@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using AcTools.Windows;
 using JetBrains.Annotations;
 
 namespace AcTools.DataFile {
@@ -608,21 +607,26 @@ namespace AcTools.DataFile {
             return _content.Count == 0;
         }
 
-        public static void Write(string path, [Localizable(false)] string section, [Localizable(false)] string key, [Localizable(false)] string value) {
-            Kernel32.WritePrivateProfileString(section, key, value, path);
+        public static void Write(string path, [Localizable(false)] string section, [Localizable(false)] string key, [Localizable(false)] string value)
+        {
+            throw new NotImplementedException();
+            // Kernel32.WritePrivateProfileString(section, key, value, path);
         }
 
         public static void Write(string path, string section, string key, int value) {
-            Kernel32.WritePrivateProfileString(section, key, value.ToString(), path);
+            throw new NotImplementedException();
+            // Kernel32.WritePrivateProfileString(section, key, value.ToString(), path);
         }
 
         public static void Write(string path, string section, string key, bool value) {
-            Kernel32.WritePrivateProfileString(section, key, value ? "1" : "0", path);
+            throw new NotImplementedException();
+            // Kernel32.WritePrivateProfileString(section, key, value ? "1" : "0", path);
         }
 
         public static void Write(string path, string section, string key, bool? value) {
+            throw new NotImplementedException();
             if (!value.HasValue) return;
-            Kernel32.WritePrivateProfileString(section, key, value.Value ? "1" : "0", path);
+            // Kernel32.WritePrivateProfileString(section, key, value.Value ? "1" : "0", path);
         }
 
         public static IEnumerable<string> GetSectionNames(string prefixName, int startFrom = 0) {

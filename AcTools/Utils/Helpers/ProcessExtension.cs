@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using AcTools.Windows;
 using JetBrains.Annotations;
 
 namespace AcTools.Utils.Helpers {
@@ -95,25 +93,19 @@ namespace AcTools.Utils.Helpers {
         public static bool HasExitedSafe([NotNull] this Process process) {
             if (process == null) throw new ArgumentNullException(nameof(process));
 
-            int processId;
-            try {
-                processId = process.Id;
-            } catch (InvalidOperationException) {
-                // What?
-                return true;
-            }
-
-            var handle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryLimitedInformation | Kernel32.ProcessAccessFlags.Synchronize, false, processId);
-            if (handle == IntPtr.Zero || handle == new IntPtr(-1)) return true;
-
-            try {
-                if (Kernel32.GetExitCodeProcess(handle, out var exitCode) && exitCode != Kernel32.STILL_ACTIVE) return true;
-                using (var w = new ProcessWrapper.ProcessWaitHandle(handle)) {
-                    return w.WaitOne(0, false);
-                }
-            } finally {
-                Kernel32.CloseHandle(handle);
-            }
+            process.WaitForExit();
+            return process.ExitCode == 0;
+            // var handle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryLimitedInformation | Kernel32.ProcessAccessFlags.Synchronize, false, processId);
+            // if (handle == IntPtr.Zero || handle == new IntPtr(-1)) return true;
+            //
+            // try {
+            //     if (Kernel32.GetExitCodeProcess(handle, out var exitCode) && exitCode != Kernel32.STILL_ACTIVE) return true;
+            //     using (var w = new ProcessWrapper.ProcessWaitHandle(handle)) {
+            //         return w.WaitOne(0, false);
+            //     }
+            // } finally {
+            //     Kernel32.CloseHandle(handle);
+            // }
         }
 
         private static async Task WaitForExitAsyncDeeperFallback([NotNull] Process process, CancellationToken cancellationToken = default) {
@@ -137,25 +129,27 @@ namespace AcTools.Utils.Helpers {
         private static async Task WaitForExitAsyncFallback([NotNull] Process process, CancellationToken cancellationToken = default) {
             if (process == null) throw new ArgumentNullException(nameof(process));
 
-            var handle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryLimitedInformation | Kernel32.ProcessAccessFlags.Synchronize, false, process.Id);
-            if (handle == IntPtr.Zero || handle == new IntPtr(-1)) {
-                await WaitForExitAsyncDeeperFallback(process, cancellationToken);
-                return;
-            }
+            await process.WaitForExitAsync(cancellationToken);
 
-            try {
-                if (Kernel32.GetExitCodeProcess(handle, out var exitCode) && exitCode != Kernel32.STILL_ACTIVE) return;
-                using (var w = new ProcessWrapper.ProcessWaitHandle(handle)) {
-                    AcToolsLogging.Write("Waiting using ProcessWaitHandle…");
-
-                    while (!w.WaitOne(0, false)) {
-                        await Task.Delay(300, cancellationToken);
-                        if (cancellationToken.IsCancellationRequested) return;
-                    }
-                }
-            } finally {
-                Kernel32.CloseHandle(handle);
-            }
+            // var handle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryLimitedInformation | Kernel32.ProcessAccessFlags.Synchronize, false, process.Id);
+            // if (handle == IntPtr.Zero || handle == new IntPtr(-1)) {
+            //     await WaitForExitAsyncDeeperFallback(process, cancellationToken);
+            //     return;
+            // }
+            //
+            // try {
+            //     if (Kernel32.GetExitCodeProcess(handle, out var exitCode) && exitCode != Kernel32.STILL_ACTIVE) return;
+            //     using (var w = new ProcessWrapper.ProcessWaitHandle(handle)) {
+            //         AcToolsLogging.Write("Waiting using ProcessWaitHandle…");
+            //
+            //         while (!w.WaitOne(0, false)) {
+            //             await Task.Delay(300, cancellationToken);
+            //             if (cancellationToken.IsCancellationRequested) return;
+            //         }
+            //     }
+            // } finally {
+            //     Kernel32.CloseHandle(handle);
+            // }
         }
 
         public static Task WaitForExitAsync([NotNull] this Process process, CancellationToken cancellationToken = default) {
@@ -244,39 +238,48 @@ namespace AcTools.Utils.Helpers {
             }
         }
 
-        [DllImport(@"psapi.dll")]
-        private static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName,
-                [In, MarshalAs(UnmanagedType.U4)] int nSize);
 
-        private static string GetProcessPathUsingPsApi(int pid) {
-            var processHandle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryInformation, false, pid);
-            if (processHandle == IntPtr.Zero) return null;
-
-            const int lengthSb = 4000;
-
-            try {
-                var sb = new StringBuilder(lengthSb);
-                return GetModuleFileNameEx(processHandle, IntPtr.Zero, sb, lengthSb) > 0 ? sb.ToString() : null;
-            } catch (Exception e) {
-                AcToolsLogging.Write(e);
-                return null;
-            } finally {
-                Kernel32.CloseHandle(processHandle);
+        private static string? GetProcessPathUsingPsApi(int pid)
+        {
+            try
+            {
+                var process = Process.GetProcessById(pid);
+                return process.StartInfo.FileName;
             }
+            catch (ArgumentException)
+            {
+                return null;
+            }
+
+            // var processHandle = Kernel32.OpenProcess(Kernel32.ProcessAccessFlags.QueryInformation, false, pid);
+            // if (processHandle == IntPtr.Zero) return null;
+            //
+            // const int lengthSb = 4000;
+            //
+            // try {
+            //     var sb = new StringBuilder(lengthSb);
+            //     return GetModuleFileNameEx(processHandle, IntPtr.Zero, sb, lengthSb) > 0 ? sb.ToString() : null;
+            // } catch (Exception e) {
+            //     AcToolsLogging.Write(e);
+            //     return null;
+            // } finally {
+            //     Kernel32.CloseHandle(processHandle);
+            // }
         }
 
         [CanBeNull]
         private static string GetProcessPathUsingManagement(int processId) {
-            try {
-                using (var s = new ManagementObjectSearcher($"SELECT ExecutablePath FROM Win32_Process WHERE ProcessId = {processId}"))
-                using (var c = s.Get()) {
-                    return c.Cast<ManagementObject>().Select(x => x[@"ExecutablePath"]).FirstOrDefault()?.ToString();
-                }
-            } catch (Exception e) {
-                AcToolsLogging.Write(e);
-            }
-
-            return null;
+            // try {
+            //     using (var s = new ManagementObjectSearcher($"SELECT ExecutablePath FROM Win32_Process WHERE ProcessId = {processId}"))
+            //     using (var c = s.Get()) {
+            //         return c.Cast<ManagementObject>().Select(x => x[@"ExecutablePath"]).FirstOrDefault()?.ToString();
+            //     }
+            // } catch (Exception e) {
+            //     AcToolsLogging.Write(e);
+            // }
+            //
+            // return null;
+            throw new NotImplementedException();
         }
 
         private static bool EnumWindow(IntPtr handle, IntPtr pointer) {
@@ -289,25 +292,29 @@ namespace AcTools.Utils.Helpers {
             throw new InvalidCastException("GCHandle Target could not be cast as List<IntPtr>");
         }
 
-        public static IReadOnlyList<IntPtr> GetWindowsHandles([NotNull] this Process process) {
-            if (process == null) throw new ArgumentNullException(nameof(process));
-            var handles = new List<IntPtr>();
-            foreach (ProcessThread thread in Process.GetProcessById(process.Id).Threads) {
-                User32.EnumThreadWindows(thread.Id, (hWnd, lParam) => {
-                    handles.Add(hWnd);
-                    return true;
-                }, IntPtr.Zero);
-            }
-            return handles;
+        public static IReadOnlyList<IntPtr> GetWindowsHandles([NotNull] this Process process)
+        {
+            throw new NotImplementedException();
+            // if (process == null) throw new ArgumentNullException(nameof(process));
+            // var handles = new List<IntPtr>();
+            // foreach (ProcessThread thread in Process.GetProcessById(process.Id).Threads) {
+            //     User32.EnumThreadWindows(thread.Id, (hWnd, lParam) => {
+            //         handles.Add(hWnd);
+            //         return true;
+            //     }, IntPtr.Zero);
+            // }
+            // return handles;
         }
 
-        public static bool HasWindow([NotNull] this Process process, IntPtr handle) {
-            if (process == null) throw new ArgumentNullException(nameof(process));
-            var result = false;
-            foreach (ProcessThread thread in Process.GetProcessById(process.Id).Threads) {
-                User32.EnumThreadWindows(thread.Id, (h, l) => result |= h == handle, IntPtr.Zero);
-            }
-            return result;
+        public static bool HasWindow([NotNull] this Process process, IntPtr handle)
+        {
+            throw new NotImplementedException();
+            // if (process == null) throw new ArgumentNullException(nameof(process));
+            // var result = false;
+            // foreach (ProcessThread thread in Process.GetProcessById(process.Id).Threads) {
+            //     User32.EnumThreadWindows(thread.Id, (h, l) => result |= h == handle, IntPtr.Zero);
+            // }
+            // return result;
         }
     }
 }

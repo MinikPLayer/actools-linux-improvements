@@ -59,7 +59,7 @@ namespace AcTools {
         }
 
         public void WriteHalf(float value) {
-            Write(new Half(value).Value);
+            Write(new SystemHalf.Half(value).Value);
         }
 
         public override void Write(string value) {

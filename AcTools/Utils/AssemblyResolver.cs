@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using AcTools.Windows;
 using JetBrains.Annotations;
 
 namespace AcTools.Utils {
@@ -44,6 +43,16 @@ namespace AcTools.Utils {
         private readonly Lazier<Regex[]> _filters;
         private readonly Dictionary<string, Assembly> _resolved = new Dictionary<string, Assembly>();
 
+        public static void AddDllDirectory(string directory)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void LoadLibrary(string path)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Initialize([NotNull] string directory) {
             AcToolsLogging.Write(directory);
 
@@ -55,11 +64,11 @@ namespace AcTools.Utils {
             AppDomain.CurrentDomain.AssemblyResolve += Resolve;
 
             if (RegisterDllDirectory) {
-                Kernel32.AddDllDirectory(directory);
+                AddDllDirectory(directory);
             }
 
             foreach (var name in Imports) {
-                Kernel32.LoadLibrary(Path.Combine(directory, name + DllExtension));
+                LoadLibrary(Path.Combine(directory, name + DllExtension));
             }
         }
 

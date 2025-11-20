@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 
 namespace AcTools.Utils.Helpers {

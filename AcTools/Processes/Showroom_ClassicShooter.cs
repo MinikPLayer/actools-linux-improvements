@@ -1,14 +1,9 @@
-﻿using System;
-using AcTools.Utils;
+﻿using AcTools.Utils;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Windows.Forms;
 using AcTools.DataFile;
+using AcTools.FormsReplacement;
 using AcTools.Utils.Helpers;
-using AcTools.Windows;
-using AcTools.Windows.Input;
+using AcTools.WindowsEmu.Input;
 
 namespace AcTools.Processes {
     class DistanceChange : IDisposable {
@@ -210,7 +205,7 @@ namespace AcTools.Processes {
 
             // ReSharper disable once UnusedMember.Local
             private void DisableAutorotation() {
-                User32.BringProcessWindowToFront(_process);
+                WindowUtils.BringProcessWindowToFront(_process);
                 _mouse.MoveMouseTo((int)(65536.0 * DisableRotationClickX / Screen.PrimaryScreen.Bounds.Width),
                     (int)(65536.0 * DisableRotationClickY / Screen.PrimaryScreen.Bounds.Height));
                 _mouse.LeftButtonClick();
@@ -219,7 +214,7 @@ namespace AcTools.Processes {
             private void RotateCam(double x, double y) {
                 PressKey(Keys.F7);
 
-                User32.BringProcessWindowToFront(_process);
+                WindowUtils.BringProcessWindowToFront(_process);
                 _mouse.MoveMouseTo(32767 - 32767 * x / Screen.PrimaryScreen.Bounds.Width,
                     32767 - 32767 * y / Screen.PrimaryScreen.Bounds.Height);
                 _mouse.RightButtonDown();
@@ -237,7 +232,7 @@ namespace AcTools.Processes {
                     var dx = (int)Math.Round(lx) - px;
                     var dy = (int)Math.Round(ly) - py;
 
-                    User32.BringProcessWindowToFront(_process);
+                    WindowUtils.BringProcessWindowToFront(_process);
                     _mouse.MoveMouseBy(dx, dy);
                     px += dx;
                     py += dy;
@@ -245,7 +240,7 @@ namespace AcTools.Processes {
                     Wait(WaitTimeoutIteration);
                 }
 
-                User32.BringProcessWindowToFront(_process);
+                WindowUtils.BringProcessWindowToFront(_process);
                 _mouse.RightButtonUp();
                 PressKey(Keys.F7);
                 Wait(WaitTimeoutEnsure);
@@ -287,7 +282,7 @@ namespace AcTools.Processes {
             }
 
             private void PressKey(Keys key) {
-                User32.BringProcessWindowToFront(_process);
+                WindowUtils.BringProcessWindowToFront(_process);
                 var code = key;
                 _keyboard.KeyDown(code);
                 Wait(WaitTimeoutIteration);

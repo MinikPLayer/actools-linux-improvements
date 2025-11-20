@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
+using AcTools.FormsReplacement;
 
-namespace AcTools.Windows.Input {
+namespace AcTools.WindowsEmu.Input {
     public interface IKeyboardListener : IDisposable {
         event EventHandler<KeyboardEventArgs> PreviewKeyUp, PreviewKeyDown;
         event EventHandler<KeyboardEventArgs> KeyUp, KeyDown;

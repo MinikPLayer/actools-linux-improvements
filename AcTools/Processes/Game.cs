@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AcTools.DataFile;
 using AcTools.Utils.Helpers;
-using AcTools.Windows.Input;
+using AcTools.WindowsEmu.Input;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 

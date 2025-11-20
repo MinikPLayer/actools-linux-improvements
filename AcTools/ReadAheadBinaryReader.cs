@@ -260,9 +260,9 @@ namespace AcTools {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected static Half ToHalf(byte[] value, int startIndex) {
+        protected static SystemHalf.Half ToHalf(byte[] value, int startIndex) {
             var val = ToUInt16(value, startIndex);
-            return Half.ToHalf(val);
+            return SystemHalf.Half.ToHalf(val);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -312,7 +312,7 @@ namespace AcTools {
             return (uint)ReadInt32();
         }
 
-        public Half ReadHalf() {
+        public SystemHalf.Half ReadHalf() {
             return ToHalf(_buffer, GetPosAndMove(2));
         }
 

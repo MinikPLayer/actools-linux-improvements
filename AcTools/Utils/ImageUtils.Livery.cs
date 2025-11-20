@@ -224,8 +224,8 @@ namespace AcTools.Utils {
                 var dy = Math.Max(imgHeight / 40, 2);
 
                 using (var pc = img.GetPixels()) {
-                    for (var y = 0; y < imgHeight; y += dy)
-                        for (var x = 0; x < imgWidth; x += dx) {
+                    for (var y = 0; y < imgHeight; y += (int)dy)
+                        for (var x = 0; x < imgWidth; x += (int)dx) {
                             var pixel = pc[x, y];
                             var color = pixel.ToColor();
                             average[0] += color.R;

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using AcTools.FormsReplacement;
 using AcTools.Utils;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using AcTools.Utils.Helpers;
-using AcTools.Windows.Input;
+using AcTools.WindowsEmu.Input;
 
 namespace AcTools.Processes {
     public partial class Showroom {

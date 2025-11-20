@@ -1,5 +1,4 @@
-﻿using AcTools.Windows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
+using AcTools.FormsReplacement;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 
@@ -117,14 +116,14 @@ namespace AcTools.Utils {
         }
 
         public static bool Undo() {
-            var handle = User32.FindWindowEx(
-                    User32.FindWindowEx(User32.FindWindow("Progman", "Program Manager"), IntPtr.Zero, "SHELLDLL_DefView", ""),
+            var handle = WindowUtils.FindWindowEx(
+                WindowUtils.FindWindowEx(WindowUtils.FindWindow("Progman", "Program Manager"), IntPtr.Zero, "SHELLDLL_DefView", ""),
                     IntPtr.Zero, "SysListView32", "FolderView");
             if (handle != IntPtr.Zero) {
-                var current = User32.GetForegroundWindow();
-                User32.SetForegroundWindow(handle);
+                var current = WindowUtils.GetForegroundWindow();
+                WindowUtils.SetForegroundWindow(handle);
                 SendKeys.SendWait("^(z)");
-                User32.SetForegroundWindow(current);
+                WindowUtils.SetForegroundWindow(current);
                 return true;
             } else {
                 return false;
@@ -404,6 +403,8 @@ namespace AcTools.Utils {
         }
 
         private static bool TryToHardLink([NotNull] string source, [NotNull] string destination, bool overwrite = false) {
+            throw new NotImplementedException();
+
             if (source == null) throw new ArgumentNullException(nameof(source));
             if (destination == null) throw new ArgumentNullException(nameof(destination));
 
@@ -411,7 +412,7 @@ namespace AcTools.Utils {
                 File.Delete(destination);
             }
 
-            return Kernel32.CreateHardLink(destination, source, IntPtr.Zero);
+            // return Kernel32.CreateHardLink(destination, source, IntPtr.Zero);
         }
 
         [Obsolete]
@@ -582,47 +583,52 @@ namespace AcTools.Utils {
             }
         }
 
-        public static bool Unblock([NotNull] string fileName) {
-            return Kernel32.DeleteFile(fileName + ":Zone.Identifier");
-        }
-
-        public static bool IsBlocked([NotNull] string fileName) {
-            using (var handle = Kernel32.CreateFile(fileName + ":Zone.Identifier",
-                    Kernel32.FileAccess.GenericRead, Kernel32.FileShare.Read, IntPtr.Zero, Kernel32.CreationDisposition.OpenExisting,
-                    Kernel32.FileAttributes.Normal, IntPtr.Zero)) {
-                return !handle.IsInvalid;
+        public static bool Unblock([NotNull] string fileName)
+        {
+            try
+            {
+                File.Delete(fileName + ":Zone.Identifier");
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
-        [NotNull]
-        public static string GetMountPoint([NotNull] string filename) {
-            const uint stringLength = 256;
-            var sb = new StringBuilder((int)stringLength);
-            Kernel32.GetVolumePathName(filename, sb, stringLength);
-            return sb.ToString();
+        public static bool IsBlocked([NotNull] string fileName) {
+            return File.Exists(fileName + ":Zone.Identifier");
         }
 
-        [NotNull]
-        public static string[] GetFileSiblingHardLinks([NotNull] string filename, [NotNull] string mountPoint) {
-            var result = new List<string>();
-            uint stringLength = 256;
-            var sb = new StringBuilder((int)stringLength);
-            var findHandle = Kernel32.FindFirstFileNameW(filename, 0, ref stringLength, sb);
-            if (findHandle.ToInt32() == -1) return new string[0];
+        // [NotNull]
+        // public static string GetMountPoint([NotNull] string filename) {
+        //     const uint stringLength = 256;
+        //     var sb = new StringBuilder((int)stringLength);
+        //     Kernel32.GetVolumePathName(filename, sb, stringLength);
+        //     return sb.ToString();
+        // }
 
-            do {
-                result.Add(mountPoint + sb.ToString().Substring(1));
-                sb.Length = 0;
-                stringLength = 256;
-            } while (Kernel32.FindNextFileNameW(findHandle, ref stringLength, sb));
-            Kernel32.FindClose(findHandle);
-            return result.ToArray();
-        }
-
-        [CanBeNull]
-        public static string[] GetFileSiblingHardLinks([NotNull] string filename) {
-            return GetFileSiblingHardLinks(filename, GetMountPoint(filename));
-        }
+        // [NotNull]
+        // public static string[] GetFileSiblingHardLinks([NotNull] string filename, [NotNull] string mountPoint) {
+        //     var result = new List<string>();
+        //     uint stringLength = 256;
+        //     var sb = new StringBuilder((int)stringLength);
+        //     var findHandle = Kernel32.FindFirstFileNameW(filename, 0, ref stringLength, sb);
+        //     if (findHandle.ToInt32() == -1) return new string[0];
+        //
+        //     do {
+        //         result.Add(mountPoint + sb.ToString().Substring(1));
+        //         sb.Length = 0;
+        //         stringLength = 256;
+        //     } while (Kernel32.FindNextFileNameW(findHandle, ref stringLength, sb));
+        //     Kernel32.FindClose(findHandle);
+        //     return result.ToArray();
+        // }
+        //
+        // [CanBeNull]
+        // public static string[] GetFileSiblingHardLinks([NotNull] string filename) {
+        //     return GetFileSiblingHardLinks(filename, GetMountPoint(filename));
+        // }
 
         public static bool IsDirectoryEmpty([NotNull] string path, bool? resultForMissing = null) {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(path);
@@ -631,29 +637,30 @@ namespace AcTools.Utils {
                 throw new DirectoryNotFoundException();
             }
 
-            var last = path[path.Length - 1];
-            if (last == Path.DirectorySeparatorChar || last == Path.AltDirectorySeparatorChar) {
-                path += "*";
-            } else {
-                path += Path.DirectorySeparatorChar + "*";
-            }
-
-            var handle = Kernel32.FindFirstFile(path, out var findData);
-            if (handle != Kernel32.InvalidHandleValue) {
-                try {
-                    do {
-                        if (findData.FileName != "." && findData.FileName != "..") {
-                            return false;
-                        }
-                    } while (Kernel32.FindNextFile(handle, out findData));
-                    return true;
-                } finally {
-                    Kernel32.FindClose(handle);
-                }
-            }
-
-            throw new Exception("Failed to get directory first file",
-                    Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
+            return Directory.EnumerateFileSystemEntries(path, "*", SearchOption.AllDirectories).Any();
+            // var last = path[path.Length - 1];
+            // if (last == Path.DirectorySeparatorChar || last == Path.AltDirectorySeparatorChar) {
+            //     path += "*";
+            // } else {
+            //     path += Path.DirectorySeparatorChar + "*";
+            // }
+            //
+            // var handle = Kernel32.FindFirstFile(path, out var findData);
+            // if (handle != Kernel32.InvalidHandleValue) {
+            //     try {
+            //         do {
+            //             if (findData.FileName != "." && findData.FileName != "..") {
+            //                 return false;
+            //             }
+            //         } while (Kernel32.FindNextFile(handle, out findData));
+            //         return true;
+            //     } finally {
+            //         Kernel32.FindClose(handle);
+            //     }
+            // }
+            //
+            // throw new Exception("Failed to get directory first file",
+            //         Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace AcTools.Utils {
 
     // Separate class to avoid Magick-related static variables to be initialized beforehand.
     public static class ImageUtilsOptions {
-        public static int JpegQuality = 98;
+        public static uint JpegQuality = 98;
     }
 
     public static partial class ImageUtils {
@@ -80,7 +80,7 @@ namespace AcTools.Utils {
             }
 
             using (var image = new MagickImage(data)) {
-                formatDescription = image.CompressionMethod.ToString();
+                formatDescription = image.Format.ToString();
 
                 if (noAlpha) {
                     image.HasAlpha = false;
@@ -108,8 +108,8 @@ namespace AcTools.Utils {
                     image.Interpolate = PixelInterpolateMethod.Catrom;
                     image.FilterType = FilterType.Lanczos;
                     image.Sharpen();
-                    image.Resize((int)(k * image.Width), (int)(k * image.Height));
-                    image.Crop((int)maxWidth, (int)maxHeight, Gravity.Center);
+                    image.Resize((uint)(k * image.Width), (uint)(k * image.Height));
+                    image.Crop((uint)maxWidth, (uint)maxHeight, Gravity.Center);
                 }
 
                 image.Quality = ImageUtilsOptions.JpegQuality;
@@ -134,7 +134,7 @@ namespace AcTools.Utils {
                     profile.SetValue(ExifTag.ImageDescription, information.Name);
                 }
 
-                image.AddProfile(profile);
+                image.SetProfile(profile);
                 image.Write(destination);
             }
         }
@@ -253,14 +253,14 @@ namespace AcTools.Utils {
             image.Resize(new Percentage(scale * 100d));
         }
 
-        public static void SaveImage(MagickImage image, string destination, int? quality = null, ImageInformation exif = null,
+        public static void SaveImage(MagickImage image, string destination, uint? quality = null, ImageInformation exif = null,
                 MagickFormat format = MagickFormat.Jpeg) {
             using (var stream = File.Open(destination, FileMode.Create, FileAccess.ReadWrite)) {
                 SaveImage(image, stream, quality, exif, format);
             }
         }
 
-        public static void SaveImage(MagickImage image, Stream destination, int? quality = null, ImageInformation exif = null,
+        public static void SaveImage(MagickImage image, Stream destination, uint? quality = null, ImageInformation exif = null,
                 MagickFormat format = MagickFormat.Jpeg) {
             if (exif != null) {
                 var profile = new ExifProfile();
@@ -283,7 +283,7 @@ namespace AcTools.Utils {
                 profile.SetValue(ExifTag.DateTimeOriginal, date);
                 profile.SetValue(ExifTag.DateTimeDigitized, date);
 
-                image.AddProfile(profile);
+                image.SetProfile(profile);
             }
 
             image.Quality = quality ?? ImageUtilsOptions.JpegQuality;
@@ -291,7 +291,7 @@ namespace AcTools.Utils {
             image.Write(destination, format);
         }
 
-        private static void SaveImage(Image image, Stream destination, int quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
+        private static void SaveImage(Image image, Stream destination, uint quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
             if (exif != null) {
                 var date = DateTime.Now;
 
@@ -322,7 +322,7 @@ namespace AcTools.Utils {
         public static bool OptionConvertCombined = true;
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void ConvertImageMagick(Stream source, Stream destination, Size? resize, int quality, ImageInformation exif,
+        private static void ConvertImageMagick(Stream source, Stream destination, Size? resize, uint quality, ImageInformation exif,
                 [CanBeNull] ImageFormat format) {
             using (var image = new MagickImage(source)) {
                 if (resize.HasValue) {
@@ -330,8 +330,8 @@ namespace AcTools.Utils {
                     image.Interpolate = PixelInterpolateMethod.Catrom;
                     image.FilterType = FilterType.Lanczos;
                     image.Sharpen();
-                    image.Resize((int)(k * image.Width), (int)(k * image.Height));
-                    image.Crop(resize.Value.Width, resize.Value.Height, Gravity.Center);
+                    image.Resize((uint)(k * image.Width), (uint)(k * image.Height));
+                    image.Crop((uint)resize.Value.Width, (uint)resize.Value.Height, Gravity.Center);
                 }
 
                 SaveImage(image, destination, quality, exif, format.ToMagickFormat());
@@ -343,7 +343,7 @@ namespace AcTools.Utils {
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void ConvertCombined(Stream source, Stream destination, Size? resize, int quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
+        private static void ConvertCombined(Stream source, Stream destination, Size? resize, uint quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
             if (resize == null) {
                 ConvertImageMagick(source, destination, null, quality, exif, format);
                 return;
@@ -364,7 +364,7 @@ namespace AcTools.Utils {
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void ConvertGdi(Stream source, Stream destination, Size? resize, int quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
+        private static void ConvertGdi(Stream source, Stream destination, Size? resize, uint quality, ImageInformation exif, [CanBeNull] ImageFormat format) {
             using (var image = Image.FromStream(source))
             using (var prepared = format == null || format.Guid == ImageFormat.Jpeg.Guid ? CutOutAlpha((Bitmap)image) : image) {
                 if (resize.HasValue) {
@@ -377,7 +377,7 @@ namespace AcTools.Utils {
             }
         }
 
-        public static void Convert(Stream source, Stream destination, Size? resize, int? quality = null, ImageInformation exif = null, ImageFormat format = null) {
+        public static void Convert(Stream source, Stream destination, Size? resize, uint? quality = null, ImageInformation exif = null, ImageFormat format = null) {
             if (!IsMagickSupported) {
                 ConvertGdi(source, destination, resize, quality ?? ImageUtilsOptions.JpegQuality, exif, format);
             } else if (OptionConvertCombined) {
@@ -387,7 +387,7 @@ namespace AcTools.Utils {
             }
         }
 
-        public static void Convert(string source, string destination, Size? resize, int? quality = null, ImageInformation exif = null, ImageFormat format = null) {
+        public static void Convert(string source, string destination, Size? resize, uint? quality = null, ImageInformation exif = null, ImageFormat format = null) {
             if (File.Exists(destination)) {
                 try {
                     File.Delete(destination);
@@ -403,11 +403,11 @@ namespace AcTools.Utils {
             }
         }
 
-        public static void Convert(Stream source, Stream destination, int? quality = null, ImageInformation exif = null, ImageFormat format = null) {
+        public static void Convert(Stream source, Stream destination, uint? quality = null, ImageInformation exif = null, ImageFormat format = null) {
             Convert(source, destination, null, quality, exif);
         }
 
-        public static void Convert(string source, string destination, int? quality = null, ImageInformation exif = null, ImageFormat format = null) {
+        public static void Convert(string source, string destination, uint? quality = null, ImageInformation exif = null, ImageFormat format = null) {
             Convert(source, destination, null, quality, exif);
         }
     }
