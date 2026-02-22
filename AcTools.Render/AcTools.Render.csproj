@@ -348,11 +348,14 @@
     <Compile Include="Temporary\TestingCubeRendererUsingEffect.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DdsEncoder.cs" />
+    <Compile Include="Utils\MatrixFix.cs" />
     <Compile Include="Utils\OpenExrEncoder.cs" />
     <Compile Include="Utils\PreferredDdsFormat.cs" />
     <Compile Include="Utils\PreferredDdsFormatExtension.cs" />
     <Compile Include="Wrapper\BaseKn5FormWrapper.cs" />
     <Compile Include="Wrapper\FormWrapperBase.cs" />
+    <Compile Include="Wrapper\FormWrapperMouseBase.cs" />
+    <Compile Include="Wrapper\Kn5WrapperCameraControlHelper.cs" />
     <Compile Include="Wrapper\LiteShowroomFormWrapper.cs" />
   </ItemGroup>
   <ItemGroup>

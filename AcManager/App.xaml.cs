@@ -35,6 +35,7 @@ using AcManager.Tools;
 using AcManager.Tools.AcErrors;
 using AcManager.Tools.AcManagersNew;
 using AcManager.Tools.AcObjectsNew;
+using AcManager.Tools.ContentInstallation;
 using AcManager.Tools.Data;
 using AcManager.Tools.Data.GameSpecific;
 using AcManager.Tools.GameProperties;
@@ -139,8 +140,16 @@ namespace AcManager {
                 ValuesStorage.Set(AppAppearanceManager.KeySoftwareRendering, true);
             }
 
-            if (IsSoftwareRenderingModeEnabled()) {
-                SwitchToSoftwareRendering();
+            var softwareRenderingModeIsEnabled = IsSoftwareRenderingModeEnabled();
+            if (AppArguments.GetDouble(AppFlag.DesiredFrameRate) is double v && v > 0d) {
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(v));
+                if (softwareRenderingModeIsEnabled) {
+                    RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+                    ModernFrame.OptionDisableTransitionAnimation = true;
+                }
+            } else if (softwareRenderingModeIsEnabled) {
+                RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(30));
             }
 
             var app = new App();
@@ -193,11 +202,6 @@ namespace AcManager {
         public static bool IsSoftwareRenderingModeEnabled() {
             return AppArguments.GetBool(AppFlag.SoftwareRendering) || ValuesStorage.Get<bool>(AppAppearanceManager.KeySoftwareRendering)
                     || MainExecutingFile.Name.IndexOf(@"safe", StringComparison.OrdinalIgnoreCase) != -1;
-        }
-
-        private static void SwitchToSoftwareRendering() {
-            RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-            Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(30));
         }
 
         private AppHibernator _hibernator;
@@ -274,9 +278,9 @@ namespace AcManager {
             AppArguments.Set(AppFlag.FbxMultiMaterial, ref Kn5.OptionJoinToMultiMaterial);
 
             Acd.Factory = new AcdFactory();
-            //#if !DEBUG
+#if !DEBUG || true
             Kn5.Factory = Kn5New.GetFactoryInstance();
-            //#endif
+#endif
             Lazier.SyncAction = ActionExtension.InvokeInMainThreadAsync;
             KeyboardListenerFactory.Register<KeyboardListener>();
 
@@ -347,9 +351,11 @@ namespace AcManager {
             AppArguments.Set(AppFlag.ShowroomUiVerbose, ref LiteShowroomFormWrapperWithTools.OptionAttachedToolsVerboseMode);
             AppArguments.Set(AppFlag.BenchmarkReplays, ref GameDialog.OptionBenchmarkReplays);
             AppArguments.Set(AppFlag.HideRaceCancelButton, ref GameDialog.OptionHideCancelButton);
+            AppArguments.Set(AppFlag.SkipAllResults, ref GameDialog.OptionSkipAllResults);
             AppArguments.Set(AppFlag.PatchSupport, ref PatchHelper.OptionPatchSupport);
             AppArguments.Set(AppFlag.CspReportsLocation, ref CspReportUtils.OptionLocation);
             AppArguments.Set(AppFlag.RingDebug, ref ExtraProgressRings.OptionAnimationDevelopment);
+            AppArguments.Set(AppFlag.DevLobbies, ref ThirdPartyOnlineSourcesManager.OptionDevLobbies);
 #if INCLUDE_WORKSHOP
             AppArguments.Set(AppFlag.CmWorkshop, ref WorkshopClient.OptionUserAvailable);
             AppArguments.Set(AppFlag.CmWorkshopCreator, ref WorkshopClient.OptionCreatorAvailable);
@@ -417,6 +423,11 @@ namespace AcManager {
             }
 
             CupClient.Initialize();
+            CupClient.Instance?.RegisterPostponed(CupContentType.App, () => PythonAppsManager.Instance);
+            CupClient.Instance?.RegisterPostponed(CupContentType.LuaApp, () => LuaAppsManager.Instance);
+            CupClient.Instance?.RegisterPostponed(CupContentType.Showroom, () => ShowroomsManager.Instance);
+            CupClient.Instance?.RegisterPostponed(CupContentType.Filter, () => PpFiltersManager.Instance);
+            
             CupViewModel.Initialize();
             Superintendent.Initialize();
             ModsWebBrowser.Initialize();
@@ -429,47 +440,43 @@ namespace AcManager {
             PrepareUi();
 
             AppShortcut.Initialize("Content Manager", "Content Manager");
-
-            // If shortcut exists, make sure it has a proper app ID set for notifications
-            if (File.Exists(AppShortcut.ShortcutLocation)) {
-                AppShortcut.CreateShortcut();
-            }
-
             AppIconService.Initialize(new AppIconProvider());
 
             Toast.SetDefaultAction(() => (Current.Windows.OfType<ModernWindow>().FirstOrDefault(x => x.IsActive) ??
                     Current.MainWindow as ModernWindow)?.BringToFront());
             BbCodeBlock.ImageClicked += OnBbImageClick;
+            BbCodeBlock.IconsDictionary = new SharedResourceDictionary {
+                Source = new Uri("/AcManager.Controls;component/Assets/IconData.xaml", UriKind.Relative)
+            };
             BbCodeBlock.OptionEmojiProvider = new EmojiProvider();
             BbCodeBlock.OptionImageCacheDirectory = FilesStorage.Instance.GetTemporaryFilename("Images");
             BbCodeBlock.OptionEmojiCacheDirectory = FilesStorage.Instance.GetTemporaryFilename("Emoji");
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/enable"), new DelegateCommand(() => {
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/enable"), new SimpleLinkCommand(() => {
                 using (var model = PatchSettingsModel.Create()) {
                     var item = model.Configs?
-                            .FirstOrDefault(x => x.FileNameWithoutExtension == "general")?.Sections.GetByIdOrDefault("BASIC")?
+                            .FirstOrDefault(x => x.FileNameWithoutExtension == "general")?.SectionsOwn.GetByIdOrDefault("BASIC")?
                             .GetByIdOrDefault("ENABLED");
                     if (item != null) {
                         item.Value = @"1";
                     }
                 }
-            }));
+            }, "Enable Custom Shaders Patch"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/disable"), new DelegateCommand(() => {
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/disable"), new SimpleLinkCommand(() => {
                 using (var model = PatchSettingsModel.Create()) {
                     var item = model.Configs?
-                            .FirstOrDefault(x => x.FileNameWithoutExtension == "general")?.Sections.GetByIdOrDefault("BASIC")?
+                            .FirstOrDefault(x => x.FileNameWithoutExtension == "general")?.SectionsOwn.GetByIdOrDefault("BASIC")?
                             .GetByIdOrDefault("ENABLED");
                     if (item != null) {
                         item.Value = @"0";
                     }
                 }
-            }));
+            }, "Disable Custom Shaders Patch"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/update"), new DelegateCommand<string>(id => {
-                var version = id.As(0);
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/update"), new SimpleLinkCommand<int>(version => {
                 if (version == 0) {
-                    Logging.Error($"Wrong parameter: {id}");
+                    Logging.Error($"Wrong parameter: {version}");
                     return;
                 }
 
@@ -480,34 +487,53 @@ namespace AcManager {
                 }
 
                 PatchUpdater.Instance.InstallAsync(versionInfo, CancellationToken.None);
-            }));
+            }, "Update Custom Shaders Patch"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://findMissing/car"), new DelegateCommand<string>(
-                    id => { WindowsHelper.ViewInBrowser(SettingsHolder.Content.MissingContentSearch.GetUri(id, SettingsHolder.MissingContentType.Car)); }));
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/changelog"), new SimpleLinkCommand<int>(version => {
+                if (version == 0) {
+                    Logging.Error($"Wrong parameter: {version}");
+                    return;
+                }
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://findMissing/track"), new DelegateCommand<string>(
-                    id => { WindowsHelper.ViewInBrowser(SettingsHolder.Content.MissingContentSearch.GetUri(id, SettingsHolder.MissingContentType.Track)); }));
+                var versionInfo = PatchUpdater.Instance.Versions.FirstOrDefault(x => x.Build == version);
+                if (versionInfo == null) {
+                    Logging.Error($"Version {version} is missing");
+                    return;
+                }
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://downloadMissing/car"), new DelegateCommand<string>(id => {
+                versionInfo.ViewChangelogCommand.Execute();
+            }, "View changelog"));
+
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://findMissing/car"), new SimpleLinkCommand<string>(
+                    id => { WindowsHelper.ViewInBrowser(SettingsHolder.Content.MissingContentSearch.GetUri(id, SettingsHolder.MissingContentType.Car)); },
+                    "Look for the missing car"));
+
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://findMissing/track"), new SimpleLinkCommand<string>(
+                    id => { WindowsHelper.ViewInBrowser(SettingsHolder.Content.MissingContentSearch.GetUri(id, SettingsHolder.MissingContentType.Track)); },
+                    "Look for the missing track"));
+
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://downloadMissing/car"), new SimpleLinkCommand<string>(id => {
                 var s = id.Split('|');
                 IndexDirectDownloader.DownloadCarAsync(s[0], s.ArrayElementAtOrDefault(1)).Ignore();
-            }));
+            }, "Download missing car"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://downloadMissing/track"), new DelegateCommand<string>(id => {
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://downloadMissing/track"), new SimpleLinkCommand<string>(id => {
                 var s = id.Split('|');
                 IndexDirectDownloader.DownloadTrackAsync(s[0], s.ArrayElementAtOrDefault(1)).Ignore();
-            }));
+            }, "Download missing track"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://createNeutralLut"), new DelegateCommand<string>(id =>
-                    NeutralColorGradingLut.CreateNeutralLut(id.As(16))));
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://createNeutralLut"), new SimpleLinkCommand<string>(id =>
+                    NeutralColorGradingLut.CreateNeutralLut(id.As(16)), "Create a neutral LUT"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://openPage/importantTips"), new DelegateCommand<string>(id =>
-                    LinkCommands.NavigateLinkMainWindow.Execute(new Uri($"/Pages/About/ImportantTipsPage.xaml?Key={id}", UriKind.Relative))));
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://openPage/importantTips"), new SimpleLinkCommand<string>(id =>
+                    LinkCommands.NavigateLinkMainWindow.Execute(new Uri($"/Pages/About/ImportantTipsPage.xaml?Key={id}", UriKind.Relative)), 
+                    "View important tips"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://openCarLodGeneratorDefinitions"), new DelegateCommand<string>(id =>
-                    WindowsHelper.ViewFile(FilesStorage.Instance.GetContentFile(ContentCategory.CarLodsGeneration, "CommonDefinitions.json").Filename)));
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://openCarLodGeneratorDefinitions"), new SimpleLinkCommand<string>(id =>
+                    WindowsHelper.ViewFile(FilesStorage.Instance.GetContentFile(ContentCategory.CarLodsGeneration, "CommonDefinitions.json").Filename),
+                    "View common definitions"));
 
-            BbCodeBlock.AddLinkCommand(new Uri("cmd://findSrsServers"), new DelegateCommand(() => new ModernDialog {
+            BbCodeBlock.AddLinkCommand(new Uri("cmd://findSrsServers"), new SimpleLinkCommand(() => new ModernDialog {
                 ShowTitle = false,
                 ShowTopBlob = false,
                 Title = "Connect to SimRacingSystem",
@@ -523,7 +549,7 @@ namespace AcManager {
                 SizeToContent = SizeToContent.Manual,
                 ResizeMode = ResizeMode.CanResizeWithGrip,
                 LocationAndSizeKey = @".SrsJoinDialog"
-            }.ShowDialog()));
+            }.ShowDialog(), "Find SRS servers"));
 
             BbCodeBlock.DefaultLinkNavigator.PreviewNavigate += (sender, args) => {
                 if (ArgumentsHandler.IsCmCommand(args.Uri)) {
@@ -550,8 +576,7 @@ namespace AcManager {
             AppArguments.Set(AppFlag.CspPreviewsBatchSize, ref CmPreviewsTools.OptionBatchSize);
             AppArguments.Set(AppFlag.CspPreviewsRunVisible, ref DarkPreviewsAcUpdater.OptionRunVisible);
             AppArguments.Set(AppFlag.CspPreviewsKeepPositions, ref DarkPreviewsAcUpdater.OptionKeepPositions);
-            SlimDX.Configuration.DetectDoubleDispose = true;
-            SlimDX.Configuration.EnableObjectTracking = true;
+            AppArguments.Set(AppFlag.AllowDataScripts, ref ArgumentsHandler.OptionAllowDataScripts);
             Filter.OptionSimpleMatching = true;
 
             GameResultExtension.RegisterNameProvider(new GameSessionNameProvider());
@@ -560,6 +585,21 @@ namespace AcManager {
             SettingsHolder.Content.OldLayout = AppArguments.GetBool(AppFlag.CarsOldLayout);
 
             var acRootIsFine = Superintendent.Instance.IsReady && !AcRootDirectorySelector.IsReviewNeeded();
+            
+            // Initializing AC configs 
+            if (acRootIsFine) {
+                var sourceCfg = Path.Combine(AcRootDirectory.Instance.Value ?? string.Empty, "cfg");
+                if (File.Exists(Path.Combine(sourceCfg, "templates\\tracks.ini"))) {
+                    var documentsCfg = AcPaths.GetDocumentsCfgDirectory();
+                    if (!Directory.Exists(sourceCfg)) {
+                        FileUtils.CopyRecursive(sourceCfg, documentsCfg);
+                    } else if (!File.Exists(Path.Combine(documentsCfg, "templates\\tracks.ini"))) {
+                        FileUtils.CopyRecursive(sourceCfg, documentsCfg, false);
+                    }
+                }
+            }
+            
+            // Preparing Steam starter thing
             if (acRootIsFine && SteamStarter.Initialize(AcRootDirectory.Instance.Value, false)) {
                 if (SettingsHolder.Drive.SelectedStarterType != SettingsHolder.DriveSettings.SteamStarterType) {
                     SettingsHolder.Drive.SelectedStarterType = SettingsHolder.DriveSettings.SteamStarterType;
@@ -576,6 +616,12 @@ namespace AcManager {
 
             InitializeUpdatableStuff();
             BackgroundInitialization();
+
+            NewFilesReporter.NewFileCreated += (sender, s) => {
+                if (SettingsHolder.Content.CompressFilesInBackground) {
+                    FilesCompressor.RegisterNewFileToBeCompressedLater(s);
+                }
+            };
 
             FatalErrorMessage.Register(new AppRestartHelper());
             ImageUtils.SafeMagickWrapper = fn => {
@@ -621,7 +667,7 @@ namespace AcManager {
 
             // Discord
             if (AppArguments.Has(AppFlag.DiscordCmd)) {
-                // Do not show main window and wait for futher instructions?
+                // Do not show main window and wait for further instructions?
             }
 
             if (SettingsHolder.Integrated.DiscordIntegration) {
@@ -668,12 +714,20 @@ namespace AcManager {
                     PatchUpdater.Instance.Updated += OnPatchUpdated;
                 }
             });
+
+            WebBlock.CmCommandHandler = s => {
+                ActionExtension.InvokeInMainThreadAsync(() => {
+                    using (GameWrapper.SetPropertiesCallback(p => p.SetAdditional(new LiveServiceMark("Generic")))) {
+                        ArgumentsHandler.ProcessArguments(new[] { s }, true).Ignore();
+                    }
+                });
+            };
         }
 
         private static async Task CheckFaultTolerantHeap() {
             try {
                 await Task.Delay(500);
-                if (ValuesStorage.Get(".fth.shown2", false) && FaultTolerantHeapFix.Check()) {
+                if (ValuesStorage.Get(".fth.shown4", false) && FaultTolerantHeapFix.Check()) {
                     NonfatalError.NotifyBackground("Performance issue detected",
                             "Assetto Corsa performance is negatively affected by FTH. Content Manager can try to fix it.",
                             solutions: new[] {
@@ -699,11 +753,21 @@ namespace AcManager {
                     Logging.Error(e);
                 }
             });
+            await Task.Delay(5000);
+
+            // If shortcut exists, make sure it has a proper app ID set for notifications
+            var runs = ValuesStorage.Get(".r", 0);
+            if (runs % 16 == 15 && File.Exists(AppShortcut.ShortcutLocation)) {
+                AppShortcut.CreateShortcut();
+            }
+            ValuesStorage.Set(".r", ++runs);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void SetRenderersOptions() {
             AppArguments.Set(AppFlag.TrackMapGeneratorMaxSize, ref TrackMapRenderer.OptionMaxSize);
+            SlimDX.Configuration.DetectDoubleDispose = true;
+            SlimDX.Configuration.EnableObjectTracking = true;
         }
 
         protected override void OnStartup(StartupEventArgs e) {
@@ -745,8 +809,8 @@ namespace AcManager {
         private static void PrepareUi() {
             try {
                 ToolTipService.ShowOnDisabledProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(true));
-                ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(300));
-                ToolTipService.BetweenShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(600));
+                ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(500));
+                ToolTipService.BetweenShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(0));
                 ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(60000));
                 ItemsControl.IsTextSearchCaseSensitiveProperty.OverrideMetadata(typeof(ComboBox), new FrameworkPropertyMetadata(true));
 
@@ -815,7 +879,7 @@ namespace AcManager {
                 string additional = null;
                 AppArguments.Set(AppFlag.SimilarAdditionalSourceIds, ref additional);
                 if (!string.IsNullOrWhiteSpace(additional)) {
-                    CarAnalyzer.OptionSimilarAdditionalSourceIds = additional.Split(';', ',').Select(x => x.Trim()).Where(x => x.Length > 0).ToArray();
+                    CarAnalyzer.OptionSimilarAdditionalSourceIds = additional;
                 }
 
                 await Task.Delay(500);
@@ -858,6 +922,12 @@ namespace AcManager {
 
                 await Task.Delay(1500);
                 ExtraProgressRings.Initialize();
+
+                AcSharedMemory.Instance.BackgroundProcessingOpportunity += (sender, args) => {
+                    if (SettingsHolder.Content.CompressFilesInBackground) {
+                        FilesCompressor.BackgroundCompressStep();
+                    }
+                };
 
                 await Task.Delay(3500);
                 await Task.Run(() => {

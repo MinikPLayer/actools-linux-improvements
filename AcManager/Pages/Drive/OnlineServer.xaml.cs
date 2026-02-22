@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -36,6 +37,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Converters;
+using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 using CarEntry = AcManager.Tools.Managers.Online.ServerEntry.CarEntry;
 
@@ -134,9 +136,10 @@ namespace AcManager.Pages.Drive {
         private void ResizingStuff() {
             ShowExtendedInformation = ActualWidth > 600;
 
-            var contentHeight = ErrorsPanel.ActualHeight + PasswordPanel.ActualHeight + DataPanel.ActualHeight;
-            var availableHeight = ScrollViewer.ActualHeight;
-            ScrollableContent = availableHeight - contentHeight < 120;
+            // var contentHeight = ErrorsPanel.ActualHeight + PasswordPanel.ActualHeight + DataPanel.ActualHeight;
+            // var availableHeight = ScrollViewer.ActualHeight;
+            // ScrollableContent = availableHeight - contentHeight < 120;
+            ScrollableContent = true;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e) {
@@ -461,11 +464,11 @@ namespace AcManager.Pages.Drive {
         public static string EncryptSharedPassword(string id, string password) {
             var data = Encoding.UTF8.GetBytes(password);
             Xor(data, Encoding.UTF8.GetBytes(id + EncryptKey));
-            return Convert.ToBase64String(data);
+            return HttpUtility.UrlEncode(Convert.ToBase64String(data));
         }
 
         public static string EncryptSharedPassword(string ip, int httpPort, string password) {
-            return EncryptSharedPassword($@"{ip}:{httpPort.ToInvariantString()}", password);
+            return HttpUtility.UrlEncode(EncryptSharedPassword($@"{ip}:{httpPort.ToInvariantString()}", password));
         }
 
         public static string DecryptSharedPassword(string id, string encryptedPassword) {
@@ -695,6 +698,26 @@ namespace AcManager.Pages.Drive {
 
         private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
             Model.QuickDriveButton.Initialize();
+        }
+
+        private async void OnErrorsBlockLoaded(object sender, RoutedEventArgs e) {
+            if (Model.Entry.IsAbleToInstallMissingContentState_Cup == ServerEntry.IsAbleToInstallMissingContent.NoMissingContent
+                    || FancyHints.CupV2IndexedContent.Shown) {
+                return;
+            }
+
+            await Task.Yield();
+            var self = (SelectableBbCodeBlock)sender;
+            var downloadIcon = BbCodeBlock.IconsDictionary[@"DownloadIconData"] as Geometry;
+            foreach (var child in self.FindVisualChildren<Path>()) {
+                if (child.Data == downloadIcon) {
+                    var pos = child.TranslatePoint(new Point(0, 0), self);
+                    FancyHintsService.SetOffsetX(self, pos.X + child.ActualWidth / 2d);
+                    FancyHintsService.SetOffsetY(self, pos.Y + child.ActualHeight / 2d);
+                    FancyHints.CupV2IndexedContent.Trigger(TimeSpan.FromSeconds(1d));
+                    break;
+                }
+            }
         }
     }
 }

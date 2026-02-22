@@ -12,6 +12,7 @@ using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Render.Shaders;
+using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
@@ -210,6 +211,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                 _effect.FxInputMap.SetResource(_tempBuffer.View);
                 _effect.TechVerticalShadowBlur.DrawAllPasses(DeviceContext, 6);
                 AcToolsLogging.Write("    Blur pass: " + i);
+                DeviceContext.Flush();
             }
 
             // result
@@ -226,6 +228,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             
             _effect.TechResult.DrawAllPasses(DeviceContext, 6);
             AcToolsLogging.Write("    Result pass drawn");
+            DeviceContext.Flush();
         }
 
         private void SaveResultAs(string filename, int size, int padding) {
@@ -286,6 +289,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                 SetBodyShadowCamera();
                 AcToolsLogging.Write("  Body camera set");
                 Draw(BodyMultiplier, BodySize, BodyPadding, Fade ? 0.5f : 0f, progress.SubrangeDouble(0.01, 0.59), cancellation);
+                DeviceContext.Flush();
                 AcToolsLogging.Write("  Body drawn");
                 if (cancellation.IsCancellationRequested) return;
 
@@ -318,7 +322,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
 
             foreach (var entry in list) {
                 using (var replacement = FileUtils.RecycleOriginal(Path.Combine(outputDirectory, entry.FileName))) {
-                    var m = Matrix.Invert(entry.GlobalMatrix);
+                    var m = entry.GlobalMatrix.Invert_v2();
                     _flattenNodes = list.SelectMany(x => {
                         x.Node.ParentMatrix = Matrix.Identity;
                         x.Node.LocalMatrix = entry.Matrix * x.GlobalMatrix * m;
@@ -326,6 +330,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                     }).ToArray();
 
                     Draw(WheelMultiplier, WheelSize, WheelPadding, 1f, entry.Progress, cancellation);
+                    DeviceContext.Flush();
                     AcToolsLogging.Write("  Wheel drawn");
                     if (cancellation.IsCancellationRequested) return;
 
@@ -347,7 +352,6 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             DisposeHelper.Dispose(ref _tempBuffer);
             DisposeHelper.Dispose(ref _shadowBuffer);
             // CarNode.Dispose();
-            Scene.Dispose();
             base.DisposeOverride();
         }
     }

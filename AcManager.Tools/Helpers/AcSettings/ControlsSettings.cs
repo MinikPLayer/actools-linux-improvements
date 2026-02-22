@@ -67,10 +67,10 @@ namespace AcManager.Tools.Helpers.AcSettings {
 
             WheelAxleEntries = new[] {
                 SteerAxleEntry,
-                new WheelAxleEntry("THROTTLE", ToolsStrings.Controls_Throttle),
+                new WheelAxleEntry("THROTTLE", ToolsStrings.Controls_Throttle, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma)),
                 new WheelAxleEntry("BRAKES", ToolsStrings.Controls_Brakes, gammaMode: true),
-                new WheelAxleEntry("CLUTCH", ToolsStrings.Controls_Clutch),
-                new WheelAxleEntry(HandbrakeId, ToolsStrings.Controls_Handbrake)
+                new WheelAxleEntry("CLUTCH", ToolsStrings.Controls_Clutch, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma)),
+                new WheelAxleEntry(HandbrakeId, ToolsStrings.Controls_Handbrake, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma))
             };
 
             KeyboardSpecificButtonEntries = new[] {
@@ -225,10 +225,17 @@ namespace AcManager.Tools.Helpers.AcSettings {
                 new SystemButtonEntryCombined("REV", "Rewind", defaultKey: Keys.D),
             };
 
-            SystemOnlineButtonEntries = new[] {
-                new SystemButtonEntryCombined("__CM_ONLINE_POLL_YES", "Poll: vote Yes", fixedValueCallback: x => new[] { Keys.Y }, delayed: true),
-                new SystemButtonEntryCombined("__CM_ONLINE_POLL_NO", "Poll: vote No", fixedValueCallback: x => new[] { Keys.N }, delayed: true)
-            };
+            if (PatchHelper.IsFeatureSupported(PatchHelper.CustomVotingBinding)) {
+                SystemOnlineButtonEntries = new[] {
+                    new SystemButtonEntryCombined("__CM_ONLINE_POLL_YES", "Poll: vote Yes", defaultKey: Keys.Y),
+                    new SystemButtonEntryCombined("__CM_ONLINE_POLL_NO", "Poll: vote No", defaultKey: Keys.N)
+                };
+            } else {
+                SystemOnlineButtonEntries = new[] {
+                    new SystemButtonEntryCombined("__CM_ONLINE_POLL_YES", "Poll: vote Yes", fixedValueCallback: x => new[] { Keys.Y }, delayed: true),
+                    new SystemButtonEntryCombined("__CM_ONLINE_POLL_NO", "Poll: vote No", fixedValueCallback: x => new[] { Keys.N }, delayed: true)
+                };
+            }
 
             SystemDiscordButtonEntries = new[] {
                 new SystemButtonEntryCombined("__CM_DISCORD_REQUEST_ACCEPT", "Accept join request", fixedValueCallback: x => new[] { Keys.Enter }, delayed: true),
@@ -478,14 +485,14 @@ namespace AcManager.Tools.Helpers.AcSettings {
                         var device = devices[i];
                         if (device == null) continue;
 
-                        if (device.Information.ProductName.Contains(@"FANATEC CSL Elite")
+                        /*if (device.Information.ProductName.Contains(@"FANATEC CSL Elite")
                             || device.Information.ProductName.Contains(@"FANATEC Podium Wheel Base DD")) {
                             if (SettingsHolder.Drive.SameControllersKeepFirst) {
                                 newDevices.RemoveAll(y => y.Same(device.Information));
                             } else if (newDevices.Any(y => y.Same(device.Information))) {
                                 continue;
                             }
-                        }
+                        }*/
 
                         var existing = Devices.FirstOrDefault(y => y.Same(device.Information));
                         if (existing != null) {
@@ -1726,7 +1733,7 @@ namespace AcManager.Tools.Helpers.AcSettings {
             section.Set("FF_POST_PROCESS", AcSettingsHolder.FfPostProcess.Export().ToCutBase64());
             section.Set("SYSTEM", AcSettingsHolder.System.ExportFfb().ToCutBase64());
             section.Set("AUTO_ADJUST_SCALE", WheelSteerScaleAutoAdjust);
-            section.Set("DELAY_SPECIFIC_SYSTEM_COMMANDS", DelaySpecificSystemCommands);
+            section.Set("DELAY_SPECIFIC_SYSTEM_COMMANDS", DelaySpecificSystemCommands ? 2 : 0);
             section.Set("SHOW_SYSTEM_DELAYS", ShowSystemDelays);
             section.Set("SYSTEM_IGNORE_POV_IN_PITS", SystemIgnorePovInPits);
             section.Set("HARDWARE_LOCK", HardwareLock);
