@@ -9,7 +9,7 @@ Set of utils and apps designed for Assetto Corsa. Some obsolete projects are mov
 
 ## Linux improvements
 Changes from main:
-- Improved the Install Content function: Now it correctly refreshes installed content after install. 
+- Improved the content Install function: Now it correctly refreshes installed cars and tracks after install. 
 
 ## Common libraries
 
