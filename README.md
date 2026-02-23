@@ -1,4 +1,4 @@
-# AcTools (and Content Manager)
+# AcTools (and Content Manager) - with linux improvements
 
 [![Build status](https://img.shields.io/appveyor/ci/gro-ove/actools.svg?label=Build&maxAge=60)](https://ci.appveyor.com/project/gro-ove/actools)
 [![Works badge](https://cdn.rawgit.com/gro-ove/works-on-my-machine/5fc312b1/badge.svg)](https://github.com/nikku/works-on-my-machine)
@@ -6,6 +6,10 @@
 [![Release](https://img.shields.io/github/release/gro-ove/actools.svg?label=Release&maxAge=60)](https://github.com/gro-ove/actools/releases/latest)
 
 Set of utils and apps designed for Assetto Corsa. Some obsolete projects are moved [here](https://github.com/gro-ove/actools-utils).
+
+## Linux improvements
+Changes from main:
+- Improved the Install Content function: Now it correctly refreshes installed content after install. 
 
 ## Common libraries
 
