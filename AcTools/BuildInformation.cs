@@ -10,9 +10,15 @@ namespace AcTools {
         [NotNull]
         public static string AppVersion {
             get {
+                const string suffix = "-linux-improvements";
+
                 try {
-                    return _appVersion ??
-                            (_appVersion = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()?.Location ?? "").FileVersion);
+                    if (_appVersion != null)
+                        return _appVersion + suffix;
+
+                    _appVersion = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly()?.Location ?? "").FileVersion;
+
+                    return _appVersion + suffix;
                 } catch (Exception) {
                     return _appVersion = "0";
                 }

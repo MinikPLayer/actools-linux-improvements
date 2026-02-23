@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using AcManager.Tools.Managers;
 using AcTools.DataFile;
 using AcTools.Utils;
 using FirstFloor.ModernUI.Helpers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace AcManager.Tools.Helpers.AcSettings {
     public class SystemSettings : IniSettings {
@@ -101,6 +104,61 @@ namespace AcManager.Tools.Helpers.AcSettings {
             get => _vrCameraShake;
             set => Apply(value, ref _vrCameraShake);
         }
+
+        public bool ReloadContent
+        {
+            get => true;
+            set
+            {
+                if (!Dispatcher.CurrentDispatcher.CheckAccess())
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() => ReloadContent = value);
+                    return;
+                }
+
+                var carsCount = CarsManager.Instance.LoadedCount;
+                var tracksCount = TracksManager.Instance.LoadedCount;
+
+                CarsManager.Instance.Rescan();
+                TracksManager.Instance.Rescan();
+
+                var newCarsCount = CarsManager.Instance.LoadedCount;
+                var newTracksCount = TracksManager.Instance.LoadedCount;
+
+                var message = "";
+                if (carsCount == newCarsCount && newTracksCount == tracksCount)
+                {
+                    message = "No content changes detected.";
+                }
+                else
+                {
+                    message = "Detected changes.\n";
+                    if (carsCount != newCarsCount)
+                    {
+                        var diff = newCarsCount - carsCount;
+                        var diffString = diff.ToString();
+                        if (diff > 0)
+                            diffString = '+' + diffString;
+
+                        message += "Cars count: " + diffString + "\n";
+                    }
+
+                    if (tracksCount != newTracksCount)
+                    {
+                        var diff = newTracksCount - tracksCount;
+                        var diffString = diff.ToString();
+                        if (diff > 0)
+                            diffString = '+' + diffString;
+
+                        message += "Tracks count: " + diffString + "\n";
+                    }
+                }
+
+                MessageBox.Show(message, "Content reloaded", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+
         #endregion
 
         #region Experimental FFB

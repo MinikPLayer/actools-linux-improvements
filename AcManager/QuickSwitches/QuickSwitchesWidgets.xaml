@@ -56,7 +56,11 @@
       Content="{x:Static c:ControlsStrings.QuickSwitches_OnlineName}" IconData="{StaticResource UserTieIconData}"
       ToolTip="{x:Static c:ControlsStrings.QuickSwitches_OnlineName_Tooltip}" />
 
-  <!-- Drop down lists -->
+  <mui:ModernToggleButton x:Key="WidgetReloadContent" IsChecked="{Binding ReloadContent, Source={x:Static t:AcSettingsHolder.System}}"
+      Content="Reload content" IconData="{StaticResource ReloadContentIconData}"
+      ToolTip="Reload content" />
+
+    <!-- Drop down lists -->
   <c:QuickSwitchPresetsControl x:Key="WidgetUiPresets" UserPresetable="{x:Static t:AcSettingsHolder.AppsPresets}" IconData="{StaticResource ScreenIconData}"
       ToolTip="{x:Static c:ControlsStrings.QuickSwitches_UiPresets_Tooltip}" />
   <c:QuickSwitchPresetsControl x:Key="WidgetAudioPresets" UserPresetable="{x:Static t:AcSettingsHolder.AudioPresets}" IconData="{StaticResource AudioIconData}"
