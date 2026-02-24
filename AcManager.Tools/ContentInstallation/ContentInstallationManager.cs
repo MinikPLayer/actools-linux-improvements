@@ -8,7 +8,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Caching;
+using System.Windows;
 using AcManager.Tools.ContentInstallation.Entries;
+using AcManager.Tools.Helpers.AcSettings;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI;
@@ -226,7 +228,11 @@ namespace AcManager.Tools.ContentInstallation {
 
                 TaskAdded?.Invoke(this, EventArgs.Empty);
                 DownloadList.Add(entry);
-                return await entry.RunAsync();
+                var result = await entry.RunAsync();
+                if(result)
+                    SystemSettings.ReloadAllContent(false);
+                
+                return result;
             }), entry.Source);
         }
 

@@ -56,7 +56,7 @@
       Content="{x:Static c:ControlsStrings.QuickSwitches_OnlineName}" IconData="{StaticResource UserTieIconData}"
       ToolTip="{x:Static c:ControlsStrings.QuickSwitches_OnlineName_Tooltip}" />
 
-  <mui:ModernToggleButton x:Key="WidgetReloadContent" IsChecked="{Binding ReloadContent, Source={x:Static t:AcSettingsHolder.System}}"
+    <mui:ModernButton x:Key="WidgetReloadContent" Command="{Binding ReloadAllContentCommand, Source={x:Static t:AcSettingsHolder.System}}"
       Content="Reload content" IconData="{StaticResource ReloadContentIconData}"
       ToolTip="Reload content" />
 
