@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcTools</RootNamespace>
     <AssemblyName>AcTools</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>894b5421</NuGetPackageImportStamp>
@@ -293,7 +293,7 @@
     <None Include="Resources\AcStarter.exe" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DiffPatch" />
+    <Folder Include="DiffPatch\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Libraries\PreBuildEvents.props" />

@@ -22,7 +22,7 @@ namespace CustomTracksBakery.Shaders {
 		internal static readonly ResourceManager Manager = new ResourceManager("CustomTracksBakery.Shaders", Assembly.GetExecutingAssembly());
 	}
 
-	public class EffectBakeryShaders : IEffectWrapper {
+ /* ! fxc.exe is missing ! */ }	public class EffectBakeryShaders : IEffectWrapper {
 		private ShaderBytecode _b;
 		public Effect E;
 

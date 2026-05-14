@@ -25,6 +25,27 @@ namespace AcTools.Render.Shaders {
 		public enum Mode { Main, FewerExtraShadows, FewerExtraShadowsNoPCSS, NoAreaLights, NoExtraShadows, NoPCSS, Simple, SimpleNoPCSS, SimpleNoShadows, WithoutLighting }
 
 		[StructLayout(LayoutKind.Sequential)]
+        public struct VertexOut {
+
+
+			public static readonly int Stride = Marshal.SizeOf(typeof(VertexOut));
+        }
+
+		[StructLayout(LayoutKind.Sequential)]
+        public struct PatchTess {
+
+
+			public static readonly int Stride = Marshal.SizeOf(typeof(PatchTess));
+        }
+
+		[StructLayout(LayoutKind.Sequential)]
+        public struct HullOut {
+
+
+			public static readonly int Stride = Marshal.SizeOf(typeof(HullOut));
+        }
+
+		[StructLayout(LayoutKind.Sequential)]
         public struct Light {
             public Vector3 PosW;
             public float Range;
