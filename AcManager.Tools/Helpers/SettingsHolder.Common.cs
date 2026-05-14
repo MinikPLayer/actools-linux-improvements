@@ -82,8 +82,7 @@ namespace AcManager.Tools.Helpers {
             public PeriodEntry UpdatePeriod {
                 get {
                     var saved = ValuesStorage.Get<TimeSpan?>("Settings.CommonSettings.UpdatePeriod");
-                    return _updatePeriod ?? (_updatePeriod = Periods.FirstOrDefault(x => x.TimeSpan == saved) ??
-                            Periods.ElementAt(4));
+                    return _updatePeriod ??= PeriodDisabled;
                 }
                 set {
                     if (Equals(value, _updatePeriod)) return;
