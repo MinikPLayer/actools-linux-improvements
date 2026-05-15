@@ -11,7 +11,7 @@ namespace AcTools.Utils {
         private static string GetLinuxSteamAppsDirectory()
         {
             const string BASE_PATH = "Z:\\home";
-            const string SUB_PATH = ".steam\\steam\\steamapps";
+            const string SUB_PATH = ".steam\\steam";
 
             AcToolsLogging.Write("Searching for a linux path...");
 
@@ -48,18 +48,19 @@ namespace AcTools.Utils {
             return null;
         }
 
-        private static string GetSteamAppsDirectoryFromCurrentPath()
+        private static string GetSteamDirectoryFromCurrentPath()
         {
             var cwd = Directory.GetCurrentDirectory();
-            var target = Path.Combine(cwd, "..\\..\\");
+            var target = Path.Combine(cwd, "..\\..\\..\\");
 
-            if (Directory.Exists(target))
+            if (Directory.Exists(target) && File.Exists(Path.Combine(target, "Steam.exe")))
                 return target;
             
             return null;
         }
 
-        private static IEnumerable<string> GetSteamAppsDirectories() {
+        public static IEnumerable<string> GetSteamDirectories(bool checkReg)
+        {
             var linuxSteamAppsDirectory = GetLinuxSteamAppsDirectory();
             if (linuxSteamAppsDirectory != null)
             {
@@ -67,13 +68,29 @@ namespace AcTools.Utils {
                 yield return linuxSteamAppsDirectory;
             }
 
-            var steamAppsCwdDir = GetSteamAppsDirectoryFromCurrentPath();
+            var steamAppsCwdDir = GetSteamDirectoryFromCurrentPath();
             if (steamAppsCwdDir != null)
             {
                 AcToolsLogging.Write($"Got Steam apps directory from CWD: ${linuxSteamAppsDirectory}");
-                yield return linuxSteamAppsDirectory;
+                yield return steamAppsCwdDir;
             }
 
+            if(checkReg)
+            {
+                var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+                if (regKey != null)
+                {
+                    var steamPath = regKey.GetValue("SteamPath").ToString();
+                    yield return steamPath;
+                }
+            }
+
+        }
+
+        private static IEnumerable<string> GetSteamAppsDirectories() {
+            foreach(var dir in GetSteamDirectories(false))
+                yield return Path.Combine(dir, "steamapps");
+            
             var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
             if (regKey == null) yield break;
 
@@ -95,11 +112,13 @@ namespace AcTools.Utils {
         [CanBeNull]
         public static string TryToFind() {
             try {
-                var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
-                return regKey == null ? null :
-                        (from searchCandidate in GetSteamAppsDirectories()
-                         where searchCandidate != null && Directory.Exists(searchCandidate)
-                         select Path.Combine(searchCandidate, @"common", @"assettocorsa")).FirstOrDefault(Directory.Exists);
+                foreach (var searchCandidate in GetSteamAppsDirectories())
+                {
+                    var acPath = Path.Combine(searchCandidate, @"common", @"assettocorsa");
+                    if (Directory.Exists(acPath))
+                        return acPath;
+                }
+                return null;
             } catch (Exception e) {
                 AcToolsLogging.Write(e);
                 return null;

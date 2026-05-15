@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AcManager.Internal;
 using AcManager.Tools.Helpers.Api;
+using AcTools;
 using AcTools.DataFile;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
@@ -109,20 +110,29 @@ namespace AcManager.Tools.Helpers {
         public static IEnumerable<SteamProfile> TryToFind() {
             // TODO: if (OptionForceValue != null) return OptionForceValue;
 
-            Vdf parsed;
-            try {
-                var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
-                if (regKey == null) yield break;
+            Vdf parsed = null;
+            foreach (var steamPath in AcRootFinder.GetSteamDirectories(true))
+            {
+                try
+                {
+                    AcToolsLogging.Write($"Trying {steamPath}...");
+                    var config = File.ReadAllText(Path.Combine(steamPath, @"config", @"loginusers.vdf"));
 
-                var steamPath = regKey.GetValue("SteamPath").ToString();
-                var config = File.ReadAllText(Path.Combine(steamPath, @"config", @"loginusers.vdf"));
-
-                parsed = Vdf.Parse(config).Children.GetValueOrDefault("users");
-                if (parsed == null) {
-                    throw new Exception("Config is invalid");
+                    parsed = Vdf.Parse(config).Children.GetValueOrDefault("users");
+                    if (parsed == null)
+                    {
+                        throw new Exception("Config is invalid");
+                    }
                 }
-            } catch (Exception e) {
-                NonfatalError.NotifyBackground("Can’t get Steam ID from its config", e);
+                catch (Exception e)
+                {
+                    NonfatalError.NotifyBackground("Can’t get Steam ID from its config", e);
+                }
+            }
+
+            if(parsed == null)
+            {
+                NonfatalError.NotifyBackground("Can't get Steam ID from it's config!");
                 yield break;
             }
 
