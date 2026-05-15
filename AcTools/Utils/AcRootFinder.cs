@@ -27,8 +27,55 @@ namespace AcTools.Utils {
             }
         }
 
+        private static string TryToFindLinux()
+        {
+            const string BASE_PATH = "Z:\\home";
+            const string SUB_PATH = ".steam\\steam\\steamapps\\common\\assettocorsa";
+
+            AcToolsLogging.Write("Searching for a linux path...");
+
+            var user = Environment.GetEnvironmentVariable("USER");
+            if (string.IsNullOrEmpty(user))
+            {
+                AcToolsLogging.Write("User env variable not defined.");
+                return null;
+            }
+
+            var userHome = Path.Combine(BASE_PATH, user);
+            if(!Directory.Exists(Path.Combine(userHome)))
+            {
+                AcToolsLogging.Write("User home doesn't exist.");
+                return null;
+            }
+
+            try
+            {
+                var homeUserAcPath = Path.Combine(userHome, SUB_PATH);
+                if(Directory.Exists(homeUserAcPath))
+                {
+                    return homeUserAcPath;
+                }
+
+                AcToolsLogging.Write("Cannot find Linux assetto corsa directory.");
+                return null;
+            }
+            catch (Exception e)
+            {
+                AcToolsLogging.Write(e);
+            }
+
+            return null;
+        }
+
         [CanBeNull]
         public static string TryToFind() {
+            if (UnixUtils.IsUnixWine)
+            {
+                var linuxPath = TryToFindLinux();
+                if (linuxPath != null)
+                    return linuxPath;
+            }
+
             try {
                 var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
                 return regKey == null ? null :

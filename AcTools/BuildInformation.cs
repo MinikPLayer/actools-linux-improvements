@@ -10,7 +10,7 @@ namespace AcTools {
         [NotNull]
         public static string AppVersion {
             get {
-                const string suffix = "-linux-improvements";
+                const string suffix = "-linux-improvements-v0.1.2";
 
                 try {
                     if (_appVersion != null)

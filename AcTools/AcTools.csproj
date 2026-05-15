@@ -149,6 +149,7 @@
     <Compile Include="Numerics\Vec4.Intrinsics.cs" />
     <Compile Include="Processes\AcsRunEventArgs.cs" />
     <Compile Include="Processes\FakeCarIds.cs" />
+    <Compile Include="UnixUtils.cs" />
     <Compile Include="Utils\AcKunosContent.cs" />
     <Compile Include="Utils\AcLocaleProvider.cs" />
     <Compile Include="Utils\AcPaths.cs" />
