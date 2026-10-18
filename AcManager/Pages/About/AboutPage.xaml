@@ -94,6 +94,10 @@
 [url=&quot;https://openweathermap.org/&quot;]OpenWeatherMap[/url],
 [url=&quot;https://www.yahoo.com/&quot;]Yahoo[/url],
 [url=&quot;https://disk.yandex.ru&quot;]Yandex.Disk[/url]." />
+
+        <TextBlock Style="{StaticResource Label.Padding}" Text="Linux improvements:" />
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="[url=&quot;https://github.com/MinikPLayer&quot;]Michał Tomecki (Minik)[/url]" />
+
       </StackPanel>
     </ScrollViewer>
 
