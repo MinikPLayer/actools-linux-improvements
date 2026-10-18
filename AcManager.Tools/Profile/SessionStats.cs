@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.Tools.Profile {
     public partial class PlayerStatsManager {

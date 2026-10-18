@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.Pages.AcSettings {
     public partial class AcSettingsChaseCamera {
@@ -166,7 +166,7 @@ namespace AcManager.Pages.AcSettings {
             var camera = Model.SelectedCamera;
             var origin = new Vector3(0, (float)camera.Height, (float)-camera.Distance) - _carOffset;
             var look = new Vector3(0, 0, (float)_carLength) - _lookAt;
-            var pitch = Vector3.TransformNormal(look - origin, SlimDX.Matrix.RotationAxis(Vector3.UnitX, (float)-camera.Pitch));
+            var pitch = Vector3.TransformNormal(look - origin, SharpDX.Matrix.RotationAxis(Vector3.UnitX, (float)-camera.Pitch));
             _renderer.SetCamera(origin, origin + pitch, 60f.ToRadians(), pitch.Z < 0 ? MathF.PI : 0);
         }
 

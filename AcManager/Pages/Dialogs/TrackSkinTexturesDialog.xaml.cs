@@ -21,7 +21,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Converters;
-using SlimDX.DXGI;
+using SharpDX.DXGI;
 using Application = System.Windows.Application;
 
 namespace AcManager.Pages.Dialogs {

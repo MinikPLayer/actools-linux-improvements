@@ -45,5 +45,8 @@
 
     <!-- System.Diagnostics.CodeAnalysis.NotNullAttribute (since .NET Core 3.0) clashes with the one from JetBrains. -->
     <Using Include="JetBrains.Annotations.NotNullAttribute" Alias="NotNullAttribute" />
+
+    <!-- Used to be available automatically through Framework references. -->
+    <Using Include="System.Collections.Generic" />
   </ItemGroup>
 </Project>

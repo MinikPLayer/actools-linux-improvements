@@ -52,14 +52,6 @@ namespace AcManager {
 
         [STAThread]
         private static void Main(string[] a) {
-            if (Type.GetType("System.Web.HttpResponse, System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")?
-                    .GetMethod("AddOnSendingHeaders") == null
-                    && MessageBox.Show("It appears that .NET 4.5.2 is not installed. Would you like to download it first?", "Error",
-                            MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes) {
-                Process.Start("https://www.microsoft.com/net/download/dotnet-framework-runtime/net452");
-                return;
-            }
-
             var profileDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "AcTools Content Manager",
                     "Temporary", "Profile");
             Directory.CreateDirectory(profileDirectory);
@@ -99,6 +91,8 @@ namespace AcManager {
 
 #if COSTURA
             CosturaUtility.Initialize();
+#elif NET5_0_OR_GREATER
+            // No packing with .NET Core: libraries are loaded the usual way
 #else
             var logFilename = AppArguments.GetBool(AppFlag.LogPacked) ? GetLogName("Packed Log") : null;
             AppArguments.Set(AppFlag.DirectAssembliesLoading, ref PackedHelper.OptionDirectLoading);

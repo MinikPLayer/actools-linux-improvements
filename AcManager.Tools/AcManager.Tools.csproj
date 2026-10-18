@@ -4,6 +4,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AcManager.Tools</RootNamespace>
     <AssemblyName>AcManager.Tools</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
@@ -39,9 +41,10 @@
       <HintPath>..\Libraries\AcTools\AcTools.CookerHood.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.7.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-      <HintPath>..\packages\HtmlAgilityPack.1.7.0\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
+    <PackageReference Include="System.Management" Version="10.0.0" />
+    <PackageReference Include="System.ServiceModel.NetNamedPipe" Version="10.0.652802" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.0" />
     <Reference Include="MegaApiClient, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libraries\MegaApiClient\MegaApiClient.dll</HintPath>
       <Private>True</Private>
@@ -60,11 +63,9 @@
       <HintPath>..\Libraries\SharpCompress\SharpCompress.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="SlimDX, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\SlimDX-$(ActualPlatform)\SlimDX.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <Reference Include="Steamworks.NET">
       <HintPath>..\Libraries\Steamworks.NET\Steamworks.NET.dll</HintPath>
       <Private>False</Private>
@@ -407,6 +408,7 @@
     <Compile Include="Helpers\SettingsHolder.Content.cs" />
     <Compile Include="Helpers\ContentUtils.cs" />
     <Compile Include="Helpers\DirectInput\DirectInputScanner.cs" />
+    <Compile Include="Helpers\DirectInput\SharpDxDirectInputCompat.cs" />
     <Compile Include="Helpers\DirectInput\DirectInputPov.cs" />
     <Compile Include="Helpers\DirectInput\DirectInputPovDirection.cs" />
     <Compile Include="Helpers\DirectInput\DisplayInputParams.cs" />

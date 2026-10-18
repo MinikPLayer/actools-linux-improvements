@@ -809,12 +809,14 @@ namespace AcTools.Utils.Helpers {
             }
         }
 
+#if !NETCOREAPP2_0_OR_GREATER
         [Pure]
         public static IEnumerable<T> SkipLast<T>([NotNull] this IEnumerable<T> source, int count) {
             if (source == null) throw new ArgumentNullException(nameof(source));
             var list = source.ToIReadOnlyListIfItIsNot();
             return list.Take(Math.Max(list.Count - count, 0));
         }
+#endif
 
         [Pure]
         public static IEnumerable<T> Append<T>([NotNull] this IEnumerable<T> source, params T[] additionalItems) {

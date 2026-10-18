@@ -27,7 +27,8 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SlimDX;
+using SharpDX;
+using Color = System.Windows.Media.Color;
 
 namespace AcManager.CustomShowroom {
     public class CmPreviewsSettingsValues {

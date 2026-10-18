@@ -11,10 +11,11 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 using Size = System.Drawing.Size;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using Point = System.Windows.Point;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace AcManager.CustomShowroom {
     public class LiteShowroomFormWrapperWithTools : LiteShowroomFormWrapperWithUiShots, ICustomShowroomShots {

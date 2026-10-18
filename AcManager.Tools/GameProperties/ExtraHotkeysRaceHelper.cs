@@ -29,8 +29,11 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.DirectInput;
+using SharpDX;
+using Point = System.Windows.Point;
+using Color = System.Windows.Media.Color;
+using AcManager.Tools.Helpers.DirectInput;
+using SharpDX.DirectInput;
 using Keyboard = System.Windows.Input.Keyboard;
 using Keys = System.Windows.Forms.Keys;
 using AcCommand = AcManager.Internal.InternalUtils.AcControlPointCommand;
@@ -737,15 +740,21 @@ namespace AcManager.Tools.GameProperties {
                     try {
                         var item = device.Value;
                         var joystick = item.Device;
-                        if (joystick?.Disposed != false) {
+                        if (joystick?.IsDisposed != false) {
                             toRemove.Add(device.Key);
                             continue;
                         }
 
-                        if (joystick.Acquire().IsFailure || joystick.Poll().IsFailure) continue;
+                        try {
+                            joystick.Acquire();
+                            joystick.Poll();
+                        } catch (SharpDXException) {
+                            continue;
+                        }
 
-                        item.State = joystick.GetCurrentState();
-                        if (Result.Last.IsFailure) {
+                        try {
+                            item.State = joystick.GetCurrentState();
+                        } catch (SharpDXException e) when (!e.IsUnplugged()) {
                             item.State = null;
                         }
 
@@ -759,9 +768,9 @@ namespace AcManager.Tools.GameProperties {
                                     ? buttons.ArrayElementAtOrDefault(key.Button.Value)
                                     : (povAvailable || key.Pov != 0) && key.Direction.IsInRange(povs.ArrayElementAtOrDefault(key.Pov ?? 0)));
                         }*/
-                    } catch (DirectInputException e) when (e.Message.Contains(@"DIERR_UNPLUGGED")) {
+                    } catch (SharpDXException e) when (e.IsUnplugged()) {
                         toRemove.Add(device.Key);
-                    } catch (DirectInputException e) {
+                    } catch (SharpDXException e) {
                         toRemove.Add(device.Key);
                         Logging.Warning(e.Message);
                     } catch (Exception e) {

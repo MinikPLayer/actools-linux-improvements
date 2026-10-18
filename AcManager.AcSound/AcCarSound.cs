@@ -4,7 +4,7 @@ using AcTools.Render.Kn5Specific;
 using AcTools.SoundbankPlayer;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.AcSound {
     public class AcCarSound : IAcCarSound {

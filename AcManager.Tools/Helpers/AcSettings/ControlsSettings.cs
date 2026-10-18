@@ -26,7 +26,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
-using SlimDX.DirectInput;
+using SharpDX.DirectInput;
 using StringBasedFilter;
 using Application = System.Windows.Application;
 using Key = System.Windows.Input.Key;

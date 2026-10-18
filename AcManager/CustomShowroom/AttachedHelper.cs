@@ -17,7 +17,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
-using SlimDX.Windows;
+using AcTools.Render.Wrapper;
 using CheckBox = System.Windows.Controls.CheckBox;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;

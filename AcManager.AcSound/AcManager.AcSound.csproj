@@ -42,11 +42,9 @@
       <HintPath>..\Libraries\AcTools\AcTools.SoundbankPlayer.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SlimDX, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\SlimDX-$(ActualPlatform)\SlimDX.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcCarSound.cs" />

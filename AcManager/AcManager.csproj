@@ -12,6 +12,8 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>AcManager</RootNamespace>
     <AssemblyName>AssettoCorsa</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
@@ -56,10 +58,8 @@
   <PropertyGroup>
     <ApplicationManifest>App.manifest</ApplicationManifest>
   </PropertyGroup>
-  <ItemGroup Condition="'$(UseCosturaToPack)' == 'true'">
-    <Reference Include="Costura, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d">
-      <HintPath>..\packages\Costura.Fody.2.0.0\lib\net452\Costura.dll</HintPath>
-    </Reference>
+  <ItemGroup>
+    <Using Include="AcTools.Render.Base.Utils.MathF" Alias="MathF" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AcManager.Internal, Culture=neutral, processorArchitecture=MSIL">
@@ -74,25 +74,14 @@
       <HintPath>..\Libraries\AcTools\AcTools.Kn5Tools.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Costura, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d">
-      <HintPath>..\packages\Costura.Fody.2.0.0\lib\net452\Costura.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Hardcodet.NotifyIcon.Wpf, Version=1.1.0.0, Culture=neutral, PublicKeyToken=682384a853a08aad">
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.1.0\lib\net45\Hardcodet.NotifyIcon.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.7.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-      <HintPath>..\packages\HtmlAgilityPack.1.7.0\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
+    <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
     <Reference Include="MegaApiClient, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libraries\MegaApiClient\MegaApiClient.dll</HintPath>
     </Reference>
     <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libraries\NAudio\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="Interop.D3DImageEx, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\Libraries\Interop.D3DImageEx\Interop.D3DImageEx.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Libraries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
@@ -101,15 +90,6 @@
     <Reference Include="SharpCompress, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Libraries\SharpCompress\SharpCompress.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
-    </Reference>
-    <Reference Include="SlimDX, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\SlimDX-$(ActualPlatform)\SlimDX.dll</HintPath>
-      <Private>True</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CefSharp, Version=114.2.120.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CefSharp.Common.114.2.120\lib\net452\CefSharp.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="xxHashSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\xxHashSharp.1.0.0\lib\net45\xxHashSharp.dll</HintPath>
@@ -132,9 +112,8 @@
       <HintPath>..\packages\OxyPlot.Wpf.2014.1.546\lib\net45\OxyPlot.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="TimeZoneConverter, Version=2.4.1.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\TimeZoneConverter.2.4.1\lib\net45\TimeZoneConverter.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\Libraries\System.Windows.Interactivity\System.Windows.Interactivity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -752,6 +731,7 @@
     <Compile Include="SomeCommonCommandsHelper.cs" />
     <Compile Include="Tools\AcErrors\AcErrorFixer.cs" />
     <Compile Include="Tools\AppIconProvider.cs" />
+    <Compile Include="Tools\D3DImageEx.cs" />
     <Compile Include="Tools\AppRestartHelper.cs" />
     <Compile Include="Tools\ArgumentsHandler.SharedUserChampionship.cs" />
     <Compile Include="Tools\ArgumentsHandler.Race.cs" />

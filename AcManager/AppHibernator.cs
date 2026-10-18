@@ -115,29 +115,31 @@ namespace AcManager {
 
             _trayIcon.DoubleClick += OnTrayIconDoubleClick;
 
-            var patchSettings = SettingsShadersPatch.IsCustomShadersPatchInstalled() ? new MenuItem { Text = "Custom Shaders Patch settings" } : null;
+            var patchSettings = SettingsShadersPatch.IsCustomShadersPatchInstalled() ? new ToolStripMenuItem { Text = "Custom Shaders Patch settings" } : null;
             if (patchSettings != null) {
                 patchSettings.Click += (sender, args) => SettingsShadersPatch.GetShowSettingsCommand().Execute(null);
             }
 
-            var rhm = RhmService.Instance.Active ? new MenuItem { Text = "RHM settings" } : null;
+            var rhm = RhmService.Instance.Active ? new ToolStripMenuItem { Text = "RHM settings" } : null;
             if (rhm != null) {
                 rhm.Click += (sender, args) => RhmService.Instance.ShowSettingsCommand.ExecuteAsync().Ignore();
             }
 
-            var restoreMenuItem = new MenuItem { Text = UiStrings.Restore };
+            var restoreMenuItem = new ToolStripMenuItem { Text = UiStrings.Restore };
             restoreMenuItem.Click += OnRestoreMenuItemClick;
 
-            var closeMenuItem = new MenuItem { Text = UiStrings.Close };
+            var closeMenuItem = new ToolStripMenuItem { Text = UiStrings.Close };
             closeMenuItem.Click += OnCloseMenuItemClick;
 
-            _trayIcon.ContextMenu = new ContextMenu(new[] {
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.AddRange(new ToolStripItem[] {
                 patchSettings,
                 rhm,
-                new MenuItem(@"-"),
+                new ToolStripSeparator(),
                 restoreMenuItem,
                 closeMenuItem
             }.NonNull().ToArray());
+            _trayIcon.ContextMenuStrip = contextMenu;
 
             _trayIcon.Visible = true;
         }

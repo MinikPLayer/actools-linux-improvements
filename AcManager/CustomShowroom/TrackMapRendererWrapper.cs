@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.CustomShowroom {
     public class TrackMapRendererWrapper : BaseKn5FormWrapper {

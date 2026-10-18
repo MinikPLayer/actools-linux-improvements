@@ -49,7 +49,7 @@ namespace AcManager.LargeFilesSharing {
                     }
                 }
 
-                var message = HttpWorkerRequest.GetStatusDescription((int)r.StatusCode);
+                var message = r.StatusDescription;
                 if (string.IsNullOrWhiteSpace(message)) {
                     message = r.StatusDescription;
                 }

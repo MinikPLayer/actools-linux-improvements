@@ -171,7 +171,7 @@ namespace AcManager.Controls.UserControls.Cef {
                 if (_inner != null) {
                     CefSharpHelper.AcApiHandler.Register(_inner, _jsBridge?.AcApiHosts.ToArray(), OnAcApiRequest);
                     _inner.JavascriptObjectRepository.NameConverter = new CefSharpProperNameConverter();
-                    _inner.JavascriptObjectRepository.Register(@"external", _jsBridge?.Proxy, false, new BindingOptions {
+                    _inner.JavascriptObjectRepository.Register(@"external", _jsBridge?.Proxy, new BindingOptions {
                         Binder = BindingOptions.DefaultBinder.Binder
                     });
                 }

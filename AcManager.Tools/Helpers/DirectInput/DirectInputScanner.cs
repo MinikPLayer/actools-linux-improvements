@@ -9,7 +9,7 @@ using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
-using SlimDX.DirectInput;
+using SharpDX.DirectInput;
 
 // ReSharper disable MemberHidesStaticFromOuterClass
 
@@ -28,7 +28,7 @@ namespace AcManager.Tools.Helpers.DirectInput {
         private static string _staticDataFootprint;
 
         [CanBeNull]
-        private static SlimDX.DirectInput.DirectInput _directInput;
+        private static SharpDX.DirectInput.DirectInput _directInput;
 
         public static void Shutdown() {
             _isActive = false;
@@ -55,7 +55,7 @@ namespace AcManager.Tools.Helpers.DirectInput {
         }
 
         private static void Scan() {
-            _directInput = new SlimDX.DirectInput.DirectInput();
+            _directInput = new SharpDX.DirectInput.DirectInput();
 
             try {
                 while (_isActive) {
@@ -71,7 +71,7 @@ namespace AcManager.Tools.Helpers.DirectInput {
                         updated = _staticDataFootprint != footprint;
                     } else {
                         try {
-                            var devices = _directInput?.GetDevices(DeviceClass.GameController, DeviceEnumerationFlags.AttachedOnly);
+                            var devices = _directInput?.GetDevices(DeviceClass.GameControl, DeviceEnumerationFlags.AttachedOnly);
                             footprint = devices?.Select(x => x.InstanceGuid).JoinToString(';');
                             updated = _staticDataFootprint != footprint;
                             list = updated ? devices?.Select(x => {
@@ -138,7 +138,7 @@ namespace AcManager.Tools.Helpers.DirectInput {
         private static readonly List<Watcher> Instances = new List<Watcher>();
 
         [CanBeNull]
-        public static SlimDX.DirectInput.DirectInput DirectInput => _directInput;
+        public static SharpDX.DirectInput.DirectInput DirectInput => _directInput;
 
         [NotNull]
         public static Watcher Watch() {

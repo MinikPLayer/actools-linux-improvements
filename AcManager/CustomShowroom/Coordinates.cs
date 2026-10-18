@@ -1,5 +1,5 @@
 ﻿using FirstFloor.ModernUI.Presentation;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.CustomShowroom {
     public class Coordinates : NotifyPropertyChanged {

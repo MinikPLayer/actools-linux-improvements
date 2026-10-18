@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcManager.Pages.Selected {
     public partial class SelectedShowroomPage : ILoadableContent, IParametrizedUriContent {

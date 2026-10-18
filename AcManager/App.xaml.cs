@@ -225,16 +225,51 @@ namespace AcManager {
             try {
                 ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
                 ServicePointManager.Expect100Continue = true;
+#if NET5_0_OR_GREATER
+                // SSL 3.0 and TLS 1.0/1.1 are not supported by .NET Core, default (system) value is the best choice
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+#else
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
                         | (SecurityProtocolType)12288
                         | SecurityProtocolType.Tls12
                         | SecurityProtocolType.Tls11
                         | SecurityProtocolType.Tls;
+#endif
             } catch (Exception) {
+#if !NET5_0_OR_GREATER
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
                         | SecurityProtocolType.Tls12
                         | SecurityProtocolType.Tls11
                         | SecurityProtocolType.Tls;
+#endif
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void InitializeAcdFactory() {
+            Acd.Factory = new AcdFactory();
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static void InitializeKn5Factory() {
+            Kn5.Factory = Kn5New.GetFactoryInstance(msg => {
+                AcManager.Pages.Windows.MainWindow.EnterKeyLabel = new TextBlock { Text = msg, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.Yellow) };
+                AcManager.Pages.Windows.MainWindow.EnterKeyAccent = false;
+            });
+        }
+
+        private static void InitializeFactories() {
+            // Closed-source libraries are obfuscated in a way CoreCLR can’t always load, so they’re optional here
+            try {
+                InitializeAcdFactory();
+            } catch (Exception e) {
+                Logging.Warning("Can’t load ACD factory (AcTools.AcdEncryption): " + e.Message);
+            }
+
+            try {
+                InitializeKn5Factory();
+            } catch (Exception e) {
+                Logging.Warning("Can’t load KN5 factory (AcTools.Kn5Tools), falling back to basic implementation: " + e.Message);
             }
         }
 
@@ -292,13 +327,7 @@ namespace AcManager {
             AppArguments.Set(AppFlag.JpegQuality, ref ImageUtilsOptions.JpegQuality);
             AppArguments.Set(AppFlag.FbxMultiMaterial, ref Kn5.OptionJoinToMultiMaterial);
 
-            Acd.Factory = new AcdFactory();
-#if !DEBUG || true
-            Kn5.Factory = Kn5New.GetFactoryInstance(msg => {
-                AcManager.Pages.Windows.MainWindow.EnterKeyLabel = new TextBlock { Text = msg, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.Yellow) };
-                AcManager.Pages.Windows.MainWindow.EnterKeyAccent = false;
-            });
-#endif
+            InitializeFactories();
             Lazier.SyncAction = ActionExtension.InvokeInMainThreadAsync;
             KeyboardListenerFactory.Register<KeyboardListener>();
 
@@ -809,8 +838,6 @@ namespace AcManager {
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void SetRenderersOptions() {
             AppArguments.Set(AppFlag.TrackMapGeneratorMaxSize, ref TrackMapRenderer.OptionMaxSize);
-            SlimDX.Configuration.DetectDoubleDispose = true;
-            SlimDX.Configuration.EnableObjectTracking = true;
         }
 
         protected override void OnStartup(StartupEventArgs e) {

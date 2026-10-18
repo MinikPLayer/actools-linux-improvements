@@ -49,7 +49,7 @@ using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using OxyPlot;
-using SlimDX.DXGI;
+using SharpDX.DXGI;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Dialogs {

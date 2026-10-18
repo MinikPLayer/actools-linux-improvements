@@ -20,10 +20,12 @@ using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.DirectInput;
+using SharpDX;
+using SharpDX.DirectInput;
 using Keys = System.Windows.Forms.Keys;
 using Path = System.Windows.Shapes.Path;
+using Point = System.Windows.Point;
+using Color = System.Windows.Media.Color;
 
 namespace AcManager.Pages.Dialogs {
     public partial class DiscordJoinRequestDialog {
@@ -174,15 +176,15 @@ namespace AcManager.Pages.Dialogs {
 
                 for (var index = _devices.Length - 1; index >= 0; index--) {
                     var joystick = _devices[index];
-                    if (joystick == null || joystick.Disposed) continue;
+                    if (joystick == null || joystick.IsDisposed) continue;
 
                     try {
-                        if (!joystick.Acquire().IsFailure && !joystick.Poll().IsFailure && !Result.Last.IsFailure) {
-                            _states[index] = joystick.GetCurrentState();
-                        }
-                    } catch (DirectInputException e) when (e.Message.Contains(@"DIERR_UNPLUGGED")) {
+                        joystick.Acquire();
+                        joystick.Poll();
+                        _states[index] = joystick.GetCurrentState();
+                    } catch (SharpDXException e) when (e.IsUnplugged()) {
                         _devices[index] = null;
-                    } catch (DirectInputException e) {
+                    } catch (SharpDXException e) {
                         _devices[index] = null;
                         Logging.Warning(e);
                     }

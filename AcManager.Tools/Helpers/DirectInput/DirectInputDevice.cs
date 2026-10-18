@@ -8,8 +8,8 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.DirectInput;
+using SharpDX;
+using SharpDX.DirectInput;
 
 namespace AcManager.Tools.Helpers.DirectInput {
     public sealed class DirectInputDevice : Displayable, IDirectInputDevice, IDisposable {
@@ -71,14 +71,14 @@ namespace AcManager.Tools.Helpers.DirectInput {
         }
 
         private static bool Acquire(Device newdevice) {
-            var result = newdevice.Acquire();
-            if (result.IsSuccess) {
+            try {
+                newdevice.Acquire();
                 newdevice.Poll();
                 return true;
+            } catch (SharpDXException e) {
+                Logging.Debug($"Can’t acquire {newdevice.Information.ProductName}: {e.Message}");
+                return false;
             }
-
-            Logging.Debug($"Can’t acquire {newdevice.Information.ProductName}: {result.Description}");
-            return false;
         }
 
         private DirectInputDevice([NotNull] Joystick device, int index) {
@@ -95,11 +95,11 @@ namespace AcManager.Tools.Helpers.DirectInput {
             var window = Application.Current?.MainWindow;
             if (window != null) {
                 try {
-                    _joystick.SetCooperativeLevel(new WindowInteropHelper(window).Handle, CooperativeLevel.Background | CooperativeLevel.Nonexclusive);
+                    _joystick.SetCooperativeLevel(new WindowInteropHelper(window).Handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
                     _joystick.Properties.AxisMode = DeviceAxisMode.Absolute;
 
                     if (!Acquire(_joystick)) {
-                        _joystick.SetCooperativeLevel(new WindowInteropHelper(window).Handle, CooperativeLevel.Background | CooperativeLevel.Nonexclusive);
+                        _joystick.SetCooperativeLevel(new WindowInteropHelper(window).Handle, CooperativeLevel.Background | CooperativeLevel.NonExclusive);
                         Acquire(_joystick);
                     }
                 } catch (Exception e) {
@@ -163,10 +163,7 @@ namespace AcManager.Tools.Helpers.DirectInput {
         public static DirectInputDevice Create(Joystick device, int iniId) {
             try {
                 return new DirectInputDevice(device, iniId);
-            } catch (DirectInputNotFoundException e) {
-                Logging.Warning(e);
-                return null;
-            } catch (DirectInputException e) {
+            } catch (SharpDXException e) {
                 Logging.Error(e);
                 return null;
             }
@@ -177,7 +174,12 @@ namespace AcManager.Tools.Helpers.DirectInput {
 
         public void OnTick() {
             try {
-                if (_joystick.Disposed || _joystick.Acquire().IsFailure || _joystick.Poll().IsFailure || Result.Last.IsFailure) {
+                if (_joystick.IsDisposed) return;
+
+                try {
+                    _joystick.Acquire();
+                    _joystick.Poll();
+                } catch (SharpDXException) {
                     return;
                 }
 
@@ -199,9 +201,9 @@ namespace AcManager.Tools.Helpers.DirectInput {
                     var b = Povs[i];
                     b.Value = b.Direction.IsInRange(b.Id < povs.Length ? povs[b.Id] : -1);
                 }
-            } catch (DirectInputException e) when (e.Message.Contains(@"DIERR_UNPLUGGED")) {
+            } catch (SharpDXException e) when (e.IsUnplugged()) {
                 Unplugged = true;
-            } catch (DirectInputException e) {
+            } catch (SharpDXException e) {
                 if (!Error) {
                     Logging.Warning("Exception: " + e);
                     Error = true;

@@ -7,7 +7,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web.Caching;
 using System.Windows;
 using AcManager.Tools.ContentInstallation.Entries;
 using AcManager.Tools.Helpers.AcSettings;

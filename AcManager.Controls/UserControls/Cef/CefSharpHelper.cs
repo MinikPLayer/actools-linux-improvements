@@ -30,7 +30,6 @@ namespace AcManager.Controls.UserControls.Cef {
 
                 Logging.Write($"Initializing CEF (WPF mode: {wpfMode})…");
 
-                CefSharpSettings.WcfEnabled = true;
                 var path = PluginsManager.Instance.GetPluginDirectory(KnownPlugins.CefSharp);
                 var settings = new CefSettings {
                     UserAgent = DefaultUserAgent,
