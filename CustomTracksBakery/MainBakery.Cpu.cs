@@ -4,7 +4,7 @@ using System.Linq;
 using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace CustomTracksBakery {
     public partial class MainBakery {

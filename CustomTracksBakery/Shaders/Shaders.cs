@@ -10,9 +10,9 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.D3DCompiler;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.D3DCompiler;
+using SharpDX.Direct3D11;
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
 // ReSharper disable NotNullMemberIsNotInitialized
@@ -22,11 +22,11 @@ namespace CustomTracksBakery.Shaders {
 		internal static readonly ResourceManager Manager = new ResourceManager("CustomTracksBakery.Shaders", Assembly.GetExecutingAssembly());
 	}
 
- /* ! fxc.exe is missing ! */ }	public class EffectBakeryShaders : IEffectWrapper {
+	public class EffectBakeryShaders : IEffectWrapper {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePNTG;
+        public ShaderBytecode InputSignaturePNTG;
         public InputLayout LayoutPNTG;
 
 		public EffectReadyTechnique TechPerPixel, TechMultiLayer, TechPerPixel_SecondPass, TechMultiLayer_SecondPass, TechPerPixel_GrassPass;

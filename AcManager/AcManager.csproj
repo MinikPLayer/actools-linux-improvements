@@ -2133,4 +2133,30 @@
     <!-- This command deliberately breaks SlimDX to debug how CM works without it. -->
     <!--<PostBuildEvent>cp "$(TargetDir)\Content Manager.exe.manifest" "$(TargetDir)\SlimDX.dll"</PostBuildEvent>-->
   </PropertyGroup>
+  <!-- Replacement for the post-build editbin call: 32-bit builds need to be large address aware (it’s the apphost executable which matters). -->
+  <UsingTask TaskName="SetLargeAddressAware" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ExecutableFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        using (var stream = new FileStream(ExecutableFile, FileMode.Open, FileAccess.ReadWrite)) {
+            var reader = new BinaryReader(stream);
+            stream.Position = 0x3C;
+            var peOffset = reader.ReadInt32();
+            stream.Position = peOffset + 4 + 18;
+            var characteristics = reader.ReadUInt16();
+            if ((characteristics & 0x20) == 0) {
+                stream.Position = peOffset + 4 + 18;
+                stream.Write(BitConverter.GetBytes((ushort)(characteristics | 0x20)), 0, 2);
+            }
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="SetLargeAddressAwareFlag" AfterTargets="Build" Condition="'$(PlatformTarget)' == 'x86' And Exists('$(OutDir)$(AssemblyName).exe')">
+    <SetLargeAddressAware ExecutableFile="$(OutDir)$(AssemblyName).exe" />
+  </Target>
 </Project>

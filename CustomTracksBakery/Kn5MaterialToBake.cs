@@ -6,8 +6,8 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Kn5Specific.Textures;
 using CustomTracksBakery.Shaders;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
 
 namespace CustomTracksBakery {
     public class Kn5MaterialToBake : IRenderableMaterial {

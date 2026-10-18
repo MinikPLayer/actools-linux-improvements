@@ -34,16 +34,17 @@ using AcTools.Utils.Helpers;
 using CustomTracksBakery.Shaders;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D;
+using SharpDX.Direct3D11;
+using SharpDX.DXGI;
 using StringBasedFilter;
 using StringBasedFilter.Parsing;
 using StringBasedFilter.TestEntries;
-using Device = SlimDX.Direct3D11.Device;
+using Device = SharpDX.Direct3D11.Device;
 using Filter = StringBasedFilter.Filter;
 using Half = SystemHalf.Half;
-using Resource = SlimDX.Direct3D11.Resource;
+using Resource = SharpDX.Direct3D11.Resource;
 
 namespace CustomTracksBakery {
     public enum StoreMode {
@@ -744,11 +745,11 @@ namespace CustomTracksBakery {
             _color = TargetResourceTexture.Create(SampleFormat);
             _color.Resize(DeviceContextHolder, Width, Height, null);
 
-            _state = RasterizerState.FromDescription(Device, new RasterizerStateDescription {
+            _state = new RasterizerState(Device, new RasterizerStateDescription {
                 FillMode = FillMode.Solid,
                 CullMode = CullMode.None,
                 IsAntialiasedLineEnabled = false,
-                IsFrontCounterclockwise = false,
+                IsFrontCounterClockwise = false,
                 IsDepthClipEnabled = true
             });
 
@@ -1402,7 +1403,7 @@ namespace CustomTracksBakery {
                         $@"D:\Temporary\Big Piles of Crap\{t.VertexId}_{yVal:F4}.dds");
             }*/
 
-            var rect = Device.ImmediateContext.MapSubresource(t.Texture, 0, MapMode.Read, SlimDX.Direct3D11.MapFlags.None);
+            var rect = Device.ImmediateContext.MapSubresourceCompat(t.Texture, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
 
             var satGain = SaturationGain;
             var satInputMult = SaturationInputMultiplier;

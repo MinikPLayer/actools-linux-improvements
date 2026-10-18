@@ -9,7 +9,8 @@ using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Render.Kn5SpecificForwardDark;
 using AcTools.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SlimDX;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Tests {
     [TestClass]
