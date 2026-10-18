@@ -1,7 +1,7 @@
 ﻿using System;
 using AcTools.Render.Utils;
 using AcTools.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Utils {
     public static partial class MathF {

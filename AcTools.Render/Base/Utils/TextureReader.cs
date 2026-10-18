@@ -4,8 +4,9 @@ using System.Runtime.CompilerServices;
 using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Shaders;
 using AcTools.Utils;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.Utils {
     public class TextureReader : IDisposable {
@@ -56,9 +57,8 @@ namespace AcTools.Render.Base.Utils {
                 using (var stream = new System.IO.MemoryStream())
                 using (var effect = new EffectPpBasic())
                 using (var output = TargetResourceTexture.Create(Format.R8G8B8A8_UNorm))
-                using (var resource = ShaderResourceView.FromMemory(holder.Device, bytes)) {
-                    var texture = (Texture2D)resource.Resource;
-                    var loaded = texture.Description;
+                using (var resource = D3DX11Compat.ShaderResourceViewFromMemory(holder.Device, bytes)) {
+                    var loaded = resource.GetTexture2DDescription().Value;
 
                     int width, height;
                     if (downsize.HasValue) {
@@ -78,7 +78,7 @@ namespace AcTools.Render.Base.Utils {
                     holder.DeviceContext.ClearRenderTargetView(output.TargetView, Color.Transparent);
                     holder.DeviceContext.OutputMerger.SetTargets(output.TargetView);
 
-                    viewports = holder.DeviceContext.Rasterizer.GetViewports();
+                    viewports = holder.DeviceContext.Rasterizer.GetViewportsF();
                     holder.DeviceContext.Rasterizer.SetViewports(new Viewport(0, 0, width, height, 0f, 1f));
 
                     holder.DeviceContext.OutputMerger.BlendState = null;
@@ -93,7 +93,7 @@ namespace AcTools.Render.Base.Utils {
                         effect.TechCopy.DrawAllPasses(holder.DeviceContext, 6);
                     }
 
-                    Texture2D.ToStream(holder.DeviceContext, output.Texture, ImageFileFormat.Png, stream);
+                    D3DX11Compat.SaveTexture2D(holder.DeviceContext, output.Texture, ImageFileFormat.Png, stream);
                     stream.Position = 0;
                     return stream.GetBuffer();
                 }

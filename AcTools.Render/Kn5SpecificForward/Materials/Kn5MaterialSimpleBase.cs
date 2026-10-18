@@ -9,7 +9,7 @@ using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Render.Shaders;
 using AcTools.Render.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward.Materials {
     public class Kn5MaterialSimpleBase : IRenderableMaterial {

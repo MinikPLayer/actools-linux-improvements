@@ -1,7 +1,9 @@
 ﻿using AcTools.Render.Base.Materials;
 using AcTools.Render.Base.Shaders;
 using JetBrains.Annotations;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base {
     public interface IDeviceContextHolder {

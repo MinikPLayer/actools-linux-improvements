@@ -14,11 +14,14 @@ using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using FillMode = SlimDX.Direct3D11.FillMode;
-using Matrix = SlimDX.Matrix;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using FillMode = SharpDX.Direct3D11.FillMode;
+using Matrix = SharpDX.Matrix;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class UvRenderer : UtilsRendererBase {
@@ -113,11 +116,11 @@ namespace AcTools.Render.Kn5SpecificSpecial {
         }
 
         protected override void DrawOverride() {
-            using (var rasterizerState = RasterizerState.FromDescription(Device, new RasterizerStateDescription {
+            using (var rasterizerState = new RasterizerState(Device, new RasterizerStateDescription {
                 FillMode = FillMode.Wireframe,
                 CullMode = CullMode.None,
                 IsAntialiasedLineEnabled = UseAntialiazing,
-                IsFrontCounterclockwise = false,
+                IsFrontCounterClockwise = false,
                 IsDepthClipEnabled = true
             })) {
                 DeviceContext.OutputMerger.BlendState = null;
@@ -152,7 +155,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             _filteredNodes = Flatten(_kn5, _carNode, textureName, objectPath).ToArray();
             Draw();
             DeviceContext.Flush();
-            Texture2D.ToFile(DeviceContext, RenderBuffer, ImageFileFormat.Png, outputFile);
+            D3DX11Compat.SaveTexture2DToFile(DeviceContext, RenderBuffer, ImageFileFormat.Png, outputFile);
         }
 
         protected override void OnTickOverride(float dt) {}

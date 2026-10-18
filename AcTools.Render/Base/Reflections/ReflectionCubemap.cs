@@ -4,9 +4,10 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.Reflections {
     public class ReflectionCubemap : IDisposable {
@@ -78,16 +79,13 @@ namespace AcTools.Render.Base.Reflections {
                     new RenderTargetViewDescription {
                         Format = format,
                         Dimension = RenderTargetViewDimension.Texture2DArray,
-                        ArraySize = 1,
-                        FirstArraySlice = x,
-                        MipSlice = 0
+                        Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource { ArraySize = 1, FirstArraySlice = x, MipSlice = 0 }
                     })).ToArray();
 
             _view = new ShaderResourceView(holder.Device, CubeTex, new ShaderResourceViewDescription {
                 Format = format,
                 Dimension = ShaderResourceViewDimension.TextureCube,
-                MostDetailedMip = 0,
-                MipLevels = -1
+                TextureCube = new ShaderResourceViewDescription.TextureCubeResource { MostDetailedMip = 0, MipLevels = -1 }
             });
 
             const Format depthFormat = Format.D32_Float;
@@ -107,7 +105,7 @@ namespace AcTools.Render.Base.Reflections {
                     Format = depthFormat,
                     Flags = DepthStencilViewFlags.None,
                     Dimension = DepthStencilViewDimension.Texture2D,
-                    MipSlice = 0,
+                    Texture2D = new DepthStencilViewDescription.Texture2DResource { MipSlice = 0 },
                 });
             }
         }

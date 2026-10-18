@@ -5,7 +5,7 @@ using AcTools.Render.Base.Materials;
 using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public class SkyObject : TrianglesRenderableObject<InputLayouts.VerticeP> {

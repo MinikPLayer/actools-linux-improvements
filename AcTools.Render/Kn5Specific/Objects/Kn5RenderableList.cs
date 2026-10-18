@@ -6,7 +6,7 @@ using AcTools.Render.Base;
 using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public sealed class Kn5RenderableList : RenderableList {

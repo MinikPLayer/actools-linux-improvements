@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using AcTools.Render.Base;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 using Debug = System.Diagnostics.Debug;
 
 namespace AcTools.Render.Kn5Specific.Textures {
@@ -37,7 +39,7 @@ namespace AcTools.Render.Kn5Specific.Textures {
             get => _override;
             internal set {
                 if (Equals(_override, value)) return;
-                if (_override?.Disposed == false) { // wut? how does that happen?
+                if (_override?.IsDisposed == false) { // wut? how does that happen?
                     DisposeHelper.Dispose(ref _override);
                 }
                 _override = value;
@@ -63,7 +65,7 @@ namespace AcTools.Render.Kn5Specific.Textures {
             if (device == null) return null;
             try {
                 GC.AddMemoryPressure(bytes.Length);
-                return ShaderResourceView.FromMemory(device, bytes);
+                return D3DX11Compat.ShaderResourceViewFromMemory(device, bytes);
             } catch (Exception e) {
                 AcToolsLogging.Write($"Texture {Name} damaged: {e}");
                 return null;
@@ -74,7 +76,7 @@ namespace AcTools.Render.Kn5Specific.Textures {
         private ShaderResourceView LoadSafe(Device device, string filename) {
             if (device == null) return null;
             try {
-                return ShaderResourceView.FromFile(device, filename);
+                return D3DX11Compat.ShaderResourceViewFromFile(device, filename);
             } catch (Exception e) {
                 AcToolsLogging.Write($"Texture {Name} damaged: {e}");
                 return null;

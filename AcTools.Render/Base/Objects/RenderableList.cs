@@ -7,7 +7,7 @@ using AcTools.Render.Base.Utils;
 using AcTools.Render.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Objects {
     public class RenderableList : List<IRenderableObject>, IRenderableObject {
@@ -218,12 +218,12 @@ namespace AcTools.Render.Base.Objects {
             if (HighlightDummy && mode == SpecialRenderMode.SimpleTransparent) {
                 if (_lines == null) {
                     _lines = new DebugLinesObject(Matrix.Identity, new[] {
-                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(0, 1, 0)),
-                        new InputLayouts.VerticePC(new Vector3(0f, 0.02f, 0f), new Color4(0, 1, 0)),
-                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(1, 0, 0)),
-                        new InputLayouts.VerticePC(new Vector3(0.02f, 0f, 0f), new Color4(1, 0, 0)),
-                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(0, 0, 1)),
-                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0.02f), new Color4(0, 0, 1)),
+                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(0, 1, 0, 1f)),
+                        new InputLayouts.VerticePC(new Vector3(0f, 0.02f, 0f), new Color4(0, 1, 0, 1f)),
+                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(1, 0, 0, 1f)),
+                        new InputLayouts.VerticePC(new Vector3(0.02f, 0f, 0f), new Color4(1, 0, 0, 1f)),
+                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0f), new Color4(0, 0, 1, 1f)),
+                        new InputLayouts.VerticePC(new Vector3(0f, 0f, 0.02f), new Color4(0, 0, 1, 1f)),
                     });
                 }
 

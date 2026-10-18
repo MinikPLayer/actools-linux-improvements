@@ -5,7 +5,7 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward {
     public partial class ToolsKn5ObjectRenderer {

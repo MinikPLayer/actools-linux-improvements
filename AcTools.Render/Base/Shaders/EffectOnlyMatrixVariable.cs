@@ -1,6 +1,9 @@
+using System;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base.Shaders {
     // To make it more type-strict (and avoid losing tons of hours because of accidental “Set()” instead of “SetMatrix()” in the future! Arghh…)
@@ -30,20 +33,23 @@ namespace AcTools.Render.Base.Shaders {
         public bool IsValid => _v != null;
 
         public void SetMatrixArray(Matrix[] m) {
-            _v?.SetMatrixArray(m);
+            _v?.SetMatrix(m);
         }
 
         public void SetMatrixArray(Matrix[] m, int offset, int count) {
-            _v?.SetMatrixArray(m, offset, count);
+            if (_v == null) return;
+            var slice = new Matrix[count];
+            Array.Copy(m, offset, slice, 0, count);
+            _v.SetMatrix(slice);
         }
     }
 
     public class EffectOnlyResourceVariable {
         [CanBeNull]
-        private readonly EffectResourceVariable _v;
+        private readonly EffectShaderResourceVariable _v;
 
         public EffectOnlyResourceVariable(EffectVariable v) {
-            _v = v.AsResource();
+            _v = v.AsShaderResource();
         }
 
         public bool IsValid => _v != null;
@@ -55,10 +61,10 @@ namespace AcTools.Render.Base.Shaders {
 
     public class EffectOnlyResourceArrayVariable {
         [CanBeNull]
-        private readonly EffectResourceVariable _v;
+        private readonly EffectShaderResourceVariable _v;
 
         public EffectOnlyResourceArrayVariable(EffectVariable v) {
-            _v = v.AsResource();
+            _v = v.AsShaderResource();
         }
 
         public bool IsValid => _v != null;
@@ -68,7 +74,10 @@ namespace AcTools.Render.Base.Shaders {
         }
 
         public void SetResourceArray(ShaderResourceView[] m, int offset, int count) {
-            _v?.SetResourceArray(m, offset, count);
+            if (_v == null) return;
+            var slice = new ShaderResourceView[count];
+            Array.Copy(m, offset, slice, 0, count);
+            _v.SetResourceArray(slice);
         }
     }
 

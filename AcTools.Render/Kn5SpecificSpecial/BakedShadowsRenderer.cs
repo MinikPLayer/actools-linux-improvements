@@ -19,9 +19,11 @@ using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class BakedShadowsRenderer : ShadowsRendererBase {
@@ -48,30 +50,30 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             _bufferA = TargetResourceTexture.Create(Format.R8G8B8A8_UNorm);
 
             _sumBlendState = Device.CreateBlendState(new RenderTargetBlendDescription {
-                BlendEnable = true,
+                IsBlendEnabled = true,
                 SourceBlend = BlendOption.One,
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Add,
-                SourceBlendAlpha = BlendOption.One,
-                DestinationBlendAlpha = BlendOption.One,
-                BlendOperationAlpha = BlendOperation.Add,
+                SourceAlphaBlend = BlendOption.One,
+                DestinationAlphaBlend = BlendOption.One,
+                AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All,
             });
 
             _bakedBlendState = Device.CreateBlendState(new RenderTargetBlendDescription {
-                BlendEnable = true,
+                IsBlendEnabled = true,
                 SourceBlend = BlendOption.One,
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Maximum,
-                SourceBlendAlpha = BlendOption.One,
-                DestinationBlendAlpha = BlendOption.One,
-                BlendOperationAlpha = BlendOperation.Maximum,
+                SourceAlphaBlend = BlendOption.One,
+                DestinationAlphaBlend = BlendOption.One,
+                AlphaBlendOperation = BlendOperation.Maximum,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All,
             });
 
             _effect = DeviceContextHolder.GetEffect<EffectSpecialShadow>();
 
-            _rasterizerStateFrontCull = RasterizerState.FromDescription(Device, new RasterizerStateDescription {
+            _rasterizerStateFrontCull = new RasterizerState(Device, new RasterizerStateDescription {
                 CullMode = CullMode.Front,
                 FillMode = FillMode.Solid,
                 IsAntialiasedLineEnabled = false,
@@ -81,7 +83,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                 SlopeScaledDepthBias = ShadowBiasCullFront
             });
 
-            _rasterizerStateBackCull = RasterizerState.FromDescription(Device, new RasterizerStateDescription {
+            _rasterizerStateBackCull = new RasterizerState(Device, new RasterizerStateDescription {
                 CullMode = CullMode.Back,
                 FillMode = FillMode.Solid,
                 IsAntialiasedLineEnabled = false,
@@ -331,7 +333,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
 
             AcToolsLogging.Write("Baked shadows are ready");
             using (var stream = new MemoryStream()) {
-                Texture2D.ToStream(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
+                D3DX11Compat.SaveTexture2D(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
                 AcToolsLogging.Write("Baked shadows are saved in stream: " + stream.Position);
                 return stream.ToArray();
             }

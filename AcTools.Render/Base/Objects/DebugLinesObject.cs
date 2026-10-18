@@ -8,7 +8,8 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Base.Objects {
     public class DebugLinesObject : LinesRenderableObject<InputLayouts.VerticePC> {
@@ -57,7 +58,7 @@ namespace AcTools.Render.Base.Objects {
             var planeN = Vector3.Normalize(Vector3.Cross(segmentN, planeD));
             var plane = new Plane(a, planeN);
 
-            if (!Ray.Intersects(ray, plane, out var distance)) return false;
+            if (!SharpDxCompat.RayIntersects(ray, plane, out var distance)) return false;
 
             var point = ray.Position + ray.Direction * distance;
             if (Vector3.Dot(Vector3.Normalize(point - b), -segmentN) < 0) return false;
@@ -86,7 +87,7 @@ namespace AcTools.Render.Base.Objects {
         public bool DrawHighlighted(Ray pickingRay, IDeviceContextHolder contextHolder, ICamera camera) {
             var bb = BoundingBox;
             var intersects = bb.HasValue &&
-                    Ray.Intersects(pickingRay, bb.Value, out _) &&
+                    SharpDxCompat.RayIntersects(pickingRay, bb.Value, out _) &&
                     DoesIntersect(pickingRay, 0.01f / bb.Value.GetCenter().GetOnScreenSize(camera));
 
             Draw(contextHolder, camera, intersects ? SpecialRenderMode.Outline : SpecialRenderMode.Simple);

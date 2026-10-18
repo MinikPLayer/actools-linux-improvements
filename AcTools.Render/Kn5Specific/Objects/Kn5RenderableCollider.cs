@@ -5,7 +5,7 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Materials;
 using AcTools.Render.Base.Objects;
 using AcTools.Render.Kn5Specific.Materials;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public class Kn5RenderableCollider : Kn5RenderableFile {

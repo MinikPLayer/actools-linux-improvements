@@ -7,7 +7,7 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     // Requires Magick.NET

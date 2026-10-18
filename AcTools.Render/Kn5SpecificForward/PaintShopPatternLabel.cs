@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using SlimDX.DirectWrite;
+using SharpDX.DirectWrite;
 
 namespace AcTools.Render.Kn5SpecificForward {
     public sealed class PaintShopPatternLabel : PaintShopPatternNumber {

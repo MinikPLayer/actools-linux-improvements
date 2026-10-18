@@ -4,13 +4,15 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 using Debug = System.Diagnostics.Debug;
-using Device = SlimDX.Direct3D11.Device;
-using Quaternion = SlimDX.Quaternion;
-using Vector4 = SlimDX.Vector4;
+using Device = SharpDX.Direct3D11.Device;
+using Quaternion = SharpDX.Quaternion;
+using Vector4 = SharpDX.Vector4;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Base.Utils {
     public static class SlimDxExtension {
@@ -261,60 +263,26 @@ namespace AcTools.Render.Base.Utils {
         }
 
         private static readonly Dictionary<int, CacheObject> Cache = new Dictionary<int, CacheObject>();
-        private static readonly Dictionary<Tuple<int, int>, ArrayCacheObject> ArrayCache = new Dictionary<Tuple<int, int>, ArrayCacheObject>();
+        private static readonly Dictionary<Tuple<int, int>, CacheObject> ArrayCache = new Dictionary<Tuple<int, int>, CacheObject>();
 
+        // Unmanaged buffer wrapped into a stream, to avoid allocating anything when setting effect variables
         private class CacheObject : IDisposable {
-            public static byte[] Array = new byte[512];
             public readonly IntPtr Pointer;
             public readonly DataStream Data;
 
             public CacheObject(int len) {
-                if (len > Array.Length) {
-                    Array = new byte[len];
-                } else {
-                    System.Array.Clear(Array, 0, Array.Length);
-                }
-
                 Pointer = Marshal.AllocHGlobal(len);
-                Data = new DataStream(Array, false, false);
+                Data = new DataStream(Pointer, len, true, true);
             }
 
             public void Dispose() {
-                Marshal.FreeHGlobal(Pointer);
                 Data.Dispose();
-            }
-        }
-
-        private class ArrayCacheObject : IDisposable {
-            public static byte[] Array = new byte[5120];
-            public readonly IntPtr Pointer;
-            public readonly DataStream Data;
-
-            public ArrayCacheObject(int elementLen, int arrayLen) {
-                var len = arrayLen * elementLen;
-                if (len > Array.Length) {
-                    Array = new byte[len];
-                } else {
-                    System.Array.Clear(Array, 0, Array.Length);
-                }
-
-                Pointer = Marshal.AllocHGlobal(elementLen);
-                Data = new DataStream(Array, false, false);
-            }
-
-            public void Dispose() {
                 Marshal.FreeHGlobal(Pointer);
-                Data.Dispose();
             }
         }
 
         public static void Set_(EffectVariable variable, object o, int len) {
-            var arr = new byte[len];
-            var ptr = Marshal.AllocHGlobal(len);
-            Marshal.StructureToPtr(o, ptr, true);
-            Marshal.Copy(ptr, arr, 0, len);
-            Marshal.FreeHGlobal(ptr);
-            variable.SetRawValue(new DataStream(arr, false, false), len);
+            SetObject(variable, o, len);
         }
 
         public static void SetObject(EffectVariable variable, object o, int len) {
@@ -328,8 +296,8 @@ namespace AcTools.Render.Base.Utils {
                     Debug.WriteLine("CACHED MEMORY AREA CREATED: " + len);
                 }
 
-                Marshal.StructureToPtr(o, cobj.Pointer, true);
-                Marshal.Copy(cobj.Pointer, CacheObject.Array, 0, len);
+                Marshal.StructureToPtr(o, cobj.Pointer, false);
+                cobj.Data.Position = 0;
                 variable.SetRawValue(cobj.Data, len);
             }
         }
@@ -341,18 +309,18 @@ namespace AcTools.Render.Base.Utils {
                 var len = elementLen * o.Length;
                 var key = Tuple.Create(elementLen, o.Length);
 
-                ArrayCacheObject cobj;
+                CacheObject cobj;
                 if (!ArrayCache.TryGetValue(key, out cobj)) {
-                    cobj = new ArrayCacheObject(elementLen, o.Length);
+                    cobj = new CacheObject(len);
                     ArrayCache[key] = cobj;
                     Debug.WriteLine("CACHED MEMORY AREA CREATED: " + len);
                 }
 
                 for (var i = 0; i < o.Length; i++) {
-                    Marshal.StructureToPtr(o.GetValue(i), cobj.Pointer, true);
-                    Marshal.Copy(cobj.Pointer, ArrayCacheObject.Array, elementLen * i, elementLen);
+                    Marshal.StructureToPtr(o.GetValue(i), cobj.Pointer + elementLen * i, false);
                 }
 
+                cobj.Data.Position = 0;
                 variable.SetRawValue(cobj.Data, len);
             }
         }
@@ -366,8 +334,8 @@ namespace AcTools.Render.Base.Utils {
                 AlphaToCoverageEnable = false,
                 IndependentBlendEnable = false
             };
-            desc.RenderTargets[0] = description;
-            return BlendState.FromDescription(device, desc);
+            desc.RenderTarget[0] = description;
+            return new BlendState(device, desc);
         }
 
         public static long GetBitsPerPixel(this Format format) {
@@ -406,7 +374,7 @@ namespace AcTools.Render.Base.Utils {
                 case Format.R11G11B10_Float:
                 case Format.R8G8B8A8_Typeless:
                 case Format.R8G8B8A8_UNorm:
-                case Format.R8G8B8A8_UNorm_SRGB:
+                case Format.R8G8B8A8_UNorm_SRgb:
                 case Format.R8G8B8A8_UInt:
                 case Format.R8G8B8A8_SNorm:
                 case Format.R8G8B8A8_SInt:
@@ -425,16 +393,16 @@ namespace AcTools.Render.Base.Utils {
                 case Format.D24_UNorm_S8_UInt:
                 case Format.R24_UNorm_X8_Typeless:
                 case Format.X24_Typeless_G8_UInt:
-                case Format.R9G9B9E5_SharedExp:
+                case Format.R9G9B9E5_Sharedexp:
                 case Format.R8G8_B8G8_UNorm:
                 case Format.G8R8_G8B8_UNorm:
                 case Format.B8G8R8A8_UNorm:
                 case Format.B8G8R8X8_UNorm:
-                case Format.R10G10B10_XR_Bias_A2_UNorm:
+                case Format.R10G10B10_Xr_Bias_A2_UNorm:
                 case Format.B8G8R8A8_Typeless:
-                case Format.B8G8R8A8_UNorm_SRGB:
+                case Format.B8G8R8A8_UNorm_SRgb:
                 case Format.B8G8R8X8_Typeless:
-                case Format.B8G8R8X8_UNorm_SRGB:
+                case Format.B8G8R8X8_UNorm_SRgb:
                     return 32;
                 case Format.R8G8_Typeless:
                 case Format.R8G8_UNorm:
@@ -462,25 +430,25 @@ namespace AcTools.Render.Base.Utils {
                     return 1;
                 case Format.BC1_Typeless:
                 case Format.BC1_UNorm:
-                case Format.BC1_UNorm_SRGB:
+                case Format.BC1_UNorm_SRgb:
                 case Format.BC2_Typeless:
                 case Format.BC2_UNorm:
-                case Format.BC2_UNorm_SRGB:
+                case Format.BC2_UNorm_SRgb:
                 case Format.BC3_Typeless:
                 case Format.BC3_UNorm:
-                case Format.BC3_UNorm_SRGB:
+                case Format.BC3_UNorm_SRgb:
                 case Format.BC4_Typeless:
                 case Format.BC4_UNorm:
                 case Format.BC4_SNorm:
                 case Format.BC5_Typeless:
                 case Format.BC5_UNorm:
                 case Format.BC5_SNorm:
-                case Format.BC6_Typeless:
-                case Format.BC6_UFloat16:
-                case Format.BC6_SFloat16:
+                case Format.BC6H_Typeless:
+                case Format.BC6H_Uf16:
+                case Format.BC6H_Sf16:
                 case Format.BC7_Typeless:
                 case Format.BC7_UNorm:
-                case Format.BC7_UNorm_SRGB:
+                case Format.BC7_UNorm_SRgb:
                     throw new NotImplementedException($"Type {format} is unknown to find size of");
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format), format, null);
@@ -488,7 +456,7 @@ namespace AcTools.Render.Base.Utils {
         }
 
         public static long GetBytesSize([NotNull] this ShaderResourceView view) {
-            var n = (view.Resource as Texture2D)?.Description;
+            var n = view.GetTexture2DDescription();
             if (!n.HasValue) return 0;
 
             var d = n.Value;

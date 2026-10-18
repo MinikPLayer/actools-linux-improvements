@@ -9,8 +9,9 @@ using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Lights {
     public abstract class DarkAreaLightBase : DarkLightBase {

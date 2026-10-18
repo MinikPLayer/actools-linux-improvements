@@ -9,7 +9,7 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using Newtonsoft.Json.Linq;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Lights {
     public class DarkLtcTubeLight : DarkAreaTubeLight {

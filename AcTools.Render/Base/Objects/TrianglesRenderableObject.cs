@@ -7,10 +7,11 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using Buffer = SlimDX.Direct3D11.Buffer;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace AcTools.Render.Base.Objects {
     public class TrianglesRenderableObject<T> : BaseRenderableObject where T : struct, InputLayouts.IPositionLayout {
@@ -178,13 +179,13 @@ namespace AcTools.Render.Base.Objects {
             var first = Vertices.Length > 0 ? Vertices[0] : new T();
             var vbd = new BufferDescription(first.Stride * Vertices.Length, ResourceUsage.Immutable,
                     BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            _verticesStream = new DataStream(Vertices, false, false);
+            _verticesStream = DataStream.Create(Vertices, false, false);
             _verticesBuffer = new Buffer(contextHolder.Device, _verticesStream, vbd);
             _verticesBufferBinding = new VertexBufferBinding(_verticesBuffer, first.Stride, 0);
 
             var ibd = new BufferDescription(sizeof(ushort) * Indices.Length, ResourceUsage.Immutable,
                     BindFlags.IndexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            _indicesStream = new DataStream(Indices, false, false);
+            _indicesStream = DataStream.Create(Indices, false, false);
             _indicesBuffer = new Buffer(contextHolder.Device, _indicesStream, ibd);
         }
 
@@ -206,7 +207,7 @@ namespace AcTools.Render.Base.Objects {
             UpdateBoundingBox();
 
             /*float d;
-            if (!BoundingBox.HasValue || !Ray.Intersects(ray, BoundingBox.Value, out d)) {
+            if (!BoundingBox.HasValue || !SharpDxCompat.RayIntersects(ray, BoundingBox.Value, out d)) {
                 return null;
             }*/
 
@@ -221,7 +222,7 @@ namespace AcTools.Render.Base.Objects {
                 var v1 = Vector3.TransformCoordinate(vertices[indices[i * 3 + 1]].Position, matrix);
                 var v2 = Vector3.TransformCoordinate(vertices[indices[i * 3 + 2]].Position, matrix);
                 if (Vector3.Dot(Vector3.Cross(v1 - v0, v2 - v0), ray.Direction) <= 0 ||
-                        !Ray.Intersects(ray, v0, v1, v2, out var distance) || distance >= min) continue;
+                        !SharpDxCompat.RayIntersects(ray, v0, v1, v2, out var distance) || distance >= min) continue;
                 min = distance;
                 found = true;
             }

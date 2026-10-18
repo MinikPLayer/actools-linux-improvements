@@ -2,8 +2,10 @@
 using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base.Materials {
     public interface IRenderableMaterial : IDisposable {

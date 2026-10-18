@@ -7,7 +7,7 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
 using AcTools.Render.Data;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public partial class Kn5RenderableCar : IMoveable {

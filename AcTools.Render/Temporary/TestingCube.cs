@@ -4,7 +4,7 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Structs;
 using AcTools.Render.Shaders;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Temporary {
     public class TestingCube : TrianglesRenderableObject<InputLayouts.VerticePC> {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using AcTools.Render.Base;
 using AcTools.Render.Base.PostEffects.AO;
-using SlimDX.DXGI;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public enum AoType {

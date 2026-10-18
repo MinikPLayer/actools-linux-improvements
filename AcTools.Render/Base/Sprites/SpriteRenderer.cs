@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using AcTools.Render.Shaders;
-using SlimDX;
-using SlimDX.Direct3D11;
-using Buffer = SlimDX.Direct3D11.Buffer;
-using Device = SlimDX.Direct3D11.Device;
-using MapFlags = SlimDX.Direct3D11.MapFlags;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using Buffer = SharpDX.Direct3D11.Buffer;
+using Device = SharpDX.Direct3D11.Device;
+using MapFlags = SharpDX.Direct3D11.MapFlags;
 
 namespace AcTools.Render.Base.Sprites {
     /// <summary>
@@ -238,7 +240,7 @@ namespace AcTools.Render.Base.Sprites {
         #region ### Template method hooks ###
 
         protected Viewport QueryViewport() {
-            return Device.ImmediateContext.Rasterizer.GetViewports()[0];
+            return Device.ImmediateContext.Rasterizer.GetViewportsF()[0];
         }
 
         protected void CreateVertexBuffer(int elementByteSize, int elements) {
@@ -252,26 +254,26 @@ namespace AcTools.Render.Base.Sprites {
                 IsDepthEnabled = false,
                 DepthWriteMask = DepthWriteMask.Zero
             };
-            DepthStencilState = DepthStencilState.FromDescription(Device, dssd);
+            DepthStencilState = new DepthStencilState(Device, dssd);
 
             var blendDesc = new BlendStateDescription {
                 AlphaToCoverageEnable = false,
                 IndependentBlendEnable = false
             };
 
-            blendDesc.RenderTargets[0].BlendOperation = BlendOperation.Add;
-            blendDesc.RenderTargets[0].DestinationBlend = BlendOption.InverseSourceAlpha;
-            blendDesc.RenderTargets[0].SourceBlend = BlendOption.SourceAlpha;
-            blendDesc.RenderTargets[0].BlendEnable = true;
-            blendDesc.RenderTargets[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
-            blendDesc.RenderTargets[0].BlendOperationAlpha = BlendOperation.Add;
-            blendDesc.RenderTargets[0].SourceBlendAlpha = BlendOption.SourceAlpha;
-            blendDesc.RenderTargets[0].DestinationBlendAlpha = BlendOption.InverseSourceAlpha;
-            BlendState = BlendState.FromDescription(Device, blendDesc);
+            blendDesc.RenderTarget[0].BlendOperation = BlendOperation.Add;
+            blendDesc.RenderTarget[0].DestinationBlend = BlendOption.InverseSourceAlpha;
+            blendDesc.RenderTarget[0].SourceBlend = BlendOption.SourceAlpha;
+            blendDesc.RenderTarget[0].IsBlendEnabled = true;
+            blendDesc.RenderTarget[0].RenderTargetWriteMask = ColorWriteMaskFlags.All;
+            blendDesc.RenderTarget[0].AlphaBlendOperation = BlendOperation.Add;
+            blendDesc.RenderTarget[0].SourceAlphaBlend = BlendOption.SourceAlpha;
+            blendDesc.RenderTarget[0].DestinationAlphaBlend = BlendOption.InverseSourceAlpha;
+            BlendState = new BlendState(Device, blendDesc);
         }
 
         protected void UpdateVertexBufferData<T>(T[] vertices) where T : struct {
-            var data = _context.MapSubresource(_vb, MapMode.WriteDiscard, MapFlags.None);
+            var data = _context.MapSubresourceCompat(_vb, MapMode.WriteDiscard, MapFlags.None);
             data.Data.WriteRange(vertices);
             _context.UnmapSubresource(_vb, 0);
         }

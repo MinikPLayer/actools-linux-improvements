@@ -4,7 +4,7 @@ using AcTools.Render.Base;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Kn5Specific;
 using AcTools.Windows;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Wrapper {
     public class Kn5WrapperCameraControlHelper {

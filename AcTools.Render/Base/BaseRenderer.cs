@@ -13,12 +13,14 @@ using AcTools.Render.Base.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 using Debug = System.Diagnostics.Debug;
-using Device = SlimDX.Direct3D11.Device;
-using Resource = SlimDX.Direct3D11.Resource;
+using Device = SharpDX.Direct3D11.Device;
+using Resource = SharpDX.Direct3D11.Resource;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Base {
     public abstract class BaseRenderer : IDisposable, INotifyPropertyChanged {
@@ -159,10 +161,8 @@ namespace AcTools.Render.Base {
         protected BaseRenderer() {
 #if DEBUG
             Configuration.EnableObjectTracking = OptionDebugResources;
-            Configuration.DetectDoubleDispose = OptionDebugResources;
 #else
             Configuration.EnableObjectTracking = false;
-            Configuration.DetectDoubleDispose = false;
 #endif
         }
 
@@ -201,7 +201,7 @@ namespace AcTools.Render.Base {
             if (_deviceContextHolder == null) return;
 
             var sampleDescription = UseMsaa ? GetMsaaDescription(Device) : new SampleDescription(1, 0);
-            if (sampleDescription != SampleDescription) {
+            if (!sampleDescription.Equals(SampleDescription)) {
                 SampleDescription = sampleDescription;
                 if (_swapChain != null) {
                     RecreateSwapChain();
@@ -261,7 +261,7 @@ namespace AcTools.Render.Base {
         }
 
         public IntPtr GetRenderTarget() {
-            return _renderBuffer.ComPointer;
+            return _renderBuffer.NativePointer;
         }
 
         private bool _sharedHolder;
@@ -306,7 +306,9 @@ namespace AcTools.Render.Base {
             SetDeviceContextHolder(new DeviceContextHolder(device));
 
             // Let Factory leak: otherwise we can’t dispose swap chain
-            _swapChain.GetParent<Factory>().SetWindowAssociation(outputHandle, WindowAssociationFlags.IgnoreAll);
+            using (var factory = _swapChain.GetParent<Factory>()) {
+                factory.MakeWindowAssociation(outputHandle, WindowAssociationFlags.IgnoreAll);
+            }
 
             InitializeInner();
             Initialized = true;
@@ -324,7 +326,11 @@ namespace AcTools.Render.Base {
             };
 
             DisposeSwapChain();
-            _swapChain = new SwapChain(Device.Factory, Device, _swapChainDescription);
+            using (var dxgiDevice = Device.QueryInterface<SharpDX.DXGI.Device>())
+            using (var adapter = dxgiDevice.GetParent<Adapter>())
+            using (var factory = adapter.GetParent<Factory>()) {
+                _swapChain = new SwapChain(factory, Device, _swapChainDescription);
+            }
             _resized = true;
         }
 
@@ -599,7 +605,7 @@ namespace AcTools.Render.Base {
             Disposed = true;
 
 #if DEBUG
-            // var debug = new SlimDX.Direct3D11.Debug(Device);
+            // var debug = new SharpDX.Direct3D11.Debug(Device);
 #endif
             DisposeOverride();
 
@@ -627,7 +633,7 @@ namespace AcTools.Render.Base {
 #if DEBUG
             // debug.ReportLiveDeviceObjects(ReportingLevel.Detail);
             // debug.Dispose();
-            Debug.WriteLine(ObjectTable.ReportLeaks());
+            Debug.WriteLine(SharpDX.Diagnostics.ObjectTracker.ReportActiveObjects());
 #endif
         }
 
@@ -684,7 +690,7 @@ namespace AcTools.Render.Base {
                     }
 
                     DrawShot(null, progress.SubrangeDouble(0.05, 0.9), cancellation);
-                    Texture2D.ToStream(DeviceContext, _renderBuffer, shotFormat.ToImageFileFormat(), outputStream);
+                    D3DX11Compat.SaveTexture2D(DeviceContext, _renderBuffer, shotFormat.ToImageFileFormat(), outputStream);
 
                     var desc = _renderBuffer.Description;
                     LastShotWidth = desc.Width;

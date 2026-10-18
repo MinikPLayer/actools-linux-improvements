@@ -8,10 +8,12 @@ using AcTools.Render.Base;
 using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using Device = SlimDX.Direct3D11.Device;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Device = SharpDX.Direct3D11.Device;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     /// <summary>
@@ -48,10 +50,10 @@ namespace AcTools.Render.Kn5Specific.Objects {
                     try {
                         lock (_device) {
                             if (OptionLoadView) {
-                                var view = ShaderResourceView.FromMemory(_device, bytes); // new ShaderResourceView(_device, texture);
+                                var view = D3DX11Compat.ShaderResourceViewFromMemory(_device, bytes); // new ShaderResourceView(_device, texture);
                                 _ready[textureName] = new Tuple<Texture2D, ShaderResourceView>(null, view);
                             } else {
-                                var texture = Texture2D.FromMemory(_device, bytes);
+                                var texture = D3DX11Compat.Texture2DFromMemory(_device, bytes);
                                 var view = new ShaderResourceView(_device, texture);
                                 _ready[textureName] = new Tuple<Texture2D, ShaderResourceView>(texture, view);
                             }
@@ -78,12 +80,12 @@ namespace AcTools.Render.Kn5Specific.Objects {
                 base.Dispose();
 
                 foreach (var i in _ready.Values.Where(x => x != null)) {
-                    if (i.Item2?.Disposed == false) {
+                    if (i.Item2?.IsDisposed == false) {
                         i.Item2.Dispose();
                     }
 
-                    if (i.Item1?.Disposed == false) {
-                        i.Item1.EvictionPriority = ResourcePriority.Minimum;
+                    if (i.Item1?.IsDisposed == false) {
+                        i.Item1.EvictionPriority = (int)ResourcePriority.Minimum;
                         i.Item1.Dispose();
                     }
                 }

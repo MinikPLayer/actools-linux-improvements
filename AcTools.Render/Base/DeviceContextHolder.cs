@@ -8,12 +8,15 @@ using AcTools.Render.Base.PostEffects;
 using AcTools.Render.Base.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 using Debug = System.Diagnostics.Debug;
-using Device = SlimDX.Direct3D11.Device;
-using MapFlags = SlimDX.Direct3D11.MapFlags;
+using Device = SharpDX.Direct3D11.Device;
+using MapFlags = SharpDX.Direct3D11.MapFlags;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Base {
     public class DeviceContextHolder : IDeviceContextHolder, IDisposable {
@@ -57,7 +60,7 @@ namespace AcTools.Render.Base {
         }
 
         public long GetDedicatedVideoMemory() {
-            using (var dxgiDevice = new SlimDX.DXGI.Device(Device))
+            using (var dxgiDevice = Device.QueryInterface<SharpDX.DXGI.Device>())
             using (var adapter = dxgiDevice.Adapter){
                 return adapter.Description.DedicatedVideoMemory;
             }
@@ -181,7 +184,7 @@ namespace AcTools.Render.Base {
         [Pure]
         public IDisposable SaveRenderTargetAndViewport() {
             var targets = DeviceContext.OutputMerger.GetRenderTargets(2);
-            var viewports = DeviceContext.Rasterizer.GetViewports();
+            var viewports = DeviceContext.Rasterizer.GetViewportsF();
             return new ActionAsDisposable(() => {
                 DeviceContext.Rasterizer.SetViewports(viewports);
                 DeviceContext.OutputMerger.SetTargets(targets);
@@ -247,7 +250,7 @@ namespace AcTools.Render.Base {
                 CpuAccessFlags = CpuAccessFlags.Write
             });
 
-            var rect = DeviceContext.MapSubresource(texture, 0, MapMode.WriteDiscard, MapFlags.None);
+            var rect = DeviceContext.MapSubresourceCompat(texture, 0, MapMode.WriteDiscard, MapFlags.None);
             if (rect.Data.CanWrite) {
                 for (var y = 0; y < width; y++) {
                     var rowStart = y * rect.RowPitch;
@@ -272,8 +275,7 @@ namespace AcTools.Render.Base {
                 return new ShaderResourceView(Device, texture, new ShaderResourceViewDescription {
                     Format = texture.Description.Format,
                     Dimension = ShaderResourceViewDimension.Texture2D,
-                    MostDetailedMip = 0,
-                    MipLevels = 1
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource { MostDetailedMip = 0, MipLevels = 1 }
                 });
             }
         }
@@ -294,7 +296,7 @@ namespace AcTools.Render.Base {
                 CpuAccessFlags = CpuAccessFlags.Write
             });
 
-            var rect = DeviceContext.MapSubresource(texture, 0, MapMode.WriteDiscard, MapFlags.None);
+            var rect = DeviceContext.MapSubresourceCompat(texture, 0, MapMode.WriteDiscard, MapFlags.None);
             if (rect.Data.CanWrite) {
                 for (var y = 0; y < width; y++) {
                     var rowStart = y * rect.RowPitch;
@@ -319,8 +321,7 @@ namespace AcTools.Render.Base {
                 return new ShaderResourceView(Device, texture, new ShaderResourceViewDescription {
                     Format = texture.Description.Format,
                     Dimension = ShaderResourceViewDimension.Texture2D,
-                    MostDetailedMip = 0,
-                    MipLevels = 1
+                    Texture2D = new ShaderResourceViewDescription.Texture2DResource { MostDetailedMip = 0, MipLevels = 1 }
                 });
             }
         }

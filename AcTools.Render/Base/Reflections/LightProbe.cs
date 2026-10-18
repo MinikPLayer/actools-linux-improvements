@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base.Reflections {
     public class LightProbe : ReflectionCubemap {
@@ -30,26 +32,16 @@ namespace AcTools.Render.Base.Reflections {
             }
         }
 
-        private static ConstructorInfo _resultConstructorInfo;
-
-        private static Result ToResult(int value) {
-            if (value == 0) return default(Result);
-            return (Result)(_resultConstructorInfo ?? (_resultConstructorInfo =
-                    AppDomain.CurrentDomain.GetAssemblies().First(a => a.FullName.StartsWith("SlimDX") && new AssemblyName(a.FullName).Name == "SlimDX")
-                             .GetType("SlimDX.Result").GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)[0]))
-                    .Invoke(new object[] { value });
-        }
-
         private static void ShProjectCubeMap(DeviceContext contextRef, int order, Texture2D cubeMapRef, float[] rOutRef, float[] gOutRef, float[] bOutRef) {
             unsafe {
                 fixed (void* r = rOutRef)
                 fixed (void* g = gOutRef)
                 fixed (void* b = bOutRef) {
-                    var result = ToResult(D3DX11SHProjectCubeMap(
-                            (void*)(contextRef?.ComPointer ?? IntPtr.Zero), order,
-                            (void*)(cubeMapRef?.ComPointer ?? IntPtr.Zero), r, g, b));
-                    if (result != default(Result)) {
-                        throw new SlimDXException(result);
+                    var result = (D3DX11SHProjectCubeMap(
+                            (void*)(contextRef?.NativePointer ?? IntPtr.Zero), order,
+                            (void*)(cubeMapRef?.NativePointer ?? IntPtr.Zero), r, g, b));
+                    if (result < 0) {
+                        throw new SharpDXException(result);
                     }
                 }
             }

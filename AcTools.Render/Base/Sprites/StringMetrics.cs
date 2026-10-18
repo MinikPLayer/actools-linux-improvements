@@ -1,5 +1,5 @@
 ﻿using System;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Sprites {
     /// <summary>

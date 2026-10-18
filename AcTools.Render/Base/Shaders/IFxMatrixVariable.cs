@@ -45,14 +45,14 @@
         }
 
         public void Set(Matrix[] value) {
-            _inner.SetMatrixArray(value);
+            _inner.SetMatrix(value);
         }
     }
 
     public class FxEffectResourceVariable : IFxResourceVariable {
-        private readonly EffectResourceVariable _inner;
+        private readonly EffectShaderResourceVariable _inner;
 
-        public FxEffectResourceVariable(EffectResourceVariable inner) {
+        public FxEffectResourceVariable(EffectShaderResourceVariable inner) {
             _inner = inner;
         }
 

@@ -2,9 +2,10 @@
 using AcTools.ExtraKn5Utils.Kn5Utils;
 using AcTools.Kn5File;
 using AcTools.Render.Base.Utils;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 // ReSharper disable InconsistentNaming
 

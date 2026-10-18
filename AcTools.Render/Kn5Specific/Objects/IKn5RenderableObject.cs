@@ -2,7 +2,7 @@
 using AcTools.Render.Base;
 using AcTools.Render.Base.Objects;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public interface IKn5RenderableObject : IRenderableObject {

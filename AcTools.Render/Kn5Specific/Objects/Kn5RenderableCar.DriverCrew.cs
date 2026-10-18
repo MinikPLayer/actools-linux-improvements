@@ -11,7 +11,7 @@ using AcTools.Render.Kn5Specific.Animations;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 #pragma warning disable 169
 

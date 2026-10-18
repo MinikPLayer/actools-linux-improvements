@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using AcTools.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Utils {
     public static class GeometryGenerator {

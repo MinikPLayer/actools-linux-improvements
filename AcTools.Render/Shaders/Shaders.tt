@@ -488,7 +488,7 @@ namespace <#= resultNamespace #> {
 		<#= extraModesEnum #><#= string.Join("", structs) #><#= string.Join("", consts) #>private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature <#= string.Join(", ", tls.Select(x => "InputSignature" + x.Type)) #>;
+        public ShaderBytecode <#= string.Join(", ", tls.Select(x => "InputSignature" + x.Type)) #>;
         public InputLayout <#= string.Join(", ", tls.Select(x => "Layout" + x.Type)) #>;
 
 		public EffectReadyTechnique <#= string.Join(", ", ts.Select(x => "Tech" + x)) #>;
@@ -608,7 +608,7 @@ namespace <#= resultNamespace #> {
 				InputSignature<#= a #> = Tech<#= b #>.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignature<#= a #> == null) throw new System.Exception("input signature (<#= name #>, <#= a #>, <#= b #>) == null");
-			Layout<#= a #> = new InputLayout(device, InputSignature<#= a #>, <#= p #>.InputElementsValue);
+			Layout<#= a #> = new InputLayout(device, InputSignature<#= a #>.Data, <#= p #>.InputElementsValue);
 <# } #>
 
 <# foreach (var x in vms.Distinct()){ #>

@@ -11,7 +11,8 @@ using AcTools.Render.Base.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Data {
     public class CarData {

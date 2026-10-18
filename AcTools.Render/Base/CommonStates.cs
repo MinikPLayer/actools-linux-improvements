@@ -1,7 +1,8 @@
 ﻿using System;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base {
     public class CommonStates : IDisposable {
@@ -19,7 +20,7 @@ namespace AcTools.Render.Base {
                 _wireframeInvertedState, _wireframeBiasState, _wireframeInvertedBiasState, _ambientShadowState, _shadowsState, _shadowsPointState;
 
         public DepthStencilState NormalDepthState => _normalDepthState ?? (_normalDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = true,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.All,
@@ -27,7 +28,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState ShadowsDepthState => _shadowsDepthState ?? (_shadowsDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     DepthWriteMask = DepthWriteMask.All,
                     DepthComparison = Comparison.Greater,
                     IsDepthEnabled = true,
@@ -35,7 +36,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState DisabledDepthState => _disabledDepthState ?? (_disabledDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = false,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.Zero,
@@ -43,7 +44,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState ReadOnlyDepthState => _readOnlyDepthState ?? (_readOnlyDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = true,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.Zero,
@@ -51,7 +52,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState GreaterReadOnlyDepthState => _greaterReadOnlyDepthState ?? (_greaterReadOnlyDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = true,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.Zero,
@@ -59,7 +60,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState LessEqualDepthState => _lessEqualDepthState ?? (_lessEqualDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = true,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.All,
@@ -67,7 +68,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public DepthStencilState LessEqualReadOnlyDepthState => _lessEqualReadOnlyDepthState ?? (_lessEqualReadOnlyDepthState =
-                DepthStencilState.FromDescription(_device, new DepthStencilStateDescription {
+                new DepthStencilState(_device, new DepthStencilStateDescription {
                     IsDepthEnabled = true,
                     IsStencilEnabled = false,
                     DepthWriteMask = DepthWriteMask.Zero,
@@ -76,135 +77,135 @@ namespace AcTools.Render.Base {
 
         public BlendState OpaqueBlendState => _opaqueBlendState ?? (_opaqueBlendState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = false,
+                    IsBlendEnabled = false,
                     SourceBlend = BlendOption.One,
                     DestinationBlend = BlendOption.Zero,
                     BlendOperation = BlendOperation.Add,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Maximum,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Maximum,
                     RenderTargetWriteMask = ColorWriteMaskFlags.Red | ColorWriteMaskFlags.Green | ColorWriteMaskFlags.Blue
                 }));
 
         public BlendState TransparentBlendState => _transparentBlendState ?? (_transparentBlendState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.SourceAlpha,
                     DestinationBlend = BlendOption.InverseSourceAlpha,
                     BlendOperation = BlendOperation.Add,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Maximum,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Maximum,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All
                 }));
 
         public BlendState AddBlendState => _addBlendState ?? (_addBlendState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.SourceAlpha,
                     DestinationBlend = BlendOption.One,
                     BlendOperation = BlendOperation.Add,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Add,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
                 }));
 
         public BlendState AddState => _addState ?? (_addState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.One,
                     DestinationBlend = BlendOption.One,
                     BlendOperation = BlendOperation.Add,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Add,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
                 }));
 
         public BlendState MaxState => _maxState ?? (_maxState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.One,
                     DestinationBlend = BlendOption.One,
                     BlendOperation = BlendOperation.Maximum,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Maximum,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Maximum,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
                 }));
 
         public BlendState MinState => _minState ?? (_minState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.One,
                     DestinationBlend = BlendOption.One,
                     BlendOperation = BlendOperation.Minimum,
-                    SourceBlendAlpha = BlendOption.One,
-                    DestinationBlendAlpha = BlendOption.One,
-                    BlendOperationAlpha = BlendOperation.Minimum,
+                    SourceAlphaBlend = BlendOption.One,
+                    DestinationAlphaBlend = BlendOption.One,
+                    AlphaBlendOperation = BlendOperation.Minimum,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
                 }));
 
         public BlendState MultiplyState => _multiplyState ?? (_multiplyState =
                 _device.CreateBlendState(new RenderTargetBlendDescription {
-                    BlendEnable = true,
+                    IsBlendEnabled = true,
                     SourceBlend = BlendOption.Zero,
                     DestinationBlend = BlendOption.SourceColor,
                     BlendOperation = BlendOperation.Add,
-                    SourceBlendAlpha = BlendOption.Zero,
-                    DestinationBlendAlpha = BlendOption.SourceAlpha,
-                    BlendOperationAlpha = BlendOperation.Add,
+                    SourceAlphaBlend = BlendOption.Zero,
+                    DestinationAlphaBlend = BlendOption.SourceAlpha,
+                    AlphaBlendOperation = BlendOperation.Add,
                     RenderTargetWriteMask = ColorWriteMaskFlags.All,
                 }));
 
         public RasterizerState DoubleSidedSmoothLinesState => _doubleSidedSmoothLinesState ?? (_doubleSidedSmoothLinesState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     IsAntialiasedLineEnabled = true,
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsDepthClipEnabled = false
                 }));
 
         public RasterizerState DoubleSidedState => _doubleSidedState ?? (_doubleSidedState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsDepthClipEnabled = false
                 }));
 
         public RasterizerState DoubleSidedClockwiseState => _doubleSidedClockwiseState ?? (_doubleSidedClockwiseState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    IsFrontCounterclockwise = false,
+                    IsFrontCounterClockwise = false,
                     IsDepthClipEnabled = false
                 }));
 
         public RasterizerState InvertedState => _invertedState ?? (_invertedState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.Back,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsDepthClipEnabled = true
                 }));
 
         public RasterizerState WireframeState => _wireframeState ?? (_wireframeState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Wireframe,
                     CullMode = CullMode.Back,
-                    IsFrontCounterclockwise = false,
+                    IsFrontCounterClockwise = false,
                     IsAntialiasedLineEnabled = false,
                     IsDepthClipEnabled = true
                 }));
 
         public RasterizerState WireframeBiasState => _wireframeBiasState ?? (_wireframeBiasState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Wireframe,
                     CullMode = CullMode.Back,
-                    IsFrontCounterclockwise = false,
+                    IsFrontCounterClockwise = false,
                     IsAntialiasedLineEnabled = false,
                     IsDepthClipEnabled = true,
                     DepthBias = -30,
@@ -213,19 +214,19 @@ namespace AcTools.Render.Base {
                 }));
 
         public RasterizerState WireframeInvertedState => _wireframeInvertedState ?? (_wireframeInvertedState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Wireframe,
                     CullMode = CullMode.Back,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsAntialiasedLineEnabled = false,
                     IsDepthClipEnabled = true
                 }));
 
         public RasterizerState WireframeInvertedBiasState => _wireframeInvertedBiasState ?? (_wireframeInvertedBiasState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Wireframe,
                     CullMode = CullMode.Back,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsAntialiasedLineEnabled = false,
                     IsDepthClipEnabled = true,
                     DepthBias = -30,
@@ -234,10 +235,10 @@ namespace AcTools.Render.Base {
                 }));
 
         public RasterizerState AmbientShadowState => _ambientShadowState ?? (_ambientShadowState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     FillMode = FillMode.Solid,
                     CullMode = CullMode.None,
-                    IsFrontCounterclockwise = false,
+                    IsFrontCounterClockwise = false,
                     IsDepthClipEnabled = false,
                     DepthBias = -1000,
                     DepthBiasClamp = 0.0f,
@@ -245,7 +246,7 @@ namespace AcTools.Render.Base {
                 }));
 
         public RasterizerState ShadowsState => _shadowsState ?? (_shadowsState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     CullMode = CullMode.Front,
                     FillMode = FillMode.Solid,
                     IsAntialiasedLineEnabled = false,
@@ -256,10 +257,10 @@ namespace AcTools.Render.Base {
                 }));
 
         public RasterizerState ShadowsPointState => _shadowsPointState ?? (_shadowsPointState =
-                RasterizerState.FromDescription(_device, new RasterizerStateDescription {
+                new RasterizerState(_device, new RasterizerStateDescription {
                     CullMode = CullMode.Back,
                     FillMode = FillMode.Solid,
-                    IsFrontCounterclockwise = true,
+                    IsFrontCounterClockwise = true,
                     IsAntialiasedLineEnabled = false,
                     IsDepthClipEnabled = true,
                     DepthBias = 100,

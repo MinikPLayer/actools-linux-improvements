@@ -15,9 +15,10 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class TrackOutlineRenderer : BaseRenderer {
@@ -267,7 +268,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                     }
                 } else {
                     if (_view == null) {
-                        using (var map = Texture2D.FromFile(holder.Device, Filename)) {
+                        using (var map = D3DX11Compat.Texture2DFromFile(holder.Device, Filename)) {
                             if (MapSize == default(Vector2)) {
                                 MapSize = new Vector2(map.Description.Width, map.Description.Height);
                             }
@@ -431,7 +432,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
 
             if (LoadPreview) {
                 if (File.Exists(_previewFilename)) {
-                    using (var preview = Texture2D.FromFile(Device, _previewFilename)) {
+                    using (var preview = D3DX11Compat.Texture2DFromFile(Device, _previewFilename)) {
                         _previewSize = new Vector2(preview.Description.Width, preview.Description.Height);
                         _previewView = new ShaderResourceView(Device, preview);
                     }
@@ -449,13 +450,13 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             _aSummBuffer = TargetResourceTexture.Create(Format.R8G8B8A8_UNorm);
 
             _combineBlendState = Device.CreateBlendState(new RenderTargetBlendDescription {
-                BlendEnable = true,
+                IsBlendEnabled = true,
                 SourceBlend = BlendOption.SourceAlpha,
                 DestinationBlend = BlendOption.InverseSourceAlpha,
                 BlendOperation = BlendOperation.Add,
-                SourceBlendAlpha = BlendOption.One,
-                DestinationBlendAlpha = BlendOption.One,
-                BlendOperationAlpha = BlendOperation.Maximum,
+                SourceAlphaBlend = BlendOption.One,
+                DestinationAlphaBlend = BlendOption.One,
+                AlphaBlendOperation = BlendOperation.Maximum,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All
             });
         }
@@ -467,7 +468,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
                 _shotMode = true;
 
                 Draw();
-                Texture2D.ToFile(DeviceContext, RenderBuffer, ImageFileFormat.Png, outlineImage);
+                D3DX11Compat.SaveTexture2DToFile(DeviceContext, RenderBuffer, ImageFileFormat.Png, outlineImage);
             } finally {
                 _shotMode = false;
                 IsDirty = true;

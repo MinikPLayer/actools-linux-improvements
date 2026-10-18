@@ -8,8 +8,10 @@ using AcTools.Render.Kn5SpecificForwardDark.Materials;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public enum FlatMirrorMode {
@@ -286,7 +288,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
         private readonly FlatMirrorObject _object;
 
         private FlatMirror([CanBeNull] IRenderableObject mirroredObject, Plane plane, FlatMirrorMode mode) {
-            LocalMatrix = Matrix.Reflection(plane);
+            LocalMatrix = SharpDxCompat.ReflectionMatrix(plane);
 
             var point = plane.Normal * plane.D;
             var matrix = Matrix.Scaling(200f, 200f, 200f) * Matrix.Translation(point);

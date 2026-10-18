@@ -15,7 +15,7 @@ using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using SlimDX;
+using SharpDX;
 using ThreadPool = AcTools.Render.Base.Utils.ThreadPool;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {

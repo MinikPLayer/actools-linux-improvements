@@ -9,7 +9,7 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Structs;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class AiLaneObject : TrianglesRenderableObject<InputLayouts.VerticeP> {

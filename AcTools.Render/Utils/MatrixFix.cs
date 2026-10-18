@@ -1,6 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Utils {
     /** I still remember the times when Windows didn’t suck. */

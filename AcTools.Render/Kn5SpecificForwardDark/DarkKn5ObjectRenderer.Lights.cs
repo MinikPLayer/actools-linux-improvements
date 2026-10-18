@@ -18,8 +18,10 @@ using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public interface IDarkLightsDescriptionProvider {
@@ -144,7 +146,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
                 var min = float.PositiveInfinity;
                 InnerPair minPair = null;
                 foreach (var t in list) {
-                    if (BoundingBox.Contains(t.BoundingBox, v.Position) == ContainmentType.Contains) {
+                    if (SharpDxCompat.BoxContains(t.BoundingBox, v.Position) == ContainmentType.Contains) {
                         minPair = t;
                         break;
                     }
@@ -796,8 +798,8 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
             DisposeHelper.Dispose(ref _ltcViews);
 
             _ltcViews = new[] {
-                ShaderResourceView.FromMemory(Device, Resources.LtcMat),
-                ShaderResourceView.FromMemory(Device, Resources.LtcAmp)
+                D3DX11Compat.ShaderResourceViewFromMemory(Device, Resources.LtcMat),
+                D3DX11Compat.ShaderResourceViewFromMemory(Device, Resources.LtcAmp)
             };
 
             _effect.FxLtcMap.SetResource(_ltcViews[0]);

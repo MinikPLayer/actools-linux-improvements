@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using AcTools.Utils;
 using SystemHalf;
+using Half = SystemHalf.Half;
 
 namespace AcManager.Tools.AcPlugins.CspCommands {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]

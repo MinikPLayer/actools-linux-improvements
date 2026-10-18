@@ -7,8 +7,9 @@ using AcTools.Render.Base.Utils;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Special {
     public class Pieces {
@@ -144,7 +145,7 @@ namespace AcTools.Render.Special {
 
             ShaderResourceView view;
             try {
-                view = ShaderResourceView.FromFile(Device, filename);
+                view = D3DX11Compat.ShaderResourceViewFromFile(Device, filename);
             } catch (Exception e) {
                 AcToolsLogging.Write(e);
                 _cache[filename] = null;
@@ -175,7 +176,7 @@ namespace AcTools.Render.Special {
                 _effect.FxPaddingSize.Set(new Vector2(2f / (_padding - 1f)));
 
                 Draw();
-                Texture2D.ToStream(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
+                D3DX11Compat.SaveTexture2D(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
             } finally {
                 foreach (var texture in array) {
                     UnlockTexture(texture);

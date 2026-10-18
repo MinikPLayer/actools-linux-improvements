@@ -1,7 +1,9 @@
 using System;
 using AcTools.Render.Base.TargetTextures;
 using AcTools.Utils.Helpers;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base.PostEffects {
     public class SmaaHelper : IRenderHelper {
@@ -15,8 +17,8 @@ namespace AcTools.Render.Base.PostEffects {
             throw new NotImplementedException();
             /*_effect = holder.GetEffect<EffectPpSmaa>();
 
-            _areasTexMap = ShaderResourceView.FromMemory(holder.Device, SmaaResources.AreaTexDX10);
-            _searchTexMap = ShaderResourceView.FromMemory(holder.Device, SmaaResources.SearchTex);*/
+            _areasTexMap = D3DX11Compat.ShaderResourceViewFromMemory(holder.Device, SmaaResources.AreaTexDX10);
+            _searchTexMap = D3DX11Compat.ShaderResourceViewFromMemory(holder.Device, SmaaResources.SearchTex);*/
         }
 
         public void OnResize(DeviceContextHolder holder) {}

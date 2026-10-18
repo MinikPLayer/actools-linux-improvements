@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using SystemHalf;
+using Half = SystemHalf.Half;
 using AcTools.Numerics;
 
 namespace AcTools {

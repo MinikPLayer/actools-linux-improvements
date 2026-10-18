@@ -4,7 +4,7 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.ExtraKn5Utils.FbxUtils {
     public struct FbxVertex : IEquatable<FbxVertex> {

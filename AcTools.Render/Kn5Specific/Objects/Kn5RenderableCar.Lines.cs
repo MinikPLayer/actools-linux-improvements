@@ -17,10 +17,11 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.DirectWrite;
-using FontStyle = SlimDX.DirectWrite.FontStyle;
+using SharpDX;
+using SharpDX.DirectWrite;
+using FontStyle = SharpDX.DirectWrite.FontStyle;
 using TextAlignment = AcTools.Render.Base.Sprites.TextAlignment;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public partial class Kn5RenderableCar {
@@ -44,8 +45,8 @@ namespace AcTools.Render.Kn5Specific.Objects {
                 Name = name;
                 OriginalName = name;
                 Renderable = renderable;
-                Color = color ?? (renderable as DebugLinesObject)?.Color ??
-                        (renderable as RenderableList)?.OfType<DebugLinesObject>().FirstOrDefault()?.Color ??
+                Color = color ?? (renderable as DebugLinesObject)?.Color.ToColor4() ??
+                        (renderable as RenderableList)?.OfType<DebugLinesObject>().FirstOrDefault()?.Color.ToColor4() ??
                                 new Color4(1f, 0.6f, 0.3f, 0f);
                 Transform = (renderable as DebugLinesObject)?.Transform ?? (renderable as RenderableList)?.LocalMatrix ?? Matrix.Identity;
             }

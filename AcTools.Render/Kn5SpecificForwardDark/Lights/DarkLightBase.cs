@@ -18,12 +18,15 @@ using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DirectWrite;
-using FontStyle = SlimDX.DirectWrite.FontStyle;
-using FontWeight = SlimDX.DirectWrite.FontWeight;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DirectWrite;
+using FontStyle = SharpDX.DirectWrite.FontStyle;
+using FontWeight = SharpDX.DirectWrite.FontWeight;
 using TextAlignment = AcTools.Render.Base.Sprites.TextAlignment;
+using Color = System.Drawing.Color;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Lights {
     public enum DarkLightType : uint {

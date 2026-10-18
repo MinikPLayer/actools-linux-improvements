@@ -12,8 +12,9 @@ using AcTools.Render.Shaders;
 using AcTools.Render.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 using Debug = System.Diagnostics.Debug;
 
 namespace AcTools.Render.Kn5SpecificSpecial {

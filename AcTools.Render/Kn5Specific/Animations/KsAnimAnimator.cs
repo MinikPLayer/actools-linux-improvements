@@ -10,7 +10,7 @@ using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Animations {
     public class KsAnimAnimator : IDisposable {

@@ -1,5 +1,5 @@
 ﻿using AcTools.Render.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Cameras {
     public class AccumulationDofCamera : FpsCamera {

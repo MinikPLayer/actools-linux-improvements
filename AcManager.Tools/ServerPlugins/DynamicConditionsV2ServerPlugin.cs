@@ -8,6 +8,7 @@ using AcManager.Tools.AcPlugins.Messages;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using SystemHalf;
+using Half = SystemHalf.Half;
 
 namespace AcManager.Tools.ServerPlugins {
     // More advanced version, uses v3 weather description with all conditions. Most important values are fixed or generated randomly and

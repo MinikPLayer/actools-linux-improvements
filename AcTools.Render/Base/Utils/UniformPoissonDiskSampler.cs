@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Utils {
     public static class UniformPoissonDiskSampler {

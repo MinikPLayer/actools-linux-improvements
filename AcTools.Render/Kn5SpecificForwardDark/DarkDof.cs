@@ -6,10 +6,12 @@ using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using Buffer = SlimDX.Direct3D11.Buffer;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public class DarkDof : IDisposable {
@@ -38,7 +40,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
         public void OnInitialize(DeviceContextHolder holder) {
             _effect = holder.GetEffect<EffectPpDof>();
             _copyHelper = holder.GetHelper<CopyHelper>();
-            _bokehBaseView = ShaderResourceView.FromMemory(holder.Device, Resources.Bokeh);
+            _bokehBaseView = D3DX11Compat.ShaderResourceViewFromMemory(holder.Device, Resources.Bokeh);
         }
 
         public int? MaxSize {

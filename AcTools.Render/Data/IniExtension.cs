@@ -1,6 +1,6 @@
 using AcTools.DataFile;
 using AcTools.Render.Base.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Data {
     internal static class IniExtension {

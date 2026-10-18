@@ -3,7 +3,7 @@ using System.Linq;
 using AcTools.Render.Forward;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public partial class DarkKn5ObjectRenderer {

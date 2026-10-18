@@ -1,15 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Utils {
     public static class OpenExrEncoder {
         private const int ChannelCount = 4;
         private const int ValueSize = sizeof(float);
 
-        public static void ConvertToExr(SlimDX.Direct3D11.Device device, Texture2D texture, Stream destination) {
+        public static void ConvertToExr(SharpDX.Direct3D11.Device device, Texture2D texture, Stream destination) {
             if (texture.Description.Format != Format.R32G32B32A32_Float) {
                 throw new NotSupportedException("Not supported format: " + texture.Description.Format);
             }
@@ -74,7 +76,7 @@ namespace AcTools.Render.Utils {
             }
         }
 
-        private static void WriteData(SlimDX.Direct3D11.Device device, Texture2D texture, Stream destination) {
+        private static void WriteData(SharpDX.Direct3D11.Device device, Texture2D texture, Stream destination) {
             var width = texture.Description.Width;
             var height = texture.Description.Height;
 
@@ -92,7 +94,7 @@ namespace AcTools.Render.Utils {
                 device.ImmediateContext.CopyResource(texture, copy);
 
                 try {
-                    var dataBox = device.ImmediateContext.MapSubresource(copy, 0, MapMode.Read, SlimDX.Direct3D11.MapFlags.None);
+                    var dataBox = device.ImmediateContext.MapSubresourceCompat(copy, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
                     var ddsData = dataBox.Data;
                     var ddsDataRowSize = dataBox.RowPitch;
 

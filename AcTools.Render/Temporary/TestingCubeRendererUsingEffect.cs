@@ -4,8 +4,9 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Utils;
 using AcTools.Utils;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Temporary {
     public class TestingCubeRendererUsingEffect : SceneRenderer {

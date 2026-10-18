@@ -22,9 +22,11 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public partial class DarkKn5ObjectRenderer : ToolsKn5ObjectRenderer {
@@ -131,7 +133,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
         }
 
         protected override void ClearRenderTarget() {
-            var color = (Color4)BackgroundColor * BackgroundBrightness;
+            var color = BackgroundColor.ToColor4() * BackgroundBrightness;
             color.Alpha = 0f;
             DeviceContext.ClearRenderTargetView(InnerBuffer.TargetView, color);
         }
@@ -554,7 +556,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
                 var center = slots[i].GetCarBoundingBox()?.GetCenter();
                 if (center.HasValue) {
                     sh.Update(UseCustomReflectionCubemap ? Vector3.Zero : center.Value);
-                    sh.BackgroundColor = (Color4)BackgroundColor * BackgroundBrightness;
+                    sh.BackgroundColor = BackgroundColor.ToColor4() * BackgroundBrightness;
                     if (!sh.IsDirty) continue;
 
                     if (shotAny) {
@@ -700,7 +702,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
 
                 if (FlatMirrorBlurred) {
                     DeviceContext.ClearDepthStencilView(_mirrorDepthBuffer.DepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-                    var bg = (Color4)BackgroundColor * BackgroundBrightness;
+                    var bg = BackgroundColor.ToColor4() * BackgroundBrightness;
                     bg.Alpha = 0f;
                     DeviceContext.ClearRenderTargetView(_mirrorBuffer.TargetView, bg);
                     DeviceContext.ClearRenderTargetView(_mirrorBlurBuffer.TargetView, default(Color4));
@@ -721,7 +723,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark {
                     DrawMirror();
                 } else {
                     DeviceContext.ClearDepthStencilView(_mirrorDepthBuffer.DepthView, DepthStencilClearFlags.Depth, 1.0f, 0);
-                    var bg = (Color4)BackgroundColor * BackgroundBrightness;
+                    var bg = BackgroundColor.ToColor4() * BackgroundBrightness;
                     bg.Alpha = 0f;
                     DeviceContext.ClearRenderTargetView(_mirrorBuffer.TargetView, bg);
                     DeviceContext.OutputMerger.SetTargets(_mirrorDepthBuffer.DepthView, _mirrorBuffer.TargetView);

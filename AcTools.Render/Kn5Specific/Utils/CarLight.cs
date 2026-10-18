@@ -3,7 +3,7 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Data;
 using AcTools.Render.Kn5Specific.Objects;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Utils {
     public class CarLight {

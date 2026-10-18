@@ -17,8 +17,9 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public abstract class ShadowsRendererBase : UtilsRendererBase {

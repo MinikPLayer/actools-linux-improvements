@@ -23,7 +23,7 @@ using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public partial class Kn5RenderableCar : Kn5RenderableFile, INotifyPropertyChanged {

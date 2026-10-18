@@ -19,6 +19,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using SystemHalf;
+using Half = SystemHalf.Half;
 
 namespace AcManager.Tools.ServerPlugins {
     public class LiveConditionsServerPlugin : AcServerPlugin {

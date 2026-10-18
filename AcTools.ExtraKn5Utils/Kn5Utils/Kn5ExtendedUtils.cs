@@ -9,6 +9,7 @@ using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using K4os.Compression.LZ4;
 using SystemHalf;
+using Half = SystemHalf.Half;
 
 namespace AcTools.ExtraKn5Utils.Kn5Utils {
     public static class Kn5ExtendedUtils { 

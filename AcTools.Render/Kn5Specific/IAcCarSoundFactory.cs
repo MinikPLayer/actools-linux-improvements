@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific {
     public interface IAcCarSoundFactory {

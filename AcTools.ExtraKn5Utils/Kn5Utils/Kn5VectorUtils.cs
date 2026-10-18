@@ -1,5 +1,5 @@
 using AcTools.Numerics;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.ExtraKn5Utils.Kn5Utils {
     public static class Kn5VectorUtils {

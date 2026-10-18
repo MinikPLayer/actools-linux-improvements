@@ -1,15 +1,17 @@
 using System;
 using System.Drawing;
 using AcTools.Render.Base.TargetTextures;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Kn5SpecificForward {
     // some common texture transformations for PaintShop
     public partial class ToolsKn5ObjectRenderer {
         public bool IsHdrTexture(ShaderResourceView view, Size size) {
-            using (var maxColor = GetLimits(view, size, ((Texture2D)view.Resource).Description.Format)) {
+            using (var maxColor = GetLimits(view, size, view.GetTexture2DDescription().Value.Format)) {
                 var texture = maxColor.Texture;
                 using (var copy = new Texture2D(Device, new Texture2DDescription {
                     SampleDescription = new SampleDescription(1, 0),
@@ -23,7 +25,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     CpuAccessFlags = CpuAccessFlags.Read
                 })) {
                     Device.ImmediateContext.CopyResource(texture, copy);
-                    var rect = Device.ImmediateContext.MapSubresource(copy, 0, MapMode.Read, SlimDX.Direct3D11.MapFlags.None);
+                    var rect = Device.ImmediateContext.MapSubresourceCompat(copy, 0, MapMode.Read, SharpDX.Direct3D11.MapFlags.None);
                     try {
                         using (var b = new ReadAheadBinaryReader(rect.Data)) {
                             var c = b.ReadVec4();

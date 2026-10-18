@@ -31,6 +31,7 @@ namespace AcTools.Utils.Helpers {
             }
         }
 
+#if !NET6_0_OR_GREATER
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector) {
             return source.DistinctBy(keySelector, EqualityComparer<TKey>.Default);
         }
@@ -44,6 +45,7 @@ namespace AcTools.Utils.Helpers {
                 }
             }
         }
+#endif
 
         public static IEnumerable<T[]> Partition<T>([NotNull] this IEnumerable<T> items, int partitionSize) {
             if (items == null) throw new ArgumentNullException(nameof(items));

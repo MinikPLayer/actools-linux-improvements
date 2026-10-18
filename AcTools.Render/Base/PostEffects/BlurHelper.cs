@@ -2,8 +2,9 @@
 using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Shaders;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 using GaussianSize = System.Tuple<int, int, float>;
 using GaussianHW = System.Tuple<AcTools.Render.Base.PostEffects.BlurHelper.BlurGaussian, AcTools.Render.Base.PostEffects.BlurHelper.BlurGaussian>;

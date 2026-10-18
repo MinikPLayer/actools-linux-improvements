@@ -5,10 +5,11 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using Buffer = SlimDX.Direct3D11.Buffer;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Buffer = SharpDX.Direct3D11.Buffer;
 
 namespace AcTools.Render.Base.Objects {
     public class LinesRenderableObject<T> : BaseRenderableObject where T : struct, InputLayouts.IPositionLayout {
@@ -74,13 +75,13 @@ namespace AcTools.Render.Base.Objects {
 
             var vbd = new BufferDescription(Vertices[0].Stride * Vertices.Length, ResourceUsage.Immutable,
                     BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            _verticesStream = new DataStream(Vertices, false, false);
+            _verticesStream = DataStream.Create(Vertices, false, false);
             _verticesBuffer = new Buffer(contextHolder.Device, _verticesStream, vbd);
             _verticesBufferBinding = new VertexBufferBinding(_verticesBuffer, Vertices[0].Stride, 0);
 
             var ibd = new BufferDescription(sizeof(ushort) * Indices.Length, ResourceUsage.Immutable,
                     BindFlags.IndexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            _indicesStream = new DataStream(Indices, false, false);
+            _indicesStream = DataStream.Create(Indices, false, false);
             _indicesBuffer = new Buffer(contextHolder.Device, _indicesStream, ibd);
         }
 

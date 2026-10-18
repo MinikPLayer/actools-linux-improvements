@@ -1,5 +1,5 @@
 ﻿using AcTools.Render.Base.Materials;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class TrackMapMaterialsFactory : IMaterialsFactory {

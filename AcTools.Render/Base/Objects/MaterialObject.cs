@@ -4,7 +4,7 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Objects {
     public class MaterialObject : TrianglesRenderableObject<InputLayouts.VerticePNTG> {

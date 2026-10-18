@@ -8,9 +8,11 @@ using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Shaders;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public class DarkSslr : IDisposable {

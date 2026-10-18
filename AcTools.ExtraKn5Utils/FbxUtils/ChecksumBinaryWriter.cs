@@ -29,7 +29,7 @@ namespace AcTools.ExtraKn5Utils.FbxUtils {
         }
 
         public override void Write(byte value) {
-            UpdateChecksum(BitConverter.GetBytes(value));
+            UpdateChecksum(BitConverter.GetBytes((short)value));
             base.Write(value);
         }
 

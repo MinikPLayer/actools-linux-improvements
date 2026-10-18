@@ -1,3 +1,4 @@
+using AcTools.Render.Base;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,11 +16,13 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DirectWrite;
-using SlimDX.DXGI;
-using Factory = SlimDX.DirectWrite.Factory;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DirectWrite;
+using SharpDX.DXGI;
+using Factory = SharpDX.DirectWrite.Factory;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Kn5SpecificForward {
     internal class SourceReady : IDisposable {
@@ -253,7 +256,7 @@ namespace AcTools.Render.Kn5SpecificForward {
 
                 if (format.IsHdr()) {
                     if (format != PreferredDdsFormat.AutoHDR || IsHdrTexture(tx.View, size)) {
-                        Texture2D.ToStream(DeviceContext, tx.Texture, ImageFileFormat.Dds, s);
+                        D3DX11Compat.SaveTexture2D(DeviceContext, tx.Texture, ImageFileFormat.Dds, s);
                         await FileUtils.WriteAllBytesAsync(Path.Combine(location, destination.TextureName), s.ToArray());
                         return;
                     }
@@ -262,7 +265,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     format = PreferredDdsFormat.AutoTransparency;
                 }
 
-                Texture2D.ToStream(DeviceContext, tx.Texture, ImageFileFormat.Tiff, s);
+                D3DX11Compat.SaveTexture2D(DeviceContext, tx.Texture, ImageFileFormat.Tiff, s);
                 await Task.Run(() => DdsEncoder.SaveAsDds(Path.Combine(location, destination.TextureName), s.ToArray(),
                         format, null));
             }
@@ -298,7 +301,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     if (source.Color != null) {
                         using (var texture = DeviceContextHolder.CreateTexture(4, 4, (x, y) => source.Color.Value))
                         using (var stream = new MemoryStream()) {
-                            Texture2D.ToStream(DeviceContext, texture, ImageFileFormat.Png, stream);
+                            D3DX11Compat.SaveTexture2D(DeviceContext, texture, ImageFileFormat.Png, stream);
                             return stream.ToArray();
                         }
                     }
@@ -306,7 +309,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     if (source.ColorRef != null) {
                         using (var texture = DeviceContextHolder.CreateTexture(4, 4, (x, y) => source.ColorRef.GetValue() ?? Color.Black))
                         using (var stream = new MemoryStream()) {
-                            Texture2D.ToStream(DeviceContext, texture, ImageFileFormat.Png, stream);
+                            D3DX11Compat.SaveTexture2D(DeviceContext, texture, ImageFileFormat.Png, stream);
                             return stream.ToArray();
                         }
                     }
@@ -324,7 +327,7 @@ namespace AcTools.Render.Kn5SpecificForward {
         private object _paintShopCacheLock = new object();
 
         private static Size? GetSize([NotNull] ResourceView view) {
-            var d = (view.Resource as Texture2D)?.Description;
+            var d = view.GetTexture2DDescription();
             if (d == null) return null;
             return new Size(d.Value.Width, d.Value.Height);
         }
@@ -382,7 +385,7 @@ namespace AcTools.Render.Kn5SpecificForward {
             }
 
             ShaderResourceView original;
-            using (var texture = Texture2D.FromMemory(Device, decoded)) {
+            using (var texture = D3DX11Compat.Texture2DFromMemory(Device, decoded)) {
                 original = new ShaderResourceView(Device, texture);
                 size = new Size(texture.Description.Width, texture.Description.Height);
 
@@ -560,7 +563,7 @@ namespace AcTools.Render.Kn5SpecificForward {
 
             public FontCollection GetCollection(Factory factory) {
                 if (_collection != null) return _collection;
-                return _collection = factory.CreateCustomFontCollection(_source.Filename);
+                return _collection = CustomFontCollection.Create(factory, _source.Filename);
             }
 
             public void Dispose() {
@@ -600,14 +603,14 @@ namespace AcTools.Render.Kn5SpecificForward {
         private void PatternDrawText([CanBeNull] Color[] c, [NotNull] PaintShopPatternNumber p, string s, double multiplier) {
             GetPatternTextRenderer(p).DrawString(s,
                     new Vector2((float)(p.Left * multiplier), (float)(p.Top * multiplier)), ((float)p.Angle).ToRadians(),
-                    p.GetTextAlignment(), (float)(p.Size * multiplier), p.ColorRef.GetValue(c));
+                    p.GetTextAlignment(), (float)(p.Size * multiplier), p.ColorRef.GetValue(c).ToColor4());
         }
 
         private Dictionary<string, SourceReady> _paintShopFlags = new Dictionary<string, SourceReady>();
 
         private SourceReady GetFlagTexture([NotNull] string filename) {
             if (!_paintShopFlags.TryGetValue(filename, out var ready)) {
-                var view = ShaderResourceView.FromFile(Device, filename);
+                var view = D3DX11Compat.ShaderResourceViewFromFile(Device, filename);
                 _paintShopFlags[filename] = ready = new SourceReady(view, DefaultChannelParams, GetSize(view) ?? new Size(100, 100), true);
             }
 
@@ -632,7 +635,7 @@ namespace AcTools.Render.Kn5SpecificForward {
             e.FxTransform.SetMatrix(MatrixFix.Transformation2D(new Vector2(0.5f), 0f, scale, new Vector2(0.5f), 0f, translate) *
                     MatrixFix.AffineTransformation2D(1f, new Vector2(0.5f, 0.5f), angle, Vector2.Zero) *
                     MatrixFix.Transformation2D(new Vector2(0.5f), 0f, new Vector2(1f, 1f / aspect), Vector2.Zero, 0f, Vector2.Zero));
-            e.FxColor.Set(new Color4(color));
+            e.FxColor.Set(color.ToColor4());
             source.Set(e.FxInputMap, e.FxInputParams);
             e.TechPiece.DrawAllPasses(DeviceContext, 6);
         }
@@ -835,7 +838,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                                 e.FxOverlayWithoutAo.Set(p.OverlayWithoutAo);
                                 e.FxUnderlayWithoutAo.Set(p.UnderlayWithoutAo);
                                 e.FxDetailsMap.SetResource(previous.FirstOrDefault());
-                                e.FxColor.Set(p.BackgroundColorHint);
+                                e.FxColor.Set(p.BackgroundColorHint.ToColor4());
 
                                 var colors = p.Colors;
                                 if (colors?.Length > 0) {

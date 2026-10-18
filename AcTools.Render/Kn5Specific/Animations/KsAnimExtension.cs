@@ -3,7 +3,7 @@ using AcTools.ExtraKn5Utils.Kn5Utils;
 using AcTools.Numerics;
 using AcTools.Render.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Animations {
     // TODO: Properly interpolate quaterninons?

@@ -22,13 +22,16 @@ using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DirectWrite;
-using SlimDX.DXGI;
-using FontStyle = SlimDX.DirectWrite.FontStyle;
-using Matrix = SlimDX.Matrix;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DirectWrite;
+using SharpDX.DXGI;
+using FontStyle = SharpDX.DirectWrite.FontStyle;
+using Matrix = SharpDX.Matrix;
 using TextAlignment = AcTools.Render.Base.Sprites.TextAlignment;
+using Color = System.Drawing.Color;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class TrackMapPreparationRenderer : TrackMapRenderer, IKn5ObjectRenderer {
@@ -152,11 +155,11 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             if (TrianglesCount == 0) {
                 _textBlock.DrawString("Nothing found",
                         new RectangleF(0, 0, Width, Height), 0f, TextAlignment.VerticalCenter | TextAlignment.HorizontalCenter, 20f,
-                        new Color4(1.0f, 1.0f, 1.0f), CoordinateType.Absolute);
+                        new Color4(1.0f, 1.0f, 1.0f, 1f), CoordinateType.Absolute);
             } else {
                 _textBlock.DrawString($"Triangles: {TrianglesCount}\nZoom: {Zoom:F3}×\nResult image most likely will be different size",
                         new RectangleF(8, 8, Width - 16, Height - 16), 0f, TextAlignment.Bottom | TextAlignment.Left, 12f,
-                        new Color4(1.0f, 1.0f, 1.0f), CoordinateType.Absolute);
+                        new Color4(1.0f, 1.0f, 1.0f, 1f), CoordinateType.Absolute);
             }
         }
 
@@ -856,7 +859,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
 
         private void SaveResultAs(string filename) {
             using (var stream = new MemoryStream()) {
-                Texture2D.ToStream(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
+                D3DX11Compat.SaveTexture2D(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
                 stream.Position = 0;
 
                 using (var image = Image.FromStream(stream)) {

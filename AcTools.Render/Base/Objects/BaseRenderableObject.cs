@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using AcTools.Render.Base.Cameras;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Objects {
     public abstract class BaseRenderableObject : IRenderableObject {

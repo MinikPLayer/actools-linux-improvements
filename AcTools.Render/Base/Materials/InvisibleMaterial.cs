@@ -1,6 +1,6 @@
 ﻿using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Materials {
     public class InvisibleMaterial : ISkinnedMaterial {

@@ -1,4 +1,5 @@
 ﻿using System;
+using AcTools.Render.Base;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -16,9 +17,12 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Color = System.Drawing.Color;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class AmbientShadowRenderer : ShadowsRendererBase {
@@ -54,13 +58,13 @@ namespace AcTools.Render.Kn5SpecificSpecial {
             _tempBuffer = TargetResourceTexture.Create(Format.R32_Float);
 
             _blendState = Device.CreateBlendState(new RenderTargetBlendDescription {
-                BlendEnable = true,
+                IsBlendEnabled = true,
                 SourceBlend = BlendOption.One,
                 DestinationBlend = BlendOption.One,
                 BlendOperation = BlendOperation.Add,
-                SourceBlendAlpha = BlendOption.SourceAlpha,
-                DestinationBlendAlpha = BlendOption.InverseSourceAlpha,
-                BlendOperationAlpha = BlendOperation.Add,
+                SourceAlphaBlend = BlendOption.SourceAlpha,
+                DestinationAlphaBlend = BlendOption.InverseSourceAlpha,
+                AlphaBlendOperation = BlendOperation.Add,
                 RenderTargetWriteMask = ColorWriteMaskFlags.All,
             });
 
@@ -233,7 +237,7 @@ namespace AcTools.Render.Kn5SpecificSpecial {
 
         private void SaveResultAs(string filename, int size, int padding) {
             using (var stream = new MemoryStream()) {
-                Texture2D.ToStream(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
+                D3DX11Compat.SaveTexture2D(DeviceContext, RenderBuffer, ImageFileFormat.Png, stream);
                 stream.Position = 0;
 
                 using (var image = Image.FromStream(stream))

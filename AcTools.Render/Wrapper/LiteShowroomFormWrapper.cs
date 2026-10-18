@@ -15,7 +15,8 @@ using AcTools.Render.Kn5SpecificForwardDark.Materials;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using AcTools.Windows;
-using SlimDX;
+using SharpDX;
+using Point = System.Drawing.Point;
 
 namespace AcTools.Render.Wrapper {
     public class LiteShowroomFormWrapper : BaseKn5FormWrapper {

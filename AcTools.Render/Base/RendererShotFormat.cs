@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using AcTools.Render.Utils;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base {
     public enum RendererShotFormat {
@@ -53,7 +55,7 @@ namespace AcTools.Render.Base {
                     break;
             }
 
-            Texture2D.ToStream(deviceContext, texture, format.ToImageFileFormat(), stream);
+            D3DX11Compat.SaveTexture2D(deviceContext, texture, format.ToImageFileFormat(), stream);
         }
 
         public static ImageFileFormat ToImageFileFormat(this RendererShotFormat format) {

@@ -3,8 +3,10 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.TargetTextures;
 using AcTools.Render.Shaders;
 using AcTools.Utils;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Base.PostEffects.AO {
     public class SsaoHelper : AoHelperBase {

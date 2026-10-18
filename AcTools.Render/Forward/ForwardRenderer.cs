@@ -11,9 +11,11 @@ using AcTools.Render.Base.Utils;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Color = System.Drawing.Color;
 
 namespace AcTools.Render.Forward {
     public abstract class ForwardRenderer : SceneRenderer {
@@ -270,7 +272,7 @@ namespace AcTools.Render.Forward {
         }
 
         protected virtual void ClearRenderTarget() {
-            DeviceContext.ClearRenderTargetView(InnerBuffer.TargetView, (Color4)BackgroundColor * BackgroundBrightness);
+            DeviceContext.ClearRenderTargetView(InnerBuffer.TargetView, BackgroundColor.ToColor4() * BackgroundBrightness);
         }
 
         protected virtual void DrawSceneToBuffer() {
@@ -505,7 +507,7 @@ namespace AcTools.Render.Forward {
             try {
                 var d = ColorGradingData;
                 if (d.Length > 3 && d[0] == 'D' && d[1] == 'D' && d[2] == 'D') {
-                    _colorGradingTexture = Texture3D.FromMemory(Device, ColorGradingData);
+                    _colorGradingTexture = D3DX11Compat.Texture3DFromMemory(Device, ColorGradingData);
                 } else {
                     using (var s = new MemoryStream(d))
                     using (var b = Image.FromStream(s)) {

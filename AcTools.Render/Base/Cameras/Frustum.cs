@@ -1,5 +1,6 @@
+using AcTools.Render.Base.Utils;
 using System.Linq;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Cameras {
     public class Frustum {
@@ -63,7 +64,7 @@ namespace AcTools.Render.Base.Cameras {
 
         public FrustrumIntersectionType Intersect(BoundingBox box) {
             for (var i = 0; i < 6; i++) {
-                switch (Plane.Intersects(Planes[i], box)) {
+                switch (SharpDxCompat.PlaneIntersects(Planes[i], box)) {
                     case PlaneIntersectionType.Back:
                         return FrustrumIntersectionType.None;
                     case PlaneIntersectionType.Intersecting:
@@ -77,7 +78,7 @@ namespace AcTools.Render.Base.Cameras {
         public FrustrumIntersectionType IntersectOld(BoundingBox box) {
             var totalIn = 0;
 
-            foreach (var intersection in Planes.Select(plane => Plane.Intersects(plane, box))) {
+            foreach (var intersection in Planes.Select(plane => SharpDxCompat.PlaneIntersects(plane, box))) {
                 switch (intersection) {
                     case PlaneIntersectionType.Back:
                         return FrustrumIntersectionType.None;

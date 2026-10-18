@@ -4,7 +4,7 @@ using AcTools.Render.Kn5Specific.Materials;
 using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Render.Shaders;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward.Materials {
     public class Kn5MaterialSimple : Kn5MaterialSimpleBase, IAcDynamicMaterial {

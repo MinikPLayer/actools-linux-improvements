@@ -1,20 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{841DCDF5-07D3-412A-98AE-4615F1DC5DD9}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcTools.Render</RootNamespace>
     <AssemblyName>AcTools.Render</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
-    <FileAlignment>512</FileAlignment>
-    <ActualPlatform>$(Platform)</ActualPlatform>
-    <ActualPlatform Condition="'$(ActualPlatform)' == 'AnyCPU'">x86</ActualPlatform>
-    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -22,9 +11,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -32,9 +19,7 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -42,9 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -52,15 +35,9 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325">
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Magick.NET-Q8-$(ActualPlatform), Culture=neutral, processorArchitecture=$(ActualPlatform)">
       <HintPath>..\Libraries\Magick.NET-7.0.4-$(ActualPlatform)\Magick.NET-Q8-$(ActualPlatform).dll</HintPath>
       <Private>False</Private>
@@ -72,27 +49,15 @@
     <Reference Include="Newtonsoft.Json, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libraries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\SlimDX-$(ActualPlatform)\SlimDX.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Nvidia.TextureTools.Compress, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\Nvidia.TextureTools.Compress-$(ActualPlatform)\Nvidia.TextureTools.Compress.dll</HintPath>
-      <Private>True</Private>
-      <EmbedInteropTypes>false</EmbedInteropTypes>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="SharpDX" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DXGI" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11" Version="4.2.0" />
+    <PackageReference Include="SharpDX.D3DCompiler" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D11.Effects" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct3D10" Version="4.2.0" />
+    <PackageReference Include="SharpDX.Direct2D1" Version="4.2.0" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\Cameras\AccumulationDofCamera.cs" />
@@ -177,6 +142,7 @@
     <Compile Include="Base\Sprites\StringMetrics.cs" />
     <Compile Include="Base\Sprites\Structs.cs" />
     <Compile Include="Base\Sprites\TextBlockRenderer.cs" />
+    <Compile Include="Base\Sprites\CustomFontCollection.cs" />
     <Compile Include="Base\Utils\ThreadPool.cs" />
     <Compile Include="Data\CarData.cs" />
     <Compile Include="Kn5SpecificForwardDark\DarkKn5ObjectRenderer.cs" />
@@ -290,6 +256,7 @@
     <Compile Include="Base\Utils\MathF.cs" />
     <Compile Include="Base\Utils\MathF_CosTable.cs" />
     <Compile Include="Base\Utils\SlimDxExtension.cs" />
+    <Compile Include="Base\Utils\SharpDxCompat.cs" />
     <Compile Include="Base\Utils\TextureReader.cs" />
     <Compile Include="Forward\ForwardRenderer.cs" />
     <Compile Include="Kn5SpecificForward\Materials\Kn5MaterialSimpleAlpha.cs" />
@@ -354,9 +321,16 @@
     <Compile Include="Utils\PreferredDdsFormatExtension.cs" />
     <Compile Include="Wrapper\BaseKn5FormWrapper.cs" />
     <Compile Include="Wrapper\FormWrapperBase.cs" />
+    <Compile Include="Wrapper\RenderForm.cs" />
+    <Compile Include="Base\D3DX11Compat.cs" />
     <Compile Include="Wrapper\FormWrapperMouseBase.cs" />
     <Compile Include="Wrapper\Kn5WrapperCameraControlHelper.cs" />
     <Compile Include="Wrapper\LiteShowroomFormWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- SlimDX's Viewport was using floats, SharpDX has separate ViewportF for that. -->
+    <Using Include="SharpDX.ViewportF" Alias="Viewport" />
+    <Using Include="AcTools.Render.Base.Utils.MathF" Alias="MathF" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AcTools.ExtraKn5Utils\AcTools.ExtraKn5Utils.csproj">
@@ -370,7 +344,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\SearchTex.dds" />
     <None Include="Resources\AreaTexDX10.dds" />
     <Content Include="Resources\Bokeh.dds" />
@@ -442,9 +415,6 @@
     <Content Include="Shaders\Includes\Common.fx" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -455,13 +425,7 @@
       <LastGenOutput>SmaaResources.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <TemplatesToUpdate>~/bin/t4auto Shaders/Shaders.tt Shaders/*(F)</TemplatesToUpdate>
-  </PropertyGroup>
-  <Import Project="..\Libraries\PreBuildEvents.Templates.props" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
   </PropertyGroup>
 </Project>

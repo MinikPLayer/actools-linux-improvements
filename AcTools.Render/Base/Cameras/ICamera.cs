@@ -1,6 +1,6 @@
 using AcTools.Render.Base.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Cameras {
     public interface ICamera {

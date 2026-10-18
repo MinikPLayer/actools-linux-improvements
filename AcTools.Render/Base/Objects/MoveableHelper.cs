@@ -4,7 +4,7 @@ using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Objects {
     public interface IMoveable {
@@ -66,8 +66,8 @@ namespace AcTools.Render.Base.Objects {
                 var plane = new Plane(ParentMatrix.GetTranslationVector(), -camera.Look);
                 var rayFrom = camera.GetPickingRay(relativeFrom, new Vector2(1f, 1f));
                 var rayTo = camera.GetPickingRay(relativeFrom + relativeDelta, new Vector2(1f, 1f));
-                if (!Ray.Intersects(rayFrom, plane, out var distanceFrom) ||
-                        !Ray.Intersects(rayTo, plane, out var distanceTo)) return false;
+                if (!SharpDxCompat.RayIntersects(rayFrom, plane, out var distanceFrom) ||
+                        !SharpDxCompat.RayIntersects(rayTo, plane, out var distanceTo)) return false;
 
                 var pointDelta = rayTo.Direction * distanceTo - rayFrom.Direction * distanceFrom;
                 if (tryToClone) {

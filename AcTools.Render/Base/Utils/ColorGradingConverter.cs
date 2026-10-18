@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
-using Device = SlimDX.Direct3D11.Device;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
+using Device = SharpDX.Direct3D11.Device;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace AcTools.Render.Base.Utils {
     public static class ColorGradingConverter {
@@ -69,7 +71,7 @@ namespace AcTools.Render.Base.Utils {
                 CpuAccessFlags = CpuAccessFlags.Write
             });
 
-            var rect = device.ImmediateContext.MapSubresource(texture, 0, MapMode.WriteDiscard, SlimDX.Direct3D11.MapFlags.None);
+            var rect = device.ImmediateContext.MapSubresourceCompat(texture, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
             if (rect.Data.CanWrite) {
                 switch (bitmap.PixelFormat){
                     case PixelFormat.Format24bppRgb:

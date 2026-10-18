@@ -4,8 +4,9 @@ using System.Linq;
 using AcTools.Render.Base;
 using AcTools.Render.Base.Objects;
 using AcTools.Render.Base.Utils;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public partial class Kn5RenderableCar {

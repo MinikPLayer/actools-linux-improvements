@@ -1,7 +1,9 @@
 ﻿using AcTools.Render.Base;
 using AcTools.Render.Base.PostEffects;
 using AcTools.Render.Shaders;
-using SlimDX.Direct3D11;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5SpecificSpecial {
     public class TrackMapRenderHelper : IRenderHelper {

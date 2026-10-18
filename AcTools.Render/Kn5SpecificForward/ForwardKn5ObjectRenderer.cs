@@ -20,10 +20,12 @@ using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using SlimDX;
-using SlimDX.DirectWrite;
-using FontStyle = SlimDX.DirectWrite.FontStyle;
+using SharpDX;
+using SharpDX.DirectWrite;
+using FontStyle = SharpDX.DirectWrite.FontStyle;
 using TextAlignment = AcTools.Render.Base.Sprites.TextAlignment;
+using Color = System.Drawing.Color;
+using RectangleF = System.Drawing.RectangleF;
 
 namespace AcTools.Render.Kn5SpecificForward {
     public partial class ForwardKn5ObjectRenderer : ForwardRenderer, IKn5ObjectRenderer {
@@ -679,7 +681,7 @@ namespace AcTools.Render.Kn5SpecificForward {
             var reflectionPosition = ReflectionCubemapPosition;
             if (_reflectionCubemap != null) {
                 _reflectionCubemap.Update(UseCustomReflectionCubemap ? Vector3.Zero : reflectionPosition);
-                _reflectionCubemap.BackgroundColor = (Color4)BackgroundColor * BackgroundBrightness;
+                _reflectionCubemap.BackgroundColor = BackgroundColor.ToColor4() * BackgroundBrightness;
 
                 _reflectionCubemap.DrawScene(DeviceContextHolder, this,
                         ShotDrawInProcess || ForceUpdateWholeCubemapAtOnce ? 6 : CubemapReflectionFacesPerFrame);
@@ -723,7 +725,7 @@ Magick.NET: {(ImageUtils.IsMagickSupported ? "Yes" : "No")}".Trim();
             }
 
             _textBlock.DrawString(GetInformationString(),
-                    new Vector2(ActualWidth - 300, 20), 0f, 16f, UiColor,
+                    new Vector2(ActualWidth - 300, 20), 0f, 16f, UiColor.ToColor4(),
                     CoordinateType.Absolute);
 
             if (CarNode == null) return;
@@ -734,7 +736,7 @@ Magick.NET: {(ImageUtils.IsMagickSupported ? "Yes" : "No")}".Trim();
                 _textBlock.DrawString(
                         $"LOD #{CarNode.CurrentLod + 1} ({CarNode.LodsCount} in total; shown from {information?.In.ToInvariantString() ?? "?"} to {information?.Out.ToInvariantString() ?? "?"})",
                         new RectangleF(0f, 0f, ActualWidth, ActualHeight - offset), 0f,
-                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor,
+                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor.ToColor4(),
                         CoordinateType.Absolute);
                 offset += 20;
             }
@@ -758,7 +760,7 @@ Magick.NET: {(ImageUtils.IsMagickSupported ? "Yes" : "No")}".Trim();
             if (flags.Count > 0) {
                 _textBlock.DrawString(flags.JoinToString(),
                         new RectangleF(0f, 0f, ActualWidth, ActualHeight - offset), 0f,
-                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor,
+                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor.ToColor4(),
                         CoordinateType.Absolute);
                 offset += 20;
             }
@@ -766,7 +768,7 @@ Magick.NET: {(ImageUtils.IsMagickSupported ? "Yes" : "No")}".Trim();
             if (CarNode.Skins != null && CarNode.CurrentSkin != null) {
                 _textBlock.DrawString($"{CarNode.CurrentSkin} ({CarNode.Skins.IndexOf(CarNode.CurrentSkin) + 1}/{CarNode.Skins.Count})",
                         new RectangleF(0f, 0f, ActualWidth, ActualHeight - offset), 0f,
-                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor,
+                        TextAlignment.HorizontalCenter | TextAlignment.Bottom, 16f, UiColor.ToColor4(),
                         CoordinateType.Absolute);
             }
         }

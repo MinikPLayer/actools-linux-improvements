@@ -2,8 +2,10 @@ using AcTools.ExtraKn5Utils.Kn5Utils;
 using AcTools.Kn5File;
 using AcTools.Render.Base.Shaders;
 using AcTools.Render.Kn5Specific.Textures;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5Specific.Materials {
     public static class Kn5MaterialExtension {
@@ -21,7 +23,7 @@ namespace AcTools.Render.Kn5Specific.Materials {
             return GetPropertyValueCByName(mat, name, Vector3.Zero);
         }
 
-        public static bool SetResource(this EffectResourceVariable variable, IRenderableTexture texture) {
+        public static bool SetResource(this EffectShaderResourceVariable variable, IRenderableTexture texture) {
             var res = texture?.Resource;
             variable.SetResource(res);
             return res != null;

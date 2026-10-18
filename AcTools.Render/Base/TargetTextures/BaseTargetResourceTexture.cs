@@ -1,8 +1,10 @@
 using System;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.TargetTextures {
     public class BaseTargetResourceTexture : IDisposable {
@@ -31,7 +33,7 @@ namespace AcTools.Render.Base.TargetTextures {
 
         public virtual bool Resize([NotNull] DeviceContextHolder holder, int width, int height, [CanBeNull] SampleDescription? sample) {
             if (holder == null) throw new ArgumentNullException(nameof(holder));
-            if (width == Width && height == Height && (!sample.HasValue || sample == Description.SampleDescription)) return false;
+            if (width == Width && height == Height && (!sample.HasValue || sample.Value.Equals(Description.SampleDescription))) return false;
             Dispose();
 
             Description.Width = width;

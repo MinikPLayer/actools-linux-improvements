@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Objects;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward {
     public partial class ForwardKn5ObjectRenderer : IMousePositionProvider {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 ﻿using System;
 using AcTools.ExtraKn5Utils.Kn5Utils;
 using AcTools.Kn5File;
@@ -12,7 +13,7 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 #pragma warning disable 649
 
 namespace AcTools.Render.Kn5Specific.Objects {

@@ -1,4 +1,4 @@
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Cameras {
     public class InterpolationCamera : ICamera {

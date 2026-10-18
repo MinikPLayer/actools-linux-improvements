@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using SlimDX.DirectWrite;
+using SharpDX.DirectWrite;
 using TextAlignment = AcTools.Render.Base.Sprites.TextAlignment;
 
 namespace AcTools.Render.Kn5SpecificForward {

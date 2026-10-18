@@ -1,8 +1,8 @@
 using System.IO;
 using System.IO.Compression;
 using System.Resources;
-using SlimDX;
-using SlimDX.D3DCompiler;
+using SharpDX;
+using SharpDX.D3DCompiler;
 
 namespace AcTools.Render.Base.Shaders {
     public static class EffectUtils {

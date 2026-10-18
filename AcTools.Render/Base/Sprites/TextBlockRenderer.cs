@@ -6,19 +6,23 @@ using System.IO;
 using System.Threading;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct2D;
-using SlimDX.Direct3D10;
-using SlimDX.DirectWrite;
-using SlimDX.DXGI;
-using Device1 = SlimDX.Direct3D10_1.Device1;
-using Factory = SlimDX.DirectWrite.Factory;
-using FactoryType = SlimDX.DirectWrite.FactoryType;
-using FontStretch = SlimDX.DirectWrite.FontStretch;
-using FontStyle = SlimDX.DirectWrite.FontStyle;
-using FontWeight = SlimDX.DirectWrite.FontWeight;
-using Resource = SlimDX.DXGI.Resource;
-using ShaderResourceView = SlimDX.Direct3D11.ShaderResourceView;
+using SharpDX;
+using SharpDX.Direct2D1;
+using SharpDX.Direct3D10;
+using SharpDX.DirectWrite;
+using SharpDX.DXGI;
+using Device1 = SharpDX.Direct3D10.Device1;
+using Factory = SharpDX.DirectWrite.Factory;
+using FactoryType = SharpDX.DirectWrite.FactoryType;
+using FontStretch = SharpDX.DirectWrite.FontStretch;
+using FontStyle = SharpDX.DirectWrite.FontStyle;
+using FontWeight = SharpDX.DirectWrite.FontWeight;
+using Resource = SharpDX.DXGI.Resource;
+using ShaderResourceView = SharpDX.Direct3D11.ShaderResourceView;
+using RectangleF = System.Drawing.RectangleF;
+using AlphaMode = SharpDX.Direct2D1.AlphaMode;
+using PixelFormat = SharpDX.Direct2D1.PixelFormat;
+using SharpDX.Mathematics.Interop;
 
 namespace AcTools.Render.Base.Sprites {
     /// <summary>
@@ -141,23 +145,20 @@ namespace AcTools.Render.Base.Sprites {
 
             Monitor.Enter(sprite.Device);
             try {
-                _rtp = new RenderTargetProperties {
-                    HorizontalDpi = 96,
-                    VerticalDpi = 96,
-                    Type = RenderTargetType.Default,
-                    PixelFormat = new PixelFormat(Format.R8G8B8A8_UNorm, AlphaMode.Premultiplied),
-                    MinimumFeatureLevel = FeatureLevel.Direct3D10
-                };
+                _rtp = new RenderTargetProperties(RenderTargetType.Default, new PixelFormat(Format.R8G8B8A8_UNorm, AlphaMode.Premultiplied),
+                        96f, 96f, RenderTargetUsage.None, SharpDX.Direct2D1.FeatureLevel.Level_10);
 
                 if (collection != null) {
                     var c = collection.GetCollection(WriteFactory);
-                    if (c.FindFamilyName(fontName) == -1) {
-                        fontName = c[0].FamilyNames.get_String(0);
+                    if (!c.FindFamilyName(fontName, out _)) {
+                        using (var family = c.GetFontFamily(0)) {
+                            fontName = family.FamilyNames.GetString(0);
+                        }
                     }
-                    Font = WriteFactory.CreateTextFormat(fontName, c, fontWeight, fontStyle, fontStretch, fontSize,
+                    Font = new TextFormat(WriteFactory, fontName, c, fontWeight, fontStyle, fontStretch, fontSize,
                             CultureInfo.CurrentCulture.Name);
                 } else {
-                    Font = WriteFactory.CreateTextFormat(fontName, fontWeight, fontStyle, fontStretch, fontSize, CultureInfo.CurrentCulture.Name);
+                    Font = new TextFormat(WriteFactory, fontName, null, fontWeight, fontStyle, fontStretch, fontSize, CultureInfo.CurrentCulture.Name);
                 }
             } finally {
                 Monitor.Exit(sprite.Device);
@@ -167,7 +168,7 @@ namespace AcTools.Render.Base.Sprites {
         }
 
         protected TextLayout GetTextLayout(string s) {
-            return new TextLayout(WriteFactory, s, Font);
+            return new TextLayout(WriteFactory, s, Font, float.MaxValue, float.MaxValue);
         }
 
         protected IDisposable CreateFontMapTexture(int width, int height, CharRenderCall[] drawCalls) {
@@ -190,14 +191,14 @@ namespace AcTools.Render.Base.Sprites {
             var rtv = new RenderTargetView(device10, texture);
             device10.ClearRenderTargetView(rtv, new Color4(0, 1, 1, 1));
             // device10.ClearRenderTargetView(rtv, new Color4(1, 0, 0, 0));
-            var surface = texture.AsSurface();
-            var target = RenderTarget.FromDXGI((SlimDX.Direct2D.Factory)D2DFactory, surface, _rtp);
+            var surface = texture.QueryInterface<Surface>();
+            var target = new RenderTarget((SharpDX.Direct2D1.Factory)D2DFactory, surface, _rtp);
             var color = new SolidColorBrush(target, new Color4(1, 1, 1, 1));
 
             target.BeginDraw();
 
             foreach (var drawCall in drawCalls) {
-                target.DrawTextLayout(drawCall.Position, (TextLayout)drawCall.TextLayout, color);
+                target.DrawTextLayout(new RawVector2(drawCall.Position.X, drawCall.Position.Y), (TextLayout)drawCall.TextLayout, color);
             }
 
             target.EndDraw();
@@ -207,7 +208,7 @@ namespace AcTools.Render.Base.Sprites {
             // This is a workaround for Windows 8.1 machines.
             // If these lines would not be present, the shared resource would be empty.
             // TODO: find a nicer solution
-            using (var ms = new MemoryStream()) Texture2D.ToStream(texture, ImageFileFormat.Bmp, ms);
+            device10.Flush();
 
             target.Dispose();
 
@@ -221,24 +222,24 @@ namespace AcTools.Render.Base.Sprites {
             var device11 = Sprite.Device;
 
             lock (device11) {
-                var dxgiResource = new Resource(texture);
+                var dxgiResource = texture.QueryInterface<Resource>();
 
-                SlimDX.Direct3D11.Texture2D tex11;
+                SharpDX.Direct3D11.Texture2D tex11;
                 if (PixCompatible) {
-                    tex11 = new SlimDX.Direct3D11.Texture2D(device11, new SlimDX.Direct3D11.Texture2DDescription {
+                    tex11 = new SharpDX.Direct3D11.Texture2D(device11, new SharpDX.Direct3D11.Texture2DDescription {
                         ArraySize = 1,
-                        BindFlags = SlimDX.Direct3D11.BindFlags.ShaderResource | SlimDX.Direct3D11.BindFlags.RenderTarget,
-                        CpuAccessFlags = SlimDX.Direct3D11.CpuAccessFlags.None,
+                        BindFlags = SharpDX.Direct3D11.BindFlags.ShaderResource | SharpDX.Direct3D11.BindFlags.RenderTarget,
+                        CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.None,
                         Format = Format.R8G8B8A8_UNorm,
                         Height = height,
                         Width = width,
                         MipLevels = 1,
-                        OptionFlags = SlimDX.Direct3D11.ResourceOptionFlags.Shared,
+                        OptionFlags = SharpDX.Direct3D11.ResourceOptionFlags.Shared,
                         SampleDescription = new SampleDescription(1, 0),
-                        Usage = SlimDX.Direct3D11.ResourceUsage.Default
+                        Usage = SharpDX.Direct3D11.ResourceUsage.Default
                     });
                 } else {
-                    tex11 = device11.OpenSharedResource<SlimDX.Direct3D11.Texture2D>(dxgiResource.SharedHandle);
+                    tex11 = device11.OpenSharedResource<SharpDX.Direct3D11.Texture2D>(dxgiResource.SharedHandle);
                 }
                 srv11 = new ShaderResourceView(device11, tex11);
                 texture11 = tex11;
@@ -248,9 +249,9 @@ namespace AcTools.Render.Base.Sprites {
 
         protected DeviceDescriptor CreateDevicesAndFactories() {
             return new DeviceDescriptor {
-                D3DDevice10 = new Device1(DeviceCreationFlags.BgraSupport, SlimDX.Direct3D10_1.FeatureLevel.Level_10_0),
+                D3DDevice10 = new Device1(SharpDX.Direct3D10.DriverType.Hardware, DeviceCreationFlags.BgraSupport, SharpDX.Direct3D10.FeatureLevel.Level_10_0),
                 WriteFactory = new Factory(FactoryType.Shared),
-                D2DFactory = new SlimDX.Direct2D.Factory(SlimDX.Direct2D.FactoryType.SingleThreaded)
+                D2DFactory = new SharpDX.Direct2D1.Factory(SharpDX.Direct2D1.FactoryType.SingleThreaded)
             };
         }
 

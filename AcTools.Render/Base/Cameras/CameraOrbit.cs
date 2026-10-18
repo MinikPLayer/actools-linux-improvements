@@ -1,7 +1,7 @@
 ﻿using AcTools.Render.Base.Utils;
 using AcTools.Render.Utils;
 using AcTools.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Cameras {
     public class CameraOrbit : CameraBase {

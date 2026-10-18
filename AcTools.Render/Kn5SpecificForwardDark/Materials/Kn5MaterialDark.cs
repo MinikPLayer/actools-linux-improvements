@@ -6,7 +6,7 @@ using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Render.Shaders;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Materials {
     public class Kn5MaterialDark : Kn5MaterialDarkBase, IAcDynamicMaterial {

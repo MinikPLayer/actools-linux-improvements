@@ -1,5 +1,7 @@
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.TargetTextures {
     public class TargetResourceDepthTexture : BaseTargetResourceTexture {
@@ -8,21 +10,20 @@ namespace AcTools.Render.Base.TargetTextures {
         protected TargetResourceDepthTexture(Texture2DDescription description) : base(description) { }
 
         public override bool Resize(DeviceContextHolder holder, int width, int height, SampleDescription? sample) {
-            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription == sample.Value)) return false;
+            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription.Equals(sample.Value))) return false;
             base.Resize(holder, width, height, sample);
 
             DepthView = new DepthStencilView(holder.Device, Texture, new DepthStencilViewDescription {
                 Flags = DepthStencilViewFlags.None,
                 Format = GetDepthStencilViewFormat(Description.Format),
                 Dimension = DepthStencilViewDimension.Texture2D,
-                MipSlice = 0
+                Texture2D = new DepthStencilViewDescription.Texture2DResource { MipSlice = 0 }
             });
 
             View = new ShaderResourceView(holder.Device, Texture, new ShaderResourceViewDescription {
                 Format = GetShaderResourceViewFormat(Description.Format),
                 Dimension = ShaderResourceViewDimension.Texture2D,
-                MipLevels = 1,
-                MostDetailedMip = 0
+                Texture2D = new ShaderResourceViewDescription.Texture2DResource { MipLevels = 1, MostDetailedMip = 0 }
             });
 
             return true;

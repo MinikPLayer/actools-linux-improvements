@@ -1,4 +1,4 @@
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Materials {
     public interface IAcDynamicMaterial {

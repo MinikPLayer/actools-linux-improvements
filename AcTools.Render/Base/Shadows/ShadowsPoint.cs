@@ -2,9 +2,10 @@
 using AcTools.Render.Base.Cameras;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
-using SlimDX;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.Shadows {
     public class ShadowsPoint : ShadowsBase {
@@ -49,15 +50,12 @@ namespace AcTools.Render.Base.Shadows {
                         new DepthStencilViewDescription {
                             Format = Format.D24_UNorm_S8_UInt,
                             Dimension = DepthStencilViewDimension.Texture2DArray,
-                            ArraySize = 1,
-                            FirstArraySlice = x,
-                            MipSlice = 0
+                            Texture2DArray = new DepthStencilViewDescription.Texture2DArrayResource { ArraySize = 1, FirstArraySlice = x, MipSlice = 0 }
                         })).ToArray();
                 _view = new ShaderResourceView(holder.Device, cubeTex, new ShaderResourceViewDescription {
                     Format = Format.R24_UNorm_X8_Typeless,
                     Dimension = ShaderResourceViewDimension.TextureCube,
-                    MostDetailedMip = 0,
-                    MipLevels = -1
+                    TextureCube = new ShaderResourceViewDescription.TextureCubeResource { MostDetailedMip = 0, MipLevels = -1 }
                 });
             }
         }

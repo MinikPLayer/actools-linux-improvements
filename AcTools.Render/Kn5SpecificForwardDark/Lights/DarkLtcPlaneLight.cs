@@ -6,7 +6,7 @@ using AcTools.Render.Shaders;
 using AcTools.Render.Utils;
 using AcTools.Utils;
 using Newtonsoft.Json.Linq;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Lights {
     public class DarkLtcPlaneLight : DarkAreaLightBase {

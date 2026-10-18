@@ -4,7 +4,7 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Render.Kn5SpecificForwardDark.Lights;
 using AcTools.Utils.Helpers;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark {
     public partial class DarkKn5ObjectRenderer {

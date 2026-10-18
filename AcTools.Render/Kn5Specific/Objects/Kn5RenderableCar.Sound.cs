@@ -6,7 +6,7 @@ using AcTools.Render.Base.Utils;
 using AcTools.Render.Utils;
 using AcTools.Utils;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public partial class Kn5RenderableCar {

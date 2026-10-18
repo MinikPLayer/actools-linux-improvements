@@ -14,7 +14,7 @@ using AcTools.Render.Utils;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5Specific.Objects {
     public sealed class Kn5SkinnedObject : TrianglesRenderableObject<InputLayouts.VerticePNTGW4B>, IKn5RenderableObject {
@@ -187,7 +187,7 @@ namespace AcTools.Render.Kn5Specific.Objects {
                     var v2 = Vector3.TransformCoordinate(GetPosition(vertices[indices[i * 3 + 2]]), matrix);
 
                     float distance;
-                    if (!Ray.Intersects(ray, v0, v1, v2, out distance)) continue;
+                    if (!SharpDxCompat.RayIntersects(ray, v0, v1, v2, out distance)) continue;
                     if (distance >= min) continue;
                     min = distance;
                     found = true;

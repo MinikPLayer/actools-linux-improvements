@@ -5,8 +5,10 @@ using AcTools.Render.Base.Shadows;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using Newtonsoft.Json.Linq;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Lights {
     public class DarkPointLight : DarkLightBase {

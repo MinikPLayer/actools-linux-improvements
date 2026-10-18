@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AcTools.Render.Base;
 using JetBrains.Annotations;
-using SlimDX.Windows;
+//using SlimDX.Windows;
 
 namespace AcTools.Render.Wrapper {
     public class FormWrapperBase {
@@ -115,19 +115,6 @@ namespace AcTools.Render.Wrapper {
         [CanBeNull]
         private Action _firstFrame;
 
-        private class IdleHandler {
-            private MainLoop loopDelegate;
-
-            public IdleHandler(MainLoop mainLoop) => this.loopDelegate = mainLoop;
-
-            public void OnIdle(object sender, EventArgs e) {
-                if (!MessagePump.IsApplicationIdle)
-                    return;
-                do {
-                    this.loopDelegate();
-                } while (MessagePump.IsApplicationIdle);
-            }
-        }
 
         public void Run(Action firstFrame = null) {
             try {

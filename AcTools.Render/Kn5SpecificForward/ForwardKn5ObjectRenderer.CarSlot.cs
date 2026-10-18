@@ -15,7 +15,7 @@ using AcTools.Render.Kn5Specific;
 using AcTools.Render.Kn5Specific.Objects;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward {
     public partial class ForwardKn5ObjectRenderer {

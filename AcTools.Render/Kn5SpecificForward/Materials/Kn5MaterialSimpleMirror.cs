@@ -5,7 +5,7 @@ using AcTools.Render.Base.Objects;
 using AcTools.Render.Kn5Specific.Materials;
 using AcTools.Render.Shaders;
 using AcTools.Render.Utils;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForward.Materials {
     public class Kn5MaterialSimpleMirror : IRenderableMaterial, IAcDynamicMaterial {

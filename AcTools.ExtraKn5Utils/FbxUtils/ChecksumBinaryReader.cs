@@ -30,7 +30,7 @@ namespace AcTools.ExtraKn5Utils.FbxUtils {
 
         public override byte ReadByte() {
             var value = base.ReadByte();
-            UpdateChecksum(BitConverter.GetBytes(value));
+            UpdateChecksum(BitConverter.GetBytes((short)value));
             return value;
         }
 

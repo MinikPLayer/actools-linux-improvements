@@ -8,8 +8,10 @@ using AcTools.Render.Kn5Specific.Textures;
 using AcTools.Render.Shaders;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
 using Debug = System.Diagnostics.Debug;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Materials {

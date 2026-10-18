@@ -1,7 +1,9 @@
 ﻿using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX.Direct3D11;
-using SlimDX.DXGI;
+using SharpDX.Direct3D11;
+using AcTools.Render.Base.Utils;
+using SharpDX.Direct3D;
+using SharpDX.DXGI;
 
 namespace AcTools.Render.Base.TargetTextures {
     public class TargetResourceTextureArray : BaseTargetResourceTexture {
@@ -12,7 +14,7 @@ namespace AcTools.Render.Base.TargetTextures {
         public TargetResourceTextureArray(Texture2DDescription description) : base(description) {}
         
         public override bool Resize(DeviceContextHolder holder, int width, int height, SampleDescription? sample) {
-            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription == sample.Value)) return false;
+            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription.Equals(sample.Value))) return false;
             base.Resize(holder, width, height, sample);
 
             TargetViews = new RenderTargetView[Description.ArraySize];
@@ -21,9 +23,7 @@ namespace AcTools.Render.Base.TargetTextures {
                 TargetViews[i] = new RenderTargetView(holder.Device, Texture, new RenderTargetViewDescription {
                     Format = Description.Format,
                     Dimension = RenderTargetViewDimension.Texture2DArray,
-                    ArraySize = 1,
-                    MipSlice = 0,
-                    FirstArraySlice = i
+                    Texture2DArray = new RenderTargetViewDescription.Texture2DArrayResource { ArraySize = 1, MipSlice = 0, FirstArraySlice = i }
                 });
             }
 
@@ -62,7 +62,7 @@ namespace AcTools.Render.Base.TargetTextures {
         public TargetResourceTexture(Texture2DDescription description) : base(description) {}
         
         public override bool Resize(DeviceContextHolder holder, int width, int height, SampleDescription? sample) {
-            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription == sample.Value)) return false;
+            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription.Equals(sample.Value))) return false;
             base.Resize(holder, width, height, sample);
 
             TargetView = new RenderTargetView(holder.Device, Texture);
@@ -101,27 +101,26 @@ namespace AcTools.Render.Base.TargetTextures {
         public TargetResourceSpecialTexture(Texture2DDescription description) : base(description) { }
 
         public override bool Resize(DeviceContextHolder holder, int width, int height, SampleDescription? sample) {
-            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription == sample.Value)) return false;
+            if (width == Width && height == Height && (!sample.HasValue || Description.SampleDescription.Equals(sample.Value))) return false;
             base.Resize(holder, width, height, sample);
 
             StencilView = new DepthStencilView(holder.Device, Texture, new DepthStencilViewDescription {
                 Flags = DepthStencilViewFlags.None,
                 Format = Format.D24_UNorm_S8_UInt,
                 Dimension = DepthStencilViewDimension.Texture2D,
-                MipSlice = 0
+                Texture2D = new DepthStencilViewDescription.Texture2DResource { MipSlice = 0 }
             });
 
             TargetView = new RenderTargetView(holder.Device, Texture, new RenderTargetViewDescription {
-                MipSlice = 0,
                 Dimension = RenderTargetViewDimension.Texture2D,
+                Texture2D = new RenderTargetViewDescription.Texture2DResource { MipSlice = 0 },
                 Format = Format.D24_UNorm_S8_UInt
             });
 
             View = new ShaderResourceView(holder.Device, Texture, new ShaderResourceViewDescription {
                 Format = Format.R24_UNorm_X8_Typeless,
                 Dimension = ShaderResourceViewDimension.Texture2D,
-                MipLevels = 1,
-                MostDetailedMip = 0
+                Texture2D = new ShaderResourceViewDescription.Texture2DResource { MipLevels = 1, MostDetailedMip = 0 }
             });
 
             return true;

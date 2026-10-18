@@ -9,9 +9,10 @@ using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
-using SlimDX;
-using SlimDX.D3DCompiler;
-using SlimDX.Direct3D11;
+using SharpDX;
+using SharpDX.D3DCompiler;
+using SharpDX.Direct3D11;
+using SharpDX.Direct3D;
 // ReSharper disable InconsistentNaming
 // ReSharper disable LocalizableElement
 // ReSharper disable NotNullMemberIsNotInitialized
@@ -246,7 +247,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT, InputSignaturePNTG, InputSignaturePNTGW4B;
+        public ShaderBytecode InputSignaturePT, InputSignaturePNTG, InputSignaturePNTGW4B;
         public InputLayout LayoutPT, LayoutPNTG, LayoutPNTGW4B;
 
 		public EffectReadyTechnique TechStandard, TechStandard_NoAlpha, TechSkinnedStandard, TechSkinnedStandard_NoAlpha, TechSky, TechAlpha, TechAlpha_NoAlpha, TechReflective, TechReflective_NoAlpha, TechNm, TechNm_NoAlpha, TechNmUvMult, TechNmUvMult_NoAlpha, TechAtNm, TechAtNm_NoAlpha, TechMaps, TechMaps_NoAlpha, TechMaps_TesselatePhong, TechMaps_TesselatePn, TechSkinnedMaps, TechSkinnedMaps_NoAlpha, TechTyres, TechGl, TechSkinnedGl, TechWindscreen, TechWindscreen_NoAlpha, TechCollider, TechDebug, TechSkinnedDebug, TechDebug_NoAlpha, TechSkinnedDebug_NoAlpha, TechDepthOnly, TechSkinnedDepthOnly, TechAmbientShadow, TechMirror, TechFlatMirror, TechTransparentGround, TechFlatTextureMirror, TechFlatTextureMirrorNoGround, TechFlatBackgroundGround, TechFlatAmbientGround, TechGPass_Standard, TechGPass_Alpha, TechGPass_Reflective, TechGPass_Nm, TechGPass_NmUvMult, TechGPass_AtNm, TechGPass_Maps, TechGPass_SkinnedMaps, TechGPass_Tyres, TechGPass_Gl, TechGPass_SkinnedGl, TechGPass_FlatMirror, TechGPass_FlatMirror_SslrFix, TechGPass_Debug, TechGPass_SkinnedDebug;
@@ -377,17 +378,17 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechAmbientShadow.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (DarkMaterial, PT, AmbientShadow) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 			for (var i = 0; i < TechStandard.Description.PassCount && InputSignaturePNTG == null; i++) {
 				InputSignaturePNTG = TechStandard.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTG == null) throw new System.Exception("input signature (DarkMaterial, PNTG, Standard) == null");
-			LayoutPNTG = new InputLayout(device, InputSignaturePNTG, InputLayouts.VerticePNTG.InputElementsValue);
+			LayoutPNTG = new InputLayout(device, InputSignaturePNTG.Data, InputLayouts.VerticePNTG.InputElementsValue);
 			for (var i = 0; i < TechSkinnedStandard.Description.PassCount && InputSignaturePNTGW4B == null; i++) {
 				InputSignaturePNTGW4B = TechSkinnedStandard.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTGW4B == null) throw new System.Exception("input signature (DarkMaterial, PNTGW4B, SkinnedStandard) == null");
-			LayoutPNTGW4B = new InputLayout(device, InputSignaturePNTGW4B, InputLayouts.VerticePNTGW4B.InputElementsValue);
+			LayoutPNTGW4B = new InputLayout(device, InputSignaturePNTGW4B.Data, InputLayouts.VerticePNTGW4B.InputElementsValue);
 
 			FxWorld = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorld"));
 			FxWorldInvTranspose = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldInvTranspose"));
@@ -486,7 +487,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePNT;
+        public ShaderBytecode InputSignaturePNT;
         public InputLayout LayoutPNT;
 
 		public EffectReadyTechnique TechPerPixel;
@@ -514,7 +515,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePNT = TechPerPixel.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNT == null) throw new System.Exception("input signature (KunosShader, PNT, PerPixel) == null");
-			LayoutPNT = new InputLayout(device, InputSignaturePNT, InputLayouts.VerticePNT.InputElementsValue);
+			LayoutPNT = new InputLayout(device, InputSignaturePNT.Data, InputLayouts.VerticePNT.InputElementsValue);
 
 			FxWorld = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorld"));
 			FxWorldInvTranspose = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldInvTranspose"));
@@ -538,7 +539,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechCopy, TechCopyFullyTransparent, TechCopyFromRed, TechCopySqr, TechCopySqrt, TechCut, TechCopyNoAlpha, TechAccumulate, TechAccumulateDivide, TechOverlay, TechDepthToLinear, TechShadow, TechDepth, TechFxaa;
@@ -577,7 +578,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechCopy.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpBasic, PT, Copy) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
 			FxOverlayMap = new EffectOnlyResourceVariable(E.GetVariableByName("gOverlayMap"));
@@ -602,7 +603,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechGaussianBlur, TechFlatMirrorBlur, TechDarkSslrBlur0, TechReflectionGaussianBlur;
@@ -635,7 +636,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechGaussianBlur.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpBlur, PT, GaussianBlur) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxWorldViewProjInv = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProjInv"));
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
@@ -662,7 +663,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechDownscale4, TechSslr, TechFinalStep;
@@ -692,7 +693,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechDownscale4.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpDarkSslr, PT, Downscale4) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxCameraProjInv = new EffectOnlyMatrixVariable(E.GetVariableByName("gCameraProjInv"));
 			FxCameraProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gCameraProj"));
@@ -729,7 +730,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechDownsampleColorCoC, TechBokehSprite, TechResolveBokeh;
@@ -755,7 +756,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechDownsampleColorCoC.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpDof, PT, DownsampleColorCoC) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputTexture = new EffectOnlyResourceVariable(E.GetVariableByName("InputTexture"));
 			FxInputTextureBokenBase = new EffectOnlyResourceVariable(E.GetVariableByName("InputTextureBokenBase"));
@@ -786,7 +787,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechCopy, TechAverage, TechAnisotropic;
@@ -812,7 +813,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechCopy.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpDownsample, PT, Copy) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
 			FxMultipler = new EffectOnlyVector2Variable(E.GetVariableByName("gMultipler"));
@@ -833,7 +834,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechDownsampling, TechAdaptation, TechTonemap, TechCopy, TechColorGrading, TechCombine_ToneLumaBasedReinhard, TechCombine_ToneWhitePreservingLumaBasedReinhard, TechCombine_ToneUncharted2, TechCombine_ToneReinhard, TechCombine_ToneFilmic, TechCombine_ToneFilmicReinhard, TechCombine, TechBloom, TechBloomHighThreshold;
@@ -872,7 +873,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechDownsampling.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpHdr, PT, Downsampling) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
 			FxBrightnessMap = new EffectOnlyResourceVariable(E.GetVariableByName("gBrightnessMap"));
@@ -898,7 +899,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechGhosts;
@@ -916,7 +917,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechGhosts.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpLensFlares, PT, Ghosts) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
 		}
@@ -935,7 +936,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechOutline;
@@ -957,7 +958,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechOutline.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpOutline, PT, Outline) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
 			FxDepthMap = new EffectOnlyResourceVariable(E.GetVariableByName("gDepthMap"));
@@ -977,7 +978,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechAddShadow, TechAddShadowBlur;
@@ -1004,7 +1005,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechAddShadow.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpAmbientShadows, PT, AddShadow) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxViewProjInv = new EffectOnlyMatrixVariable(E.GetVariableByName("gViewProjInv"));
 			FxViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gViewProj"));
@@ -1033,7 +1034,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechBlurH, TechBlurV;
@@ -1056,7 +1057,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechBlurH.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpAoBlur, PT, BlurH) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxDepthMap = new EffectOnlyResourceVariable(E.GetVariableByName("gDepthMap"));
 			FxNormalMap = new EffectOnlyResourceVariable(E.GetVariableByName("gNormalMap"));
@@ -1079,7 +1080,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechHbao;
@@ -1103,7 +1104,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechHbao.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpHbao, PT, Hbao) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxDepthMap = new EffectOnlyResourceVariable(E.GetVariableByName("gDepthMap"));
 			FxNoiseMap = new EffectOnlyResourceVariable(E.GetVariableByName("gNoiseMap"));
@@ -1130,7 +1131,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechSsao, TechBlurH, TechBlurV;
@@ -1164,7 +1165,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechSsao.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpSsao, PT, Ssao) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxWorldViewProjInv = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProjInv"));
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
@@ -1198,7 +1199,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechSsaoVs;
@@ -1224,7 +1225,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechSsaoVs.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (PpSsaoAlt, PT, SsaoVs) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxViewProjInv = new EffectOnlyMatrixVariable(E.GetVariableByName("gViewProjInv"));
 			FxViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gViewProj"));
@@ -1362,7 +1363,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT, InputSignaturePNTG;
+        public ShaderBytecode InputSignaturePT, InputSignaturePNTG;
         public InputLayout LayoutPT, LayoutPNTG;
 
 		public EffectReadyTechnique TechStandard, TechAlpha, TechReflective, TechNm, TechNmUvMult, TechAtNm, TechMaps, TechDiffMaps, TechGl, TechAmbientShadow, TechMirror;
@@ -1408,12 +1409,12 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechAmbientShadow.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SimpleMaterial, PT, AmbientShadow) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 			for (var i = 0; i < TechStandard.Description.PassCount && InputSignaturePNTG == null; i++) {
 				InputSignaturePNTG = TechStandard.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTG == null) throw new System.Exception("input signature (SimpleMaterial, PNTG, Standard) == null");
-			LayoutPNTG = new InputLayout(device, InputSignaturePNTG, InputLayouts.VerticePNTG.InputElementsValue);
+			LayoutPNTG = new InputLayout(device, InputSignaturePNTG.Data, InputLayouts.VerticePNTG.InputElementsValue);
 
 			FxWorld = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorld"));
 			FxWorldInvTranspose = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldInvTranspose"));
@@ -1446,7 +1447,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePC;
+        public ShaderBytecode InputSignaturePC;
         public InputLayout LayoutPC;
 
 		public EffectReadyTechnique TechMain, TechGPass;
@@ -1471,7 +1472,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePC = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePC == null) throw new System.Exception("input signature (SpecialAreaLights, PC, Main) == null");
-			LayoutPC = new InputLayout(device, InputSignaturePC, InputLayouts.VerticePC.InputElementsValue);
+			LayoutPC = new InputLayout(device, InputSignaturePC.Data, InputLayouts.VerticePC.InputElementsValue);
 
 			FxWorld = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorld"));
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
@@ -1493,7 +1494,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePC;
+        public ShaderBytecode InputSignaturePC;
         public InputLayout LayoutPC;
 
 		public EffectReadyTechnique TechMain;
@@ -1515,7 +1516,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePC = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePC == null) throw new System.Exception("input signature (SpecialDebugLines, PC, Main) == null");
-			LayoutPC = new InputLayout(device, InputSignaturePC, InputLayouts.VerticePC.InputElementsValue);
+			LayoutPC = new InputLayout(device, InputSignaturePC.Data, InputLayouts.VerticePC.InputElementsValue);
 
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
 			FxOverrideColor = new EffectOnlyBoolVariable(E.GetVariableByName("gOverrideColor"));
@@ -1535,7 +1536,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePNTG;
+        public ShaderBytecode InputSignaturePNTG;
         public InputLayout LayoutPNTG;
 
 		public EffectReadyTechnique TechMain;
@@ -1561,7 +1562,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePNTG = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTG == null) throw new System.Exception("input signature (SpecialDebugReflections, PNTG, Main) == null");
-			LayoutPNTG = new InputLayout(device, InputSignaturePNTG, InputLayouts.VerticePNTG.InputElementsValue);
+			LayoutPNTG = new InputLayout(device, InputSignaturePNTG.Data, InputLayouts.VerticePNTG.InputElementsValue);
 
 			FxWorld = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorld"));
 			FxWorldInvTranspose = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldInvTranspose"));
@@ -1604,7 +1605,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechPiece, TechFill, TechFlakes, TechPattern, TechColorfulPattern, TechMaskThreshold, TechMask, TechReplacement, TechMaps, TechTint, TechTintMask, TechCombineChannels, TechFindLimitsFirstStep, TechFindLimits, TechNormalizeLimits, TechNormalizeMaxLimits, TechDesaturate, TechDesaturateMax;
@@ -1663,7 +1664,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechPiece.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialPaintShop, PT, Piece) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxTransform = new EffectOnlyMatrixVariable(E.GetVariableByName("gTransform"));
 			FxNoiseMap = new EffectOnlyResourceVariable(E.GetVariableByName("gNoiseMap"));
@@ -1703,7 +1704,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechBlend;
@@ -1723,7 +1724,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechBlend.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialPiecesBlender, PT, Blend) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxInputMaps = new EffectOnlyResourceArrayVariable(E.GetVariableByName("gInputMaps"));
 			FxPaddingSize = new EffectOnlyVector2Variable(E.GetVariableByName("gPaddingSize"));
@@ -1743,7 +1744,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT;
+        public ShaderBytecode InputSignaturePT;
         public InputLayout LayoutPT;
 
 		public EffectReadyTechnique TechMain, TechFlatNormalMap;
@@ -1760,7 +1761,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialRandom, PT, Main) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 		}
 
@@ -1777,7 +1778,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT, InputSignaturePNTG;
+        public ShaderBytecode InputSignaturePT, InputSignaturePNTG;
         public InputLayout LayoutPT, LayoutPNTG;
 
 		public EffectReadyTechnique TechHorizontalShadowBlur, TechVerticalShadowBlur, TechAmbientShadow, TechResult, TechSimplest, TechAo, TechAoResult, TechAoGrow;
@@ -1816,12 +1817,12 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechHorizontalShadowBlur.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialShadow, PT, HorizontalShadowBlur) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 			for (var i = 0; i < TechAo.Description.PassCount && InputSignaturePNTG == null; i++) {
 				InputSignaturePNTG = TechAo.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTG == null) throw new System.Exception("input signature (SpecialShadow, PNTG, Ao) == null");
-			LayoutPNTG = new InputLayout(device, InputSignaturePNTG, InputLayouts.VerticePNTG.InputElementsValue);
+			LayoutPNTG = new InputLayout(device, InputSignaturePNTG.Data, InputLayouts.VerticePNTG.InputElementsValue);
 
 			FxShadowViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gShadowViewProj"));
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
@@ -1862,7 +1863,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignatureP, InputSignaturePT;
+        public ShaderBytecode InputSignatureP, InputSignaturePT;
         public InputLayout LayoutP, LayoutPT;
 
 		public EffectReadyTechnique TechMain, TechPp, TechFinal, TechFinalCheckers, TechPpHorizontalBlur, TechPpVerticalBlur;
@@ -1891,12 +1892,12 @@ namespace AcTools.Render.Shaders {
 				InputSignatureP = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignatureP == null) throw new System.Exception("input signature (SpecialTrackMap, P, Main) == null");
-			LayoutP = new InputLayout(device, InputSignatureP, InputLayouts.VerticeP.InputElementsValue);
+			LayoutP = new InputLayout(device, InputSignatureP.Data, InputLayouts.VerticeP.InputElementsValue);
 			for (var i = 0; i < TechPp.Description.PassCount && InputSignaturePT == null; i++) {
 				InputSignaturePT = TechPp.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialTrackMap, PT, Pp) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
 			FxInputMap = new EffectOnlyResourceVariable(E.GetVariableByName("gInputMap"));
@@ -1922,7 +1923,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePT, InputSignatureP;
+        public ShaderBytecode InputSignaturePT, InputSignatureP;
         public InputLayout LayoutPT, LayoutP;
 
 		public EffectReadyTechnique TechFirstStep, TechExtraWidth, TechShadow, TechCombine, TechBlend, TechFinal, TechFinalBg, TechFinalCheckers, TechFirstStepObj;
@@ -1956,12 +1957,12 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePT = TechExtraWidth.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePT == null) throw new System.Exception("input signature (SpecialTrackOutline, PT, ExtraWidth) == null");
-			LayoutPT = new InputLayout(device, InputSignaturePT, InputLayouts.VerticePT.InputElementsValue);
+			LayoutPT = new InputLayout(device, InputSignaturePT.Data, InputLayouts.VerticePT.InputElementsValue);
 			for (var i = 0; i < TechFirstStepObj.Description.PassCount && InputSignatureP == null; i++) {
 				InputSignatureP = TechFirstStepObj.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignatureP == null) throw new System.Exception("input signature (SpecialTrackOutline, P, FirstStepObj) == null");
-			LayoutP = new InputLayout(device, InputSignatureP, InputLayouts.VerticeP.InputElementsValue);
+			LayoutP = new InputLayout(device, InputSignatureP.Data, InputLayouts.VerticeP.InputElementsValue);
 
 			FxMatrix = new EffectOnlyMatrixVariable(E.GetVariableByName("gMatrix"));
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
@@ -1988,7 +1989,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePNTG;
+        public ShaderBytecode InputSignaturePNTG;
         public InputLayout LayoutPNTG;
 
 		public EffectReadyTechnique TechMain;
@@ -2006,7 +2007,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePNTG = TechMain.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNTG == null) throw new System.Exception("input signature (SpecialUv, PNTG, Main) == null");
-			LayoutPNTG = new InputLayout(device, InputSignaturePNTG, InputLayouts.VerticePNTG.InputElementsValue);
+			LayoutPNTG = new InputLayout(device, InputSignaturePNTG.Data, InputLayouts.VerticePNTG.InputElementsValue);
 
 			FxOffset = new EffectOnlyVector2Variable(E.GetVariableByName("gOffset"));
 		}
@@ -2024,7 +2025,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignatureSpriteSpecific;
+        public ShaderBytecode InputSignatureSpriteSpecific;
         public InputLayout LayoutSpriteSpecific;
 
 		public EffectReadyTechnique TechRender;
@@ -2042,7 +2043,7 @@ namespace AcTools.Render.Shaders {
 				InputSignatureSpriteSpecific = TechRender.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignatureSpriteSpecific == null) throw new System.Exception("input signature (SpriteShader, SpriteSpecific, Render) == null");
-			LayoutSpriteSpecific = new InputLayout(device, InputSignatureSpriteSpecific, Base.Sprites.VerticeSpriteSpecific.InputElementsValue);
+			LayoutSpriteSpecific = new InputLayout(device, InputSignatureSpriteSpecific.Data, Base.Sprites.VerticeSpriteSpecific.InputElementsValue);
 
 			FxTex = new EffectOnlyResourceVariable(E.GetVariableByName("Tex"));
 		}
@@ -2060,7 +2061,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePC;
+        public ShaderBytecode InputSignaturePC;
         public InputLayout LayoutPC;
 
 		public EffectReadyTechnique TechCube;
@@ -2078,7 +2079,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePC = TechCube.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePC == null) throw new System.Exception("input signature (TestingCube, PC, Cube) == null");
-			LayoutPC = new InputLayout(device, InputSignaturePC, InputLayouts.VerticePC.InputElementsValue);
+			LayoutPC = new InputLayout(device, InputSignaturePC.Data, InputLayouts.VerticePC.InputElementsValue);
 
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
 		}
@@ -2096,7 +2097,7 @@ namespace AcTools.Render.Shaders {
 		private ShaderBytecode _b;
 		public Effect E;
 
-        public ShaderSignature InputSignaturePNT;
+        public ShaderBytecode InputSignaturePNT;
         public InputLayout LayoutPNT;
 
 		public EffectReadyTechnique TechCube;
@@ -2114,7 +2115,7 @@ namespace AcTools.Render.Shaders {
 				InputSignaturePNT = TechCube.GetPassByIndex(i).Description.Signature;
 			}
 			if (InputSignaturePNT == null) throw new System.Exception("input signature (TestingPnt, PNT, Cube) == null");
-			LayoutPNT = new InputLayout(device, InputSignaturePNT, InputLayouts.VerticePNT.InputElementsValue);
+			LayoutPNT = new InputLayout(device, InputSignaturePNT.Data, InputLayouts.VerticePNT.InputElementsValue);
 
 			FxWorldViewProj = new EffectOnlyMatrixVariable(E.GetVariableByName("gWorldViewProj"));
 		}

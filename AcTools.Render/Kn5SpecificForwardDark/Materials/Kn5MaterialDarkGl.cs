@@ -3,7 +3,7 @@ using AcTools.Render.Base.Materials;
 using AcTools.Render.Base.Shaders;
 using AcTools.Render.Kn5Specific.Materials;
 using JetBrains.Annotations;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Kn5SpecificForwardDark.Materials {
     public class Kn5MaterialDarkGl : Kn5MaterialDarkBase {

@@ -3,7 +3,7 @@ using AcTools.Render.Base.Materials;
 using AcTools.Render.Base.Structs;
 using AcTools.Render.Base.Utils;
 using AcTools.Render.Kn5SpecificForward.Materials;
-using SlimDX;
+using SharpDX;
 
 namespace AcTools.Render.Base.Objects {
     public class DebugObject : TrianglesRenderableObject<InputLayouts.VerticePNTG> {
