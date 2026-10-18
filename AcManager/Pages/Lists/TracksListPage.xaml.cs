@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using AcManager.Controls.Helpers;
 using AcManager.Controls.ViewModels;
@@ -9,6 +10,7 @@ using AcManager.Tools.AcObjectsNew;
 using AcManager.Tools.Filters.Testers;
 using AcManager.Tools.Managers;
 using AcManager.Tools.Objects;
+using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
@@ -22,7 +24,7 @@ namespace AcManager.Pages.Lists {
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
-            ((ViewModel)DataContext).Load();
+            ((ViewModel)DataContext).Load(this);
             FancyHints.DoubleClickToQuickDrive.Trigger();
         }
 

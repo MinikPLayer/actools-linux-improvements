@@ -74,8 +74,7 @@
         <Button Content="{x:Static g:AppStrings.Selected_CarPage_ReplaceTyres}" Command="{Binding ReplaceTyresCommand}">
           <Button.ToolTip>Replace sets of tyres by some tyres from Kunos (Alt+T)</Button.ToolTip>
         </Button>
-        <Button Content="Generate LODs" Command="{Binding GenerateLodsCommand}"
-            Visibility="{Binding CanEditDetails, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Button Content="Generate LODs" Command="{Binding GenerateLodsCommand}">
           <Button.ToolTip>Improve performance by generating LODs</Button.ToolTip>
         </Button>
       </ToolBar>
@@ -454,20 +453,22 @@
                   </FrameworkElement.ContextMenu>
                 </c:NotesBlock>
 
-                <mui:BooleanSwitch Value="{Binding TheSetupMarketCounter, Source={x:Static t:SettingsHolder.Integrated}}" CollapseOnFalse="True"
-                    c:PropertiesGrid.Label="Setups on TSM:">
-                  <DockPanel Background="Transparent" ToolTip="{x:Static g:AppStrings.Selected_CarPage_New_TSMSetups_Tooltip}">
-                    <Button Content="…" Padding="4 0" DockPanel.Dock="Right" Margin="4 0 1 0" Click="OnTsmSetupsButtonClick" />
-                    <mui:PlaceholderTextBlock Placeholder="…" Text="{Binding SelectedObject.TsmSetupsCount}" />
-                  </DockPanel>
-                </mui:BooleanSwitch>
-
                 <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Total driven:" Placeholder="…"
                     Text="{Binding SelectedObject.TotalDrivenDistanceKm, Converter={StaticResource MultiplyConverter}, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.DistanceFormat}}">
                   <FrameworkElement.ContextMenu>
                     <ContextMenu>
                       <MenuItem Header="{x:Static g:AppStrings.Selected_FilterBySimilarDrivenDistance}" Command="{Binding Path=FilterCommand}" CommandParameter="driven" />
                       <Separator />
+                      <MenuItem Header="{x:Static g:AppStrings.Selected_CarPage_ClearStatsFromThisCar}" Command="{Binding Path=ClearStatsCommand}" />
+                    </ContextMenu>
+                  </FrameworkElement.ContextMenu>
+                </mui:PlaceholderTextBlock>
+
+                <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Last used:" Placeholder="…"
+                    Text="{Binding SelectedObject.LastUsedAt, StringFormat='{}{0:dd/MM/yyyy hh:mm tt}'}"
+                    Visibility="{Binding SelectedObject.LastUsedSet, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <FrameworkElement.ContextMenu>
+                    <ContextMenu>
                       <MenuItem Header="{x:Static g:AppStrings.Selected_CarPage_ClearStatsFromThisCar}" Command="{Binding Path=ClearStatsCommand}" />
                     </ContextMenu>
                   </FrameworkElement.ContextMenu>

@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using System.Windows.Input;
+﻿using System;
+using System.Linq;
+using System.Windows.Controls;
+using AcManager.Controls.ViewModels.Sorting;
 using AcManager.Tools.AcManagersNew;
 using AcManager.Tools.AcObjectsNew;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Lists;
 using AcTools.Utils.Helpers;
-using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Converters;
@@ -13,16 +14,6 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Controls.ViewModels {
-    public interface IAcListPageViewModel {
-        string GetNumberString(int count);
-        string Status { get; }
-        ICommand CopyIdsCommand { get; }
-        ICommand CopyTagsCommand { get; }
-        void SetCurrentItem(string id);
-        AcWrapperCollectionView GetAcWrapperCollectionView();
-        IAcManagerNew Manager { get; }
-    }
-
     public abstract class AcListPageViewModel<T> : AcObjectListCollectionViewWrapper<T>, IAcListPageViewModel where T : AcObjectNew {
         private const string KeyBase = "Content";
 
@@ -30,9 +21,31 @@ namespace AcManager.Controls.ViewModels {
 
         protected AcListPageViewModel([NotNull] IAcManagerNew list, IFilter<T> listFilter) : base(list, listFilter, KeyBase, false) {
             Manager = list;
-            CopyIdsCommand = new DelegateCommand(() => ClipboardHelper.SetText(MainList.OfType<AcItemWrapper>().Select(x => x.Id).JoinToString('\n')));
-            CopyTagsCommand = new DelegateCommand(() => ClipboardHelper.SetText(MainList.OfType<AcItemWrapper>().Select(x => x.Value)
-                    .OfType<AcJsonObjectNew>().SelectMany(x => x.Tags).OrderBy(x => x).Distinct().JoinToString('\n')));
+            _sortingSortingMenuFactory = AcListSortingHelper.Create<T>(Key, pair => SetSortingImpl(pair.Key, pair.Value));
+        }
+
+        private AcObjectSorter<T> _curSortingImpl;
+        private readonly ISortingContextMenuFactory _sortingSortingMenuFactory;
+
+        protected void SetSortingImpl(AcObjectSorter<T> created, bool allowGrouping) {
+            if (_curSortingImpl != null) {
+                _curSortingImpl.OnSelected(false, false, this);
+                _curSortingImpl = null;
+            }
+            if (created != null) {
+                _curSortingImpl = created;
+                _curSortingImpl.OnSelected(true, allowGrouping, this);
+                UsePaddingForChildObjects = _curSortingImpl.UsePaddingForChildObjects();
+                Sorting = _curSortingImpl;
+            } else {
+                ResetGroping();
+                UsePaddingForChildObjects = true;
+                Sorting = null;
+            }
+        }
+
+        public ContextMenu BuildListContextMenu(Action selectMultiple) {
+            return _sortingSortingMenuFactory.BuildListContextMenu(() => MainList.OfType<AcItemWrapper>(), selectMultiple);
         }
 
         protected override void FilteredNumberChanged(int oldValue, int newValue) {
@@ -47,10 +60,6 @@ namespace AcManager.Controls.ViewModels {
         }
 
         public string Status => GetNumberString(MainList.Count);
-
-        public ICommand CopyIdsCommand { get; }
-
-        public ICommand CopyTagsCommand { get; }
 
         public void SetCurrentItem(string id) {
             var found = MainList.OfType<AcItemWrapper>().GetByIdOrDefault(id) ?? MainList.OfType<AcItemWrapper>().FirstOrDefault();

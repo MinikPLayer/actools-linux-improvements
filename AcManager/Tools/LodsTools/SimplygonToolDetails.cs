@@ -20,9 +20,15 @@ namespace AcManager.Tools.Helpers.LodGeneratorServices {
     public class SimplygonToolDetails : ILodsToolDetails {
         public string Key => "Simplygon";
 
+        public string Name => "Simplygon";
+
         public bool UseFbx => true;
 
         public bool SplitPriorities => false;
+        
+        public bool NeedsTool => true;
+        
+        public bool CanWeld => true;
 
         public IEnumerable<string> DefaultToolLocation => new[] { @"C:\Program Files\Simplygon\10\SimplygonBatch.exe" };
 

@@ -23,6 +23,7 @@ SOFTWARE. */
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Cache;
 using System.Security.Cryptography;
@@ -31,6 +32,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using FirstFloor.ModernUI.Helpers;
 
 namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
     internal partial class BbCodeParser {
@@ -38,14 +40,16 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
 
         private class InlineImage : Image {
             private readonly InlineImageCache _cache;
+            private readonly int _maxSize;
 
             static InlineImage() {
                 DefaultStyleKeyProperty.OverrideMetadata(typeof(InlineImage),
                         new FrameworkPropertyMetadata(typeof(InlineImage)));
             }
 
-            public InlineImage(InlineImageCache cache = null) {
+            public InlineImage(InlineImageCache cache = null, int maxSize = -1) {
                 _cache = cache;
+                _maxSize = maxSize;
             }
 
             public Uri ImageUri {
@@ -53,48 +57,35 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
                 set => SetValue(ImageUriProperty, value);
             }
 
-            public BitmapCreateOptions CreateOptions {
-                get => GetValue(CreateOptionsProperty) as BitmapCreateOptions? ?? default;
-                set => SetValue(CreateOptionsProperty, value);
-            }
-
             private static async void ImageUrlPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e) {
-                var uri = e.NewValue as Uri;
-                if (uri == null) return;
+                try {
+                    var uri = e.NewValue as Uri;
+                    if (uri == null) return;
 
-                var cachedImage = (InlineImage)obj;
-                var bitmapImage = new BitmapImage();
+                    var cachedImage = (InlineImage)obj;
+                    if (uri.IsFile) {
+                        if (BbCodeBlock.OptionVerifyLocalImage?.Invoke(uri.LocalPath) == true) {
+                            var image = await BetterImage.LoadBitmapSourceAsync(uri.LocalPath, cachedImage._maxSize, cachedImage._maxSize);
+                            cachedImage.Source = image.ImageSource;
+                        }
+                        return;
+                    }
 
-                if (cachedImage._cache != null) {
-                    try {
+                    if (cachedImage._cache != null) {
                         var memoryStream = await cachedImage._cache.HitAsync(uri);
                         if (memoryStream == null) return;
-
-                        bitmapImage.BeginInit();
-                        bitmapImage.CreateOptions = cachedImage.CreateOptions;
-                        bitmapImage.StreamSource = memoryStream;
-                        bitmapImage.EndInit();
-                        cachedImage.Source = bitmapImage;
-                    } catch (Exception) {
-                        // ignored, in case the downloaded file is a broken or not an image.
+                        cachedImage.Source = BetterImage.LoadBitmapSourceFromMemoryStream(memoryStream, cachedImage._maxSize, cachedImage._maxSize, sourceDebug: uri.ToString()).ImageSource;
+                    } else {
+                        var image = await BetterImage.LoadRemoteBitmapAsync(uri, cachedImage._maxSize, cachedImage._maxSize);
+                        cachedImage.Source = image.ImageSource;
                     }
-                } else {
-                    bitmapImage.BeginInit();
-                    bitmapImage.CreateOptions = cachedImage.CreateOptions;
-                    bitmapImage.UriSource = uri;
-
-                    // Enable IE-like cache policy.
-                    bitmapImage.UriCachePolicy = new RequestCachePolicy(RequestCacheLevel.Default);
-                    bitmapImage.EndInit();
-                    cachedImage.Source = bitmapImage;
+                } catch (Exception ex) {
+                    Logging.Error($"Failed to set BB image {e.NewValue}:  {ex}");
                 }
             }
 
-            public static readonly DependencyProperty ImageUriProperty = DependencyProperty.Register("ImageUri",
+            public static readonly DependencyProperty ImageUriProperty = DependencyProperty.Register(nameof(ImageUri),
                     typeof(Uri), typeof(InlineImage), new PropertyMetadata(null, ImageUrlPropertyChanged));
-
-            public static readonly DependencyProperty CreateOptionsProperty = DependencyProperty.Register("CreateOptions",
-                    typeof(BitmapCreateOptions), typeof(InlineImage));
         }
 
         private class InlineImageCache {
@@ -107,6 +98,10 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
 
             private readonly string _appCacheDirectory;
 
+            private static string EnsureFileNameIsValid(string fileName) {
+                return Path.GetInvalidFileNameChars().Aggregate(fileName, (current, c) => current.Replace(c, '_'));
+            }
+            
             public async Task<MemoryStream> HitAsync(Uri uri) {
                 if (!Directory.Exists(_appCacheDirectory)) {
                     Directory.CreateDirectory(_appCacheDirectory);
@@ -117,8 +112,9 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
                     var canonicalUrl = uri.ToString();
                     var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(canonicalUrl));
                     fileNameBuilder.Append(BitConverter.ToString(hash).Replace(@"-", "").ToLower());
-                    if (Path.HasExtension(canonicalUrl)) {
-                        fileNameBuilder.Append(Path.GetExtension(canonicalUrl));
+                    var lastSep = canonicalUrl.LastIndexOf('.');
+                    if (lastSep != -1 && lastSep > fileNameBuilder.Length - 6) {
+                        fileNameBuilder.Append(EnsureFileNameIsValid(canonicalUrl.Substring(lastSep)));
                     }
                 }
 

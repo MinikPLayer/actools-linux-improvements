@@ -80,16 +80,34 @@ namespace AcManager.Pages.Windows {
                 new TitleLinkEnabledEntry("server", AppStrings.Main_Server, false),
                 new TitleLinkEnabledEntry("settings", AppStrings.Main_Settings),
                 new TitleLinkEnabledEntry("about", AppStrings.Main_About),
-                new TitleLinkEnabledEntry("originalLauncher", AppStrings.Windows_MainWindow_OriginalLauncherAppearsWithSteamStarter),
+                new TitleLinkEnabledEntry("originalLauncher", AppStrings.Windows_MainWindow_OriginalLauncherAppearsWithSteamStarter, false),
                 new TitleLinkEnabledEntry("settings/video", AppStrings.Windows_MainWindow_VideoSettingsFPSCounter, false),
             }.NonNull().ToArray();
         }
 
         public static readonly Uri OriginalLauncherUrl = new Uri("cmd://originalLauncher");
         public static readonly Uri EnterKeyUrl = new Uri("cmd://enterKey");
+        public static object EnterKeyLabel = "switch to full version";
+        public static bool EnterKeyAccent = true;
 
         private readonly bool _cancelled;
+        private bool _steamOverlayFixApplied;
+        private FrameworkElement _steamOverlayFix;
         // private readonly string _testGameDialog = null;
+
+        private void UpdateSteamOverlayFix() {
+            
+            if (_steamOverlayFixApplied == SteamStarter.IsOverlayVisible) return;
+            _steamOverlayFixApplied = !_steamOverlayFixApplied;
+            if (_steamOverlayFix == null) {
+                _steamOverlayFix = (FrameworkElement)FindResource(@"SteamOverlayFix");
+            }
+            if (_steamOverlayFixApplied) {
+                OverlayContentCell.Children.Add(_steamOverlayFix);
+            } else {
+                OverlayContentCell.Children.Remove(_steamOverlayFix);
+            }
+        }
 
         public MainWindow() {
             Owner = null;
@@ -165,13 +183,22 @@ namespace AcManager.Pages.Windows {
 #endif
 
             if (SteamStarter.IsInitialized) {
-                OverlayContentCell.Children.Add((FrameworkElement)FindResource(@"SteamOverlayFix"));
+                if (_steamOverlayFix == null) {
+                    _steamOverlayFix = (FrameworkElement)FindResource(@"SteamOverlayFix");
+                }
+                OverlayContentCell.Children.Add(_steamOverlayFix);
+                _steamOverlayFixApplied = true;
+                Task.Delay(TimeSpan.FromSeconds(15d)).ContinueWithInMainThread(t => UpdateSteamOverlayFix());
             }
+            
+            SteamStarter.SteamOverlayShown += (sender, b) => {
+                Task.Delay(b ? TimeSpan.Zero : TimeSpan.FromSeconds(5d)).ContinueWithInMainThread(t => UpdateSteamOverlayFix());
+            };
 
             LinkNavigator.Commands.Add(new Uri("cmd://enterKey"), Model.EnterKeyCommand);
             if (SettingsHolder.Drive.SelectedStarterType != SettingsHolder.DriveSettings.SteamStarterType) {
                 TitleLinks.Remove(OriginalLauncher);
-            } else {
+            } else if (string.Equals(System.IO.Path.GetFileName(MainExecutingFile.Location), @"assettocorsa.exe", StringComparison.OrdinalIgnoreCase)) {
                 LinkNavigator.Commands.Add(new Uri("cmd://originalLauncher"), new DelegateCommand(SteamStarter.StartOriginalLauncher));
             }
 
@@ -468,7 +495,7 @@ namespace AcManager.Pages.Windows {
             LiveGroup.IsShown = LiveGroup.Links.Any(x => x.IsShown && x.Icon == null);
             // ShortSurveyLink.IsShown = !Stored.Get<bool>("surveyHide").Value;
 
-            RaceULink.IsShown = SettingsHolder.Live.RaceUEnabled;
+            // RaceULink.IsShown = SettingsHolder.Live.RaceUEnabled;
         }
 
         /// <summary>
@@ -715,8 +742,10 @@ namespace AcManager.Pages.Windows {
             ArgumentsHandler.OnDragEnter(e);
         }
 
-        private void OnClosed(object sender, EventArgs e) {
-            _dynamicBackground?.Dispose();
+        private bool _closed;
+        private bool _postponeShutdown;
+
+        private static void EnsureShutdown() {
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
                 WindowsHelper.RestartCurrentApplication();
             } else {
@@ -728,8 +757,11 @@ namespace AcManager.Pages.Windows {
                 }
             }
         }
-
-        private bool _closed;
+        
+        private void OnClosed(object sender, EventArgs e) {
+            _dynamicBackground?.Dispose();
+            if (!_postponeShutdown) EnsureShutdown();
+        }
 
         private void OnClosing(object sender, CancelEventArgs e) {
             if (_closed) return;
@@ -761,7 +793,8 @@ namespace AcManager.Pages.Windows {
                                     unsaved.OrderBy(x => x).Select(x => $@" • {x}").JoinToString(Environment.NewLine)}",
                             AppStrings.Main_UnsavedChangesHeader, MessageBoxButton.YesNoCancel)) {
                                 case MessageBoxResult.Yes:
-                                    Superintendent.Instance.SaveAll();
+                                    _postponeShutdown = true;
+                                    Superintendent.Instance.SaveAllAsync().ContinueWith(r => EnsureShutdown());
                                     break;
                                 case MessageBoxResult.Cancel:
                                     e.Cancel = true;
@@ -771,7 +804,7 @@ namespace AcManager.Pages.Windows {
 
                 // Just in case, temporary
                 _closed = true;
-                Application.Current.Shutdown();
+                if (!_postponeShutdown) EnsureShutdown();
             } catch (Exception ex) {
                 Logging.Warning(ex);
             }

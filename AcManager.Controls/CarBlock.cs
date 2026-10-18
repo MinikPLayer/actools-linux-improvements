@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Shapes;
 using AcManager.Controls.Dialogs;
 using AcManager.Controls.Graphs;
 using AcManager.Controls.Helpers;
@@ -16,8 +17,12 @@ using AcManager.Tools.Objects;
 using AcTools.Utils;
 using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Helpers;
+using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
+using FirstFloor.ModernUI.Windows.Controls.BbCode;
+using FirstFloor.ModernUI.Windows.Navigation;
 using JetBrains.Annotations;
+using Path = System.IO.Path;
 
 namespace AcManager.Controls {
     public interface ICustomShowroomWrapper {
@@ -35,7 +40,7 @@ namespace AcManager.Controls {
     }
 
     [ContentProperty(nameof(PreviewContent))]
-    public class CarBlock : Control {
+    public class CarBlock : Control, IBbCodeLinkParser {
         [CanBeNull]
         public static ICustomShowroomWrapper CustomShowroomWrapper { get; set; }
 
@@ -65,7 +70,7 @@ namespace AcManager.Controls {
         public Border Footer { get; private set; }
 
         private FrameworkElement _previewImage;
-        private Button _showroomButton, _tsmSetupsButton;
+        private Button _showroomButton;
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
@@ -80,13 +85,8 @@ namespace AcManager.Controls {
                 _showroomButton.PreviewMouseRightButtonDown -= OnShowroomContextMenu;
             }
 
-            if (_tsmSetupsButton != null) {
-                _tsmSetupsButton.Click -= OnTsmSetupsButtonClick;
-            }
-
             _previewImage = GetTemplateChild("PART_PreviewImage") as FrameworkElement;
             _showroomButton = GetTemplateChild("PART_ShowroomButton") as Button;
-            _tsmSetupsButton = GetTemplateChild("PART_TsmSetupsButton") as Button;
 
             if (_previewImage != null) {
                 _previewImage.MouseUp += OnPreviewImageClick;
@@ -96,11 +96,7 @@ namespace AcManager.Controls {
                 _showroomButton.Click += OnShowroomButtonClick;
                 _showroomButton.PreviewMouseRightButtonDown += OnShowroomContextMenu;
             }
-
-            if (_tsmSetupsButton != null) {
-                _tsmSetupsButton.Click += OnTsmSetupsButtonClick;
-            }
-
+            
             // Various areas and footer
             TagsList = GetTemplateChild("PART_TagsList") as TagsList;
             BrandArea = GetTemplateChild("PART_BrandArea") as FrameworkElement;
@@ -219,7 +215,7 @@ namespace AcManager.Controls {
 
                 item.Inlines.Add(string.IsNullOrEmpty(carDescription) ?
                         PlaceholderTextBlock.GetPlaceholder(textBox, "Description is missing.") :
-                        new Run(carDescription));
+                        BbCodeBlock.ParseEmoji(carDescription, BbCodeBlock.AllowBbCodes.Limited, false, this, linkParser: this));
 
                 textBox.Document.Blocks.Add(item);
 
@@ -234,6 +230,26 @@ namespace AcManager.Controls {
             } else {
                 footer.Child = null;
             }
+        }
+
+        bool IBbCodeLinkParser.TryParseUriWithParameters(string value, bool detectParametersInWebUrls, out Uri uri, out string parameter, out string targetName, out string toolTip) {
+            uri = null;
+            parameter = null;
+            targetName = null;
+            toolTip = null;
+            if (value != null && value.StartsWith(@"ui/") && !value.Contains(@"..")) {
+                var car = Car;
+                if (car != null) {
+                    uri = new Uri(Path.Combine(car.Location, value));
+                    toolTip = value;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public string Urlify(string value) {
+            return value.StartsWith(@"ui/") && !value.Contains(@"..") ? value : value.Urlify();
         }
 
         public static readonly DependencyProperty SelectedSkinProperty = DependencyProperty.Register(nameof(SelectedSkin), typeof(CarSkinObject),
@@ -364,10 +380,6 @@ namespace AcManager.Controls {
 
         private void OnShowroomButtonClick(object sender, EventArgs e) {
             OnShowroomButtonClick(Car, SelectedSkin);
-        }
-
-        private void OnTsmSetupsButtonClick(object sender, RoutedEventArgs e) {
-            CarSetupsView?.Open(Car, CarSetupsRemoteSource.TheSetupMarket);
         }
     }
 }

@@ -248,6 +248,10 @@ namespace AcManager.Tools.Managers.Online {
             }
         }
 
+        public enum CurrentDriverStatus : byte {
+            Disconnected, Connected, Fake
+        }
+
         public class CurrentDriver : NotifyPropertyChanged {
             private static readonly WeakList<CurrentDriver> Instances = new WeakList<CurrentDriver>();
 
@@ -261,7 +265,7 @@ namespace AcManager.Tools.Managers.Online {
 
             public string CarSkinId { get; }
 
-            public bool IsConnected { get; }
+            public CurrentDriverStatus IsAnybodyConnected { get; }
 
             public bool IsBookedForPlayer { get; }
 
@@ -270,8 +274,16 @@ namespace AcManager.Tools.Managers.Online {
                 Team = x.DriverTeam;
                 CarId = x.CarId;
                 CarSkinId = x.CarSkinId;
-                CspParams = x.CspParams;
-                IsConnected = x.IsConnected;
+                if (allowCspParams) {
+                    CspParams = x.CspParams;
+                }
+                if (!x.IsSlotTaken) {
+                    IsAnybodyConnected = CurrentDriverStatus.Disconnected;
+                } else if (!x.IsRequestedGuid && OnlineSanityHelper.IsHoldingSlot(Name, x.CarSkinId)) {
+                    IsAnybodyConnected = CurrentDriverStatus.Fake;
+                } else {
+                    IsAnybodyConnected = CurrentDriverStatus.Connected;
+                }
                 IsBookedForPlayer = x.IsRequestedGuid;
 
                 Instances.Purge();
@@ -293,7 +305,7 @@ namespace AcManager.Tools.Managers.Online {
 
             protected bool Equals(CurrentDriver other) {
                 return string.Equals(Name, other.Name) && string.Equals(Team, other.Team) && string.Equals(CarId, other.CarId) &&
-                        string.Equals(CarSkinId, other.CarSkinId) && IsConnected == other.IsConnected && IsBookedForPlayer == other.IsBookedForPlayer;
+                        string.Equals(CarSkinId, other.CarSkinId) && IsAnybodyConnected == other.IsAnybodyConnected && IsBookedForPlayer == other.IsBookedForPlayer;
             }
 
             public override bool Equals(object obj) {
@@ -306,7 +318,7 @@ namespace AcManager.Tools.Managers.Online {
                     hashCode = (hashCode * 397) ^ (Team?.GetHashCode() ?? 0);
                     hashCode = (hashCode * 397) ^ (CarId?.GetHashCode() ?? 0);
                     hashCode = (hashCode * 397) ^ (CarSkinId?.GetHashCode() ?? 0);
-                    hashCode = (hashCode * 397) ^ IsConnected.GetHashCode();
+                    hashCode = (hashCode * 397) ^ IsAnybodyConnected.GetHashCode();
                     hashCode = (hashCode * 397) ^ IsBookedForPlayer.GetHashCode();
                     return hashCode;
                 }

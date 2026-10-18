@@ -1044,7 +1044,7 @@ window.$KEY = outline.stop.bind(outline);
                 _progress = null;
 
                 try {
-                    var newLoader = await FlexibleLoader.CreateLoaderAsync(url, this, default(CancellationToken));
+                    var newLoader = await FlexibleLoader.CreateLoaderAsync(new FlexibleLoader.LoaderParams(url), this, CancellationToken.None);
                     if (newLoader == null) throw new Exception("Unexpected exception #4313");
 
                     Logging.Write("Loader: " + newLoader.GetType().Name);
@@ -1260,14 +1260,14 @@ window.$KEY = outline.stop.bind(outline);
                                 if (_onDownloadFired) {
                                     _source.AutoDownloadRule = suggestedRule;
                                 } else {
-                                    ActionExtension.InvokeInMainThread(FailSafe);
+                                    ActionExtension.InvokeInMainThreadAsyncLater(FailSafe);
                                 }
                             });
                             return;
                         }
 
                         if (!_onDownloadFired) {
-                            ActionExtension.InvokeInMainThread(FailSafe);
+                            ActionExtension.InvokeInMainThreadAsyncLater(FailSafe);
                         }
                     }).Ignore();
                     _dialog.ShowInvisible();

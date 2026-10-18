@@ -7,7 +7,6 @@ using AcManager.Tools.Helpers;
 using AcManager.Tools.Helpers.Api.Kunos;
 using AcManager.Tools.Objects;
 using AcTools.Processes;
-using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Helpers;
@@ -22,8 +21,6 @@ namespace AcManager.Tools.Managers.Online {
 
         public ServerEntry([NotNull] ServerInformation information) {
             if (information == null) throw new ArgumentNullException(nameof(information));
-            _sortingName = Lazier.Create(() => GetSortingName(DisplayName));
-
             Id = information.Id;
             Ip = information.Ip;
             PortHttp = information.PortHttp;
@@ -36,12 +33,13 @@ namespace AcManager.Tools.Managers.Online {
             set {
                 if (Equals(value, base.DisplayName)) return;
                 base.DisplayName = value;
-                _sortingName.Reset();
+                _sortingName = null;
             }
         }
 
-        private readonly Lazier<string> _sortingName;
-        public string SortingName => _sortingName.Value;
+        private string _sortingName;
+        
+        public string SortingName => _sortingName ?? (_sortingName = OnlineSanityHelper.GetSortingName(DisplayName));
 
         public async Task UpdateValuesAsync([NotNull] ServerInformation information, bool forceStatus = false) {
             PrepareErrorsList();

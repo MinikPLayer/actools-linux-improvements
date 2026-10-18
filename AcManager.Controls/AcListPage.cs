@@ -216,6 +216,17 @@ namespace AcManager.Controls {
         public static readonly DependencyProperty NarrowListProperty = DependencyProperty.RegisterAttached("NarrowList", typeof(bool),
                 typeof(AcListPage), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
+        public static bool GetUsePaddingForChildObjects(DependencyObject obj) {
+            return obj.GetValue(UsePaddingForChildObjectsProperty) as bool? == true;
+        }
+
+        public static void SetUsePaddingForChildObjects(DependencyObject obj, bool value) {
+            obj.SetValue(UsePaddingForChildObjectsProperty, value);
+        }
+
+        public static readonly DependencyProperty UsePaddingForChildObjectsProperty = DependencyProperty.RegisterAttached("UsePaddingForChildObjects", typeof(bool),
+                typeof(AcListPage), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
+
         private bool _batchActionsSet;
 
         private void SetMultiSelectionMode(bool? newValue = null) {
@@ -266,6 +277,14 @@ namespace AcManager.Controls {
 
             BatchMenuVisible = !BatchMenuVisible;
             Draggable.SetForceDisabled(this, BatchMenuVisible);
+        }
+
+        private void OnListContextMenuClick(object sender, ContextMenuButtonEventArgs e) {
+            var button = (ContextMenuButton)sender;
+            if (button.Menu == null) {
+                button.Menu = (DataContext as IAcListPageViewModel)?.BuildListContextMenu(_list == null || GetBatchActionsArray().Length == 0 ? null 
+                        : (Action)(() => SetMultiSelectionMode(true)));
+            }
         }
 
         private static readonly string KeepBatchActionsPanelOpenKey = "_ba.keepOpen";
@@ -389,7 +408,7 @@ namespace AcManager.Controls {
 
         private void OnSelectedBatchActionChanged([CanBeNull] BatchAction newValue) {
             if (_selectedBatchAction != null) {
-                WeakEventManager<BatchAction, EventArgs>.RemoveHandler(newValue, nameof(BatchAction.AvailabilityChanged), OnBatchActionAvailabilityChanged);
+                WeakEventManager<BatchAction, EventArgs>.RemoveHandler(_selectedBatchAction, nameof(BatchAction.AvailabilityChanged), OnBatchActionAvailabilityChanged);
             }
 
             _selectedBatchAction = newValue;
@@ -513,6 +532,8 @@ namespace AcManager.Controls {
 
         [CanBeNull]
         private SizeRelatedCondition[] _listSizeConditions;
+        
+        private ContextMenuButton _listContextMenuButton;
 
         //private FrameworkElement _frame;
         //private DoubleAnimation _batchActionParamsAnimation;
@@ -549,6 +570,10 @@ namespace AcManager.Controls {
                 _batchActionRunButton.Click -= OnBatchActionRunButtonClick;
             }
 
+            if (_listContextMenuButton != null) {
+                _listContextMenuButton.Click -= OnListContextMenuClick;
+            }
+
             base.OnApplyTemplate();
 
             _batchActionsSet = false;
@@ -562,6 +587,7 @@ namespace AcManager.Controls {
             _batchActionParams = GetTemplateChild(@"PART_BatchActionParams") as FrameworkElement;
             _batchActionRunButton = GetTemplateChild(@"PART_BatchBlock_RunButton") as Button;
             _batchActionCloseButton = GetTemplateChild(@"PART_BatchBlock_CloseButton") as Button;
+            _listContextMenuButton = GetTemplateChild(@"PART_ListContextMenu") as ContextMenuButton;
             //_frame = GetTemplateChild(@"PART_Frame") as FrameworkElement;
             //_batchActionParamsAnimation = GetTemplateChild(@"PART_BatchActionParams_Animation") as DoubleAnimation;
 
@@ -612,6 +638,10 @@ namespace AcManager.Controls {
             if (_batchActionParams != null) {
                 _batchActionParamsTransform = new TranslateTransform();
                 _batchActionParams.RenderTransform = _batchActionParamsTransform;
+            }
+
+            if (_listContextMenuButton != null) {
+                _listContextMenuButton.Click += OnListContextMenuClick;
             }
 
             UpdateBatchBlocksSizes();
@@ -745,7 +775,7 @@ namespace AcManager.Controls {
             }
         }
 
-        #region Control Properies
+        #region Control Properties
         public static readonly DependencyProperty SelectedSourceProperty = DependencyProperty.Register(nameof(SelectedSource), typeof(Uri),
             typeof(AcListPage), new PropertyMetadata());
 

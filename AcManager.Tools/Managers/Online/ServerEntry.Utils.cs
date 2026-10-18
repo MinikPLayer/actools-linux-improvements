@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Objects;
 using AcTools.Utils.Helpers;
+using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
 
 namespace AcManager.Tools.Managers.Online {
@@ -20,68 +21,6 @@ namespace AcManager.Tools.Managers.Online {
                 RegexOptions.Compiled);
 
         private static readonly Regex SimpleCleanUpRegex = new Regex(@"^AA+\s*", RegexOptions.Compiled);
-
-        private static string GetSortingName(string name) {
-            if (string.IsNullOrEmpty(name)) {
-                return @"zzzz";
-            }
-
-            name = name.Trim();
-            
-            var shadyCount = name.TakeWhile(IsLikelyToBeCheat).Count();
-            if (shadyCount > 2 && (IsMoreLikelyToBeCheat(name[shadyCount - 1]) || name[0] == 'A')) {
-                name = name.Substring(shadyCount).TrimStart() + @"z";
-            }
-
-            name = name.ToLowerInvariant();
-
-            var shadyBit = name.IndexOf(@"000", StringComparison.Ordinal);
-            if (shadyBit != -1) {
-                return @"zz:" + name;
-            }
-
-            if (IsUnlikelyToBeCheat(name[0])) {
-                return name;
-            }
-
-            var lettersOnly = LettersOnly(name);
-            for (int i = 0, u = 0; i < lettersOnly.Length - 3; ++i) {
-                if (lettersOnly[i] == '0' && lettersOnly[i + 1] == '0') {
-                    lettersOnly = lettersOnly.Substring(i + 2).TrimStart('0');
-                    i = 0;
-                    u = 0;
-                } else if (IsUnlikelyToBeCheat(lettersOnly[i])) {
-                    if (++u == 2) break;
-                }
-            }
-            
-            return lettersOnly.Length > 0 ? lettersOnly : @"zzz:" + name;
-
-            bool IsLikelyToBeCheat(char c) {
-                return c >= 'a' && c <= 'c' || c >= 'A' && c <= 'D' || c >= '0' && c <= '5' || !char.IsLetterOrDigit(c);
-            }
-
-            bool IsMoreLikelyToBeCheat(char c) {
-                return !char.IsLetter(c) || c >= 'A' && c <= 'C' || c >= 'a' && c <= 'b' || c >= '0' && c <= '2';
-            }
-
-            bool IsUnlikelyToBeCheat(char c) {
-                return c > 'a' && c <= 'z';
-            }
-
-            string LettersOnly(string s) {
-                var o = new StringBuilder(s.Length);
-                var v = s.Length > 3 && IsUnlikelyToBeCheat(s[1]);
-                for (var i = 0; i < s.Length; i++) {
-                    var c = s[i];
-                    if (char.IsLetterOrDigit(s[i])) {
-                        v = v || IsUnlikelyToBeCheat(c);
-                        if (v) o.Append(char.ToLowerInvariant(s[i]));
-                    }
-                }
-                return o.ToString();
-            }
-        }
 
         private static string InvisibleCleanUp(string s) {
             var r = new StringBuilder();

@@ -4,6 +4,14 @@ using JetBrains.Annotations;
 
 namespace AcTools.Utils.Helpers {
     public static class ArrayExtension {
+        public static void XorSelf(this byte[] data, byte[] key) {
+            int dataLength = data.Length, keyLength = key.Length;
+            for (int i = 0, k = 0; i < dataLength; i++, k++) {
+                if (k == keyLength) k = 0;
+                data[i] ^= key[k];
+            }
+        }
+
         [CanBeNull]
         public static T[] CreateArrayOfType<T>(int size) where T : new() {
             var result = new T[size];
@@ -129,6 +137,19 @@ namespace AcTools.Utils.Helpers {
             if (decoded != null) {
                 try {
                     return Convert.ToBase64String(decoded).TrimEnd('=');
+                } catch (Exception e) {
+                    AcToolsLogging.Write(e);
+                }
+            }
+
+            return null;
+        }
+
+        [Pure, CanBeNull]
+        public static string ToCutBase64Url([CanBeNull] this byte[] decoded) {
+            if (decoded != null) {
+                try {
+                    return Convert.ToBase64String(decoded).TrimEnd('=').Replace('+', '-').Replace('/', '_');
                 } catch (Exception e) {
                     AcToolsLogging.Write(e);
                 }

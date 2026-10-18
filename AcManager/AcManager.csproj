@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.props')" />
   <Import Project="..\packages\cef.redist.x86.114.2.12\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.114.2.12\build\cef.redist.x86.props')" />
   <Import Project="..\packages\cef.redist.x64.114.2.12\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.114.2.12\build\cef.redist.x64.props')" />
   <PropertyGroup>
     <!-- There is also a custom packer made for this app, that’s why there is an option. -->
-    <UseCosturaToPack>true</UseCosturaToPack>
+    <UseCosturaToPack>false</UseCosturaToPack>
     <IncludeWorkshop>false</IncludeWorkshop>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -24,6 +24,9 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('C:\Development\.x4fab')">
+    <UseCosturaToPack>true</UseCosturaToPack>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -427,6 +430,7 @@
     <Compile Include="Pages\ContentTools\Uv2ModelConverter.xaml.cs">
       <DependentUpon>Uv2ModelConverter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Dialogs\AllowedHelper.cs" />
     <Compile Include="Pages\Dialogs\AppKeyDialog.xaml.cs">
       <DependentUpon>AppKeyDialog.xaml</DependentUpon>
     </Compile>
@@ -457,6 +461,9 @@
     </Compile>
     <Compile Include="Pages\Dialogs\ImageEditor.xaml.cs">
       <DependentUpon>ImageEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Dialogs\ServerCommunityRating.xaml.cs">
+      <DependentUpon>ServerCommunityRating.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Dialogs\TrackSkinTexturesDialog.xaml.cs">
       <DependentUpon>TrackSkinTexturesDialog.xaml</DependentUpon>
@@ -493,6 +500,9 @@
       <DependentUpon>AppIconEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Dialogs\TyresMachineGraphViewer.cs" />
+    <Compile Include="Pages\Drive\CspNewModes.xaml.cs">
+      <DependentUpon>CspNewModes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Drive\GridFinder.xaml.cs">
       <DependentUpon>GridFinder.xaml</DependentUpon>
     </Compile>
@@ -500,6 +510,7 @@
     <Compile Include="Pages\Drive\JsGenericProxy.cs" />
     <Compile Include="Pages\Drive\Online.QuickFilters.cs" />
     <Compile Include="Pages\Drive\OnlineServer.AutoJoin.cs" />
+    <Compile Include="Pages\Drive\OnlineServer.Cmor.cs" />
     <Compile Include="Pages\Drive\QuickDriveSingleModeViewModel.cs" />
     <Compile Include="Pages\Drive\QuickDrive_Custom.xaml.cs">
       <DependentUpon>QuickDrive_Custom.xaml</DependentUpon>
@@ -856,10 +867,15 @@
     <Compile Include="Tools\GameSessionNameProvider.cs" />
     <Compile Include="Tools\LargeFileUploaderParams.cs" />
     <Compile Include="Tools\LiveryIconEditor.cs" />
+    <Compile Include="Tools\LodsTools\BlenderToolDetails.cs" />
     <Compile Include="Tools\LodsTools\MeshLabToolDetails.cs" />
     <Compile Include="Tools\LodsTools\PolygonCruncherToolDetails.cs" />
     <Compile Include="Tools\LodsTools\ILodsToolDetails.cs" />
+    <Compile Include="Tools\LodsTools\RunProcessAsyncHelper.cs" />
     <Compile Include="Tools\LodsTools\SimplygonToolDetails.cs" />
+    <Compile Include="Tools\LodsTools\MeshOptimizerToolDetails.cs" />
+    <None Include="Tools\LodsTools\MeshOptimizerLod.cpp" />
+    <Compile Include="Tools\LodsTools\SingleTimeInitHelper.cs" />
     <Compile Include="Tools\NeutralColorGradingLut.cs" />
     <Compile Include="Tools\KeyboardListener.cs" />
     <Compile Include="Tools\QuickDriveButtonModel.cs" />
@@ -1193,6 +1209,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Dialogs\ServerCommunityRating.xaml" />
     <Page Include="Pages\Dialogs\TrackSkinTexturesDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1249,6 +1266,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Drive\CspNewModes.xaml" />
     <Page Include="Pages\Drive\GridFinder.xaml" />
     <Page Include="Pages\Drive\QuickDrive_Custom.xaml" />
     <Page Include="Pages\Drive\RaceU.xaml" />
@@ -2172,7 +2190,6 @@
     </None>
     <None Include="About\ImportantTips\Thank you!.txt" />
     <None Include="About\ImportantTips\Track Previews How-To.txt" />
-    <None Include="About\ImportantTips\Starters.txt" />
     <None Include="About\ImportantTips\Command-Line Arguments.txt" />
   </ItemGroup>
   <ItemGroup>

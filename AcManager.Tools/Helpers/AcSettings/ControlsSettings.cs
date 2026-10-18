@@ -45,6 +45,7 @@ namespace AcManager.Tools.Helpers.AcSettings {
         static ControlsSettings() {
             PresetsDirectory = Path.Combine(AcPaths.GetDocumentsCfgDirectory(), "controllers");
             UserPresetsDirectory = Path.Combine(PresetsDirectory, SubUserPresets);
+            Directory.CreateDirectory(UserPresetsDirectory);
         }
 
         private static string CapitalizeFirst(string s) {
@@ -68,7 +69,7 @@ namespace AcManager.Tools.Helpers.AcSettings {
             WheelAxleEntries = new[] {
                 SteerAxleEntry,
                 new WheelAxleEntry("THROTTLE", ToolsStrings.Controls_Throttle, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma)),
-                new WheelAxleEntry("BRAKES", ToolsStrings.Controls_Brakes, gammaMode: true),
+                new WheelAxleEntry("BRAKES", ToolsStrings.Controls_Brakes, gammaMode: true) { GammaWarning = true },
                 new WheelAxleEntry("CLUTCH", ToolsStrings.Controls_Clutch, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma)),
                 new WheelAxleEntry(HandbrakeId, ToolsStrings.Controls_Handbrake, gammaMode: PatchHelper.IsFeatureSupported(PatchHelper.FeatureDirectInputExtraGamma))
             };

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ using AcManager.Pages.Drive;
 using AcManager.Pages.Selected;
 using AcManager.Pages.Windows;
 using AcManager.Tools;
+using AcManager.Tools.AcManagersNew;
 using AcManager.Tools.AcObjectsNew;
 using AcManager.Tools.Data;
 using AcManager.Tools.Filters.Testers;
@@ -47,7 +49,7 @@ namespace AcManager.Pages.Lists {
         private ViewModel Model => (ViewModel)DataContext;
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
-            Model.Load();
+            Model.Load(this);
             FancyHints.DoubleClickToQuickDrive.Trigger();
 
             if (Model.MainList.Count > 20) {
@@ -74,7 +76,6 @@ namespace AcManager.Pages.Lists {
                     _selectNextCar = null;
                     return value;
                 }
-
                 return base.LoadCurrentId();
             }
         }
@@ -114,6 +115,7 @@ namespace AcManager.Pages.Lists {
             if (SettingsHolder.Common.DeveloperMode) {
                 ret = ret.Append(BatchAction_UnpackCarData.Instance);
                 ret = ret.Append(BatchAction_PackCarData.Instance);
+                ret = ret.Append(BatchAction_ResaveCarModel.Instance);
             }
             return ret;
         }
@@ -388,9 +390,9 @@ namespace AcManager.Pages.Lists {
                         torqueCurve?.ScaleToSelf(torque.Value);
                     }
                 } else {
-                    var multipler = 1d / (1d - TransmissionLoss);
-                    torqueCurve?.TransformSelf(x => x.Y * multipler);
-                    powerCurve?.TransformSelf(x => x.Y * multipler);
+                    var multiplier = 1d / (1d - TransmissionLoss);
+                    torqueCurve?.TransformSelf(x => x.Y * multiplier);
+                    powerCurve?.TransformSelf(x => x.Y * multiplier);
                 }
 
                 if (powerCurve != null) {
@@ -494,6 +496,28 @@ namespace AcManager.Pages.Lists {
             }
         }
 
+        public class BatchAction_ResaveCarModel : BatchAction<CarObject> {
+            public static readonly BatchAction_ResaveCarModel Instance = new BatchAction_ResaveCarModel();
+
+            public BatchAction_ResaveCarModel()
+                    : base("Re-save car model", "Might help with some damaged models", "Developer", null) {
+                DisplayApply = "Re-save";
+            }
+
+            public override bool IsAvailable(CarObject obj) {
+                return true;
+            }
+
+            protected override void ApplyOverride(CarObject obj) {
+                try {
+                    var kn5 = Kn5.FromFile(AcPaths.GetMainCarFilename(obj.Location, obj.AcdData, false) ?? throw new Exception());
+                    kn5.SaveRecyclingOriginal(kn5.OriginalFilename);
+                } catch (Exception e) {
+                    NonfatalError.NotifyBackground("Can’t re-save model", e);
+                }
+            }
+        }
+
         public class BatchAction_UnpackCarData : BatchAction<CarObject> {
             public static readonly BatchAction_UnpackCarData Instance = new BatchAction_UnpackCarData();
 
@@ -521,8 +545,10 @@ namespace AcManager.Pages.Lists {
         public class BatchAction_PackCarData : BatchAction<CarObject> {
             public static readonly BatchAction_PackCarData Instance = new BatchAction_PackCarData();
 
+            public StoredValue<bool> OverrideExisting { get; } = Stored.Get("BatchAction_AnalyzeCar.OverrideExisting", false);
+
             public BatchAction_PackCarData()
-                    : base("Pack car data", "Pack “data” folder into “data.acd” if there is no such file", "Developer", null) {
+                    : base("Pack car data", "Pack “data” folder into “data.acd” if there is no such file", "Developer", "Batch.PackCarData") {
                 DisplayApply = "Unpack";
             }
 
@@ -534,8 +560,11 @@ namespace AcManager.Pages.Lists {
                 try {
                     var destination = Path.Combine(obj.Location, "data.a" + "cd");
                     var dataDirectory = Path.Combine(obj.Location, "data");
-                    if (!Directory.Exists(dataDirectory) || File.Exists(destination)) {
+                    if (!Directory.Exists(dataDirectory) || !OverrideExisting.Value && File.Exists(destination)) {
                         return;
+                    }
+                    if (OverrideExisting.Value && File.Exists(destination)) {
+                        FileUtils.Recycle(destination);
                     }
                     Acd.FromDirectory(dataDirectory).Save(destination);
                 } catch (Exception e) {
@@ -785,7 +814,7 @@ namespace AcManager.Pages.Lists {
 
             public BatchAction_PackCars() : base("Batch.PackCars") { }
 
-            #region Properies
+            #region Properties
             private bool _packData = ValuesStorage.Get("_ba.packCars.data", true);
 
             public bool PackData {

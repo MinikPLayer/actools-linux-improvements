@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
@@ -26,6 +27,7 @@ using AcManager.Tools.Managers.Online;
 using AcManager.Tools.Miscellaneous;
 using AcManager.Tools.SemiGui;
 using AcManager.Tools.SharedMemory;
+using AcManager.Tools.Starters;
 using AcTools.Processes;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
@@ -417,16 +419,30 @@ namespace AcManager.Pages.Drive {
                 }
             }
 
-            private DelegateCommand _inviteCommand;
-
-            public DelegateCommand InviteCommand => _inviteCommand ?? (_inviteCommand = new DelegateCommand(() => {
-                var link = $@"{InternalUtils.MainApiDomain}/s/q:race/online/join?ip={Entry.Ip}&httpPort={Entry.PortHttp}";
+            private string GenerateInviteLinkBase() {
+                var link = $@"online/join?ip={Entry.Ip}&httpPort={Entry.PortHttp}";
                 if (CopyPasswordToInviteLink && !string.IsNullOrWhiteSpace(Entry.Password) && Entry.PasswordRequired) {
                     link += $@"&password={EncryptSharedPassword(Entry.Id, Entry.Password)}";
                 }
+                return link;
+            }
 
+            private DelegateCommand _inviteCommand;
+
+            public DelegateCommand InviteCommand => _inviteCommand ?? (_inviteCommand = new DelegateCommand(() => {
+                var link = $@"{InternalUtils.MainApiDomain}/s/q:race/{GenerateInviteLinkBase()}";
                 SharingUiHelper.ShowShared("Inviting link", link, false);
             }));
+
+            private AsyncCommand _inviteSteamFriendCommand;
+
+            public AsyncCommand InviteSteamFriendCommand => _inviteSteamFriendCommand ?? (_inviteSteamFriendCommand = new AsyncCommand(async () => {
+                try {
+                    await SteamStarter.InviteFriendAsync(GenerateInviteLinkBase()).ConfigureAwait(false);
+                } catch (Exception e) {
+                    NonfatalError.Notify("Failed to invite a friend", e);
+                }
+            }, () => SettingsHolder.Integrated.SteamIntegration));
 
             private string _tsServer;
             private DelegateCommand _joinTsCommand;
@@ -453,17 +469,9 @@ namespace AcManager.Pages.Drive {
         /// </summary>
         private static readonly string EncryptKey = InternalUtils.GetOnlineInviteEncryptionKey();
 
-        private static void Xor(byte[] data, byte[] key) {
-            int dataLength = data.Length, keyLength = key.Length;
-            for (int i = 0, k = 0; i < dataLength; i++, k++) {
-                if (k == keyLength) k = 0;
-                data[i] ^= key[k];
-            }
-        }
-
         public static string EncryptSharedPassword(string id, string password) {
             var data = Encoding.UTF8.GetBytes(password);
-            Xor(data, Encoding.UTF8.GetBytes(id + EncryptKey));
+            data.XorSelf(Encoding.UTF8.GetBytes(id + EncryptKey));
             return HttpUtility.UrlEncode(Convert.ToBase64String(data));
         }
 
@@ -473,7 +481,7 @@ namespace AcManager.Pages.Drive {
 
         public static string DecryptSharedPassword(string id, string encryptedPassword) {
             var data = Convert.FromBase64String(encryptedPassword);
-            Xor(data, Encoding.UTF8.GetBytes(id + EncryptKey));
+            data.XorSelf(Encoding.UTF8.GetBytes(id + EncryptKey));
             return Encoding.UTF8.GetString(data);
         }
 
@@ -514,6 +522,12 @@ namespace AcManager.Pages.Drive {
         }
 
         private void OnEntryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (Application.Current?.Dispatcher.Thread != Thread.CurrentThread) {
+                ActionExtension.InvokeInMainThreadAsyncLater(() => {
+                    OnEntryPropertyChanged(sender, e);
+                });
+                return;
+            }
             Model.OnPropertyChanged(e);
 
             switch (e.PropertyName) {

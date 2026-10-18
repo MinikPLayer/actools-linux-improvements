@@ -305,6 +305,18 @@
               </mui:PlaceholderTextBlock>
             </c:PropertiesGrid>
 
+            <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Last used:" Placeholder="…"
+                Text="{Binding SelectedTrackConfiguration.LastUsedAt, StringFormat='{}{0:dd/MM/yyyy hh:mm tt}'}"
+                Visibility="{Binding SelectedTrackConfiguration.LastUsedSet, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <FrameworkElement.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="Clear stats from this track" Command="{Binding Path=ClearStatsCommand}" />
+                  <MenuItem Header="Clear stats from this track (all layouts)" Command="{Binding Path=ClearStatsAllCommand}"
+                      Visibility="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </ContextMenu>
+              </FrameworkElement.ContextMenu>
+            </mui:PlaceholderTextBlock>
+
             <c:BestLapsList TrackId="{Binding SelectedTrackConfiguration.IdWithLayout}" Margin="0 20 0 0" />
           </StackPanel>
 
@@ -330,7 +342,7 @@
                           <mui:BetterImage Height="32" Width="57" Background="{DynamicResource ThumbnailBackground}" Filename="{Binding PreviewImage}" Stretch="UniformToFill"
                               Margin="2 2 6 -2" VerticalAlignment="Center" />
                           <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 4" />
-                          <TextBlock Text="{Binding Description}" Style="{StaticResource Small}" Margin="0 0 0 0" />
+                          <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" Style="{StaticResource Small}" Margin="0 0 0 0" />
                         </DockPanel>
                       </CheckBox>
                     </DataTemplate>

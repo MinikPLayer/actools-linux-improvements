@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -100,7 +101,7 @@ namespace AcManager {
     public partial class App : IDisposable {
         private const string WebBrowserEmulationModeDisabledKey = "___webBrowserEmulationModeDisabled";
 
-        public static void CreateAndRun(bool forceSoftwareRenderingMode) {
+        private static void CreateAndRun_InitializeBase() {
             FilesStorage.Initialize(EntryPoint.ApplicationDataDirectory);
 
             if (!AppArguments.GetBool(AppFlag.DisableLogging)) {
@@ -134,13 +135,20 @@ namespace AcManager {
 
             NonfatalError.Initialize();
             LocaleHelper.InitializeAsync().Wait();
+        }
 
+        private static App CreateAndRun_CreateApp(bool forceSoftwareRenderingMode) {
             var softwareRenderingModeWasEnabled = IsSoftwareRenderingModeEnabled();
             if (forceSoftwareRenderingMode) {
                 ValuesStorage.Set(AppAppearanceManager.KeySoftwareRendering, true);
             }
 
-            var softwareRenderingModeIsEnabled = IsSoftwareRenderingModeEnabled();
+            bool softwareRenderingModeIsEnabled = IsSoftwareRenderingModeEnabled();
+            if (WineHelper.IsOnWine) {
+                BetterImage.WineDecodeLock = new object();
+                Logging.Debug("Wine detected, switching to safer image loading method");
+            }
+
             if (AppArguments.GetDouble(AppFlag.DesiredFrameRate) is double v && v > 0d) {
                 Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(v));
                 if (softwareRenderingModeIsEnabled) {
@@ -167,26 +175,33 @@ namespace AcManager {
                 });
             }
 
+            return app;
+        }
+
+        public static void CreateAndRun(bool forceSoftwareRenderingMode) {
+            CreateAndRun_InitializeBase();
+            var app = CreateAndRun_CreateApp(forceSoftwareRenderingMode);
             var move = AppArguments.Get(AppFlag.MoveApp);
             if (move != null && File.Exists(move)) {
                 for (var i = 0; i < 10; i++) {
                     if (FileUtils.TryToDelete(move) || !File.Exists(move)) break;
                     Thread.Sleep(100);
                 }
-                Toast.Show("App moved", $"App moved from AC root folder, now Oculus Rift should work better", () => {
-                    var originalRemoved = File.Exists(move) ? "failed to remove original file" : "original file removed";
-                    if (MessageDialog.Show(
-                            $"New location is “{MainExecutingFile.Location}”, {originalRemoved}. Please don’t forget to recreate any shortcuts you might have created.",
-                            "Content Manager is moved",
-                            new MessageDialogButton {
-                                [MessageBoxResult.Yes] = "View new location",
-                                [MessageBoxResult.No] = UiStrings.Ok
-                            }) == MessageBoxResult.Yes) {
-                        WindowsHelper.ViewFile(MainExecutingFile.Location);
-                    }
-                });
+                if (AppArguments.GetBool(AppFlag.OculusFixApplied)) {
+                    Toast.Show("App moved", $"App moved from AC root folder, now Oculus Rift should work better", () => {
+                        var originalRemoved = File.Exists(move) ? "failed to remove original file" : "original file removed";
+                        if (MessageDialog.Show(
+                                $"New location is “{MainExecutingFile.Location}”, {originalRemoved}. Please don’t forget to recreate any shortcuts you might have created.",
+                                "Content Manager is moved",
+                                new MessageDialogButton {
+                                    [MessageBoxResult.Yes] = "View new location",
+                                    [MessageBoxResult.No] = UiStrings.Ok
+                                }) == MessageBoxResult.Yes) {
+                            WindowsHelper.ViewFile(MainExecutingFile.Location);
+                        }
+                    });
+                }
             }
-
             app.Run();
         }
 
@@ -279,7 +294,10 @@ namespace AcManager {
 
             Acd.Factory = new AcdFactory();
 #if !DEBUG || true
-            Kn5.Factory = Kn5New.GetFactoryInstance();
+            Kn5.Factory = Kn5New.GetFactoryInstance(msg => {
+                AcManager.Pages.Windows.MainWindow.EnterKeyLabel = new TextBlock { Text = msg, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.Yellow) };
+                AcManager.Pages.Windows.MainWindow.EnterKeyAccent = false;
+            });
 #endif
             Lazier.SyncAction = ActionExtension.InvokeInMainThreadAsync;
             KeyboardListenerFactory.Register<KeyboardListener>();
@@ -451,6 +469,7 @@ namespace AcManager {
             BbCodeBlock.OptionEmojiProvider = new EmojiProvider();
             BbCodeBlock.OptionImageCacheDirectory = FilesStorage.Instance.GetTemporaryFilename("Images");
             BbCodeBlock.OptionEmojiCacheDirectory = FilesStorage.Instance.GetTemporaryFilename("Emoji");
+            BbCodeBlock.OptionVerifyLocalImage = filename => AcRootDirectory.Instance.Value != null && FileUtils.IsAffectedBy(filename, AcRootDirectory.Instance.Value);
 
             BbCodeBlock.AddLinkCommand(new Uri("cmd://csp/enable"), new SimpleLinkCommand(() => {
                 using (var model = PatchSettingsModel.Create()) {
@@ -558,6 +577,13 @@ namespace AcManager {
                 }
             };
 
+            BbCodeBlock.OptionFileNavigateCommand = new DelegateCommand<string>(filename => {
+                if (AcRootDirectory.Instance.Value != null && FileUtils.IsAffectedBy(filename, AcRootDirectory.Instance.Value)
+                    && filename.EndsWith(@".pdf")) {
+                    Process.Start(filename);
+                }
+            });
+
 #if INCLUDE_WORKSHOP
             WorkshopLinkCommands.Initialize();
 #endif
@@ -599,19 +625,36 @@ namespace AcManager {
                 }
             }
             
+            /*DiscordRichPresence.PresenceUpdate += (sender, presence) => {
+                SteamStarter.PushRichPresence(presence?.State, presence?.Details);
+            };*/
+
+            SteamStarter.SteamInvite += async (sender, args) => {
+                Logging.Debug($"Steam invite: {args.SteamId}, {args.InviteUrl}");
+                if (args.InviteUrl.StartsWith("acmanager://race/")) {
+                    if (GameWrapper.IsInGame || AcSharedMemory.Instance.IsLive) {
+                        await Task.Delay(500); // give AC chance to handle the invite using its own Steam API
+                        try {
+                            var handledMark = new BetterMemoryMappedAccessor<long>("AcTools.CSP.SteamInviteHandledMark.v0");
+                            if (handledMark.Get() + 5 >= DateTime.Now.ToUnixTimestamp()) {
+                                Logging.Debug("Invite has been handled by CSP");
+                                return;
+                            }
+                        } catch {
+                            // ignored
+                        }
+                    }
+                    ActionExtension.InvokeInMainThreadAsync(() => ArgumentsHandler.ProcessArguments(new[] { args.InviteUrl }, false).Ignore());
+                }
+            };
+            
             // Preparing Steam starter thing
-            if (acRootIsFine && SteamStarter.Initialize(AcRootDirectory.Instance.Value, false)) {
-                if (SettingsHolder.Drive.SelectedStarterType != SettingsHolder.DriveSettings.SteamStarterType) {
+            if (acRootIsFine && SteamStarter.Initialize(AcRootDirectory.Instance.Value, SettingsHolder.Integrated.SteamIntegration)) {
+                Logging.Debug("Steam is ready");
+                if (SteamStarter.IsFullyIntegrated && SettingsHolder.Drive.SelectedStarterType != SettingsHolder.DriveSettings.SteamStarterType) {
                     SettingsHolder.Drive.SelectedStarterType = SettingsHolder.DriveSettings.SteamStarterType;
                     Toast.Show("Starter changed to replacement", "Enjoy Steam being included into CM");
                 }
-            } else if (SettingsHolder.Drive.SelectedStarterType == SettingsHolder.DriveSettings.SteamStarterType) {
-                SettingsHolder.Drive.SelectedStarterType = SettingsHolder.DriveSettings.DefaultStarterType;
-                Toast.Show($"Starter changed to {SettingsHolder.Drive.SelectedStarterType.DisplayName}", "Steam Starter is unavailable", () => {
-                    ModernDialog.ShowMessage(
-                            "To use Steam Starter, please make sure CM is taken place of the official launcher and AC root directory is valid.",
-                            "Steam Starter is unavailable", MessageBoxButton.OK);
-                });
             }
 
             InitializeUpdatableStuff();
@@ -814,7 +857,7 @@ namespace AcManager {
                 ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(60000));
                 ItemsControl.IsTextSearchCaseSensitiveProperty.OverrideMetadata(typeof(ComboBox), new FrameworkPropertyMetadata(true));
 
-                if (AppAppearanceManager.Instance.DisallowTransparency) {
+                if (AppAppearanceManager.Instance.DisallowTransparency || WineHelper.IsOnWine) {
                     DisableTransparencyHelper.Disable();
                 }
             } catch (Exception e) {
@@ -866,6 +909,7 @@ namespace AcManager {
                 }
 
                 await Task.Delay(500);
+                OnlineSanityHelper.Initialize();
                 AppArguments.Set(AppFlag.SimilarThreshold, ref CarAnalyzer.OptionSimilarThreshold);
 
                 if (SettingsHolder.Drive.ScanControllersAutomatically) {
@@ -937,16 +981,25 @@ namespace AcManager {
                         where info.LastWriteTime < DateTime.Now - TimeSpan.FromDays(3)
                         select info) {
                         f.Delete();
+                        f.Delete();
                     }
                 });
 
                 await Task.Delay(5000);
                 await Task.Run(() => {
+                    var toRemoval = new List<string>();
                     foreach (var f in new DirectoryInfo(FilesStorage.Instance.GetTemporaryDirectory()).GetFiles("*", SearchOption.AllDirectories)
                             .Where(x => x.LastAccessTime < DateTime.Now - TimeSpan.FromDays(30) && x.LastWriteTime < DateTime.Now - TimeSpan.FromDays(30))) {
                         if (f.Name == "Startup.Profile") continue;
                         Logging.Debug($"Delete old temporary file: {f.FullName}");
-                        f.Delete();
+                        toRemoval.Add(f.FullName);
+                    }
+                    if (toRemoval.Count > 0) {
+                        Task.Delay(5000).ContinueWith(t => {
+                            foreach (var filename in toRemoval) {
+                                FileUtils.TryToDelete(filename);
+                            }
+                        });
                     }
                 });
             } catch (Exception e) {
@@ -1013,10 +1066,10 @@ namespace AcManager {
         }
 
         private void OnProcessExit(object sender, EventArgs args) {
-            Logging.Flush();
             Storage.SaveBeforeExit();
             KunosCareerProgress.SaveBeforeExit();
             UserChampionshipsProgress.SaveBeforeExit();
+            Logging.Flush();
             RhmService.Instance.Dispose();
             DiscordConnector.Instance?.Dispose();
             try {

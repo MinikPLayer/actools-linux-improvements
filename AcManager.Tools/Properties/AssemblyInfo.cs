@@ -12,7 +12,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("AcClub")]
 [assembly: AssemblyProduct("AcManager.Tools")]
-[assembly: AssemblyCopyright("Copyright © AcClub, 2015-2020")]
+[assembly: AssemblyCopyright("Copyright © AcClub, 2015-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,8 +34,8 @@ using System.Windows.Markup;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.6671")]
-[assembly: AssemblyFileVersion("1.0.1.6671")]
+[assembly: AssemblyVersion("1.0.1.7941")]
+[assembly: AssemblyFileVersion("1.0.1.7941")]
 
 [assembly: XmlnsDefinition("http://acstuff.club/app/tools", "AcManager.Tools")]
 [assembly: XmlnsDefinition("http://acstuff.club/app/tools", "AcManager.Tools.AcManagersNew")]
@@ -61,5 +61,5 @@ using System.Windows.Markup;
 
 // For testing
 [assembly: InternalsVisibleTo("AcManager.Tools.Tests")]
-// Modified at: 18/04/09 01:52:22
-// Modified at: 6/14/2020 11:00:42 PM
+// Modified at: 26/06/08 8:14:42 PM
+// Modified at: 9/8/2022 11:14:13 PM

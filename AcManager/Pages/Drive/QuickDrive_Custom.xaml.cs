@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
 using AcManager.Controls;
 using AcManager.Tools.Data;
 using AcManager.Tools.Filters.Testers;
@@ -23,9 +24,10 @@ using FirstFloor.ModernUI.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using StringBasedFilter;
+using Binding = System.Windows.Data.Binding;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Custom : IQuickDriveModeControl {
+    public partial class QuickDrive_Custom : IQuickDriveModeControl, ITabCanBePinned {
         public static string OpponentNoun { get; set; } = ControlsStrings.Common_OpponentsPostfix;
         
         public QuickDrive_Custom() {
@@ -47,6 +49,8 @@ namespace AcManager.Pages.Drive {
                 ConverterParameter = OpponentNoun
             });
         }
+
+        public string Title => (DataContext as ViewModel)?.Name;
 
         private void OnUnloaded(object sender, RoutedEventArgs e) {
             if (!_loaded) return;
@@ -72,6 +76,7 @@ namespace AcManager.Pages.Drive {
                 Race,
             }
 
+            public string Name => _mode.DisplayName;
             private readonly NewRaceModeData _mode;
             private readonly SessionType _sessionType;
             private readonly int _aiLevel = -1;
@@ -118,7 +123,7 @@ namespace AcManager.Pages.Drive {
                         : Tuple.Create(filter, string.Empty);
             }
 
-            public ViewModel(string id, bool initialize = true) : base(null) {
+            public ViewModel(string id, bool initialize = true, bool minimal = false) : base(null) {
                 ID = id;
                 _mode = NewRaceModeData.Instance.Items.GetByIdOrDefault(id) ?? throw new Exception($"Mode {id} is missing");
 
@@ -211,6 +216,7 @@ namespace AcManager.Pages.Drive {
                     }
                 }
 
+                if (minimal) return;
                 LoadSaveable(initialize);
 
                 try {
@@ -257,7 +263,7 @@ namespace AcManager.Pages.Drive {
             }
 
             private void OnConfigChange() {
-                if (Config == null) return;
+                if (Config == null || _settingsKey == null) return;
                 ValuesStorage.Set(_settingsKey, Config.Serialize());
             }
 
@@ -369,6 +375,10 @@ namespace AcManager.Pages.Drive {
 
             protected override Game.BaseModeProperties GetModeProperties(IEnumerable<Game.AiCar> botCars) {
                 _mode.PublishSettings(Config?.Serialize());
+                return GetModePropertiesImpl(botCars);
+            }
+
+            public Game.BaseModeProperties GetModePropertiesImpl(IEnumerable<Game.AiCar> botCars) {
                 if (_sessionType == SessionType.Race) {
                     return new Game.RaceProperties {
                         SessionName = _mode.DisplayName,

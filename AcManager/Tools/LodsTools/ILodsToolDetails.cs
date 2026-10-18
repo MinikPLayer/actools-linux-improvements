@@ -4,8 +4,15 @@ using JetBrains.Annotations;
 
 namespace AcManager.Tools.LodsTools {
     public interface ILodsToolDetails : ICarLodGeneratorToolParams {
-        string Key { get; }          
+        string Key { get; }
+        
+        string Name { get; }
+        
+        bool NeedsTool { get; }
+        
+        bool CanWeld { get; }
             
+        [CanBeNull]
         IEnumerable<string> DefaultToolLocation { get; }
 
         [CanBeNull]

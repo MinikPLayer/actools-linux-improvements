@@ -442,7 +442,7 @@ namespace AcManager.Tools.Data {
         public Task TriggerAutoLoadAsync([CanBeNull] string id, IProgress<AsyncProgressEntry> progress = null, CancellationToken cancellation = default) {
             if (!PatchHelper.OptionPatchSupport || cancellation.IsCancellationRequested) return Task.Delay(0);
 
-            Logging.Debug($"Auto-loading stuff for “{id}” from {Title.ToSentenceMember()} list");
+            Logging.Debug($"Auto-loading stuff for “{id}” from {Title.ToSentenceMember()} list, enabled: {InstallAutomatically.Value}");
             if (!InstallAutomatically.Value || string.IsNullOrWhiteSpace(id)) return Task.Delay(0);
             return _cache.Get(async () => {
                 try {
@@ -462,7 +462,7 @@ namespace AcManager.Tools.Data {
                     } else {
                         Logging.Debug("Loading entries list…");
                         progress?.Report(AsyncProgressEntry.FromStringIndetermitate("Loading entries list…"));
-                        var list = await ApiCache.GetStringAsync($"{InternalUtils.PatchDataApiDomain}{GetBaseUrl()}", @"list").WithCancellation(cancellation);
+                        var list = await ApiCache.GetStringAsync($"{InternalUtils.PatchDataApiDomain}{GetBaseUrl()}", @"list", null, cancellation);
                         Logging.Debug("Done: " + cancellation.IsCancellationRequested);
                         if (cancellation.IsCancellationRequested) return;
 

@@ -39,7 +39,7 @@ namespace AcManager.Pages.Lists {
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
-            Model.Load();
+            Model.Load(this);
             if ((Model as LocalViewModel)?.MainList.Count > 20 || (Model as RemoteViewModel)?.MainList.Count > 20) {
                 FancyHints.MultiSelectionMode.Trigger();
             }
@@ -66,9 +66,6 @@ namespace AcManager.Pages.Lists {
                     _acManager = _car.SetupsManager;
                     await _car.SetupsManager.EnsureLoadedAsync();
                     break;
-                case CarSetupsRemoteSource.TheSetupMarket:
-                    _acManager = await TheSetupMarketAsManager.CreateAsync(_car);
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -85,9 +82,6 @@ namespace AcManager.Pages.Lists {
                     _acManager = _car.SetupsManager;
                     _car.SetupsManager.EnsureLoaded();
                     break;
-                case CarSetupsRemoteSource.TheSetupMarket:
-                    _acManager = TheSetupMarketAsManager.CreateAsync(_car).Result;
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -97,9 +91,6 @@ namespace AcManager.Pages.Lists {
             switch (_remoteSource) {
                 case CarSetupsRemoteSource.None:
                     DataContext = new LocalViewModel(_car, _acManager, string.IsNullOrEmpty(_filter) ? null : Filter.Create(CarSetupObjectTester.Instance, _filter));
-                    break;
-                case CarSetupsRemoteSource.TheSetupMarket:
-                    DataContext = new RemoteViewModel(_car, _acManager, null); // TODO: filter?
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -151,17 +142,11 @@ namespace AcManager.Pages.Lists {
 
         public static int GetRemoteLinksStatus() {
             var result = 0;
-            if (SettingsHolder.Integrated.TheSetupMarketTab) result += 1;
             return result;
         }
 
         public static IEnumerable<Link> GetRemoteLinks(string carId) {
-            if (SettingsHolder.Integrated.TheSetupMarketTab) {
-                yield return new Link {
-                    DisplayName = "The Setup Market",
-                    Source = GetRemoteSourceUri(carId, CarSetupsRemoteSource.TheSetupMarket)
-                };
-            }
+            return new List<Link>();
         }
 
         private static int _remoteLinksStatus;

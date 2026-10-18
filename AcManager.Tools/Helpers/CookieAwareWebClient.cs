@@ -84,7 +84,7 @@ namespace AcManager.Tools.Helpers {
                     return response.StatusCode;
                 }
 
-                throw new InvalidOperationException(@"No request were made to get status code");
+                throw new InvalidOperationException(@"No request was made to get status code");
             }
         }
 
@@ -139,6 +139,14 @@ namespace AcManager.Tools.Helpers {
             return new ActionAsDisposable(() => _debugMode = oldValue);
         }
 
+        private bool _steamAuthAware;
+
+        public IDisposable SetSteamAuthAware(bool value) {
+            var oldValue = _steamAuthAware;
+            _steamAuthAware = value;
+            return new ActionAsDisposable(() => _steamAuthAware = oldValue);
+        }
+
         public IDisposable SetProxy([CanBeNull] string proxy) {
             if (string.IsNullOrWhiteSpace(proxy)) return new ActionAsDisposable(() => { });
 
@@ -189,6 +197,13 @@ namespace AcManager.Tools.Helpers {
 
                 if (_debugMode) {
                     Logging.Debug("Cookies:\n" + cookie);
+                }
+
+                if (_steamAuthAware && SteamTicketProvider.UrlRequiresSteamTicket(address.ToString())) {
+                    var ticket = SteamTicketProvider.GetTicketHex();
+                    if (!string.IsNullOrEmpty(ticket)) {
+                        webRequest.Headers.Set("Authorization", "Bearer " + ticket);
+                    }
                 }
 
                 if (_autoRedirect.HasValue) {
