@@ -16,6 +16,11 @@
     <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <!-- CefSharp comes with platform-specific assets (managed libraries and native CEF files) which are copied only if RID is set. -->
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Assets\Icons\Icon.ico</ApplicationIcon>
   </PropertyGroup>
@@ -2158,5 +2163,12 @@
   </UsingTask>
   <Target Name="SetLargeAddressAwareFlag" AfterTargets="Build" Condition="'$(PlatformTarget)' == 'x86' And Exists('$(OutDir)$(AssemblyName).exe')">
     <SetLargeAddressAware ExecutableFile="$(OutDir)$(AssemblyName).exe" />
+  </Target>
+  <!-- CefSharp’s targets don’t copy CEF locales for transitive references, so doing it here. -->
+  <Target Name="CopyCefLocales" AfterTargets="Build" Condition="'$(RuntimeIdentifier)' == 'win-x86'">
+    <ItemGroup>
+      <_CefLocale Include="$(NuGetPackageRoot)chromiumembeddedframework.runtime\*\CEF\win-x86\locales\*.pak" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_CefLocale)" DestinationFolder="$(OutDir)locales" SkipUnchangedFiles="true" />
   </Target>
 </Project>

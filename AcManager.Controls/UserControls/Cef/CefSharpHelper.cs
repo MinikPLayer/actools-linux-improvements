@@ -84,10 +84,19 @@ namespace AcManager.Controls.UserControls.Cef {
                     }
                 };
 
-                var localeFilename = Path.Combine(path, "locales", SettingsHolder.Locale.LocaleName + ".pak");
-                if (!File.Exists(localeFilename)) {
-                    var enLocaleFilename = Path.Combine(path, "locales", "en.pak");
-                    FileUtils.HardLinkOrCopy(enLocaleFilename, localeFilename);
+                try {
+                    var localeFilename = Path.Combine(path, "locales", SettingsHolder.Locale.LocaleName + ".pak");
+                    if (!File.Exists(localeFilename)) {
+                        // Newer CEF builds have en-US.pak instead of en.pak
+                        var enLocaleFilename = Path.Combine(path, "locales", "en.pak");
+                        if (!File.Exists(enLocaleFilename)) {
+                            enLocaleFilename = Path.Combine(path, "locales", "en-US.pak");
+                        }
+
+                        FileUtils.HardLinkOrCopy(enLocaleFilename, localeFilename);
+                    }
+                } catch (Exception e) {
+                    Logging.Warning("Can’t prepare locale file: " + e.Message);
                 }
 
                 CefSharp.Cef.AddCrossOriginWhitelistEntry(@"https://www.simracingsystem.com", @"ac", string.Empty, true);

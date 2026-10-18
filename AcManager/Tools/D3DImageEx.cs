@@ -21,18 +21,38 @@ namespace AcManager.Tools {
         private Surface _surface;
         private IntPtr _lastSharedHandle;
 
-        private void EnsureDevice() {
-            if (_device != null) return;
+        private bool _deviceFailed;
 
-            _direct3D = new Direct3DEx();
-            _device = new DeviceEx(_direct3D, 0, DeviceType.Hardware, IntPtr.Zero,
-                    CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve,
-                    new PresentParameters {
-                        Windowed = true,
-                        SwapEffect = SwapEffect.Discard,
-                        DeviceWindowHandle = GetDesktopWindow(),
-                        PresentationInterval = PresentInterval.Default
-                    });
+        /// <summary>
+        /// False if there is nothing to show, for example, if Direct3D 9Ex is not available.
+        /// </summary>
+        public bool HasBackBuffer => _surface != null;
+
+        /// <summary>
+        /// Returns false if Direct3D 9Ex is not available (for example, in some virtual machines), image won’t be shown then.
+        /// </summary>
+        private bool EnsureDevice() {
+            if (_device != null) return true;
+            if (_deviceFailed) return false;
+
+            try {
+                _direct3D = new Direct3DEx();
+                _device = new DeviceEx(_direct3D, 0, DeviceType.Hardware, IntPtr.Zero,
+                        CreateFlags.HardwareVertexProcessing | CreateFlags.Multithreaded | CreateFlags.FpuPreserve,
+                        new PresentParameters {
+                            Windowed = true,
+                            SwapEffect = SwapEffect.Discard,
+                            DeviceWindowHandle = GetDesktopWindow(),
+                            PresentationInterval = PresentInterval.Default
+                        });
+                return true;
+            } catch (Exception e) {
+                _deviceFailed = true;
+                _direct3D?.Dispose();
+                _direct3D = null;
+                FirstFloor.ModernUI.Helpers.Logging.Warning("Can’t create Direct3D 9Ex device, previews in WPF windows won’t be shown: " + e.Message);
+                return false;
+            }
         }
 
         [DllImport("user32.dll")]
@@ -72,7 +92,7 @@ namespace AcManager.Tools {
                     throw new InvalidOperationException("Texture should be created with a shared flag");
                 }
 
-                EnsureDevice();
+                if (!EnsureDevice()) return;
 
                 if (_texture == null || sharedHandle != _lastSharedHandle) {
                     SetBackBuffer(D3DResourceType.IDirect3DSurface9, IntPtr.Zero);

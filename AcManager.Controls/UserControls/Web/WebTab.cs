@@ -106,7 +106,12 @@ namespace AcManager.Controls.UserControls.Web {
 
         private string GetBrokenSuggestions() {
             if (_something is CefSharpWrapper || _something is FormsCefSharpWrapper) {
-                var directory = @"file://" + PluginsManager.Instance.GetPluginDirectory(KnownPlugins.CefSharp);
+                var directory = PluginsManager.Instance.GetPluginDirectory(KnownPlugins.CefSharp);
+
+                // Bundled with the app, nothing to remove
+                if (string.Equals(directory.TrimEnd('\\', '/'), AppContext.BaseDirectory.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase)) return null;
+
+                directory = @"file://" + directory;
                 return
                         $"Try to reinstall CefSharp plugin, its installation could be damaged. To do that, [url={BbCodeBlock.EncodeAttribute(directory)}]remove this directory[/url] (you’ll need to close the app to be able to remove it).";
             }

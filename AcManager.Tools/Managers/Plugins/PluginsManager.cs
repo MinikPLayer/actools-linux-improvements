@@ -68,7 +68,21 @@ namespace AcManager.Tools.Managers.Plugins {
             Instance.Recommended = new PluginsRequirement(o => o.IsRecommended);
         }
 
+        /// <summary>
+        /// Some plugins can’t be downloaded when running on .NET (downloadable builds are for .NET Framework), so they come together with
+        /// the app instead: this is a directory with such a plugin if it exists next to the executable.
+        /// </summary>
+        [CanBeNull]
+        private static string GetBundledPluginDirectory([Localizable(false)] string id) {
+            if (id != KnownPlugins.CefSharp) return null;
+
+            var directory = AppContext.BaseDirectory;
+            return File.Exists(Path.Combine(directory, "libcef.dll")) ? directory : null;
+        }
+
         public bool IsPluginEnabled([Localizable(false)] string id) {
+            if (GetBundledPluginDirectory(id) != null) return true;
+
             if (!_locallyLoaded) {
                 ReloadLocalList();
             }
@@ -77,7 +91,7 @@ namespace AcManager.Tools.Managers.Plugins {
         }
 
         public string GetPluginDirectory([Localizable(false)] string id) {
-            return Path.Combine(PluginsDirectory, id);
+            return GetBundledPluginDirectory(id) ?? Path.Combine(PluginsDirectory, id);
         }
 
         public string GetPluginFilename([Localizable(false)] string id, [Localizable(false)] string fileId) {

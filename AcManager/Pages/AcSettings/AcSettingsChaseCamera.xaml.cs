@@ -214,6 +214,8 @@ namespace AcManager.Pages.AcSettings {
                 _lastTarget = target;
             }
 
+            if (!_imageEx.HasBackBuffer) return;
+
             _imageEx.Lock();
             _imageEx.AddDirtyRect(new Int32Rect {
                 X = 0,
