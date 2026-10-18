@@ -85,7 +85,7 @@ namespace AcManager.Pages.AcSettings {
                 if (_imageEx != null || car == null) return;
 
                 Progress.IsActive = true;
-                var panoramaBg = new Uri("pack://application:,,,/Content Manager;component/Assets/Img/ShowroomPanoramaExample.jpg", UriKind.Absolute);
+                var panoramaBg = new Uri("pack://application:,,,/Assets/Img/ShowroomPanoramaExample.jpg", UriKind.Absolute);
                 var renderer = new DarkKn5ObjectRenderer(CarDescription.FromDirectory(car.Location, car.AcdData)) {
                     WpfMode = true,
                     UseMsaa = false,

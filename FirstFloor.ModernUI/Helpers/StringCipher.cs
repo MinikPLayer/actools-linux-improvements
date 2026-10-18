@@ -27,18 +27,8 @@ namespace FirstFloor.ModernUI.Helpers {
 
                 using (var password = new Rfc2898DeriveBytes(passPhrase, salt, DerivationIterations)) {
                     var keyBytes = password.GetBytes(Keysize / 8);
-                    using (var symmetricKey = new RijndaelManaged {
-                        BlockSize = 256,
-                        Mode = CipherMode.CBC,
-                        Padding = PaddingMode.PKCS7
-                    })
-                    using (var encryptor = symmetricKey.CreateEncryptor(keyBytes, iv))
-                    using (var memoryStream = new MemoryStream())
-                    using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write)) {
-                        cryptoStream.Write(decryptesBytes, 0, decryptesBytes.Length);
-                        cryptoStream.FlushFinalBlock();
-                        return salt.Concat(iv).Concat(memoryStream.ToArray()).ToArray();
-                    }
+                    // Rijndael with 256-bit blocks is not available in .NET Core
+                    return salt.Concat(iv).Concat(Rijndael256.Encrypt(keyBytes, iv, decryptesBytes)).ToArray();
                 }
             } catch (Exception e) {
                 Logging.Warning(e.Message);
@@ -54,18 +44,7 @@ namespace FirstFloor.ModernUI.Helpers {
                 var actual = input.Skip(Keysize / 8 * 2).Take(input.Length - Keysize / 8 * 2).ToArray();
                 using (var password = new Rfc2898DeriveBytes(passPhrase, salt, DerivationIterations)) {
                     var keyBytes = password.GetBytes(Keysize / 8);
-                    using (var symmetricKey = new RijndaelManaged {
-                        BlockSize = 256,
-                        Mode = CipherMode.CBC,
-                        Padding = PaddingMode.PKCS7
-                    })
-                    using (var decryptor = symmetricKey.CreateDecryptor(keyBytes, iv))
-                    using (var memoryStream = new MemoryStream(actual))
-                    using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read)) {
-                        var result = new byte[actual.Length];
-                        var count = cryptoStream.Read(result, 0, result.Length);
-                        return count != result.Length ? result.Take(count).ToArray() : result;
-                    }
+                    return Rijndael256.Decrypt(keyBytes, iv, actual);
                 }
             } catch (Exception e) {
                 Logging.Warning(e.Message);

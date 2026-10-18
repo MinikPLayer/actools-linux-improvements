@@ -1,0 +1,122 @@
+<Project>
+  <!--
+    Replaces the shader compilation part of Shaders.tt (T4 template), so shaders could be compiled without Visual Studio: all .fx files are
+    compiled with fxc.exe (Windows SDK, fx_5_0 profile), compressed and packed into obj\<config>\Shaders.resources which is then embedded
+    into the assembly. If fxc.exe is not found, a stub from the repository (Shaders.resources) is used instead and renderer will not work.
+  -->
+  <UsingTask TaskName="CompileShaders" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ShadersDirectory ParameterType="System.String" Required="true" />
+      <FxcLocation ParameterType="System.String" Required="true" />
+      <TempDirectory ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.Collections.Generic" />
+      <Using Namespace="System.Diagnostics" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.IO.Compression" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Resources" />
+      <Using Namespace="System.Threading.Tasks" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        Directory.CreateDirectory(TempDirectory);
+
+        var includes = Directory.GetFiles(Path.Combine(ShadersDirectory, "Includes"));
+        var includesWrite = includes.Select(x => File.GetLastWriteTimeUtc(x)).DefaultIfEmpty().Max();
+
+        var shaders = Directory.GetFiles(ShadersDirectory, "*.fx").Concat(Directory.GetDirectories(ShadersDirectory)
+                .Where(x => !string.Equals(Path.GetFileName(x), "Includes", StringComparison.OrdinalIgnoreCase))
+                .SelectMany(x => Directory.GetFiles(x, "*.fx"))).ToList();
+
+        var compiled = new Dictionary<string, byte[]>();
+        var failed = false;
+        Parallel.ForEach(shaders, new ParallelOptions { MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount / 2) }, f => {
+            var name = Path.GetFileNameWithoutExtension(f);
+            var cached = Path.Combine(TempDirectory, Path.GetFileName(f) + ".o");
+            if (File.Exists(cached) && File.GetLastWriteTimeUtc(cached) > File.GetLastWriteTimeUtc(f) && File.GetLastWriteTimeUtc(cached) > includesWrite) {
+                lock (compiled) compiled[name] = File.ReadAllBytes(cached);
+                return;
+            }
+
+            var raw = Path.Combine(TempDirectory, Path.GetFileName(f) + ".raw");
+            var process = Process.Start(new ProcessStartInfo {
+                FileName = FxcLocation,
+                Arguments = "/nologo /T fx_5_0 /O3 /I../Includes /E Render /Fo\"" + raw + "\" \"" + Path.GetFileName(f) + "\"",
+                WorkingDirectory = Path.GetDirectoryName(f),
+                WindowStyle = ProcessWindowStyle.Hidden,
+                RedirectStandardError = true,
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            });
+
+            var stdout = process.StandardOutput.ReadToEndAsync();
+            var stderr = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+            if (process.ExitCode != 0) {
+                Log.LogError("Failed to compile shader " + Path.GetFileName(f) + ": " + stderr + stdout.Result);
+                failed = true;
+                return;
+            }
+
+            var output = new MemoryStream();
+            using (var stream = new DeflateStream(output, CompressionLevel.Optimal)) {
+                var bytes = File.ReadAllBytes(raw);
+                stream.Write(bytes, 0, bytes.Length);
+            }
+
+            File.Delete(raw);
+            File.WriteAllBytes(cached, output.ToArray());
+            lock (compiled) compiled[name] = output.ToArray();
+        });
+
+        if (failed) return false;
+
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        using (var writer = new ResourceWriter(OutputFile)) {
+            foreach (var pair in compiled.OrderBy(x => x.Key, StringComparer.Ordinal)) {
+                writer.AddResource(pair.Key, pair.Value);
+            }
+
+            writer.Generate();
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <ItemGroup>
+    <FxcCandidate Include="$(MSBuildProgramFiles32)\Windows Kits\10\bin\*\x86\fxc.exe" />
+    <FxcCandidate Include="$(MSBuildProgramFiles32)\Windows Kits\10\bin\*\x64\fxc.exe" />
+    <FxcCandidate Include="$(MSBuildProgramFiles32)\Windows Kits\8.1\bin\x64\fxc.exe" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <ShadersResourcesFile>$(MSBuildProjectDirectory)\obj\Shaders\Shaders.resources</ShadersResourcesFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ShaderSource Include="Shaders\**\*.fx" />
+  </ItemGroup>
+
+  <Target Name="GenerateShadersResources" BeforeTargets="AssignTargetPaths" Inputs="@(ShaderSource)" Outputs="$(ShadersResourcesFile)">
+    <ItemGroup>
+      <FxcFound Include="@(FxcCandidate)" Condition="Exists('%(FullPath)')" />
+    </ItemGroup>
+    <PropertyGroup>
+      <FxcLocation Condition="'$(FxcLocation)' == ''">@(FxcFound->'%(FullPath)', '|')</FxcLocation>
+      <FxcLocation>$(FxcLocation.Split('|')[0])</FxcLocation>
+    </PropertyGroup>
+    <Warning Condition="'$(FxcLocation)' == '' Or !Exists('$(FxcLocation)')"
+        Text="fxc.exe not found (it comes with Windows SDK), shaders won’t be compiled and renderer won’t work." />
+    <CompileShaders Condition="'$(FxcLocation)' != '' And Exists('$(FxcLocation)')" ShadersDirectory="$(MSBuildProjectDirectory)\Shaders"
+        FxcLocation="$(FxcLocation)" TempDirectory="$(MSBuildProjectDirectory)\obj\Shaders\Compiled" OutputFile="$(ShadersResourcesFile)" />
+  </Target>
+
+  <Target Name="EmbedCompiledShaders" DependsOnTargets="GenerateShadersResources" BeforeTargets="AssignTargetPaths">
+    <ItemGroup Condition="Exists('$(ShadersResourcesFile)')">
+      <EmbeddedResource Remove="Shaders.resources" />
+      <EmbeddedResource Include="$(ShadersResourcesFile)" LogicalName="AcTools.Render.Shaders.resources" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -295,6 +295,7 @@
     <Compile Include="Helpers\Lzf.cs" />
     <Compile Include="Helpers\NonfatalError.cs" />
     <Compile Include="Helpers\Storage.cs" />
+    <Compile Include="Helpers\Rijndael256.cs" />
     <Compile Include="Helpers\StringCipher.cs" />
     <Compile Include="Helpers\TreeViewExtension.cs" />
     <Compile Include="Helpers\UriExtension.cs" />

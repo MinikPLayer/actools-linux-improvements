@@ -20,11 +20,7 @@ namespace AcTools.Render.Base.Shaders {
                 throw new System.Exception("Shader is missing!");
             }
 
-            bytes = Decompress(bytes);
-            using (var ds = new DataStream(bytes.Length, true, true)) {
-                ds.Write(bytes, 0, bytes.Length);
-                return new ShaderBytecode(ds);
-            }
+            return new ShaderBytecode(Decompress(bytes));
         }
     }
 }
