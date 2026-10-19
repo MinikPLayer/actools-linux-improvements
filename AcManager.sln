@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcManager.Workshop", "AcMan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcTools.ExtraKn5Utils", "AcTools.ExtraKn5Utils\AcTools.ExtraKn5Utils.csproj", "{67729C43-6E5F-482A-8777-1651EA1AA393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcManager.Internal.Stub", "AcManager.Internal.Stub\AcManager.Internal.Stub.csproj", "{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -311,6 +313,14 @@ Global
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x64.Build.0 = Release|x64
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x86.ActiveCfg = Release|x86
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x86.Build.0 = Release|x86
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Debug|x86.ActiveCfg = Debug|x86
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Debug|x86.Build.0 = Debug|x86
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Release|x86.ActiveCfg = Release|x86
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Release|x86.Build.0 = Release|x86
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Debug|x64.ActiveCfg = Debug|x64
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Debug|x64.Build.0 = Debug|x64
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Release|x64.ActiveCfg = Release|x64
+		{3BFFC7F0-B095-41F1-80DE-E5B0EA36E861}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
