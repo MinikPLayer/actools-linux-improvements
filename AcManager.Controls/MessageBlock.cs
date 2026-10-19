@@ -8,6 +8,8 @@ using JetBrains.Annotations;
 namespace AcManager.Controls {
     [ContentProperty(nameof(Children))]
     public class MessageBlock : ContentControl {
+        protected override System.Type StyleKeyOverride => typeof(MessageBlock);
+
         static MessageBlock() {
         }
 

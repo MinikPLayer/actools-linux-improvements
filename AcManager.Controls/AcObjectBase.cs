@@ -12,6 +12,8 @@ using AcManager.Tools.AcObjectsNew;
 namespace AcManager.Controls {
     [ContentProperty(nameof(Content))]
     public class AcObjectBase : Control {
+        protected override System.Type StyleKeyOverride => typeof(AcObjectBase);
+
         static AcObjectBase() {
         }
 

@@ -7,6 +7,8 @@ using System.Windows.Markup;
 namespace AcManager.Controls {
     [ContentProperty(nameof(ToolBars))]
     public class AcToolBar : Control {
+        protected override System.Type StyleKeyOverride => typeof(AcToolBar);
+
         public static readonly StyledProperty<Avalonia.Layout.VerticalAlignment> VerticalContentAlignmentProperty =
                 Avalonia.Controls.ContentControl.VerticalContentAlignmentProperty.AddOwner<AcToolBar>();
 

@@ -4,6 +4,8 @@ using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchSlider : RoundSlider {
+        protected override System.Type StyleKeyOverride => typeof(QuickSwitchSlider);
+
         static QuickSwitchSlider() {
         }
         

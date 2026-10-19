@@ -3,6 +3,8 @@ using System.Windows.Media;
 
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchPresetsControl : UserPresetsControl {
+        protected override System.Type StyleKeyOverride => typeof(QuickSwitchPresetsControl);
+
         static QuickSwitchPresetsControl() {
         }
 

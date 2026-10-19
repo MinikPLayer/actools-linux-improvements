@@ -4,6 +4,8 @@ using System.Windows.Media;
 
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchComboBox : ComboBox {
+        protected override System.Type StyleKeyOverride => typeof(QuickSwitchComboBox);
+
         static QuickSwitchComboBox() {
         }
 

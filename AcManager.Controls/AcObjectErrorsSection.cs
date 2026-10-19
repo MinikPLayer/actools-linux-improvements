@@ -4,6 +4,8 @@ using AcManager.Tools.AcObjectsNew;
 
 namespace AcManager.Controls {
     public class AcObjectErrorsSection : Control {
+        protected override System.Type StyleKeyOverride => typeof(AcObjectErrorsSection);
+
         static AcObjectErrorsSection() {
         }
 

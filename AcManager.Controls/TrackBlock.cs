@@ -6,6 +6,8 @@ using AcManager.Tools.Objects;
 namespace AcManager.Controls {
     [ContentProperty(nameof(PreviewContent))]
     public class TrackBlock : Control {
+        protected override System.Type StyleKeyOverride => typeof(TrackBlock);
+
         static TrackBlock() {
         }
 

@@ -13,6 +13,8 @@ using PlotCommands = OxyPlot.PlotCommands;
 
 namespace AcManager.Controls.Graphs {
     public abstract class GraphDataViewerBase : PlotView {
+        protected override System.Type StyleKeyOverride => typeof(GraphDataViewerBase);
+
         private class CustomController : ControllerBase, IPlotController {
             public CustomController() {
                 this.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.Shift, PlotCommands.Track);

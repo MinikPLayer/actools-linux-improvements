@@ -6,6 +6,8 @@ using AcManager.Tools.AcObjectsNew;
 
 namespace AcManager.Controls {
     public class AcObjectHeaderSection : Control {
+        protected override System.Type StyleKeyOverride => typeof(AcObjectHeaderSection);
+
         static AcObjectHeaderSection() {
         }
 

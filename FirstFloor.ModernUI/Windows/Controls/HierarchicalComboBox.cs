@@ -100,6 +100,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class HierarchicalItem : LazyMenuItem {
+        protected override System.Type StyleKeyOverride => typeof(HierarchicalItem);
+
         [CanBeNull]
         private readonly HierarchicalItemsView _view;
 

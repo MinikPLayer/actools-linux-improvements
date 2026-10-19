@@ -19,6 +19,8 @@ using JetBrains.Annotations;
 
 namespace AcManager.Controls {
     public class UserPresetsControl : Control, IHierarchicalItemPreviewProvider {
+        protected override System.Type StyleKeyOverride => typeof(UserPresetsControl);
+
         internal class ChangedPresetEventArgs : EventArgs {
             public string Key { get; }
 

@@ -5,6 +5,8 @@ using System.Windows.Media;
 
 namespace AcManager.Controls {
     public class FavouriteButton : ToggleButton {
+        protected override System.Type StyleKeyOverride => typeof(FavouriteButton);
+
         static FavouriteButton() {
         }
 
@@ -16,11 +18,11 @@ namespace AcManager.Controls {
             set => SetValue(ActiveBrushProperty, value);
         }
 
-        public static readonly StyledProperty<PathData> DataProperty = DP.Register<PathData>(nameof(Data),
+        public static readonly StyledProperty<Avalonia.Media.Geometry> DataProperty = DP.Register<Avalonia.Media.Geometry>(nameof(Data),
                 typeof(FavouriteButton));
 
-        public PathData Data {
-            get => (PathData)GetValue(DataProperty);
+        public Avalonia.Media.Geometry Data {
+            get => (Avalonia.Media.Geometry)GetValue(DataProperty);
             set => SetValue(DataProperty, value);
         }
     }

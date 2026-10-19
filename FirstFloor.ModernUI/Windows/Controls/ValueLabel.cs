@@ -10,6 +10,8 @@ using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class DoubleValueLabel : ValueLabel {
+        protected override System.Type StyleKeyOverride => typeof(DoubleValueLabel);
+
         static DoubleValueLabel() {
         }
 
@@ -139,6 +141,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
     [ContentProperty(nameof(Content))]
     public class ValueLabel : Control {
+        protected override System.Type StyleKeyOverride => typeof(ValueLabel);
+
         static ValueLabel() {
         }
 

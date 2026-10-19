@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
 using Avalonia;
@@ -37,8 +37,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             switch (e.Action) {
                 case NotifyCollectionChangedAction.Add: {
                     var added = e.NewItems.OfType<Control>().ToList();
-                    LogicalChildren.InsertRange(e.NewStartingIndex, added);
-                    VisualChildren.InsertRange(e.NewStartingIndex, added);
+                    // indices can mismatch if children were added before the collection was observed
+                    LogicalChildren.InsertRange(Math.Min(e.NewStartingIndex, LogicalChildren.Count), added);
+                    VisualChildren.InsertRange(Math.Min(e.NewStartingIndex, VisualChildren.Count), added);
                     break;
                 }
                 case NotifyCollectionChangedAction.Remove: {

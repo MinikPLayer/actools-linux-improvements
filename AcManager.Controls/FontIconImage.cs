@@ -6,6 +6,8 @@ using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Controls {
     public class FontIconImage : BetterImage {
+        protected override System.Type StyleKeyOverride => typeof(FontIconImage);
+
         public FontIconImage() {
             ShowBroken = false;
         }

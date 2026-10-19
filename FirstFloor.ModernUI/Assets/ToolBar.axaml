@@ -1,4 +1,4 @@
-<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/AsyncButton.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
@@ -126,18 +126,7 @@
         <StackPanel Orientation="Horizontal"/>
       </ItemsPanelTemplate>
     </Setter>
-    <Style Selector="^ Button"><Setter Property="Theme" Value="{StaticResource ToolBar.ButtonStyle}"/></Style>
-    <Style Selector="^ ToggleButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ToggleButtonStyle}"/></Style>
-    <Style Selector="^ CheckBox"><Setter Property="Theme" Value="{StaticResource ToolBar.CheckBoxStyle}"/></Style>
-    <Style Selector="^ RadioButton"><Setter Property="Theme" Value="{StaticResource ToolBar.RadioButtonStyle}"/></Style>
-    <Style Selector="^ Menu"><Setter Property="Theme" Value="{StaticResource ToolBar.MenuStyle}"/></Style>
-    <Style Selector="^ c|ModernButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ModernButton}"/></Style>
-    <Style Selector="^ c|ButtonWithComboBox, ^ c|AsyncButton">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="BorderBrush" Value="Transparent"/>
-      <Setter Property="Focusable" Value="False"/>
-      <Setter Property="Padding" Value="8 3 8 5"/>
-    </Style>
+    <!-- PORT: descendant styles of the toolbar are in ToolBar.styles.axaml (a ControlTheme can’t contain them) -->
   </ControlTheme>
 
   <ControlTheme TargetType="c:ToolBarTray" x:Key="{x:Type c:ToolBarTray}">

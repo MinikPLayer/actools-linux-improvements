@@ -7,6 +7,8 @@ using AcTools.Utils;
 
 namespace AcManager.Controls {
     public class RatingBar : Control {
+        protected override System.Type StyleKeyOverride => typeof(RatingBar);
+
         static RatingBar() {
         }
 
@@ -18,11 +20,11 @@ namespace AcManager.Controls {
             set => SetValue(ActiveBrushProperty, value);
         }
 
-        public static readonly StyledProperty<PathData> DataProperty = DP.Register<PathData>(nameof(Data),
+        public static readonly StyledProperty<Avalonia.Media.Geometry> DataProperty = DP.Register<Avalonia.Media.Geometry>(nameof(Data),
                 typeof(RatingBar));
 
-        public PathData Data {
-            get => (PathData)GetValue(DataProperty);
+        public Avalonia.Media.Geometry Data {
+            get => (Avalonia.Media.Geometry)GetValue(DataProperty);
             set => SetValue(DataProperty, value);
         }
 

@@ -41,6 +41,8 @@ namespace AcManager.Controls {
 
     [ContentProperty(nameof(PreviewContent))]
     public class CarBlock : Control, IBbCodeLinkParser {
+        protected override System.Type StyleKeyOverride => typeof(CarBlock);
+
         [CanBeNull]
         public static ICustomShowroomWrapper CustomShowroomWrapper { get; set; }
 

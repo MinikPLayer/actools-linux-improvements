@@ -13,6 +13,8 @@ namespace AcManager.Controls {
     }
 
     public class BestLapsList : Control {
+        protected override System.Type StyleKeyOverride => typeof(BestLapsList);
+
         static BestLapsList() {
         }
 

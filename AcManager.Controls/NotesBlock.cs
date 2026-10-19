@@ -7,6 +7,8 @@ using FirstFloor.ModernUI.Dialogs;
 
 namespace AcManager.Controls {
     public class NotesBlock : Control {
+        protected override System.Type StyleKeyOverride => typeof(NotesBlock);
+
         static NotesBlock() {
         }
 

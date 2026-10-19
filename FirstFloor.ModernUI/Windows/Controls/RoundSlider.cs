@@ -10,6 +10,8 @@ using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class RoundSlider : Slider {
+        protected override System.Type StyleKeyOverride => typeof(RoundSlider);
+
         public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
                 ContentControl.HorizontalContentAlignmentProperty.AddOwner<RoundSlider>();
 

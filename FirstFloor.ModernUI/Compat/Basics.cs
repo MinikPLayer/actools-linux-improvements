@@ -689,7 +689,7 @@ namespace System.Windows {
 
         public static Type FindType(Uri uri) {
             var s = uri.OriginalString;
-            var m = System.Text.RegularExpressions.Regex.Match(s, @"^(?:pack://application:,,,)?/?(?:([^;/]+);component/)?(.+?)(?:\.a?xaml)?$");
+            var m = System.Text.RegularExpressions.Regex.Match(s, @"^(?:pack://application:,,,)?/?(?:([^;/]+);component/)?(.+?)(?:\.a?xaml)?(?:\?.*)?$");
             if (!m.Success) return null;
 
             var assemblyName = m.Groups[1].Success ? m.Groups[1].Value : null;

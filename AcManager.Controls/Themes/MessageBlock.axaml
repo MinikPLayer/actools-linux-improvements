@@ -41,6 +41,10 @@
             </Style><Style Selector="^[(pa|T.S1)=True] /template/ Button#PART_CloseButton"><Setter Property="Width" Value="13"/>
               <Setter Property="Height" Value="13"/>
               <Setter Property="Padding" Value="2"/>
-              <Setter Property="Content" Value="{StaticResource CloseButtonContent}"/>
+              <Setter Property="Content">
+                <Template>
+                  <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                </Template>
+              </Setter>
             </Style></ControlTheme>
 </ResourceDictionary>

@@ -11,6 +11,8 @@ using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Controls {
     public class PropertiesGrid : RenderablePanel {
+        protected override System.Type StyleKeyOverride => typeof(PropertiesGrid);
+
         static PropertiesGrid() {
         }
 
@@ -220,6 +222,7 @@ namespace AcManager.Controls {
 
         public override void Render(DrawingContext dc) {
             base.Render(dc);
+            if (_labels == null || _labelElements == null) return; // not measured yet
 
             var y = 0.0;
             for (int i = 0, c = 0; i < _labels.Length; i++, c++) {

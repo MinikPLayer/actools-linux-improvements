@@ -1,4 +1,4 @@
-<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ToolBar.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="c|ToolBar Separator">
     <Setter Property="Background" Value="{DynamicResource SeparatorBackground}"/>
   </Style>
@@ -11,4 +11,17 @@
     <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
   </Style>
 
-  </Styles>
+  
+    <Style Selector="c|ToolBar Button"><Setter Property="Theme" Value="{StaticResource ToolBar.ButtonStyle}"/></Style>
+    <Style Selector="c|ToolBar ToggleButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ToggleButtonStyle}"/></Style>
+    <Style Selector="c|ToolBar CheckBox"><Setter Property="Theme" Value="{StaticResource ToolBar.CheckBoxStyle}"/></Style>
+    <Style Selector="c|ToolBar RadioButton"><Setter Property="Theme" Value="{StaticResource ToolBar.RadioButtonStyle}"/></Style>
+    <Style Selector="c|ToolBar Menu"><Setter Property="Theme" Value="{StaticResource ToolBar.MenuStyle}"/></Style>
+    <Style Selector="c|ToolBar c|ModernButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ModernButton}"/></Style>
+    <Style Selector="c|ToolBar c|ButtonWithComboBox, c|ToolBar c|AsyncButton">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Padding" Value="8 3 8 5"/>
+    </Style>
+</Styles>

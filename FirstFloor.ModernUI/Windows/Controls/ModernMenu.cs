@@ -15,6 +15,8 @@ using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernMenu : Control {
+        protected override System.Type StyleKeyOverride => typeof(ModernMenu);
+
         private readonly Dictionary<string, ReadOnlyLinkGroupCollection> _groupMap = new Dictionary<string, ReadOnlyLinkGroupCollection>();
         private bool _isSelecting;
 

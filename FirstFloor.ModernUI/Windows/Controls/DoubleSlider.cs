@@ -13,6 +13,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class DoubleThumb : ThumbExt {
+        protected override System.Type StyleKeyOverride => typeof(DoubleThumb);
+
         static DoubleThumb() {
         }
 
@@ -99,6 +101,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class DoubleSlider : Slider {
+        protected override System.Type StyleKeyOverride => typeof(DoubleSlider);
+
         static DoubleSlider() {
         }
 

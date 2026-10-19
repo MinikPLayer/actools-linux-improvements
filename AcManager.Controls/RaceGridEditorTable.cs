@@ -10,6 +10,8 @@ using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Controls {
     public class RaceGridEditorTable : Control {
+        protected override System.Type StyleKeyOverride => typeof(RaceGridEditorTable);
+
         static RaceGridEditorTable() {
         }
 

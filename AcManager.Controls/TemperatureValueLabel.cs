@@ -8,6 +8,8 @@ using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Controls {
     public class TemperatureBlock : TextBlock {
+        protected override System.Type StyleKeyOverride => typeof(TemperatureBlock);
+
         static TemperatureBlock() {
         }
 
@@ -80,6 +82,8 @@ namespace AcManager.Controls {
     }
 
     public class TemperatureValueLabel : ValueLabel {
+        protected override System.Type StyleKeyOverride => typeof(TemperatureValueLabel);
+
         static TemperatureValueLabel() {
         }
 
@@ -101,6 +105,8 @@ namespace AcManager.Controls {
     }
 
     public class DoubleTemperatureValueLabel : DoubleValueLabel {
+        protected override System.Type StyleKeyOverride => typeof(DoubleTemperatureValueLabel);
+
         static DoubleTemperatureValueLabel() {
         }
 

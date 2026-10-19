@@ -4,6 +4,8 @@ using FirstFloor.ModernUI;
 
 namespace AcManager.Controls.QuickSwitches {
     public class ShadersPatchPresetsControl : QuickSwitchPresetsControl {
+        protected override System.Type StyleKeyOverride => typeof(ShadersPatchPresetsControl);
+
         static ShadersPatchPresetsControl() {
         }
 

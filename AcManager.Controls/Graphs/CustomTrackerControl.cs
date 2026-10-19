@@ -6,6 +6,8 @@ using OxyPlot.Avalonia;
 
 namespace AcManager.Controls.Graphs {
     public class CustomTrackerControl : TrackerControl {
+        protected override System.Type StyleKeyOverride => typeof(CustomTrackerControl);
+
         static CustomTrackerControl() {
         }
 

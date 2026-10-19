@@ -33,6 +33,8 @@ using JetBrains.Annotations;
 namespace AcManager.Controls {
     [ContentProperty(nameof(Resources))]
     public class AcListPage : Control {
+        protected override System.Type StyleKeyOverride => typeof(AcListPage);
+
         static AcListPage() {
         }
 

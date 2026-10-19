@@ -22,6 +22,8 @@ using StringBasedFilter;
 
 namespace AcManager.Controls {
     public class AcObjectListBox : Control, IComparer {
+        protected override System.Type StyleKeyOverride => typeof(AcObjectListBox);
+
         public static IValueConverter ThumbnailColumnsConverter { get; } = new ThumbnailColumnsConverterInner();
 
         private class ThumbnailColumnsConverterInner : IValueConverter {
