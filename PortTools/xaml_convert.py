@@ -210,7 +210,7 @@ EVENT_RENAME = {
     'MouseMove': 'PointerMoved', 'PreviewMouseMove': 'PointerMoved', 'MouseEnter': 'PointerEntered', 'MouseLeave': 'PointerExited',
     'MouseWheel': 'PointerWheelChanged', 'PreviewMouseWheel': 'PointerWheelChanged',
     'PreviewKeyDown': 'KeyDown', 'PreviewKeyUp': 'KeyUp', 'PreviewTextInput': 'TextInput',
-    'LostMouseCapture': 'PointerCaptureLost', 'MouseDoubleClick': 'DoubleTapped',
+    'SelectedItemChanged': 'SelectionChanged', 'LostMouseCapture': 'PointerCaptureLost', 'MouseDoubleClick': 'DoubleTapped',
     'Drop': 'DragDrop.Drop', 'DragOver': 'DragDrop.DragOver', 'DragEnter': 'DragDrop.DragEnter', 'DragLeave': 'DragDrop.DragLeave',
     'PreviewDrop': 'DragDrop.Drop', 'PreviewDragOver': 'DragDrop.DragOver',
 }

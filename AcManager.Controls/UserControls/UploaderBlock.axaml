@@ -78,7 +78,7 @@
           </mui:Switch>
         </mui:ReferenceSwitch.Null>
         <mui:ReferenceSwitch.NonNull>
-          <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" SelectionChanged="OnTreeSelectedItemChanged" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
             <TreeView.DataTemplates><TreeDataTemplate DataType="{x:Type h:DirectoryEntry}" ItemsSource="{Binding Children}">
                 <Border x:Name="Panel" Padding="4 3" Background="Transparent">
                   <Border.Styles><Style Selector="Border#Panel"><Style Selector="^:pointerover Border#Panel"><Setter Property="TemplatedControl.Foreground" Value="{DynamicResource ItemTextHover}"/>
@@ -93,7 +93,7 @@
                   </DockPanel>
                 </Border>
                 </TreeDataTemplate>
-            </TreeView.DataTemplates><!-- PORT: removed SelectedItemChanged (not in Avalonia) --><TreeView.Resources>
+            </TreeView.DataTemplates><TreeView.Resources>
               <ControlTheme TargetType="TreeViewItem" x:Key="{x:Type TreeViewItem}">
                 <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
                 <Setter Property="Template">
