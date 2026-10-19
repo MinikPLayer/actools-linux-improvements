@@ -307,6 +307,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
             this.RememberTemplateScope(e);
             if (_subMenuListBox != null) {
+                _subMenuListBox.ContainerPrepared -= OnSubMenuContainerPrepared;
                 _subMenuListBox.RemoveDrop(OnDrop);
             }
 
@@ -315,6 +316,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _subMenuListBox = this.GetTemplateChild("PART_SubMenu") as ListBox;
             if (_subMenuListBox != null) {
                 _subMenuListBox.AddDrop(OnDrop);
+                _subMenuListBox.ContainerPrepared += OnSubMenuContainerPrepared;
+            }
+        }
+
+        private void OnSubMenuContainerPrepared(object sender, Avalonia.Controls.ContainerPreparedEventArgs e) {
+            if (this.FindResource("ModernSubMenuItemContainerStyleSelector") is ModernSubMenuItemContainerStyleSelector selector) {
+                e.Container.Theme = selector.SelectTheme(((ListBox)sender).ItemFromContainer(e.Container));
             }
         }
 
