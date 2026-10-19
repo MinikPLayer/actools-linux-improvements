@@ -139,7 +139,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="ListBox">
           <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False">
-            <ItemsPresenter/>
+            <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
           </ScrollViewer>
         </ControlTemplate>
       </Setter.Value>
@@ -152,7 +152,7 @@
         <ControlTemplate TargetType="ListBox">
           <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}">
             <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-              <ItemsPresenter/>
+              <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
             </ScrollViewer>
           </Border>
         </ControlTemplate>
@@ -173,7 +173,7 @@
         <ControlTemplate TargetType="ItemsControl">
           <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
             <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-              <ItemsPresenter/>
+              <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
             </ScrollViewer>
           </Border>
         </ControlTemplate>
@@ -194,7 +194,7 @@
         <ControlTemplate TargetType="ItemsControl">
           <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
             <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-              <ItemsPresenter/>
+              <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
             </ScrollViewer>
           </Border>
         </ControlTemplate>

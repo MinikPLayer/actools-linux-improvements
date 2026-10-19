@@ -259,13 +259,13 @@ namespace AcManager.Pages.Windows {
             };
 
             SettingsHolder.Common.PropertyChanged += (sender, args) => {
-                if (args.PropertyName == nameof(SettingsHolder.Common.LowerPriorityInBackground)) {
+                if (OperatingSystem.IsWindows() && args.PropertyName == nameof(SettingsHolder.Common.LowerPriorityInBackground)) {
                     Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
                 }
             };
 
             Deactivated += (sender, args) => {
-                if (SettingsHolder.Common.LowerPriorityInBackground && !AttachedHelper.AnyRunning) {
+                if (OperatingSystem.IsWindows() && SettingsHolder.Common.LowerPriorityInBackground && !AttachedHelper.AnyRunning) {
                     Task.Delay(TimeSpan.FromSeconds(3d)).ContinueWith(r => ActionExtension.InvokeInMainThreadAsync(() => {
                         if (!IsActive) {
                             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.BelowNormal;
@@ -275,7 +275,8 @@ namespace AcManager.Pages.Windows {
             };
 
             Activated += (sender, args) => {
-                if (SettingsHolder.Common.LowerPriorityInBackground) {
+                // On Linux, priority can’t be raised back without privileges
+                if (OperatingSystem.IsWindows() && SettingsHolder.Common.LowerPriorityInBackground) {
                     Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
                 }
             };

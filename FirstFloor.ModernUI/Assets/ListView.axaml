@@ -71,7 +71,7 @@
                 <ControlTemplate TargetType="ListBox">
                     <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
                         <ScrollViewer Padding="{TemplateBinding Padding}">
-                            <ItemsPresenter/>
+                            <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
                         </ScrollViewer>
                     </Border>
                     </ControlTemplate>

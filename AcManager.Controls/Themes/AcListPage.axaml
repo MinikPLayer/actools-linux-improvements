@@ -58,7 +58,7 @@
                 <ListBox.Template>
                   <ControlTemplate TargetType="ListBox">
                     <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                      <ItemsPresenter/>
+                      <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
                     </ScrollViewer>
                   </ControlTemplate>
                 </ListBox.Template>

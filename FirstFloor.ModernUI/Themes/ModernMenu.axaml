@@ -203,7 +203,7 @@
               </ListBox.ItemsPanel>
               <ListBox.Template>
                 <ControlTemplate TargetType="ListBox">
-                  <ItemsPresenter/>
+                  <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
                 </ControlTemplate>
               </ListBox.Template>
             </ListBox>

@@ -2079,6 +2079,16 @@ def convert_file(path, registry, out_dir=None):
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
         s = re.sub(r'\.\(Color\.([ARGB])\)', r'.\1', s)
         s = re.sub(r'\((?:Control|TextBlock)\.Foreground\)', '(TextElement.Foreground)', s)
+        # custom templates of items controls: the presenter doesn't take the panel from the control on its own
+        def _items_panel(m, text=s):
+            owner = text.rfind('TargetType="', 0, m.start())
+            tpl = text.rfind('<ControlTemplate', 0, m.start())
+            if tpl >= 0 and 'TargetType' not in text[tpl:text.index('>', tpl)]:
+                return m.group(0)  # property template of a custom control: binding would be resolved against that control
+            if owner >= 0 and 'ModernTab' in text[owner:owner + 60]:
+                return m.group(0)
+            return '<ItemsPresenter%s ItemsPanel="{TemplateBinding ItemsPanel}"%s>' % (m.group(1), m.group(2))
+        s = re.sub(r'<ItemsPresenter((?:(?!ItemsPanel=)[^>/])*?)(/?)>', _items_panel, s)
         # resources declared on the element itself are not yet available when trigger styles are built
         s = re.sub(r'(<Style Selector="\^[^"]*"><Setter Property="[^"]+" Value=")\{StaticResource ', r'\1{DynamicResource ', s)
         s = s.replace(' TickPlacement="Both"', ' TickPlacement="Outside"')

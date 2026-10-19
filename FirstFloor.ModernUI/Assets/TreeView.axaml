@@ -50,7 +50,7 @@
             <Border x:Name="Bd" DockPanel.Dock="Top" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
               <ContentPresenter x:Name="PART_Header"/>
             </Border>
-            <ItemsPresenter x:Name="ItemsHost"/>
+            <ItemsPresenter x:Name="ItemsHost" ItemsPanel="{TemplateBinding ItemsPanel}"/>
           </DockPanel>
 
           <!--<Grid>

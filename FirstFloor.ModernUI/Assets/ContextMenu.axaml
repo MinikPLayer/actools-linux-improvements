@@ -27,7 +27,7 @@
                   <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Rectangle x:Name="OpaqueRect" Height="{Binding ElementName=ContextMenuBorder, Path=ActualHeight}" Width="{Binding ElementName=ContextMenuBorder, Path=ActualWidth}" Fill="{Binding ElementName=ContextMenuBorder, Path=Background}"/>
                   </Canvas>
-                  <ItemsPresenter x:Name="ItemsPresenter"/>
+                  <ItemsPresenter x:Name="ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
                 </c:Cell>
               </ScrollViewer>
             </Border>

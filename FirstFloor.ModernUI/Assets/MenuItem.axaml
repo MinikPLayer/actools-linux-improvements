@@ -61,7 +61,7 @@
           <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
             <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
               <Grid>
-                <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
+                <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True" ItemsPanel="{TemplateBinding ItemsPanel}"/>
               </Grid>
             </ScrollViewer>
           </Border>

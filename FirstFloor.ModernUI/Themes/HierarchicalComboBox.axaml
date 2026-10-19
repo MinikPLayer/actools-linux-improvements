@@ -41,7 +41,7 @@
                       <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Rectangle x:Name="OpaqueRect" Height="{Binding ActualHeight, ElementName=DropDownBorder}" Width="{Binding ActualWidth, ElementName=DropDownBorder}" Fill="{Binding Background, ElementName=DropDownBorder}"/>
                       </Canvas>
-                      <ItemsPresenter x:Name="ItemsPresenter"/>
+                      <ItemsPresenter x:Name="ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
                     </Grid>
                   </ScrollViewer>
                 </Border>
@@ -92,7 +92,7 @@
         <Grid Margin="0" Background="{DynamicResource PopupBackground}">
           <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
             <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
-              <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
+              <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True" ItemsPanel="{TemplateBinding ItemsPanel}"/>
             </ScrollViewer>
           </Border>
         </Grid>
@@ -150,7 +150,7 @@
                       <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Rectangle x:Name="OpaqueRect" Height="{Binding ActualHeight, ElementName=DropDownBorder}" Width="{Binding ActualWidth, ElementName=DropDownBorder}" Fill="{Binding Background, ElementName=DropDownBorder}"/>
                       </Canvas>
-                      <ItemsPresenter x:Name="ItemsPresenter"/>
+                      <ItemsPresenter x:Name="ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
                     </Grid>
                   </ScrollViewer>
                 </Border>

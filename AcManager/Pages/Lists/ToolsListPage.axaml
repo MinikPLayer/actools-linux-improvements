@@ -3,7 +3,7 @@
     <ItemsControl.Template>
       <ControlTemplate TargetType="ItemsControl">
         <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-          <ItemsPresenter/>
+          <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
         </ScrollViewer>
       </ControlTemplate>
     </ItemsControl.Template>

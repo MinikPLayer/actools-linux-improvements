@@ -56,7 +56,7 @@
                     <mui:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
                       <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
                         <ScrollViewer x:Name="DropDownScrollViewer">
-                          <ItemsPresenter x:Name="ItemsPresenter"/>
+                          <ItemsPresenter x:Name="ItemsPresenter" ItemsPanel="{TemplateBinding ItemsPanel}"/>
                         </ScrollViewer>
                       </Border>
                     </mui:Cell>
