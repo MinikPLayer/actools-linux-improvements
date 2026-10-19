@@ -266,6 +266,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             DimOwner();
+            ClampToScreen();
 
             if (Owner == null || !Owner.IsVisible) {
                 ShowInTaskbar = true;
@@ -382,7 +383,26 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// </summary>
         public event EventHandler ContentRendered;
 
+        /// <summary>
+        /// Dialogs use huge Height/MinHeight to say “as big as possible” (WPF clamps windows to the screen), Avalonia doesn’t.
+        /// </summary>
+        private void ClampToScreen() {
+            var area = (Screens?.ScreenFromWindow(this) ?? Screens?.Primary)?.WorkingArea;
+            if (area == null) return;
+
+            var scale = RenderScaling;
+            var maxWidth = area.Value.Width / scale;
+            var maxHeight = area.Value.Height / scale;
+            if (MinWidth > maxWidth) MinWidth = maxWidth;
+            if (MinHeight > maxHeight) MinHeight = maxHeight;
+            if (!double.IsNaN(Width) && Width > maxWidth) Width = maxWidth;
+            if (!double.IsNaN(Height) && Height > maxHeight) Height = maxHeight;
+            if (MaxWidth > maxWidth) MaxWidth = maxWidth;
+            if (MaxHeight > maxHeight) MaxHeight = maxHeight;
+        }
+
         private void OnOpened(object sender, EventArgs e) {
+            ClampToScreen();
             LoadLocationAndSize();
             OnSourceInitializedOverride();
             Dispatcher.UIThread.Post(() => ContentRendered?.Invoke(this, EventArgs.Empty), DispatcherPriority.Render);
