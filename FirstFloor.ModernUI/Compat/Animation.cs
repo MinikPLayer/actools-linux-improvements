@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -103,7 +103,17 @@ namespace System.Windows.Media.Animation {
                         running.Remove(property);
                     }
 
-                    if (timeline == null || !(target is Animatable animatable)) return;
+                    if (timeline == null) return;
+                    if (!(target is Animatable animatable) || target is Avalonia.Media.Transform) {
+                        // transforms and other non-visual targets can’t be animated this way, value is just set
+                        try {
+                            target.SetValue(property, timeline.GetTo(target, property));
+                        } catch (Exception) {
+                            // ignored
+                        }
+
+                        return;
+                    }
 
                     var cancellation = new CancellationTokenSource();
                     running[property] = cancellation;
@@ -139,7 +149,9 @@ namespace System.Windows.Media.Animation {
 
                                 timeline.Completed?.Invoke();
                             }
-                        } catch (OperationCanceledException) { }
+                        } catch (OperationCanceledException) { } catch (Exception e) {
+                            FirstFloor.ModernUI.Helpers.Logging.Warning("Animation failed: " + e.Message);
+                        }
                     }
                 }
             }

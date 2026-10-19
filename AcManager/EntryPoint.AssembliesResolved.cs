@@ -267,7 +267,7 @@ namespace AcManager {
                     UnhandledExceptionFancyHandler(e);
                     return;
                 } catch (Exception ex) {
-                    LogError(ex.Message);
+                    LogError(ex.ToString());
 
                     try {
                         if (text.Contains("SlimDX")) {

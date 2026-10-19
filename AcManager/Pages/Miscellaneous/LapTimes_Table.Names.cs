@@ -2,6 +2,6 @@
 namespace AcManager.Pages.Miscellaneous {
     public partial class LapTimes_Table {
         private global::Avalonia.Controls.DataGridTextColumn _DefaultColumn_;
-        internal global::Avalonia.Controls.DataGridTextColumn DefaultColumn => _DefaultColumn_ ?? (_DefaultColumn_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("DefaultColumn") as global::Avalonia.Controls.DataGridTextColumn);
+        internal global::Avalonia.Controls.DataGridTextColumn DefaultColumn => _DefaultColumn_ ?? (_DefaultColumn_ = FirstFloor.ModernUI.Windows.Attached.ColumnNames.Find<global::Avalonia.Controls.DataGridTextColumn>(this, "DefaultColumn"));
     }
 }

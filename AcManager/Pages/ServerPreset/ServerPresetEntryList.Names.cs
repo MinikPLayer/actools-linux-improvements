@@ -2,12 +2,12 @@
 namespace AcManager.Pages.ServerPreset {
     public partial class ServerPresetEntryList {
         private global::Avalonia.Controls.DataGridTemplateColumn _TeamColumn_;
-        internal global::Avalonia.Controls.DataGridTemplateColumn TeamColumn => _TeamColumn_ ?? (_TeamColumn_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("TeamColumn") as global::Avalonia.Controls.DataGridTemplateColumn);
+        internal global::Avalonia.Controls.DataGridTemplateColumn TeamColumn => _TeamColumn_ ?? (_TeamColumn_ = FirstFloor.ModernUI.Windows.Attached.ColumnNames.Find<global::Avalonia.Controls.DataGridTemplateColumn>(this, "TeamColumn"));
 
         private global::Avalonia.Controls.DataGridTemplateColumn _BallastColumn_;
-        internal global::Avalonia.Controls.DataGridTemplateColumn BallastColumn => _BallastColumn_ ?? (_BallastColumn_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("BallastColumn") as global::Avalonia.Controls.DataGridTemplateColumn);
+        internal global::Avalonia.Controls.DataGridTemplateColumn BallastColumn => _BallastColumn_ ?? (_BallastColumn_ = FirstFloor.ModernUI.Windows.Attached.ColumnNames.Find<global::Avalonia.Controls.DataGridTemplateColumn>(this, "BallastColumn"));
 
         private global::Avalonia.Controls.DataGridTemplateColumn _RestrictorColumn_;
-        internal global::Avalonia.Controls.DataGridTemplateColumn RestrictorColumn => _RestrictorColumn_ ?? (_RestrictorColumn_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("RestrictorColumn") as global::Avalonia.Controls.DataGridTemplateColumn);
+        internal global::Avalonia.Controls.DataGridTemplateColumn RestrictorColumn => _RestrictorColumn_ ?? (_RestrictorColumn_ = FirstFloor.ModernUI.Windows.Attached.ColumnNames.Find<global::Avalonia.Controls.DataGridTemplateColumn>(this, "RestrictorColumn"));
     }
 }

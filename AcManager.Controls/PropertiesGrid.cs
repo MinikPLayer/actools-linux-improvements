@@ -261,7 +261,7 @@ namespace AcManager.Controls {
             }
 
             // Label-related values
-            _labelTypeface = new Typeface(LabelFontFamily, FontStyles.Normal, LabelFontWeight, FontStretches.Normal);
+            _labelTypeface = new Typeface(LabelFontFamily, FontStyles.Normal, (int)LabelFontWeight <= 0 ? FontWeights.Normal : LabelFontWeight, FontStretches.Normal);
             _labelForeground = (Brush)GetValue(TextBlock.ForegroundProperty);
             _labelFontSize = GetValue(TextBlock.FontSizeProperty) as double? ?? 18d;
             _formattingMode = GetValue(TextOptions.TextFormattingModeProperty) as TextFormattingMode? ?? TextFormattingMode.Display;

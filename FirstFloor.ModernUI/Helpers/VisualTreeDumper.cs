@@ -27,6 +27,44 @@ namespace FirstFloor.ModernUI.Helpers {
             });
         }
 
+        /// <summary>
+        /// Debug helper: navigates the main window through all links of its menu, writes the current one to /tmp/cm_crawl.txt.
+        /// </summary>
+        public static void CrawlPages(TimeSpan delay, TimeSpan perPage) {
+            System.Threading.Tasks.Task.Run(async () => {
+                await System.Threading.Tasks.Task.Delay(delay);
+                var uris = new System.Collections.Generic.List<Uri>();
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => {
+                    var window = (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)
+                            ?.Windows.OfType<FirstFloor.ModernUI.Windows.Controls.ModernWindow>().FirstOrDefault();
+                    if (window == null) return;
+                    void Add(FirstFloor.ModernUI.Presentation.Link link) {
+                        if (link.Source != null) uris.Add(link.Source);
+                        if (link is FirstFloor.ModernUI.Presentation.LinkWithList list) {
+                            foreach (var child in list.Children) Add(child);
+                        }
+                    }
+
+                    foreach (var group in window.MenuLinkGroups) {
+                        foreach (var link in group.Links) Add(link);
+                    }
+                });
+
+                var index = 0;
+                foreach (var uri in uris.Distinct()) {
+                    await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() => {
+                        var window = (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)
+                                ?.Windows.OfType<FirstFloor.ModernUI.Windows.Controls.ModernWindow>().FirstOrDefault();
+                        window?.NavigateTo(uri);
+                    });
+                    System.IO.File.WriteAllText("/tmp/cm_crawl.txt", (++index) + " " + uri);
+                    await System.Threading.Tasks.Task.Delay(perPage);
+                }
+
+                System.IO.File.WriteAllText("/tmp/cm_crawl.txt", "done");
+            });
+        }
+
         private static void Dump(Visual v, int depth, StringBuilder sb) {
             if (depth > 40) return;
             sb.Append(' ', depth * 2).Append(v.GetType().Name);

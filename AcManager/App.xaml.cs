@@ -309,6 +309,9 @@ namespace AcManager {
             if (Environment.GetEnvironmentVariable("CM_DUMP_TREE") is string dump && double.TryParse(dump, out var delay)) {
                 FirstFloor.ModernUI.Helpers.VisualTreeDumper.DumpAfter(TimeSpan.FromSeconds(delay));
             }
+            if (Environment.GetEnvironmentVariable("CM_CRAWL") is string crawl && double.TryParse(crawl, out var crawlDelay)) {
+                FirstFloor.ModernUI.Helpers.VisualTreeDumper.CrawlPages(TimeSpan.FromSeconds(crawlDelay), TimeSpan.FromSeconds(4));
+            }
             // Some sort of safe mode
             if (_forceSoftwareRenderingMode && !_softwareRenderingModeWasEnabled) {
                 Toast.Show("Safe mode", "Failed to start the last time, now CM uses software rendering", () => {

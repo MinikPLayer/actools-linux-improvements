@@ -33,12 +33,12 @@ namespace AcManager.Pages.Drive {
                 if (!string.IsNullOrEmpty(color)) {
                     this.SetCustomAccentColor(color.As(Colors.YellowGreen));
                 } else {
-                    Browser.PreferTransparentBackground = false;
+                    if (Browser != null) Browser.PreferTransparentBackground = false;
                 }
             }
-            Browser.StartPage = _url;
-            Browser.KeepAliveKey = "ulsk:" + _url;
-            Browser.SaveKey = "ulss:" + _url;
+            if (Browser != null) Browser.StartPage = _url;
+            if (Browser != null) Browser.KeepAliveKey = "ulsk:" + _url;
+            if (Browser != null) Browser.SaveKey = "ulss:" + _url;
         }
 
         private static PluginsRequirement _requirement;
