@@ -208,7 +208,7 @@
                   <Button Content="Set icon from Google" Command="{Binding SetGoogleFaviconCommand}"/>
                   <Button Command="{Binding DeleteCommand}" Foreground="{DynamicResource Error}">
                     <DockPanel Margin="0">
-                      <Path Width="8" Height="8" VerticalAlignment="Center" Margin="0 0 0 -2" DockPanel.Dock="Left" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                      <Path Width="8" Height="8" VerticalAlignment="Center" Margin="0 0 0 -2" DockPanel.Dock="Left" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                       <TextBlock Text="Delete site" VerticalAlignment="Center" Margin="4 0 0 0"/>
                     </DockPanel>
                   </Button>

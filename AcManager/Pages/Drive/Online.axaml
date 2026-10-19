@@ -64,7 +64,7 @@
         </StackPanel>
         <Button Command="{Binding RefreshCommand}" CommandParameter="True" Margin="0 0 0 8" IsVisible="{Binding Pack.Error.IsFatal, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
           <DockPanel>
-            <Path Data="{StaticResource RefreshIconData}" Width="14" Height="14" Margin="0 0 8 0" VerticalAlignment="Center" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+            <Path Data="{StaticResource RefreshIconData}" Width="14" Height="14" Margin="0 0 8 0" VerticalAlignment="Center" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
             <TextBlock Text="{x:Static c:ControlsStrings.Common_TryAgain}"/>
           </DockPanel>
         </Button>
@@ -74,7 +74,7 @@
               <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Caching server helps to reduce load on main AC lobby server and speed things up, and supply data for some time in case AC lobby server would go under maintenance. And loading data directly from remote servers instead of going through AC lobby server would ensure data is the freshest."/>
             </ToolTip.Tip>
             <DockPanel>
-              <Path Data="{StaticResource GitForkIconData}" Width="14" Height="14" Margin="0 0 8 0" VerticalAlignment="Center" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+              <Path Data="{StaticResource GitForkIconData}" Width="14" Height="14" Margin="0 0 8 0" VerticalAlignment="Center" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
               <TextBlock Text="Switch to caching server and direct loading" DockPanel.Dock="Top" Margin="0 0 0 2"/>
               <TextBlock Text="Can be disabled later in Settings/Online" Classes="Small"/>
             </DockPanel>

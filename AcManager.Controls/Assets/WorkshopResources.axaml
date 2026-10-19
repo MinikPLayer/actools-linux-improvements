@@ -289,7 +289,7 @@
           <!-- PORT: removed CollectionContainer -->
           <Button BorderThickness="0" Margin="0 0 4 4" Command="{Binding AddReferenceCommand}">
             <DockPanel>
-              <Path Data="{StaticResource AddIconData}" Width="10" Height="10" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+              <Path Data="{StaticResource AddIconData}" Width="10" Height="10" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
               <TextBlock Text="Add an author" FontSize="{DynamicResource SmallFontSize}"/>
             </DockPanel>
           </Button>

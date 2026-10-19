@@ -96,7 +96,7 @@
                     <mui:BbCodeBlock MaxWidth="480" Text="{Binding DisplayInstalledVersion, StringFormat='{}Installed version [b]{0}[/b] is selected manually, so Content Manager won’t auto-update patch if this is the version you prefer. Press this button to release that explicit preferance and enable automatic updates. Be careful: files inside extension folder might get overwritten, namely:[br] [br]  • All INI-files in [b]extension/config[/b] (but not subfolders) will be moved to the Recycle Bin;[br]  • Most files in folders [b]extension/lua[/b], [b]extension/shaders[/b] and [b]extension/tzdata[/b];[br]  • And, only some files in [b]extension/textures[/b] folder might change.'}"/>
                   </ToolTip.Tip>
                   <DockPanel Margin="0">
-                    <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 4 0" Data="{StaticResource UnlockIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                    <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 0 4 0" Data="{StaticResource UnlockIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                     <TextBlock Text="Unlock" Margin="0" Padding="0"/>
                   </DockPanel>
                 </Button>
@@ -131,7 +131,7 @@
                 <Button Command="{Binding ReinstallCommand}" Content="Reinstall current version"/>
                 <Button Command="{Binding DeleteCommand}" Foreground="{DynamicResource Error}">
                   <DockPanel Margin="0">
-                    <Path Width="8" Height="8" VerticalAlignment="Center" Margin="0 0 0 -2" DockPanel.Dock="Left" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                    <Path Width="8" Height="8" VerticalAlignment="Center" Margin="0 0 0 -2" DockPanel.Dock="Left" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                     <TextBlock Text="Delete patch" VerticalAlignment="Center" Margin="4 0 0 0"/>
                   </DockPanel>
                 </Button>
@@ -178,7 +178,7 @@
                       </ContextMenu>
                     </DockPanel.ContextMenu>
                     <Button x:Name="PART_UrlButton" VerticalAlignment="Center" Padding="4 2 4 4" CommandParameter="{Binding Url}" DockPanel.Dock="Right" Command="{x:Static mui:LinkCommands.NavigateLink}">
-                      <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource LinkIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                      <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource LinkIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                     </Button>
                     <DockPanel DockPanel.Dock="Top" Margin="0 0 0 4">
                       <TextBlock Text="{Binding Version}" FontWeight="Bold" Margin="0 0 8 0"/>

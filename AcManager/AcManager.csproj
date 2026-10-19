@@ -55,6 +55,7 @@
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
     <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.13" />
     <ProjectReference Include="..\AcManager.Internal.Stub\AcManager.Internal.Stub.csproj" />
     <Reference Include="AcTools.AcdEncryption, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Libraries\AcTools\AcTools.AcdEncryption.dll</HintPath>

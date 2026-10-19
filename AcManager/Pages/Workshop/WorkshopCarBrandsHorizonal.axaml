@@ -201,7 +201,7 @@
               </ToolTip.Tip>
               <mui:AsyncButton.Content>
                 <DockPanel>
-                  <Path Width="20" Height="20" Margin="0 0 8 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                  <Path Width="20" Height="20" Margin="0 0 8 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                   <TextBlock Text="Install" DockPanel.Dock="Top" Classes="Heading2"/>
                   <TextBlock Text="{Binding SizeToInstall, Converter={StaticResource FileSizeConverter}}" Classes="Small"/>
                 </DockPanel>
@@ -210,13 +210,13 @@
             <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="4" Margin="0 0 0 20">
               <Button>
                 <DockPanel>
-                  <Path Width="10" Height="10" Margin="0 0 6 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                  <Path Width="10" Height="10" Margin="0 0 6 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                   <TextBlock Text="Share"/>
                 </DockPanel>
               </Button>
               <Button Margin="0 0 1 0">
                 <DockPanel>
-                  <Path Width="10" Height="10" Margin="0 0 6 0" Stretch="Uniform" Data="{StaticResource ReportIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                  <Path Width="10" Height="10" Margin="0 0 6 0" Stretch="Uniform" Data="{StaticResource ReportIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                   <TextBlock Text="Report"/>
                 </DockPanel>
               </Button>

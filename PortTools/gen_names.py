@@ -42,6 +42,8 @@ for cs, names in want.items():
     def lookup(n, t):
         if t.startswith('Avalonia.Controls.DataGrid') and t.endswith('Column'):
             return 'FirstFloor.ModernUI.Windows.Attached.ColumnNames.Find<global::%s>(this, "%s")' % (t, n)
+        if t.startswith('FirstFloor.ModernUI.Presentation.'):
+            return 'FirstFloor.ModernUI.Helpers.NamedObjects.Find(this, "%s") as global::%s' % (n, t)
         return 'Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("%s") as global::%s' % (n, t)
     body = '\n'.join('        private global::%s _%s_;\n        internal global::%s %s => _%s_ ?? (_%s_ = %s);\n' % (t, n, t, n, n, n, lookup(n, t)) for n, t in props)
     open(out, 'w', encoding='utf-8').write('// Named objects which are not controls (no generated fields for them), see PortTools/gen_names.py\nnamespace %s {\n    public partial class %s {\n%s    }\n}\n' % (ns, short, body))

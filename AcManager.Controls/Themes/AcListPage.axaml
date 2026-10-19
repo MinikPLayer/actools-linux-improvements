@@ -104,7 +104,7 @@
 
                       <Button x:Name="PART_BatchBlock_RunButton" Padding="8 3 8 5" Height="27" IsEnabled="{Binding SelectedAmount, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MoreConverter}}">
                         <DockPanel>
-                          <Path Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Stretch="Fill" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z"/>
+                          <Path Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Stretch="Fill" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z"/>
                           <TextBlock x:Name="PART_BatchBlock_RunButton_Text" VerticalAlignment="Center" Margin="4 0 0 0">
                             <TextBlock.Text>
                               <MultiBinding StringFormat="{x:Static mui:ColonConverter.FormatBoth}">
@@ -118,8 +118,8 @@
                       <Button x:Name="PART_BatchBlock_CloseButton" Padding="8 3 8 5" Height="27" Grid.Column="2">
                         <DockPanel>
                           <mui:Cell Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0">
-                            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
-                            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
+                            <Line StrokeThickness="1" Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
+                            <Line StrokeThickness="1" Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
                           </mui:Cell>
                           <TextBlock x:Name="PART_BatchBlock_CloseButton_Text" Text="{x:Static mui:UiStrings.Close}" VerticalAlignment="Center" Margin="4 0 0 0"/>
                         </DockPanel>
@@ -200,7 +200,7 @@
               <DockPanel Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button DockPanel.Dock="Bottom" x:Name="AddNewButton" Padding="8 3 8 5" Margin="0 8 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{TemplateBinding AddNewCommand, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
                   <DockPanel>
-                    <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource AddIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                    <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource AddIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                     <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_CreateNewItem}" VerticalAlignment="Center" Margin="4 0 0 0"/>
                   </DockPanel>
                 </Button>

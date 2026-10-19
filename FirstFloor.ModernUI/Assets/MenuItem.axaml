@@ -29,7 +29,7 @@
         </Grid.ColumnDefinitions>
         <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center"/>
         <Border Grid.Column="0" x:Name="GlyphPanel" IsVisible="False">
-          <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
+          <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
         </Border>
         <ContentPresenter Grid.Column="2" Margin="0,2,8,2" RecognizesAccessKey="True"/>
         <TextBlock Grid.Column="4" Text="{TemplateBinding MenuItem.InputGestureText}" Margin="0,2"/>
@@ -51,10 +51,10 @@
         </Grid.ColumnDefinitions>
         <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center"/>
         <Border Grid.Column="0" x:Name="GlyphPanel" IsVisible="False">
-          <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
+          <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
         </Border>
         <ContentPresenter Grid.Column="2" Margin="0 2 8 2" RecognizesAccessKey="True"/>
-        <Path x:Name="RightArrow" Grid.Column="5" VerticalAlignment="Center" Margin="4 0 0 0" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" Data="{StaticResource RightArrow}"/>
+        <Path x:Name="RightArrow" Grid.Column="5" VerticalAlignment="Center" Margin="4 0 0 0" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="{StaticResource RightArrow}"/>
       </Grid>
       <Popup x:Name="PART_Popup" Placement="Right" VerticalOffset="-3" HorizontalOffset="-2" Focusable="False" IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" Background="{DynamicResource PopupBackground}">

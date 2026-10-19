@@ -197,12 +197,12 @@
                     <ContextMenu>
                       <MenuItem Command="{Binding ResetStatsCommand}" Header="{x:Static g:AppStrings.Drive_OnlineServer_ResetStats}">
                         <MenuItem.Icon>
-                          <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource RemoveIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                          <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource RemoveIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                         </MenuItem.Icon>
                       </MenuItem>
                       <MenuItem Click="OnShareStatsItemClick" Header="{x:Static g:AppStrings.Drive_OnlineServer_GetLinkToStats}">
                         <MenuItem.Icon>
-                          <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                          <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
                         </MenuItem.Icon>
                       </MenuItem>
                     </ContextMenu>
@@ -236,7 +236,7 @@
                 <mui:BooleanSwitch.False>
                   <mui:AsyncButton Command="{Binding RefreshCommand}">
                     <DockPanel>
-                      <Path Data="{StaticResource RefreshIconData}" Stretch="Uniform" Width="12" Height="12" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 6 -1" VerticalAlignment="Center"/>
+                      <Path Data="{StaticResource RefreshIconData}" Stretch="Uniform" Width="12" Height="12" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 6 -1" VerticalAlignment="Center"/>
                       <TextBlock Text="{x:Static c:ControlsStrings.Common_TryAgain}"/>
                     </DockPanel>
                   </mui:AsyncButton>
@@ -245,7 +245,7 @@
                   <DockPanel>
                     <mui:AsyncButton Command="{Binding RefreshCommand}">
                       <DockPanel>
-                        <Path Data="{StaticResource RefreshIconData}" Stretch="Uniform" Width="12" Height="12" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 6 -1" VerticalAlignment="Center"/>
+                        <Path Data="{StaticResource RefreshIconData}" Stretch="Uniform" Width="12" Height="12" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 6 -1" VerticalAlignment="Center"/>
                         <TextBlock Text="{x:Static c:ControlsStrings.Common_TryAgain}"/>
                       </DockPanel>
                     </mui:AsyncButton>
@@ -312,7 +312,7 @@
                     <ToolTip.Tip>
                       <mui:BbCodeBlock Text="{Binding SelectedCarEntry.CspOptions.Description}" Mode="Extended"/>
                     </ToolTip.Tip>
-                    <Path Data="{StaticResource BulbIconData}" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
+                    <Path Data="{StaticResource BulbIconData}" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
                   </Border>
 
                   <!-- Selection ComboBox -->

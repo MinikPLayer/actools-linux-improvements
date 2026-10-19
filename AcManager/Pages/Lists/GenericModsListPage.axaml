@@ -34,13 +34,13 @@
         <mui:SpacingUniformGrid DockPanel.Dock="Bottom" Margin="0 8 0 0" Rows="1" HorizontalSpacing="8">
           <Button Padding="8 3 8 5" Click="CreateDirectoryButtonClick">
             <DockPanel>
-              <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource AddIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+              <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource AddIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
               <TextBlock Text="Create it" VerticalAlignment="Center" Margin="4 0 0 0"/>
             </DockPanel>
           </Button>
           <Button Padding="8 3 8 5" CommandParameter="/Pages/Settings/SettingsGenericMods.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}">
             <DockPanel>
-              <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource GearIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+              <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource GearIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
               <TextBlock Text="Settings" VerticalAlignment="Center" Margin="4 0 0 0"/>
             </DockPanel>
           </Button>
@@ -80,19 +80,19 @@
         <mui:SpacingStackPanel Grid.Column="2" Spacing="4" Margin="0 40 0 0">
           <Button Padding="2 4" Command="{Binding EnableCommand}" ToolTip.Tip="Enable selected mod">
             <DockPanel>
-              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
+              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
               <TextBlock Text="Enable"/>
             </DockPanel>
           </Button>
           <Button Padding="2 4" Command="{Binding DisableCommand}" ToolTip.Tip="Disable selected mod">
             <DockPanel>
-              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
+              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 57,42L 57,34L 32.25,34L 42.25,24L 31.75,24L 17.75,38L 31.75,52L 42.25,52L 32.25,42L 57,42 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
               <TextBlock Text="Disable"/>
             </DockPanel>
           </Button>
           <Button Padding="2 4" Command="{Binding DisableAllCommand}" ToolTip.Tip="Disable all mods">
             <DockPanel>
-              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 56.5,18L 31.75,18L 41.75,28L 31.25,28L 17.25,14L 31.25,0L 41.75,0L 31.75,10L 56.5,10L 56.5,18 Z M 14.5,18L 24.5,28L 14,28L 0,14L 14,0L 24.5,0L 14.5,10L 19.25,10L 15.25,14L 19.25,18L 14.5,18 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
+              <Path Width="32" Height="12" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 56.5,18L 31.75,18L 41.75,28L 31.25,28L 17.25,14L 31.25,0L 41.75,0L 31.75,10L 56.5,10L 56.5,18 Z M 14.5,18L 24.5,28L 14,28L 0,14L 14,0L 24.5,0L 14.5,10L 19.25,10L 15.25,14L 19.25,18L 14.5,18 Z" DockPanel.Dock="Top" Margin="0 4 0 4"/>
               <TextBlock Text="Disable all"/>
             </DockPanel>
           </Button>

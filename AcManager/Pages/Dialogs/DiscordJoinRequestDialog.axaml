@@ -29,7 +29,7 @@
           <mui:Cell>
             <ProgressBar x:Name="YesBar" Minimum="0" Maximum="1" Background="Transparent" Foreground="{DynamicResource ButtonBackgroundHover}"/>
             <DockPanel x:Name="YesText" HorizontalAlignment="Center" Margin="16 1 16 2">
-              <Path x:Name="YesIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
+              <Path x:Name="YesIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
               <TextBlock Text="Yes" Margin="0 -1 0 1" VerticalAlignment="Center"/>
             </DockPanel>
           </mui:Cell>
@@ -38,7 +38,7 @@
           <mui:Cell>
             <ProgressBar x:Name="NoBar" Minimum="0" Maximum="1" Background="Transparent" Foreground="{DynamicResource ButtonBackgroundHover}"/>
             <DockPanel x:Name="NoText" HorizontalAlignment="Center" Margin="16 1 16 2">
-              <Path x:Name="NoIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
+              <Path x:Name="NoIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
               <TextBlock Text="No" Margin="0 -1 0 1" VerticalAlignment="Center"/>
             </DockPanel>
           </mui:Cell>

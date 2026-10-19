@@ -456,7 +456,7 @@
               <DockPanel Classes="DockPanel">
                 <Label Content="Attach to:"/>
                 <ToggleButton DockPanel.Dock="Right" Margin="4 0 0 0" Padding="4 2" IsChecked="{Binding AttachedToSelect}">
-                  <Path Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 54.25,34L 42,34L 42,21.75L 46,17.75L 46,26.75L 54,18.75L 57.25,22L 49.25,30L 58.25,30L 54.25,34 Z M 34,21.75L 34,34L 21.75,34L 17.75,30L 26.75,30L 18.75,22L 22,18.75L 30,26.75L 30,17.75L 34,21.75 Z M 21.75,42L 34,42L 34,54.25L 30,58.25L 30,49.25L 22,57.25L 18.75,54L 26.75,46L 17.75,46L 21.75,42 Z M 42,54.25L 42,42L 54.25,42L 58.25,46L 49.25,46L 57.25,54L 54,57.25L 46,49.25L 46,58.25L 42,54.25 Z" Width="12" Height="12" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                  <Path Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 54.25,34L 42,34L 42,21.75L 46,17.75L 46,26.75L 54,18.75L 57.25,22L 49.25,30L 58.25,30L 54.25,34 Z M 34,21.75L 34,34L 21.75,34L 17.75,30L 26.75,30L 18.75,22L 22,18.75L 30,26.75L 30,17.75L 34,21.75 Z M 21.75,42L 34,42L 34,54.25L 30,58.25L 30,49.25L 22,57.25L 18.75,54L 26.75,46L 17.75,46L 21.75,42 Z M 42,54.25L 42,42L 54.25,42L 58.25,46L 49.25,46L 57.25,54L 54,57.25L 46,49.25L 46,58.25L 42,54.25 Z" Width="12" Height="12" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </ToggleButton>
                 <mui:BetterTextBox Text="{Binding AttachedTo}" Placeholder="None"/>
               </DockPanel>
@@ -616,7 +616,7 @@
         </mui:SpacingStackPanel>
       </mui:BooleanSwitch>
 
-      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 -1 4 1" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
+      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 -1 4 1" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
       <mui:Switch Value="{Binding Tag}">
         <Border mui:Switch.When="{x:Static lights:DarkLightTag.Car}"/>
         <CheckBox IsChecked="{Binding Enabled}" DockPanel.Dock="Left" Margin="4 0"/>

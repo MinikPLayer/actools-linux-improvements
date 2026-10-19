@@ -32,8 +32,8 @@
         </Button.Resources>
         <DockPanel>
           <mui:Cell Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 4 0">
-            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
-            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
+            <Line StrokeThickness="1" Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
+            <Line StrokeThickness="1" Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
           </mui:Cell>
           <TextBlock Text="{x:Static mui:UiStrings.Close}" VerticalAlignment="Center"/>
         </DockPanel>

@@ -184,7 +184,7 @@
                         HorizontalAlignment="Center" StrokeThickness="1" />
                   </Button>-->
                   <mui:BetterTextBox x:Name="PriorityTextBox" DockPanel.Dock="Right" Margin="4 0 0 0" Text="{Binding CandidatePriority}" VerticalAlignment="Center" Width="20" Mode="Positive" ToolTip.Tip="{x:Static g:AppStrings.RaceGrid_CandidatePriority}" Theme="{StaticResource Borderless.White.Small}"/>
-                  <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                   <mui:BbCodeBlock Mode="WithoutBbCodes" x:Name="NameTextBlock" Text="{Binding DisplayName}"/>
                 </DockPanel>
                 </DataTemplate>
@@ -214,7 +214,7 @@
                         <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
                       </Button>
                       <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" Margin="2 2 4 0" VerticalAlignment="Center"/>
-                      <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                      <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                       <mui:BbCodeBlock Mode="WithoutBbCodes" x:Name="EntryName" Text="{Binding DisplayName}"/>
                     </DockPanel>
                     </DataTemplate>

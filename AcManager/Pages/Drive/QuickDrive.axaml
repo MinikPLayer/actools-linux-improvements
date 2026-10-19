@@ -27,7 +27,7 @@
         </dr:QuickDriveModeLinksTemplateSelector.HeaderDataTemplate>
         <dr:QuickDriveModeLinksTemplateSelector.LinkDataTemplate>
           <DataTemplate DataType="{x:Type mui:Link}">
-            <TextBlock Name="PART_Text" Text="{Binding DisplayName}" FontWeight="Normal" ToolTip.Tip="{Binding ToolTip}"><TextBlock.Styles><Style Selector="TextBlock#PART_Text"><Style Selector="^ TextBlock#PART_Text"><Setter Property="ContextMenu" Value="{StaticResource CustomModeContextMenu}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Tag, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#PART_Text"><Setter Property="ContextMenu" Value="{StaticResource CustomModeContextMenu}"/>
+            <TextBlock Name="PART_Text" Text="{Binding DisplayName}" FontWeight="Normal" ToolTip.Tip="{Binding ToolTip}"><TextBlock.Styles><Style Selector="TextBlock#PART_Text"><Style Selector="^ TextBlock#PART_Text"><Setter Property="ContextMenu" Value="{DynamicResource CustomModeContextMenu}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Tag, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#PART_Text"><Setter Property="ContextMenu" Value="{DynamicResource CustomModeContextMenu}"/>
               </Style></Style></TextBlock.Styles></TextBlock>
             </DataTemplate>
         </dr:QuickDriveModeLinksTemplateSelector.LinkDataTemplate>

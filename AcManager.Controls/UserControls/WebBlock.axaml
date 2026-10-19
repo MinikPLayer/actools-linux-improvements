@@ -22,7 +22,7 @@
               <mui:Cell x:Name="Cell">
                 <Border x:Name="MouseOver" Background="{DynamicResource ButtonBackgroundHover}" BorderThickness="1" BorderBrush="{DynamicResource ButtonBorderHover}" Opacity="0"/>
                 <Border x:Name="Pressed" Background="{DynamicResource ButtonBackgroundPressed}" BorderThickness="1" Opacity="0"/>
-                <Path Data="{TemplateBinding IconData}" Width="13" Height="13" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                <Path Data="{TemplateBinding IconData}" Width="13" Height="13" Stretch="Uniform" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}"/>
               </mui:Cell>
               </ControlTemplate>
           </Setter.Value>

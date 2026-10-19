@@ -297,7 +297,7 @@
 
                     <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding GeneratedModels.Count, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=1}">
                       <Button Click="OnShowroomClick" Margin="0 0 4 0" Padding="8 0" ToolTip.Tip="Showroom">
-                        <Path Data="{StaticResource CarShowroomIconData}" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Width="20" Height="20" Stretch="Uniform"/>
+                        <Path Data="{StaticResource CarShowroomIconData}" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Width="20" Height="20" Stretch="Uniform"/>
                       </Button>
                       <mui:BetterComboBox ItemsSource="{Binding GeneratedModels}" SelectedItem="{Binding SelectedGeneratedModel}" IsEditable="False" ToolTip.Tip="Choose the model to save as final">
                         <mui:BetterComboBox.ItemTemplate>

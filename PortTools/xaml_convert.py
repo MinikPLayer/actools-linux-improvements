@@ -1514,6 +1514,11 @@ class StyleConverter:
             if prop == 'ResizeMode':
                 prop, v = 'CanResize', ('False' if v == 'NoResize' else 'True')
             prop = self.map_prop(prop) or prop
+            if v is not None and is_markup(v) and '.' not in prop and parse_markup(v).name in ('StaticResource', 'DynamicResource'):
+                # selectors can't compare with resources, a state property is bound instead
+                sp = self.new_state()
+                sp_defs.append((sp, '{Binding %s, RelativeSource={RelativeSource Self}}' % prop, v))
+                return '[(pa|T.%s)=True]' % sp
             if (prop, v) in PSEUDO:
                 return PSEUDO[(prop, v)]
             if v == 'null' and '.' not in prop:
@@ -2073,6 +2078,9 @@ def convert_file(path, registry, out_dir=None):
             name = re.match(r'<[\w:.\-]+', s)
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
         s = re.sub(r'\.\(Color\.([ARGB])\)', r'.\1', s)
+        s = re.sub(r'\((?:Control|TextBlock)\.Foreground\)', '(TextElement.Foreground)', s)
+        # resources declared on the element itself are not yet available when trigger styles are built
+        s = re.sub(r'(<Style Selector="\^[^"]*"><Setter Property="[^"]+" Value=")\{StaticResource ', r'\1{DynamicResource ', s)
         s = s.replace(' TickPlacement="Both"', ' TickPlacement="Outside"')
         s = s.replace(' ToolBarTray.IsLocked=', ' mui:ToolBar.IsLocked=')
         s = re.sub(r'<(/?)Duration(?=[ >])', r'<\1x:TimeSpan', s)

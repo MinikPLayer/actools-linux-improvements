@@ -56,20 +56,20 @@
               <DockPanel DockPanel.Dock="Left" Margin="0 0 8 0" Background="Transparent">
                 <RadioButton DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0 0 4 0" IsChecked="{Binding DefaultSet}" ToolTip.Tip="Default set"/>
                 <!-- <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 0 4 0" Stretch="Uniform"
-                       Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}"
+                       Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}"
                        Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z" /> -->
                 <TextBlock Text="{Binding Position, StringFormat='{}#{0}'}" VerticalAlignment="Center" Classes="Heading2"/>
               </DockPanel>
 
               <Button DockPanel.Dock="Right" Width="13" Height="13" Margin="4 0 4 0" VerticalAlignment="Center" Padding="2" Command="{Binding DeleteCommand}" IsVisible="{Binding DeleteCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" VerticalAlignment="Center"/>
+                <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" VerticalAlignment="Center"/>
               </Button>
               <!-- Tyres per place (draggable tyres) -->
               <c:PropertiesGrid Columns="1" LabelWidth="60" VerticalSpacing="4">
                 <Border c:PropertiesGrid.Label="Front:" mui:Draggable.Data="{Binding Front}" DragDrop.AllowDrop="True" DragDrop.Drop="OnFrontSlotDrop" PointerPressed="OnFrontSlotMouseDown" Classes="TyresCell">
                   <mui:Cell>
                     <DockPanel Margin="8 4">
-                      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
+                      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
                       <TextBlock Text="{Binding Front.DisplayName}" DockPanel.Dock="Top" TextTrimming="CharacterEllipsis"/>
                       <TextBlock Text="{Binding Front.DisplaySource}" TextTrimming="CharacterEllipsis" Classes="Small"/>
                     </DockPanel>
@@ -88,7 +88,7 @@
                 <Border c:PropertiesGrid.Label="Rear:" mui:Draggable.Data="{Binding Rear}" DragDrop.AllowDrop="True" DragDrop.Drop="OnRearSlotDrop" PointerPressed="OnRearSlotMouseDown" Classes="TyresCell">
                   <mui:Cell>
                     <DockPanel Margin="8 4">
-                      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
+                      <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
                       <TextBlock Text="{Binding Rear.DisplayName}" DockPanel.Dock="Top" TextTrimming="CharacterEllipsis"/>
                       <TextBlock Text="{Binding Rear.DisplaySource}" TextTrimming="CharacterEllipsis" Classes="Small"/>
                     </DockPanel>
@@ -118,7 +118,7 @@
             <Border c:PropertiesGrid.Label="Front:" mui:Draggable.Data="{Binding Front}" PointerPressed="OnFrontSlotMouseDown" Classes="TyresCell">
               <mui:Cell>
                 <DockPanel Margin="8 4">
-                  <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
+                  <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
                   <TextBlock Text="{Binding Front.DisplayName}" DockPanel.Dock="Top" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Text="{Binding Front.DisplaySource}" TextTrimming="CharacterEllipsis" Classes="Small"/>
                 </DockPanel>
@@ -137,7 +137,7 @@
             <Border c:PropertiesGrid.Label="Rear:" mui:Draggable.Data="{Binding Rear}" PointerPressed="OnRearSlotMouseDown" Classes="TyresCell">
               <mui:Cell>
                 <DockPanel Margin="8 4">
-                  <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
+                  <Path VerticalAlignment="Center" DockPanel.Dock="Left" Height="8" Width="6" Margin="0 2 4 -2" Stretch="Uniform" Fill="{Binding (TextElement.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 28.5,23L 36.5,23L 36.5,31L 28.5,31L 28.5,23 Z M 28.5,34L 36.5,34L 36.5,42L 28.5,42L 28.5,34 Z M 39.5,23L 47.5,23L 47.5,31L 39.5,31L 39.5,23 Z M 28.5,45L 36.5,45L 36.5,53L 28.5,53L 28.5,45 Z M 39.5,34L 47.5,34L 47.5,42L 39.5,42L 39.5,34 Z M 39.5,45L 47.5,45L 47.5,53L 39.5,53L 39.5,45 Z"/>
                   <TextBlock Text="{Binding Rear.DisplayName}" DockPanel.Dock="Top" TextTrimming="CharacterEllipsis"/>
                   <TextBlock Text="{Binding Rear.DisplaySource}" TextTrimming="CharacterEllipsis" Classes="Small"/>
                 </DockPanel>

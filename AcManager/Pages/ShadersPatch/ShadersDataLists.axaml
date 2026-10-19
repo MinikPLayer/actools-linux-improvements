@@ -78,6 +78,6 @@
   </DataTemplate>
 
   <Border x:Key="HeaderInstallContent" Background="Transparent" ToolTip.Tip="Is downloaded">
-    <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" HorizontalAlignment="Center"/>
+    <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" HorizontalAlignment="Center"/>
   </Border>
 </ResourceDictionary>

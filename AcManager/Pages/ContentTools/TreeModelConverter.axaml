@@ -44,7 +44,7 @@
             <mui:FallbackSwitch Width="10" Height="10" Margin="0 0 8 0" VerticalAlignment="Center" DockPanel.Dock="Left">
               <Path Data="{StaticResource AlertIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{DynamicResource Error}" Stretch="Uniform" mui:FallbackSwitch.Value="{Binding LastError}" mui:FallbackSwitch.WhenNot="{x:Null}"/>
               <Path Data="{StaticResource CheckIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{DynamicResource Go}" Stretch="Uniform" mui:FallbackSwitch.Value="{Binding RefreshCommand.IsAbleToExecute}" mui:FallbackSwitch.When="True"/>
-              <Path Data="{StaticResource RefreshIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" RenderTransformOrigin="0.5, 0.5">
+              <Path Data="{StaticResource RefreshIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{Binding Path=(TextElement.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" RenderTransformOrigin="0.5, 0.5">
                 <Path.RenderTransform>
                   <RotateTransform/>
                 </Path.RenderTransform>
