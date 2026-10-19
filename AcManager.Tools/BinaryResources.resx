@@ -119,21 +119,21 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ModuleCmHelper" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\cmhelper.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Assets\CmHelper.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="Rules" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\rules.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+    <value>Assets\Rules.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="SidePassage" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\sidepassage.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Assets\SidePassage.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TimeZoneConverter.Aliases" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\timezoneconverter\aliases.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Assets\TimeZoneConverter\Aliases.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TimeZoneConverter.Mapping" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\timezoneconverter\mapping.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Assets\TimeZoneConverter\Mapping.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="TimeZoneConverter.RailsMapping" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>assets\timezoneconverter\railsmapping.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Assets\TimeZoneConverter\RailsMapping.csv.gz;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

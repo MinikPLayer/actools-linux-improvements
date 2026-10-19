@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using System.Windows.Forms;
 using AcTools.Render.Base.PostEffects;
 using AcTools.Render.Base.Sprites;
 using AcTools.Render.Base.TargetTextures;
@@ -565,10 +564,10 @@ namespace AcTools.Render.Base {
             }
         }
 
-        private WeakReference<Form> _associatedWindow;
+        private WeakReference<object> _associatedWindow;
 
         [CanBeNull]
-        public Form AssociatedWindow {
+        public object AssociatedWindow {
             get {
                 if (_associatedWindow != null) {
                     if (_associatedWindow.TryGetTarget(out var result)) return result;
@@ -579,8 +578,8 @@ namespace AcTools.Render.Base {
             }
         }
 
-        public void SetAssociatedWindow(Form window) {
-            _associatedWindow = window == null ? null : new WeakReference<Form>(window);
+        public void SetAssociatedWindow(object window) {
+            _associatedWindow = window == null ? null : new WeakReference<object>(window);
         }
 
         private bool _disposed;

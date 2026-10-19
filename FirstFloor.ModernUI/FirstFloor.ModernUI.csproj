@@ -292,7 +292,7 @@
     <Compile Include="Helpers\LimitedStorage.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
     <Compile Include="Helpers\Logging.cs" />
-    <Compile Include="Helpers\Lzf.cs" />
+    <Compile Include="Helpers\LZF.cs" />
     <Compile Include="Helpers\NonfatalError.cs" />
     <Compile Include="Helpers\Storage.cs" />
     <Compile Include="Helpers\Rijndael256.cs" />
@@ -305,7 +305,7 @@
     <Compile Include="Localizable\Ordinalizing.cs" />
     <Compile Include="Localizable\Pluralizing.cs" />
     <Compile Include="Localizable\Titling.cs" />
-    <Compile Include="ModernUiHelper.cs" />
+    <Compile Include="ModernUIHelper.cs" />
     <Compile Include="Commands\AsyncCommand.cs" />
     <Compile Include="Presentation\AutoCompleteBehavior.cs" />
     <Compile Include="Presentation\BindingProxy.cs" />
@@ -710,7 +710,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\BbCodeBlock.xaml">
+    <Page Include="Themes\BBCodeBlock.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

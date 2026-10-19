@@ -1,5 +1,4 @@
-using System;
-using System.Windows.Forms;
+﻿using System;
 using AcTools.Kn5File;
 using AcTools.Render.Base;
 using AcTools.Render.Base.Cameras;
@@ -230,7 +229,7 @@ namespace AcTools.Render.Kn5SpecificForwardDark.Materials {
         protected static void WarnAboutBones(int count) {
             if (_warnedAboutBones) return;
             _warnedAboutBones = true;
-            MessageBox.Show($"Too much bones: {count} (shader limitation: {EffectDarkMaterial.MaxBones})");
+            AcToolsLogging.Write($"Too much bones: {count} (shader limitation: {EffectDarkMaterial.MaxBones})");
         }
         #endregion
     }

@@ -42,11 +42,11 @@ namespace AcTools.Render.Utils {
             try {
                 using (var input = new MemoryStream(imageData))
                 using (var image = new MagickImage(input)) {
-                    var compression = GetCompression(format, image.Width, image.Height);
+                    var compression = GetCompression(format, (int)image.Width, (int)image.Height);
                     AcToolsLogging.Write($"Preferred format: {format}, compression: {compression}");
 
                     image.Settings.SetDefine(MagickFormat.Dds, "compression", compression);
-                    image.Settings.SetDefine(MagickFormat.Dds, "mipmaps", GetMipmapsCount(image.Width, image.Height).ToString());
+                    image.Settings.SetDefine(MagickFormat.Dds, "mipmaps", GetMipmapsCount((int)image.Width, (int)image.Height).ToString());
                     if (compression != "none") {
                         image.Settings.SetDefine(MagickFormat.Dds, "cluster-fit", "true");
                     }

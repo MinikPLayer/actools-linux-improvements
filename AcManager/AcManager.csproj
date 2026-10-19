@@ -61,7 +61,7 @@
     <DefineConstants>COSTURA</DefineConstants>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationManifest>App.manifest</ApplicationManifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Using Include="AcTools.Render.Base.Utils.MathF" Alias="MathF" />
@@ -1851,7 +1851,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Presets.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="App.config">
+    <EmbeddedResource Include="app.config">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="About\ImportantTips\Custom Showroom Best Antialiasing.txt" />
@@ -1877,7 +1877,7 @@
     <None Include="About\Licenses\OxyPlot\LICENSE" />
     <None Include="About\Licenses\SharpCompress\LICENSE.md" />
     <None Include="About\Licenses\SlimDX\LICENSE" />
-    <None Include="App.manifest">
+    <None Include="app.manifest">
       <SubType>Designer</SubType>
     </None>
     <None Include="Assets\Data\AT-Previews Special %281.6%29.ini" />
@@ -1888,7 +1888,7 @@
     <None Include="Assets\Presets\Assists\c@AssistsPreset_Pro.cmpreset" />
     <None Include="Assets\Presets\Custom Previews\Kunos.cmpreset" />
     <None Include="Assets\Presets\Previews\Kunos.cmpreset" />
-    <None Include="Packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Condition="'$(IncludeWorkshop)' == 'true'">
     <DefineConstants>INCLUDE_WORKSHOP</DefineConstants>

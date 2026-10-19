@@ -38,10 +38,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Magick.NET-Q8-$(ActualPlatform), Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\Magick.NET-7.0.4-$(ActualPlatform)\Magick.NET-Q8-$(ActualPlatform).dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="NBidi, Culture=neutral">
       <HintPath>..\Libraries\NBidi\NBidi.dll</HintPath>
       <Private>True</Private>
@@ -194,7 +190,7 @@
     <Compile Include="Kn5SpecificForward\PaintShopSourceParams.cs" />
     <Compile Include="Kn5SpecificForward\ToolsKn5ObjectRenderer.Camera.cs" />
     <Compile Include="Kn5SpecificForward\ToolsKn5ObjectRenderer.Textures.cs" />
-    <Compile Include="Kn5SpecificForward\ToolsKn5ObjectRenderer.PaintShop.cs" />
+    <Compile Include="Kn5SpecificForward\ToolsKn5ObjectRenderer.Paintshop.cs" />
     <Compile Include="Kn5SpecificSpecial\AiLaneObject.cs" />
     <Compile Include="Kn5SpecificSpecial\BakedShadowsRenderer.cs" />
     <Compile Include="Kn5SpecificSpecial\DepthMaterialsFactory.cs" />
@@ -319,13 +315,13 @@
     <Compile Include="Utils\OpenExrEncoder.cs" />
     <Compile Include="Utils\PreferredDdsFormat.cs" />
     <Compile Include="Utils\PreferredDdsFormatExtension.cs" />
-    <Compile Include="Wrapper\BaseKn5FormWrapper.cs" />
-    <Compile Include="Wrapper\FormWrapperBase.cs" />
-    <Compile Include="Wrapper\RenderForm.cs" />
+    <Compile Include="Wrapper\BaseKn5FormWrapper.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
+    <Compile Include="Wrapper\FormWrapperBase.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
+    <Compile Include="Wrapper\RenderForm.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
     <Compile Include="Base\D3DX11Compat.cs" />
-    <Compile Include="Wrapper\FormWrapperMouseBase.cs" />
-    <Compile Include="Wrapper\Kn5WrapperCameraControlHelper.cs" />
-    <Compile Include="Wrapper\LiteShowroomFormWrapper.cs" />
+    <Compile Include="Wrapper\FormWrapperMouseBase.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
+    <Compile Include="Wrapper\Kn5WrapperCameraControlHelper.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
+    <Compile Include="Wrapper\LiteShowroomFormWrapper.cs" Condition="'$(AcToolsRenderForms)' == 'true'" />
   </ItemGroup>
   <ItemGroup>
     <!-- Native library for Effects11 comes in a folder with an obsolete version-specific RID, so it’s not copied automatically. -->

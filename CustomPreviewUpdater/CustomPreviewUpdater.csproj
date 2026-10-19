@@ -52,10 +52,6 @@
       <HintPath>..\Libraries\AcTools\AcTools.Kn5Tools.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Magick.NET-Q8-$(ActualPlatform), Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\Magick.NET-7.0.4-$(ActualPlatform)\Magick.NET-Q8-$(ActualPlatform).dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=1.9.71.2, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">

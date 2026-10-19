@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using AcTools.Kn5File;
 using AcTools.Numerics;
 using AcTools.Render.Base.Cameras;
@@ -310,7 +309,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     _renderer.IsDirty = true;
                     _renderer.Scene.UpdateBoundingBox();
                 } catch (Exception e) {
-                    MessageBox.Show(e.ToString());
+                    AcToolsLogging.Write(e);
                     throw;
                 } finally {
                     if (ReferenceEquals(_loadingCar, car)) {
@@ -399,7 +398,7 @@ namespace AcTools.Render.Kn5SpecificForward {
                     _renderer.Scene.UpdateBoundingBox();
 #if DEBUG
                 } catch (Exception e) {
-                    MessageBox.Show(e.ToString());
+                    AcToolsLogging.Write(e);
                     throw;
 #endif
                 } finally {

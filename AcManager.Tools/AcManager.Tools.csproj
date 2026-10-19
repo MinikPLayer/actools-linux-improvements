@@ -851,7 +851,7 @@
     <None Include="App.config" />
     <None Include="Assets\CmHelper.zip" />
     <None Include="Assets\SidePassage.zip" />
-    <None Include="Packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BinaryResources.resx">

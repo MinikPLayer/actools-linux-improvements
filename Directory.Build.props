@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
   <!--
     Shared settings for the .NET 10 port. The csproj files keep their explicit <Compile>/<Page>/…
     item lists (default globbing is disabled), so merging new files from upstream still works the
@@ -7,7 +7,9 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Platforms>x86;x64</Platforms>
-    <Platform Condition="'$(Platform)' == '' Or '$(Platform)' == 'AnyCPU'">x86</Platform>
+    <!-- 32-bit by default on Windows (as it used to be), but there are no 32-bit .NET installations around on Linux. -->
+    <Platform Condition="('$(Platform)' == '' Or '$(Platform)' == 'AnyCPU') And $([MSBuild]::IsOSPlatform('Windows'))">x86</Platform>
+    <Platform Condition="('$(Platform)' == '' Or '$(Platform)' == 'AnyCPU') And !$([MSBuild]::IsOSPlatform('Windows'))">x64</Platform>
 
     <!-- Kept from the old project files: some references are picked from per-architecture folders. -->
     <ActualPlatform>$(Platform)</ActualPlatform>
