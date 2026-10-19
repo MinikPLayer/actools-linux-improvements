@@ -12,7 +12,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         internal FatalErrorMessage() {
         }
 
-        public static readonly DependencyProperty MessageProperty = DP.Register(nameof(Message), typeof(string),
+        public static readonly StyledProperty<string> MessageProperty = DP.Register<string>(nameof(Message),
                 typeof(FatalErrorMessage));
 
         public string Message {
@@ -20,7 +20,7 @@ namespace FirstFloor.ModernUI.Dialogs {
             set => SetValue(MessageProperty, value);
         }
 
-        public static readonly DependencyProperty StackTraceProperty = DP.Register(nameof(StackTrace), typeof(string),
+        public static readonly StyledProperty<string> StackTraceProperty = DP.Register<string>(nameof(StackTrace),
                 typeof(FatalErrorMessage));
 
         public string StackTrace {

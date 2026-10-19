@@ -1,13 +1,14 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme TargetType="c:ModernFrame" x:Key="{x:Type c:ModernFrame}">
-    <Setter Property="Background" Value="Transparent"/>
+    
+
+          <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="BorderBrush" Value="{x:Null}"/>
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -16,15 +17,8 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="c:ModernFrame">
-          <ControlTemplate.Resources>
-            <!-- render a nicely formatted error page when content is an exception -->
-            <DataTemplate DataType="{x:Type sys:Exception}">
-              <c:ExceptionDetails Exception="{Binding}"/>
-            </DataTemplate>
-          </ControlTemplate.Resources>
-
           <Border HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-            <c:Cell HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" c:ModernFrame.KeepContentAlive="False">
+            <c:Cell HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}">
               <c:TransitioningContentControl Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="{TemplateBinding Padding}" Transition="{TemplateBinding TransitionName}"/>
 
               <!-- display progress bar while content is being loaded -->

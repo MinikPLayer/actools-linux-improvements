@@ -22,7 +22,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
     public class LogarithmicScale : DependencyObject, IValueConverter, IMultiValueConverter {
         private bool _dirty = true;
 
-        public static readonly DependencyProperty RoundToProperty = DP.Register(nameof(RoundTo), typeof(double),
+        public static readonly StyledProperty<double> RoundToProperty = DP.Register<double>(nameof(RoundTo),
                 typeof(LogarithmicScale), new PropertyMetadata(0d, (o, e) => {
                     ((LogarithmicScale)o)._roundTo = (double)e.NewValue;
                 }));
@@ -34,7 +34,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
             set => SetValue(RoundToProperty, value);
         }
 
-        public static readonly DependencyProperty MinimumProperty = DP.Register(nameof(Minimum), typeof(double),
+        public static readonly StyledProperty<double> MinimumProperty = DP.Register<double>(nameof(Minimum),
                 typeof(LogarithmicScale), new PropertyMetadata(0d, (o, e) => {
                     var l = (LogarithmicScale)o;
                     l._minimum = (double)e.NewValue;
@@ -48,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
             set => SetValue(MinimumProperty, value);
         }
 
-        public static readonly DependencyProperty MiddleProperty = DP.Register(nameof(Middle), typeof(double),
+        public static readonly StyledProperty<double> MiddleProperty = DP.Register<double>(nameof(Middle),
                 typeof(LogarithmicScale), new PropertyMetadata(0d, (o, e) => {
                     var l = (LogarithmicScale)o;
                     l._middle = (double)e.NewValue;
@@ -62,7 +62,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
             set => SetValue(MiddleProperty, value);
         }
 
-        public static readonly DependencyProperty MaximumProperty = DP.Register(nameof(Maximum), typeof(double),
+        public static readonly StyledProperty<double> MaximumProperty = DP.Register<double>(nameof(Maximum),
                 typeof(LogarithmicScale), new PropertyMetadata(0d, (o, e) => {
                     var l = (LogarithmicScale)o;
                     l._maximum = (double)e.NewValue;
@@ -76,7 +76,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
             set => SetValue(MaximumProperty, value);
         }
 
-        public static readonly DependencyProperty FixedValuesProperty = DP.Register(nameof(FixedValues), typeof(string),
+        public static readonly StyledProperty<string> FixedValuesProperty = DP.Register<string>(nameof(FixedValues),
                 typeof(LogarithmicScale), new PropertyMetadata(null, (o, e) => {
                     var l = (LogarithmicScale)o;
                     l._fixedValues = (string)e.NewValue;

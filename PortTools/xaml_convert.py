@@ -20,6 +20,14 @@ NS_AV = 'https://github.com/avaloniaui'
 NS_MC = 'http://schemas.openxmlformats.org/markup-compatibility/2006'
 NS_D = 'http://schemas.microsoft.com/expression/blend/2008'
 NS_MUI = 'http://firstfloorsoftware.com/ModernUI'
+# prefixes for helper namespaces added to every converted file (they are removed again if unused)
+HELPER_NS = {
+    'pa': 'clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI',
+    'pc': 'clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI',
+    'sw': 'clr-namespace:System.Windows;assembly=FirstFloor.ModernUI',
+    'swi': 'clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI',
+}
+COMPAT_STATICS = {'SystemCommands': 'sw', 'SystemParameters': 'sw', 'NavigationCommands': 'swi', 'ApplicationCommands': 'swi', 'ComponentCommands': 'swi'}
 X = '{%s}' % NS_X
 
 ELEMENT_RENAME = {
@@ -30,6 +38,14 @@ ELEMENT_RENAME = {
     'ButtonBase': 'Button',
 }
 
+UNSUPPORTED = {
+    'Storyboard', 'BeginStoryboard', 'StopStoryboard', 'DoubleAnimation', 'DoubleAnimationUsingKeyFrames', 'ColorAnimation', 'ThicknessAnimation',
+    'ObjectAnimationUsingKeyFrames', 'SplineDoubleKeyFrame', 'EasingDoubleKeyFrame', 'LinearDoubleKeyFrame', 'DiscreteDoubleKeyFrame',
+    'DiscreteObjectKeyFrame', 'ExponentialEase', 'CubicEase', 'QuadraticEase', 'PowerEase', 'WindowChrome', 'Typography',
+    'CollectionViewSource', 'CollectionContainer', 'TickBar', 'AdornedElementPlaceholder', 'MouseBinding', 'KeyBinding', 'VisualStateGroup', 'VisualState',
+    'VisualTransition', 'EventTrigger', 'MouseGesture', 'KeyGesture', 'PopupAnimation', 'ShaderEffect', 'AdornerDecorator_',
+}
+
 TYPE_RENAME = {
     'ButtonBase': 'Button',
     'ListView': 'ListBox',
@@ -37,6 +53,7 @@ TYPE_RENAME = {
     'Page': 'UserControl',
     'FrameworkElement': 'Control',
     'UIElement': 'Control',
+    'Control': 'TemplatedControl',
     'Selector': 'SelectingItemsControl',
     'TextBoxBase': 'TextBox',
 }
@@ -64,6 +81,8 @@ PSEUDO = {
     ('IsExpanded', 'False'): ':not(:expanded)',
     ('IsReadOnly', 'True'): ':readonly',
     ('IsDefault', 'True'): ':default',
+    ('ToggleButton.IsChecked', 'True'): ':checked',
+    ('ToggleButton.IsChecked', 'False'): ':unchecked',
     ('IsEditable', 'True'): ':editable',
 }
 
@@ -124,8 +143,32 @@ PROP_RENAME = {
     'NavigationUIVisibility': None,
     'TextOptions.TextFormattingMode': None,
     'TextBlock.TextOptions': None,
+    'VirtualizingStackPanel.CacheLengthUnit': None,
+    'VirtualizingPanel.CacheLengthUnit': None,
+    'VirtualizingStackPanel.CacheLength': None,
+    'VirtualizingStackPanel.ScrollUnit': None,
+    'ScrollViewer.CanContentScroll': None,
+    'CanContentScroll': None,
+    'IsTextSearchEnabled': None,
+    'IsTextSearchCaseSensitive': None,
+    'TextSearch.TextPath': None,
+    'ItemContainerStyleSelector': None,
+    'OverridesDefaultStyle': None,
+    'PanningMode': None,
+    'CommandTarget': None,
+    'a:Resources.Renames': None,
+    'WindowChrome.WindowChrome': None,
+    'WindowChrome.CaptionHeight': None,
+    'ContentSource': None,
+    'Typography.Variants': None,
+    'PopupAnimation': None,
+    'HasDropShadow': None,
+    'ScrollViewer.PanningDeceleration': None,
+    'ScrollViewer.PanningRatio': None,
+    'ScrollViewer.IsManipulationEnabled': None,
+    'IsManipulationEnabled': None,
+    'Stylus.IsPressAndHoldEnabled': None,
     'FlowDirection': 'FlowDirection',
-    'IsTextSearchEnabled': 'IsTextSearchEnabled',
 }
 
 EVENT_RENAME = {
@@ -143,6 +186,10 @@ EVENT_RENAME = {
 
 CURSORS = {'SizeWE': 'SizeWestEast', 'SizeNS': 'SizeNorthSouth', 'IBeam': 'Ibeam', 'ScrollAll': 'SizeAll',
            'SizeNESW': 'TopRightCorner', 'SizeNWSE': 'TopLeftCorner'}
+
+
+def full_name_in(owner, prop, names):
+    return (owner, prop) == names
 
 
 def local(tag):
@@ -296,8 +343,10 @@ def convert_markup(mk, ctx, prop=None, el=None):
         if mk.args and isinstance(mk.args[0], str):
             mk.args[0] = type_name(mk.args[0])
     elif name == 'x:Static':
-        if mk.args and isinstance(mk.args[0], str) and mk.args[0].startswith('SystemParameters.'):
-            ctx.warn(el, 'SystemParameters not available: %s' % mk.args[0])
+        if mk.args and isinstance(mk.args[0], str):
+            owner = mk.args[0].split('.')[0]
+            if owner in COMPAT_STATICS:
+                mk.args[0] = '%s:%s' % (COMPAT_STATICS[owner], mk.args[0])
     return mk
 
 
@@ -327,8 +376,21 @@ class Converter:
     def convert_element(self, el):
         tag = local(el.tag)
         ns = ns_of(el.tag)
+        if ns == NS_X and tag == 'Null':
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed x:Null resource %s ' % el.get(X + 'Key'))
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
         if '.' in tag:
             self.convert_property_element(el, tag, ns)
+            return
+        if ns == NS_WPF and tag in UNSUPPORTED:
+            self.ctx.todo.append('removed %s' % tag)
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
             return
         if ns == NS_WPF:
             if tag == 'Style':
@@ -381,7 +443,39 @@ class Converter:
                 if new_name in el.attrib and new_name == 'ToolTip.ShowDelay':
                     continue
                 el.set(new_name, new_val)
+        self.fix_container_style_attr(el)
         self.fix_style_attr(el)
+
+    def fix_container_style_attr(self, el):
+        st = el.get('ItemContainerStyle')
+        if st is None:
+            return False
+        reg = self.ctx.registry
+        key = reg.key_of(st) if reg else None
+        if not key or key not in reg.styles:
+            del el.attrib['ItemContainerStyle']
+            el.set('ItemContainerTheme', st)
+            return False
+        if reg.is_theme(key):
+            del el.attrib['ItemContainerStyle']
+            el.set('ItemContainerTheme', st)
+            return True
+        # plain style: copy it into a Styles collection of the items control
+        info = reg.styles[key]
+        copy_el = copy.deepcopy(info['el'])
+        copy_el.attrib.pop(X + 'Key', None)
+        target = copy_el.get('TargetType') or 'ListBoxItem'
+        holder = etree.Element(qn(local(el.tag) + '.Styles'))
+        container = type_name(target)
+        copy_el.set('TargetType', container)
+        # use the converter for this (clone of) style as unkeyed implicit one, then give it the right selector
+        StyleConverter(self).convert(copy_el, class_name=None)
+        copy_el.set('Selector', container.replace(':', '|'))
+        copy_el.attrib.pop('__plain', None)
+        holder.append(copy_el)
+        del el.attrib['ItemContainerStyle']
+        el.insert(0, holder)
+        return True
 
     def fix_style_attr(self, el):
         st = el.get('Style')
@@ -411,6 +505,15 @@ class Converter:
             self.ctx.warn(None, 'unknown style %s used as Theme' % key)
 
     def convert_attribute(self, el, name, val):
+        tag = local(el.tag)
+        if name in ('IsItemsHost', 'CacheLength', 'CacheLengthUnit', 'ScrollUnit', 'VirtualizationMode', 'IsVirtualizing') and tag in (
+                'VirtualizingStackPanel', 'StackPanel', 'WrapPanel', 'VirtualizingPanel', 'Grid', 'DockPanel', 'Canvas', 'UniformGrid'):
+            return None, val
+        if name == 'SelectionMode' and val == 'Extended':
+            return name, 'Multiple'
+        m = re.match(r'^TextBlock\.(Foreground|FontSize|FontFamily|FontWeight|FontStyle)$', name)
+        if m:
+            return 'TextElement.' + m.group(1), convert_markup_value(val, self.ctx, name, el)
         if name in EVENT_RENAME:
             return EVENT_RENAME[name], val
         if name == 'Visibility':
@@ -420,8 +523,14 @@ class Converter:
             if new is None:
                 return None, val
             return new, convert_markup_value(val, self.ctx, name, el)
+        if name == 'ItemContainerStyle':
+            return name, val
         if name == 'Cursor':
             return name, CURSORS.get(val, val)
+        if name in ('Command', 'CommandParameter') and re.match(r'^(SystemCommands|NavigationCommands|ApplicationCommands|ComponentCommands)\.\w+$', val or ''):
+            return name, '{x:Static %s:%s}' % (COMPAT_STATICS[val.split('.')[0]], val)
+        if name == 'ResizeMode':
+            return 'CanResize', 'False' if val == 'NoResize' else 'True'
         if name == 'TargetType':
             return name, type_name(val)
         if name == 'Source' and 'component/' in val:
@@ -439,7 +548,7 @@ class Converter:
             mk = parse_markup(val)
             mk = convert_markup(mk, self.ctx, 'Visibility', el)
             if mk.name in ('Binding', 'TemplateBinding') and not mk.has('Converter'):
-                mk.set('Converter', '{x:Static mui:VisibilityConverters.ToBool}')
+                mk.set('Converter', '{x:Static pc:VisibilityConverters.ToBool}')
             return str(mk)
         if val == 'Visible':
             return 'True'
@@ -450,6 +559,16 @@ class Converter:
     # --------------------------------------------------------------- property elements
     def convert_property_element(self, el, tag, ns):
         owner, prop = tag.split('.', 1)
+        if prop == 'LayoutTransform':
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
+        if prop == 'ToolTip':
+            el.tag = qn('ToolTip.Tip')
+            self.convert_tree(el)
+            return
         if ns != NS_WPF:
             self.convert_tree(el)
             return
@@ -463,6 +582,18 @@ class Converter:
         if prop in ('ItemContainerStyle',):
             self.convert_item_container_style(el, owner)
             return
+        if full_name_in(owner, prop, ('VisualStateManager', 'VisualStateGroups')):
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
+        if prop in ('InputBindings', 'CommandBindings'):
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
         if prop == 'Resources':
             el.tag = qn('%s.Resources' % TYPE_RENAME.get(owner, owner))
             self.convert_tree(el)
@@ -474,9 +605,10 @@ class Converter:
             self.ctx.warn(el, 'Visibility property element')
             return
         if prop == 'LayoutTransform':
-            self.ctx.warn(el, 'LayoutTransform needs LayoutTransformControl')
-            el.tag = qn('%s.RenderTransform' % owner)
-            self.convert_tree(el)
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
             return
         if prop in ('Effect',):
             el.tag = qn('%s.Effect' % owner)
@@ -537,6 +669,7 @@ class Converter:
         if has_t:
             el.tag = qn('%s.Theme' % owner)
             StyleConverter(self).convert(st, force_theme=True)
+            st.attrib.pop(X + 'Key', None)
         else:
             # inline style -> Styles collection with a unique class
             self.ctx.inline_counter += 1
@@ -560,6 +693,7 @@ class Converter:
         if has_t:
             el.tag = qn('%s.ItemContainerTheme' % owner)
             StyleConverter(self).convert(st, force_theme=True)
+            st.attrib.pop(X + 'Key', None)
         else:
             tt = type_name(st.get('TargetType') or 'ListBoxItem')
             StyleConverter(self).convert(st, class_name=None)
@@ -572,6 +706,23 @@ class StyleConverter:
         self.conv = conv
         self.ctx = conv.ctx
         self.template_names = {}
+        self.template_types = {}
+        self.hoisted_resources = None
+
+    def selector_type_of(self, el):
+        tag = local(el.tag)
+        ns = ns_of(el.tag)
+        if ns == NS_WPF:
+            return ELEMENT_RENAME.get(tag, tag) if '.' not in tag else '*'
+        prefix = None
+        for p, u in el.nsmap.items():
+            if u == ns and p:
+                prefix = p
+        return '%s|%s' % (prefix, tag) if prefix else tag
+
+    def sel(self, name):
+        t = self.template_types.get(name, '')
+        return ('%s#%s' % (t, name)) if t and t != '*' else '#%s' % name
 
     # -------------------------------------------------- Style
     def effective(self, style, key):
@@ -594,6 +745,9 @@ class StyleConverter:
     def convert(self, style, force_theme=False, class_name=None):
         reg = self.ctx.registry
         key = style.get(X + 'Key')
+        if key and key.strip().startswith('{x:Type'):
+            style.attrib.pop(X + 'Key')
+            key = None
         target = style.get('TargetType')
         sel_type = type_name(target) if target else 'Control'
         based_attr = style.get('BasedOn')
@@ -660,17 +814,30 @@ class StyleConverter:
             nested += self.triggers_to_styles(trig + tmpl_triggers, in_template=True, theme_root=True)
             for n in nested:
                 style.append(n)
+            if self.hoisted_resources is not None:
+                hoisted = self.hoisted_resources
+                hoisted.tag = qn('ControlTheme.Resources')
+                for c in list(hoisted):
+                    if is_el(c):
+                        self.conv.convert_element(c)
+                rd = etree.Element(qn('ResourceDictionary'))
+                for c in list(hoisted):
+                    rd.append(c)
+                hoisted.append(rd)
+                style.insert(0, hoisted)
+                self.hoisted_resources = None
         else:
             style.tag = qn('Style')
             style.attrib.pop('BasedOn', None)
             style.attrib.pop('TargetType', None)
             style.attrib.pop(X + 'Key', None)
+            sel_t = sel_type.replace(':', '|')
             if class_name is not None:
-                sel = '%s.%s' % (sel_type, class_name)
+                sel = '%s.%s' % (sel_t, class_name)
             elif key:
-                sel = '%s.%s' % (sel_type, key.replace(' ', '_'))
+                sel = '%s.%s' % (sel_t, key.replace(' ', '_'))
             else:
-                sel = sel_type
+                sel = sel_t
             style.set('Selector', sel)
             self.convert_setters(style, all_setters)
             trig = (list(triggers_el) if triggers_el is not None else []) + inherited_triggers
@@ -680,8 +847,12 @@ class StyleConverter:
                 # goes to X.styles.axaml
                 style.set('__plain', '1')
         if resources_el is not None:
-            resources_el.tag = qn('Style.Resources')
+            resources_el.tag = qn('ControlTheme.Resources' if as_theme else 'Style.Resources')
             self.conv.convert_tree(resources_el)
+            rd = etree.Element(qn('ResourceDictionary'))
+            for c in list(resources_el):
+                rd.append(c)
+            resources_el.append(rd)
 
     def convert_setters(self, parent, setters):
         for s in setters:
@@ -697,6 +868,10 @@ class StyleConverter:
                 s.getparent().remove(s)
             return
         v = s.get('Value')
+        if prop == 'ResizeMode':
+            newp = 'CanResize'
+            s.set('Value', 'False' if v == 'NoResize' else 'True')
+            v = None
         if newp == 'IsVisible':
             if v is not None:
                 s.set('Value', self.conv.convert_visibility(v, s))
@@ -711,6 +886,13 @@ class StyleConverter:
                         self.conv.convert_element(cc)
 
     def map_prop(self, prop):
+        if prop.endswith('Resources.Renames') or prop.endswith('Resources.Replaces'):
+            return None
+        if prop == 'ItemContainerStyle':
+            return 'ItemContainerTheme'
+        m = re.match(r'^TextBlock\.(Foreground|FontSize|FontFamily|FontWeight|FontStyle)$', prop)
+        if m:
+            return 'TextElement.' + m.group(1)
         if prop in PROP_RENAME:
             return PROP_RENAME[prop]
         if '.' in prop:
@@ -737,6 +919,10 @@ class StyleConverter:
         return triggers
 
     def prepare_template(self, tmpl):
+        res = next((c for c in tmpl if is_el(c) and local(c.tag) == 'ControlTemplate.Resources'), None)
+        if res is not None:
+            tmpl.remove(res)
+            self.hoisted_resources = res
         trig = next((c for c in tmpl if is_el(c) and local(c.tag) == 'ControlTemplate.Triggers'), None)
         triggers = list(trig) if trig is not None else []
         if trig is not None:
@@ -751,6 +937,8 @@ class StyleConverter:
                 n = el.get(X + 'Name') or el.get('Name')
                 if n:
                     self.template_names[n] = el
+        # remember element types before conversion changes the tags
+        self.template_types = {n: self.selector_type_of(e) for n, e in self.template_names.items()}
         for child in list(tmpl):
             if is_el(child):
                 self.conv.convert_element(child)
@@ -828,7 +1016,7 @@ class StyleConverter:
             by_target.setdefault(tn, []).append((prop, val))
         for tn, items in by_target.items():
             st = etree.Element(qn('Style'))
-            st.set('Selector', '^ /template/ #%s' % tn if in_template else '^ #%s' % tn)
+            st.set('Selector', '^ /template/ %s' % self.sel(tn) if in_template else '^ %s' % self.sel(tn))
             for prop, val in items:
                 se = etree.SubElement(st, qn('Setter'))
                 se.set('Property', prop)
@@ -864,6 +1052,8 @@ class StyleConverter:
                     v = mk.args[0].split('.')[-1]
                 elif mk.name == 'x:Null':
                     v = 'null'
+            if prop == 'ResizeMode':
+                prop, v = 'CanResize', ('False' if v == 'NoResize' else 'True')
             prop = self.map_prop(prop) or prop
             if (prop, v) in PSEUDO:
                 return PSEUDO[(prop, v)]
@@ -873,7 +1063,7 @@ class StyleConverter:
             return '[%s=%s]' % (prop, v)
         sp = self.new_state()
         sp_defs.append((sp, binding, value))
-        return '[(mui|T.%s)=True]' % sp
+        return '[(pa|T.%s)=True]' % sp
 
     def read_binding(self, trig, attr='Binding', prefix='DataTrigger'):
         b = trig.get(attr)
@@ -902,12 +1092,14 @@ class StyleConverter:
             for c in trig.find('{%s}MultiDataTrigger.Conditions' % NS_WPF):
                 conds.append(('data', None, c.get('Value'), self.read_binding(c, prefix='Condition')))
         sp_defs = []
-        frag = ''
+        frags = []
         for kind, prop, value, binding in conds:
             if kind == 'data' and (binding is None or isinstance(binding, tuple)):
                 self.ctx.warn(None, 'DataTrigger with element binding')
                 return [etree.Comment(' PORT: DataTrigger with element binding not converted ')]
-            frag += self.cond_fragment(kind, prop, value, binding, sp_defs)
+            frags.append(self.cond_fragment(kind, prop, value, binding, sp_defs))
+        frag = frags[-1] if frags else ''
+        outer = frags[:-1]
         out = []
         for sp, binding, value in sp_defs:
             out.append(self.make_state_style(sp, binding, value))
@@ -921,7 +1113,7 @@ class StyleConverter:
         for tn in order:
             st = etree.Element(qn('Style'))
             if tn:
-                st.set('Selector', ('^%s /template/ #%s' if in_template else '^%s #%s') % (frag, tn))
+                st.set('Selector', ('^%s /template/ %s' if in_template else '^%s %s') % (frag, self.sel(tn)))
             else:
                 st.set('Selector', '^%s' % frag)
             for s in groups[tn]:
@@ -930,6 +1122,12 @@ class StyleConverter:
                 st.append(s2)
                 self.convert_setter(s2)
             if len(st):
+                # several conditions: nest the styles, so conditions are combined with AND
+                for of in reversed(outer):
+                    wrapper = etree.Element(qn('Style'))
+                    wrapper.set('Selector', '^%s' % of)
+                    wrapper.append(st)
+                    st = wrapper
                 out.append(st)
         if enter is not None or exit_ is not None:
             self.ctx.warn(None, 'trigger actions (storyboards) not converted: %s' % frag)
@@ -940,7 +1138,7 @@ class StyleConverter:
         st = etree.Element(qn('Style'))
         st.set('Selector', '^')
         s = etree.SubElement(st, qn('Setter'))
-        s.set('Property', 'mui:T.%s' % sp)
+        s.set('Property', 'pa:T.%s' % sp)
         if binding and is_markup(binding):
             mk = parse_markup(binding)
             expected = value if value is not None else ''
@@ -953,14 +1151,27 @@ class StyleConverter:
             if mk.name == 'Binding':
                 if mk.has('Converter'):
                     self.ctx.warn(None, 'data trigger binding with converter, parameter replaced')
-                    mk.set('Converter', '{x:Static mui:StateConverter.Instance}')
+                    mk.set('Converter', '{x:Static pc:StateConverter.Instance}')
                 else:
-                    mk.set('Converter', '{x:Static mui:StateConverter.Instance}')
+                    mk.set('Converter', '{x:Static pc:StateConverter.Instance}')
                 mk.set('ConverterParameter', expected)
                 s.set('Value', str(mk))
             else:
                 s.set('Value', binding)
         return st
+
+
+_TB_RX = re.compile(r'\{TemplateBinding\s+([^}]+)\}')
+
+
+def fix_template_bindings(root):
+    """Setters of nested styles (outside of ControlTemplate) can't use TemplateBinding: use the templated parent binding instead."""
+    for style in root.iter(qn('Style')):
+        # Style which is not a child of a ControlTemplate content
+        for setter in style.iter(qn('Setter')):
+            v = setter.get('Value')
+            if v and '{TemplateBinding' in v:
+                setter.set('Value', _TB_RX.sub(lambda m: '{Binding %s, RelativeSource={RelativeSource TemplatedParent}}' % m.group(1).strip(), v))
 
 
 def finalize_names(root):
@@ -986,6 +1197,7 @@ def convert_file(path, registry, out_dir=None):
     conv = Converter(ctx)
     conv.convert_root(root)
     finalize_names(root)
+    fix_template_bindings(root)
 
     # namespaces
     new_nsmap = {}
@@ -996,8 +1208,8 @@ def convert_file(path, registry, out_dir=None):
             continue
         else:
             new_nsmap[p] = u
-    if 'mui' not in new_nsmap:
-        new_nsmap['mui'] = NS_MUI
+    for hp, hu in HELPER_NS.items():
+        new_nsmap.setdefault(hp, hu)
     for p, u in list(new_nsmap.items()):
         if u.startswith('clr-namespace:System;assembly=mscorlib'):
             new_nsmap[p] = 'using:System'
@@ -1033,7 +1245,7 @@ def convert_file(path, registry, out_dir=None):
         rd = etree.SubElement(res, qn('ResourceDictionary'))
         md = etree.SubElement(rd, qn('ResourceDictionary.MergedDictionaries'))
         inc = etree.SubElement(md, qn('ResourceInclude'))
-        inc.set('Source', 'avares://__ASM__/' + os.path.basename(base) + '.axaml')
+        inc.set('Source', 'avares://%s/%s.axaml' % (ASM[0], os.path.relpath(base, ASM[1]).replace(os.sep, '/')))
         for p in plain:
             sroot.append(p)
         outputs.append((base + '.styles.axaml', sroot))
@@ -1050,6 +1262,9 @@ def convert_file(path, registry, out_dir=None):
     return ctx, [p for p, _ in outputs]
 
 
+ASM = ['__ASM__', '.']
+
+
 def main(argv):
     scans, files, all_dirs = [], [], []
     i = 0
@@ -1059,6 +1274,8 @@ def main(argv):
             scans.append(argv[i + 1]); i += 2; continue
         if a == '--all':
             all_dirs.append(argv[i + 1]); i += 2; continue
+        if a == '--asm':
+            ASM[0] = argv[i + 1]; ASM[1] = os.path.abspath(argv[i + 2]); i += 3; continue
         files.append(a); i += 1
     reg = Registry()
     reg.scan(scans + all_dirs + [os.path.dirname(f) for f in files])

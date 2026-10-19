@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public BetterTextBox() {
         }
 
-        public static readonly DependencyProperty PlaceholderOpacityProperty = DP.Register(nameof(PlaceholderOpacity), typeof(double),
+        public static readonly StyledProperty<double> PlaceholderOpacityProperty = DP.Register<double>(nameof(PlaceholderOpacity),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(0.5));
 
         public double PlaceholderOpacity {
@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PlaceholderOpacityProperty, value);
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string), typeof(BetterTextBox));
+        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder), typeof(BetterTextBox));
 
         public string Placeholder {
             get => (string)GetValue(PlaceholderProperty);
@@ -71,7 +71,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ConverterProperty, value);
         }
 
-        public static readonly DependencyProperty ConverterProperty = DP.RegisterAttached("Converter", typeof(INumberInputConverter),
+        public static readonly AttachedProperty<INumberInputConverter> ConverterProperty = DP.RegisterAttached<INumberInputConverter>("Converter",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -83,7 +83,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DP.RegisterAttached("Mode", typeof(SpecialMode),
+        public static readonly AttachedProperty<SpecialMode> ModeProperty = DP.RegisterAttached<SpecialMode>("Mode",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(SpecialMode.None, FrameworkPropertyMetadataOptions.Inherits));
 
         public static string GetModeLabel(DependencyObject obj) {
@@ -94,7 +94,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeLabelProperty, value);
         }
 
-        public static readonly DependencyProperty ModeLabelProperty = DP.RegisterAttached("ModeLabel", typeof(string),
+        public static readonly AttachedProperty<string> ModeLabelProperty = DP.RegisterAttached<string>("ModeLabel",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -106,7 +106,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeLabelValueProperty, value);
         }
 
-        public static readonly DependencyProperty ModeLabelValueProperty = DP.RegisterAttached("ModeLabelValue", typeof(double),
+        public static readonly AttachedProperty<double> ModeLabelValueProperty = DP.RegisterAttached<double>("ModeLabelValue",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -118,7 +118,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(MinimumProperty, value);
         }
 
-        public static readonly DependencyProperty MinimumProperty = DP.RegisterAttached("Minimum", typeof(double),
+        public static readonly AttachedProperty<double> MinimumProperty = DP.RegisterAttached<double>("Minimum",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -130,7 +130,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(MaximumProperty, value);
         }
 
-        public static readonly DependencyProperty MaximumProperty = DP.RegisterAttached("Maximum", typeof(double),
+        public static readonly AttachedProperty<double> MaximumProperty = DP.RegisterAttached<double>("Maximum",
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.Inherits));
 
 

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ControlTheme x:Key="ExpandCollapseToggleStyle" TargetType="ToggleButton">
     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
@@ -29,14 +29,14 @@
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
             </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:checked /template/ #ExpandPath"><Setter Property="RenderTransform">
+            </Style><Style Selector="^:checked /template/ Path#ExpandPath"><Setter Property="RenderTransform">
                 <Setter.Value>
                   <RotateTransform Angle="180" CenterX="3" CenterY="3"/>
                 </Setter.Value>
               </Setter>
             </Style></ControlTheme>
 
-  <ControlTheme x:Key="{x:Type TreeViewItem}" TargetType="TreeViewItem">
+  <ControlTheme TargetType="TreeViewItem" x:Key="{x:Type TreeViewItem}">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -48,7 +48,7 @@
           <DockPanel>
             <ToggleButton x:Name="Expander" DockPanel.Dock="Left" VerticalAlignment="Top" ClickMode="Press" IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
             <Border x:Name="Bd" DockPanel.Dock="Top" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-              <ContentPresenter x:Name="PART_Header" ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+              <ContentPresenter x:Name="PART_Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
             </Border>
             <ItemsPresenter x:Name="ItemsHost"/>
           </DockPanel>
@@ -67,18 +67,18 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Style Selector="^ /template/ #Bd"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^[(VirtualizingStackPanel.IsVirtualizing)=True]"><Setter Property="ItemsPanel">
+    <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[(VirtualizingStackPanel.IsVirtualizing)=True]"><Setter Property="ItemsPanel">
           <Setter.Value>
             <ItemsPanelTemplate>
               <VirtualizingStackPanel/>
             </ItemsPanelTemplate>
           </Setter.Value>
         </Setter>
-      </Style><Style Selector="^:not(:expanded) /template/ #ItemsHost"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[HasItems=False] /template/ #Expander"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^:pointerover /template/ #Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+      </Style><Style Selector="^:not(:expanded) /template/ ItemsPresenter#ItemsHost"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[HasItems=False] /template/ ToggleButton#Expander"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
               </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
-            </Style><Style Selector="^:selected /template/ #Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+            </Style><Style Selector="^:selected /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
               </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
             </Style></ControlTheme>

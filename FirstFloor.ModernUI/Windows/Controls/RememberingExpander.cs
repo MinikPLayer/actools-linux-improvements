@@ -4,7 +4,7 @@ using FirstFloor.ModernUI.Helpers;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class RememberingExpander : Expander {
-        public static readonly DependencyProperty DefaultValueProperty = DP.Register(nameof(DefaultValue), typeof(bool),
+        public static readonly StyledProperty<bool> DefaultValueProperty = DP.Register<bool>(nameof(DefaultValue),
                 typeof(RememberingExpander), new PropertyMetadata(true, (o, e) => {
                     ((RememberingExpander)o)._defaultValue = (bool)e.NewValue;
                 }));
@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DefaultValueProperty, value);
         }
 
-        public static readonly DependencyProperty KeyProperty = DP.Register(nameof(Key), typeof(string),
+        public static readonly StyledProperty<string> KeyProperty = DP.Register<string>(nameof(Key),
                 typeof(RememberingExpander), new PropertyMetadata(OnKeyChanged));
 
         public string Key {

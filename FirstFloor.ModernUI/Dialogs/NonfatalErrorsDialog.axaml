@@ -1,4 +1,4 @@
-﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:h="clr-namespace:FirstFloor.ModernUI.Helpers" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.NonfatalErrorsDialog" Title="Errors" DataContext="{x:Static h:NonfatalError.Instance}" SizeToContent="Manual" Width="480" Height="600" LocationAndSizeKey=".NonfatalErrors.LS" KeyDown="OnKeyDown">
+﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:h="clr-namespace:FirstFloor.ModernUI.Helpers" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.NonfatalErrorsDialog" Title="Errors" DataContext="{x:Static h:NonfatalError.Instance}" SizeToContent="Manual" Width="480" Height="600" LocationAndSizeKey=".NonfatalErrors.LS" KeyDown="OnKeyDown">
   <co:ModernDialog.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -8,10 +8,10 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </co:ModernDialog.Resources>
-  <ListBox x:Name="List" SelectionMode="Extended" ItemsSource="{Binding Errors}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="OnSelectionChanged" ItemContainerStyle="{StaticResource RibbonListBoxItem.Left}" Margin="-24 0">
+  <ListBox x:Name="List" ItemsSource="{Binding Errors}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="OnSelectionChanged" Margin="-24 0" SelectionMode="Multiple" ItemContainerTheme="{StaticResource RibbonListBoxItem.Left}">
     <ListBox.ItemTemplate>
       <DataTemplate>
-        <DockPanel Margin="0 4 0 4" TextBlock.FontWeight="Normal">
+        <DockPanel Margin="0 4 0 4" TextElement.FontWeight="Normal">
           <ItemsControl ItemsSource="{Binding Solutions}" DockPanel.Dock="Bottom" Margin="20 8 20 0" IsVisible="{Binding HasSolutions, Converter={StaticResource BooleanToVisibilityConverter}}">
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="{x:Type h:NonfatalErrorSolution}">
@@ -34,7 +34,7 @@
     </ListBox.ItemTemplate>
     <ListBox.ItemsPanel>
       <ItemsPanelTemplate>
-        <VirtualizingStackPanel IsItemsHost="True" CacheLength="1,1" CacheLengthUnit="Page" ScrollUnit="Pixel" VirtualizationMode="Recycling" IsVirtualizing="True"/>
+        <VirtualizingStackPanel/>
       </ItemsPanelTemplate>
     </ListBox.ItemsPanel>
   </ListBox>

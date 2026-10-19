@@ -1,7 +1,6 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
@@ -23,7 +22,7 @@
     </Setter>
   <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource MenuTextHover}"/>
             </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
-            </Style><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding IsShown, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(mui|T.S0)=True]"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="IsVisible" Value="False"/>
             </Style></ControlTheme>
 
   <ItemsPanelTemplate x:Key="ModernTabLinkItemPanelTemplate">
@@ -44,9 +43,9 @@
       <c:ModernTabLinksComboBox.Template>
         <!-- PORT: ControlTemplate with triggers outside of a style (6 triggers) --><ControlTemplate TargetType="c:ModernTabLinksComboBox">
           <c:Cell x:Name="MainGrid">
-            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+            <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
-                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
                   <ScrollViewer x:Name="DropDownScrollViewer">
                     <ItemsPresenter x:Name="ItemsPresenter"/>
                   </ScrollViewer>
@@ -77,9 +76,9 @@
       <c:ModernTabLinksComboBox.Template>
         <!-- PORT: ControlTemplate with triggers outside of a style (6 triggers) --><ControlTemplate TargetType="c:ModernTabLinksComboBox">
           <c:Cell x:Name="MainGrid">
-            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+            <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
-                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
                   <ScrollViewer x:Name="DropDownScrollViewer">
                     <ItemsPresenter x:Name="ItemsPresenter"/>
                   </ScrollViewer>
@@ -155,7 +154,7 @@
     <Setter Property="LinksListBoxTemplate">
       <Setter.Value>
         <ControlTemplate TargetType="ListBox">
-          <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" CanContentScroll="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" PanningMode="Both">
+          <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
             <ItemsPresenter/>
           </ScrollViewer>
         </ControlTemplate>
@@ -166,7 +165,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="c:ModernTab">
           <DockPanel>
-            <ListBox x:Name="PART_LinkList" VerticalAlignment="Top" ItemsSource="{TemplateBinding Links}" ItemContainerStyle="{StaticResource ModernTabLinkItem}" ItemsPanel="{StaticResource ModernTabLinkItemPanelTemplate}" ItemTemplate="{StaticResource ModernTabLinkItemPanelDataTemplate}" HorizontalAlignment="{TemplateBinding LinksHorizontalAlignment}" Margin="{TemplateBinding LinksMargin}" Template="{TemplateBinding LinksListBoxTemplate}" DockPanel.Dock="Top"/>
+            <ListBox x:Name="PART_LinkList" VerticalAlignment="Top" ItemsSource="{TemplateBinding Links}" ItemsPanel="{StaticResource ModernTabLinkItemPanelTemplate}" ItemTemplate="{StaticResource ModernTabLinkItemPanelDataTemplate}" HorizontalAlignment="{TemplateBinding LinksHorizontalAlignment}" Margin="{TemplateBinding LinksMargin}" Template="{TemplateBinding LinksListBoxTemplate}" DockPanel.Dock="Top" ItemContainerTheme="{StaticResource ModernTabLinkItem}"/>
             <c:ModernFrame x:Name="PART_Frame" Source="{Binding SelectedSource, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ContentLoader="{TemplateBinding ContentLoader}" Margin="{TemplateBinding FrameMargin}"/>
           </DockPanel>
         </ControlTemplate>

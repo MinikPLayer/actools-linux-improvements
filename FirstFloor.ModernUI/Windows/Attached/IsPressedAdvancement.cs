@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
     public class IsPressedAdvancement {
-        public static readonly DependencyProperty IsPressedProperty = DP.RegisterAttached("IsPressed", typeof(bool),
+        public static readonly AttachedProperty<bool> IsPressedProperty = DP.RegisterAttached<bool>("IsPressed",
                 typeof(IsPressedAdvancement), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty AttachIsPressedProperty = DP.RegisterAttached("AttachIsPressed", typeof(bool),
+        public static readonly AttachedProperty<bool> AttachIsPressedProperty = DP.RegisterAttached<bool>("AttachIsPressed",
                 typeof(IsPressedAdvancement), new PropertyMetadata(false, PropertyChangedCallback));
 
         public static void PropertyChangedCallback(DependencyObject depObj, DependencyPropertyChangedEventArgs args) {

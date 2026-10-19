@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -282,7 +282,7 @@ namespace FirstFloor.ModernUI.Windows {
         }
 
         public SizeRelatedCondition<TParent, TValue> ListenOnProperty<TSource>(TSource source, DependencyProperty property) {
-            DependencyPropertyDescriptor.FromProperty(property, typeof(TSource)).AddValueChanged(source, (sender, args) => RenderAndUpdate());
+            property.Changed.Subscribe(x => { if (ReferenceEquals(x.Sender, source)) RenderAndUpdate(); });
             return this;
         }
 

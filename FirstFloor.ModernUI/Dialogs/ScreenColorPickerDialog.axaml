@@ -1,4 +1,4 @@
-﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:di="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:mui="clr-namespace:FirstFloor.ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.ScreenColorPickerDialog" MaxWidth="{x:Static co:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static co:DpiAwareWindow.UnlimitedSize}" Title="Pick a Color" ResizeMode="NoResize" WindowState="Maximized" SizeToContent="Manual" KeyUp="OnKeyUp" PointerMoved="OnMouseMove" PointerExited="OnMouseLeave" PointerReleased="OnMouseLeftButtonUp">
+﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:di="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.ScreenColorPickerDialog" MaxWidth="{x:Static co:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static co:DpiAwareWindow.UnlimitedSize}" Title="Pick a Color" WindowState="Maximized" SizeToContent="Manual" KeyUp="OnKeyUp" CanResize="False" PointerMoved="OnMouseMove" PointerExited="OnMouseLeave" PointerReleased="OnMouseLeftButtonUp">
   <co:ModernDialog.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -16,27 +16,9 @@
     </ControlTemplate>
   </co:ModernDialog.Template>
   <co:ModernDialog.Triggers>
-    <EventTrigger RoutedEvent="Window.Loaded">
-      <BeginStoryboard>
-        <Storyboard>
-          <DoubleAnimation Storyboard.TargetName="Flash" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" FillBehavior="HoldEnd"/>
-        </Storyboard>
-      </BeginStoryboard>
-    </EventTrigger>
-    <EventTrigger SourceName="UpperPart" RoutedEvent="FrameworkElement.MouseEnter">
-      <BeginStoryboard>
-        <Storyboard>
-          <DoubleAnimation Storyboard.TargetName="TitleTextBlock" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" BeginTime="0:0:0.4" FillBehavior="HoldEnd"/>
-        </Storyboard>
-      </BeginStoryboard>
-    </EventTrigger>
-    <EventTrigger SourceName="UpperPart" RoutedEvent="FrameworkElement.MouseLeave">
-      <BeginStoryboard>
-        <Storyboard>
-          <DoubleAnimation Storyboard.TargetName="TitleTextBlock" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" BeginTime="0:0:0.4" FillBehavior="HoldEnd"/>
-        </Storyboard>
-      </BeginStoryboard>
-    </EventTrigger>
+    <!-- PORT: removed EventTrigger -->
+    <!-- PORT: removed EventTrigger -->
+    <!-- PORT: removed EventTrigger -->
   </co:ModernDialog.Triggers>
   <Grid Cursor="{x:Static Cursors.Cross}">
     <Image x:Name="CapturedImage" RenderOptions.BitmapInterpolationMode="NearestNeighbor"/>

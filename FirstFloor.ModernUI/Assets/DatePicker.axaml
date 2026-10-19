@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Calendar.axaml"/>
@@ -49,13 +49,13 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_TextBox"><Setter Property="Foreground" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #LayoutRoot"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled /template/ #PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:focus /template/ #LayoutRoot"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:focus-within /template/ #LayoutRoot"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:not(:disabled):pointerover"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+  <Style Selector="^ /template/ DatePickerTextBox#PART_TextBox"><Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Border#LayoutRoot"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:disabled /template/ DatePickerTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style><Style Selector="^:focus /template/ Border#LayoutRoot"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^:focus-within /template/ Border#LayoutRoot"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
-            </Style></ControlTheme>
+            </Style></Style></ControlTheme>
 
   <ControlTheme TargetType="DatePickerTextBox" x:Key="{x:Type DatePickerTextBox}">
     <Setter Property="Foreground" Value="{DynamicResource InputText}"/>
@@ -66,20 +66,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="DatePickerTextBox">
           <c:Cell>
-            <VisualStateManager.VisualStateGroups>
-              <VisualStateGroup x:Name="WatermarkStates">
-                <VisualStateGroup.Transitions>
-                  <VisualTransition GeneratedDuration="0"/>
-                </VisualStateGroup.Transitions>
-                <VisualState x:Name="Unwatermarked"/>
-                <VisualState x:Name="Watermarked">
-                  <Storyboard>
-                    <DoubleAnimation Storyboard.TargetName="ContentElement" Storyboard.TargetProperty="Opacity" To="0" Duration="0"/>
-                    <DoubleAnimation Storyboard.TargetName="PART_Watermark" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
-                  </Storyboard>
-                </VisualState>
-              </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+            <!-- PORT: removed VisualStateManager.VisualStateGroups -->
             <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
               <c:Cell x:Name="WatermarkContent" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                 <Border x:Name="ContentElement" BorderThickness="0" Opacity="1"/>
@@ -93,8 +80,8 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^:disabled /template/ #PART_Watermark"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:readonly /template/ #PART_Watermark"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+  <Style Selector="^:disabled /template/ ContentControl#PART_Watermark"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style><Style Selector="^:readonly /template/ ContentControl#PART_Watermark"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style></ControlTheme>
 
 </ResourceDictionary>

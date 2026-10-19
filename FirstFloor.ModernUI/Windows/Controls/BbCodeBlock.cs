@@ -109,7 +109,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         #region Properties
-        public static readonly DependencyProperty TextProperty = DP.Register(nameof(Text), typeof(string), typeof(BbCodeBlock),
+        public static readonly StyledProperty<string> TextProperty = DP.Register<string>(nameof(Text), typeof(BbCodeBlock),
                 new PropertyMetadata(OnBbCodeChanged));
 
         [Avalonia.Metadata.Content]
@@ -118,7 +118,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TextProperty, value);
         }
 
-        public static readonly DependencyProperty LinkNavigatorProperty = DP.Register(nameof(LinkNavigator), typeof(ILinkNavigator),
+        public static readonly StyledProperty<ILinkNavigator> LinkNavigatorProperty = DP.Register<ILinkNavigator>(nameof(LinkNavigator),
                 typeof(BbCodeBlock), new PropertyMetadata(DefaultLinkNavigator, OnBbCodeChanged));
 
         [CanBeNull]
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LinkNavigatorProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DP.Register(nameof(Mode), typeof(EmojiSupport),
+        public static readonly StyledProperty<EmojiSupport> ModeProperty = DP.Register<EmojiSupport>(nameof(Mode),
                 typeof(BbCodeBlock), new PropertyMetadata(EmojiSupport.Extended, OnBbCodeChanged));
 
         public EmojiSupport Mode {
@@ -135,7 +135,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty HighlightUrlsProperty = DP.Register(nameof(HighlightUrls), typeof(bool),
+        public static readonly StyledProperty<bool> HighlightUrlsProperty = DP.Register<bool>(nameof(HighlightUrls),
                 typeof(BbCodeBlock), new PropertyMetadata(true, OnBbCodeChanged));
 
         public bool HighlightUrls {
@@ -143,7 +143,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HighlightUrlsProperty, value);
         }
 
-        public static readonly DependencyProperty AllowImagesProperty = DP.Register(nameof(AllowImages), typeof(bool),
+        public static readonly StyledProperty<bool> AllowImagesProperty = DP.Register<bool>(nameof(AllowImages),
                 typeof(BbCodeBlock), new PropertyMetadata(true));
 
         public bool AllowImages {
@@ -151,7 +151,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AllowImagesProperty, value);
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
+        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder),
                 typeof(BbCodeBlock), new PropertyMetadata(OnBbCodeChanged));
 
         public string Placeholder {
@@ -159,7 +159,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PlaceholderProperty, value);
         }
 
-        public static readonly DependencyProperty AllowedBbCodesProperty = DP.Register(nameof(AllowedBbCodes), typeof(AllowBbCodes),
+        public static readonly StyledProperty<AllowBbCodes> AllowedBbCodesProperty = DP.Register<AllowBbCodes>(nameof(AllowedBbCodes),
                 typeof(BbCodeBlock), new PropertyMetadata(AllowBbCodes.All, OnBbCodeChanged));
 
         public AllowBbCodes AllowedBbCodes {
@@ -213,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (string.IsNullOrEmpty(text)) {
                 var placeholder = Placeholder;
                 if (!string.IsNullOrEmpty(placeholder)) {
-                    inlines.Add(PlaceholderTextBlock.GetPlaceholder(this, placeholder));
+                    inlines.Add(PlaceholderTextBlock.GetPlaceholder(TextBlock, placeholder));
                 }
 
                 return;

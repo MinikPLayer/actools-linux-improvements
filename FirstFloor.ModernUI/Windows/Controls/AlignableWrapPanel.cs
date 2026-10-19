@@ -14,7 +14,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return double.IsNaN(v) || (v >= 0.0d && !double.IsPositiveInfinity(v));
         }
 
-        public static readonly DependencyProperty ItemWidthProperty = DP.Register("ItemWidth", typeof(double),
+        public static readonly StyledProperty<double> ItemWidthProperty = DP.Register<double>("ItemWidth",
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsWidthHeightValid);
 
@@ -24,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ItemWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightProperty = DP.Register("ItemHeight", typeof(double),
+        public static readonly StyledProperty<double> ItemHeightProperty = DP.Register<double>("ItemHeight",
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsWidthHeightValid);
 
@@ -231,7 +231,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DP.Register(nameof(HorizontalContentAlignment), typeof(HorizontalAlignment),
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty = DP.Register<HorizontalAlignment>(nameof(HorizontalContentAlignment),
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public HorizontalAlignment HorizontalContentAlignment {
@@ -239,7 +239,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HorizontalContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DP.Register(nameof(VerticalContentAlignment), typeof(VerticalAlignment),
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty = DP.Register<VerticalAlignment>(nameof(VerticalContentAlignment),
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public VerticalAlignment VerticalContentAlignment {

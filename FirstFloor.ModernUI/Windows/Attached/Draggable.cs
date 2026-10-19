@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ForceDisabledProperty, value);
         }
 
-        public static readonly DependencyProperty ForceDisabledProperty = DP.RegisterAttached("ForceDisabled", typeof(bool),
+        public static readonly AttachedProperty<bool> ForceDisabledProperty = DP.RegisterAttached<bool>("ForceDisabled",
                 typeof(Draggable), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetEnabled(FrameworkElement obj) {
@@ -67,7 +67,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(EnabledProperty, value);
         }
 
-        public static readonly DependencyProperty EnabledProperty = DP.RegisterAttached("Enabled", typeof(bool), typeof(Draggable),
+        public static readonly AttachedProperty<bool> EnabledProperty = DP.RegisterAttached<bool>("Enabled", typeof(Draggable),
                 new PropertyMetadata(false, OnEnabledChanged));
 
         public static object GetData(DependencyObject obj) {
@@ -78,7 +78,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DataProperty, value);
         }
 
-        public static readonly DependencyProperty DataProperty = DP.RegisterAttached("Data", typeof(object),
+        public static readonly AttachedProperty<object> DataProperty = DP.RegisterAttached<object>("Data",
                 typeof(Draggable), new PropertyMetadata(null, OnEnabledChanged));
 
         public static bool GetKeepSelection(DependencyObject obj) {
@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(KeepSelectionProperty, value);
         }
 
-        public static readonly DependencyProperty KeepSelectionProperty = DP.RegisterAttached("KeepSelection", typeof(bool),
+        public static readonly AttachedProperty<bool> KeepSelectionProperty = DP.RegisterAttached<bool>("KeepSelection",
                 typeof(Draggable), new PropertyMetadata(false));
 
         public static bool GetIsDestinationHighlighted(DependencyObject obj) {
@@ -100,8 +100,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(IsDestinationHighlightedProperty, value);
         }
 
-        public static readonly DependencyProperty IsDestinationHighlightedProperty = DP.RegisterAttached("IsDestinationHighlighted",
-                typeof(bool),
+        public static readonly AttachedProperty<bool> IsDestinationHighlightedProperty = DP.RegisterAttached<bool>("IsDestinationHighlighted",
                 typeof(Draggable), new FrameworkPropertyMetadata(false));
 
         private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -333,7 +332,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DestinationProperty, value);
         }
 
-        public static readonly DependencyProperty DestinationProperty = DP.RegisterAttached("Destination", typeof(object),
+        public static readonly AttachedProperty<object> DestinationProperty = DP.RegisterAttached<object>("Destination",
                 typeof(Draggable), new UIPropertyMetadata(OnDestinationChanged));
 
         private static void OnDestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -360,8 +359,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DestinationConverterProperty, value);
         }
 
-        public static readonly DependencyProperty DestinationConverterProperty = DP.RegisterAttached("DestinationConverter",
-                typeof(IDraggableDestinationConverter), typeof(Draggable), new UIPropertyMetadata(OnDestinationConverterChanged));
+        public static readonly AttachedProperty<IDraggableDestinationConverter> DestinationConverterProperty = DP.RegisterAttached<IDraggableDestinationConverter>("DestinationConverter", typeof(Draggable), new UIPropertyMetadata(OnDestinationConverterChanged));
 
         private static void OnDestinationConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is ItemsControl element) || !(e.NewValue is IDraggableDestinationConverter)) return;

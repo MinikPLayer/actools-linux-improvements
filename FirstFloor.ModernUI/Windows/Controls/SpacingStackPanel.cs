@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class SpacingStackPanel : Panel {
-        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly StyledProperty<Orientation> OrientationProperty = DP.Register<Orientation>(nameof(Orientation),
                 typeof(SpacingStackPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public Orientation Orientation {
@@ -11,7 +11,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty SpacingProperty = DP.Register(nameof(Spacing), typeof(double),
+        public static readonly StyledProperty<double> SpacingProperty = DP.Register<double>(nameof(Spacing),
                 typeof(SpacingStackPanel), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double Spacing {

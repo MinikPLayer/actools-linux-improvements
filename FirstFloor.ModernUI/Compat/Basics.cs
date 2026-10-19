@@ -46,18 +46,7 @@ namespace System.Windows {
         CanResizeWithGrip
     }
 
-    public enum SizeToContent {
-        Manual,
-        Width,
-        Height,
-        WidthAndHeight
-    }
 
-    public enum WindowStartupLocation {
-        Manual,
-        CenterScreen,
-        CenterOwner
-    }
 
     public static class FontWeights {
         public static FontWeight Thin => FontWeight.Thin;
@@ -558,5 +547,182 @@ namespace System.Windows.Controls {
         public Avalonia.Controls.Control Build(object param) {
             return SelectTemplate(param, null)?.Build(param);
         }
+    }
+}
+
+namespace System.Windows.Interop {
+    public class WindowInteropHelper {
+        public WindowInteropHelper(Avalonia.Controls.Window window) {
+            Handle = window?.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
+        }
+
+        public IntPtr Handle { get; }
+    }
+}
+
+namespace System.Windows {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using Avalonia.Markup.Xaml;
+
+    /// <summary>
+    /// Replacement for WPF’s URI-based loading (pack URIs like /Assembly;component/Path/Page.xaml).
+    /// Pages are classes in Avalonia, so URIs are mapped to types by convention: folders are namespaces, file name is the class name.
+    /// </summary>
+    public static class ComponentLoader {
+        private static readonly Dictionary<string, Type> Cache = new Dictionary<string, Type>();
+
+        public static Uri ToAvaloniaUri(Uri uri) {
+            var s = uri.OriginalString;
+            var m = System.Text.RegularExpressions.Regex.Match(s, @"^(?:pack://application:,,,)?/?([^;/]+);component/(.+)$");
+            if (m.Success) {
+                var path = m.Groups[2].Value;
+                if (path.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase)) path = path.Substring(0, path.Length - 5) + ".axaml";
+                return new Uri($"avares://{m.Groups[1].Value}/{path}");
+            }
+
+            if (s.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase)) {
+                return new Uri(s.Substring(0, s.Length - 5) + ".axaml", uri.IsAbsoluteUri ? UriKind.Absolute : UriKind.RelativeOrAbsolute);
+            }
+
+            return uri;
+        }
+
+        public static Type FindType(Uri uri) {
+            var s = uri.OriginalString;
+            var m = System.Text.RegularExpressions.Regex.Match(s, @"^(?:pack://application:,,,)?/?(?:([^;/]+);component/)?(.+?)(?:\.a?xaml)?$");
+            if (!m.Success) return null;
+
+            var assemblyName = m.Groups[1].Success ? m.Groups[1].Value : null;
+            var relative = m.Groups[2].Value.Replace('/', '.');
+            var key = (assemblyName ?? "") + "|" + relative;
+            lock (Cache) {
+                if (Cache.TryGetValue(key, out var cached)) return cached;
+            }
+
+            Type found = null;
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(x => assemblyName == null || x.GetName().Name == assemblyName);
+            foreach (var assembly in assemblies) {
+                found = assembly.GetType(assembly.GetName().Name + "." + relative);
+                if (found == null) {
+                    try {
+                        found = assembly.GetTypes().FirstOrDefault(x => x.FullName != null && x.FullName.EndsWith("." + relative, StringComparison.Ordinal)
+                                && typeof(Avalonia.Controls.Control).IsAssignableFrom(x));
+                    } catch (ReflectionTypeLoadException) { }
+                }
+
+                if (found != null) break;
+            }
+
+            lock (Cache) {
+                Cache[key] = found;
+            }
+
+            return found;
+        }
+
+        public static object Load(Uri uri) {
+            var type = FindType(uri);
+            if (type == null) throw new InvalidOperationException("Can’t find a type for " + uri);
+            return Activator.CreateInstance(type);
+        }
+    }
+
+    public static class ApplicationLoadExtension {
+        extension(Application) {
+            public static object LoadComponent(Uri uri) => ComponentLoader.Load(uri);
+        }
+    }
+
+    public static class ResourceDictionaryExtension {
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ResourceDictionary, Uri> Sources
+                = new System.Runtime.CompilerServices.ConditionalWeakTable<ResourceDictionary, Uri>();
+
+        extension(ResourceDictionary d) {
+            public Uri Source {
+                get => Sources.TryGetValue(d, out var uri) ? uri : null;
+                set {
+                    Sources.AddOrUpdate(d, value);
+                    LoadInto(d, value);
+                }
+            }
+
+            public bool Contains(object key) => d.ContainsKey(key);
+        }
+
+        private static void LoadInto(ResourceDictionary target, Uri uri) {
+            var loaded = AvaloniaXamlLoader.Load(ComponentLoader.ToAvaloniaUri(uri)) as ResourceDictionary
+                    ?? throw new InvalidOperationException("Not a resource dictionary: " + uri);
+            foreach (var pair in loaded) {
+                target[pair.Key] = pair.Value;
+            }
+
+            foreach (var merged in loaded.MergedDictionaries.ToList()) {
+                loaded.MergedDictionaries.Remove(merged);
+                target.MergedDictionaries.Add(merged);
+            }
+        }
+    }
+}
+
+namespace System.Windows {
+    using Avalonia.Controls;
+    using Avalonia.Input;
+
+    public static class MiscExtension {
+        extension(TextBox t) {
+            public int SelectionLength {
+                get => Math.Abs(t.SelectionEnd - t.SelectionStart);
+                set => t.SelectionEnd = t.SelectionStart + value;
+            }
+
+            public string Password {
+                get => t.Text;
+                set => t.Text = value;
+            }
+        }
+
+        extension(IDataObject d) {
+            public object GetData(string format) => d.Get(format);
+            public bool GetDataPresent(string format) => d.Contains(format);
+        }
+
+        extension(DragEventArgs e) {
+            public DragDropEffects Effects {
+                get => e.DragEffects;
+                set => e.DragEffects = value;
+            }
+        }
+    }
+}
+
+namespace System.Windows {
+    using Avalonia.Controls;
+
+    public static class DataGridColumnExtension {
+        extension(DataGridColumn c) {
+            public Visibility Visibility {
+                get => c.IsVisible ? Visibility.Visible : Visibility.Collapsed;
+                set => c.IsVisible = value == Visibility.Visible;
+            }
+        }
+    }
+}
+
+namespace System.Windows {
+    /// <summary>
+    /// A few WPF system parameters used in styles (values aren’t meaningful with Avalonia, window chrome is drawn by the theme).
+    /// </summary>
+    public static class SystemParameters {
+        public static Thickness WindowNonClientFrameThickness => new Thickness(0);
+        public static Thickness WindowResizeBorderThickness => new Thickness(0);
+        public static double VerticalScrollBarWidth => 17d;
+        public static double HorizontalScrollBarHeight => 17d;
+        public static double VerticalScrollBarButtonHeight => 17d;
+        public static double HorizontalScrollBarButtonWidth => 17d;
+        public static double CaptionHeight => 30d;
+        public static double PrimaryScreenWidth => 1920d;
+        public static double PrimaryScreenHeight => 1080d;
     }
 }

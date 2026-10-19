@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -23,7 +23,7 @@
     <Setter Property="MinWidth" Value="240"/>
     <Setter Property="MinHeight" Value="240"/>
     <Setter Property="ShowInTaskbar" Value="False"/>
-    <Setter Property="ResizeMode" Value="NoResize"/>
+    <Setter Property="CanResize" Value="False"/>
     <Setter Property="SizeToContent" Value="WidthAndHeight"/>
     <Setter Property="Padding" Value="24 20"/>
     <Setter Property="ButtonsMargin" Value="24 0 24 24"/>
@@ -34,7 +34,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="c:ModernDialog">
-          <!-- PORT: SystemParameters not available: SystemParameters.WindowNonClientFrameThickness --><Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+          <Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static sw:SystemParameters.WindowNonClientFrameThickness}}">
             <c:Cell>
               <Panel a:FancyHintsService.HintsDecorator="True">
                 <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -83,37 +83,24 @@
       </Setter.Value>
     </Setter>
 
-    <Setter Property="WindowChrome.WindowChrome">
-      <Setter.Value>
-        <WindowChrome CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False" CaptionHeight="20" NonClientFrameEdges="None" ResizeBorderThickness="4"/>
-      </Setter.Value>
-    </Setter>
-  <Style.Resources>
-      <!--<Style x:Key="BottomRow" TargetType="FrameworkElement">
+    <ControlTheme.Resources>
+      <ResourceDictionary><!--<Style x:Key="BottomRow" TargetType="FrameworkElement">
         <Setter Property="Margin" Value="0 -46 200 -172" />
         <Setter Property="Height" Value="26" />
         <Setter Property="HorizontalAlignment" Value="Right" />
       </Style>-->
       <HorizontalAlignment x:Key="BottomRowAlignment">Right</HorizontalAlignment>
-    </Style.Resources>
+    </ResourceDictionary></ControlTheme.Resources>
 
-    <Style Selector="^ /template/ #PART_BorderActive"><Setter Property="IsVisible" Value="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ #ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[ExtraContent=null] /template/ #PART_ExtraContent"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding Path=BorderBrush.(SolidColorBrush.Color).(Color.A), ElementName=PART_Border, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(mui|T.S0)=True] /template/ #PART_BorderActive"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[ResizeMode=CanResizeWithGrip][WindowState=Normal] /template/ #ResizeGrip"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^[ShowTitle=False][ShowTopBlob=False][IconSource=null] /template/ #PART_Title"><Setter Property="IsVisible" Value="False"/>
-            </Style></ControlTheme>
+    <Style Selector="^ /template/ Border#PART_BorderActive"><Setter Property="IsVisible" Value="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ c|Cell#ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[ExtraContent=null] /template/ ContentControl#PART_ExtraContent"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Path=BorderBrush.(SolidColorBrush.Color).(Color.A), ElementName=PART_Border, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ Border#PART_BorderActive"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[CanResize=True]"><Style Selector="^[WindowState=Normal] /template/ c|Cell#ResizeGrip"><Setter Property="IsVisible" Value="True"/>
+            </Style></Style><Style Selector="^[ShowTitle=False]"><Style Selector="^[ShowTopBlob=False]"><Style Selector="^[IconSource=null] /template/ StackPanel#PART_Title"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style></Style></ControlTheme>
 
   <ControlTheme TargetType="dialogs:FatalErrorMessage" x:Key="{x:Type dialogs:FatalErrorMessage}">
-    <Setter Property="BackgroundContent" Value="{x:Null}"/>
-    <Setter Property="Foreground" Value="White"/>
-    <Setter Property="Background" Value="#2067b2"/>
-    <Setter Property="Title" Value="Fatal Error"/>
-
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="dialogs:FatalErrorMessage">
-          <ControlTemplate.Resources>
-            <SolidColorBrush x:Key="ButtonBackground" Color="#2b6099"/>
+    <ControlTheme.Resources>
+            <ResourceDictionary><SolidColorBrush x:Key="ButtonBackground" Color="#2b6099"/>
             <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#2b6099"/>
             <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#295b91"/>
             <SolidColorBrush x:Key="ButtonBorder" Color="#2b6099"/>
@@ -123,9 +110,17 @@
             <SolidColorBrush x:Key="ButtonTextHover" Color="#ffffff"/>
             <SolidColorBrush x:Key="ButtonTextPressed" Color="#ffffff"/>
             <SolidColorBrush x:Key="ButtonTextDisabled" Color="#999999"/>
-          </ControlTemplate.Resources>
+          </ResourceDictionary></ControlTheme.Resources>
 
-          <!-- PORT: SystemParameters not available: SystemParameters.WindowNonClientFrameThickness --><Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+          <Setter Property="BackgroundContent" Value="{x:Null}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="#2067b2"/>
+    <Setter Property="Title" Value="Fatal Error"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="dialogs:FatalErrorMessage">
+          <Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static sw:SystemParameters.WindowNonClientFrameThickness}}">
             <Border BorderBrush="#2067b2" BorderThickness="1">
               <Panel>
                 <StackPanel Margin="40">

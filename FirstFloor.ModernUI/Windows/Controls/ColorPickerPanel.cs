@@ -251,14 +251,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         #region Properties
-        public static readonly DependencyProperty OriginalColorProperty = DP.Register(nameof(OriginalColor), typeof(Color), typeof(ColorPickerPanel));
+        public static readonly StyledProperty<Color> OriginalColorProperty = DP.Register<Color>(nameof(OriginalColor), typeof(ColorPickerPanel));
 
         public Color OriginalColor {
             get => GetValue(OriginalColorProperty) as Color? ?? default;
             set => SetValue(OriginalColorProperty, value);
         }
 
-        public static readonly DependencyProperty ColorProperty = DP.Register(nameof(Color), typeof(Color), typeof(ColorPickerPanel), new FrameworkPropertyMetadata(Color.FromRgb(255, 127, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
+        public static readonly StyledProperty<Color> ColorProperty = DP.Register<Color>(nameof(Color), typeof(ColorPickerPanel), new FrameworkPropertyMetadata(Color.FromRgb(255, 127, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
 
         public Color Color {
             get => GetValue(ColorProperty) as Color? ?? default;
@@ -273,21 +273,21 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return Math.Max(Math.Min((int)baseValue, 255), 0);
         }
 
-        public static readonly DependencyProperty RedProperty = DP.Register(nameof(Red), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly StyledProperty<int> RedProperty = DP.Register<int>(nameof(Red), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Red {
             get => GetValue(RedProperty) as int? ?? default;
             set => SetValue(RedProperty, Math.Max(Math.Min(value, 255), 0));
         }
 
-        public static readonly DependencyProperty GreenProperty = DP.Register(nameof(Green), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly StyledProperty<int> GreenProperty = DP.Register<int>(nameof(Green), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Green {
             get => GetValue(GreenProperty) as int? ?? default;
             set => SetValue(GreenProperty, Math.Max(Math.Min(value, 255), 0));
         }
 
-        public static readonly DependencyProperty BlueProperty = DP.Register(nameof(Blue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly StyledProperty<int> BlueProperty = DP.Register<int>(nameof(Blue), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Blue {
             get => GetValue(BlueProperty) as int? ?? default;
@@ -298,7 +298,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((ColorPickerPanel)o).OnRgbChanged();
         }
 
-        public static readonly DependencyProperty HueProperty = DP.Register(nameof(Hue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, HueCoerceValueCallback));
+        public static readonly StyledProperty<int> HueProperty = DP.Register<int>(nameof(Hue), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, HueCoerceValueCallback));
 
         private static object HueCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 359), 0);
@@ -309,7 +309,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HueProperty, value);
         }
 
-        public static readonly DependencyProperty SaturationProperty = DP.Register(nameof(Saturation), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, SaturationCoerceValueCallback));
+        public static readonly StyledProperty<int> SaturationProperty = DP.Register<int>(nameof(Saturation), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, SaturationCoerceValueCallback));
 
         private static object SaturationCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 100), 0);
@@ -320,7 +320,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SaturationProperty, value);
         }
 
-        public static readonly DependencyProperty BrightnessProperty = DP.Register(nameof(Brightness), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, BrightnessCoerceValueCallback));
+        public static readonly StyledProperty<int> BrightnessProperty = DP.Register<int>(nameof(Brightness), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, BrightnessCoerceValueCallback));
 
         private static object BrightnessCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 100), 0);
@@ -353,7 +353,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public bool IsBright => GetValue(IsBrightProperty) as bool? ?? default;
 
-        public static readonly DependencyProperty ModeProperty = DP.Register(nameof(Mode), typeof(ColorPickingMode),
+        public static readonly StyledProperty<ColorPickingMode> ModeProperty = DP.Register<ColorPickingMode>(nameof(Mode),
                 typeof(ColorPickerPanel), new PropertyMetadata(OnModeChanged));
 
         public ColorPickingMode Mode {

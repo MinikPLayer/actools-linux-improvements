@@ -158,5 +158,9 @@
     <Using Include="Avalonia.Controls.GridUnitType" Alias="GridUnitType" />
     <Using Include="Avalonia.Controls.PlacementMode" Alias="PlacementMode" />
     <Using Include="Avalonia.Data.UpdateSourceTrigger" Alias="UpdateSourceTrigger" />
+    <Using Include="Avalonia.Controls.SizeToContent" Alias="SizeToContent" />
+    <Using Include="Avalonia.Controls.WindowStartupLocation" Alias="WindowStartupLocation" />
+    <Using Include="FirstFloor.ModernUI.Windows.Media" />
+    <Using Include="Avalonia" />
   </ItemGroup>
 </Project>

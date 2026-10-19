@@ -1,73 +1,49 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TreeView.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme x:Key="Expander" TargetType="Expander">
-    <Setter Property="TextBlock.Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource WindowText}"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Expander">
           <StackPanel>
             <DockPanel x:Name="PART_Header">
               <ToggleButton DockPanel.Dock="Left" VerticalAlignment="Center" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
-              <ContentPresenter ContentSource="Header" RecognizesAccessKey="False"/>
+              <ContentPresenter RecognizesAccessKey="False"/>
             </DockPanel>
             <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}"/>
           </StackPanel>
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_ExpandSite"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:expanded /template/ #PART_ExpandSite"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:expanded /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="True"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="Expander.Animated" TargetType="Expander" BasedOn="{StaticResource Expander}">
-    <Setter Property="Template">
+    <ControlTheme.Resources>
+            <ResourceDictionary><ResourceDictionary>
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+            </ResourceDictionary>
+          </ResourceDictionary></ControlTheme.Resources>
+          <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Expander">
           <DockPanel>
             <DockPanel x:Name="PART_Header" DockPanel.Dock="Top">
               <ToggleButton DockPanel.Dock="Left" VerticalAlignment="Center" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
-              <ContentPresenter ContentSource="Header" RecognizesAccessKey="False"/>
+              <ContentPresenter RecognizesAccessKey="False"/>
             </DockPanel>
             <Border x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}" ClipToBounds="True" IsVisible="False">
-              <!-- PORT: LayoutTransform needs LayoutTransformControl --><Border.RenderTransform>
-                <ScaleTransform x:Name="PART_ExpandScale" ScaleX="1" ScaleY="0"/>
-              </Border.RenderTransform>
+              <!-- PORT: removed Border.LayoutTransform -->
               <ContentPresenter x:Name="PART_Content" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
             </Border>
           </DockPanel>
-          <ControlTemplate.Resources>
-            <ResourceDictionary>
-              <Storyboard x:Key="ScaleYUp" TargetProperty="(ScaleTransform.ScaleY)">
-                <DoubleAnimation From="0" To="1" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetName="PART_ExpandSite" Storyboard.TargetProperty="Visibility">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <Visibility>Visible</Visibility>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-              </Storyboard>
-              <Storyboard x:Key="ScaleYDown" TargetProperty="(ScaleTransform.ScaleY)">
-                <DoubleAnimation From="1" To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.22" Storyboard.TargetName="PART_ExpandSite" Storyboard.TargetProperty="Visibility">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <Visibility>Collapsed</Visibility>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-              </Storyboard>
-              <Storyboard x:Key="ScaleXUp" TargetProperty="(ScaleTransform.ScaleX)">
-                <DoubleAnimation From="0" To="1" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-              <Storyboard x:Key="ScaleXDown" TargetProperty="(ScaleTransform.ScaleX)">
-                <DoubleAnimation From="1" To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-            </ResourceDictionary>
-          </ControlTemplate.Resources>
           </ControlTemplate>
       </Setter.Value>
     </Setter>

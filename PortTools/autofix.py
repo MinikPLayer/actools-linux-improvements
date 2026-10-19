@@ -6,10 +6,10 @@ Applies mechanical fixes for compiler errors: python3 autofix.py <errors.txt>
 import re, sys, collections
 
 THIS_NAMES = {'CommandBindings', 'InputBindings', 'Visibility', 'ActualWidth', 'ActualHeight', 'GetTemplateChild', 'FindResource', 'TryFindResource',
-              'FindName', 'Left', 'Top', 'ResizeMode', 'SetBinding', 'BeginInvoke'}
+              'FindName', 'Left', 'Top', 'ResizeMode', 'SetBinding', 'BeginInvoke', 'ToolTip', 'Style'}
 fixes = collections.defaultdict(list)
 for l in open(sys.argv[1]):
-    m = re.match(r"(.+?)\((\d+),(\d+)\): error CS0103: The name '(\w+)' does not exist", l)
+    m = re.match(r"(.+?)\((\d+),(\d+)\): error CS0103: The name '(\w+)' does not exist", l) or re.match(r"(.+?)\((\d+),(\d+)\): error CS011[89]: '(\w+)' is a type", l)
     if m and m.group(4) in THIS_NAMES:
         fixes[m.group(1)].append((int(m.group(2)), int(m.group(3)), m.group(4)))
 total = 0

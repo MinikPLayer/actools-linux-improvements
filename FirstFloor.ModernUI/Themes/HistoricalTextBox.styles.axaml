@@ -1,12 +1,10 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
-  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/HistoricalTextBox.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="c:HistoricalTextBox">
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/HistoricalTextBox.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="c|HistoricalTextBox">
     <Setter Property="ItemTemplate">
       <Setter.Value>
         <DataTemplate>
           <DockPanel x:Name="Panel" Background="Transparent">
-            <DockPanel.InputBindings>
-              <MouseBinding Gesture="MiddleClick" CommandParameter="{Binding}" Command="{Binding DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type c:HistoricalTextBox}}}"/>
-            </DockPanel.InputBindings>
+            <!-- PORT: removed DockPanel.InputBindings -->
             <Button DockPanel.Dock="Right" Width="13" Height="13" Margin="4 0 0 0" VerticalAlignment="Center" Padding="2" CommandParameter="{Binding}" Command="{Binding DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type c:HistoricalTextBox}}}" Classes="inline1">
               <Button.Styles>
                 <Style Selector="Button.inline1">

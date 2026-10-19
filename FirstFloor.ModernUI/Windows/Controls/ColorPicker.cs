@@ -74,7 +74,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public Color OverlayColor => (Color)GetValue(OverlayColorProperty);
 
-        public static readonly DependencyProperty ColorProperty = DP.Register(nameof(Color), typeof(Color),
+        public static readonly StyledProperty<Color> ColorProperty = DP.Register<Color>(nameof(Color),
                 typeof(ColorPicker),
                 new FrameworkPropertyMetadata(Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
 
@@ -97,7 +97,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty DisplayColorProperty = DP.Register(nameof(DisplayColor), typeof(string),
+        public static readonly StyledProperty<string> DisplayColorProperty = DP.Register<string>(nameof(DisplayColor),
                 typeof(ColorPicker), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisplayColorChanged));
 
         public string DisplayColor {

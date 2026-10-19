@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
@@ -23,12 +23,12 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^[Prefix=null] /template/ #PART_Prefix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[Postfix=null] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[ShowPostfix=False] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel][Value=0] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel][Value=-1] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
+  <Style Selector="^[Prefix=null] /template/ TextBlock#PART_Prefix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[Postfix=null] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ShowPostfix=False] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel]"><Style Selector="^[Value=0] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel]"><Style Selector="^[Value=-1] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
 
   <ControlTheme TargetType="c:DoubleValueLabel" x:Key="{x:Type c:DoubleValueLabel}">
     <Setter Property="Margin" Value="0 0 0 4"/>
@@ -65,12 +65,12 @@
               </ControlTemplate>
           </Setter.Value>
         </Setter>
-      </Style><Style Selector="^[Prefix=null] /template/ #PART_Prefix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[Postfix=null] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[ShowPostfix=False] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel][Value=0] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[JoinIfEqual=True][ValuesEqual=True] /template/ #PART_Separator"><Setter Property="IsVisible" Value="False"/>
-              </Style><Style Selector="^[JoinIfEqual=True][ValuesEqual=True] /template/ #PART_TextBox2"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel][Value=-1] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
-            </Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
+      </Style><Style Selector="^[Prefix=null] /template/ TextBlock#PART_Prefix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[Postfix=null] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ShowPostfix=False] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel]"><Style Selector="^[Value=0] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><Style Selector="^[JoinIfEqual=True]"><Style Selector="^[ValuesEqual=True] /template/ TextBlock#PART_Separator"><Setter Property="IsVisible" Value="False"/>
+              </Style></Style><Style Selector="^[JoinIfEqual=True]"><Style Selector="^[ValuesEqual=True] /template/ c|BetterTextBox#PART_TextBox2"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel]"><Style Selector="^[Value=-1] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
 </ResourceDictionary>

@@ -219,12 +219,82 @@ def _find_block_end(text, open_pos):
     return len(text)
 
 
+# ---------------------------------------------------------------- typed property fields (Avalonia’s XAML compiler needs them)
+_FIELD_RX = re.compile(r'(?P<mods>\b(?:public|internal|private|protected)\s+(?:new\s+)?static\s+readonly\s+)DependencyProperty\s+(?P<name>\w+)\s*=\s*DP\.Register(?P<att>Attached)?\(')
+
+
+def _split_args(text, start):
+    """text[start] is the first char after '('. Returns (list of arg strings, index after ')')"""
+    args = []
+    depth = 0
+    cur = []
+    i = start
+    q = None
+    while i < len(text):
+        c = text[i]
+        if q:
+            cur.append(c)
+            if c == '\\' and q == '"':
+                cur.append(text[i + 1])
+                i += 1
+            elif c == q:
+                q = None
+        elif c in '"\'':
+            q = c
+            cur.append(c)
+        elif c in '([{':
+            depth += 1
+            cur.append(c)
+        elif c in ')]}':
+            if depth == 0:
+                args.append(''.join(cur))
+                return args, i + 1
+            depth -= 1
+            cur.append(c)
+        elif c == '<' and False:
+            pass
+        elif c == ',' and depth == 0:
+            args.append(''.join(cur))
+            cur = []
+        else:
+            cur.append(c)
+        i += 1
+    return args, i
+
+
+def type_fields(text):
+    pos = 0
+    while True:
+        m = _FIELD_RX.search(text, pos)
+        if not m:
+            return text
+        args, end = _split_args(text, m.end())
+        if len(args) < 3:
+            pos = m.end()
+            continue
+        t = args[1].strip()
+        mt = re.match(r'typeof\((.*)\)$', t, re.S)
+        if not mt:
+            pos = m.end()
+            continue
+        tt = mt.group(1).strip()
+        att = m.group('att')
+        kind = 'AttachedProperty' if att else 'StyledProperty'
+        rest = ','.join([args[0], args[2]] + args[3:])
+        new = '%s%s<%s> %s = DP.Register%s<%s>(%s)' % (m.group('mods'), kind, tt, m.group('name'), att or '', tt, rest.strip() if rest.strip() else '')
+        # keep the original formatting of arguments after the type
+        new = '%s%s<%s> %s = DP.Register%s<%s>(%s,%s)' % (m.group('mods'), kind, tt, m.group('name'), att or '', tt, args[0].strip(), ','.join(args[2:]))
+        text = text[:m.start()] + new + text[end:]
+        pos = m.start() + len(new)
+
+
 def convert(text):
     for pat, rep in RULES:
         if rep is None: continue
         text = re.sub(pat, rep, text)
     # OverrideMetadata: X.OverrideMetadata(typeof(T), md) -> DP.OverrideMetadata(X, typeof(T), md)
     text = re.sub(r'\b(\w+(?:\.\w+)*Property)\.OverrideMetadata\(', r'DP.OverrideMetadata(\1, ', text)
+    text = type_fields(text)
     text = rewrite_events(text)
     text = rewrite_overrides(text)
     return text

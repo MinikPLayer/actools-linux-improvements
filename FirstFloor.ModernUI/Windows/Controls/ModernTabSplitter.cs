@@ -117,7 +117,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty AdjustRightColumnProperty = DP.Register(nameof(AdjustRightColumn), typeof(bool),
+        public static readonly StyledProperty<bool> AdjustRightColumnProperty = DP.Register<bool>(nameof(AdjustRightColumn),
                 typeof(ModernTabSplitter), new PropertyMetadata(false, (o, e) => {
                     ((ModernTabSplitter)o)._adjustRightColumn = (bool)e.NewValue;
                 }));
@@ -129,7 +129,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AdjustRightColumnProperty, value);
         }
 
-        public static readonly DependencyProperty InitialWidthProperty = DP.Register(nameof(InitialWidth), typeof(double),
+        public static readonly StyledProperty<double> InitialWidthProperty = DP.Register<double>(nameof(InitialWidth),
                 typeof(ModernTabSplitter), new PropertyMetadata(200d));
 
         public double InitialWidth {
@@ -139,7 +139,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private string SaveKeyValue => $"ModernTabSplitter:{SaveKey}";
 
-        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
+        public static readonly StyledProperty<string> SaveKeyProperty = DP.Register<string>(nameof(SaveKey),
                 typeof(ModernTabSplitter), new PropertyMetadata(@"ModernTab", OnSaveKeyChanged));
 
         public string SaveKey {

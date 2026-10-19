@@ -14,7 +14,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(BrightnessProperty);
         }
 
-        public static readonly DependencyProperty HueProperty = DP.Register("Hue", typeof(double),
+        public static readonly StyledProperty<double> HueProperty = DP.Register<double>("Hue",
                 typeof(ColorPickerSaturationSliderEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), HueCoerceSaturationFactor));
 
         public double Hue {
@@ -26,7 +26,7 @@ namespace FirstFloor.ModernUI.Effects {
             return Math.Min(Math.Max((double)value / 360d, 0d), 1d);
         }
 
-        public static readonly DependencyProperty BrightnessProperty = DP.Register("Brightness", typeof(double),
+        public static readonly StyledProperty<double> BrightnessProperty = DP.Register<double>("Brightness",
                 typeof(ColorPickerSaturationSliderEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(1), BrightnessCoerceSaturationFactor));
 
         public double Brightness {

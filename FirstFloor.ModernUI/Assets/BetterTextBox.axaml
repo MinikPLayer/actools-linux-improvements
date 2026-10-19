@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
@@ -90,14 +90,14 @@
   </ControlTheme>
 
   <ControlTheme x:Key="Borderless.White" TargetType="c:BetterTextBox" BasedOn="{StaticResource Borderless}">
-    <Style Selector="^[IsReadOnly=False]:not(:disabled):pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-      </Style></ControlTheme>
+    <Style Selector="^[IsReadOnly=False]"><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+      </Style></Style></Style></ControlTheme>
 
   <ControlTheme x:Key="Borderless.White.Small" TargetType="c:BetterTextBox" BasedOn="{StaticResource Borderless}">
     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
-  <Style Selector="^[IsReadOnly=False]:not(:disabled):pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-      </Style></ControlTheme>
+  <Style Selector="^[IsReadOnly=False]"><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+      </Style></Style></Style></ControlTheme>
 
   <ControlTheme x:Key="BetterComboBoxEditableTextBox" TargetType="c:BetterTextBox">
     <Setter Property="ContextMenu" Value="{StaticResource TextBoxContextMenu}"/>
@@ -112,9 +112,9 @@
 
   <!-- PORT: ControlTemplate with triggers outside of a style (4 triggers) --><ControlTemplate x:Key="BetterComboBoxTemplate.Basic" TargetType="c:BetterComboBox">
     <c:Cell x:Name="MainGrid">
-      <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+      <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
-          <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+          <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
             <ScrollViewer x:Name="DropDownScrollViewer">
               <ItemsPresenter x:Name="ItemsPresenter"/>
             </ScrollViewer>
@@ -129,9 +129,9 @@
 
   <!-- PORT: ControlTemplate with triggers outside of a style (6 triggers) --><ControlTemplate x:Key="BetterComboBoxTemplate.Editable" TargetType="c:BetterComboBox">
     <c:Cell x:Name="MainGrid">
-      <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+      <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
-          <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+          <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
             <ScrollViewer x:Name="DropDownScrollViewer">
               <ItemsPresenter x:Name="ItemsPresenter"/>
             </ScrollViewer>
@@ -150,9 +150,9 @@
         <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
       </c:AdornedControl.AdornerContent>
       <c:Cell x:Name="MainGrid">
-        <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+        <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
           <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
-            <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+            <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
               <ScrollViewer x:Name="DropDownScrollViewer">
                 <ItemsPresenter x:Name="ItemsPresenter"/>
               </ScrollViewer>
@@ -174,9 +174,9 @@
         <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
       </c:AdornedControl.AdornerContent>
       <c:Cell x:Name="MainGrid">
-        <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+        <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
           <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
-            <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource WindowText}">
+            <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
               <ScrollViewer x:Name="DropDownScrollViewer">
                 <ItemsPresenter x:Name="ItemsPresenter"/>
               </ScrollViewer>
@@ -190,7 +190,7 @@
     </c:AdornedControl>
     </ControlTemplate>
 
-  <ControlTheme x:Key="{x:Type c:BetterComboBox}" TargetType="c:BetterComboBox">
+  <ControlTheme TargetType="c:BetterComboBox" x:Key="{x:Type c:BetterComboBox}">
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
@@ -199,8 +199,6 @@
   <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource BetterComboBoxTemplate.Basic}"/>
-    <Setter Property="IsTextSearchEnabled" Value="True"/>
-    <Setter Property="IsTextSearchCaseSensitive" Value="False"/>
     <Style Selector="^:editable"><Setter Property="IsTabStop" Value="True"/>
         <Setter Property="Focusable" Value="True"/>
         <Setter Property="Template" Value="{StaticResource BetterComboBoxTemplate.Editable}"/>
@@ -239,6 +237,6 @@
         <Setter Property="Focusable" Value="True"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template" Value="{StaticResource BetterComboBoxTemplate.Editable.Borderless}"/>
-      </Style><Style Selector="^[IsReadOnly=False]:not(:disabled):pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-      </Style></ControlTheme>
+      </Style><Style Selector="^[IsReadOnly=False]"><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+      </Style></Style></Style></ControlTheme>
 </ResourceDictionary>

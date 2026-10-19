@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
   <ControlTheme TargetType="Calendar" x:Key="{x:Type Calendar}">
     <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
@@ -21,14 +21,14 @@
   </ControlTheme>
 
   <ControlTheme TargetType="CalendarItem" x:Key="{x:Type CalendarItem}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="CalendarItem">
-          <ControlTemplate.Resources>
-            <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
+    <ControlTheme.Resources>
+            <ResourceDictionary><DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
               <TextBlock x:Name="Text" FontWeight="Bold" FontSize="{DynamicResource DefaultFontSize}" Foreground="{DynamicResource ItemText}" HorizontalAlignment="Center" Text="{Binding}" Margin="0 6 0 6" VerticalAlignment="Center"/>
             </DataTemplate>
-          </ControlTemplate.Resources>
+          </ResourceDictionary></ControlTheme.Resources>
+          <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="CalendarItem">
           <c:Cell x:Name="PART_Root">
             <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
               <Grid>
@@ -92,7 +92,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_MonthView"><Setter Property="IsVisible" Value="True"/></Style><Style Selector="^ /template/ #PART_YearView"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: DataTrigger with element binding not converted --><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
+  <Style Selector="^ /template/ Grid#PART_MonthView"><Setter Property="IsVisible" Value="True"/></Style><Style Selector="^ /template/ Grid#PART_YearView"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: DataTrigger with element binding not converted --><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
 
   <ControlTheme TargetType="CalendarDayButton" x:Key="{x:Type CalendarDayButton}">
     <Setter Property="MinWidth" Value="5"/>
@@ -112,8 +112,8 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #DayButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ #Blackout"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ #DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:focus /template/ #DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Path#Blackout"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^:focus /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
             </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
@@ -122,10 +122,10 @@
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
             </Style><Style Selector="^:selected"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^[IsToday=True] /template/ #DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[IsToday=True] /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^[IsInactive=True]"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
-            </Style><Style Selector="^[IsBlackedOut=True] /template/ #Blackout"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[IsBlackedOut=True] /template/ Path#Blackout"><Setter Property="IsVisible" Value="True"/>
             </Style></ControlTheme>
 
   <ControlTheme TargetType="CalendarButton" x:Key="{x:Type CalendarButton}">
@@ -146,8 +146,8 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ #CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:focus /template/ #CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^:focus /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
             </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>

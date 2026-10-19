@@ -1,33 +1,14 @@
 ﻿using System.Windows;
-using System.Windows.Documents;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
+    /// <summary>
+    /// Adds a small “new” mark to elements (visuals aren’t ported yet).
+    /// </summary>
     public static class NewMarkService {
-        public static readonly DependencyProperty NewProperty;
+        public static readonly AttachedProperty<bool> NewProperty = DP.RegisterAttached<bool>("New", typeof(NewMarkService), new FrameworkPropertyMetadata(false));
 
-        static NewMarkService() {
-            NewProperty = DP.RegisterAttached("New", typeof(bool), typeof(NewMarkService),
-                    new FrameworkPropertyMetadata(false, OnLimitedChanged));
-        }
+        public static bool GetNew(DependencyObject d) => d.GetValue(NewProperty);
 
-        public static bool GetNew(DependencyObject d) {
-            return d.GetValue(NewProperty) as bool? == true;
-        }
-
-        public static void SetNew(DependencyObject d, bool value) {
-            d.SetValue(NewProperty, value);
-        }
-
-        private static void OnLimitedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (!(d is FrameworkElement u)) return;
-            u.Loaded += OnControlLoaded;
-        }
-
-        private static void OnControlLoaded(object sender, RoutedEventArgs e) {
-            var c = (UIElement)sender;
-            if (GetNew(c)) {
-                AdornerLayer.GetAdornerLayer(c)?.Add(new NewMarkAdorner(c));
-            }
-        }
+        public static void SetNew(DependencyObject d, bool value) => d.SetValue(NewProperty, value);
     }
 }

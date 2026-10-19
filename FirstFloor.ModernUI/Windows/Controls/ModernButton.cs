@@ -4,18 +4,18 @@ using System.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernButton : Button {
-        public static readonly DependencyProperty EllipseDiameterProperty = DP.Register("EllipseDiameter", typeof(double), typeof(ModernButton),
+        public static readonly StyledProperty<double> EllipseDiameterProperty = DP.Register<double>("EllipseDiameter", typeof(ModernButton),
                 new PropertyMetadata(22D));
 
-        public static readonly DependencyProperty EllipseStrokeThicknessProperty = DP.Register("EllipseStrokeThickness", typeof(double),
+        public static readonly StyledProperty<double> EllipseStrokeThicknessProperty = DP.Register<double>("EllipseStrokeThickness",
                 typeof(ModernButton), new PropertyMetadata(1D));
 
-        public static readonly DependencyProperty IconDataProperty = DP.Register("IconData", typeof(Geometry), typeof(ModernButton));
+        public static readonly StyledProperty<Geometry> IconDataProperty = DP.Register<Geometry>("IconData", typeof(ModernButton));
 
-        public static readonly DependencyProperty IconHeightProperty = DP.Register("IconHeight", typeof(double), typeof(ModernButton),
+        public static readonly StyledProperty<double> IconHeightProperty = DP.Register<double>("IconHeight", typeof(ModernButton),
                 new PropertyMetadata(12D));
 
-        public static readonly DependencyProperty IconWidthProperty = DP.Register("IconWidth", typeof(double), typeof(ModernButton),
+        public static readonly StyledProperty<double> IconWidthProperty = DP.Register<double>("IconWidth", typeof(ModernButton),
                 new PropertyMetadata(12D));
 
         public double EllipseDiameter {

@@ -151,7 +151,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                         Source = Model.SuggestionsDynamic
                     });
                 }
-                listBox.SetBinding(SelectingItemsControl.SelectedItemProperty, new Binding {
+                listBox.SetBinding(Avalonia.Controls.Primitives.SelectingItemsControl.SelectedItemProperty, new Binding {
                     Source = DataContext,
                     Path = new PropertyPath(nameof(ViewModel.TextInList)),
                     Mode = BindingMode.TwoWay
@@ -178,7 +178,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                 passwordBox.Focus();
                 passwordBox.SelectAll();
             } else if (_element is BetterComboBox comboBox) {
-                if (comboBox.FindVisualChild<TextBox>() is TextBox textBox) {
+                if (Windows.Media.VisualTreeHelperEx.FindVisualChild<TextBox>(comboBox) is TextBox textBox) {
                     textBox.SelectAll();
                     textBox.Focus();
                 } else {

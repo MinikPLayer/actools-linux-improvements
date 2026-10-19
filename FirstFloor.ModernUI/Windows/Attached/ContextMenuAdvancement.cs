@@ -27,7 +27,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(AddCopyLinkItemProperty, value);
         }
 
-        public static readonly DependencyProperty AddCopyLinkItemProperty = DP.RegisterAttached("AddCopyLinkItem", typeof(bool),
+        public static readonly AttachedProperty<bool> AddCopyLinkItemProperty = DP.RegisterAttached<bool>("AddCopyLinkItem",
                 typeof(ContextMenuAdvancement), new UIPropertyMetadata(OnAddCopyLinkItemChanged));
 
         private static void OnAddCopyLinkItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -46,7 +46,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                     menu.Items.Remove(item);
                 }
 
-                if ((Mouse.DirectlyOver as Run)?.Parent is Hyperlink hyperlink && (hyperlink.Tag?.ToString()).IsWebUrl()) {
+                if (Mouse.DirectlyOver is Avalonia.Controls.Control hyperlink && (hyperlink.Tag?.ToString()).IsWebUrl()) {
                     menu.Items.Insert(0, new MenuItem {
                         Header = "Copy link",
                         Command = new DelegateCommand(() => ClipboardHelper.SetText(hyperlink.Tag?.ToString())),
@@ -67,7 +67,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(PropagateToChildrenProperty, value);
         }
 
-        public static readonly DependencyProperty PropagateToChildrenProperty = DP.RegisterAttached("PropagateToChildren", typeof(bool),
+        public static readonly AttachedProperty<bool> PropagateToChildrenProperty = DP.RegisterAttached<bool>("PropagateToChildren",
                 typeof(ContextMenuAdvancement), new UIPropertyMetadata(OnPropagateToChildrenChanged));
 
         private static void OnPropagateToChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

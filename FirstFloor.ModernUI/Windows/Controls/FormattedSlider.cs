@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             AutoToolTipPrecision = 10;
         }
 
-        public static readonly DependencyProperty AutoToolTipFormatProperty = DP.Register(nameof(AutoToolTipFormat), typeof(string),
+        public static readonly StyledProperty<string> AutoToolTipFormatProperty = DP.Register<string>(nameof(AutoToolTipFormat),
                 typeof(FormattedSlider), new PropertyMetadata(null, (o, e) => {
                     ((FormattedSlider)o)._autoToolTipFormat = (string)e.NewValue;
                 }));
@@ -26,7 +26,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AutoToolTipFormatProperty, value);
         }
 
-        public static readonly DependencyProperty AutoToolTipConverterProperty = DP.Register(nameof(AutoToolTipConverter), typeof(IValueConverter),
+        public static readonly StyledProperty<IValueConverter> AutoToolTipConverterProperty = DP.Register<IValueConverter>(nameof(AutoToolTipConverter),
                 typeof(FormattedSlider), new PropertyMetadata(null, (o, e) => {
                     ((FormattedSlider)o)._autoToolTipConverter = (IValueConverter)e.NewValue;
                 }));

@@ -69,7 +69,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             ActionExtension.InvokeInMainThreadAsync(() => {
                 DebugMessage($"{Id}: triggered");
                 
-                if (FancyHintAdorner.IsAnyShown) {
+                if (false) {
                     DebugMessage($"{Id}: something else is being shown right now");
                     return;
                 }

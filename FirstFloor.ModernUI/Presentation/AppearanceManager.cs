@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Presentation {
                 _idealFormattingMode = value;
 
                 if (value.HasValue) {
-                    Application.Current.Resources[KeyFormattingMode] = value.Value ? TextFormattingMode.Ideal : TextFormattingMode.Display;
+                    Application.Current.Resources[KeyFormattingMode] = value.Value ? "Ideal" : "Display";
                 } else {
                     Application.Current.Resources.Remove(KeyFormattingMode);
                 }
@@ -164,8 +164,8 @@ namespace FirstFloor.ModernUI.Presentation {
                 Application.Current.Resources[KeyAccentOverlay] = new SolidColorBrush(overlay);
 
                 if (CurrentThemeDictionary != null) {
-                    if (CurrentThemeDictionary.Source != null) {
-                        SetTheme(CurrentThemeDictionary.Source);
+                    if (((ResourceDictionary)CurrentThemeDictionary).Source != null) {
+                        SetTheme(((ResourceDictionary)CurrentThemeDictionary).Source);
                     } else {
                         ThemeObsolete?.Invoke(this, EventArgs.Empty);
                     }

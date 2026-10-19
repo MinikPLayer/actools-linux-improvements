@@ -1,5 +1,5 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
-  <ControlTheme x:Key="{x:Type RadioButton}" TargetType="RadioButton">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ControlTheme TargetType="RadioButton" x:Key="{x:Type RadioButton}">
     <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
     <Setter Property="Template">
       <Setter.Value>
@@ -14,14 +14,14 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #CheckMark"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
-            </Style><Style Selector="^:checked /template/ #CheckMark"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:pointerover /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+  <Style Selector="^ /template/ Ellipse#CheckMark"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:checked /template/ Ellipse#CheckMark"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^:pointerover /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
-              </Style><Style Selector="^:pointerover /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
-            </Style><Style Selector="^:pressed /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              </Style><Style Selector="^:pointerover /template/ Ellipse#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
-              </Style><Style Selector="^:pressed /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^:focus /template/ #CheckBorder"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+              </Style><Style Selector="^:pressed /template/ Ellipse#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ Border#CheckBorder"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></ControlTheme>
 </ResourceDictionary>

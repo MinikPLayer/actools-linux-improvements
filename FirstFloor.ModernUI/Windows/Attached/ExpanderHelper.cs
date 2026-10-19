@@ -10,7 +10,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(IsContentVisibleProperty, value);
         }
 
-        public static readonly DependencyProperty IsContentVisibleProperty = DP.RegisterAttached("IsContentVisible", typeof(bool),
+        public static readonly AttachedProperty<bool> IsContentVisibleProperty = DP.RegisterAttached<bool>("IsContentVisible",
                 typeof(ExpanderHelper), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
     }
 }

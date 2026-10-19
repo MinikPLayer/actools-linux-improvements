@@ -1,12 +1,12 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="Fonts.axaml"/>
     </ResourceDictionary.MergedDictionaries>
     
-    <ControlTheme x:Key="{x:Type Label}" TargetType="Label">
+    <ControlTheme TargetType="Label" x:Key="{x:Type Label}">
         <Setter Property="FontFamily" Value="{StaticResource CondensedFont}"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Control}}, Path=(TextElement.Foreground)}"/>
+        <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type TemplatedControl}}, Path=(TextElement.Foreground)}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>

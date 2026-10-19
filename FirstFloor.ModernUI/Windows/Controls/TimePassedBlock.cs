@@ -18,7 +18,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (_timer != null) return;
             _timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Background, (o, args) => {
                 Update();
-            }, Dispatcher);
+            });
+            _timer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e) {
@@ -27,7 +28,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _timer = null;
         }
 
-        public static readonly DependencyProperty FromProperty = DP.Register(nameof(From), typeof(DateTime),
+        public static readonly StyledProperty<DateTime> FromProperty = DP.Register<DateTime>(nameof(From),
                 typeof(TimePassedBlock), new PropertyMetadata(OnFromChanged));
 
         public DateTime From {
@@ -43,7 +44,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void OnFromChanged(DateTime newValue) {
             _dateTime = newValue;
-            ToolTip = newValue.ToString(CultureInfo.CurrentUICulture);
+            this.ToolTip = newValue.ToString(CultureInfo.CurrentUICulture);
             Update();
         }
 

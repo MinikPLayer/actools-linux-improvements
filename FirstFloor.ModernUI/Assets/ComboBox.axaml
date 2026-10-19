@@ -1,11 +1,11 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="ContextMenu.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <Geometry x:Key="DownArrowGeometry">M 0 0 L 3.5 4 L 7 0 Z</Geometry>
 
-  <ControlTheme x:Key="{x:Type ComboBoxItem}" TargetType="ComboBoxItem">
+  <ControlTheme TargetType="ComboBoxItem" x:Key="{x:Type ComboBoxItem}">
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Padding" Value="7 2 8 2"/>
@@ -24,7 +24,7 @@
         Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
     <Setter Property="VerticalContentAlignment"
         Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />-->
-    <Style Selector="^ /template/ #Bd"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^[IsHighlighted=True] /template/ #Bd"><Setter Property="Background" Value="{DynamicResource Accent}"/>
+    <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[IsHighlighted=True] /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource Accent}"/>
               </Style><Style Selector="^[IsHighlighted=True]"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
             </Style></ControlTheme>
@@ -34,7 +34,6 @@
 
     <Setter Property="CaretBrush" Value="{DynamicResource InputText}"/>
     <Setter Property="SelectionBrush" Value="{DynamicResource Accent}"/>
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="DragDrop.AllowDrop" Value="True"/>
     <Setter Property="MinWidth" Value="0"/>
     <Setter Property="MinHeight" Value="0"/>
@@ -51,9 +50,9 @@
     <Grid x:Name="MainGrid">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
-        <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+        <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
       </Grid.ColumnDefinitions>
-      <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+      <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
 
           <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
@@ -76,7 +75,7 @@
     </Grid>
     </ControlTemplate>
 
-  <ControlTheme x:Key="{x:Type ComboBox}" TargetType="ComboBox">
+  <ControlTheme TargetType="ComboBox" x:Key="{x:Type ComboBox}">
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
@@ -85,7 +84,6 @@
   <Setter Property="Foreground" Value="{DynamicResource InputText}"/>
     <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}"/>
-    <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel"/>
     <Setter Property="ItemsPanel">
       <Setter.Value>
         <ItemsPanelTemplate>
@@ -99,10 +97,10 @@
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
             </Grid.ColumnDefinitions>
-            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-              <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" TextBlock.Foreground="{DynamicResource WindowText}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
+            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+              <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}" TextElement.Foreground="{DynamicResource WindowText}">
                 <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
                   <!-- popup border thickness not dependent on BorderThickness property-->
                   <ScrollViewer x:Name="DropDownScrollViewer">
@@ -126,13 +124,13 @@
     <Style Selector="^:editable"><Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Padding" Value="3"/>
         <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
-      </Style><Style Selector="^[HasItems=False] /template/ #DropDownBorder"><Setter Property="Height" Value="95"/>
+      </Style><Style Selector="^[HasItems=False] /template/ Border#DropDownBorder"><Setter Property="Height" Value="95"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
               <Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
             </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^[(ScrollViewer.CanContentScroll)=False] /template/ #OpaqueRect"><Setter Property="Canvas.Top" Value="{Binding ElementName=DropDownScrollViewer, Path=VerticalOffset}"/>
+            </Style><Style Selector="^[(ScrollViewer.CanContentScroll)=False] /template/ Rectangle#OpaqueRect"><Setter Property="Canvas.Top" Value="{Binding ElementName=DropDownScrollViewer, Path=VerticalOffset}"/>
               <Setter Property="Canvas.Left" Value="{Binding ElementName=DropDownScrollViewer, Path=HorizontalOffset}"/>
             </Style></ControlTheme>
 

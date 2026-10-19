@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class VirtualizingColumnsPanel : VirtualizingPanel, IScrollInfo {
-        public static readonly DependencyProperty ColumnsProperty = DP.Register(nameof(Columns), typeof(int),
+        public static readonly StyledProperty<int> ColumnsProperty = DP.Register<int>(nameof(Columns),
                 typeof(VirtualizingColumnsPanel), new PropertyMetadata(2, (o, e) => {
                     var panel = (VirtualizingColumnsPanel)o;
                     panel._columns = (int)e.NewValue;
@@ -22,7 +22,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ColumnsProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightModifierProperty = DP.Register(nameof(ItemHeightModifier), typeof(double),
+        public static readonly StyledProperty<double> ItemHeightModifierProperty = DP.Register<double>(nameof(ItemHeightModifier),
                 typeof(VirtualizingColumnsPanel), new PropertyMetadata(0.8, (o, e) => {
                     var panel = (VirtualizingColumnsPanel)o;
                     panel._itemHeightModifier = (double)e.NewValue;

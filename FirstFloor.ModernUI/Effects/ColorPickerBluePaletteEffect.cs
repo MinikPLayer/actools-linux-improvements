@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(BlueProperty);
         }
 
-        public static readonly DependencyProperty BlueProperty = DP.Register("Blue", typeof(double),
+        public static readonly StyledProperty<double> BlueProperty = DP.Register<double>("Blue",
                 typeof(ColorPickerBluePaletteEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), CoerceSaturationFactor));
 
         public double Blue {

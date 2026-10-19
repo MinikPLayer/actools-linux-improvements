@@ -4,7 +4,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(True))]
     public class BooleanSwitch : BaseSwitch {
-        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(bool),
+        public static readonly StyledProperty<bool> ValueProperty = DP.Register<bool>(nameof(Value),
                 typeof(BooleanSwitch), new PropertyMetadata(false, (o, e) => {
                     ((BooleanSwitch)o)._value = (bool)e.NewValue;
                     OnChildSelectingPropertyChanged(o, e);
@@ -17,7 +17,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty TrueProperty = DP.Register(nameof(True), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> TrueProperty = DP.Register<UIElement>(nameof(True),
                 typeof(BooleanSwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanSwitch)o)._true = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -30,7 +30,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TrueProperty, value);
         }
 
-        public static readonly DependencyProperty FalseProperty = DP.Register(nameof(False), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> FalseProperty = DP.Register<UIElement>(nameof(False),
                 typeof(BooleanSwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanSwitch)o)._false = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -54,7 +54,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return value ? _true : _false;
         }
 
-        public static readonly DependencyProperty CollapseOnFalseProperty = DP.Register(nameof(CollapseOnFalse), typeof(bool),
+        public static readonly StyledProperty<bool> CollapseOnFalseProperty = DP.Register<bool>(nameof(CollapseOnFalse),
                 typeof(BooleanSwitch), new PropertyMetadata(false, (o, e) => {
                     var b = (BooleanSwitch)o;
                     b._collapseOnFalse = (bool)e.NewValue;

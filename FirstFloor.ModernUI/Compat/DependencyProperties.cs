@@ -134,6 +134,14 @@ namespace System.Windows {
         private static readonly MethodInfo RegisterAttachedMethod = typeof(DP).GetMethod(nameof(RegisterAttachedCore), BindingFlags.NonPublic | BindingFlags.Static);
         private static readonly MethodInfo AddOwnerMethod = typeof(DP).GetMethod(nameof(AddOwnerCore), BindingFlags.NonPublic | BindingFlags.Static);
 
+        public static StyledProperty<T> Register<T>(string name, Type ownerType, PropertyMetadata metadata = null, ValidateValueCallback validate = null) {
+            return (StyledProperty<T>)Register(name, typeof(T), ownerType, metadata, validate);
+        }
+
+        public static AttachedProperty<T> RegisterAttached<T>(string name, Type ownerType, PropertyMetadata metadata = null, ValidateValueCallback validate = null) {
+            return (AttachedProperty<T>)RegisterAttached(name, typeof(T), ownerType, metadata, validate);
+        }
+
         public static DependencyProperty Register(string name, Type propertyType, Type ownerType) {
             return Register(name, propertyType, ownerType, null);
         }
@@ -316,5 +324,12 @@ namespace System.Windows {
         public static Type GetPropertyType(this DependencyProperty property) {
             return property.PropertyType;
         }
+    }
+}
+
+namespace System.Windows {
+    using Avalonia;
+
+    public static class DPTyped {
     }
 }

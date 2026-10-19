@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
   <Geometry x:Key="RightArrow">M 0,0 L 4,3.5 L 0,7 Z</Geometry>
   <Geometry x:Key="Checkmark">M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z</Geometry>
@@ -27,11 +27,11 @@
           <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
           <ColumnDefinition Width="17"/>
         </Grid.ColumnDefinitions>
-        <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center" ContentSource="Icon"/>
+        <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center"/>
         <Border Grid.Column="0" x:Name="GlyphPanel" IsVisible="False">
           <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
         </Border>
-        <ContentPresenter Grid.Column="2" ContentSource="Header" Margin="0,2,8,2" RecognizesAccessKey="True"/>
+        <ContentPresenter Grid.Column="2" Margin="0,2,8,2" RecognizesAccessKey="True"/>
         <TextBlock Grid.Column="4" Text="{TemplateBinding MenuItem.InputGestureText}" Margin="0,2"/>
       </Grid>
     </c:Cell>
@@ -49,17 +49,17 @@
           <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
           <ColumnDefinition Width="17"/>
         </Grid.ColumnDefinitions>
-        <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center" ContentSource="Icon"/>
+        <ContentPresenter x:Name="Icon" Margin="1" VerticalAlignment="Center"/>
         <Border Grid.Column="0" x:Name="GlyphPanel" IsVisible="False">
           <Path x:Name="Glyph" Width="10" Height="10" Stretch="Fill" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" FlowDirection="LeftToRight" Data="{StaticResource Checkmark}"/>
         </Border>
-        <ContentPresenter Grid.Column="2" ContentSource="Header" Margin="0 2 8 2" RecognizesAccessKey="True"/>
+        <ContentPresenter Grid.Column="2" Margin="0 2 8 2" RecognizesAccessKey="True"/>
         <Path x:Name="RightArrow" Grid.Column="5" VerticalAlignment="Center" Margin="4 0 0 0" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" Data="{StaticResource RightArrow}"/>
       </Grid>
-      <!-- PORT: SystemParameters not available: SystemParameters.MenuPopupAnimationKey --><Popup x:Name="PART_Popup" Placement="Right" VerticalOffset="-3" HorizontalOffset="-2" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+      <Popup x:Name="PART_Popup" Placement="Right" VerticalOffset="-3" HorizontalOffset="-2" Focusable="False" IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" Background="{DynamicResource PopupBackground}">
           <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
-            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="True" Foreground="{DynamicResource ItemText}">
+            <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
               <Grid>
                 <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
               </Grid>
@@ -70,7 +70,7 @@
     </c:Cell>
     </ControlTemplate>
 
-  <ControlTheme x:Key="{x:Type MenuItem}" TargetType="MenuItem">
+  <ControlTheme TargetType="MenuItem" x:Key="{x:Type MenuItem}">
     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>

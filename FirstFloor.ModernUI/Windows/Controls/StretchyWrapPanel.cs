@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class StretchyWrapPanel : Panel {
-        public static readonly DependencyProperty ItemWidthProperty = DP.Register(nameof(ItemWidth), typeof(double),
+        public static readonly StyledProperty<double> ItemWidthProperty = DP.Register<double>(nameof(ItemWidth),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._itemWidth = (double)e.NewValue;
                 }));
@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ItemWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightProperty = DP.Register(nameof(ItemHeight), typeof(double),
+        public static readonly StyledProperty<double> ItemHeightProperty = DP.Register<double>(nameof(ItemHeight),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._itemHeight = (double)e.NewValue;
                 }));
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ItemHeightProperty, value);
         }
 
-        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly StyledProperty<Orientation> OrientationProperty = DP.Register<Orientation>(nameof(Orientation),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._orientation = (Orientation)e.NewValue;
                 }));
@@ -44,7 +44,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty StretchToFillProperty = DP.Register(nameof(StretchToFill), typeof(bool),
+        public static readonly StyledProperty<bool> StretchToFillProperty = DP.Register<bool>(nameof(StretchToFill),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._stretchToFill = (bool)e.NewValue;
                 }));
@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchToFillProperty, value);
         }
 
-        public static readonly DependencyProperty StretchProportionallyProperty = DP.Register(nameof(StretchProportionally), typeof(bool),
+        public static readonly StyledProperty<bool> StretchProportionallyProperty = DP.Register<bool>(nameof(StretchProportionally),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._stretchProportionally = (bool)e.NewValue;
                 }));
@@ -68,7 +68,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchProportionallyProperty, value);
         }
 
-        public static readonly DependencyProperty RearrangeForBestFitProperty = DP.Register(nameof(RearrangeForBestFit), typeof(bool),
+        public static readonly StyledProperty<bool> RearrangeForBestFitProperty = DP.Register<bool>(nameof(RearrangeForBestFit),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._rearrangeForBestFit = (bool)e.NewValue;
                 }));
@@ -80,7 +80,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RearrangeForBestFitProperty, value);
         }
 
-        public static readonly DependencyProperty LineSpaceProperty = DP.Register(nameof(LineSpace), typeof(double),
+        public static readonly StyledProperty<double> LineSpaceProperty = DP.Register<double>(nameof(LineSpace),
                 typeof(StretchyWrapPanel), new PropertyMetadata(0d, (o, e) => {
                     ((StretchyWrapPanel)o)._lineSpace = (double)e.NewValue;
                 }));

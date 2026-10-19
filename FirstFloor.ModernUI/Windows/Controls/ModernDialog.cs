@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// Represents a Modern UI styled dialog window.
     /// </summary>
     public class ModernDialog : DpiAwareWindow {
-        public static readonly DependencyProperty ShowTopBlobProperty = DP.Register(nameof(ShowTopBlob), typeof(bool),
+        public static readonly StyledProperty<bool> ShowTopBlobProperty = DP.Register<bool>(nameof(ShowTopBlob),
                 typeof(ModernDialog), new PropertyMetadata(true));
 
         public bool ShowTopBlob {
@@ -27,13 +27,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// Identifies the BackgroundContent dependency property.
         /// </summary>
-        public static readonly DependencyProperty BackgroundContentProperty = DP.Register("BackgroundContent", typeof(object),
+        public static readonly StyledProperty<object> BackgroundContentProperty = DP.Register<object>("BackgroundContent",
                 typeof(ModernDialog));
 
         /// <summary>
         /// Identifies the Buttons dependency property.
         /// </summary>
-        public static readonly DependencyProperty ButtonsProperty = DP.Register("Buttons", typeof(IEnumerable<Control>), typeof(ModernDialog));
+        public static readonly StyledProperty<IEnumerable<Control>> ButtonsProperty = DP.Register<IEnumerable<Control>>("Buttons", typeof(ModernDialog));
 
         private Button _okButton;
         private Button _goButton;
@@ -46,7 +46,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Initializes a new instance of the <see cref="ModernDialog"/> class.
         /// </summary>
         public ModernDialog() {
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            WindowStartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner;
 
             CloseCommand = new DelegateCommand<MessageBoxResult?>(CloseWithResult);
             Buttons = new Control[] { CloseButton };
@@ -262,7 +262,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return ShowMessage(text, "", MessageBoxButton.OK);
         }
 
-        public static readonly DependencyProperty IconSourceProperty = DP.Register(nameof(IconSource), typeof(string),
+        public static readonly StyledProperty<string> IconSourceProperty = DP.Register<string>(nameof(IconSource),
                 typeof(ModernDialog));
 
         public string IconSource {
@@ -270,15 +270,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IconSourceProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsRowContentAlignmentProperty = DP.Register(nameof(ButtonsRowContentAlignment),
-                typeof(HorizontalAlignment), typeof(ModernDialog));
+        public static readonly StyledProperty<HorizontalAlignment> ButtonsRowContentAlignmentProperty = DP.Register<HorizontalAlignment>(nameof(ButtonsRowContentAlignment), typeof(ModernDialog));
 
         public HorizontalAlignment ButtonsRowContentAlignment {
             get => GetValue(ButtonsRowContentAlignmentProperty) as HorizontalAlignment? ?? default;
             set => SetValue(ButtonsRowContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty ExtraContentProperty = DP.Register(nameof(ExtraContent), typeof(object),
+        public static readonly StyledProperty<object> ExtraContentProperty = DP.Register<object>(nameof(ExtraContent),
                 typeof(ModernDialog));
 
         public object ExtraContent {
@@ -286,7 +285,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ExtraContentProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsRowContentProperty = DP.Register(nameof(ButtonsRowContent), typeof(object),
+        public static readonly StyledProperty<object> ButtonsRowContentProperty = DP.Register<object>(nameof(ButtonsRowContent),
                 typeof(ModernDialog));
 
         public object ButtonsRowContent {
@@ -294,7 +293,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonsRowContentProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsMarginProperty = DP.Register(nameof(ButtonsMargin), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> ButtonsMarginProperty = DP.Register<Thickness>(nameof(ButtonsMargin),
                 typeof(ModernDialog));
 
         public Thickness ButtonsMargin {
@@ -302,15 +301,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonsMarginProperty, value);
         }
 
-        public static readonly DependencyProperty MainButtonsPanelTemplateProperty = DP.Register(nameof(MainButtonsPanelTemplate),
-                typeof(ItemsPanelTemplate), typeof(ModernDialog));
+        public static readonly StyledProperty<ItemsPanelTemplate> MainButtonsPanelTemplateProperty = DP.Register<ItemsPanelTemplate>(nameof(MainButtonsPanelTemplate), typeof(ModernDialog));
 
         public ItemsPanelTemplate MainButtonsPanelTemplate {
             get => (ItemsPanelTemplate)GetValue(MainButtonsPanelTemplateProperty);
             set => SetValue(MainButtonsPanelTemplateProperty, value);
         }
 
-        public static readonly DependencyProperty ContentMarginProperty = DP.Register(nameof(ContentMargin), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> ContentMarginProperty = DP.Register<Thickness>(nameof(ContentMargin),
                 typeof(ModernDialog));
 
         public Thickness ContentMargin {
@@ -318,7 +316,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentMarginProperty, value);
         }
 
-        public static readonly DependencyProperty ShowTitleProperty = DP.Register(nameof(ShowTitle), typeof(bool),
+        public static readonly StyledProperty<bool> ShowTitleProperty = DP.Register<bool>(nameof(ShowTitle),
                 typeof(ModernDialog), new PropertyMetadata(true));
 
         public bool ShowTitle {
@@ -334,7 +332,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ButtonBehaviorProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonBehaviorProperty = DP.RegisterAttached("ButtonBehavior", typeof(MessageBoxResult?),
+        public static readonly AttachedProperty<MessageBoxResult?> ButtonBehaviorProperty = DP.RegisterAttached<MessageBoxResult?>("ButtonBehavior",
                 typeof(FatalErrorMessage), new UIPropertyMetadata(null, OnButtonBehaviorChanged));
 
         private static void OnButtonBehaviorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -370,14 +368,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _offsetX = offsetX;
             _offsetY = offsetY;
 
-            var style = new Style(typeof(FrameworkElement));
-            var bottomMargin = -40 - _offsetY;
-            style.Setters.Add(new Setter(MarginProperty, new Thickness(0d, 0d, _offsetX, bottomMargin)));
-            style.Setters.Add(new Setter(HeightProperty, _offsetY));
-            style.Setters.Add(new Setter(HorizontalAlignmentProperty, HorizontalAlignment.Right));
-            style.Seal();
-
-            Resources[@"BottomRow"] = style;
+            // the style isn’t used by the theme anymore
         }
 
         protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {

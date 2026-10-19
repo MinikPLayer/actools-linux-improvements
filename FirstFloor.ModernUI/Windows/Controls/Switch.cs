@@ -5,7 +5,7 @@ using FirstFloor.ModernUI.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class Switch : ListSwitch {
-        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(object),
+        public static readonly StyledProperty<object> ValueProperty = DP.Register<object>(nameof(Value),
                 typeof(Switch), new PropertyMetadata(null, (o, e) => {
                     ((Switch)o)._value = e.NewValue;
                     OnChildSelectingPropertyChanged(o, e);
@@ -26,7 +26,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(WhenProperty, value);
         }
 
-        public static readonly DependencyProperty WhenProperty = DP.RegisterAttached("When", typeof(object),
+        public static readonly AttachedProperty<object> WhenProperty = DP.RegisterAttached<object>("When",
                 typeof(Switch), new FrameworkPropertyMetadata(null, OnWhenChanged));
 
         protected static void OnWhenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

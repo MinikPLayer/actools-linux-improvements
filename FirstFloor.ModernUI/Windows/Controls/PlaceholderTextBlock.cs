@@ -9,7 +9,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// Text block which displays a dimmed placeholder when text is empty.
     /// </summary>
     public class PlaceholderTextBlock : TextBlock {
-        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
+        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder),
                 typeof(PlaceholderTextBlock), new PropertyMetadata(OnPlaceholderChanged));
 
         public string Placeholder {
@@ -44,7 +44,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static Inline GetPlaceholder(Control target, string text) {
+        public static Inline GetPlaceholder(Avalonia.Controls.Control target, string text) {
             var inline = new Run { Text = text };
             inline.Bind(TextElement.ForegroundProperty, new Avalonia.Data.Binding {
                 Path = nameof(Foreground),

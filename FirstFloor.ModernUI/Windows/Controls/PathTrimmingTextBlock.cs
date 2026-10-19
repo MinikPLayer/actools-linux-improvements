@@ -96,7 +96,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
+        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder),
                 typeof(PathTrimmingTextBlock), new PropertyMetadata(OnPlaceholderChanged));
 
         public string Placeholder {
@@ -108,7 +108,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((PathTrimmingTextBlock)o).Update();
         }
 
-        public static readonly DependencyProperty TextProperty = DP.Register(nameof(Text), typeof(string),
+        public static readonly StyledProperty<string> TextProperty = DP.Register<string>(nameof(Text),
                 typeof(PathTrimmingTextBlock), new PropertyMetadata(OnTextChanged));
 
         private string _text;

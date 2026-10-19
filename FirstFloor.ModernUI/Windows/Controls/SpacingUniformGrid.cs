@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class SpacingUniformGrid : Panel {
-        public static readonly DependencyProperty FirstColumnProperty = DP.Register(nameof(FirstColumn), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly StyledProperty<int> FirstColumnProperty = DP.Register<int>(nameof(FirstColumn), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int FirstColumn {
@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FirstColumnProperty, value);
         }
 
-        public static readonly DependencyProperty ColumnsProperty = DP.Register(nameof(Columns), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly StyledProperty<int> ColumnsProperty = DP.Register<int>(nameof(Columns), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int Columns {
@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ColumnsProperty, value);
         }
 
-        public static readonly DependencyProperty RowsProperty = DP.Register(nameof(Rows), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly StyledProperty<int> RowsProperty = DP.Register<int>(nameof(Rows), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int Rows {
@@ -29,7 +29,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RowsProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalSpacingProperty = DP.Register(nameof(HorizontalSpacing), typeof(double),
+        public static readonly StyledProperty<double> HorizontalSpacingProperty = DP.Register<double>(nameof(HorizontalSpacing),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double HorizontalSpacing {
@@ -37,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HorizontalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalSpacingProperty = DP.Register(nameof(VerticalSpacing), typeof(double),
+        public static readonly StyledProperty<double> VerticalSpacingProperty = DP.Register<double>(nameof(VerticalSpacing),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double VerticalSpacing {
@@ -45,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(VerticalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalStackModeProperty = DP.Register(nameof(VerticalStackMode), typeof(bool),
+        public static readonly StyledProperty<bool> VerticalStackModeProperty = DP.Register<bool>(nameof(VerticalStackMode),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public bool VerticalStackMode {
@@ -53,7 +53,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(VerticalStackModeProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalStackModeProperty = DP.Register(nameof(HorizontalStackMode), typeof(bool),
+        public static readonly StyledProperty<bool> HorizontalStackModeProperty = DP.Register<bool>(nameof(HorizontalStackMode),
                 typeof(SpacingUniformGrid));
 
         public bool HorizontalStackMode {

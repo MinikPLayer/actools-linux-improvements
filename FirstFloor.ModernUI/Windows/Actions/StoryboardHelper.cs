@@ -12,7 +12,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringProperty = DP.RegisterAttached("ContinuousFiring", typeof(bool),
+        public static readonly AttachedProperty<bool> ContinuousFiringProperty = DP.RegisterAttached<bool>("ContinuousFiring",
                 typeof(StoryboardHelper), new UIPropertyMetadata(OnContinuousFiringChanged));
 
         private static async void OnContinuousFiringChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -39,7 +39,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringActiveProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringActiveProperty = DP.RegisterAttached("ContinuousFiringActive", typeof(bool),
+        public static readonly AttachedProperty<bool> ContinuousFiringActiveProperty = DP.RegisterAttached<bool>("ContinuousFiringActive",
                 typeof(StoryboardHelper));
 
         public static TimeSpan GetContinuousFiringInterval(DependencyObject obj) {
@@ -50,7 +50,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringIntervalProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringIntervalProperty = DP.RegisterAttached("ContinuousFiringInterval", typeof(TimeSpan),
+        public static readonly AttachedProperty<TimeSpan> ContinuousFiringIntervalProperty = DP.RegisterAttached<TimeSpan>("ContinuousFiringInterval",
                 typeof(StoryboardHelper));
 
         public static bool GetContinuousFired(DependencyObject obj) {
@@ -61,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiredProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiredProperty = DP.RegisterAttached("ContinuousFired", typeof(bool),
+        public static readonly AttachedProperty<bool> ContinuousFiredProperty = DP.RegisterAttached<bool>("ContinuousFired",
                 typeof(StoryboardHelper));
     }
 }

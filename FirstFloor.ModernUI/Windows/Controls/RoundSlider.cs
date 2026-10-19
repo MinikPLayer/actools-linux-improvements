@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         static RoundSlider() {
         }
 
-        public static readonly DependencyProperty IsThumbDraggingProperty = DP.Register(nameof(IsThumbDragging), typeof(bool),
+        public static readonly StyledProperty<bool> IsThumbDraggingProperty = DP.Register<bool>(nameof(IsThumbDragging),
                 typeof(RoundSlider));
 
         public bool IsThumbDragging {
@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IsThumbDraggingProperty, value);
         }
 
-        public static readonly DependencyProperty TickBrushProperty = DP.Register(nameof(TickBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> TickBrushProperty = DP.Register<Brush>(nameof(TickBrush),
                 typeof(RoundSlider));
 
         public Brush TickBrush {
@@ -29,7 +29,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickBrushProperty, value);
         }
 
-        public static readonly DependencyProperty TickThicknessProperty = DP.Register(nameof(TickThickness), typeof(double),
+        public static readonly StyledProperty<double> TickThicknessProperty = DP.Register<double>(nameof(TickThickness),
                 typeof(RoundSlider));
 
         public double TickThickness {
@@ -37,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickThicknessProperty, value);
         }
 
-        public static readonly DependencyProperty TickLengthProperty = DP.Register(nameof(TickLength), typeof(double),
+        public static readonly StyledProperty<double> TickLengthProperty = DP.Register<double>(nameof(TickLength),
                 typeof(RoundSlider));
 
         public double TickLength {
@@ -45,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickLengthProperty, value);
         }
 
-        public static readonly DependencyProperty TickOffsetProperty = DP.Register(nameof(TickOffset), typeof(double),
+        public static readonly StyledProperty<double> TickOffsetProperty = DP.Register<double>(nameof(TickOffset),
                 typeof(RoundSlider));
 
         public double TickOffset {
@@ -53,7 +53,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickOffsetProperty, value);
         }
 
-        public static readonly DependencyProperty ContentProperty = DP.Register(nameof(Content), typeof(object),
+        public static readonly StyledProperty<object> ContentProperty = DP.Register<object>(nameof(Content),
                 typeof(RoundSlider));
 
         public object Content {
@@ -61,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentProperty, value);
         }
 
-        public static readonly DependencyProperty ContentWidthProperty = DP.Register(nameof(ContentWidth), typeof(double),
+        public static readonly StyledProperty<double> ContentWidthProperty = DP.Register<double>(nameof(ContentWidth),
                 typeof(RoundSlider));
 
         public double ContentWidth {
@@ -69,7 +69,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ContentHeightProperty = DP.Register(nameof(ContentHeight), typeof(double),
+        public static readonly StyledProperty<double> ContentHeightProperty = DP.Register<double>(nameof(ContentHeight),
                 typeof(RoundSlider));
 
         public double ContentHeight {

@@ -1,5 +1,5 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="clr-namespace:FirstFloor.ModernUI">
-  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/Marks.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="TextBlock.LimitedMarkStyle">
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Marks.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="TextBlock.LimitedMarkStyle">
     <Setter Property="FontFamily" Value="{StaticResource CondensedFont}"/>
     <Setter Property="FontWeight" Value="Bold"/>
     <Setter Property="TextWrapping" Value="NoWrap"/>

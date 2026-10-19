@@ -34,13 +34,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }));
 
-        public static readonly DependencyProperty ItemsSourceProperty = DP.Register("ItemsSource", typeof(ObservableCollection<string>),
+        public static readonly StyledProperty<ObservableCollection<string>> ItemsSourceProperty = DP.Register<ObservableCollection<string>>("ItemsSource",
             typeof(TagsList));
 
-        public static readonly DependencyProperty SuggestionsSourceProperty = DP.Register("SuggestionsSource", typeof(CollectionView),
+        public static readonly StyledProperty<CollectionView> SuggestionsSourceProperty = DP.Register<CollectionView>("SuggestionsSource",
             typeof(TagsList));
 
-        public static readonly DependencyProperty ItemContextMenuProperty = DP.Register(nameof(ItemContextMenu), typeof(ContextMenu),
+        public static readonly StyledProperty<ContextMenu> ItemContextMenuProperty = DP.Register<ContextMenu>(nameof(ItemContextMenu),
                 typeof(TagsList));
 
         public ContextMenu ItemContextMenu {
@@ -135,7 +135,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = DP.Register(nameof(IsReadOnly), typeof(bool),
+        public static readonly StyledProperty<bool> IsReadOnlyProperty = DP.Register<bool>(nameof(IsReadOnly),
                 typeof(TagsList));
 
         public bool IsReadOnly {

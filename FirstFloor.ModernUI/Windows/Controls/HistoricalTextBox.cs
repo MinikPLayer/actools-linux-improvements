@@ -36,7 +36,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             Update();
         }
 
-        public static readonly DependencyProperty DefaultItemsProperty = DP.Register(nameof(DefaultItems), typeof(ObservableCollection<string>),
+        public static readonly StyledProperty<ObservableCollection<string>> DefaultItemsProperty = DP.Register<ObservableCollection<string>>(nameof(DefaultItems),
                 typeof(HistoricalTextBox), new PropertyMetadata(OnDefaultItemsChanged));
 
         public ObservableCollection<string> DefaultItems {
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
+        public static readonly StyledProperty<string> SaveKeyProperty = DP.Register<string>(nameof(SaveKey),
                 typeof(HistoricalTextBox), new PropertyMetadata(null, OnSaveKeyChanged));
 
         public string SaveKey {
@@ -153,7 +153,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _dirty = false;
         }
 
-        public static readonly DependencyProperty MaxSizeProperty = DP.Register(nameof(MaxSize), typeof(int),
+        public static readonly StyledProperty<int> MaxSizeProperty = DP.Register<int>(nameof(MaxSize),
                 typeof(HistoricalTextBox), new PropertyMetadata(10, OnMaxSizeChanged));
 
         public int MaxSize {

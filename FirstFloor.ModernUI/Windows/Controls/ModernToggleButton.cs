@@ -7,7 +7,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             InputElement.PointerPressedEvent.AddClassHandler<ModernToggleButton>((x, e) => { if (e is PointerEventArgs p && p.IsButton(MouseButton.Right)) x.OnPreviewMouseRightButtonDown(p); }, Avalonia.Interactivity.RoutingStrategies.Tunnel);
         }
 
-        public static readonly DependencyProperty IsCheckedProperty = DP.Register(nameof(IsChecked), typeof(bool),
+        public static readonly StyledProperty<bool> IsCheckedProperty = DP.Register<bool>(nameof(IsChecked),
                 typeof(ModernToggleButton), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public bool IsChecked {
@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             IsChecked = !IsChecked;
         }
 
-        public static readonly DependencyProperty MoreCommandProperty = DP.Register(nameof(MoreCommand), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> MoreCommandProperty = DP.Register<ICommand>(nameof(MoreCommand),
             typeof(ModernToggleButton));
 
         public ICommand MoreCommand {

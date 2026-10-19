@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
     <ControlTheme TargetType="c:TransitioningContentControl" x:Key="{x:Type c:TransitioningContentControl}">
         <Setter Property="IsTabStop" Value="True"/>
@@ -9,103 +9,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="c:TransitioningContentControl">
                     <c:Cell Background="{TemplateBinding Background}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="PresentationStates">
-                                <VisualState x:Name="DefaultTransition">
-                                    <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-
-                                <VisualState x:Name="Normal">
-                                    <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.Visibility)">
-                                            <DiscreteObjectKeyFrame KeyTime="00:00:00">
-                                                <DiscreteObjectKeyFrame.Value>
-                                                    <Visibility>Collapsed</Visibility>
-                                                </DiscreteObjectKeyFrame.Value>
-                                            </DiscreteObjectKeyFrame>
-                                        </ObjectAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-
-                                <VisualState x:Name="UpTransition">
-                                    <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="30"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="-30"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-
-                                <VisualState x:Name="DownTransition">
-                                    <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="1"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="-40"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.300" Value="40"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-
-                                <VisualState x:Name="ModernUITransition">
-                                    <Storyboard>
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.400" Value="1"/>
-                                        </DoubleAnimationUsingKeyFrames>
-
-                                        <DoubleAnimation BeginTime="00:00:00" Duration="00:00:00.500" Storyboard.TargetName="CurrentWrapper" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" From="-50" To="0">
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-
-                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PreviousWrapper" Storyboard.TargetProperty="(UIElement.Opacity)">
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
-                                            <SplineDoubleKeyFrame KeyTime="00:00:00.100" Value="0"/>
-                                        </DoubleAnimationUsingKeyFrames>
-                                    </Storyboard>
-                                </VisualState>
-
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                        <!-- PORT: removed VisualStateManager.VisualStateGroups -->
                         
                         <Border x:Name="PreviousWrapper" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <Border.RenderTransform>

@@ -14,7 +14,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ProperMultiSelectionModeProperty, value);
         }
 
-        public static readonly DependencyProperty ProperMultiSelectionModeProperty = DP.RegisterAttached("ProperMultiSelectionMode", typeof(bool),
+        public static readonly AttachedProperty<bool> ProperMultiSelectionModeProperty = DP.RegisterAttached<bool>("ProperMultiSelectionMode",
                 typeof(ListBoxHelper), new UIPropertyMetadata(OnProperMultiSelectionModeChanged));
 
         private static void OnProperMultiSelectionModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

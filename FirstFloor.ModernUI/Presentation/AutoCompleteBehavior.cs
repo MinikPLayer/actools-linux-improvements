@@ -13,14 +13,12 @@ namespace FirstFloor.ModernUI.Presentation {
         /// <summary>
         /// The collection to search for matches from.
         /// </summary>
-        public static readonly DependencyProperty AutoCompleteItemsSource = DP.RegisterAttached(nameof(AutoCompleteItemsSource),
-                typeof(IEnumerable<string>), typeof(AutoCompleteBehavior), new UIPropertyMetadata(null, OnAutoCompleteItemsSource));
+        public static readonly AttachedProperty<IEnumerable<string>> AutoCompleteItemsSource = DP.RegisterAttached<IEnumerable<string>>(nameof(AutoCompleteItemsSource), typeof(AutoCompleteBehavior), new UIPropertyMetadata(null, OnAutoCompleteItemsSource));
 
         /// <summary>
         /// Whether or not to ignore case when searching for matches.
         /// </summary>
-        public static readonly DependencyProperty AutoCompleteStringComparison = DP.RegisterAttached(nameof(AutoCompleteStringComparison),
-                typeof(StringComparison), typeof(AutoCompleteBehavior), new UIPropertyMetadata(StringComparison.Ordinal));
+        public static readonly AttachedProperty<StringComparison> AutoCompleteStringComparison = DP.RegisterAttached<StringComparison>(nameof(AutoCompleteStringComparison), typeof(AutoCompleteBehavior), new UIPropertyMetadata(StringComparison.Ordinal));
 
         #region Items Source
         public static IEnumerable<string> GetAutoCompleteItemsSource(DependencyObject obj) {

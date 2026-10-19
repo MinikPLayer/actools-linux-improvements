@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
@@ -37,11 +37,11 @@
           <Border Background="Transparent">
             <ItemsControl>
               <ItemsControl.Resources>
-                <CollectionViewSource x:Key="TagsCollection" Source="{Binding ItemsSource, RelativeSource={RelativeSource TemplatedParent}}"/>
+                <!-- PORT: removed CollectionViewSource -->
               </ItemsControl.Resources>
               <ItemsControl.ItemsSource>
                 <CompositeCollection>
-                  <CollectionContainer Collection="{Binding Source={StaticResource TagsCollection}}"/>
+                  <!-- PORT: removed CollectionContainer -->
                   <Border BorderThickness="1" BorderBrush="{DynamicResource ButtonBorder}" Background="{DynamicResource ButtonBackground}" Margin="0 0 0 4" Padding="2">
                     <c:BetterComboBox x:Name="PART_NewTagTextBox" MinWidth="100" ItemsSource="{Binding SuggestionsSource, RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Center" Theme="{StaticResource BetterComboBox.Borderless}"/>
                   </Border>

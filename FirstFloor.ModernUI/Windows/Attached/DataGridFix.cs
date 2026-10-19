@@ -11,7 +11,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(EnabledProperty, value);
         }
 
-        public static readonly DependencyProperty EnabledProperty = DP.RegisterAttached("Enabled", typeof(bool),
+        public static readonly AttachedProperty<bool> EnabledProperty = DP.RegisterAttached<bool>("Enabled",
                 typeof(DataGridFix), new UIPropertyMetadata(OnEnabledChanged));
 
         private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -28,7 +28,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
 
         private static void OnDataGridLoaded(object sender, RoutedEventArgs routedEventArgs) {
             var grid = (DataGrid)sender;
-            grid.CommitEdit(DataGridEditingUnit.Row, true);
+            grid.CommitEdit(Avalonia.Controls.DataGridEditingUnit.Row, true);
         }
     }
 }

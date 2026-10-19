@@ -10,7 +10,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(String1Property, value);
         }
 
-        public static readonly DependencyProperty String1Property = DP.RegisterAttached("String1", typeof(object),
+        public static readonly AttachedProperty<object> String1Property = DP.RegisterAttached<object>("String1",
                 typeof(DataTemplateArgument), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         public static object GetFlag1(DependencyObject obj) {
@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(Flag1Property, value);
         }
 
-        public static readonly DependencyProperty Flag1Property = DP.RegisterAttached("Flag1", typeof(bool),
+        public static readonly AttachedProperty<bool> Flag1Property = DP.RegisterAttached<bool>("Flag1",
                 typeof(DataTemplateArgument), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
     }
 }

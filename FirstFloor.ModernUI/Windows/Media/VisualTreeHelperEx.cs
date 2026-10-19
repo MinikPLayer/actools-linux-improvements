@@ -22,7 +22,7 @@ namespace FirstFloor.ModernUI.Windows.Media {
         }
 
         [Pure]
-        public static bool IsUserVisible(this Control element, Control container) {
+        public static bool IsUserVisible(this Avalonia.Controls.Control element, Avalonia.Controls.Control container) {
             if (element.IsVisible != true) return false;
             var topLeft = element.TranslatePoint(new Point(0.0, 0.0), container);
             if (topLeft == null) return false;

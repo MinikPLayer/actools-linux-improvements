@@ -1,21 +1,12 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme x:Key="HintMarkStyle" TargetType="attached:FancyHintControl">
-    <Setter Property="Margin" Value="-4000"/>
-    <Setter Property="IsHitTestVisible" Value="True"/>
-    <Setter Property="Background" Value="{DynamicResource FancyHintBackground}"/>
-    <Setter Property="Foreground" Value="{DynamicResource FancyHintText}"/>
-    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-    <Setter Property="VerticalContentAlignment" Value="Top"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="attached:FancyHintControl">
-          <ControlTemplate.Resources>
-            <ControlTheme TargetType="Button" x:Key="{x:Type Button}">
+    <ControlTheme.Resources>
+            <ResourceDictionary><ControlTheme TargetType="Button" x:Key="{x:Type Button}">
               <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -40,13 +31,22 @@
                 </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundPressed}"/>
                   <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorderPressed}"/>
                   <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextPressed}"/>
-                </Style><Style Selector="^[(ToggleButton.IsChecked)=True]"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundPressed}"/>
+                </Style><Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundPressed}"/>
                   <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorderPressed}"/>
                   <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextPressed}"/>
                 </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
                 </Style></ControlTheme>
-          </ControlTemplate.Resources>
+          </ResourceDictionary></ControlTheme.Resources>
 
+          <Setter Property="Margin" Value="-4000"/>
+    <Setter Property="IsHitTestVisible" Value="True"/>
+    <Setter Property="Background" Value="{DynamicResource FancyHintBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource FancyHintText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Top"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="attached:FancyHintControl">
           <controls:Cell x:Name="PART_Cell" Width="72" Height="72" attached:VisibilityAnimation.Visible="False" HorizontalAlignment="{TemplateBinding HorizontalPositionAlignment}" VerticalAlignment="{TemplateBinding VerticalPositionAlignment}">
             <Border Margin="-4000 -4000 72 -4000" Background="{TemplateBinding Background}"/>
             <Border Margin="72 -4000 -4000 -4000" Background="{TemplateBinding Background}"/>
@@ -81,11 +81,11 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^[HorizontalContentAlignment=Left][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="54 56 -720 -720"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Right][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 56 54 -720"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Center][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 56 -720 -720"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Left][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="54 -720 -720 56"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Right][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 -720 54 56"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Center][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 -720 -720 56"/>
-            </Style></ControlTheme>
+  <Style Selector="^[HorizontalContentAlignment=Left]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="54 56 -720 -720"/>
+            </Style></Style><Style Selector="^[HorizontalContentAlignment=Right]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 56 54 -720"/>
+            </Style></Style><Style Selector="^[HorizontalContentAlignment=Center]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 56 -720 -720"/>
+            </Style></Style><Style Selector="^[HorizontalContentAlignment=Left]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="54 -720 -720 56"/>
+            </Style></Style><Style Selector="^[HorizontalContentAlignment=Right]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 54 56"/>
+            </Style></Style><Style Selector="^[HorizontalContentAlignment=Center]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 -720 56"/>
+            </Style></Style></ControlTheme>
 </ResourceDictionary>

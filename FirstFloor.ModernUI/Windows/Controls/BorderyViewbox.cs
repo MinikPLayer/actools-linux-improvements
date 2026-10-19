@@ -9,16 +9,14 @@ using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class BorderyViewbox : Decorator {
-        public static readonly DependencyProperty StretchProperty = DP.Register(nameof(Stretch),
-                typeof(Stretch), typeof(BorderyViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly StyledProperty<Stretch> StretchProperty = DP.Register<Stretch>(nameof(Stretch), typeof(BorderyViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public Stretch Stretch {
             get => GetValue(StretchProperty) as Stretch? ?? default;
             set => SetValue(StretchProperty, value);
         }
 
-        public static readonly DependencyProperty StretchDirectionProperty = DP.Register(nameof(StretchDirection),
-                typeof(StretchDirection), typeof(BorderyViewbox), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly StyledProperty<StretchDirection> StretchDirectionProperty = DP.Register<StretchDirection>(nameof(StretchDirection), typeof(BorderyViewbox), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public StretchDirection StretchDirection {
             get => GetValue(StretchDirectionProperty) as StretchDirection? ?? default;

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="ContextMenu.axaml"/>
     <ResourceInclude Source="Converters.axaml"/>
@@ -11,7 +11,7 @@
     <StackPanel>
       <Border BorderThickness="1" BorderBrush="#FFDC000C" VerticalAlignment="Top" Margin="-2" Padding="2">
         <controls:Cell>
-          <AdornedElementPlaceholder x:Name="PART_Adorner" Margin="-1"/>
+          <!-- PORT: removed AdornedElementPlaceholder -->
           <Path Data="{StaticResource AlertIconData}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FFDC000C" x:Name="ErrorIcon" Margin="4 0" Height="10" Width="10"/>
         </controls:Cell>
       </Border>
@@ -24,7 +24,7 @@
   <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate x:Key="ErrorTemplate.Borderless">
     <StackPanel>
       <controls:Cell>
-        <AdornedElementPlaceholder x:Name="PART_Adorner" Margin="2"/>
+        <!-- PORT: removed AdornedElementPlaceholder -->
         <Border BorderThickness="1" BorderBrush="#FFDC000C" IsHitTestVisible="False" Margin="-3"/>
         <Path Data="{StaticResource AlertIconData}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FFDC000C" x:Name="ErrorIcon" Margin="4 0" Height="10" Width="10"/>
       </controls:Cell>
@@ -37,7 +37,7 @@
   <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate x:Key="ErrorTemplate.Borderless.ExtraPadding">
     <StackPanel>
       <controls:Cell>
-        <AdornedElementPlaceholder x:Name="PART_Adorner" Margin="2"/>
+        <!-- PORT: removed AdornedElementPlaceholder -->
         <Border BorderThickness="1" BorderBrush="#FFDC000C" IsHitTestVisible="False" Margin="-3"/>
         <Path Data="{StaticResource AlertIconData}" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FFDC000C" x:Name="ErrorIcon" Margin="4 0 20 0" Height="10" Width="10"/>
       </controls:Cell>
@@ -47,7 +47,7 @@
     </StackPanel>
     </ControlTemplate>
 
-  <ControlTheme x:Key="{x:Type TextBoxBase}" TargetType="TextBox">
+  <ControlTheme TargetType="TextBox" x:Key="{x:Type TextBox}">
     <Setter Property="ContextMenu" Value="{StaticResource TextBoxContextMenu}"/>
     <Setter Property="CaretBrush" Value="{DynamicResource InputText}"/>
     <Setter Property="BorderThickness" Value="1"/>
@@ -69,10 +69,10 @@
       </Style><Style Selector="^:not(:disabled)"><Setter Property="Foreground" Value="{DynamicResource InputText}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^:readonly"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^[IsReadOnly=False]:not(:disabled):pointerover"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+            </Style><Style Selector="^[IsReadOnly=False]"><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
-            </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></Style></Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></ControlTheme>
 
   <!-- text-in-datagrid styles-->

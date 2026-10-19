@@ -20,7 +20,7 @@ namespace FirstFloor.ModernUI {
         }
 
         public static Task<T> InvokeInMainThreadAsync<T>(this Func<T> action) {
-            return GetDispatcher().InvokeAsync(action);
+            return GetDispatcher().InvokeAsync(action).GetTask();
         }
 
         public static T InvokeInMainThread<T>(this Func<T> action) {

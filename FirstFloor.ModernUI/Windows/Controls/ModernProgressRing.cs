@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// Identifies the IsActive property.
         /// </summary>
-        public static readonly DependencyProperty IsActiveProperty = DP.Register("IsActive", typeof(bool), typeof(ModernProgressRing),
+        public static readonly StyledProperty<bool> IsActiveProperty = DP.Register<bool>("IsActive", typeof(ModernProgressRing),
                 new PropertyMetadata(false, OnIsActiveChanged));
 
         /// <inheritdoc />
@@ -54,7 +54,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         #region For glowing
-        public static readonly DependencyProperty DensityMultiplierProperty = DP.Register(nameof(DensityMultiplier), typeof(double),
+        public static readonly StyledProperty<double> DensityMultiplierProperty = DP.Register<double>(nameof(DensityMultiplier),
                 typeof(ModernProgressRing), new FrameworkPropertyMetadata(1d));
 
         public double DensityMultiplier {

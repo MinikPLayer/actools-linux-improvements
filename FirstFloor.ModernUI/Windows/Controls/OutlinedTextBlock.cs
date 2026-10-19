@@ -20,15 +20,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             InvalidateVisual();
         }
 
-        public static readonly DependencyProperty FillProperty = DP.Register(
-                "Fill",
-                typeof(Brush),
+        public static readonly StyledProperty<Brush> FillProperty = DP.Register<Brush>("Fill",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
 
-        public static readonly DependencyProperty StrokeProperty = DP.Register(
-                "Stroke",
-                typeof(Brush),
+        public static readonly StyledProperty<Brush> StrokeProperty = DP.Register<Brush>("Stroke",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender, StrokePropertyChangedCallback));
 
@@ -37,9 +33,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             (dependencyObject as OutlinedTextBlock)?.UpdatePen();
         }
 
-        public static readonly DependencyProperty StrokeThicknessProperty = DP.Register(
-                "StrokeThickness",
-                typeof(double),
+        public static readonly StyledProperty<double> StrokeThicknessProperty = DP.Register<double>("StrokeThickness",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(1d, FrameworkPropertyMetadataOptions.AffectsRender, StrokePropertyChangedCallback));
 
@@ -63,33 +57,23 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
-        public static readonly DependencyProperty TextProperty = DP.Register(
-                "Text",
-                typeof(string),
+        public static readonly StyledProperty<string> TextProperty = DP.Register<string>("Text",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextInvalidated));
 
-        public static readonly DependencyProperty TextAlignmentProperty = DP.Register(
-                "TextAlignment",
-                typeof(TextAlignment),
+        public static readonly StyledProperty<TextAlignment> TextAlignmentProperty = DP.Register<TextAlignment>("TextAlignment",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
-        public static readonly DependencyProperty TextDecorationsProperty = DP.Register(
-                "TextDecorations",
-                typeof(TextDecorationCollection),
+        public static readonly StyledProperty<TextDecorationCollection> TextDecorationsProperty = DP.Register<TextDecorationCollection>("TextDecorations",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
-        public static readonly DependencyProperty TextTrimmingProperty = DP.Register(
-                "TextTrimming",
-                typeof(TextTrimming),
+        public static readonly StyledProperty<TextTrimming> TextTrimmingProperty = DP.Register<TextTrimming>("TextTrimming",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
-        public static readonly DependencyProperty TextWrappingProperty = DP.Register(
-                "TextWrapping",
-                typeof(TextWrapping),
+        public static readonly StyledProperty<TextWrapping> TextWrappingProperty = DP.Register<TextWrapping>("TextWrapping",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(TextWrapping.NoWrap, OnFormattedTextUpdated));
 

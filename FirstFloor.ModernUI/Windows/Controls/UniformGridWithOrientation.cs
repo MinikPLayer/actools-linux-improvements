@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class UniformGridWithOrientation : SpacingUniformGrid {
         #region Orientation (Dependency Property)
-        public static readonly DependencyProperty OrientationProperty = DP.Register("Orientation", typeof(Orientation),
+        public static readonly StyledProperty<Orientation> OrientationProperty = DP.Register<Orientation>("Orientation",
                 typeof(UniformGridWithOrientation), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsValidOrientation);
 

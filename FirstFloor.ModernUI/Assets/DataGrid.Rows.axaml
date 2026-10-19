@@ -1,9 +1,9 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:sys="using:System" xmlns:p="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:sys="using:System" xmlns:p="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <ControlTheme x:Key="{x:Type DataGridRow}" TargetType="DataGridRow">
+  <ControlTheme TargetType="DataGridRow" x:Key="{x:Type DataGridRow}">
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="ValidationErrorTemplate">
       <Setter.Value>
@@ -29,7 +29,7 @@
               </Grid.RowDefinitions>
 
               <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}"/>
-              <DataGridDetailsPresenter SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=AreRowDetailsFrozen, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}}" Grid.Column="1" Grid.Row="1" IsVisible="{TemplateBinding DetailsVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}"/>
+              <DataGridDetailsPresenter SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=AreRowDetailsFrozen, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}}" Grid.Column="1" Grid.Row="1" IsVisible="{TemplateBinding DetailsVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
               <DataGridRowHeader SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=HeadersVisibility, Converter={x:Static DataGrid.HeadersVisibilityConverter}, ConverterParameter={x:Static DataGridHeadersVisibility.Row}}"/>
             </SelectiveScrollingGrid>
           </Border>
@@ -64,8 +64,8 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Bg"><Setter Property="Fill" Value="{TemplateBinding Background}"/></Style><Style Selector="^ /template/ #BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ #Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
-              </Style><Style Selector="^:selected /template/ #BgHighlight"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ Rectangle#Bg"><Setter Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ Rectangle#Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
+              </Style><Style Selector="^:selected /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="True"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="DataGridRow.DetailsAlways.RibbonLeft" TargetType="DataGridRow">
@@ -92,12 +92,18 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Bg"><Setter Property="Fill" Value="{TemplateBinding Background}"/></Style><Style Selector="^ /template/ #BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ #Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
-              </Style><Style Selector="^:selected /template/ #BgHighlight"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ Rectangle#Bg"><Setter Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ Rectangle#Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
+              </Style><Style Selector="^:selected /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="True"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="DataGridRow.DetailsAnimated.RibbonLeft" TargetType="DataGridRow">
-    <Setter Property="Template">
+    <ControlTheme.Resources>
+            <ResourceDictionary><ResourceDictionary>
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+            </ResourceDictionary>
+          </ResourceDictionary></ControlTheme.Resources>
+          <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGridRow">
           <c:Cell x:Name="DGR_Border">
@@ -115,44 +121,18 @@
               <DataGridCellsPresenter Grid.Column="1" ItemsPanel="{TemplateBinding ItemsPanel}"/>
               <c:BooleanSwitch x:Name="PART_ExpandSwitch" Grid.Column="1" Grid.Row="1">
                 <Border ClipToBounds="True">
-                  <!-- PORT: LayoutTransform needs LayoutTransformControl --><Border.RenderTransform>
-                    <ScaleTransform x:Name="PART_ExpandScale" ScaleX="1" ScaleY="0"/>
-                  </Border.RenderTransform>
+                  <!-- PORT: removed Border.LayoutTransform -->
                   <DataGridDetailsPresenter x:Name="PART_Content" SelectiveScrollingGrid.SelectiveScrollingOrientation="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=AreRowDetailsFrozen, Converter={x:Static DataGrid.RowDetailsScrollingConverter}, ConverterParameter={x:Static SelectiveScrollingOrientation.Vertical}}" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
                 </Border>
               </c:BooleanSwitch>
               <DataGridRowHeader SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=HeadersVisibility, Converter={x:Static DataGrid.HeadersVisibilityConverter}, ConverterParameter={x:Static DataGridHeadersVisibility.Row}}"/>
             </SelectiveScrollingGrid>
           </c:Cell>
-          <ControlTemplate.Resources>
-            <ResourceDictionary>
-              <Storyboard x:Key="ScaleYUp" TargetProperty="(ScaleTransform.ScaleY)">
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetName="PART_ExpandSwitch" Storyboard.TargetProperty="Value">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <sys:Boolean>True</sys:Boolean>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-                <DoubleAnimation To="1" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-              <Storyboard x:Key="ScaleYDown" TargetProperty="(ScaleTransform.ScaleY)">
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ExpandScale" EasingFunction="{StaticResource StandardEase}"/>
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.22" Storyboard.TargetName="PART_ExpandSwitch" Storyboard.TargetProperty="Value">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <sys:Boolean>False</sys:Boolean>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-              </Storyboard>
-            </ResourceDictionary>
-          </ControlTemplate.Resources>
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Bg"><Setter Property="Fill" Value="{TemplateBinding Background}"/></Style><Style Selector="^ /template/ #BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ #Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
-              </Style><Style Selector="^:selected /template/ #BgHighlight"><Setter Property="IsVisible" Value="True"/>
+  <Style Selector="^ /template/ Rectangle#Bg"><Setter Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ Rectangle#Bg"><Setter Property="Fill" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
+              </Style><Style Selector="^:selected /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="True"/>
             </Style><!-- PORT: storyboard actions of trigger [DetailsVisibility=Visible] not converted --></ControlTheme>
 
 </ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <!-- Do not look here if you want to create a theme for the app, those are basic library values. -->
   <Color x:Key="AccentColor">#1BA1E2</Color>
   <Color x:Key="AccentOverlayColor">#FFFFFF</Color>
@@ -17,8 +17,8 @@
   <SolidColorBrush x:Key="WindowTextReadOnly" Color="#717171"/>
   <SolidColorBrush x:Key="FocusBorder" Color="{DynamicResource AccentColor}"/>
 
-  <x:Null x:Key="WindowBackgroundContentBrush"/>
-  <x:Null x:Key="DialogBackgroundContentBrush"/>
+  <!-- PORT: removed x:Null resource WindowBackgroundContentBrush -->
+  <!-- PORT: removed x:Null resource DialogBackgroundContentBrush -->
 
   <SolidColorBrush x:Key="PopupBackground" Color="#252526"/>
   <SolidColorBrush x:Key="ProgressBackground" Color="#333333"/>

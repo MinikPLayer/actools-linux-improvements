@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
@@ -9,7 +9,6 @@
     <Setter Property="Focusable" Value="True"/>
     <Setter Property="IsTabStop" Value="True"/>
 
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
     <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -23,11 +22,11 @@
             <c:Cell VerticalAlignment="Stretch">
               <Path x:Name="Arrow" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" Margin="3 3 2 3" Data="M -0.5 3 L 5.5 3 L 2.5 6 Z"/>
               <ContentPresenter/>
-              <!-- PORT: SystemParameters not available: SystemParameters.MenuAnimationKey --><Popup IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PlacementTarget="{Binding ElementName=Chrome}" x:Name="SubMenuPopup" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuAnimationKey}}">
-                <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}" BorderThickness="1" Padding="0" TextBlock.Foreground="{DynamicResource WindowText}">
+              <Popup IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PlacementTarget="{Binding ElementName=Chrome}" x:Name="SubMenuPopup" Focusable="False">
+                <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}" BorderThickness="1" Padding="0" TextElement.Foreground="{DynamicResource WindowText}">
                   <c:Cell x:Name="SubMenu">
                     <!-- StackPanel holds children of the menu. This is set by IsItemsHost=True -->
-                    <StackPanel IsItemsHost="True"/>
+                    <StackPanel/>
                   </c:Cell>
                 </Border>
               </Popup>
@@ -36,7 +35,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+  <Style Selector="^ /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
               <Setter Property="IsVisible" Value="False"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
@@ -44,14 +43,13 @@
             </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^:focus /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="ButtonWithComboBoxWrapperMenu" TargetType="Menu">
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="FocusManager.IsFocusScope" Value="False"/>
 
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Margin" Value="0"/>
     <Setter Property="BorderBrush" Value="Transparent"/>
@@ -63,7 +61,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Menu">
-          <Grid ClipToBounds="True" IsItemsHost="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+          <Grid ClipToBounds="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -104,24 +102,24 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Presenter"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_MenuItem"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
-            </Style><Style Selector="^:pointerover /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+  <Style Selector="^ /template/ Button#Presenter"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover /template/ Button#Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
-            </Style><Style Selector="^:pressed /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+            </Style><Style Selector="^:pressed /template/ Button#Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^:pointerover /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+            </Style><Style Selector="^:pointerover /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
-            </Style><Style Selector="^:pressed /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+            </Style><Style Selector="^:pressed /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^:focus /template/ #Presenter"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-              </Style><Style Selector="^:focus /template/ #PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^:focus /template/ Button#Presenter"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+              </Style><Style Selector="^:focus /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
               </Style></ControlTheme>
 
   <ControlTheme x:Key="Go.ButtonWithComboBox" TargetType="c:ButtonWithComboBox">
@@ -135,7 +133,7 @@
         <ControlTemplate TargetType="c:ButtonWithComboBox">
           <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <DockPanel>
-              <c:Cell DockPanel.Dock="Right" TextBlock.FontWeight="Normal">
+              <c:Cell DockPanel.Dock="Right" TextElement.FontWeight="Normal">
                 <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
                   <c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
                 </Menu>
@@ -154,24 +152,24 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Presenter"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_MenuItem"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource GoButtonTextDisabled}"/>
-            </Style><Style Selector="^:pointerover /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
+  <Style Selector="^ /template/ Button#Presenter"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource GoButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover /template/ Button#Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource GoButtonTextHover}"/>
-            </Style><Style Selector="^:pressed /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+            </Style><Style Selector="^:pressed /template/ Button#Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
-            </Style><Style Selector="^:pointerover /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
+            </Style><Style Selector="^:pointerover /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource GoButtonTextHover}"/>
-            </Style><Style Selector="^:pressed /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+            </Style><Style Selector="^:pressed /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
-            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
               <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
-            </Style><Style Selector="^:focus /template/ #Presenter"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
-            </Style><Style Selector="^:focus /template/ #PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
+            </Style><Style Selector="^:focus /template/ Button#Presenter"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
+            </Style><Style Selector="^:focus /template/ c|LazyMenuItem#PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="Go.ToolBarButtonWithComboBox" BasedOn="{StaticResource Go.ButtonWithComboBox}" TargetType="c:ButtonWithComboBox">

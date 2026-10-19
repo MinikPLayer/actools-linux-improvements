@@ -1,5 +1,5 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
-  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/ListBox.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ListBoxItem">
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ListBoxItem">
     <Setter Property="HorizontalContentAlignment" Value="Left"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="Margin" Value="0"/>
@@ -18,8 +18,8 @@
 
   <Style Selector="Border.HighlightedBackground">
     <Style.Resources>
-      <SolidColorBrush x:Key="Error" Color="{DynamicResource AccentOverlayColor}"/>
-    </Style.Resources>
+      <ResourceDictionary><SolidColorBrush x:Key="Error" Color="{DynamicResource AccentOverlayColor}"/>
+    </ResourceDictionary></Style.Resources>
   </Style>
 
   </Styles>

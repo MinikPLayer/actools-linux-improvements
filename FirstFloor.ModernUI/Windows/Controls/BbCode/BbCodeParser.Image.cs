@@ -84,8 +84,7 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
                 }
             }
 
-            public static readonly DependencyProperty ImageUriProperty = DP.Register(nameof(ImageUri),
-                    typeof(Uri), typeof(InlineImage), new PropertyMetadata(null, ImageUrlPropertyChanged));
+            public static readonly StyledProperty<Uri> ImageUriProperty = DP.Register<Uri>(nameof(ImageUri), typeof(InlineImage), new PropertyMetadata(null, ImageUrlPropertyChanged));
         }
 
         private class InlineImageCache {

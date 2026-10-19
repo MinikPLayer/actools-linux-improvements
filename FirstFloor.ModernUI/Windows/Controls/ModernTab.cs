@@ -13,18 +13,17 @@ using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernTab : Control {
-        public static readonly DependencyProperty LinksHorizontalAlignmentProperty = DP.Register("LinksHorizontalAlignment",
-                typeof(HorizontalAlignment), typeof(ModernTab), new PropertyMetadata());
+        public static readonly StyledProperty<HorizontalAlignment> LinksHorizontalAlignmentProperty = DP.Register<HorizontalAlignment>("LinksHorizontalAlignment", typeof(ModernTab), new PropertyMetadata());
 
         public HorizontalAlignment LinksHorizontalAlignment {
             get => GetValue(LinksHorizontalAlignmentProperty) as HorizontalAlignment? ?? default;
             set => SetValue(LinksHorizontalAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty LinksMarginProperty = DP.Register("LinksMargin", typeof(Thickness),
+        public static readonly StyledProperty<Thickness> LinksMarginProperty = DP.Register<Thickness>("LinksMargin",
                 typeof(ModernTab), new PropertyMetadata(new Thickness(0.0, 0.0, 0.0, 0.0)));
 
-        public static readonly DependencyProperty FrameMarginProperty = DP.Register("FrameMargin", typeof(Thickness),
+        public static readonly StyledProperty<Thickness> FrameMarginProperty = DP.Register<Thickness>("FrameMargin",
                 typeof(ModernTab), new PropertyMetadata(new Thickness(0.0, 0.0, 0.0, 0.0)));
 
         public Thickness LinksMargin {
@@ -37,7 +36,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FrameMarginProperty, value);
         }
 
-        public static readonly DependencyProperty SavePolicyProperty = DP.Register(nameof(SavePolicy), typeof(SavePolicy),
+        public static readonly StyledProperty<SavePolicy> SavePolicyProperty = DP.Register<SavePolicy>(nameof(SavePolicy),
                 typeof(ModernTab));
 
         public SavePolicy SavePolicy {
@@ -45,16 +44,16 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SavePolicyProperty, value);
         }
 
-        public static readonly DependencyProperty ContentLoaderProperty = DP.Register("ContentLoader", typeof(IContentLoader),
+        public static readonly StyledProperty<IContentLoader> ContentLoaderProperty = DP.Register<IContentLoader>("ContentLoader",
                 typeof(ModernTab), new PropertyMetadata(new DefaultContentLoader()));
 
-        public static readonly DependencyProperty LayoutProperty = DP.Register("Layout", typeof(TabLayout),
+        public static readonly StyledProperty<TabLayout> LayoutProperty = DP.Register<TabLayout>("Layout",
                 typeof(ModernTab), new PropertyMetadata(TabLayout.Tab));
 
-        public static readonly DependencyProperty LinksProperty = DP.Register("Links", typeof(LinkCollection),
+        public static readonly StyledProperty<LinkCollection> LinksProperty = DP.Register<LinkCollection>("Links",
                 typeof(ModernTab), new PropertyMetadata(OnLinksChanged));
 
-        public static readonly DependencyProperty SelectedSourceProperty = DP.Register("SelectedSource", typeof(Uri),
+        public static readonly StyledProperty<Uri> SelectedSourceProperty = DP.Register<Uri>("SelectedSource",
                 typeof(ModernTab), new PropertyMetadata(OnSelectedSourceChanged));
 
         public event EventHandler<SourceEventArgs> SelectedSourceChanged;
@@ -274,7 +273,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LinksProperty, value);
         }
 
-        public static readonly DependencyProperty PinnedLinksProperty = DP.Register(nameof(PinnedLinks), typeof(LinkCollection),
+        public static readonly StyledProperty<LinkCollection> PinnedLinksProperty = DP.Register<LinkCollection>(nameof(PinnedLinks),
                 typeof(ModernTab));
 
         public LinkCollection PinnedLinks {
@@ -287,7 +286,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SelectedSourceProperty, value);
         }
 
-        public static readonly DependencyProperty TitleProperty = DP.Register(nameof(Title), typeof(string),
+        public static readonly StyledProperty<string> TitleProperty = DP.Register<string>(nameof(Title),
                 typeof(ModernTab));
 
         public string Title {
@@ -295,7 +294,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleProperty, value);
         }
 
-        public static readonly DependencyProperty PinCurrentCommandProperty = DP.Register(nameof(PinCurrentCommand), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> PinCurrentCommandProperty = DP.Register<ICommand>(nameof(PinCurrentCommand),
                 typeof(ModernTab));
 
         public ICommand PinCurrentCommand {
@@ -304,7 +303,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         // saving and loading uri
-        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
+        public static readonly StyledProperty<string> SaveKeyProperty = DP.Register<string>(nameof(SaveKey),
                 typeof(ModernTab), new PropertyMetadata(OnSaveKeyChanged));
 
         [CanBeNull]
@@ -318,8 +317,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((ModernTab)o).UpdateSelection(false);
         }
 
-        public static readonly DependencyProperty LinksListBoxTemplateProperty = DP.Register(nameof(LinksListBoxTemplate),
-                typeof(ControlTemplate),
+        public static readonly StyledProperty<ControlTemplate> LinksListBoxTemplateProperty = DP.Register<ControlTemplate>(nameof(LinksListBoxTemplate),
                 typeof(ModernTab));
 
         public ControlTemplate LinksListBoxTemplate {

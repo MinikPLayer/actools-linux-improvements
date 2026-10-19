@@ -106,7 +106,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty CancelCommandProperty = DP.Register(nameof(CancelCommand), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> CancelCommandProperty = DP.Register<ICommand>(nameof(CancelCommand),
                 typeof(AsyncButton), new PropertyMetadata(null, (o, e) => {
                     var b = (AsyncButton)o;
                     b._cancelCommand = (ICommand)e.NewValue;
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CancelCommandProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressPercentageProperty = DP.Register(nameof(ProgressPercentage), typeof(bool),
+        public static readonly StyledProperty<bool> ProgressPercentageProperty = DP.Register<bool>(nameof(ProgressPercentage),
                 typeof(AsyncButton), new PropertyMetadata(false, (o, e) => {
                     var b = (AsyncButton)o;
                     b._progressPercentage = (bool)e.NewValue;
@@ -141,7 +141,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ProgressPercentageProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressMessageProperty = DP.Register(nameof(ProgressMessage), typeof(bool),
+        public static readonly StyledProperty<bool> ProgressMessageProperty = DP.Register<bool>(nameof(ProgressMessage),
                 typeof(AsyncButton), new PropertyMetadata(false, (o, e) => {
                     var b = (AsyncButton)o;
                     b._progressMessage = (bool)e.NewValue;
@@ -155,7 +155,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ProgressMessageProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressProperty = DP.Register(nameof(Progress), typeof(AsyncProgressEntry),
+        public static readonly StyledProperty<AsyncProgressEntry> ProgressProperty = DP.Register<AsyncProgressEntry>(nameof(Progress),
                 typeof(AsyncButton));
 
         public AsyncProgressEntry Progress {

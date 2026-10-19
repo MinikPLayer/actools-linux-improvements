@@ -1,4 +1,4 @@
-﻿<c:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.WaitingDialog" Width="480" SizeToContent="Height" Initialized="OnLoaded" MinHeight="40" Padding="24 20 24 0">
+﻿<c:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.WaitingDialog" Width="480" SizeToContent="Height" Initialized="OnLoaded" MinHeight="40" Padding="24 20 24 0">
   <c:ModernDialog.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -16,7 +16,7 @@
       <c:BooleanSwitch.False>
         <c:ReferenceSwitch Value="{Binding Progress}">
           <c:ReferenceSwitch.Null>
-            <c:ModernProgressRing IsActive="True" Width="80" Height="80" HorizontalAlignment="Center"/>
+            <ProgressBar IsIndeterminate="True" Width="80" HorizontalAlignment="Center"/>
           </c:ReferenceSwitch.Null>
           <c:ReferenceSwitch.NonNull>
             <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding ProgressIndetermitate}"/>
@@ -32,7 +32,7 @@
       <c:BooleanSwitch.False>
         <c:ReferenceSwitch Value="{Binding SecondaryProgress}">
           <c:ReferenceSwitch.Null>
-            <c:ModernProgressRing IsActive="True" Width="80" Height="80" HorizontalAlignment="Center"/>
+            <ProgressBar IsIndeterminate="True" Width="80" HorizontalAlignment="Center"/>
           </c:ReferenceSwitch.Null>
           <c:ReferenceSwitch.NonNull>
             <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding SecondaryProgress, Mode=OneWay}" IsIndeterminate="{Binding SecondaryProgressIndetermitate}"/>

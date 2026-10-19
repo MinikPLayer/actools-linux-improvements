@@ -35,7 +35,7 @@ namespace FirstFloor.ModernUI.Windows.Media {
         public static bool IsInputFocused() {
             return Keyboard.FocusedElement is TextBoxBase || Keyboard.FocusedElement is PasswordBox || Keyboard.FocusedElement is ComboBox
                     || Application.Current?.Windows.OfType<Window>().SelectMany(FindVisualChildren)
-                                  .Any(x => x.IsKeyboardFocused || x.IsKeyboardFocusWithin) == true;
+                                  .Any(x => x.IsFocused || x.IsKeyboardFocusWithin) == true;
         }
     }
 }

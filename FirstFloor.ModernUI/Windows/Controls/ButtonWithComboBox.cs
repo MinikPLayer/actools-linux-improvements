@@ -48,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MenuItemsProperty, value);
         }
 
-        public static readonly DependencyProperty MenuItemsProperty = DP.Register("MenuItems", typeof(IList),
+        public static readonly StyledProperty<IList> MenuItemsProperty = DP.Register<IList>("MenuItems",
                 typeof(ButtonWithComboBox));
 
         public object ButtonToolTip {
@@ -56,10 +56,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonToolTipProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonToolTipProperty = DP.Register("ButtonToolTip", typeof(object),
+        public static readonly StyledProperty<object> ButtonToolTipProperty = DP.Register<object>("ButtonToolTip",
                 typeof(ButtonWithComboBox));
 
-        public static readonly DependencyProperty CommandProperty = DP.Register(nameof(Command), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> CommandProperty = DP.Register<ICommand>(nameof(Command),
                 typeof(ButtonWithComboBox));
 
         public ICommand Command {
@@ -67,7 +67,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CommandProperty, value);
         }
 
-        public static readonly DependencyProperty CommandParameterProperty = DP.Register(nameof(CommandParameter), typeof(object),
+        public static readonly StyledProperty<object> CommandParameterProperty = DP.Register<object>(nameof(CommandParameter),
                 typeof(ButtonWithComboBox));
 
         public object CommandParameter {

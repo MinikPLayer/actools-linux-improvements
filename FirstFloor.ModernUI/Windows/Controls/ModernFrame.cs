@@ -15,20 +15,20 @@ using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernFrame : ContentControl {
-        public static readonly DependencyProperty TransitionNameProperty = DP.Register("TransitionName", typeof(string),
+        public static readonly StyledProperty<string> TransitionNameProperty = DP.Register<string>("TransitionName",
             typeof(ModernFrame));
 
-        public static readonly DependencyProperty KeepAliveProperty = DP.RegisterAttached("KeepAlive", typeof(bool?),
+        public static readonly AttachedProperty<bool?> KeepAliveProperty = DP.RegisterAttached<bool?>("KeepAlive",
             typeof(ModernFrame), new PropertyMetadata(null));
-        public static readonly DependencyProperty KeepContentAliveProperty = DP.RegisterAttached("KeepContentAlive", typeof(bool),
+        public static readonly AttachedProperty<bool> KeepContentAliveProperty = DP.RegisterAttached<bool>("KeepContentAlive",
             typeof(ModernFrame), new FrameworkPropertyMetadata(false,
                     FrameworkPropertyMetadataOptions.Inherits, OnKeepContentAliveChanged));
-        public static readonly DependencyProperty ContentLoaderProperty = DP.Register("ContentLoader", typeof(IContentLoader),
+        public static readonly StyledProperty<IContentLoader> ContentLoaderProperty = DP.Register<IContentLoader>("ContentLoader",
             typeof(ModernFrame), new PropertyMetadata(new DefaultContentLoader(), OnContentLoaderChanged));
         private static readonly DependencyPropertyKey IsLoadingContentPropertyKey = DP.RegisterReadOnly("IsLoadingContent", typeof(bool),
             typeof(ModernFrame), new PropertyMetadata(false));
         public static readonly DependencyProperty IsLoadingContentProperty = IsLoadingContentPropertyKey.DependencyProperty;
-        public static readonly DependencyProperty SourceProperty = DP.Register("Source", typeof(Uri),
+        public static readonly StyledProperty<Uri> SourceProperty = DP.Register<Uri>("Source",
             typeof(ModernFrame), new PropertyMetadata(OnSourceChanged));
 
         public event EventHandler<FragmentNavigationEventArgs> FragmentNavigation;
@@ -598,7 +598,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TopSourceProperty, value);
         }
 
-        public static readonly DependencyProperty TopSourceProperty = DP.RegisterAttached(nameof(TopSource), typeof(Uri),
+        public static readonly AttachedProperty<Uri> TopSourceProperty = DP.RegisterAttached<Uri>(nameof(TopSource),
                 typeof(ModernFrame), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         public static Uri GetTopSource(DependencyObject o) {

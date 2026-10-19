@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -8,7 +8,7 @@
     <Setter Property="BorderThickness" Value="0"/>
   </ControlTheme>
 
-  <ControlTheme x:Key="{x:Type DataGridColumnHeadersPresenter}" TargetType="DataGridColumnHeadersPresenter">
+  <ControlTheme TargetType="DataGridColumnHeadersPresenter" x:Key="{x:Type DataGridColumnHeadersPresenter}">
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGridColumnHeadersPresenter">
@@ -47,12 +47,12 @@
     </Setter>
   </ControlTheme>
 
-  <ControlTheme x:Key="ColumnFloatingHeaderStyle" TargetType="Control">
+  <ControlTheme x:Key="ColumnFloatingHeaderStyle" TargetType="TemplatedControl">
     <Setter Property="Opacity" Value="0.6"/>
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="Control">
+        <ControlTemplate TargetType="TemplatedControl">
           <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
             <Canvas x:Name="PART_VisualBrushCanvas" Margin="{TemplateBinding Margin}"/>
           </Border>
@@ -72,7 +72,7 @@
     </Setter>
   </ControlTheme>
 
-  <ControlTheme x:Key="{x:Type DataGridCellsPresenter}" TargetType="DataGridCellsPresenter">
+  <ControlTheme TargetType="DataGridCellsPresenter" x:Key="{x:Type DataGridCellsPresenter}">
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGridCellsPresenter">

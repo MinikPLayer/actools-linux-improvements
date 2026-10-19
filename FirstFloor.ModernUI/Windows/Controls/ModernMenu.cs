@@ -154,7 +154,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region LinkGroups
-        public static readonly DependencyProperty LinkGroupsProperty = DP.Register("LinkGroups", typeof(LinkGroupCollection),
+        public static readonly StyledProperty<LinkGroupCollection> LinkGroupsProperty = DP.Register<LinkGroupCollection>("LinkGroups",
                 typeof(ModernMenu), new PropertyMetadata(new LinkGroupCollection(), OnLinkGroupsChanged));
 
         public LinkGroupCollection LinkGroups {
@@ -180,7 +180,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedLinkGroup
-        public static readonly DependencyProperty SelectedLinkGroupProperty = DP.Register("SelectedLinkGroup", typeof(LinkGroup),
+        public static readonly StyledProperty<LinkGroup> SelectedLinkGroupProperty = DP.Register<LinkGroup>("SelectedLinkGroup",
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedLinkGroupChanged));
 
         [CanBeNull]
@@ -213,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedLink
-        public static readonly DependencyProperty SelectedLinkProperty = DP.Register(nameof(SelectedLink), typeof(Link),
+        public static readonly StyledProperty<Link> SelectedLinkProperty = DP.Register<Link>(nameof(SelectedLink),
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedLinkChanged));
 
         public Link SelectedLink {
@@ -256,7 +256,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedSource
-        public static readonly DependencyProperty SelectedSourceProperty = DP.Register("SelectedSource", typeof(Uri),
+        public static readonly StyledProperty<Uri> SelectedSourceProperty = DP.Register<Uri>("SelectedSource",
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedSourceChanged));
 
         [CanBeNull]
@@ -447,7 +447,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _isSelecting = false;
         }
 
-        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
+        public static readonly StyledProperty<string> SaveKeyProperty = DP.Register<string>(nameof(SaveKey),
                 typeof(ModernMenu));
 
         public string SaveKey {
@@ -455,7 +455,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SaveKeyProperty, value);
         }
 
-        public static readonly DependencyProperty DefaultSourceProperty = DP.Register(nameof(DefaultSource), typeof(Uri),
+        public static readonly StyledProperty<Uri> DefaultSourceProperty = DP.Register<Uri>(nameof(DefaultSource),
                 typeof(ModernMenu));
 
         public Uri DefaultSource {
@@ -463,7 +463,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DefaultSourceProperty, value);
         }
 
-        public static readonly DependencyProperty TopRowVisibilityProperty = DP.Register(nameof(TopRowVisibility), typeof(Visibility),
+        public static readonly StyledProperty<Visibility> TopRowVisibilityProperty = DP.Register<Visibility>(nameof(TopRowVisibility),
                 typeof(ModernMenu), new PropertyMetadata(Visibility.Visible));
 
         public Visibility TopRowVisibility {

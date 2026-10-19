@@ -60,8 +60,8 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void SetImage(string imageFilename) {
             Dispatcher.UIThread.InvokeAsync(() => {
-                Image.IsVisible = true;
-                Image.Source = string.IsNullOrEmpty(imageFilename) ? null : new Avalonia.Media.Imaging.Bitmap(imageFilename);
+                this.Image.IsVisible = true;
+                this.Image.Source = string.IsNullOrEmpty(imageFilename) ? null : new Avalonia.Media.Imaging.Bitmap(imageFilename);
             });
         }
 

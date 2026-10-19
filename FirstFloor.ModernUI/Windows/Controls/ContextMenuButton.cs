@@ -25,7 +25,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public ContextMenuButton() {
         }
 
-        public static readonly DependencyProperty LookForParentMenuProperty = DP.Register(nameof(LookForParentMenu), typeof(bool),
+        public static readonly StyledProperty<bool> LookForParentMenuProperty = DP.Register<bool>(nameof(LookForParentMenu),
                 typeof(ContextMenuButton), new PropertyMetadata(false, (o, e) => {
                     ((ContextMenuButton)o)._lookForParentMenu = (bool)e.NewValue;
                 }));
@@ -64,7 +64,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     popup.IsOpen = false;
                 } else {
                     popup.Placement = near ? PlacementMode.Bottom : PlacementMode.Pointer;
-                    popup.PlacementTarget = near ? this : Avalonia.VisualTree.VisualExtensions.GetVisualRoot(this) as Avalonia.Visual;
+                    popup.PlacementTarget = near ? this : Avalonia.VisualTree.VisualExtensions.GetVisualRoot(this) as Avalonia.Controls.Control;
                     popup.IsOpen = true;
                     popup.StaysOpen = false;
                 }
@@ -91,7 +91,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return false;
         }
 
-        public static readonly DependencyProperty ForceNearProperty = DP.Register(nameof(ForceNear), typeof(bool?),
+        public static readonly StyledProperty<bool?> ForceNearProperty = DP.Register<bool?>(nameof(ForceNear),
                 typeof(ContextMenuButton), new PropertyMetadata(null, (o, e) => {
                     ((ContextMenuButton)o)._forceNear = (bool?)e.NewValue;
                 }));
@@ -103,7 +103,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ForceNearProperty, value);
         }
 
-        public static readonly DependencyProperty ExtraDelayProperty = DP.Register(nameof(ExtraDelay), typeof(bool),
+        public static readonly StyledProperty<bool> ExtraDelayProperty = DP.Register<bool>(nameof(ExtraDelay),
                 typeof(ContextMenuButton), new PropertyMetadata(false, (o, e) => {
                     ((ContextMenuButton)o)._extraDelay = (bool)e.NewValue;
                 }));
@@ -204,7 +204,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty MenuProperty = DP.Register(nameof(Menu), typeof(FrameworkElement),
+        public static readonly StyledProperty<FrameworkElement> MenuProperty = DP.Register<FrameworkElement>(nameof(Menu),
                 typeof(ContextMenuButton), new PropertyMetadata(OnMenuChanged));
 
         public FrameworkElement Menu {
@@ -241,7 +241,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty CommandProperty = DP.Register(nameof(Command), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> CommandProperty = DP.Register<ICommand>(nameof(Command),
             typeof(ContextMenuButton));
 
         public ICommand Command {
@@ -249,7 +249,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CommandProperty, value);
         }
 
-        public static readonly DependencyProperty CommandParameterProperty = DP.Register(nameof(CommandParameter), typeof(object),
+        public static readonly StyledProperty<object> CommandParameterProperty = DP.Register<object>(nameof(CommandParameter),
                 typeof(ContextMenuButton));
 
         public object CommandParameter {
@@ -257,7 +257,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CommandParameterProperty, value);
         }
 
-        public static readonly DependencyProperty PropagateToChildrenProperty = DP.Register(nameof(PropagateToChildren), typeof(bool),
+        public static readonly StyledProperty<bool> PropagateToChildrenProperty = DP.Register<bool>(nameof(PropagateToChildren),
                 typeof(ContextMenuButton));
 
         public bool PropagateToChildren {

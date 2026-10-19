@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernTabLinksComboBox : BetterComboBox {
-        public static readonly DependencyProperty IsAnySelectedProperty = DP.Register(nameof(IsAnySelected), typeof(bool),
+        public static readonly StyledProperty<bool> IsAnySelectedProperty = DP.Register<bool>(nameof(IsAnySelected),
                 typeof(ModernTabLinksComboBox), new PropertyMetadata(false, (o, e) => {
                     ((ModernTabLinksComboBox)o)._isAnySelected = (bool)e.NewValue;
                 }));

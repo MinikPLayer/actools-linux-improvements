@@ -45,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty ValueProperty = DP.RegisterAttached("Value", typeof(object),
+        public static readonly AttachedProperty<object> ValueProperty = DP.RegisterAttached<object>("Value",
                 typeof(FallbackSwitch), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsParentMeasure));
 
         public static object GetWhen(DependencyObject obj) {
@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(WhenProperty, value);
         }
 
-        public static readonly DependencyProperty WhenProperty = DP.RegisterAttached("When", typeof(object),
+        public static readonly AttachedProperty<object> WhenProperty = DP.RegisterAttached<object>("When",
                 typeof(FallbackSwitch), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsParentMeasure));
 
         private static readonly object UnsetValue = new object();
@@ -69,7 +69,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(WhenNotProperty, value);
         }
 
-        public static readonly DependencyProperty WhenNotProperty = DP.RegisterAttached("WhenNot", typeof(object),
+        public static readonly AttachedProperty<object> WhenNotProperty = DP.RegisterAttached<object>("WhenNot",
                 typeof(FallbackSwitch), new FrameworkPropertyMetadata(UnsetValue, FrameworkPropertyMetadataOptions.AffectsParentMeasure));
 
         protected bool TestChild(UIElement child) {

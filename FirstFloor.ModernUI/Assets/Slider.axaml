@@ -1,6 +1,5 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ControlTheme x:Key="SliderRepeatButtonStyle" TargetType="RepeatButton">
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="Template">
@@ -13,7 +12,6 @@
   </ControlTheme>
 
   <ControlTheme x:Key="BaseSliderThumbStyle" TargetType="Thumb">
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="Focusable" Value="False"/>
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="Background" Value="{DynamicResource SliderThumbBackground}"/>
@@ -58,8 +56,8 @@
                 <RowDefinition Height="Auto" MinHeight="{TemplateBinding Slider.MinHeight}"/>
                 <RowDefinition Height="Auto"/>
               </Grid.RowDefinitions>
-              <TickBar x:Name="TopTick" Grid.Row="0" Placement="Top" Height="4"/>
-              <TickBar x:Name="BottomTick" Grid.Row="2" Placement="Bottom" Height="4"/>
+              <!-- PORT: removed TickBar -->
+              <!-- PORT: removed TickBar -->
               <Border x:Name="TrackBackground" Grid.Row="1" VerticalAlignment="center" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Height="4.0">
                 <Canvas Margin="-6,-1">
                   <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource SliderSelectionBackground}" Height="4.0" StrokeThickness="1.0" Stroke="{DynamicResource SliderSelectionBorder}"/>
@@ -81,7 +79,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Style Selector="^ /template/ #TopTick"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^ /template/ #TrackBackground"><Setter Property="Margin" Value="5,0"/></Style><Style Selector="^ /template/ #BottomTick"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^ /template/ #PART_SelectionRange"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[Orientation=Vertical]"><Setter Property="Template">
+    <Style Selector="^ /template/ Border#TrackBackground"><Setter Property="Margin" Value="5,0"/></Style><Style Selector="^ /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ TickBar#TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^ /template/ TickBar#BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^[Orientation=Vertical]"><Setter Property="Template">
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate TargetType="Slider">
               <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -91,8 +89,8 @@
                     <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding Slider.MinWidth}"/>
                     <ColumnDefinition Width="Auto"/>
                   </Grid.ColumnDefinitions>
-                  <TickBar x:Name="TopTick" Grid.Column="0" Placement="Left" Fill="{DynamicResource SliderTick}" Width="4" IsVisible="False"/>
-                  <TickBar x:Name="BottomTick" Grid.Column="2" Placement="Right" Fill="{DynamicResource SliderTick}" Width="4" IsVisible="False"/>
+                  <!-- PORT: removed TickBar -->
+                  <!-- PORT: removed TickBar -->
                   <Border x:Name="TrackBackground" Grid.Column="1" Margin="0,5" HorizontalAlignment="center" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Width="4.0">
 
                     <Canvas Margin="-1,-6">
@@ -116,15 +114,15 @@
               </ControlTemplate>
           </Setter.Value>
         </Setter>
-      </Style><Style Selector="^[TickPlacement=TopLeft] /template/ #TopTick"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[TickPlacement=TopLeft] /template/ #TrackBackground"><Setter Property="Margin" Value="5 2 5 0"/>
-            </Style><Style Selector="^[TickPlacement=BottomRight] /template/ #BottomTick"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[TickPlacement=BottomRight] /template/ #TrackBackground"><Setter Property="Margin" Value="5 0 5 2"/>
-            </Style><Style Selector="^[TickPlacement=Both] /template/ #TopTick"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[TickPlacement=Both] /template/ #BottomTick"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^[IsSelectionRangeEnabled=True] /template/ #PART_SelectionRange"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:disabled /template/ #TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
-              </Style><Style Selector="^:disabled /template/ #BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
+      </Style><Style Selector="^[TickPlacement=TopLeft] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[TickPlacement=TopLeft] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 2 5 0"/>
+            </Style><Style Selector="^[TickPlacement=BottomRight] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[TickPlacement=BottomRight] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 0 5 2"/>
+            </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[IsSelectionRangeEnabled=True] /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^:disabled /template/ TickBar#TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
+              </Style><Style Selector="^:disabled /template/ TickBar#BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
             </Style></ControlTheme>
 
   </ResourceDictionary>

@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty IsDimmedProperty = DP.Register(nameof(IsDimmed), typeof(bool), typeof(DpiAwareWindow));
+        public static readonly StyledProperty<bool> IsDimmedProperty = DP.Register<bool>(nameof(IsDimmed), typeof(DpiAwareWindow));
 
         public bool IsDimmed {
             get => GetValue(IsDimmedProperty) as bool? == true;
@@ -114,7 +114,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                             ?? (main.IsVisible ? main : null);
         }
 
-        public static readonly DependencyProperty DoNotAttachToWaitingDialogsProperty = DP.Register(nameof(DoNotAttachToWaitingDialogs), typeof(bool),
+        public static readonly StyledProperty<bool> DoNotAttachToWaitingDialogsProperty = DP.Register<bool>(nameof(DoNotAttachToWaitingDialogs),
                 typeof(DpiAwareWindow), new PropertyMetadata(false, (o, e) => { ((DpiAwareWindow)o)._doNotAttachToWaitingDialogs = (bool)e.NewValue; }));
 
         private bool _doNotAttachToWaitingDialogs;
@@ -374,7 +374,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty LocationAndSizeKeyProperty = DP.Register(nameof(LocationAndSizeKey), typeof(string),
+        public static readonly StyledProperty<string> LocationAndSizeKeyProperty = DP.Register<string>(nameof(LocationAndSizeKey),
                 typeof(DpiAwareWindow), new PropertyMetadata(null, (o, e) => { ((DpiAwareWindow)o)._locationAndSizeKey = (string)e.NewValue; }));
 
         private string _locationAndSizeKey;
@@ -407,7 +407,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SimpleSerialization.Register(Placement.FromString);
         }
 
-        public static readonly DependencyProperty ConsiderPreferredFullscreenProperty = DP.Register(nameof(ConsiderPreferredFullscreen), typeof(bool),
+        public static readonly StyledProperty<bool> ConsiderPreferredFullscreenProperty = DP.Register<bool>(nameof(ConsiderPreferredFullscreen),
                 typeof(DpiAwareWindow), new PropertyMetadata(true, (o, e) => { ((DpiAwareWindow)o)._considerPreferredFullscreen = (bool)e.NewValue; }));
 
         private bool _considerPreferredFullscreen = true;
@@ -496,7 +496,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public bool PreferredFullscreenMode => false;
+        public static readonly StyledProperty<bool> PreferredFullscreenModeProperty = DP.Register<bool>(nameof(PreferredFullscreenMode), typeof(DpiAwareWindow),
+                new PropertyMetadata(false));
+
+        public bool PreferredFullscreenMode => GetValue(PreferredFullscreenModeProperty);
 
         public void UpdatePreferredFullscreenMode(bool maximized = false, bool centerAlign = false) { }
 
@@ -514,7 +517,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region Things which were handled by Windows-specific code in WPF version
-        public static readonly DependencyProperty BlurBackgroundProperty = DP.Register(nameof(BlurBackground), typeof(bool), typeof(DpiAwareWindow),
+        public static readonly StyledProperty<bool> BlurBackgroundProperty = DP.Register<bool>(nameof(BlurBackground), typeof(DpiAwareWindow),
                 new PropertyMetadata(false, (o, e) => {
                     ((DpiAwareWindow)o).TransparencyLevelHint = (bool)e.NewValue
                             ? new[] { WindowTransparencyLevel.AcrylicBlur, WindowTransparencyLevel.Blur, WindowTransparencyLevel.None }
@@ -526,14 +529,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(BlurBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty PreventActivationProperty = DP.Register(nameof(PreventActivation), typeof(bool), typeof(DpiAwareWindow));
+        public static readonly StyledProperty<bool> PreventActivationProperty = DP.Register<bool>(nameof(PreventActivation), typeof(DpiAwareWindow));
 
         public bool PreventActivation {
             get => GetValue(PreventActivationProperty) as bool? == true;
             set => SetValue(PreventActivationProperty, value);
         }
 
-        public static readonly DependencyProperty ToolWindowProperty = DP.Register(nameof(ToolWindow), typeof(bool), typeof(DpiAwareWindow),
+        public static readonly StyledProperty<bool> ToolWindowProperty = DP.Register<bool>(nameof(ToolWindow), typeof(DpiAwareWindow),
                 new PropertyMetadata(false, (o, e) => { ((DpiAwareWindow)o).ShowInTaskbar = !(bool)e.NewValue; }));
 
         public bool ToolWindow {

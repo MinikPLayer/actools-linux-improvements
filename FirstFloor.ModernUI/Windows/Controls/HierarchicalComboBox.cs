@@ -71,7 +71,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class LazyMenuItem : MenuItem {
-        public static readonly DependencyProperty AutoPrepareProperty = DP.Register(nameof(AutoPrepare), typeof(bool),
+        public static readonly StyledProperty<bool> AutoPrepareProperty = DP.Register<bool>(nameof(AutoPrepare),
                 typeof(LazyMenuItem), new PropertyMetadata(OnAutoPrepareChanged));
 
         public bool AutoPrepare {
@@ -270,7 +270,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private static readonly object NullSubstitute = new object();
 
-        public static readonly DependencyProperty ValueProperty = DP.RegisterAttached("Value", typeof(object),
+        public static readonly AttachedProperty<object> ValueProperty = DP.RegisterAttached<object>("Value",
                 typeof(HierarchicalItemsView), new UIPropertyMetadata(null, null, CoerceMyProperty));
 
         private static object CoerceMyProperty(DependencyObject d, object baseValue) {
@@ -443,7 +443,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _menu = this.GetTemplateChild("PART_MenuItem") as LazyMenuItem;
         }
 
-        public static readonly DependencyProperty InnerMarginProperty = DP.Register(nameof(InnerMargin), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> InnerMarginProperty = DP.Register<Thickness>(nameof(InnerMargin),
                 typeof(HierarchicalComboBox));
 
         public Thickness InnerMargin {
@@ -455,7 +455,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
 
-        public static readonly DependencyProperty SelectedContentProperty = DP.Register(nameof(SelectedContent), typeof(DataTemplate),
+        public static readonly StyledProperty<DataTemplate> SelectedContentProperty = DP.Register<DataTemplate>(nameof(SelectedContent),
                 typeof(HierarchicalComboBox), new PropertyMetadata(OnSelectedContentChanged));
 
         public DataTemplate SelectedContent {
@@ -485,7 +485,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         internal HierarchicalItemsView InnerItems => (HierarchicalItemsView)GetValue(InnerItemsProperty);
 
-        public static readonly DependencyProperty ItemsSourceProperty = DP.Register(nameof(ItemsSource), typeof(IList),
+        public static readonly StyledProperty<IList> ItemsSourceProperty = DP.Register<IList>(nameof(ItemsSource),
                 typeof(HierarchicalComboBox), new PropertyMetadata(OnItemsSourceChanged));
 
         public IList ItemsSource {
@@ -558,7 +558,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// Update SelectedItem when ItemsSource value is changed.
         /// </summary>
-        public static readonly DependencyProperty FixedModeProperty = DP.Register(nameof(FixedMode), typeof(bool),
+        public static readonly StyledProperty<bool> FixedModeProperty = DP.Register<bool>(nameof(FixedMode),
                 typeof(HierarchicalComboBox), new FrameworkPropertyMetadata(true));
 
         public bool FixedMode {
@@ -566,7 +566,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FixedModeProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedItemProperty = DP.Register(nameof(SelectedItem), typeof(object),
+        public static readonly StyledProperty<object> SelectedItemProperty = DP.Register<object>(nameof(SelectedItem),
                 typeof(HierarchicalComboBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedItemChanged));
 
         private static void OnSelectedItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
@@ -601,8 +601,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public static readonly DependencyProperty PreviewProviderProperty = DP.Register(nameof(PreviewProvider),
-                typeof(IHierarchicalItemPreviewProvider), typeof(HierarchicalComboBox));
+        public static readonly StyledProperty<IHierarchicalItemPreviewProvider> PreviewProviderProperty = DP.Register<IHierarchicalItemPreviewProvider>(nameof(PreviewProvider), typeof(HierarchicalComboBox));
 
         [CanBeNull]
         public IHierarchicalItemPreviewProvider PreviewProvider {

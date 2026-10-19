@@ -1,29 +1,23 @@
 ﻿using System;
-using System.Windows.Data;
 using System.Globalization;
-using System.Windows.Media.Imaging;
+using System.IO;
+using System.Windows.Data;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Serialization;
-using FirstFloor.ModernUI.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Converters {
-    [ValueConversion(typeof(object), typeof(BitmapSource))]
+    /// <summary>
+    /// Loads images by URIs (files and application resources). Web images aren’t supported yet.
+    /// </summary>
+    [ValueConversion(typeof(object), typeof(IImage))]
     public class UriToCachedImageConverter : IValueConverter {
         public const double OneTrueDpi = 96d;
 
-        public static BitmapSource ConvertBitmapToOneTrueDpi(BitmapImage bitmapImage) {
-            var width = bitmapImage.PixelWidth;
-            var height = bitmapImage.PixelHeight;
-
-            var stride = width * bitmapImage.Format.BitsPerPixel;
-            var pixelData = new byte[stride * height];
-            bitmapImage.CopyPixels(pixelData, stride, 0);
-
-            return BitmapSource.Create(width, height, OneTrueDpi, OneTrueDpi, bitmapImage.Format, null, pixelData, stride);
-        }
-
-        public static BitmapSource Convert(object value, bool considerOneTrueDpi = false, int decodeWidth = -1, int decodeHeight = -1) {
-            if (value is BitmapSource) return value as BitmapImage;
+        public static IImage Convert(object value, bool considerOneTrueDpi = false, int decodeWidth = -1, int decodeHeight = -1) {
+            if (value is IImage image) return image;
 
             var source = value as Uri;
             if (source == null) {
@@ -33,7 +27,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
                 }
 
                 try {
-                    source = new Uri(path);
+                    source = new Uri(path, UriKind.RelativeOrAbsolute);
                 } catch (Exception) {
                     Logging.Warning("Invalid URI format: " + path);
                     return null;
@@ -41,31 +35,38 @@ namespace FirstFloor.ModernUI.Windows.Converters {
             }
 
             try {
-                var bi = new BitmapImage();
-                bi.BeginInit();
+                using (var stream = OpenStream(source)) {
+                    if (stream == null) return null;
+                    if (decodeWidth > 0) {
+                        return Bitmap.DecodeToWidth(stream, decodeWidth);
+                    }
 
-                if (decodeWidth != -1) {
-                    bi.DecodePixelWidth = (int)(decodeWidth * Math.Max(DpiInformation.MaxScaleX, 1d));
+                    if (decodeHeight > 0) {
+                        return Bitmap.DecodeToHeight(stream, decodeHeight);
+                    }
+
+                    return new Bitmap(stream);
                 }
-
-                if (decodeHeight != -1) {
-                    bi.DecodePixelHeight = (int)(decodeHeight * Math.Max(DpiInformation.MaxScaleY, 1d));
-                }
-
-                bi.CreateOptions = source.Scheme == "http" || source.Scheme == "https"
-                        ? BitmapCreateOptions.None : BitmapCreateOptions.IgnoreImageCache;
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.UriSource = source;
-                bi.EndInit();
-                bi.Freeze();
-
-                if (considerOneTrueDpi && (Math.Abs(bi.DpiX - OneTrueDpi) > 1 || Math.Abs(bi.DpiY - OneTrueDpi) > 1)) {
-                    return ConvertBitmapToOneTrueDpi(bi);
-                }
-
-                return bi;
             } catch (Exception) {
                 return null;
+            }
+        }
+
+        private static Stream OpenStream(Uri source) {
+            if (!source.IsAbsoluteUri) {
+                var local = source.OriginalString;
+                return File.Exists(local) ? File.OpenRead(local) : null;
+            }
+
+            switch (source.Scheme) {
+                case "file":
+                    return File.Exists(source.LocalPath) ? File.OpenRead(source.LocalPath) : null;
+                case "avares":
+                    return AssetLoader.Open(source);
+                case "pack":
+                    return AssetLoader.Open(ComponentLoader.ToAvaloniaUri(source));
+                default:
+                    return null;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
     <ControlTheme x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
         <Setter Property="Canvas.Right" Value="-9"/>
@@ -17,7 +17,7 @@
         </Setter>
     </ControlTheme>
 
-    <ControlTheme x:Key="{x:Type GridViewColumnHeader}" TargetType="GridViewColumnHeader">
+    <ControlTheme TargetType="GridViewColumnHeader" x:Key="{x:Type GridViewColumnHeader}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -48,14 +48,14 @@
                     </ControlTemplate>
             </Setter.Value>
         </Setter>
-    <Style Selector="^ /template/ #HeaderBorder"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^ /template/ #PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+    <Style Selector="^ /template/ Border#HeaderBorder"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Thumb#PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
                         </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
-                            </Style><Style Selector="^:pointerover /template/ #HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
-                            </Style><Style Selector="^:pointerover /template/ #PART_HeaderGripper"><Setter Property="Background" Value="Transparent"/>
+                            </Style><Style Selector="^:pointerover /template/ Border#HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+                            </Style><Style Selector="^:pointerover /template/ Thumb#PART_HeaderGripper"><Setter Property="Background" Value="Transparent"/>
                             <Setter Property="IsVisible" Value="True"/>
                         </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-                            </Style><Style Selector="^:pressed /template/ #HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
-                            </Style><Style Selector="^:pressed /template/ #PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^:pressed /template/ Border#HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                            </Style><Style Selector="^:pressed /template/ Thumb#PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/>
                         </Style><Style Selector="^[Height=Auto]"><Setter Property="MinHeight" Value="20"/>
                         </Style></ControlTheme>
 
@@ -103,11 +103,11 @@
                     </ControlTemplate>
             </Setter.Value>
         </Setter>
-    <Style Selector="^ /template/ #contentPresenter"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ #Selection"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[(GridView.ColumnCollection)=null] /template/ #contentPresenter"><Setter Property="IsVisible" Value="True"/>
-                        </Style><Style Selector="^:pointerover /template/ #Selection"><Setter Property="IsVisible" Value="True"/>
+    <Style Selector="^ /template/ ContentPresenter#contentPresenter"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#Selection"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[(GridView.ColumnCollection)=null] /template/ ContentPresenter#contentPresenter"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:pointerover /template/ Border#Selection"><Setter Property="IsVisible" Value="True"/>
                             <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
                             </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
-                        </Style><Style Selector="^:selected /template/ #Selection"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:selected /template/ Border#Selection"><Setter Property="IsVisible" Value="True"/>
                             <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
                             </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
                         </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>

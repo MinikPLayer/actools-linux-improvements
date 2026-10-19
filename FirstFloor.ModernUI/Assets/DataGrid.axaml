@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -9,7 +9,7 @@
     <ResourceInclude Source="DataGrid.Rows.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <ControlTheme x:Key="{x:Type DataGrid}" TargetType="DataGrid">
+  <ControlTheme TargetType="DataGrid" x:Key="{x:Type DataGrid}">
     <Setter Property="Background" Value="{DynamicResource DataGridBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource DataGridForeground}"/>
     <Setter Property="BorderThickness" Value="0"/>
@@ -43,16 +43,16 @@
 
                     <DataGridColumnHeadersPresenter Grid.Row="0" Grid.Column="1" x:Name="PART_ColumnHeadersPresenter" IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=HeadersVisibility, Converter={x:Static DataGrid.HeadersVisibilityConverter}, ConverterParameter={x:Static DataGridHeadersVisibility.Column}}"/>
 
-                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" CanContentScroll="{TemplateBinding CanContentScroll}"/>
+                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"/>
 
-                    <c:BetterScrollBar Grid.Row="1" Grid.Column="1" x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" IsVisible="{TemplateBinding ComputedVerticalScrollBarVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarVertical}"/>
+                    <c:BetterScrollBar Grid.Row="1" Grid.Column="1" x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" IsVisible="{TemplateBinding ComputedVerticalScrollBarVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarVertical}"/>
 
                     <Grid Grid.Row="2" Grid.Column="1">
                       <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=NonFrozenColumnsViewportHorizontalOffset}"/>
                         <ColumnDefinition Width="*"/>
                       </Grid.ColumnDefinitions>
-                      <ScrollBar Grid.Column="1" x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}" ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" IsVisible="{TemplateBinding ComputedHorizontalScrollBarVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}"/>
+                      <ScrollBar Grid.Column="1" x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" Maximum="{TemplateBinding ScrollableWidth}" ViewportSize="{TemplateBinding ViewportWidth}" Value="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" IsVisible="{TemplateBinding ComputedHorizontalScrollBarVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
 
                     </Grid>
                   </Grid>
@@ -77,10 +77,6 @@
     <Setter Property="EnableRowVirtualization" Value="True"/>
     <Setter Property="EnableColumnVirtualization" Value="False"/>
     <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True"/>
-    <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel"/>
-    <Setter Property="VirtualizingStackPanel.CacheLengthUnit" Value="Item"/>
-    <Setter Property="VirtualizingStackPanel.CacheLength" Value="5,5"/>
-
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -105,8 +101,8 @@
                     <RowDefinition Height="*"/>
                   </Grid.RowDefinitions>
                   <DataGridColumnHeadersPresenter Grid.Row="0" x:Name="PART_ColumnHeadersPresenter" IsVisible="{Binding HeadersVisibility, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, ConverterParameter={x:Static DataGridHeadersVisibility.Column}}"/>
-                  <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1" CanContentScroll="{TemplateBinding CanContentScroll}"/>
-                  <c:BetterScrollBar Grid.Row="1" x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" IsVisible="{TemplateBinding ComputedVerticalScrollBarVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarVertical}"/>
+                  <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Grid.Row="1"/>
+                  <c:BetterScrollBar Grid.Row="1" x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}" IsVisible="{TemplateBinding ComputedVerticalScrollBarVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarVertical}"/>
                 </Grid>
                 </ControlTemplate>
             </ScrollViewer.Template>

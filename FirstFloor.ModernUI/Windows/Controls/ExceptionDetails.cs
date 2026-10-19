@@ -20,7 +20,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public string StackTrace => (string)GetValue(StackTraceProperty);
 
-        public static readonly DependencyProperty ExceptionProperty = DP.Register(nameof(Exception), typeof(Exception),
+        public static readonly StyledProperty<Exception> ExceptionProperty = DP.Register<Exception>(nameof(Exception),
                 typeof(ExceptionDetails), new PropertyMetadata(OnExceptionChanged));
 
         public Exception Exception {
@@ -37,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     newValue.ToString().Trim().Replace("\r", "").Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)));
         }
 
-        public static readonly DependencyProperty TitleProperty = DP.Register(nameof(Title), typeof(string),
+        public static readonly StyledProperty<string> TitleProperty = DP.Register<string>(nameof(Title),
                 typeof(ExceptionDetails), new PropertyMetadata(UiStrings.NavigationFailed));
 
         public string Title {
@@ -45,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleProperty, value);
         }
 
-        public static readonly DependencyProperty SuggestionsProperty = DP.Register(nameof(Suggestions), typeof(string),
+        public static readonly StyledProperty<string> SuggestionsProperty = DP.Register<string>(nameof(Suggestions),
                 typeof(ExceptionDetails), new PropertyMetadata(UiStrings.SuggestionsMessage));
 
         public string Suggestions {

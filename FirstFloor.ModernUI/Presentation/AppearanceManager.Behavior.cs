@@ -34,7 +34,7 @@ namespace FirstFloor.ModernUI.Presentation {
             get => _preferFullscreenMode.Value;
             set => Apply(value, _preferFullscreenMode, () => {
                 foreach (var window in Application.Current.Windows.OfType<DpiAwareWindow>().Where(x => x.ConsiderPreferredFullscreen)) {
-                    window.UpdatePreferredFullscreenMode(window.GetScreen());
+                    window.UpdatePreferredFullscreenMode();
                 }
             });
         }
@@ -47,7 +47,7 @@ namespace FirstFloor.ModernUI.Presentation {
                 if (Equals(value, _fullscreenOverTaskbarMode.Value)) return;
 
                 var toFix = value ? Application.Current.Windows.OfType<DpiAwareWindow>().Where(
-                        x => x.WindowState == WindowState.Maximized && x.WindowStyle == WindowStyle.SingleBorderWindow).ToList() : null;
+                        x => x.WindowState == WindowState.Maximized).ToList() : null;
 
                 _fullscreenOverTaskbarMode.Value = value;
                 OnPropertyChanged();

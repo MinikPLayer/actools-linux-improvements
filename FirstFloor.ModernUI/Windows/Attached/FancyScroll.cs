@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(InvertLocationProperty, value);
         }
 
-        public static readonly DependencyProperty InvertLocationProperty = DP.RegisterAttached("InvertLocation", typeof(bool),
+        public static readonly AttachedProperty<bool> InvertLocationProperty = DP.RegisterAttached<bool>("InvertLocation",
                 typeof(FancyScroll), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetOutside(DependencyObject obj) {
@@ -24,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(OutsideProperty, value);
         }
 
-        public static readonly DependencyProperty OutsideProperty = DP.RegisterAttached("Outside", typeof(bool),
+        public static readonly AttachedProperty<bool> OutsideProperty = DP.RegisterAttached<bool>("Outside",
                 typeof(FancyScroll), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -36,7 +36,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(IsMouseOverProperty, value);
         }
 
-        public static readonly DependencyProperty IsMouseOverProperty = DP.RegisterAttached("IsMouseOver", typeof(bool),
+        public static readonly AttachedProperty<bool> IsMouseOverProperty = DP.RegisterAttached<bool>("IsMouseOver",
                 typeof(FancyScroll), new UIPropertyMetadata(false));
 
         public static bool GetScrollParent(DependencyObject obj) {
@@ -47,7 +47,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ScrollParentProperty, value);
         }
 
-        public static readonly DependencyProperty ScrollParentProperty = DP.RegisterAttached("ScrollParent", typeof(bool),
+        public static readonly AttachedProperty<bool> ScrollParentProperty = DP.RegisterAttached<bool>("ScrollParent",
                 typeof(FancyScroll), new UIPropertyMetadata(OnScrollParentChanged));
 
         private static void OnScrollParentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

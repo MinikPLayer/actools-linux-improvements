@@ -10,9 +10,6 @@ namespace FirstFloor.ModernUI.Presentation {
         private static readonly Dictionary<Uri, ResourceDictionary> SharedDictionaries =
                 new Dictionary<Uri, ResourceDictionary>();
 
-        /// <summary>
-        /// Local member of the source uri
-        /// </summary>
         private Uri _sourceUri;
 
         /// <summary>
@@ -27,11 +24,8 @@ namespace FirstFloor.ModernUI.Presentation {
                     // If the dictionary is already loaded, get it from the cache
                     MergedDictionaries.Add(result);
                 } else {
-                    // If the dictionary is not yet loaded, load it by setting
-                    // the source of the base class
-                    base.Source = value;
-
-                    // add it to the cache
+                    // If the dictionary is not yet loaded, load it and add it to the cache
+                    ((ResourceDictionary)this).Source = value;
                     SharedDictionaries.Add(value, this);
                 }
             }

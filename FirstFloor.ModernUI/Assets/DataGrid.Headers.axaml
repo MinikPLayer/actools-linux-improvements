@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
@@ -6,7 +6,7 @@
   </ResourceDictionary.MergedDictionaries>
 
   <!-- Column headers -->
-  <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
+  <ControlTheme TargetType="DataGridColumnHeader" x:Key="{x:Type DataGridColumnHeader}">
     <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForeground}"/>
     <Setter Property="BorderThickness" Value="0"/>
@@ -33,23 +33,23 @@
       </Setter.Value>
     </Setter>
 
-    <Style Selector="^ /template/ #SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:pointerover[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
+    <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:pointerover"><Style Selector="^[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundHover}"/>
-      </Style><Style Selector="^:pressed[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
+      </Style></Style><Style Selector="^:pressed"><Style Selector="^[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundPressed}"/>
-      </Style><Style Selector="^[SortDirection=Ascending] /template/ #SortArrow"><Setter Property="IsVisible" Value="True"/>
+      </Style></Style><Style Selector="^[SortDirection=Ascending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
               <Setter Property="RenderTransform">
                 <Setter.Value>
                   <RotateTransform Angle="180"/>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[SortDirection=Descending] /template/ #SortArrow"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^[CanUserSort=False] /template/ #SortArrow"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ #SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
+            </Style><Style Selector="^[SortDirection=Descending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[CanUserSort=False] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
             </Style></ControlTheme>
 
   <!-- Row headers -->
-  <ControlTheme x:Key="{x:Type DataGridRowHeader}" TargetType="DataGridRowHeader">
+  <ControlTheme TargetType="DataGridRowHeader" x:Key="{x:Type DataGridRowHeader}">
     <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForeground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource DataGridGridLines}"/>

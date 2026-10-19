@@ -1,10 +1,15 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Avalonia.VisualTree;
 using FirstFloor.ModernUI.Commands;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
+    /// <summary>
+    /// Moves key bindings of an element to the window, so they work everywhere in it.
+    /// </summary>
     public static class InputBindingBehavior {
         public static bool GetPropagateToWindow(FrameworkElement obj) {
             return obj.GetValue(PropagateToWindowProperty) as bool? == true;
@@ -14,8 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(PropagateToWindowProperty, value);
         }
 
-        public static readonly DependencyProperty PropagateToWindowProperty =
-            DP.RegisterAttached("PropagateToWindow", typeof(bool), typeof(InputBindingBehavior),
+        public static readonly AttachedProperty<bool> PropagateToWindowProperty = DP.RegisterAttached<bool>("PropagateToWindow", typeof(InputBindingBehavior),
             new PropertyMetadata(false, OnPropagateToWindowChanged));
 
         private static void OnPropagateToWindowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -39,42 +43,45 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(WindowProperty, value);
         }
 
-        public static readonly DependencyProperty WindowProperty = DP.RegisterAttached("Window", typeof(Window),
+        public static readonly AttachedProperty<Window> WindowProperty = DP.RegisterAttached<Window>("Window",
                 typeof(InputBindingBehavior), new UIPropertyMetadata(null));
 
-        private static void SetBindings(UIElement element) {
+        private static readonly ConditionalWeakTable<KeyBinding, FrameworkElement> Targets = new ConditionalWeakTable<KeyBinding, FrameworkElement>();
+        private static readonly ConditionalWeakTable<KeyBinding, KeyBinding> Originals = new ConditionalWeakTable<KeyBinding, KeyBinding>();
+
+        private static void SetBindings(FrameworkElement element) {
             RemoveBindings(element);
 
-            var window = Window.GetWindow(element);
+            var window = element.GetVisualRoot() as Window;
             if (window == null) return;
 
             SetWindow(element, window);
 
             for (var i = element.InputBindings.Count - 1; i >= 0; i--) {
                 var binding = element.InputBindings[i];
-                binding.CommandTarget = element;
-                window.InputBindings.Add(new ExtBinding(window, binding));
+                var wrapped = CreateBinding(window, binding);
+                Targets.AddOrUpdate(wrapped, element);
+                Originals.AddOrUpdate(wrapped, binding);
+                window.InputBindings.Add(wrapped);
                 element.InputBindings.RemoveAt(i);
             }
         }
 
-        private class ExtBinding : InputBinding {
-            internal readonly InputBinding BaseBinding;
+        private static KeyBinding CreateBinding(Window window, KeyBinding baseBinding) {
+            return new KeyBinding {
+                Gesture = baseBinding.Gesture,
+                Command = new DelegateCommand<object>(o => {
+                    if (baseBinding.Gesture?.KeyModifiers.HasFlag(KeyModifiers.Alt) == true) {
+                        var focused = window.FocusManager?.GetFocusedElement();
+                        if (focused is TextBox) return;
+                    }
 
-            public ExtBinding(Window window, InputBinding baseBinding) : base(new DelegateCommand<object>(o => {
-                if ((baseBinding.Gesture as KeyGesture)?.Modifiers.HasFlag(ModifierKeys.Alt) == true) {
-                    var focused = FocusManager.GetFocusedElement(window);
-                    if (focused is TextBoxBase || focused is PasswordBox) return;
-                }
-
-                baseBinding.Command.Execute(baseBinding.CommandParameter);
-            }), baseBinding.Gesture) {
-                BaseBinding = baseBinding;
-                CommandTarget = baseBinding.CommandTarget;
-            }
+                    baseBinding.Command?.Execute(baseBinding.CommandParameter);
+                })
+            };
         }
 
-        private static void RemoveBindings(UIElement element) {
+        private static void RemoveBindings(FrameworkElement element) {
             var window = GetWindow(element);
             if (window == null) return;
 
@@ -82,9 +89,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
 
             for (var i = window.InputBindings.Count - 1; i >= 0; i--) {
                 var binding = window.InputBindings[i];
-                if (ReferenceEquals(binding.CommandTarget, element)) {
+                if (Targets.TryGetValue(binding, out var target) && ReferenceEquals(target, element)) {
                     window.InputBindings.RemoveAt(i);
-                    element.InputBindings.Add(binding is ExtBinding ext ? ext.BaseBinding : binding);
+                    element.InputBindings.Add(Originals.TryGetValue(binding, out var original) ? original : binding);
                 }
             }
         }

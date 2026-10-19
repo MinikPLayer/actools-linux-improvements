@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(SaturationProperty);
         }
 
-        public static readonly DependencyProperty SaturationProperty = DP.Register("Saturation", typeof(double),
+        public static readonly StyledProperty<double> SaturationProperty = DP.Register<double>("Saturation",
                 typeof(ColorPickerSaturationPaletteEffect), new UIPropertyMetadata(0d, PixelShaderConstantCallback(0), CoerceSaturationFactor));
 
         public double Saturation {

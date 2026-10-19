@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private IRecyclingItemContainerGenerator _itemsGenerator;
         private readonly Dictionary<UIElement, Rect> _childLayouts = new Dictionary<UIElement, Rect>();
 
-        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly StyledProperty<Orientation> OrientationProperty = DP.Register<Orientation>(nameof(Orientation),
                 typeof(VirtualizingTilePanel), new PropertyMetadata(Orientation.Horizontal));
 
         public Orientation Orientation {
@@ -27,14 +27,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty ItemWidthProperty = DP.Register("ItemWidth", typeof(double), typeof(VirtualizingTilePanel),
+        public static readonly StyledProperty<double> ItemWidthProperty = DP.Register<double>("ItemWidth", typeof(VirtualizingTilePanel),
                 new PropertyMetadata(double.PositiveInfinity, HandleItemDimensionChanged));
 
-        public static readonly DependencyProperty ItemHeightProperty = DP.Register("ItemHeight", typeof(double), typeof(VirtualizingTilePanel),
+        public static readonly StyledProperty<double> ItemHeightProperty = DP.Register<double>("ItemHeight", typeof(VirtualizingTilePanel),
                 new PropertyMetadata(double.PositiveInfinity, HandleItemDimensionChanged));
 
-        private static readonly DependencyProperty VirtualItemIndexProperty =
-                DP.RegisterAttached("VirtualItemIndex", typeof(int), typeof(VirtualizingTilePanel), new PropertyMetadata(-1));
+        private static readonly AttachedProperty<int> VirtualItemIndexProperty = DP.RegisterAttached<int>("VirtualItemIndex", typeof(VirtualizingTilePanel), new PropertyMetadata(-1));
 
         private bool _isInMeasure;
 
@@ -564,14 +563,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DP.Register(nameof(HorizontalContentAlignment), typeof(HorizontalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.AffectsArrange));
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty = DP.Register<HorizontalAlignment>(nameof(HorizontalContentAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public HorizontalAlignment HorizontalContentAlignment {
             get => GetValue(HorizontalContentAlignmentProperty) as HorizontalAlignment? ?? default;
             set => SetValue(HorizontalContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DP.Register(nameof(VerticalContentAlignment), typeof(VerticalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.AffectsArrange));
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty = DP.Register<VerticalAlignment>(nameof(VerticalContentAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public VerticalAlignment VerticalContentAlignment {
             get => GetValue(VerticalContentAlignmentProperty) as VerticalAlignment? ?? default;

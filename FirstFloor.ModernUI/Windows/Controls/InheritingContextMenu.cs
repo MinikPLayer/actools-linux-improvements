@@ -1,101 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using FirstFloor.ModernUI.Windows.Attached;
+using Avalonia.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
+    /// <summary>
+    /// Context menu which inherits data context of the placement target (Avalonia already does that for context menus of controls).
+    /// </summary>
     public class InheritingContextMenu : ContextMenu {
-        public static bool OptionInsertInFront = false;
-
-        private static readonly object TemporaryMark = new object();
-        private static WeakReference<InheritingContextMenu> _previouslyOpened;
-
-        private List<Tuple<ContextMenu, object>> _menus;
-        private List<List<FrameworkElement>> _items;
-
-        public InheritingContextMenu() {
-        }
-
-        private void RemoveTemporary() {
-            if (_items == null) return;
-
-            foreach (var item in Items.OfType<FrameworkElement>().Where(x => ReferenceEquals(x.Tag, TemporaryMark)).ToList()) {
-                Items.Remove(item);
-                if (item is MenuItem) {
-                    _menus[_items.FindIndex(x => x.Contains(item))].Item1.Items.Add(item);
-                    item.Tag = null;
-                }
-            }
-
-            _menus = null;
-            _items.Clear();
-            _items = null;
-        }
-
-        protected override void OnOpened(RoutedEventArgs e) {
-            InheritingContextMenu previous = null;
-            if (_previouslyOpened?.TryGetTarget(out previous) == true) {
-                previous.RemoveTemporary();
-            }
-
-            RemoveTemporary();
-            ContextMenuAdvancement.CheckTime();
-
-            _menus = ContextMenuAdvancement.ParentContextMenu;
-            if (_menus.Count == 0) return;
-
-            _menus = _menus.Where(x => !ReferenceEquals(x.Item1, this)).ToList();
-            ContextMenuAdvancement.ParentContextMenu.Clear();
-
-            _items = new List<List<FrameworkElement>>(_menus.Count);
-            foreach (var menu in _menus) {
-                var sub = menu.Item1.Items.OfType<FrameworkElement>().ToList();
-                foreach (var s in sub.OfType<MenuItem>()) {
-                    s.DataContext = menu.Item2;
-                }
-
-                _items.Add(sub);
-                menu.Item1.Items.Clear();
-            }
-
-            if (OptionInsertInFront) {
-                var i = 0;
-                foreach (var group in _items) {
-                    var any = false;
-                    foreach (var item in group) {
-                        Items.Insert(i++, item);
-                        item.Tag = TemporaryMark;
-                        any = true;
-                    }
-
-                    if (any) {
-                        Items.Insert(i++, new Separator { Tag = TemporaryMark });
-                    }
-                }
-            } else {
-                foreach (var group in _items) {
-                    var any = false;
-                    foreach (var item in group) {
-                        if (!any) {
-                            Items.Add(new Separator { Tag = TemporaryMark });
-                        }
-
-                        Items.Add(item);
-                        item.Tag = TemporaryMark;
-                        any = true;
-                    }
-                }
-            }
-
-            _previouslyOpened = new WeakReference<InheritingContextMenu>(this);
-            base.OnOpened(e);
-        }
-
-        protected override void OnClosed(RoutedEventArgs e) {
-            RemoveTemporary();
-            base.OnClosed(e);
-        }
+        protected override Type StyleKeyOverride => typeof(ContextMenu);
     }
 }

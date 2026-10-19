@@ -1,7 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
     public static class ComboBoxAdvancement {
@@ -13,36 +14,25 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DisplayConverterProperty, value);
         }
 
-        public static readonly DependencyProperty DisplayConverterProperty = DP.RegisterAttached("DisplayConverter", typeof(IValueConverter),
+        public static readonly AttachedProperty<IValueConverter> DisplayConverterProperty = DP.RegisterAttached<IValueConverter>("DisplayConverter",
                 typeof(ComboBoxAdvancement), new UIPropertyMetadata(OnDisplayConverterChanged));
 
         private static void OnDisplayConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (!(d is ComboBox element) || !(e.NewValue is IValueConverter)) return;
-            var newValue = (IValueConverter)e.NewValue;
-            if (newValue == null) {
-                element.ItemTemplate = null;
-            } else {
-                var visualTree = new FrameworkElementFactory(typeof(TextBlock));
-                visualTree.SetBinding(TextBlock.TextProperty, new Binding {
-                    Converter = newValue
-                });
-
-                element.ItemTemplate = new DataTemplate {
-                    VisualTree = visualTree
-                };
-            }
+            if (!(d is ComboBox element) || !(e.NewValue is IValueConverter newValue)) return;
+            element.ItemTemplate = new FuncDataTemplate<object>((item, scope) => new TextBlock {
+                [!TextBlock.TextProperty] = new Avalonia.Data.Binding { Converter = newValue }
+            });
         }
     }
 
+    /// <summary>
+    /// Marks controls which are available only for supporters (the original one added an adorner with a lock icon and dimmed content).
+    /// </summary>
     public static class LimitedService {
         public static bool OptionNonLimited = false;
 
-        public static readonly DependencyProperty LimitedProperty;
-
-        static LimitedService() {
-            LimitedProperty = DP.RegisterAttached("Limited", typeof(bool), typeof(LimitedService),
-                    new FrameworkPropertyMetadata(false, OnLimitedChanged));
-        }
+        public static readonly AttachedProperty<bool> LimitedProperty = DP.RegisterAttached<bool>("Limited", typeof(LimitedService),
+                new FrameworkPropertyMetadata(false, OnLimitedChanged));
 
         public static bool GetLimited(DependencyObject d) {
             return d.GetValue(LimitedProperty) as bool? == true;
@@ -53,25 +43,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         private static void OnLimitedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (OptionNonLimited) return;
-            if (d is FrameworkElement u) {
-                u.Loaded += OnControlLoaded;
-            }
-        }
-
-        private static void OnControlLoaded(object sender, RoutedEventArgs e) {
-            if (OptionNonLimited) return;
-
-            var c = (FrameworkElement)sender;
-            c.Loaded -= OnControlLoaded;
-            if (GetLimited(c)) {
-                // AdornerLayer.GetAdornerLayer(c)?.Add(new LimitedMarkAdorner(c));
-                c.IsEnabled = false;
-                c.ToolTip = "Not available in the Lite version yet";
-                c.SetValue(ToolTipService.ShowOnDisabledProperty, true);
-                c.SetValue(ToolTipService.PlacementProperty, PlacementMode.Bottom);
-                c.SetValue(ToolTipService.InitialShowDelayProperty, 100);
-            }
+            if (OptionNonLimited || !(d is Avalonia.Controls.Control c)) return;
+            // TODO: lock adorner
+            c.Opacity = e.NewValue as bool? == true ? 0.5 : 1d;
         }
     }
 }

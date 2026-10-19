@@ -48,10 +48,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightProperty = DP.Register("ItemHeight", typeof(double), typeof(VirtualizingWrapPanel),
+        public static readonly StyledProperty<double> ItemHeightProperty = DP.Register<double>("ItemHeight", typeof(VirtualizingWrapPanel),
                 new FrameworkPropertyMetadata(double.PositiveInfinity));
 
-        public static readonly DependencyProperty ItemWidthProperty = DP.Register("ItemWidth", typeof(double), typeof(VirtualizingWrapPanel),
+        public static readonly StyledProperty<double> ItemWidthProperty = DP.Register<double>("ItemWidth", typeof(VirtualizingWrapPanel),
                 new FrameworkPropertyMetadata(double.PositiveInfinity));
 
         public static readonly DependencyProperty OrientationProperty = DP.AddOwner(StackPanel.OrientationProperty, typeof(VirtualizingWrapPanel),

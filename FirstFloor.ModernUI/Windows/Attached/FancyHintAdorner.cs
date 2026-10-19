@@ -17,23 +17,21 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         static FancyHintControl() {
         }
 
-        public static readonly DependencyProperty HorizontalPositionAlignmentProperty = DP.Register(nameof(HorizontalPositionAlignment),
-                typeof(HorizontalAlignment), typeof(FancyHintControl));
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalPositionAlignmentProperty = DP.Register<HorizontalAlignment>(nameof(HorizontalPositionAlignment), typeof(FancyHintControl));
 
         public HorizontalAlignment HorizontalPositionAlignment {
             get => GetValue(HorizontalPositionAlignmentProperty) as HorizontalAlignment? ?? default;
             set => SetValue(HorizontalPositionAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalPositionAlignmentProperty = DP.Register(nameof(VerticalPositionAlignment),
-                typeof(VerticalAlignment), typeof(FancyHintControl));
+        public static readonly StyledProperty<VerticalAlignment> VerticalPositionAlignmentProperty = DP.Register<VerticalAlignment>(nameof(VerticalPositionAlignment), typeof(FancyHintControl));
 
         public VerticalAlignment VerticalPositionAlignment {
             get => GetValue(VerticalPositionAlignmentProperty) as VerticalAlignment? ?? default;
             set => SetValue(VerticalPositionAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty HintProperty = DP.Register(nameof(Hint), typeof(FancyHint),
+        public static readonly StyledProperty<FancyHint> HintProperty = DP.Register<FancyHint>(nameof(Hint),
                 typeof(FancyHintControl));
 
         public FancyHint Hint {

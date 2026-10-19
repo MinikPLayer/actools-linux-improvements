@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
@@ -10,7 +10,6 @@
   <ControlTheme x:Key="HierarchicalComboBoxMenuItem" TargetType="MenuItem">
     <Setter Property="Focusable" Value="True"/>
 
-    <Setter Property="OverridesDefaultStyle" Value="True"/>
     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
     <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
@@ -21,16 +20,15 @@
     <Setter Property="VerticalContentAlignment" Value="Center"/>
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="IsVisible" Value="True"/>
-    <Setter Property="IsTextSearchEnabled" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="MenuItem">
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
             </Grid.ColumnDefinitions>
-            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <ToolTip.Tip>
                 <ToolTip IsVisible="False"/>
               </ToolTip.Tip>
@@ -51,7 +49,7 @@
             </Popup>
             <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
             <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
-            <ContentPresenter x:Name="PART_Text" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            <ContentPresenter x:Name="PART_Text" Grid.Column="0" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </Grid>
           </ControlTemplate>
       </Setter.Value>
@@ -69,17 +67,17 @@
         </Setter>
       </Trigger>
     </Style.Triggers>-->
-  <Style Selector="^ /template/ #Arrow"><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_Button"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:pointerover /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ #PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+  <Style Selector="^ /template/ Path#Arrow"><Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
-            </Style><Style Selector="^:focus[IsSubmenuOpen=False] /template/ #PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+            </Style><Style Selector="^:focus"><Style Selector="^[IsSubmenuOpen=False] /template/ ToggleButton#PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></Style><Style Selector="^[IsSubmenuOpen=True] /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
-            </Style><Style Selector="^:disabled /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextDisabled}"/>
-              </Style><Style Selector="^:disabled /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextDisabled}"/>
+            </Style><Style Selector="^:disabled /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextDisabled}"/>
+              </Style><Style Selector="^:disabled /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextDisabled}"/>
             </Style></ControlTheme>
 
   <!-- PORT: ControlTemplate with triggers outside of a style (3 triggers) --><ControlTemplate x:Key="SpecialMenuItemHeaderControlTemplate" TargetType="c:HierarchicalItem">
@@ -88,12 +86,12 @@
         <ColumnDefinition/>
         <ColumnDefinition Width="54"/>
       </Grid.ColumnDefinitions>
-      <ContentPresenter Grid.Column="0" ContentSource="Header" Margin="7 2 8 2" RecognizesAccessKey="False"/>
+      <ContentPresenter Grid.Column="0" Margin="7 2 8 2" RecognizesAccessKey="False"/>
       <Path x:Name="RightArrow" Grid.Column="1" VerticalAlignment="Center" Margin="41 0 0 0" Fill="{TemplateBinding MenuItem.Foreground}" Data="{StaticResource RightArrow}" IsHitTestVisible="False"/>
-      <!-- PORT: SystemParameters not available: SystemParameters.MenuPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.Column="0" Grid.ColumnSpan="2" Placement="Right" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+      <Popup x:Name="PART_Popup" Grid.Column="0" Grid.ColumnSpan="2" Placement="Right" Focusable="False" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <Grid Margin="0" Background="{DynamicResource PopupBackground}">
           <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
-            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="True" Foreground="{DynamicResource ItemText}">
+            <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
               <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
             </ScrollViewer>
           </Border>
@@ -109,7 +107,7 @@
           <ContentPresenter IsHitTestVisible="False" Margin="4" Content="{Binding PreviewValue, RelativeSource={RelativeSource TemplatedParent}}" RecognizesAccessKey="False"/>
         </ToolTip>
       </ToolTip.Tip>
-      <ContentPresenter ContentSource="Header" Margin="7 2 62 2" RecognizesAccessKey="False" ToolTip.Tip="{x:Null}"/>
+      <ContentPresenter Margin="7 2 62 2" RecognizesAccessKey="False" ToolTip.Tip="{x:Null}"/>
     </Border>
     </ControlTemplate>
 
@@ -117,7 +115,6 @@
     <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource SpecialMenuItemControlTemplate}"/>
-    <Setter Property="IsTextSearchEnabled" Value="True"/>
     <Style Selector="^[Role=TopLevelHeader]"><Setter Property="Padding" Value="7 2 8 2"/>
         <Setter Property="Template" Value="{StaticResource SpecialMenuItemHeaderControlTemplate}"/>
       </Style><Style Selector="^[Role=SubmenuHeader]"><Setter Property="Padding" Value="2 3 2 3"/>
@@ -141,12 +138,12 @@
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
             </Grid.ColumnDefinitions>
-            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <Grid Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
 
-                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource ItemText}">
+                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource ItemText}">
                   <!-- popup border thickness not dependent on BorderThickness property-->
                   <ScrollViewer x:Name="DropDownScrollViewer">
                     <Grid>
@@ -161,7 +158,7 @@
             </Popup>
             <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
             <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Fill="{TemplateBinding Foreground}" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
-            <ContentPresenter x:Name="PART_Text" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            <ContentPresenter x:Name="PART_Text" Grid.Column="0" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </Grid>
         </ControlTemplate>
       </Setter.Value>
@@ -215,7 +212,7 @@
   </ControlTheme>
 
   <ControlTheme x:Key="HierarchicalComboBox.Borderless" TargetType="c:HierarchicalComboBox" BasedOn="{StaticResource HierarchicalComboBox.Base}">
-    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Control}}, Path=(TextElement.Foreground)}"/>
+    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type TemplatedControl}}, Path=(TextElement.Foreground)}"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="Transparent"/>
     <Setter Property="Padding" Value="0"/>
@@ -223,11 +220,11 @@
     </ControlTheme>
 
   <ControlTheme x:Key="HierarchicalComboBox.Borderless.White" TargetType="c:HierarchicalComboBox" BasedOn="{StaticResource HierarchicalComboBox.Base}">
-    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Control}}, Path=(TextElement.Foreground)}"/>
+    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type TemplatedControl}}, Path=(TextElement.Foreground)}"/>
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="Transparent"/>
     <Setter Property="Padding" Value="0"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource HierarchicalComboBoxTemplate.Borderless}"/>
-    <Style Selector="^:not(:disabled):pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-      </Style></ControlTheme>
+    <Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+      </Style></Style></ControlTheme>
 </ResourceDictionary>

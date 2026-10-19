@@ -4,7 +4,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(NonNull))]
     public class ReferenceSwitch : BaseSwitch {
-        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(object),
+        public static readonly StyledProperty<object> ValueProperty = DP.Register<object>(nameof(Value),
                 typeof(ReferenceSwitch), new PropertyMetadata(null, (o, e) => {
                     ((ReferenceSwitch)o)._value = e.NewValue;
                     OnChildSelectingPropertyChanged(o, e);
@@ -17,7 +17,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty NullProperty = DP.Register(nameof(Null), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> NullProperty = DP.Register<UIElement>(nameof(Null),
                 typeof(ReferenceSwitch), new PropertyMetadata(null, (o, e) => {
                     ((ReferenceSwitch)o)._null = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -30,7 +30,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(NullProperty, value);
         }
 
-        public static readonly DependencyProperty NonNullProperty = DP.Register(nameof(NonNull), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> NonNullProperty = DP.Register<UIElement>(nameof(NonNull),
                 typeof(ReferenceSwitch), new PropertyMetadata(null, (o, e) => {
                     ((ReferenceSwitch)o)._nonNull = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);

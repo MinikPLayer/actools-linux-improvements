@@ -1,11 +1,23 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:s="using:System" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:s="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <s:Double x:Key="AsyncButton.ProgressBarOpacity">0.08</s:Double>
   <ControlTheme TargetType="c:AsyncButton" BasedOn="{StaticResource BaseButtonStyle}" x:Key="{x:Type c:AsyncButton}">
-    <Setter Property="Template">
+    <ControlTheme.Resources>
+            <ResourceDictionary><ResourceDictionary>
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+              <!-- PORT: removed Storyboard -->
+            </ResourceDictionary>
+          </ResourceDictionary></ControlTheme.Resources>
+          <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="c:AsyncButton">
           <c:Cell>
@@ -40,9 +52,7 @@
                       <TranslateTransform X="{Binding Padding.Left, Converter={StaticResource SubstractConverter}, ConverterParameter=4, RelativeSource={RelativeSource TemplatedParent}}"/>
                     </Border.RenderTransform>
                     <Border Width="12" Height="12" Margin="0 -3 0 -4" DockPanel.Dock="Left" VerticalAlignment="Center" ClipToBounds="True">
-                      <!-- PORT: LayoutTransform needs LayoutTransformControl --><Border.RenderTransform>
-                        <ScaleTransform x:Name="PART_ProgressScale" ScaleX="0"/>
-                      </Border.RenderTransform>
+                      <!-- PORT: removed Border.LayoutTransform -->
                       <c:BooleanSwitch x:Name="PART_ProgressRing" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}">
                         <Canvas>
                           <c:ModernProgressRing Width="80" Height="80" IsActive="True" Theme="{StaticResource CompactProgressRingStyle}">
@@ -67,57 +77,13 @@
               </c:AdornedControl>
             </Border>
           </c:Cell>
-          <ControlTemplate.Resources>
-            <ResourceDictionary>
-              <Storyboard x:Key="ScaleXUp">
-                <DoubleAnimation To="1" Duration="0:0:0.22" Storyboard.TargetName="PART_ProgressScale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)" EasingFunction="{StaticResource StandardEase}"/>
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_CancelTranslate" Storyboard.TargetProperty="(TranslateTransform.X)" EasingFunction="{StaticResource DecelerationEase}"/>
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.0" Storyboard.TargetName="PART_ProgressRing" Storyboard.TargetProperty="(c:BooleanSwitch.Value)">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0.0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <s:Boolean>True</s:Boolean>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-              </Storyboard>
-              <Storyboard x:Key="ScaleXDown">
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ProgressScale" Storyboard.TargetProperty="(ScaleTransform.ScaleX)" EasingFunction="{StaticResource StandardEase}"/>
-                <DoubleAnimation To="23" Duration="0:0:0.22" Storyboard.TargetName="PART_CancelTranslate" Storyboard.TargetProperty="(TranslateTransform.X)" EasingFunction="{StaticResource AccelerationEase}"/>
-                <ObjectAnimationUsingKeyFrames BeginTime="0:0:0.22" Storyboard.TargetName="PART_ProgressRing" Storyboard.TargetProperty="(c:BooleanSwitch.Value)">
-                  <DiscreteObjectKeyFrame KeyTime="0:0:0.0">
-                    <DiscreteObjectKeyFrame.Value>
-                      <s:Boolean>False</s:Boolean>
-                    </DiscreteObjectKeyFrame.Value>
-                  </DiscreteObjectKeyFrame>
-                </ObjectAnimationUsingKeyFrames>
-              </Storyboard>
-              <Storyboard x:Key="PaddingDown">
-                <DoubleAnimation To="-8" Duration="0:0:0.22" Storyboard.TargetName="PART_PaddingTranslate" Storyboard.TargetProperty="(TranslateTransform.X)" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-              <Storyboard x:Key="PaddingUp">
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_PaddingTranslate" Storyboard.TargetProperty="(TranslateTransform.X)" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-              <Storyboard x:Key="ShowProgressBar">
-                <DoubleAnimation To="1" Duration="0:0:0.0" Storyboard.TargetName="PART_ProgressBar" Storyboard.TargetProperty="Opacity"/>
-              </Storyboard>
-              <Storyboard x:Key="HideProgressBar">
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ProgressBar" Storyboard.TargetProperty="Opacity"/>
-              </Storyboard>
-              <Storyboard x:Key="ShowProgressMessage">
-                <DoubleAnimation To="20" Duration="0:0:0.22" Storyboard.TargetName="PART_ContentTranslate" Storyboard.TargetProperty="(TranslateTransform.Y)" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-              <Storyboard x:Key="HideProgressMessage">
-                <DoubleAnimation To="0" Duration="0:0:0.22" Storyboard.TargetName="PART_ContentTranslate" Storyboard.TargetProperty="(TranslateTransform.Y)" EasingFunction="{StaticResource StandardEase}"/>
-              </Storyboard>
-            </ResourceDictionary>
-          </ControlTemplate.Resources>
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="Transparent"/></Style><!-- PORT: storyboard actions of trigger [IsProcessing=True] not converted --><Style Selector="^[Cancellable=True] /template/ #PART_Adorned"><Setter Property="IsAdornerVisible" Value="True"/>
-            </Style><!-- PORT: storyboard actions of trigger [IsProcessing=True][Cancellable=True][Padding=16 1 16 2] not converted --><!-- PORT: storyboard actions of trigger [IsProcessing=True][PercentageProgress=True] not converted --><!-- PORT: storyboard actions of trigger [IsProcessing=True][MessageProgress=True] not converted --><Style Selector="^:pointerover /template/ #Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-            </Style><Style Selector="^:pressed /template/ #Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
-            </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+  <Style Selector="^ /template/ Border#Chrome"><Setter Property="BorderBrush" Value="Transparent"/></Style><!-- PORT: storyboard actions of trigger [IsProcessing=True] not converted --><Style Selector="^[Cancellable=True] /template/ c|AdornedControl#PART_Adorned"><Setter Property="IsAdornerVisible" Value="True"/>
+            </Style><!-- PORT: storyboard actions of trigger [Padding=16 1 16 2] not converted --><!-- PORT: storyboard actions of trigger [PercentageProgress=True] not converted --><!-- PORT: storyboard actions of trigger [MessageProgress=True] not converted --><Style Selector="^:pointerover /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Style><Style Selector="^:pressed /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Style><Style Selector="^:focus /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/>
             </Style></ControlTheme>
 
   </ResourceDictionary>

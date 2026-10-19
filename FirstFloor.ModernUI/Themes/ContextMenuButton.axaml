@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -17,8 +17,8 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_Icon"><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^:disabled /template/ #PART_Icon"><Setter Property="Fill" Value="{DynamicResource ButtonTextDisabled}"/>
-            </Style><Style Selector="^:pointerover /template/ #PART_Icon"><Setter Property="Fill" Value="{DynamicResource Accent}"/>
+  <Style Selector="^ /template/ Path#PART_Icon"><Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:disabled /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource Accent}"/>
             </Style></ControlTheme>
 
   <ControlTheme x:Key="ContextMenuButton.AsButton" TargetType="c:ContextMenuButton">
@@ -72,7 +72,7 @@
       </Style><Style Selector="^[(a|IsPressedAdvancement.IsPressed)=True]"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-      </Style><Style Selector="^[(ToggleButton.IsChecked)=True]"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+      </Style><Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>

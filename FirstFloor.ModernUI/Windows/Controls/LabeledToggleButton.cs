@@ -24,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _loaded = true;
         }
 
-        public static readonly DependencyProperty HighlightCheckedProperty = DP.Register(nameof(HighlightChecked), typeof(bool),
+        public static readonly StyledProperty<bool> HighlightCheckedProperty = DP.Register<bool>(nameof(HighlightChecked),
                 typeof(LabeledToggleButton));
 
         public bool HighlightChecked {
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HighlightCheckedProperty, value);
         }
 
-        public static readonly DependencyProperty HighlightUncheckedProperty = DP.Register(nameof(HighlightUnchecked), typeof(bool),
+        public static readonly StyledProperty<bool> HighlightUncheckedProperty = DP.Register<bool>(nameof(HighlightUnchecked),
                 typeof(LabeledToggleButton));
 
         public bool HighlightUnchecked {
@@ -40,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HighlightUncheckedProperty, value);
         }
 
-        public static readonly DependencyProperty AnimationSpeedProperty = DP.Register(nameof(AnimationSpeed), typeof(double),
+        public static readonly StyledProperty<double> AnimationSpeedProperty = DP.Register<double>(nameof(AnimationSpeed),
                 typeof(LabeledToggleButton), new PropertyMetadata(150d));
 
         public double AnimationSpeed {
@@ -153,7 +153,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty LabelUncheckedProperty = DP.Register(nameof(LabelUnchecked), typeof(string),
+        public static readonly StyledProperty<string> LabelUncheckedProperty = DP.Register<string>(nameof(LabelUnchecked),
                 typeof(LabeledToggleButton));
 
         public string LabelUnchecked {
@@ -161,7 +161,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LabelUncheckedProperty, value);
         }
 
-        public static readonly DependencyProperty LabelCheckedProperty = DP.Register(nameof(LabelChecked), typeof(string),
+        public static readonly StyledProperty<string> LabelCheckedProperty = DP.Register<string>(nameof(LabelChecked),
                 typeof(LabeledToggleButton));
 
         public string LabelChecked {

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:e="clr-namespace:FirstFloor.ModernUI.Effects" xmlns:mui="clr-namespace:FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:e="clr-namespace:FirstFloor.ModernUI.Effects" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
@@ -25,10 +25,10 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_Icon"><Setter Property="Fill" Value="{TemplateBinding Background}"/></Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ #PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
-            </Style><Style Selector="^:checked /template/ #PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
-            </Style><Style Selector="^:pressed /template/ #PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+  <Style Selector="^ /template/ Path#PART_Icon"><Setter Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+            </Style><Style Selector="^:checked /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+            </Style><Style Selector="^:pressed /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}"/>
             </Style></ControlTheme>
 
@@ -181,63 +181,63 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ #PART_Slider"><Setter Property="Maximum" Value="359"/><Setter Property="Value" Value="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[IsBright=True] /template/ #PART_Thumb"><Setter Property="Background" Value="Black"/>
-            </Style><Style Selector="^[Mode=Saturation] /template/ #PART_Slider"><Setter Property="Maximum" Value="100"/>
+  <Style Selector="^ /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="359"/><Setter Property="Value" Value="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[IsBright=True] /template/ Thumb#PART_Thumb"><Setter Property="Background" Value="Black"/>
+            </Style><Style Selector="^[Mode=Saturation] /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="100"/>
               <Setter Property="Value" Value="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}"/>
-              </Style><Style Selector="^[Mode=Saturation] /template/ #PART_Palette"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Saturation] /template/ Rectangle#PART_Palette"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerSaturationPaletteEffect Saturation="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-              </Style><Style Selector="^[Mode=Saturation] /template/ #PART_SliderBackground"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Saturation] /template/ Rectangle#PART_SliderBackground"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerSaturationSliderEffect Hue="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}" Brightness="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[Mode=Brightness] /template/ #PART_Slider"><Setter Property="Maximum" Value="100"/>
+            </Style><Style Selector="^[Mode=Brightness] /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="100"/>
               <Setter Property="Value" Value="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}"/>
-              </Style><Style Selector="^[Mode=Brightness] /template/ #PART_Palette"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Brightness] /template/ Rectangle#PART_Palette"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerBrightnessPaletteEffect Brightness="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-              </Style><Style Selector="^[Mode=Brightness] /template/ #PART_SliderBackground"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Brightness] /template/ Rectangle#PART_SliderBackground"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerBrightnessSliderEffect Hue="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}" Saturation="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[Mode=Red] /template/ #PART_Slider"><Setter Property="Maximum" Value="255"/>
+            </Style><Style Selector="^[Mode=Red] /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="255"/>
               <Setter Property="Value" Value="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}"/>
-              </Style><Style Selector="^[Mode=Red] /template/ #PART_Palette"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Red] /template/ Rectangle#PART_Palette"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerRedPaletteEffect Red="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-              </Style><Style Selector="^[Mode=Red] /template/ #PART_SliderBackground"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Red] /template/ Rectangle#PART_SliderBackground"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerRedSliderEffect Green="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}" Blue="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[Mode=Green] /template/ #PART_Slider"><Setter Property="Maximum" Value="255"/>
+            </Style><Style Selector="^[Mode=Green] /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="255"/>
               <Setter Property="Value" Value="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}"/>
-              </Style><Style Selector="^[Mode=Green] /template/ #PART_Palette"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Green] /template/ Rectangle#PART_Palette"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerGreenPaletteEffect Green="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-              </Style><Style Selector="^[Mode=Green] /template/ #PART_SliderBackground"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Green] /template/ Rectangle#PART_SliderBackground"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerGreenSliderEffect Red="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}" Blue="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[Mode=Blue] /template/ #PART_Slider"><Setter Property="Maximum" Value="255"/>
+            </Style><Style Selector="^[Mode=Blue] /template/ Slider#PART_Slider"><Setter Property="Maximum" Value="255"/>
               <Setter Property="Value" Value="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}"/>
-              </Style><Style Selector="^[Mode=Blue] /template/ #PART_Palette"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Blue] /template/ Rectangle#PART_Palette"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerBluePaletteEffect Blue="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
               </Setter>
-              </Style><Style Selector="^[Mode=Blue] /template/ #PART_SliderBackground"><Setter Property="Effect">
+              </Style><Style Selector="^[Mode=Blue] /template/ Rectangle#PART_SliderBackground"><Setter Property="Effect">
                 <Setter.Value>
                   <e:ColorPickerBlueSliderEffect Red="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}" Green="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}"/>
                 </Setter.Value>
@@ -253,7 +253,7 @@
           <c:Cell>
             <c:BetterTextBox x:Name="PART_TextBox" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}"/>
             <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="2 0 0 0" Foreground="{Binding OverlayColor, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-            <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5" StaysOpen="False" PopupAnimation="Slide">
+            <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5" StaysOpen="False">
               <c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
                 <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
@@ -263,11 +263,11 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^:disabled /template/ #PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:not(:disabled):pointerover /template/ #PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+  <Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
-            </Style><Style Selector="^:focus /template/ #PART_TextBox"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:focus-within /template/ #PART_TextBox"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></Style><Style Selector="^:focus /template/ c|BetterTextBox#PART_TextBox"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^:focus-within /template/ c|BetterTextBox#PART_TextBox"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></ControlTheme>
 </ResourceDictionary>

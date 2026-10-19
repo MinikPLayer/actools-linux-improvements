@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -76,16 +76,16 @@
                     </ControlTemplate>
             </Setter.Value>
         </Setter>
-    <Style Selector="^ /template/ #buttonChrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:focus /template/ #buttonChrome"><Setter Property="BorderBrush" Value="Orange"/>
-                        </Style><Style Selector="^[IsContextMenuOpen=True] /template/ #buttonChrome"><Setter Property="BorderBrush" Value="DarkCyan"/>
-                        </Style><Style Selector="^[(ToggleButton.IsChecked)=True] /template/ #buttonChrome"><Setter Property="BorderBrush" Value="Yellow"/>
+    <Style Selector="^ /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:focus /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="Orange"/>
+                        </Style><Style Selector="^[IsContextMenuOpen=True] /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="DarkCyan"/>
+                        </Style><Style Selector="^:checked /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="Yellow"/>
                         </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                        </Style><Style Selector="^[Mode=Dropdown] /template/ #PART_DropDown"><Setter Property="IsVisible" Value="False"/>
-                            </Style><Style Selector="^[Mode=Dropdown] /template/ #rect"><Setter Property="IsVisible" Value="False"/>
-                        </Style><Style Selector="^[Mode=Button] /template/ #PART_DropDown"><Setter Property="IsVisible" Value="False"/>
-                            </Style><Style Selector="^[Mode=Button] /template/ #path"><Setter Property="IsVisible" Value="False"/>
-                            </Style><Style Selector="^[Mode=Button] /template/ #rect"><Setter Property="IsVisible" Value="False"/>
-                            </Style><Style Selector="^[Mode=Button] /template/ #Bd"><Setter Property="Grid.ColumnSpan" Value="2"/>
+                        </Style><Style Selector="^[Mode=Dropdown] /template/ Button#PART_DropDown"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Dropdown] /template/ Rectangle#rect"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[Mode=Button] /template/ Button#PART_DropDown"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ Path#path"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ Rectangle#rect"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ Border#Bd"><Setter Property="Grid.ColumnSpan" Value="2"/>
                         </Style></ControlTheme>
 </ResourceDictionary>

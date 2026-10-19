@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Converters {
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            return (value as System.Windows.Media.Color?)?.ToColor();
+            return (value is Avalonia.Media.Color c ? (System.Drawing.Color?)c.ToColor() : null);
         }
     }
 }

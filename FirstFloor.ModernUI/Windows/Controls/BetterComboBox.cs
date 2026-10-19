@@ -24,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SelectionChanged += (sender, e) => OnSelectionChanged(e);
         }
 
-        public static readonly DependencyProperty MaxLengthProperty = DP.Register(nameof(MaxLength), typeof(int),
+        public static readonly StyledProperty<int> MaxLengthProperty = DP.Register<int>(nameof(MaxLength),
                 typeof(BetterComboBox));
 
         public int MaxLength {
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MaxLengthProperty, value);
         }
 
-        public static readonly DependencyProperty TextWrappingProperty = DP.Register(nameof(TextWrapping), typeof(TextWrapping),
+        public static readonly StyledProperty<TextWrapping> TextWrappingProperty = DP.Register<TextWrapping>(nameof(TextWrapping),
                 typeof(BetterComboBox), new FrameworkPropertyMetadata(TextWrapping.NoWrap));
 
         public TextWrapping TextWrapping {
@@ -40,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TextWrappingProperty, value);
         }
 
-        public static readonly DependencyProperty AcceptsReturnProperty = DP.Register(nameof(AcceptsReturn), typeof(bool),
+        public static readonly StyledProperty<bool> AcceptsReturnProperty = DP.Register<bool>(nameof(AcceptsReturn),
                 typeof(BetterComboBox));
 
         public bool AcceptsReturn {
@@ -48,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AcceptsReturnProperty, value);
         }
 
-        public static readonly DependencyProperty AcceptsTabProperty = DP.Register(nameof(AcceptsTab), typeof(bool),
+        public static readonly StyledProperty<bool> AcceptsTabProperty = DP.Register<bool>(nameof(AcceptsTab),
                 typeof(BetterComboBox));
 
         public bool AcceptsTab {
@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AcceptsTabProperty, value);
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
+        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder),
                 typeof(BetterComboBox));
 
         public string Placeholder {
@@ -67,11 +67,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             if (IsDropDownOpen) return;
             e.Handled = true;
-            (Parent as Avalonia.Input.InputElement ?? this.GetVisualParent() as Avalonia.Input.InputElement)?.RaiseEvent(new PointerWheelEventArgs(
-                    e.RoutedEvent, e.Source, e.Pointer, (Avalonia.Visual)e.Source, e.GetPosition(null), e.Timestamp, e.Properties, e.KeyModifiers, e.Delta) {
-                RoutedEvent = PointerWheelChangedEvent,
-                Source = sender
-            });
+            var scroll = Windows.Media.VisualTreeHelperEx.GetParent<ScrollViewer>(this);
+            scroll?.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta.Y * 48d);
         }
 
         protected override void OnKeyDown(KeyEventArgs e) {
@@ -98,7 +95,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public new static readonly DependencyProperty SelectedItemProperty = DP.Register(nameof(SelectedItem), typeof(object),
+        public new static readonly StyledProperty<object> SelectedItemProperty = DP.Register<object>(nameof(SelectedItem),
                 typeof(BetterComboBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedItemChanged));
 
         [CanBeNull]
@@ -115,7 +112,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SetValue(SelectingItemsControl.SelectedItemProperty, newValue ?? NullValue);
         }
 
-        public static readonly DependencyProperty HoldSelectedIfEmptyProperty = DP.Register(nameof(HoldSelectedIfEmpty), typeof(bool),
+        public static readonly StyledProperty<bool> HoldSelectedIfEmptyProperty = DP.Register<bool>(nameof(HoldSelectedIfEmpty),
                 typeof(BetterComboBox), new PropertyMetadata(false, (o, e) =>
                         ((BetterComboBox)o)._holdSelectedIfEmpty = (bool)e.NewValue));
 
@@ -232,7 +229,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public new static readonly DependencyProperty ItemsSourceProperty = DP.Register(nameof(ItemsSource), typeof(IEnumerable),
+        public new static readonly StyledProperty<IEnumerable> ItemsSourceProperty = DP.Register<IEnumerable>(nameof(ItemsSource),
                 typeof(BetterComboBox), new PropertyMetadata(OnItemsSourceChanged));
 
         public new IEnumerable ItemsSource {
@@ -244,7 +241,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((BetterComboBox)o).UpdateItemsSource();
         }
 
-        public static readonly DependencyProperty NullableProperty = DP.Register(nameof(Nullable), typeof(bool),
+        public static readonly StyledProperty<bool> NullableProperty = DP.Register<bool>(nameof(Nullable),
                 typeof(BetterComboBox), new PropertyMetadata(OnNullableChanged));
 
         public bool Nullable {

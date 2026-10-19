@@ -20,8 +20,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         [Obsolete]
-        public static readonly DependencyProperty AdvancesByEnterKeyProperty = DP.RegisterAttached("AdvancesByEnterKey",
-            typeof(bool), typeof(FocusAdvancement), new UIPropertyMetadata(OnAdvancesByEnterKeyPropertyChanged));
+        public static readonly AttachedProperty<bool> AdvancesByEnterKeyProperty = DP.RegisterAttached<bool>("AdvancesByEnterKey", typeof(FocusAdvancement), new UIPropertyMetadata(OnAdvancesByEnterKeyPropertyChanged));
 
         private static void OnAdvancesByEnterKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is UIElement element)) return;
@@ -33,16 +32,18 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         public static bool MoveFocus([CanBeNull] this DependencyObject element, FocusNavigationDirection direction = FocusNavigationDirection.Next) {
-            if (!(element is UIElement e)) return false;
-            e.MoveFocus(new TraversalRequest(direction));
+            if (!(element is InputElement e)) return false;
+            var next = KeyboardNavigationHandler.GetNext(e, direction);
+            if (next == null) return false;
+            next.Focus();
             return true;
         }
 
         public static bool RemoveFocus([CanBeNull] this DependencyObject element) {
-            var parent = element?.GetParents().OfType<IInputElement>().FirstOrDefault(x => x.Focusable);
+            var parent = element?.GetParents().OfType<InputElement>().FirstOrDefault(x => x.Focusable);
             if (parent == null) return MoveFocus(element);
 
-            FocusManager.SetFocusedElement(FocusManager.GetFocusScope(element), parent);
+            parent.Focus();
             return true;
         }
 

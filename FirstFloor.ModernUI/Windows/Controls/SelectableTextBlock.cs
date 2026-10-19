@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -6,53 +6,39 @@ using System.Windows.Input;
 using FirstFloor.ModernUI.Helpers;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
+    /// <summary>
+    /// A read-only text box which looks like a text block, text is copied to clipboard by click.
+    /// </summary>
     public class SelectableTextBlock : BetterTextBox {
         public SelectableTextBlock() {
             IsReadOnly = true;
         }
 
-        static SelectableTextBlock() {
-            InputElement.PointerReleasedEvent.AddClassHandler<SelectableTextBlock>((x, e) => x.OnPreviewMouseUp((MouseButtonEventArgs)e), Avalonia.Interactivity.RoutingStrategies.Tunnel);
-            var defaultMetadata = (FrameworkPropertyMetadata)TextProperty.GetMetadata(typeof(TextBox));
-            var newMetadata = new FrameworkPropertyMetadata(
-                    defaultMetadata.DefaultValue,
-                    FrameworkPropertyMetadataOptions.None,
-                    defaultMetadata.PropertyChangedCallback,
-                    defaultMetadata.CoerceValueCallback,
-                    defaultMetadata.IsAnimationProhibited,
-                    defaultMetadata.DefaultUpdateSourceTrigger);
-            DP.OverrideMetadata(TextProperty, typeof(SelectableTextBlock), newMetadata);
-            var sealedProperty = typeof(PropertyMetadata).GetProperty("Sealed", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (sealedProperty != null) {
-                sealedProperty.SetValue(newMetadata, false);
-                newMetadata.BindsTwoWayByDefault = false;
-                newMetadata.Journal = false;
-                sealedProperty.SetValue(newMetadata, true);
-            }
-        }
+        protected override System.Type StyleKeyOverride => typeof(SelectableTextBlock);
 
         private bool _tooltipSet;
 
         protected override void OnPointerEntered(PointerEventArgs e) {
             if (!_tooltipSet) {
                 _tooltipSet = true;
-                if (ToolTip == null) {
+                if (this.ToolTip == null) {
                     var toolTipText = new TextBlock();
-                    toolTipText.SetBinding(TextBlock.TextProperty, new Binding(nameof(Text)) {
+                    toolTipText.SetBinding(TextBlock.TextProperty, new Avalonia.Data.Binding(nameof(Text)) {
                         Source = this,
                         StringFormat = "{0} (click to copy)"
                     });
-                    ToolTip = new ToolTip { Content = toolTipText };
+                    this.ToolTip = toolTipText;
                 }
             }
             base.OnPointerEntered(e);
         }
 
-        protected void OnPreviewMouseUp(MouseButtonEventArgs e) {
-            
-            if (e.ClickCount == 1 && SelectionLength == 0) {
+        protected override void OnPointerReleased(PointerReleasedEventArgs e) {
+            if (e.IsButton(MouseButton.Left) && e.ClickCount == 1 && SelectionEnd == SelectionStart) {
                 ClipboardHelper.SetText(Text);
             }
+
+            base.OnPointerReleased(e);
         }
     }
 }

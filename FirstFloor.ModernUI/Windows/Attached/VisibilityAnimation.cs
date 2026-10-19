@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Linq;
+using Avalonia.Animation;
 using System.Windows;
-using System.Windows.Media.Animation;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
+    /// <summary>
+    /// Fades elements in and out; implemented with Avalonia’s opacity transitions.
+    /// </summary>
     public class VisibilityAnimation : DependencyObject {
         public static TimeSpan GetDuration(DependencyObject obj) {
             return obj.GetValue(DurationProperty) as TimeSpan? ?? default;
@@ -12,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DurationProperty, value);
         }
 
-        public static readonly DependencyProperty DurationProperty = DP.RegisterAttached("Duration", typeof(TimeSpan),
+        public static readonly AttachedProperty<TimeSpan> DurationProperty = DP.RegisterAttached<TimeSpan>("Duration",
                 typeof(VisibilityAnimation), new UIPropertyMetadata(TimeSpan.FromSeconds(0.3)));
 
         public static bool? GetVisible(DependencyObject obj) {
@@ -23,49 +27,31 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(VisibleProperty, value);
         }
 
-        public static readonly DependencyProperty VisibleProperty = DP.RegisterAttached("Visible", typeof(bool?),
+        public static readonly AttachedProperty<bool?> VisibleProperty = DP.RegisterAttached<bool?>("Visible",
                 typeof(VisibilityAnimation), new UIPropertyMetadata(null, OnVisibleChanged));
 
         private static void OnVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (!(d is UIElement element) || !(e.NewValue is bool)) return;
+            if (!(d is Avalonia.Controls.Control element) || !(e.NewValue is bool)) return;
 
             var oldValue = e.OldValue as bool?;
             var newValue = (bool?)e.NewValue == true;
             if (!oldValue.HasValue) {
-                element.BeginAnimation(UIElement.OpacityProperty, null);
                 if (!newValue) {
                     element.Opacity = 0d;
-                    element.Visibility = Visibility.Hidden;
+                    element.IsHitTestVisible = false;
                 }
                 return;
             }
 
-            if (oldValue == newValue) {
-                element.BeginAnimation(UIElement.OpacityProperty, null);
-                return;
+            if (oldValue == newValue) return;
+
+            var transitions = element.Transitions ?? (element.Transitions = new Transitions());
+            if (!transitions.OfType<DoubleTransition>().Any(x => x.Property == Avalonia.Visual.OpacityProperty)) {
+                transitions.Add(new DoubleTransition { Property = Avalonia.Visual.OpacityProperty, Duration = GetDuration(element) });
             }
 
-            var da = new DoubleAnimation {
-                Duration = new Duration(GetDuration(element)),
-                To = newValue ? 1d : 0d
-            };
-
-            if (da.To == element.Opacity) {
-                element.BeginAnimation(UIElement.OpacityProperty, null);
-                return;
-            }
-
-            if (element.Visibility == Visibility.Hidden) {
-                element.Visibility = Visibility.Visible;
-            }
-
-            if (!newValue) {
-                da.Completed += (o, ev) => {
-                    element.Visibility = Visibility.Hidden;
-                };
-            }
-
-            element.BeginAnimation(UIElement.OpacityProperty, da);
+            element.IsHitTestVisible = newValue;
+            element.Opacity = newValue ? 1d : 0d;
         }
     }
 }

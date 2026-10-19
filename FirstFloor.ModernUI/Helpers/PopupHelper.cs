@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Helpers {
             obj.SetValue(RegisterProperty, value);
         }
 
-        public static readonly DependencyProperty RegisterProperty = DP.RegisterAttached("Register", typeof(bool),
+        public static readonly AttachedProperty<bool> RegisterProperty = DP.RegisterAttached<bool>("Register",
                 typeof(PopupHelper), new UIPropertyMetadata(OnRegisterChanged));
 
         private static void OnRegisterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -43,7 +43,7 @@ namespace FirstFloor.ModernUI.Helpers {
             obj.SetValue(GroupProperty, value);
         }
 
-        public static readonly DependencyProperty GroupProperty = DP.RegisterAttached("Group", typeof(int),
+        public static readonly AttachedProperty<int> GroupProperty = DP.RegisterAttached<int>("Group",
                 typeof(PopupHelper), new UIPropertyMetadata(0));
 
         private static readonly List<WeakReference<Popup>> Opened = new List<WeakReference<Popup>>();
