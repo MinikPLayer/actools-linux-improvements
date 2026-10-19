@@ -1,0 +1,40 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:simple="clr-namespace:Avalonia.Themes.Simple;assembly=Avalonia.Themes.Simple">
+  <!--
+    Application-level theme: put <StyleInclude Source="avares://FirstFloor.ModernUI/ModernUI.axaml" /> into Application.Styles.
+    Basic controls come from Avalonia’s Simple theme, which is customized by resources and control themes below.
+  -->
+  <simple:SimpleTheme />
+
+  <Styles.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ModernUI.Default.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/CheckBox.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Label.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ToolTip.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ContextMenu.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernFrame.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernMenu.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTab.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernWindow.axaml" />
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernDialog.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Styles.Resources>
+
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Assets/Layout.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Assets/Button.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Assets/ContextMenu.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Themes/ModernMenu.styles.axaml" />
+  <StyleInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTab.styles.axaml" />
+</Styles>

@@ -23,7 +23,7 @@
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
               <DockPanel x:Name="containerGrid">
                 <Path x:Name="SortArrow" HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="6" Margin="4 0" Stretch="Fill" Opacity="0.5" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.4" Data="M0,0 L1,0 0.5,1 z"/>
-                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
               </DockPanel>
             </Border>
             <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
@@ -61,7 +61,7 @@
           <c:Cell>
             <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
               <StackPanel Orientation="Horizontal">
-                <ContentPresenter VerticalAlignment="Center"/>
+                <ContentPresenter VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                 <Control Template="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=ValidationErrorTemplate}" IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}"/>
               </StackPanel>
             </Border>

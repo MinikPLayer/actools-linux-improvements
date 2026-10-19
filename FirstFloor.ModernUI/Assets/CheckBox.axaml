@@ -16,7 +16,7 @@
                 <Rectangle x:Name="Indeterminate" Width="8" Height="8" Margin="4" Fill="{TemplateBinding Foreground}"/>
               </c:Cell>
             </Border>
-            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
             <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />-->
           </DockPanel>
           </ControlTemplate>

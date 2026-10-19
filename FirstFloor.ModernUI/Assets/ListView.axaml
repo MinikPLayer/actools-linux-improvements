@@ -37,7 +37,7 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.RowSpan="2" Padding="{TemplateBinding Padding}">
-                                    <ContentPresenter x:Name="HeaderContent" Margin="0 0 0 1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                                    <ContentPresenter x:Name="HeaderContent" Margin="0 0 0 1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                                 </Border>
                             </Grid>
                         </Border>

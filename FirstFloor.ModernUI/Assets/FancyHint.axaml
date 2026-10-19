@@ -19,7 +19,7 @@
                 <Setter.Value>
                   <ControlTemplate TargetType="Button">
                     <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                      <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                      <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                     </Border>
                   </ControlTemplate>
                 </Setter.Value>
@@ -82,10 +82,10 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^[HorizontalContentAlignment=Left]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="54 56 -720 -720"/>
+            </Style><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="54 -720 -720 56"/>
             </Style></Style><Style Selector="^[HorizontalContentAlignment=Right]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 56 54 -720"/>
+            </Style><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 54 56"/>
             </Style></Style><Style Selector="^[HorizontalContentAlignment=Center]"><Style Selector="^[VerticalContentAlignment=Top] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 56 -720 -720"/>
-            </Style></Style><Style Selector="^[HorizontalContentAlignment=Left]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="54 -720 -720 56"/>
-            </Style></Style><Style Selector="^[HorizontalContentAlignment=Right]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 54 56"/>
-            </Style></Style><Style Selector="^[HorizontalContentAlignment=Center]"><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 -720 56"/>
+            </Style><Style Selector="^[VerticalContentAlignment=Bottom] /template/ DockPanel#PART_Panel"><Setter Property="Margin" Value="-720 -720 -720 56"/>
             </Style></Style></ControlTheme>
 </ResourceDictionary>

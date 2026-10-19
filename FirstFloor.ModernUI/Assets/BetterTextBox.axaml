@@ -56,7 +56,7 @@
     <Setter Property="Padding" Value="0"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource BetterTextBoxControlTemplate.Borderless}"/>
     <Style Selector="^:readonly"><Setter Property="Template" Value="{StaticResource BetterTextBoxControlTemplate.Borderless.ReadOnly}"/>
-      </Style><Style Selector="^:readonly"><Setter Property="ContextMenu" Value="{StaticResource TextBoxReadOnlyContextMenu}"/>
+      <Setter Property="ContextMenu" Value="{StaticResource TextBoxReadOnlyContextMenu}"/>
       </Style></ControlTheme>
 
   <ControlTheme TargetType="c:SelectableTextBlock" BasedOn="{StaticResource Borderless}" x:Key="{x:Type c:SelectableTextBlock}"/>

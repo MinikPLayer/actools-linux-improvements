@@ -104,7 +104,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="CalendarDayButton">
           <Grid Background="{TemplateBinding Background}">
-            <ContentPresenter x:Name="NormalText" TextElement.Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="5 1 5 1"/>
+            <ContentPresenter x:Name="NormalText" TextElement.Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="5 1 5 1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
             <Path x:Name="Blackout" Opacity=".5" Margin="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Fill="{TemplateBinding Foreground}" Stretch="Fill" Data="M8.1772461,11.029181 L10.433105,11.029181 L11.700684,12.801641 L12.973633,11.029181 L15.191895,11.029181 L12.844727,13.999395 L15.21875,17.060919 L12.962891,17.060919 L11.673828,15.256231 L10.352539,17.060919 L8.1396484,17.060919 L10.519043,14.042364 z"/>
             <Rectangle x:Name="DayButtonFocusVisual" IsHitTestVisible="False" Stroke="{DynamicResource Accent}"/>
           </Grid>
@@ -113,7 +113,6 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^ /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Path#Blackout"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:focus /template/ Rectangle#DayButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
             </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
@@ -140,14 +139,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="CalendarButton">
           <Grid Background="{TemplateBinding Background}">
-            <ContentPresenter x:Name="NormalText" TextElement.Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="1 0 1 1"/>
+            <ContentPresenter x:Name="NormalText" TextElement.Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="1 0 1 1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
             <Rectangle x:Name="CalendarButtonFocusVisual" IsHitTestVisible="False" Stroke="{DynamicResource Accent}"/>
           </Grid>
           </ControlTemplate>
       </Setter.Value>
     </Setter>
   <Style Selector="^ /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:focus /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:focus /template/ Rectangle#CalendarButtonFocusVisual"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
             </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>

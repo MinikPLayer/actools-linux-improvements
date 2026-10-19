@@ -13,7 +13,7 @@
                     <Grid Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <Border x:Name="chrome" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
 
-                            <ContentPresenter x:Name="Cp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ContentPresenter x:Name="Cp" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                         </Border>
                     </Grid>
 
@@ -59,7 +59,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border x:Name="Bd" Margin="1 1 2 1">
-                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"/>
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                                 </Border>
 
                                 <Rectangle x:Name="rect" Grid.Column="2" Width="1" Margin="0 -2 0 -2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="DarkGray"/>
@@ -79,7 +79,6 @@
     <Style Selector="^ /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:focus /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="Orange"/>
                         </Style><Style Selector="^[IsContextMenuOpen=True] /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="DarkCyan"/>
                         </Style><Style Selector="^:checked /template/ Border#buttonChrome"><Setter Property="BorderBrush" Value="Yellow"/>
-                        </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
                         </Style><Style Selector="^[Mode=Dropdown] /template/ Button#PART_DropDown"><Setter Property="IsVisible" Value="False"/>
                             </Style><Style Selector="^[Mode=Dropdown] /template/ Rectangle#rect"><Setter Property="IsVisible" Value="False"/>

@@ -71,7 +71,7 @@
                     <Border Margin="0 -20 0 20">
                       <TextBlock Text="{Binding Progress.Message, RelativeSource={RelativeSource TemplatedParent}}" Foreground="{DynamicResource ButtonText}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" TextTrimming="CharacterEllipsis"/>
                     </Border>
-                    <ContentPresenter x:Name="Presenter" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+                    <ContentPresenter x:Name="Presenter" RecognizesAccessKey="True" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                   </c:Cell>
                 </DockPanel>
               </c:AdornedControl>

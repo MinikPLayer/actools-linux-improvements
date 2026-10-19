@@ -937,6 +937,12 @@ class StyleConverter:
                 n = el.get(X + 'Name') or el.get('Name')
                 if n:
                     self.template_names[n] = el
+                # WPF’s ContentPresenter takes the content of the templated parent itself, in Avalonia it has to be bound
+                if ns_of(el.tag) == NS_WPF and local(el.tag) == 'ContentPresenter' and el.get('Content') is None and el.get('ContentSource') is None \
+                        and not any(is_el(c) and local(c.tag) == 'ContentPresenter.Content' for c in el):
+                    el.set('Content', '{TemplateBinding Content}')
+                    if el.get('ContentTemplate') is None:
+                        el.set('ContentTemplate', '{TemplateBinding ContentTemplate}')
         # remember element types before conversion changes the tags
         self.template_types = {n: self.selector_type_of(e) for n, e in self.template_names.items()}
         for child in list(tmpl):
@@ -1174,6 +1180,40 @@ def fix_template_bindings(root):
                 setter.set('Value', _TB_RX.sub(lambda m: '{Binding %s, RelativeSource={RelativeSource TemplatedParent}}' % m.group(1).strip(), v))
 
 
+def merge_duplicate_styles(root):
+    """Avalonia refuses duplicate setters (and merging equal selectors is cheaper): merge nested styles with identical selectors, last setter wins."""
+    for parent in list(root.iter()):
+        if not is_el(parent) or local(parent.tag) not in ('ControlTheme', 'Style', 'Styles'):
+            continue
+        by_sel = {}
+        for child in list(parent):
+            if is_el(child) and child.tag == qn('Style') and child.get('Selector') is not None:
+                sel = child.get('Selector')
+                if sel in by_sel:
+                    first = by_sel[sel]
+                    # nested styles of the duplicate are moved too
+                    for c in list(child):
+                        if is_el(c) and c.tag == qn('Setter'):
+                            prop = c.get('Property')
+                            for old in [x for x in first if is_el(x) and x.tag == qn('Setter') and x.get('Property') == prop]:
+                                first.remove(old)
+                            first.append(c)
+                        else:
+                            first.append(c)
+                    parent.remove(child)
+                else:
+                    by_sel[sel] = child
+        # setters within a single style: last one wins
+        for st in [c for c in parent if is_el(c) and c.tag in (qn('Style'), qn('ControlTheme'))] + [parent]:
+            seen = {}
+            for c in list(st):
+                if is_el(c) and c.tag == qn('Setter'):
+                    prop = c.get('Property')
+                    if prop in seen:
+                        st.remove(seen[prop])
+                    seen[prop] = c
+
+
 def finalize_names(root):
     """All remaining WPF-namespaced elements -> Avalonia namespace"""
     for el in root.iter():
@@ -1197,6 +1237,7 @@ def convert_file(path, registry, out_dir=None):
     conv = Converter(ctx)
     conv.convert_root(root)
     finalize_names(root)
+    merge_duplicate_styles(root)
     fix_template_bindings(root)
 
     # namespaces

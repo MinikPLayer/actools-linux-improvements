@@ -14,7 +14,7 @@
               <ToggleButton DockPanel.Dock="Left" VerticalAlignment="Center" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
               <ContentPresenter RecognizesAccessKey="False"/>
             </DockPanel>
-            <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}"/>
+            <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
           </StackPanel>
           </ControlTemplate>
       </Setter.Value>
@@ -41,7 +41,7 @@
             </DockPanel>
             <Border x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}" ClipToBounds="True" IsVisible="False">
               <!-- PORT: removed Border.LayoutTransform -->
-              <ContentPresenter x:Name="PART_Content" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
+              <ContentPresenter x:Name="PART_Content" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}"/>
             </Border>
           </DockPanel>
           </ControlTemplate>

@@ -35,6 +35,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected DpiAwareWindow() {
             Keyboard.Hook();
 
+            // windows are drawn by the theme (title bar, buttons, border), moving and resizing is handled here
+            SystemDecorations = SystemDecorations.None;
+            AddHandler(PointerPressedEvent, OnChromePointerPressed, Avalonia.Interactivity.RoutingStrategies.Bubble);
+            PointerMoved += OnChromePointerMoved;
+
             Opened += OnOpened;
             Activated += OnActivated;
             PositionChanged += OnPositionChanged;
@@ -45,6 +50,64 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             Owner = GetDefaultOwner(true);
             NewWindowCreated?.Invoke(this, EventArgs.Empty);
         }
+
+        #region Custom window chrome
+        private const double ResizeBorder = 6d;
+        private const double TitleBarHeight = 34d;
+
+        private WindowEdge? GetEdge(Point p) {
+            if (WindowState != WindowState.Normal || !CanResize) return null;
+            var w = Bounds.Width;
+            var h = Bounds.Height;
+            var left = p.X < ResizeBorder;
+            var right = p.X > w - ResizeBorder;
+            var top = p.Y < ResizeBorder;
+            var bottom = p.Y > h - ResizeBorder;
+            if (top && left) return WindowEdge.NorthWest;
+            if (top && right) return WindowEdge.NorthEast;
+            if (bottom && left) return WindowEdge.SouthWest;
+            if (bottom && right) return WindowEdge.SouthEast;
+            if (left) return WindowEdge.West;
+            if (right) return WindowEdge.East;
+            if (top) return WindowEdge.North;
+            if (bottom) return WindowEdge.South;
+            return null;
+        }
+
+        private void OnChromePointerMoved(object sender, PointerEventArgs e) {
+            var edge = GetEdge(e.GetPosition(this));
+            Cursor = edge == null ? null : new Cursor(edge == WindowEdge.North || edge == WindowEdge.South ? StandardCursorType.SizeNorthSouth
+                    : edge == WindowEdge.East || edge == WindowEdge.West ? StandardCursorType.SizeWestEast
+                    : edge == WindowEdge.NorthWest || edge == WindowEdge.SouthEast ? StandardCursorType.TopLeftCorner : StandardCursorType.TopRightCorner);
+        }
+
+        private void OnChromePointerPressed(object sender, PointerPressedEventArgs e) {
+            if (e.Handled || !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
+
+            var position = e.GetPosition(this);
+            var edge = GetEdge(position);
+            if (edge != null) {
+                BeginResizeDrag(edge.Value, e);
+                e.Handled = true;
+                return;
+            }
+
+            if (position.Y < TitleBarHeight && IsTitleBarArea(e)) {
+                if (e.ClickCount == 2 && CanResize) {
+                    WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+                } else {
+                    BeginMoveDrag(e);
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        /// <summary>
+        /// Dialogs and windows are moved by their title bar; override to restrict.
+        /// </summary>
+        protected virtual bool IsTitleBarArea(PointerPressedEventArgs e) => true;
+        #endregion
 
         #region Owner (settable, unlike in Avalonia)
         private Window _owner;

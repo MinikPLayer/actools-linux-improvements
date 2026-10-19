@@ -69,11 +69,11 @@
   <!-- Title links -->
   <DataTemplate x:Key="DefaultTitleLinksTemplate" DataType="presentation:TitleLink">
     <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}" x:Name="__Dt0">
-      <StackPanel.Styles><Style Selector="#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding RelativeSource={RelativeSource}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] #PART_Separator"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="attached:LimitedService.Limited" Value="True"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S5" Value="{Binding IsAccented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S5)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource Error}"/>
+      <StackPanel.Styles><Style Selector="#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding RelativeSource={RelativeSource}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S2" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S3" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S4" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S5" Value="{Binding IsAccented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] #PART_Separator"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="attached:LimitedService.Limited" Value="True"/>
+      </Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S4)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
+      </Style><Style Selector="^[(pa|T.S5)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource Error}"/>
         <Setter Property="FontWeight" Value="Bold"/>
       </Style></Style></StackPanel.Styles><Line x:Name="PART_Separator" Margin="5,0" VerticalAlignment="Center" Stroke="{DynamicResource SeparatorBackground}" StartPoint=".5,3" EndPoint=".5,12"/>
       <controls:Cell>
@@ -85,11 +85,11 @@
 
   <DataTemplate x:Key="LargerTitleLinksTemplate" DataType="presentation:TitleLink">
     <StackPanel Orientation="Horizontal" IsEnabled="{Binding IsEnabled}" x:Name="__Dt6">
-      <StackPanel.Styles><Style Selector="#__Dt6"><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding RelativeSource={RelativeSource}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S7)=True] #PART_Separator"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S8" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="attached:LimitedService.Limited" Value="True"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S9)=True]"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S10" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S10)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S11" Value="{Binding IsAccented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S11)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource Error}"/>
+      <StackPanel.Styles><Style Selector="#__Dt6"><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding RelativeSource={RelativeSource}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S8" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S9" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S10" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S11" Value="{Binding IsAccented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S7)=True] #PART_Separator"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="attached:LimitedService.Limited" Value="True"/>
+      </Style><Style Selector="^[(pa|T.S9)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S10)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
+      </Style><Style Selector="^[(pa|T.S11)=True] #PART_Button"><Setter Property="Foreground" Value="{DynamicResource Error}"/>
         <Setter Property="FontWeight" Value="Bold"/>
       </Style></Style></StackPanel.Styles><Line x:Name="PART_Separator" Margin="5,0" VerticalAlignment="Center" Stroke="{DynamicResource SeparatorBackground}" StartPoint=".5,3" EndPoint=".5,14"/>
       <controls:Cell>

@@ -32,8 +32,7 @@
     </Setter>
     <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderHover}"/>
-      </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextPressed}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderPressed}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderPressed}"/>
         <Setter Property="Background" Value="{DynamicResource ModernButtonIconBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ModernButtonIconForegroundPressed}"/>
       </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}"/>

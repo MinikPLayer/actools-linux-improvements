@@ -70,7 +70,7 @@
             </Style><Style Selector="^[ShowPostfix=False] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
             </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel]"><Style Selector="^[Value=0] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
             </Style></Style><Style Selector="^[JoinIfEqual=True]"><Style Selector="^[ValuesEqual=True] /template/ TextBlock#PART_Separator"><Setter Property="IsVisible" Value="False"/>
-              </Style></Style><Style Selector="^[JoinIfEqual=True]"><Style Selector="^[ValuesEqual=True] /template/ c|BetterTextBox#PART_TextBox2"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[ValuesEqual=True] /template/ c|BetterTextBox#PART_TextBox2"><Setter Property="IsVisible" Value="False"/>
             </Style></Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel]"><Style Selector="^[Value=-1] /template/ TextBlock#PART_Postfix"><Setter Property="IsVisible" Value="False"/>
             </Style></Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
 </ResourceDictionary>

@@ -6,15 +6,6 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <Border x:Key="WindowBackgroundContent" Background="{DynamicResource WindowBackgroundContentBrush}"/>
-
-  <Button x:Key="WindowCloseButtonDefault" Command="{Binding Source={x:Static sw:SystemCommands.CloseWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Close}" Theme="{StaticResource SystemCloseButton}">
-    <c:Cell Width="10" Height="10" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center">
-      <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="14.99,14.99" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type c:ModernWindow}}}"/>
-      <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,14.99" EndPoint="14.99,-5.01" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type c:ModernWindow}}}"/>
-    </c:Cell>
-  </Button>
-
   <ControlTheme TargetType="c:ModernWindow" x:Key="{x:Type c:ModernWindow}">
     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
@@ -22,8 +13,8 @@
     <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BackgroundContent" Value="{StaticResource WindowBackgroundContent}"/>
-    <Setter Property="CloseButton" Value="{StaticResource WindowCloseButtonDefault}"/>
+    <Setter Property="BackgroundContent"><Template><Border Background="{DynamicResource WindowBackgroundContentBrush}"/></Template></Setter>
+    <Setter Property="CloseButton"><Template><Button Command="{Binding Source={x:Static sw:SystemCommands.CloseWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Close}" Theme="{StaticResource SystemCloseButton}"><c:Cell Width="10" Height="10" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center"><Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="14.99,14.99" StrokeThickness="1"/><Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,14.99" EndPoint="14.99,-5.01" StrokeThickness="1"/></c:Cell></Button></Template></Setter>
     <Setter Property="FrameMargin" Value="0"/>
     <Setter Property="Width" Value="800"/>
     <Setter Property="Height" Value="640"/>
@@ -124,21 +115,17 @@
       </Setter.Value>
     </Setter>
     <Style Selector="^ /template/ Button#Restore"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ DockPanel#LayoutRoot"><Setter Property="Margin" Value="7 35 7 7"/></Style><Style Selector="^ /template/ Button#PART_ErrorsButton"><Setter Property="IsVisible" Value="{Binding HasUnseen, Source={x:Static h:NonfatalError.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ c|Cell#PART_MaximizeButton"><Setter Property="IsVisible" Value="{Binding PreferFullscreenMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/></Style><Style Selector="^ /template/ c|Cell#ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[IsActive=True]"><Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding FullscreenOverTaskbarMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[WindowState=Maximized] /template/ Button#Maximize"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding FullscreenOverTaskbarMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S1" Value="{Binding ForceMenuAtTopInFullscreenMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Visibility, ElementName=Restore, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Visible}"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[WindowState=Maximized] /template/ Button#Maximize"><Setter Property="IsVisible" Value="False"/>
               </Style><Style Selector="^[WindowState=Maximized] /template/ Button#Restore"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[WindowState=Maximized] /template/ TextBlock#PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
               </Style><Style Selector="^[WindowState=Maximized] /template/ DockPanel#PART_TitleBar"><Setter Property="Margin" Value="0 7 7 0"/>
-              </Style><Style Selector="^[WindowState=Maximized] /template/ StackPanel#PART_SystemButtonsPanel"><Setter Property="RenderTransform">
-                <Setter.Value>
-                  <TranslateTransform X="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=2}" Y="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=-3}"/>
-                </Setter.Value>
-              </Setter>
+              </Style><Style Selector="^[WindowState=Maximized] /template/ StackPanel#PART_SystemButtonsPanel"><Setter Property="RenderTransform" Value="translate(2px, -3px)"/>
             </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ Button#Maximize"><Setter Property="IsVisible" Value="False"/>
               </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ Button#Restore"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ TextBlock#PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
               </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ DockPanel#PART_TitleBar"><Setter Property="Margin" Value="0 7 7 0"/>
             </Style><Style Selector="^[WindowState=Normal] /template/ DockPanel#LayoutRoot"><Setter Property="Margin" Value="0 36 0 0"/>
-            </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding ForceMenuAtTopInFullscreenMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Visibility, ElementName=Restore, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Visible}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Style Selector="^[(pa|T.S2)=True] /template/ DockPanel#LayoutRoot"><Setter Property="Margin" Value="7 11 7 7"/>
+            </Style><Style Selector="^[(pa|T.S1)=True]"><Style Selector="^[(pa|T.S2)=True] /template/ DockPanel#LayoutRoot"><Setter Property="Margin" Value="7 11 7 7"/>
             </Style></Style><Style Selector="^[IsRootMarginEven=True] /template/ DockPanel#LayoutRoot"><Setter Property="Margin" Value="0"/>
             </Style><Style Selector="^[IsTitleVisible=False] /template/ TextBlock#PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
             </Style><Style Selector="^[ShowErrorsButton=False] /template/ Button#PART_ErrorsButton"><Setter Property="IsVisible" Value="False"/>

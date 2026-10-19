@@ -29,7 +29,7 @@
         </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Icon, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
+  <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Icon, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S3" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S4" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ListBoxItem">
               <c:Cell MinWidth="20" Margin="0 0 12 0" ToolTip.Tip="{Binding ToolTip}">
@@ -43,8 +43,8 @@
       </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextHover}"/>
       </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextSelected}"/>
         <Setter Property="FontWeight" Value="Bold"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S4)=True]"><Setter Property="IsEnabled" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S4)=True]"><Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Foreground" Value="{DynamicResource MenuTextDisabled}"/>
         <Setter Property="a:LimitedService.Limited" Value="True"/>
       </Style></ControlTheme>
@@ -79,8 +79,8 @@
   <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextHover}"/>
       </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextSelected}"/>
         <Setter Property="FontWeight" Value="Bold"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S5" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S5)=True]"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="IsEnabled" Value="False"/>
+      </Style><Style Selector="^"><Setter Property="pa:T.S5" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S6" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S5)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Foreground" Value="{DynamicResource MenuTextDisabled}"/>
         <Setter Property="a:LimitedService.Limited" Value="True"/>
       </Style><Style Selector="^:focus /template/ Path#Icon"><Setter Property="IsVisible" Value="False"/>
@@ -123,7 +123,7 @@
                   <Setter Property="Template">
                     <Setter.Value>
                       <ControlTemplate TargetType="Button">
-                        <ContentPresenter/>
+                        <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
                       </ControlTemplate>
                     </Setter.Value>
                   </Setter>
@@ -151,8 +151,8 @@
   <Style Selector="^ /template/ c|BetterTextBox#NameTextBox"><Setter Property="IsEnabled" Value="False"/></Style><Style Selector="^ /template/ ToolTip#ToolTip"><Setter Property="IsVisible" Value="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/></Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextHover}"/>
       </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextSelected}"/>
         <Setter Property="FontWeight" Value="Bold"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S7)=True]"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S8" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="IsEnabled" Value="False"/>
+      </Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S8" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S7)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Foreground" Value="{DynamicResource MenuTextDisabled}"/>
         <Setter Property="a:LimitedService.Limited" Value="True"/>
       </Style><Style Selector="^:selected /template/ c|BetterTextBox#NameTextBox"><Setter Property="IsEnabled" Value="True"/>
@@ -183,10 +183,10 @@
                   </Setter>
                 <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource MenuTextHover}"/>
                           </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
-                          </Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S9)=True]"><Setter Property="IsEnabled" Value="False"/>
+                          </Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S10" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S9)=True]"><Setter Property="IsEnabled" Value="False"/>
                             <Setter Property="Foreground" Value="{DynamicResource MenuTextDisabled}"/>
                             <Setter Property="a:LimitedService.Limited" Value="True"/>
-                          </Style><Style Selector="^"><Setter Property="pa:T.S10" Value="{Binding IsShown, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S10)=True]"><Setter Property="IsVisible" Value="False"/>
+                          </Style><Style Selector="^[(pa|T.S10)=True]"><Setter Property="IsVisible" Value="False"/>
                           </Style></ControlTheme>
               </ListBox.ItemContainerTheme>
               <ListBox.ItemsPanel>

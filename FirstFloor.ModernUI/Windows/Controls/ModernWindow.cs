@@ -11,6 +11,8 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(AdditionalContent))]
     public class ModernWindow : DpiAwareWindow {
+        protected override Type StyleKeyOverride => typeof(ModernWindow);
+
         public static RoutedUICommand NavigateTitleLink { get; } = new RoutedUICommand(UiStrings.NavigateLink, nameof(NavigateTitleLink), typeof(LinkCommands));
 
         public ModernWindow() {

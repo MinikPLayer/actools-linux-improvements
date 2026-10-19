@@ -21,7 +21,7 @@
           <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" VerticalAlignment="Stretch">
             <c:Cell VerticalAlignment="Stretch">
               <Path x:Name="Arrow" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" Margin="3 3 2 3" Data="M -0.5 3 L 5.5 3 L 2.5 6 Z"/>
-              <ContentPresenter/>
+              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
               <Popup IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PlacementTarget="{Binding ElementName=Chrome}" x:Name="SubMenuPopup" Focusable="False">
                 <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}" BorderThickness="1" Padding="0" TextElement.Foreground="{DynamicResource WindowText}">
                   <c:Cell x:Name="SubMenu">

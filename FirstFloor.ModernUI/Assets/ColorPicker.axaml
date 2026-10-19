@@ -29,10 +29,9 @@
     </Setter>
   <Style Selector="^ /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="False"/></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
-              </Style></Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
-              </Style></Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-            </Style></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
+              </Style><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
+              </Style><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
+            </Style></Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
               <Setter Property="Order" Value="5"/>
               </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style><Style Selector="^:focus-within /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
@@ -65,10 +64,9 @@
     </Setter>
   <Style Selector="^ /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="False"/></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
-              </Style></Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-              </Style></Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-            </Style></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
+              </Style><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
+            </Style></Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
               <Setter Property="Order" Value="5"/>
               </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style><Style Selector="^:focus-within /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>

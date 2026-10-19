@@ -122,11 +122,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundHover}"/>
-              <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
-            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackground}"/>
-              <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorder}"/>
-            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackground}"/>
+  <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackground}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorder}"/>
             </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>

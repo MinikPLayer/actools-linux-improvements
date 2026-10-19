@@ -16,6 +16,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// Represents a Modern UI styled dialog window.
     /// </summary>
     public class ModernDialog : DpiAwareWindow {
+        protected override Type StyleKeyOverride => typeof(ModernDialog);
+
         public static readonly StyledProperty<bool> ShowTopBlobProperty = DP.Register<bool>(nameof(ShowTopBlob),
                 typeof(ModernDialog), new PropertyMetadata(true));
 

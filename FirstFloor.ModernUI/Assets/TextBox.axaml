@@ -66,9 +66,9 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^:readonly"><Setter Property="ContextMenu" Value="{StaticResource TextBoxReadOnlyContextMenu}"/>
-      </Style><Style Selector="^:not(:disabled)"><Setter Property="Foreground" Value="{DynamicResource InputText}"/>
+      <Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style><Style Selector="^:not(:disabled)"><Setter Property="Foreground" Value="{DynamicResource InputText}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:readonly"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^[IsReadOnly=False]"><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
               <Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>

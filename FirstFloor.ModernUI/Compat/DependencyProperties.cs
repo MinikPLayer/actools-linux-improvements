@@ -47,7 +47,7 @@ namespace System.Windows {
         public object NewValue { get; }
 
         internal static DependencyPropertyChangedEventArgs From(AvaloniaPropertyChangedEventArgs e) {
-            return new DependencyPropertyChangedEventArgs(e.Property, e.GetOldValue<object>(), e.GetNewValue<object>());
+            return new DependencyPropertyChangedEventArgs(e.Property, e.OldValue, e.NewValue);
         }
     }
 

@@ -8,7 +8,7 @@
             <Border x:Name="CheckBorder" Width="16" Height="16" Margin="0 1 4 0" BorderThickness="1" CornerRadius="8">
               <Ellipse x:Name="CheckMark" Width="8" Height="8" Margin="2"/>
             </Border>
-            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
             <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />-->
           </DockPanel>
           </ControlTemplate>
