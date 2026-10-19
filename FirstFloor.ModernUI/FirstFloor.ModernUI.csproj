@@ -27,6 +27,7 @@
   <Import Project="..\Build\AvaloniaCompat.props" />
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.22" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Controls.DataGrid" Version="11.3.13" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6" />

@@ -2,7 +2,7 @@
   <ControlTheme TargetType="controls:AcToolBar" x:Key="{x:Type controls:AcToolBar}">
     <Setter Property="HorizontalAlignment" Value="Stretch"/>
     <Setter Property="Margin" Value="-20 0 -16 0"/>
-    <Setter Property="Height" Value="Auto"/>
+    <Setter Property="Height" Value="NaN"/>
     <Setter Property="IsTogglable" Value="False"/>
     <Setter Property="BorderBrush" Value="{DynamicResource SeparatorBackground}"/>
     <Setter Property="BorderThickness" Value="1"/>

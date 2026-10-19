@@ -30,9 +30,9 @@
                   <mui:Cell ClipToBounds="True">
                     <!-- PORT: removed Cell.CacheMode -->
                     <Border Margin="{TemplateBinding InnerMargin}" Background="#606060">
-                      <FrameworkElement.Effect>
+                      <Border.Effect>
                         <BlurEffect Radius="{Binding BlurRadius, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
-                      </FrameworkElement.Effect>
+                      </Border.Effect>
                       <Border>
                         <Border.Background>
                           <VisualBrush Visual="{Binding Visual, RelativeSource={RelativeSource TemplatedParent}}" Stretch="None" TileMode="None"><!-- PORT: removed Viewbox (not in Avalonia) --><!-- PORT: removed ViewboxUnits (not in Avalonia) --></VisualBrush>

@@ -7,3 +7,4 @@ python3 ../PortTools/xaml_convert.py --asm AcManager.Controls . --scan ../FirstF
 tail -1 /tmp/conv_controls.log
 grep -rl -e '=}' --include='*.axaml' . | xargs -r sed -i "s/=}/=''}/g"
 find . -name '*.xaml' -not -path './obj/*' -delete
+python3 ../PortTools/apply_patches.py . ../PortTools/patches/Controls.py

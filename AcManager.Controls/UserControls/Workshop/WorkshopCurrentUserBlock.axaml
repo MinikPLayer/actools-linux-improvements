@@ -12,7 +12,7 @@
   <DockPanel Background="Transparent" DataContext="{Binding Source={x:Static ws:WorkshopHolder.Model}}" IsVisible="{Binding AuthorizedAs, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
     <mui:ContextMenuButton DockPanel.Dock="Right" Padding="4 0 0 0" VerticalAlignment="Center">
       <ContextMenu>
-        <MenuItem Header="Edit profile" Command="mui:BbCodeBlock.LinkCommand" CommandParameter="cmd://workshop/editUserProfile"/>
+        <MenuItem Header="Edit profile" CommandParameter="cmd://workshop/editUserProfile" Command="{x:Static mui:BbCodeBlock.LinkCommand}"/>
         <MenuItem Header="Log out" Command="{Binding LogOutCommand}"/>
       </ContextMenu>
     </mui:ContextMenuButton>

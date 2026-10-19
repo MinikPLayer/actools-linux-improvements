@@ -40,7 +40,7 @@
                   </DataTemplate>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[CurrentUserPreset=null] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding CurrentUserPreset, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
                 <Setter.Value>
                   <DataTemplate>
                     <TextBlock TextTrimming="CharacterEllipsis" FontStyle="Italic" Text="{x:Static ac:ControlsStrings.Presets_Unsaved}"/>

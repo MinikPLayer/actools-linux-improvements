@@ -22,7 +22,7 @@
               <ToggleButton DockPanel.Dock="Left" VerticalAlignment="Center" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
               <ContentPresenter RecognizesAccessKey="False"/>
             </DockPanel>
-            <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+            <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}"/>
           </StackPanel>
           </ControlTemplate>
       </Setter.Value>
@@ -53,14 +53,8 @@
               <Border HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.MultiSelectionMode}, Mode=OneTime}" mui:FancyHintsService.OffsetY="180" mui:FancyHintsService.OffsetX="80"/>
               <Border HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DoubleClickToQuickDrive}, Mode=OneTime}" mui:FancyHintsService.OffsetY="10" mui:FancyHintsService.OffsetX="80"/>
 
-              <ListBox Grid.Row="0" x:Name="ItemsList" ItemsSource="{TemplateBinding ItemsSource}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="False" ItemTemplate="{StaticResource AcItemWrapperSpecific.ListItemTemplate}" mui:SaveScroll.Key="{TemplateBinding SaveScrollKey}">
-                <ListBox.GroupStyle>
-                  <GroupStyle>
-                    <GroupStyle.ContainerStyle>
-                      <!-- PORT: removed Style for GroupItem (no such control in Avalonia) -->
-                    </GroupStyle.ContainerStyle>
-                  </GroupStyle>
-                </ListBox.GroupStyle>
+              <ListBox Grid.Row="0" x:Name="ItemsList" ItemsSource="{TemplateBinding ItemsSource}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource AcItemWrapperSpecific.ListItemTemplate}" mui:SaveScroll.Key="{TemplateBinding SaveScrollKey}">
+                <!-- PORT: removed ListBox.GroupStyle (no grouping in Avalonia lists) -->
                 <ListBox.Template>
                   <ControlTemplate TargetType="ListBox">
                     <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -84,15 +78,15 @@
               </DockPanel>
 
               <mui:Cell x:Name="PART_BatchMenuTransform" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Bottom" Height="95.000" Background="{DynamicResource Accent}" Margin="0 0 -4 0" TextElement.Foreground="White">
-                <Control.RenderTransform>
+                <mui:Cell.RenderTransform>
                   <TranslateTransform Y="95.000"/>
-                </Control.RenderTransform>
+                </mui:Cell.RenderTransform>
 
                 <Border x:Name="PART_BatchBlock" Padding="8" Background="{DynamicResource Accent}" ZIndex="2">
                   <mui:SpacingStackPanel VerticalAlignment="Top" Spacing="8">
-                    <Control.Resources>
-                      <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
-                    </Control.Resources>
+                    <mui:SpacingStackPanel.Resources>
+                      <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
+                    </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
 
                     <mui:HierarchicalComboBox x:Name="PART_BatchActions">
                       <mui:HierarchicalComboBox.BorderBrush>
@@ -142,18 +136,18 @@
 
             <!-- Batch params -->
             <Border Grid.Column="2" x:Name="PART_BatchActionParams_Wrapper" Margin="-9 0 0 0" VerticalAlignment="Bottom" Height="95.000" ZIndex="2">
-              <Control.RenderTransform>
+              <Border.RenderTransform>
                 <TranslateTransform Y="95.000"/>
-              </Control.RenderTransform>
+              </Border.RenderTransform>
               <Border x:Name="PART_BatchActionParams" Background="{DynamicResource Accent}" Padding="8">
-                <Control.RenderTransform>
+                <Border.RenderTransform>
                   <TranslateTransform X="0"/>
-                </Control.RenderTransform>
-                <Control.Resources>
-                  <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
-                </Control.Resources>
+                </Border.RenderTransform>
+                <Border.Resources>
+                  <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
+                </ResourceDictionary.MergedDictionaries></ResourceDictionary></Border.Resources>
                 <DockPanel TextElement.Foreground="{DynamicResource AccentOverlay}">
-                  <ContentPresenter x:Name="PART_BatchAction" Margin="20 0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                  <ContentPresenter x:Name="PART_BatchAction" Margin="20 0"/>
                 </DockPanel>
               </Border>
             </Border>
@@ -164,7 +158,7 @@
     </Setter>
 
     <ControlTheme.Resources>
-      <ResourceDictionary><ResourceDictionary>
+      <ResourceDictionary>
         <ResourceDictionary.MergedDictionaries>
           <ResourceInclude Source="AcListPage.CommonBatchActions.axaml"/>
         </ResourceDictionary.MergedDictionaries>
@@ -173,7 +167,7 @@
           <Border Background="{TemplateBinding Background}" Padding="2">
             <DockPanel>
               <CheckBox x:Name="PART_CheckBox" IsHitTestVisible="False" DockPanel.Dock="Left" Margin="10 0 -11 0" Width="0" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"/>
-              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" TextElement.Foreground="{TemplateBinding Foreground}"/>
+              <ContentPresenter TextElement.Foreground="{TemplateBinding Foreground}"/>
             </DockPanel>
           </Border>
 
@@ -190,7 +184,7 @@
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
             </Style></ControlTheme>
       </ResourceDictionary>
-    </ResourceDictionary></ControlTheme.Resources>
+    </ControlTheme.Resources>
 
     <!-- Empty version -->
     <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">

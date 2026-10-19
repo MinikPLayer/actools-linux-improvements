@@ -1,23 +1,23 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ae="http://icsharpcode.net/sharpdevelop/avalonedit" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ae="using:AvaloniaEdit" xmlns:aee="using:AvaloniaEdit.Editing" xmlns:aer="using:AvaloniaEdit.Rendering" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ae|TextEditor">
     <Setter Property="Background" Value="{DynamicResource TextEditorBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource TextEditorForeground}"/>
     <Setter Property="LineNumbersForeground" Value="{DynamicResource TextEditorLineNumbersForeground}"/>
     <Setter Property="FontFamily" Value="{StaticResource MonospaceFont}"/>
-    <Setter Property="FontSize" Value="9pt"/>
+    <Setter Property="FontSize" Value="12"/>
     <Setter Property="Padding" Value="8 0"/>
     <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
     <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
     <Setter Property="ShowLineNumbers" Value="True"/>
   </Style>
 
-  <Style Selector="ae|TextArea">
+  <Style Selector="aee|TextArea">
     <Setter Property="SelectionBrush" Value="{DynamicResource Accent}"/>
     <Setter Property="SelectionBorder" Value="{StaticResource SelectionBorderPen}"/>
     <Setter Property="SelectionCornerRadius" Value="2"/>
   </Style>
 
-  <Style Selector="ae|TextView">
+  <Style Selector="aer|TextView">
     <Setter Property="LinkTextForegroundBrush" Value="{DynamicResource Hyperlink}"/>
   </Style>
 </Styles>

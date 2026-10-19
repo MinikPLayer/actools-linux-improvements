@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +21,22 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// </remarks>
     [Localizable(false)]
     public class BbCodeBlock : Avalonia.Controls.Decorator {
+
+        public static readonly StyledProperty<Avalonia.Media.IBrush> BackgroundProperty = Avalonia.Controls.Border.BackgroundProperty.AddOwner<BbCodeBlock>();
+
+        public Avalonia.Media.IBrush Background {
+            get => GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+
+        public override void Render(Avalonia.Media.DrawingContext context) {
+            var background = Background;
+            if (background != null) {
+                context.FillRectangle(background, new Avalonia.Rect(Bounds.Size));
+            }
+
+            base.Render(context);
+        }
         public static ResourceDictionary IconsDictionary { get; set; }
 
         public enum AllowBbCodes {

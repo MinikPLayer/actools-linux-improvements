@@ -114,6 +114,8 @@ PSEUDO = {
 }
 
 PROP_RENAME = {
+    'VirtualizingPanel.IsVirtualizingWhenGrouping': None, 'VirtualizingPanel.IsContainerVirtualizable': None,
+    'VirtualizingPanel.ScrollUnit': None, 'VirtualizingPanel.CacheLength': None, 'VirtualizingPanel.CacheLengthUnit': None,
     'ContentStringFormat': None, 'ItemTemplateSelector': 'ItemTemplate',
     'CacheMode': None, 'RenderOptions.BitmapScalingMode_': None, 'BorderEdgeMode': None, 'EdgeMode': None,
     'Panel.ZIndex': 'ZIndex',
@@ -221,7 +223,7 @@ EVENT_ARGS = {
     'TextInput': 'TextInputEventArgs', 'DoubleTapped': 'TappedEventArgs', 'Tapped': 'TappedEventArgs',
     'DragDrop.Drop': 'DragEventArgs', 'DragDrop.DragOver': 'DragEventArgs', 'DragDrop.DragEnter': 'DragEventArgs', 'DragDrop.DragLeave': 'DragEventArgs',
     'SelectionChanged': 'SelectionChangedEventArgs', 'TextChanged': 'TextChangedEventArgs', 'SizeChanged': 'SizeChangedEventArgs',
-    'GotFocus': 'GotFocusEventArgs', 'Closing': 'Avalonia.Controls.WindowClosingEventArgs', 'ContextRequested': 'ContextRequestedEventArgs',
+    'GotFocus': 'GotFocusEventArgs', 'DataContextChanged': 'System.EventArgs', 'Closing': 'Avalonia.Controls.WindowClosingEventArgs', 'ContextRequested': 'ContextRequestedEventArgs',
 }
 
 EVENT_RENAME_EXTRA = {}
@@ -264,6 +266,14 @@ def typed_parent(style):
     return False
 
 
+def convert_units(v):
+    m = re.match(r'^(\d+(?:\.\d+)?)(px|pt|in|cm)$', v)
+    if not m:
+        return v
+    n = float(m.group(1)) * {'px': 1, 'pt': 4 / 3, 'in': 96, 'cm': 96 / 2.54}[m.group(2)]
+    return ('%.2f' % n).rstrip('0').rstrip('.')
+
+
 def is_handler_name(v):
     return bool(v) and re.match(r'^[A-Za-z_]\w*$', v) is not None
 
@@ -304,6 +314,7 @@ def type_name(t):
 class Registry:
     def __init__(self):
         self.styles = {}      # key -> dict(file, target, based, has_template, el)
+        self.dict_styles = {}  # key -> [Style elements]: keyed resource dictionaries used as a bundle of styles (`Resources="{StaticResource K}"`)
 
     def scan(self, paths):
         for p in paths:
@@ -319,6 +330,11 @@ class Registry:
             tree = etree.parse(path)
         except Exception:
             return
+        for rd in tree.getroot().findall('{%s}ResourceDictionary' % NS_WPF):
+            k = rd.get(X + 'Key')
+            kids = [c for c in rd if is_el(c)]
+            if k and kids and all(local(c.tag) in ('Style', 'DataTemplate') and c.get(X + 'Key') is None for c in kids):
+                self.dict_styles[k] = kids
         for st in tree.getroot().iter('{%s}Style' % NS_WPF):
             key = st.get(X + 'Key')
             if not key:
@@ -514,6 +530,29 @@ class Converter:
                 if is_el(c):
                     self.convert_element(c)
             return
+        if ns == NS_WPF and tag == 'Hyperlink':
+            self.convert_hyperlink(el)
+            return
+        if ns == NS_WPF and tag == 'CompositeCollection':
+            # items of the collection go straight to the owner, `CollectionContainer` (a bound source) can't be kept
+            parent = el.getparent()
+            idx = parent.index(el)
+            kids = [c for c in el]
+            parent.remove(el)
+            if local(parent.tag).endswith('.ItemsSource'):
+                parent.tag = retag(parent.tag, local(parent.tag)[:-len('ItemsSource')] + 'Items')
+            for k, c in enumerate(kids):
+                parent.insert(idx + k, c)
+            for c in kids:
+                if is_el(c):
+                    self.convert_element(c)
+            return
+        if ns == NS_WPF and tag == 'CollectionContainer':
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed CollectionContainer ')
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
         if ns == NS_WPF and tag in UNSUPPORTED:
             self.ctx.todo.append('removed %s' % tag)
             parent = el.getparent()
@@ -572,7 +611,41 @@ class Converter:
         self.convert_tree(el)
 
     # --------------------------------------------------------------- attributes
+    def inline_style_bundle(self, el):
+        reg = self.ctx.registry
+        ref = el.attrib.get('Resources')
+        if not ref or not reg or local(el.tag) in ('Style', 'ResourceDictionary'):
+            return
+        bundle = reg.dict_styles.get(reg.key_of(ref))
+        if not bundle:
+            return
+        del el.attrib['Resources']
+        holders = {}
+        for kind in ('Styles', 'DataTemplates'):
+            holder_tag = retag(el.tag, local(el.tag) + '.' + kind)
+            holder = next((h for h in el if is_el(h) and h.tag == holder_tag), None)
+            if holder is None:
+                holder = etree.Element(holder_tag)
+                el.insert(0, holder)
+            holders[kind] = holder
+        for st in bundle:
+            c = copy.deepcopy(st)
+            if local(c.tag) == 'DataTemplate':
+                StyleConverter(self).convert_data_template(c)
+                holders['DataTemplates'].append(c)
+                continue
+            holder = holders['Styles']
+            target = type_name(c.get('TargetType') or 'Control')
+            StyleConverter(self).convert(c, class_name=None)
+            c.set('Selector', target.replace(':', '|'))
+            c.attrib.pop('__plain', None)
+            holder.append(c)
+        for h in holders.values():
+            if len(h) == 0:
+                el.remove(h)
+
     def convert_attributes(self, el):
+        self.inline_style_bundle(el)
         for name in list(el.attrib):
             val = el.attrib[name]
             if name.startswith('{'):
@@ -691,6 +764,8 @@ class Converter:
             return name, val
         if name == 'Cursor':
             return name, CURSORS.get(val, val)
+        if name == 'Command' and re.match(r'^\w+:\w+\.\w+$', val or ''):
+            return name, '{x:Static %s}' % val
         if name in ('Command', 'CommandParameter') and re.match(r'^(SystemCommands|NavigationCommands|ApplicationCommands|ComponentCommands)\.\w+$', val or ''):
             return name, '{x:Static %s:%s}' % (COMPAT_STATICS[val.split('.')[0]], val)
         if name == 'ResizeMode':
@@ -705,6 +780,8 @@ class Converter:
             return name, convert_markup_value(val, self.ctx, name, el)
         if 'pack://' in val:
             return name, convert_pack_uri(val)
+        if name in ('Width', 'Height', 'MinWidth', 'MinHeight') and val == 'Auto' and tag not in ('ColumnDefinition', 'RowDefinition'):
+            return name, 'NaN'
         if name.endswith('DashArray'):
             return name, val.replace(' ', ',')
         return name, val
@@ -725,6 +802,10 @@ class Converter:
     # --------------------------------------------------------------- property elements
     def convert_property_element(self, el, tag, ns):
         owner, prop = tag.split('.', 1)
+        if owner in ('FrameworkElement', 'UIElement', 'Control') and el.getparent() is not None and isinstance(el.getparent().tag, str):
+            owner = local(el.getparent().tag)
+            tag = '%s.%s' % (owner, prop)
+            el.tag = retag(el.getparent().tag, tag)
         if prop == 'LayoutTransform':
             parent = el.getparent()
             comment = etree.Comment(' PORT: removed %s ' % tag)
@@ -744,7 +825,7 @@ class Converter:
         if ns == NS_BLEND:
             self.convert_blend(el, tag)
             return
-        if ns != NS_WPF and prop not in ('Style', 'ItemContainerStyle', 'Resources', 'Triggers'):
+        if ns != NS_WPF and prop not in ('Style', 'ItemContainerStyle', 'Resources', 'Triggers') and prop not in PROP_RENAME:
             self.convert_tree(el)
             return
         if prop == 'ToolTip':
@@ -769,8 +850,25 @@ class Converter:
             comment.tail = el.tail
             parent.replace(el, comment)
             return
+        if prop == 'GroupStyle':
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s (no grouping in Avalonia lists) ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
         if prop == 'Resources':
             el.tag = retag(el.tag, '%s.Resources' % TYPE_RENAME.get(owner, owner))
+            kids = [c for c in el if is_el(c)]
+            if kids and all(local(c.tag) == 'SharedResourceDictionary' or (local(c.tag) == 'ResourceDictionary' and c.get('Source')) for c in kids):
+                # `Resources` takes a dictionary, an include needs a wrapper
+                rd = etree.Element(qn('ResourceDictionary'))
+                md = etree.SubElement(rd, qn('ResourceDictionary.MergedDictionaries'))
+                for c in kids:
+                    el.remove(c)
+                    md.append(c)
+                    self.convert_merged(c)
+                el.append(rd)
+                return
             self.convert_tree(el)
             return
         if prop in ('Triggers',) and owner in ('Style', 'ControlTemplate', 'DataTemplate'):
@@ -806,7 +904,7 @@ class Converter:
                 return
             prop = new
         prop = {'DecreaseRepeatButton': 'DecreaseButton', 'IncreaseRepeatButton': 'IncreaseButton'}.get(prop, prop)
-        el.tag = qn('%s.%s' % (TYPE_RENAME.get(owner, owner), prop))
+        el.tag = retag(el.tag, '%s.%s' % (TYPE_RENAME.get(owner, owner), prop))
         self.convert_tree(el)
 
     def convert_dictionary(self, el):
@@ -821,8 +919,37 @@ class Converter:
                 for d in list(child):
                     if is_el(d):
                         self.convert_merged(d)
+            elif t == 'ResourceDictionary' and child.get(X + 'Key') in (self.ctx.registry.dict_styles if self.ctx.registry else {}):
+                comment = etree.Comment(' PORT: style bundle %s is inlined where it is used ' % child.get(X + 'Key'))
+                comment.tail = child.tail
+                el.replace(child, comment)
             else:
                 self.convert_element(child)
+
+    def convert_hyperlink(self, el):
+        """<Hyperlink Command=..><Run Text=../></Hyperlink> -> <InlineUIContainer> with a button which looks like a link"""
+        texts = []
+        for c in list(el):
+            if not is_el(c):
+                continue
+            for r in ([c] if local(c.tag) == 'Run' else [x for x in c if is_el(x) and local(x.tag) == 'Run']):
+                texts.append(r.get('Text') or (r.text or ''))
+        btn = etree.Element(qn('Button'))
+        btn.set('Theme', '{StaticResource HyperlinkButton}')
+        for a in ('Command', 'CommandParameter', 'ToolTip', 'IsEnabled'):
+            if el.get(a) is not None:
+                btn.set(a, el.get(a))
+        if el.get('NavigateUri') is not None and el.get('Command') is None:
+            btn.set('Command', '{x:Static mui:BbCodeBlock.LinkCommand}')
+            btn.set('CommandParameter', el.get('NavigateUri'))
+        tb = etree.SubElement(btn, qn('TextBlock'))
+        tb.set('Text', texts[0] if len(texts) == 1 else ''.join(t for t in texts if not is_markup(t)))
+        container = etree.Element(qn('InlineUIContainer'))
+        container.append(btn)
+        container.tail = el.tail
+        parent = el.getparent()
+        parent.replace(el, container)
+        self.convert_element(btn)
 
     def convert_blend(self, el, tag):
         """Blend interactivity -> Avalonia.Xaml.Behaviors"""
@@ -964,6 +1091,16 @@ class StyleConverter:
         if key and key.strip().startswith('{x:Type'):
             style.attrib.pop(X + 'Key')
             key = None
+        res_attr = style.attrib.pop('Resources', None)
+        bundle = reg.dict_styles.get(reg.key_of(res_attr)) if (reg and res_attr) else None
+        if bundle:
+            holder = next((c for c in style if is_el(c) and local(c.tag) == 'Style.Resources'), None)
+            if holder is None:
+                holder = etree.Element(qn('Style.Resources'))
+                style.append(holder)
+            for st in bundle:
+                if local(st.tag) == 'Style':
+                    holder.append(copy.deepcopy(st))
         target = style.get('TargetType')
         sel_type = type_name(target) if target else 'Control'
         based_attr = style.get('BasedOn')
@@ -1065,10 +1202,12 @@ class StyleConverter:
         if resources_el is not None:
             resources_el.tag = qn('ControlTheme.Resources' if as_theme else 'Style.Resources')
             self.conv.convert_tree(resources_el)
-            rd = etree.Element(qn('ResourceDictionary'))
-            for c in list(resources_el):
-                rd.append(c)
-            resources_el.append(rd)
+            kids = [c for c in resources_el if is_el(c)]
+            if not (len(kids) == 1 and local(kids[0].tag) == 'ResourceDictionary'):
+                rd = etree.Element(qn('ResourceDictionary'))
+                for c in list(resources_el):
+                    rd.append(c)
+                resources_el.append(rd)
 
     def convert_setters(self, parent, setters):
         for s in setters:
@@ -1290,6 +1429,11 @@ class StyleConverter:
             prop = self.map_prop(prop) or prop
             if (prop, v) in PSEUDO:
                 return PSEUDO[(prop, v)]
+            if v == 'null' and '.' not in prop:
+                # selectors can't compare with null, a state property is bound instead
+                sp = self.new_state()
+                sp_defs.append((sp, '{Binding %s, RelativeSource={RelativeSource Self}}' % prop, '{x:Null}'))
+                return '[(pa|T.%s)=True]' % sp
             if '.' in prop:
                 t, pn = prop.rsplit('.', 1)
                 return '[(%s.%s)=%s]' % (t.replace(':', '|'), pn, v)
@@ -1689,6 +1833,15 @@ def convert_file(path, registry, out_dir=None):
     relocate_implicit(root, 'avares://%s/%s.axaml' % (ASM[0], os.path.relpath(os.path.splitext(path)[0], ASM[1]).replace(os.sep, '/')))
 
     for e in root.iter():
+        if is_el(e) and e.tag.endswith('}Setter') and e.get('Property') in ('Width', 'Height') and e.get('Value') == 'Auto':
+            e.set('Value', 'NaN')
+        if is_el(e):
+            # 9pt, 1in...: Avalonia has pixels only
+            if e.tag.endswith('}Setter') and e.get('Value') and e.get('Property') in ('FontSize', 'Width', 'Height', 'MinWidth', 'MinHeight', 'MaxWidth', 'MaxHeight'):
+                e.set('Value', convert_units(e.get('Value')))
+            for a in ('FontSize', 'Width', 'Height', 'MinWidth', 'MinHeight', 'MaxWidth', 'MaxHeight'):
+                if e.get(a):
+                    e.set(a, convert_units(e.get(a)))
         if is_el(e) and e.tag.endswith('}TreeDataTemplate'):
             for a in ('ItemTemplate', 'ItemContainerStyle', 'ItemTemplateSelector'):
                 e.attrib.pop(a, None)
@@ -1705,6 +1858,8 @@ def convert_file(path, registry, out_dir=None):
             continue
         elif u == NS_BLEND:
             new_nsmap[p] = NS_BLEND_AV
+        elif u.startswith('clr-namespace:System.Windows.Forms'):
+            new_nsmap[p] = 'clr-namespace:AcTools.Windows.Compat;assembly=AcTools'
         else:
             new_nsmap[p] = u
     for hp, hu in HELPER_NS.items():

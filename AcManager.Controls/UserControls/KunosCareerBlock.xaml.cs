@@ -34,7 +34,7 @@ namespace AcManager.Controls.UserControls {
             new KunosCareerIntro(career).ShowDialog();
         }
 
-        private void KunosCareerBlock_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        private void KunosCareerBlock_OnDataContextChanged(object sender, System.EventArgs e) {
             var career = KunosCareerObject;
             if (career == null) return;
 

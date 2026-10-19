@@ -1,76 +1,13 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceInclude Source="BetterTextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ColorPicker.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <ControlTheme x:Key="ColorPicker.Borderless" TargetType="c:ColorPicker">
+  <ControlTheme x:Key="ColorPicker.Borderless" TargetType="c:ColorPicker" BasedOn="{StaticResource {x:Type c:ColorPicker}}">
     <Setter Property="Padding" Value="0"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="c:ColorPicker">
-          <c:AdornedControl x:Name="Outline">
-            <c:AdornedControl.AdornerContent>
-              <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
-            </c:AdornedControl.AdornerContent>
-            <c:Cell>
-              <c:BetterTextBox x:Name="PART_TextBox" Template="{StaticResource BetterTextBoxControlTemplate.Simple}" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}" Theme="{StaticResource Borderless}"/>
-              <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="3 2 5 0" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5">
-                <!-- PORT: removed StaysOpen (not in Avalonia) --><c:Cell x:Name="PART_Root" HorizontalAlignment="Center">
-                  <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                  <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
-                </c:Cell>
-              </Popup>
-            </c:Cell>
-          </c:AdornedControl>
-          </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  <Style Selector="^ /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="False"/></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
-              </Style><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
-              </Style><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-            </Style></Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-              <Setter Property="Order" Value="5"/>
-              </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:focus-within /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-              <Setter Property="Order" Value="5"/>
-              </Style><Style Selector="^:focus-within"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style></ControlTheme>
-
-  <ControlTheme x:Key="ColorPicker.Borderless.White" TargetType="c:ColorPicker">
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="c:ColorPicker">
-          <c:AdornedControl x:Name="Outline">
-            <c:AdornedControl.AdornerContent>
-              <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
-            </c:AdornedControl.AdornerContent>
-            <c:Cell>
-              <c:BetterTextBox x:Name="PART_TextBox" Template="{StaticResource BetterTextBoxControlTemplate.Simple}" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}" Theme="{StaticResource Borderless}"/>
-              <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="3 2 5 0" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5">
-                <!-- PORT: removed StaysOpen (not in Avalonia) --><c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
-                  <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                  <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
-                </c:Cell>
-              </Popup>
-            </c:Cell>
-          </c:AdornedControl>
-          </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  <Style Selector="^ /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="False"/></Style><Style Selector="^:disabled /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style><Style Selector="^:not(:disabled)"><Style Selector="^:pointerover /template/ c|BetterTextBox#PART_TextBox"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
-              </Style><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-            </Style></Style><Style Selector="^:focus /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-              <Setter Property="Order" Value="5"/>
-              </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^:focus-within /template/ c|AdornedControl#Outline"><Setter Property="IsAdornerVisible" Value="True"/>
-              <Setter Property="Order" Value="5"/>
-              </Style><Style Selector="^:focus-within"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style></ControlTheme>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+  </ControlTheme>
 </ResourceDictionary>

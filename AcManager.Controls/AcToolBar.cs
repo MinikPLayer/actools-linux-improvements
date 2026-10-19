@@ -7,7 +7,12 @@ using System.Windows.Markup;
 namespace AcManager.Controls {
     [ContentProperty(nameof(ToolBars))]
     public class AcToolBar : Control {
-        static AcToolBar() {
+        public static readonly StyledProperty<Avalonia.Layout.VerticalAlignment> VerticalContentAlignmentProperty =
+                Avalonia.Controls.ContentControl.VerticalContentAlignmentProperty.AddOwner<AcToolBar>();
+
+        public Avalonia.Layout.VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
         }
 
         public AcToolBar() {

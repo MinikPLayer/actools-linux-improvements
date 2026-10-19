@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:acs="clr-namespace:AcManager.Tools.Helpers.AcSettingsControls;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:acset="clr-namespace:AcManager.Tools.Helpers.AcSettings;assembly=AcManager.Tools" xmlns:t="http://acstuff.club/app/tools" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:helpers="clr-namespace:AcManager.Controls.Helpers" xmlns:se="clr-namespace:AcManager.Controls.Services" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:acs="clr-namespace:AcManager.Tools.Helpers.AcSettingsControls;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:acset="clr-namespace:AcManager.Tools.Helpers.AcSettings;assembly=AcManager.Tools" xmlns:t="http://acstuff.club/app/tools" xmlns:forms="clr-namespace:AcTools.Windows.Compat;assembly=AcTools" xmlns:helpers="clr-namespace:AcManager.Controls.Helpers" xmlns:se="clr-namespace:AcManager.Controls.Services" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -391,11 +391,11 @@
   <DataTemplate x:Key="PythonAppConfig.ItemTemplate" DataType="t:IPythonAppConfigValue">
     <Border mui:ContextMenuAdvancement.PropagateToChildren="True" Background="Transparent" x:Name="__Dt5">
       <Border.Styles><Style Selector="Border#__Dt5"><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
-      </Style></Style></Border.Styles><Control.ContextMenu>
+      </Style></Style></Border.Styles><Border.ContextMenu>
         <ContextMenu IsEnabled="{Binding IsResettable}">
           <MenuItem Header="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsEnabled="{Binding IsNonDefault}"/>
         </ContextMenu>
-      </Control.ContextMenu>
+      </Border.ContextMenu>
 
       <ContentControl Content="{Binding}" IsEnabled="{Binding IsEnabled}">
         <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:PythonAppConfigBoolValue}">
@@ -445,7 +445,7 @@
             <DockPanel>
               <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
               <mui:BetterComboBox ItemsSource="{Binding Values}" SelectedItem="{Binding Value, Mode=TwoWay}" IsEditable="False" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}">
-                <mui:BetterComboBox.ItemTemplateSelector>
+                <mui:BetterComboBox.ItemTemplate>
                   <t:PythonAppConfigOptionsTemplateSelector>
                     <t:PythonAppConfigOptionsTemplateSelector.NullTemplate>
                       <DataTemplate>
@@ -458,7 +458,7 @@
                       </DataTemplate>
                     </t:PythonAppConfigOptionsTemplateSelector.DataTemplate>
                   </t:PythonAppConfigOptionsTemplateSelector>
-                </mui:BetterComboBox.ItemTemplateSelector>
+                </mui:BetterComboBox.ItemTemplate>
               </mui:BetterComboBox>
             </DockPanel>
           </DataTemplate>

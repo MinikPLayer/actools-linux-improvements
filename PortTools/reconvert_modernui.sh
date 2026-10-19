@@ -1,5 +1,7 @@
 #!/bin/bash
 # re-run WPF->Avalonia XAML conversion for ModernUI from pristine git sources (commit before the port started)
+# WARNING: do not run it anymore - ModernUI axaml files were edited by hand after the conversion (ProgressBar, ToolBar, Hyperlink, ...)
+exit 1
 cd /project/FirstFloor.ModernUI
 BASE=5570fd95
 for d in Assets Themes Dialogs; do

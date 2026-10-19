@@ -223,7 +223,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static readonly StyledProperty<FrameworkElement> MenuProperty = DP.Register<FrameworkElement>(nameof(Menu),
                 typeof(ContextMenuButton), new PropertyMetadata(OnMenuChanged));
 
-        public FrameworkElement Menu {
+        [Avalonia.Metadata.Content] public FrameworkElement Menu {
             get => (FrameworkElement)GetValue(MenuProperty);
             set => SetValue(MenuProperty, value);
         }

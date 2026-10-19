@@ -27,6 +27,19 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty = ContentControl.VerticalContentAlignmentProperty.AddOwner<ToolBar>();
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty = ContentControl.HorizontalContentAlignmentProperty.AddOwner<ToolBar>();
+
+        public VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
+        }
+
+        public HorizontalAlignment HorizontalContentAlignment {
+            get => GetValue(HorizontalContentAlignmentProperty);
+            set => SetValue(HorizontalContentAlignmentProperty, value);
+        }
+
         public static readonly AttachedProperty<bool> IsLockedProperty = AvaloniaProperty.RegisterAttached<ToolBar, Control, bool>("IsLocked");
         public static bool GetIsLocked(Control c) => c.GetValue(IsLockedProperty);
         public static void SetIsLocked(Control c, bool v) => c.SetValue(IsLockedProperty, v);

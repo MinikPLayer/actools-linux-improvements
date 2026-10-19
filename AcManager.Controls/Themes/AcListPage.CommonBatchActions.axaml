@@ -3,8 +3,8 @@
   <DataTemplate x:Key="Batch.AddTag" DataType="{x:Type t:CommonBatchActions+BatchAction_AddTag}">
     <mui:SpacingStackPanel Spacing="4">
       <mui:SpacingStackPanel.Resources>
-      <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
-    </mui:SpacingStackPanel.Resources>
+      <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
+    </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <DockPanel VerticalAlignment="Top">
         <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
         <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4"/>
@@ -23,8 +23,8 @@
   <DataTemplate x:Key="Batch.FindAndReplace" DataType="{x:Type t:CommonBatchActions+BatchAction_NameReplace}">
     <mui:SpacingStackPanel Spacing="4">
       <mui:SpacingStackPanel.Resources>
-      <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
-    </mui:SpacingStackPanel.Resources>
+      <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
+    </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
         <DockPanel VerticalAlignment="Top">
           <TextBlock Text="Find:" Width="60" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
@@ -49,8 +49,8 @@
   <DataTemplate x:Key="Batch.SetRating" DataType="{x:Type t:CommonBatchActions+BatchAction_SetRating}">
     <mui:SpacingStackPanel Spacing="4">
       <mui:SpacingStackPanel.Resources>
-      <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
-    </mui:SpacingStackPanel.Resources>
+      <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
+    </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
         <CheckBox IsChecked="{Binding RemoveRating}">
           <Label Content="Remove rating"/>
@@ -66,8 +66,8 @@
   <DataTemplate x:Key="Batch.Pack">
     <mui:SpacingStackPanel Spacing="4">
       <mui:SpacingStackPanel.Resources>
-      <mui:SharedResourceDictionary Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.xaml"/>
-    </mui:SpacingStackPanel.Resources>
+      <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+    </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <!--<DockPanel VerticalAlignment="Top">
           <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Style="{StaticResource Label}" />
           <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4" />

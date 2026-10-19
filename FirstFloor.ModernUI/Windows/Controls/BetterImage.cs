@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +24,22 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// (no cropping, no custom thread pools).
     /// </summary>
     public class BetterImage : Decorator {
+
+        public static readonly StyledProperty<Avalonia.Media.IBrush> BackgroundProperty = Avalonia.Controls.Border.BackgroundProperty.AddOwner<BetterImage>();
+
+        public Avalonia.Media.IBrush Background {
+            get => GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
+        }
+
+        public override void Render(Avalonia.Media.DrawingContext context) {
+            var background = Background;
+            if (background != null) {
+                context.FillRectangle(background, new Avalonia.Rect(Bounds.Size));
+            }
+
+            base.Render(context);
+        }
         #region Static options (kept from the WPF version, some of them aren’t used anymore)
         public static bool OptionReadFileSync = false;
         public static int OptionDecodeImageSyncThreshold = 30 * 1000;

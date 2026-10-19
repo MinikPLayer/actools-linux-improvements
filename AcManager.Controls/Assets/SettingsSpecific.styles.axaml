@@ -9,10 +9,89 @@
       </Style>
     </Style>
 
-  <Style Resources="{StaticResource SettingsStyle}" Selector="StackPanel.SettingsPanel">
+  <Style Selector="StackPanel.SettingsPanel">
     <Setter Property="Margin" Value="0 0 20 20"/>
     <Setter Property="MinWidth" Value="240"/>
 
+  <Style Selector="^ DockPanel">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Margin" Value="0 0 0 8"/>
+
+      <Style Selector="^ Label">
+          <Setter Property="Margin" Value="0 4 8 0"/>
+          <Setter Property="Width" Value="148"/>
+          <Setter Property="VerticalAlignment" Value="Top"/>
+          <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ mui|ValueLabel">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0 0 16 0"/>
+          <Setter Property="Width" Value="140"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ mui|DoubleValueLabel">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0 0 16 0"/>
+          <Setter Property="Width" Value="140"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ controls|TemperatureValueLabel">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0 0 16 0"/>
+          <Setter Property="Width" Value="140"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ controls|DoubleTemperatureValueLabel">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0 0 16 0"/>
+          <Setter Property="Width" Value="140"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Left"/>
+        </Style>
+
+        <Style Selector="^ Button">
+          <Setter Property="Margin" Value="8 0 0 0"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
+
+        <Style Selector="^ mui|AsyncButton">
+          <Setter Property="Margin" Value="8 0 0 0"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
+
+        <Style Selector="^ mui|LabeledToggleButton">
+          <Setter Property="Margin" Value="8 0 0 0"/>
+          <Setter Property="VerticalAlignment" Value="Center"/>
+          <Setter Property="DockPanel.Dock" Value="Right"/>
+        </Style>
+
+        <Style Selector="^ TextBlock">
+          <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style Selector="^ CheckBox"><Setter Property="VerticalAlignment" Value="Center"/>
+
+    </Style>
+      </Style>
+
+    <Style Selector="^ CheckBox">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Setter Property="Margin" Value="0 0 0 8"/>
+    </Style>
+
+    <Style Selector="^ controls|MessageBlock">
+      <Setter Property="Margin" Value="0 0 0 8"/>
+    </Style>
   </Style>
 
   <Style Selector="StackPanel.SettingsCompactPanel">

@@ -28,7 +28,7 @@
             </ControlTemplate>
           </Setter.Value>
         </Setter>
-      <Style Selector="^[IconContent=null]"><Setter Property="Template">
+      <Style Selector="^[(pa|T.S0)=True]"><Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="c:AcObjectHeaderSection">
               <DockPanel>
@@ -39,5 +39,5 @@
             </ControlTemplate>
           </Setter.Value>
         </Setter>
-      </Style></Style></ControlTheme>
+      </Style></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IconContent, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style></ControlTheme>
 </ResourceDictionary>

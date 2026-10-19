@@ -24,7 +24,7 @@ namespace AcManager.Controls.UserControls {
             new UserChampionshipIntro(career).ShowDialog();
         }
 
-        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        private void OnDataContextChanged(object sender, System.EventArgs e) {
             var career = KunosCareerObject;
             if (career == null) return;
 

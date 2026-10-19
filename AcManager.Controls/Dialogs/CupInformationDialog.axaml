@@ -42,7 +42,7 @@
       </mui:BooleanSwitch>
       <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Name:" Text="{Binding CupUpdateInformation.Name}" Placeholder="Not set"/>
       <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Made by:" Text="{Binding CupUpdateInformation.Author}" Placeholder="Not set"/>
-      <mui:PathTrimmingTextBlock c:PropertiesGrid.Label="More information at:" Text="{Binding CupUpdateInformation.InformationUrl}" Placeholder="Not set" SelectionChanged="OnHyperlinkMouseSelection" PointerReleased="OnHyperlinkMouseUp" PointerPressed="OnHyperlinkMouseDown" Theme="{StaticResource RichTextBox.Hyperlink}"/>
+      <mui:PathTrimmingTextBlock c:PropertiesGrid.Label="More information at:" Text="{Binding CupUpdateInformation.InformationUrl}" Placeholder="Not set" PointerReleased="OnHyperlinkMouseUp" PointerPressed="OnHyperlinkMouseDown" Theme="{StaticResource RichTextBox.Hyperlink}"/>
     </c:PropertiesGrid>
 
     <DockPanel Margin="0 4 0 0">

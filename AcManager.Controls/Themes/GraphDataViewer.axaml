@@ -3,7 +3,7 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <oxy:ThicknessConverter x:Key="ThicknessConverter"/>
+  
 
   <ControlTheme TargetType="gr:CustomTrackerControl" x:Key="{x:Type gr:CustomTrackerControl}">
     <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
@@ -11,11 +11,11 @@
     <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-    <Setter Property="LineDashArray" Value="4,2"/>
+    
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="LineStroke" Value="{DynamicResource Accent}"/>
-    <Setter Property="HorizontalLineVisibility" Value="Visible"/>
-    <Setter Property="VerticalLineVisibility" Value="Visible"/>
+    <Setter Property="HorizontalLineVisibility" Value="True"/>
+    <Setter Property="VerticalLineVisibility" Value="True"/>
     <Setter Property="Distance" Value="7"/>
     <Setter Property="CornerRadius" Value="0"/>
     <Setter Property="IsHitTestVisible" Value="False"/>
@@ -26,11 +26,11 @@
       <Setter.Value>
         <ControlTemplate TargetType="gr:CustomTrackerControl">
           <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Line x:Name="PART_HorizontalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding HorizontalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
-            <Line x:Name="PART_VerticalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding VerticalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
+            <Line x:Name="PART_HorizontalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="4,2" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding HorizontalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
+            <Line x:Name="PART_VerticalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="4,2" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding VerticalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
 
             <Grid x:Name="PART_ContentContainer">
-              <Path x:Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness, Converter={StaticResource ThicknessConverter}}"/>
+              <Path x:Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
               <ContentPresenter x:Name="PART_Content" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" IsVisible="False"/>
               <Border Margin="{Binding Margin, ElementName=PART_Content}">
                 <mui:BbCodeBlock Text="{Binding}" Margin="5 4" TextWrapping="NoWrap" TextTrimming="None" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{DynamicResource WindowText}"/>

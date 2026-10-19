@@ -52,7 +52,7 @@
           </Setter.Value>
         </Setter>
       </Style><Style Selector="^[Loading=True] /template/ mui|Switch#PART_Switch"><Setter Property="Value" Value="-1"/>
-            </Style><Style Selector="^[CarId=null] /template/ ItemsControl#PART_List"><Setter Property="ItemTemplate">
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding CarId, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ ItemsControl#PART_List"><Setter Property="ItemTemplate">
                 <Setter.Value>
                   <DataTemplate DataType="t:LapTimeWrapped">
                     <DockPanel Height="20" ContextMenu="{StaticResource BestLapWrappedContextMenu}" Background="Transparent" ac:ToolTips.Car="{Binding Car}" ac:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}">

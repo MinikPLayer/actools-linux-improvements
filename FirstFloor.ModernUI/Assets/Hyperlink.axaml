@@ -1,2 +1,21 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
-  </ResourceDictionary>
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- PORT: Avalonia has no Hyperlink inline, the converter replaces it with a button which looks like a link -->
+  <ControlTheme x:Key="HyperlinkButton" TargetType="Button">
+    <Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"
+            Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" TextElement.Foreground="{TemplateBinding Foreground}"/>
+      </ControlTemplate>
+    </Setter>
+    <Style Selector="^ /template/ ContentPresenter TextBlock">
+      <Setter Property="TextDecorations" Value="Underline"/>
+    </Style>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource HyperlinkHover}"/></Style>
+    <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource HyperlinkDisabled}"/><Setter Property="Cursor" Value="Arrow"/></Style>
+  </ControlTheme>
+</ResourceDictionary>

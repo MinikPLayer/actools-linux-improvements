@@ -57,7 +57,7 @@
               </Style><!-- PORT: storyboard actions of trigger :checked not converted --><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
               <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
             </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
-              </Style><Style Selector="^[MoreCommand=null] /template/ mui|ContextMenuButton#PART_MoreButton"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding MoreCommand, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ mui|ContextMenuButton#PART_MoreButton"><Setter Property="IsVisible" Value="False"/>
             </Style></ControlTheme>
 
   <ControlTheme TargetType="mui:ModernButton" x:Key="{x:Type mui:ModernButton}">
@@ -157,7 +157,7 @@
                   </DataTemplate>
                 </Setter.Value>
               </Setter>
-            </Style><Style Selector="^[CurrentUserPreset=null] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
+            </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CurrentUserPreset, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
                 <Setter.Value>
                   <DataTemplate>
                     <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Center" FontWeight="{StaticResource FontWeight}" FontFamily="{StaticResource CondensedFont}" FontSize="{StaticResource FontSize}" FontStyle="Italic" Text="{x:Static ac:ControlsStrings.Presets_Unsaved}"/>

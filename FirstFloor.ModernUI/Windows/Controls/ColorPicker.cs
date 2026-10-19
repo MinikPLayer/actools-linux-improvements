@@ -1,112 +1,47 @@
-﻿using System;
+using System;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-using FirstFloor.ModernUI.Dialogs;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
 using FirstFloor.ModernUI.Helpers;
-using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
-    public class ColorPicker : Control {
-        private static WeakReference<ColorPicker> _lastColorPicker;
+    /// <summary>
+    /// Text field with a hex color and a button with popup. WPF version used pixel shaders for palettes, here it’s Avalonia’s ColorView
+    /// (see LinuxPortDocs.md).
+    /// </summary>
+    public class ColorPicker : TemplatedControl {
+        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<ColorPicker, Color>(nameof(Color),
+                Color.FromArgb(0, 0, 0, 0), defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
-        /// <summary>
-        /// Needed a reference so it could stay open while user is picking a color from screen.
-        /// </summary>
-        [CanBeNull]
-        internal static ColorPicker GetLastOpened() {
-            ColorPicker r = null;
-            return _lastColorPicker?.TryGetTarget(out r) == true ? r : null;
-        }
+        public static readonly StyledProperty<string> DisplayColorProperty = AvaloniaProperty.Register<ColorPicker, string>(nameof(DisplayColor),
+                defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
 
-        public ColorPicker() {
-        }
+        public static readonly StyledProperty<Color> OverlayColorProperty = AvaloniaProperty.Register<ColorPicker, Color>(nameof(OverlayColor), Colors.White);
 
-        internal Popup Popup { get; private set; }
-        private ColorPickerPanel _panel;
-        private ToggleButton _button;
-
-        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
-            this.RememberTemplateScope(e);
-            base.OnApplyTemplate(e);
-
-            if (Popup != null) {
-                Popup.Opened -= OnPopupOpened;
-            }
-
-            if (_button != null) {
-                _button.RemovePreviewMouseLeftButtonDown(OnButtonClick);
-            }
-
-            Popup = this.GetTemplateChild("PART_Popup") as Popup;
-            _panel = this.GetTemplateChild("PART_Panel") as ColorPickerPanel;
-            _button = this.GetTemplateChild("PART_Button") as ToggleButton;
-
-            if (Popup != null) {
-                Popup.Opened += OnPopupOpened;
-            }
-
-            if (_button != null) {
-                _button.AddPreviewMouseLeftButtonDown(OnButtonClick);
-            }
-        }
-
-        private void OnButtonClick(object sender, RoutedEventArgs routedEventArgs) {
-            if (Keyboard.Modifiers == ModifierKeys.Control && !Popup.IsOpen) {
-                routedEventArgs.Handled = true;
-                Color = ScreenColorPickerDialog.Pick() ?? Color;
-            }
-        }
-
-        private void OnPopupOpened(object sender, EventArgs e) {
-            _panel.OriginalColor = Color;
-            _lastColorPicker = new WeakReference<ColorPicker>(this);
-        }
-
-        public static readonly DependencyPropertyKey OverlayColorPropertyKey = DP.RegisterReadOnly(nameof(OverlayColor), typeof(Color),
-                typeof(ColorPicker), new PropertyMetadata(Colors.White));
-
-        public static readonly DependencyProperty OverlayColorProperty = OverlayColorPropertyKey.DependencyProperty;
-
-        public Color OverlayColor => (Color)GetValue(OverlayColorProperty);
-
-        public static readonly StyledProperty<Color> ColorProperty = DP.Register<Color>(nameof(Color),
-                typeof(ColorPicker),
-                new FrameworkPropertyMetadata(Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
-
-        public Color Color {
-            get => GetValue(ColorProperty) as Color? ?? default;
-            set => SetValue(ColorProperty, value);
-        }
-
-        private static void OnColorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((ColorPicker)o).OnColorChanged((Color)e.NewValue);
-        }
+        public Color Color { get => GetValue(ColorProperty); set => SetValue(ColorProperty, value); }
+        public string DisplayColor { get => GetValue(DisplayColorProperty); set => SetValue(DisplayColorProperty, value); }
+        public Color OverlayColor { get => GetValue(OverlayColorProperty); private set => SetValue(OverlayColorProperty, value); }
 
         private bool _skip;
 
+        static ColorPicker() {
+            ColorProperty.Changed.AddClassHandler<ColorPicker>((o, e) => o.OnColorChanged((Color)e.NewValue));
+            DisplayColorProperty.Changed.AddClassHandler<ColorPicker>((o, e) => o.OnDisplayColorChanged((string)e.NewValue));
+        }
+
+        public ColorPicker() {
+            OnColorChanged(Color);
+        }
+
         private void OnColorChanged(Color newValue) {
             if (_skip) return;
-            if (DisplayColor.ToColor() != newValue) {
+            if (DisplayColor?.ToColor() != newValue) {
                 DisplayColor = newValue.ToHexString();
-                SetValue(OverlayColorPropertyKey.DependencyProperty, newValue.IsBright() ? Colors.Black : Colors.White);
+                OverlayColor = newValue.IsBright() ? Colors.Black : Colors.White;
             }
-        }
-
-        public static readonly StyledProperty<string> DisplayColorProperty = DP.Register<string>(nameof(DisplayColor),
-                typeof(ColorPicker), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisplayColorChanged));
-
-        public string DisplayColor {
-            get => (string)GetValue(DisplayColorProperty);
-            set => SetValue(DisplayColorProperty, value);
-        }
-
-        private static void OnDisplayColorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((ColorPicker)o).OnDisplayColorChanged((string)e.NewValue);
         }
 
         private void OnDisplayColorChanged(string newValue) {
@@ -120,13 +55,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private class InnerColorToBrushConverter : IValueConverter {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-                if (!(value is Color c)) {
-                    return null;
-                }
-
-                var brush = new SolidColorBrush(c);
-                brush.Freeze();
-                return brush;
+                return value is Color c ? new SolidColorBrush(c).ToImmutable() : null;
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {

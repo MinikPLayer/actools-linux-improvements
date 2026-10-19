@@ -15,11 +15,7 @@
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
                       <TextBlock Margin="40 0 0 0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left">
-                        <!-- PORT: Hyperlink needs manual conversion --><TextBlock>
-                          <!-- PORT: removed Command (not in Avalonia) --><Hyperlink.Inlines>
-                            <Run Text="{Binding Message, Mode=OneWay}"/>
-                          </Hyperlink.Inlines>
-                        </TextBlock>
+                        <InlineUIContainer><Button Theme="{StaticResource HyperlinkButton}" Command="{Binding StartErrorFixerCommand}"><TextBlock Text="{Binding Message, Mode=OneWay}"/></Button></InlineUIContainer>
                       </TextBlock>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
