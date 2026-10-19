@@ -575,7 +575,7 @@ namespace AcManager.Controls.UserControls {
             if (Mouse.RightButton == MouseButtonState.Pressed && Tabs.Count > 1) {
                 e.Handled = true;
                 _usedForScrolling = true;
-                SetCurrentTab(e.Delta < 0 ? Tabs.Next(CurrentTab) : Tabs.Previous(CurrentTab));
+                SetCurrentTab(e.Delta.Y < 0 ? Tabs.Next(CurrentTab) : Tabs.Previous(CurrentTab));
             }
         }
 

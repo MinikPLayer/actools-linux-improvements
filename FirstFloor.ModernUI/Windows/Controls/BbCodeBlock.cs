@@ -216,6 +216,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((BbCodeBlock)o).Update();
         }
 
+        public void ForceUpdate() {
+            Update();
+        }
+
         protected virtual void Update() {
             var text = Text;
             var inlines = TextBlock.Inlines;

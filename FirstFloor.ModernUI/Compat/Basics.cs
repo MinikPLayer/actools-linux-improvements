@@ -111,6 +111,11 @@ namespace System.Windows {
             }
         }
 
+        extension(IImage image) {
+            public double Width => image.Size.Width;
+            public double Height => image.Size.Height;
+        }
+
         extension(Visual v2) {
             public Point PointFromScreen(Point screenPoint) => v2.PointToClient(new PixelPoint((int)screenPoint.X, (int)screenPoint.Y));
         }

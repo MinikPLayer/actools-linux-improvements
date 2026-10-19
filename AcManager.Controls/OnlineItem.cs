@@ -98,6 +98,26 @@ namespace AcManager.Controls {
         private static ToolTip _toolTip;
         private static DateTime _lastClosed;
 
+        // PORT: tooltips in Avalonia are attached to controls, so the “tooltip” above is only a container of content
+        private static Avalonia.Controls.Control _toolTipTarget;
+
+        private static void CloseToolTip() {
+            if (_toolTipTarget != null) {
+                Avalonia.Controls.ToolTip.SetIsOpen(_toolTipTarget, false);
+                Avalonia.Controls.ToolTip.SetTip(_toolTipTarget, null);
+                _toolTipTarget = null;
+            }
+        }
+
+        private static void OpenToolTip(Avalonia.Controls.Control target, object content) {
+            CloseToolTip();
+            _toolTipTarget = target;
+            Avalonia.Controls.ToolTip.SetTip(target, content);
+            Avalonia.Controls.ToolTip.SetPlacement(target, Avalonia.Controls.PlacementMode.Pointer);
+            Avalonia.Controls.ToolTip.SetShowDelay(target, 0);
+            Avalonia.Controls.ToolTip.SetIsOpen(target, true);
+        }
+
         private async void ShowToolTip([CanBeNull] string key, [CanBeNull] Func<object> contentFn, [CanBeNull] Func<object> contextFn = null) {
             var owner = GetHashCode();
             if (_toolTipKey == key && _toolTipOwner == owner) {
@@ -109,7 +129,7 @@ namespace AcManager.Controls {
                 if (owner == _toolTipOwner) {
                     _toolTipKey = null;
                     if (_toolTip != null) {
-                        _toolTip.IsOpen = false;
+                        CloseToolTip();
                         _toolTip.Content = null;
                         _toolTip = null;
                         _lastClosed = DateTime.Now;
@@ -123,7 +143,7 @@ namespace AcManager.Controls {
             _toolTipKey = key;
 
             if (_toolTip != null) {
-                _toolTip.IsOpen = false;
+                CloseToolTip();
                 _toolTip.Content = null;
                 _toolTip = null;
                 // _lastClosed = DateTime.Now;
@@ -151,14 +171,14 @@ namespace AcManager.Controls {
                             MaxWidth = 400
                         } : content;
                     }
-                    _toolTip.IsOpen = true;
+                    OpenToolTip(this, _toolTip.Content);
                 }
             }
         }
 
         private static void ShowContextMenu([CanBeNull] ContextMenu menu) {
             if (menu != null) {
-                menu.IsOpen = true;
+                menu.Show();
             }
         }
 
@@ -168,7 +188,7 @@ namespace AcManager.Controls {
             var size = _size;
             var width = size.Width;
 
-            var pos = this.GetMousePosition();
+            var pos = Mouse.GetPosition(this);
             var handled = e.Handled;
             e.Handled = true;
 
@@ -205,7 +225,7 @@ namespace AcManager.Controls {
             var size = _size;
             var width = size.Width;
 
-            var pos = this.GetMousePosition();
+            var pos = Mouse.GetPosition(this);
 
             var referenceIconOffset = 22d;
             for (var i = 0; i < _icons.Length; i++) {
@@ -731,7 +751,7 @@ namespace AcManager.Controls {
                         return;
                     }
 
-                    var crop = await Task.Run(() => BetterImage.FindTransparentCropMask((BitmapSource)src));
+                    var crop = await Task.Run(() => BetterImage.FindTransparentCropMask((Bitmap)src));
                     var bitmap = ToBitmap(new BetterImage { Source = src, Crop = crop, CropUnits = ImageCropMode.Absolute });
                     TrackIconsReadyCache[track.IdWithLayout] = bitmap;
 
@@ -782,8 +802,8 @@ namespace AcManager.Controls {
             }
         }
 
-        private static TextBlock GetTextBlock(string text, bool isBlock = false, bool isBbCode = false) {
-            TextBlock result;
+        private static Avalonia.Controls.Control GetTextBlock(string text, bool isBlock = false, bool isBbCode = false) {
+            Avalonia.Controls.Control result;
 
             if (isBbCode) {
                 var bb = new BbCodeBlock {
@@ -799,8 +819,8 @@ namespace AcManager.Controls {
                 result = new TextBlock { Text = text };
             }
 
-            result.FontSize = 11;
-            result.Foreground = isBlock ? _blockText : _foreground;
+            Avalonia.Controls.Documents.TextElement.SetFontSize(result, 11);
+            Avalonia.Controls.Documents.TextElement.SetForeground(result, isBlock ? _blockText : _foreground);
 
             RenderOptions.SetBitmapScalingMode(result, BitmapScalingMode.HighQuality);
             TextOptions.SetTextRenderingMode(result, TextRenderingMode.ClearType);
@@ -966,7 +986,7 @@ namespace AcManager.Controls {
 
         [CanBeNull]
         private static BitmapSource ToBitmap(string iconKey, string colorKey, int width = 12, int height = -1) {
-            return ToBitmap(new Path {
+            return ToBitmap(new Avalonia.Controls.Shapes.Path {
                 Data = FindStaticResource<Geometry>(iconKey),
                 Fill = FindStaticResource<Brush>(colorKey),
                 Stretch = Stretch.Uniform
@@ -991,22 +1011,15 @@ namespace AcManager.Controls {
             var size = new Size(width == 0 ? double.PositiveInfinity : width, height == 0 ? double.PositiveInfinity : height);
             block.Measure(size);
 
-            if (double.IsPositiveInfinity(size.Width)) {
-                size.Width = block.DesiredSize.Width;
-            }
-
-            if (double.IsPositiveInfinity(size.Height)) {
-                size.Height = block.DesiredSize.Height;
-            }
+            size = new Size(double.IsPositiveInfinity(size.Width) ? block.DesiredSize.Width : size.Width,
+                    double.IsPositiveInfinity(size.Height) ? block.DesiredSize.Height : size.Height);
 
             block.Arrange(new Rect(size));
-            block.ApplyTemplate();
-            block.UpdateLayout();
 
             var renderWidth = (int)(size.Width * AppearanceManager.Instance.BitmapCacheScale).Ceiling();
             var renderHeight = (int)(size.Height * AppearanceManager.Instance.BitmapCacheScale).Ceiling();
             var renderDpi = 96 * AppearanceManager.Instance.BitmapCacheScale;
-            var bmp = new RenderTargetBitmap(renderWidth, renderHeight, renderDpi, renderDpi, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(new PixelSize(Math.Max(1, renderWidth), Math.Max(1, renderHeight)), new Vector(renderDpi, renderDpi));
             bmp.Render(block);
             return bmp;
         }
@@ -1028,7 +1041,7 @@ namespace AcManager.Controls {
 
             var dc = _backingTimeLeftStore.Open();
             dc.DrawText(timeLeft, new Point(218 - timeLeft.Width, 29 + _textPadding));
-            dc.Close();
+            dc.Dispose();
         }
 
         private void RenderMainLayer() {
@@ -1134,7 +1147,7 @@ namespace AcManager.Controls {
                 }
             }
 
-            dc.Close();
+            dc.Dispose();
 
             void Draw(DrawingContext dc0, ObjToRender obj, double offset) {
                 if (obj.Icon != null) {
@@ -1154,10 +1167,11 @@ namespace AcManager.Controls {
             var streamGeometry = new StreamGeometry();
             using (var gc = streamGeometry.Open()) {
                 if (sessionsCount > 0) {
-                    gc.BeginFigure(new Point(sessionsOffset, 35), true, true);
-                    gc.LineTo(new Point(sessionsOffset + sessionsCount * 20, 35), true, true);
-                    gc.LineTo(new Point(sessionsOffset + sessionsCount * 20, 55), true, true);
-                    gc.LineTo(new Point(sessionsOffset, 55), true, true);
+                    gc.BeginFigure(new Point(sessionsOffset, 35), true);
+                    gc.LineTo(new Point(sessionsOffset + sessionsCount * 20, 35));
+                    gc.LineTo(new Point(sessionsOffset + sessionsCount * 20, 55));
+                    gc.LineTo(new Point(sessionsOffset, 55));
+                    gc.EndFigure(true);
                 }
 
                 for (var i = 0; i < cars.Length; i++) {
@@ -1165,17 +1179,18 @@ namespace AcManager.Controls {
                     if (c == null) continue;
 
                     var cWidth = c.Width;
-                    gc.BeginFigure(new Point(carsOffset, 34), true, true);
-                    gc.LineTo(new Point(carsOffset + cWidth + 8, 34), true, true);
-                    gc.LineTo(new Point(carsOffset + cWidth + 8, 56), true, true);
-                    gc.LineTo(new Point(carsOffset, 56), true, true);
+                    gc.BeginFigure(new Point(carsOffset, 34), true);
+                    gc.LineTo(new Point(carsOffset + cWidth + 8, 34));
+                    gc.LineTo(new Point(carsOffset + cWidth + 8, 56));
+                    gc.LineTo(new Point(carsOffset, 56));
+                    gc.EndFigure(true);
                     carsOffset += cWidth + 16;
 
                     if (carsOffset > width) break;
                 }
             }
 
-            streamGeometry.Freeze();
+            
             return streamGeometry;
         }
 
@@ -1212,14 +1227,14 @@ namespace AcManager.Controls {
                 }), DispatcherPriority.Render);
             }*/
 
-            dc.DrawDrawing(_backingStore);
+            _backingStore.Draw(dc);
             if (_wideMode && _fullyLoaded) {
-                dc.DrawDrawing(_backingTimeLeftStore);
+                _backingTimeLeftStore.Draw(dc);
             }
         }
 
         private void OnServerPropertyChanged(object sender, PropertyChangedEventArgs e) {
-            if (Application.Current?.Dispatcher.Thread != Thread.CurrentThread) {
+            if (!Avalonia.Threading.Dispatcher.UIThread.CheckAccess()) {
                 ActionExtension.InvokeInMainThreadAsyncLater(() => {
                     OnServerPropertyChanged(sender, e);
                 });

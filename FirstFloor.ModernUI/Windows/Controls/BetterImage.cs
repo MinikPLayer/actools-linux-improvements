@@ -224,8 +224,40 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
+        /// <summary>
+        /// Finds a bounding box (in pixels) of not transparent pixels, null if the whole image is transparent or nothing could be cropped.
+        /// </summary>
         [CanBeNull]
-        public static Task FindTransparentCropMask(string filename) => Task.CompletedTask;
+        public static unsafe Rect? FindTransparentCropMask([CanBeNull] Bitmap bitmap) {
+            if (bitmap == null || bitmap.PixelSize.Width == 0 || bitmap.PixelSize.Height == 0) return null;
+            try {
+                var w = bitmap.PixelSize.Width;
+                var h = bitmap.PixelSize.Height;
+                var stride = w * 4;
+                var buffer = new byte[stride * h];
+                fixed (byte* p = buffer) {
+                    bitmap.CopyPixels(new PixelRect(0, 0, w, h), (IntPtr)p, buffer.Length, stride);
+                }
+
+                // alpha is the fourth channel for both BGRA and RGBA
+                int left = w, top = h, right = -1, bottom = -1;
+                for (var y = 0; y < h; y++) {
+                    for (var x = 0; x < w; x++) {
+                        if (buffer[y * stride + x * 4 + 3] == 0) continue;
+                        if (x < left) left = x;
+                        if (x > right) right = x;
+                        if (y < top) top = y;
+                        if (y > bottom) bottom = y;
+                    }
+                }
+
+                if (right < 0) return null;
+                return new Rect(left, top, right - left + 1, bottom - top + 1);
+            } catch (Exception e) {
+                Logging.Warning(e.Message);
+                return null;
+            }
+        }
         #endregion
 
         #region Properties
@@ -270,13 +302,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static readonly StyledProperty<IImage> ImageSourceProperty = DP.Register<IImage>(nameof(ImageSource), typeof(BetterImage), new PropertyMetadata(null, OnChanged));
         public IImage ImageSource { get => (IImage)GetValue(ImageSourceProperty); set => SetValue(ImageSourceProperty, value); }
 
-        public static readonly StyledProperty<Rect?> CropProperty = DP.Register<Rect?>(nameof(Crop), typeof(BetterImage));
+        public static readonly StyledProperty<Rect?> CropProperty = DP.Register<Rect?>(nameof(Crop), typeof(BetterImage), new PropertyMetadata(null, OnChanged));
         public Rect? Crop { get => (Rect?)GetValue(CropProperty); set => SetValue(CropProperty, value); }
 
         public static readonly StyledProperty<ImageCropMode> CropUnitsProperty = DP.Register<ImageCropMode>(nameof(CropUnits), typeof(BetterImage));
         public ImageCropMode CropUnits { get => (ImageCropMode)GetValue(CropUnitsProperty); set => SetValue(CropUnitsProperty, value); }
 
-        public static readonly StyledProperty<bool> CropTransparentAreasProperty = DP.Register<bool>(nameof(CropTransparentAreas), typeof(BetterImage));
+        public static readonly StyledProperty<bool> CropTransparentAreasProperty = DP.Register<bool>(nameof(CropTransparentAreas), typeof(BetterImage), new PropertyMetadata(false, OnChanged));
         public bool CropTransparentAreas { get => (bool)GetValue(CropTransparentAreasProperty); set => SetValue(CropTransparentAreasProperty, value); }
 
         public static readonly StyledProperty<bool> ForceFillProperty = DP.Register<bool>(nameof(ForceFill), typeof(BetterImage));
@@ -374,9 +406,31 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
+        [CanBeNull]
+        private IImage ApplyCrop([CanBeNull] IImage source) {
+            if (!(source is Bitmap bitmap)) return source;
+
+            var crop = Crop;
+            if (crop == null && CropTransparentAreas) {
+                crop = FindTransparentCropMask(bitmap);
+            } else if (crop != null && CropUnits == ImageCropMode.Relative) {
+                var size = bitmap.PixelSize;
+                crop = new Rect(crop.Value.X * size.Width, crop.Value.Y * size.Height, crop.Value.Width * size.Width, crop.Value.Height * size.Height);
+            }
+
+            if (crop == null) return source;
+            var rect = new PixelRect((int)crop.Value.X, (int)crop.Value.Y, (int)crop.Value.Width, (int)crop.Value.Height);
+            if (rect.Width <= 0 || rect.Height <= 0 || rect.X < 0 || rect.Y < 0 || rect.Right > bitmap.PixelSize.Width || rect.Bottom > bitmap.PixelSize.Height) {
+                return source;
+            }
+
+            return new CroppedBitmap(bitmap, rect);
+        }
+
+
         private void Apply(Image image, int version, bool isNull = false) {
             if (version != _version) return;
-            _image.Source = image.ImageSource ?? (ShowBroken ? BrokenIcon.ImageSource : null);
+            _image.Source = ApplyCrop(image.ImageSource) ?? (ShowBroken ? BrokenIcon.ImageSource : null);
             IsBroken = image.IsBroken && !isNull;
             if (CollapseIfMissing || CollapseIfNull) {
                 IsVisible = !image.IsBroken || (ShowBroken && !isNull);
