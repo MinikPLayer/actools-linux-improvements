@@ -5,7 +5,7 @@
   -->
   <ItemGroup>
     <Compile Remove="Effects\**" />
-    <Compile Remove="Windows\Attached\Draggable.cs;Windows\Attached\DraggableMovedEventArgs.cs" />
+    <Compile Remove="Windows\Attached\Draggable.cs" />
     <Compile Remove="Windows\Attached\FancyHintAdorner.cs;Windows\Attached\WatermarkAdorner.cs" />
     <Compile Remove="Windows\Attached\NewMarkAdorner.cs;Windows\Attached\LimitedMarkAdorner.cs" />
     <Compile Remove="Windows\Controls\AdornedControl_.cs" />

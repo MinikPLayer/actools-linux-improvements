@@ -5,8 +5,8 @@ using AcManager.Tools.Data;
 using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
-using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Document;
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
 
 namespace AcManager.Pages.ServerPreset {
     public partial class ServerPresetBasic : global::Avalonia.Controls.UserControl {

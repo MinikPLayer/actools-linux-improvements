@@ -62,7 +62,7 @@ namespace AcManager.Pages.Dialogs {
             CancellationToken = _cancellationSource.Token;
         }
 
-        protected override void OnClosingOverride(CancelEventArgs e) {
+        protected override void OnClosingOverride(Avalonia.Controls.WindowClosingEventArgs e) {
             if (IsResultCancel) {
                 try {
                     _cancellationSource.Cancel();

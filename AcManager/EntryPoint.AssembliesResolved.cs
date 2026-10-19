@@ -24,7 +24,7 @@ using AcTools.Windows;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
-using MessageBox = System.Windows.Forms.MessageBox;
+using MessageBox = AcTools.Windows.Compat.NativeMessageBox;
 
 namespace AcManager {
     public static partial class EntryPoint {

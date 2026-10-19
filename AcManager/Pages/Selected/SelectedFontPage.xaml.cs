@@ -175,42 +175,27 @@ namespace AcManager.Pages.Selected {
         }
     }
 
-    public class FontTestVisual : DrawingVisual {
-        public double Width { get; }
-
-        public double Height { get; }
-
-        public FontTestVisual(string text, FontObjectBitmap fontObjectBitmap) {
-            var totalX = 0d;
-            var totalY = 0d;
-
-            using (var dc = RenderOpen()) {
-                foreach (var cropped in text.Select(fontObjectBitmap.BitmapForChar).Where(cropped => cropped != null)) {
-                    dc.DrawImage(cropped, new Rect(totalX, 0, cropped.PixelWidth, cropped.PixelHeight));
-                    totalX += cropped.PixelWidth;
-                    totalY = Math.Max(totalY, cropped.PixelHeight);
-                }
-            }
-
-            Width = totalX;
-            Height = totalY;
-        }
-    }
-
-    public class FontTestHost : FrameworkElement {
-        private readonly FontTestVisual _visual;
+    /// <summary>
+    /// Draws characters of a font bitmap one by one.
+    /// </summary>
+    public class FontTestHost : Control {
+        private readonly List<Avalonia.Media.Imaging.Bitmap> _bitmaps;
 
         public FontTestHost(string text, FontObjectBitmap fontObjectBitmap) {
-            _visual = new FontTestVisual(text, fontObjectBitmap);
-            Width = _visual.Width;
-            Height = _visual.Height;
+            _bitmaps = text.Select(fontObjectBitmap.BitmapForChar).Where(cropped => cropped != null).ToList();
+            Width = _bitmaps.Sum(x => x.PixelSize.Width);
+            Height = _bitmaps.Count == 0 ? 0 : _bitmaps.Max(x => x.PixelSize.Height);
             HorizontalAlignment = HorizontalAlignment.Left;
             VerticalAlignment = VerticalAlignment.Top;
             Margin = new Thickness(4d);
         }
 
-        protected override Visual GetVisualChild(int index) => _visual;
-
-        protected override int VisualChildrenCount => 1;
+        public override void Render(DrawingContext context) {
+            var totalX = 0d;
+            foreach (var cropped in _bitmaps) {
+                context.DrawImage(cropped, new Rect(totalX, 0, cropped.PixelSize.Width, cropped.PixelSize.Height));
+                totalX += cropped.PixelSize.Width;
+            }
+        }
     }
 }

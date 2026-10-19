@@ -5,7 +5,7 @@ using AcManager.Tools.Objects;
 using StringBasedFilter;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class CarCategories : global::AcManager.Pages.SelectionLists.SelectionCategoriesList {
+    public partial class CarCategories : global::AcManager.Pages.SelectionLists.SelectionCategoriesList<global::AcManager.Tools.Objects.CarObject> {
         public CarCategories() : base(CarsManager.Instance) {
             InitializeComponent();
         }

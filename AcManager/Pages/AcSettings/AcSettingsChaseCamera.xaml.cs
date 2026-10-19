@@ -217,12 +217,7 @@ namespace AcManager.Pages.AcSettings {
             if (!_imageEx.HasBackBuffer) return;
 
             _imageEx.Lock();
-            _imageEx.AddDirtyRect(new Int32Rect {
-                X = 0,
-                Y = 0,
-                Height = _imageEx.PixelHeight,
-                Width = _imageEx.PixelWidth
-            });
+            _imageEx.AddDirtyRect(new PixelRect(0, 0, _imageEx.PixelWidth, _imageEx.PixelHeight));
             _imageEx.Unlock();
         }
 

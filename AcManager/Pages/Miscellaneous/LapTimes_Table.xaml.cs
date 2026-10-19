@@ -83,10 +83,10 @@ namespace AcManager.Pages.Miscellaneous {
             public ListCollectionView View { get; }
         }
 
-        private async void OnGridSorting(object sender, DataGridSortingEventArgs e) {
+        private async void OnGridSorting(object sender, Avalonia.Controls.DataGridColumnEventArgs e) {
             await Task.Delay(1);
             LimitedStorage.Set(LimitedSpace.LapTimesSortingColumn, _key, e.Column.SortMemberPath);
-            LimitedStorage.Set(LimitedSpace.LapTimesSortingDescending, _key, e.Column.SortDirection == ListSortDirection.Descending ? @"1" : @"0");
+            LimitedStorage.Set(LimitedSpace.LapTimesSortingDescending, _key, e.Column.SortDirection != ListSortDirection.Descending ? @"1" : @"0");
         }
 
         public static void OnLinkChanged(LinkChangedEventArgs e) {

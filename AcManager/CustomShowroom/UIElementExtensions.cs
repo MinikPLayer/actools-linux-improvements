@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,15 +81,6 @@ namespace AcManager.CustomShowroom {
 
                 return false;
             }) as UIElement;
-        }
-
-        /// <summary>
-        /// Focuses the first control on the ContentElement.
-        /// </summary>
-        /// <param name="element">Reference to the current <see cref="ContentElement"/>.</param>
-        /// <param name="focusParentsFirst">if set to <c>true</c>, the parents are focused first.</param>
-        public static void FocusFirstControl(this ContentElement element, bool focusParentsFirst = true) {
-            FocusFirstControl((object)element, focusParentsFirst);
         }
 
         /// <summary>
@@ -187,16 +178,6 @@ namespace AcManager.CustomShowroom {
         /// <param name="direction">The direction.</param>
         /// <param name="hops">The hops.</param>
         public static void MoveFocus(this UIElement element, FocusNavigationDirection direction, int hops) {
-            MoveFocus((object)element, direction, hops);
-        }
-
-        /// <summary>
-        /// Moves the focus in a specific direction.
-        /// </summary>
-        /// <param name="element">The element.</param>
-        /// <param name="direction">The direction.</param>
-        /// <param name="hops">The hops.</param>
-        public static void MoveFocus(this ContentElement element, FocusNavigationDirection direction, int hops) {
             MoveFocus((object)element, direction, hops);
         }
 

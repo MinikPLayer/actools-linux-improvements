@@ -16,7 +16,7 @@ namespace AcManager.Pages.Selected {
             });
         }
 
-        protected virtual void OnVersionInfoBlockClick(object sender, MouseButtonEventArgs e) {
+        protected virtual void OnVersionInfoBlockClick(object sender, PointerReleasedEventArgs e) {
             if (SelectedAcJsonObject.Author == AcCommonObject.AuthorKunos) {
                 if (SelectedAcJsonObject?.Dlc != null) {
                     WindowsHelper.ViewInBrowser(SelectedAcJsonObject.Dlc.Url);

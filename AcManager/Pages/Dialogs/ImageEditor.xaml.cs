@@ -103,7 +103,7 @@ namespace AcManager.Pages.Dialogs {
 
         public BitmapSource Result { get; private set; }
         public Rect ResultRectRelative { get; private set; }
-        public Int32Rect ResultRect { get; private set; }
+        public PixelRect ResultRect { get; private set; }
 
         /// <summary>
         /// Crop image to fit specified size (or leave it uncropped if specified). Even if user selected
@@ -135,7 +135,7 @@ namespace AcManager.Pages.Dialogs {
         /// </summary>
         /// <returns>Cropped image.</returns>
         [CanBeNull]
-        public static BitmapSource Proceed([NotNull] string filename, Size size, bool allowNoCrop, Rect? startRect, out Int32Rect resultRect) {
+        public static BitmapSource Proceed([NotNull] string filename, Size size, bool allowNoCrop, Rect? startRect, out PixelRect resultRect) {
             var dialog = new ImageEditor(filename, size, allowNoCrop, startRect);
             dialog.ShowDialog();
             resultRect = dialog.ResultRect;
@@ -154,12 +154,12 @@ namespace AcManager.Pages.Dialogs {
             Buttons = new[] {
                 allowNoCrop ? CreateExtraDialogButton(AppStrings.CropImage_Skip, new DelegateCommand(() => {
                     Result = (BitmapSource)_image.ImageSource;
-                    ResultRect = new Int32Rect(0, 0, _image.Width, _image.Height);
+                    ResultRect = new PixelRect(0, 0, _image.Width, _image.Height);
                     ResultRectRelative = new Rect(0d, 0d, 1d, 1d);
                     Close();
                 }, () => !_image.IsBroken)) : null,
                 CreateCloseDialogButton(UiStrings.Ok, true, false, MessageBoxResult.OK, new DelegateCommand(() => {
-                    var rect = new Int32Rect((int)_model.OffsetX, (int)_model.OffsetY, (int)_model.ImageWidth, (int)_model.ImageHeight);
+                    var rect = new PixelRect((int)_model.OffsetX, (int)_model.OffsetY, (int)_model.ImageWidth, (int)_model.ImageHeight);
 
                     ResultRect = rect;
                     ResultRectRelative = new Rect(

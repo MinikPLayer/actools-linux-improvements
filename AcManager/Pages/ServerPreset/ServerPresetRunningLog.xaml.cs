@@ -5,7 +5,7 @@ using AcManager.Controls;
 using AcManager.Tools.Objects;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI;
-using ICSharpCode.AvalonEdit.Document;
+using AvaloniaEdit.Document;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {

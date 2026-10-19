@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 using SharpDX;
 using SharpDX.DirectInput;
 using Keys = AcTools.Windows.Compat.Keys;
-using Path = System.Windows.Shapes.Path;
+using Path = Avalonia.Controls.Shapes.Path;
 
 namespace AcManager.Pages.Dialogs {
     public partial class DiscordJoinRequestDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {

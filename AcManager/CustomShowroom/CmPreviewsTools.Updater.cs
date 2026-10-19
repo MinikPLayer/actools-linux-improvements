@@ -7,7 +7,6 @@ using AcManager.Tools.Objects;
 using AcTools.Render.Kn5SpecificForwardDark;
 using FirstFloor.ModernUI.Dialogs;
 using JetBrains.Annotations;
-using OxyPlot.Reporting;
 
 namespace AcManager.CustomShowroom {
     public partial class CmPreviewsTools {

@@ -7,7 +7,7 @@ using AcManager.Tools.Objects;
 using AcTools.Utils;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class TrackRatings : global::AcManager.Pages.SelectionLists.SelectionList {
+    public partial class TrackRatings : global::AcManager.Pages.SelectionLists.SelectionList<global::AcManager.Tools.Objects.TrackObject, global::AcManager.Pages.SelectionLists.SelectRating> {
         public TrackRatings() : base(TracksManager.Instance, true) {
             InitializeComponent();
         }

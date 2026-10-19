@@ -837,13 +837,6 @@ namespace AcManager {
             AppArguments.Set(AppFlag.TrackMapGeneratorMaxSize, ref TrackMapRenderer.OptionMaxSize);
         }
 
-        protected override void OnStartup(StartupEventArgs e) {
-            base.OnStartup(e);
-            PresentationTraceSources.Refresh();
-            PresentationTraceSources.DataBindingSource.Switch.Level = BindingErrorTraceListener.GetSourceLevels();
-            PresentationTraceSources.DataBindingSource.Listeners.Add(new BindingErrorTraceListener());
-        }
-
         private class CarSetupsView : ICarSetupsView {
             public void Open(CarObject car, CarSetupsRemoteSource forceRemoteSource = CarSetupsRemoteSource.None, bool forceNewWindow = false) {
                 CarSetupsListPage.Open(car, forceRemoteSource, forceNewWindow);

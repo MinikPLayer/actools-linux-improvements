@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -189,7 +189,7 @@ namespace AcManager.Pages.Dialogs {
             DisposeHelper.Dispose(ref _disabledWindowHandling);
         }
 
-        protected override void OnClosingOverride(CancelEventArgs e) {
+        protected override void OnClosingOverride(Avalonia.Controls.WindowClosingEventArgs e) {
             if (IsResultCancel) {
                 try {
                     _cancellationSource?.Cancel();
@@ -1014,13 +1014,14 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnAutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e) {
+        private void OnAutoGeneratingColumn(object sender, Avalonia.Controls.DataGridAutoGeneratingColumnEventArgs e) {
             if (e.PropertyName == @"Tyres") {
-                e.Column.HeaderStyle = (Style)FindResource(@"DataGridColumnHeader.Small");
+                // header styles of columns are applied by classes in Avalonia
+                e.Column.CellStyleClasses.Add("Small");
             } else {
                 e.Column.Width = e.PropertyName == @"Lap" ? 60 : 100;
-                e.Column.HeaderStyle = (Style)FindResource(@"DataGridColumnHeader.RightAlignment.Small");
-                e.Column.CellStyle = (Style)FindResource(@"DataGridCell.Transparent.RightAlignment");
+                e.Column.CellStyleClasses.Add("Transparent");
+                e.Column.CellStyleClasses.Add("RightAlignment");
             }
         }
     }

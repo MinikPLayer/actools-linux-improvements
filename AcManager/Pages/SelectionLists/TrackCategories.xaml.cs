@@ -5,7 +5,7 @@ using AcManager.Tools.Objects;
 using StringBasedFilter;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class TrackCategories : global::AcManager.Pages.SelectionLists.SelectionCategoriesList {
+    public partial class TrackCategories : global::AcManager.Pages.SelectionLists.SelectionCategoriesList<global::AcManager.Tools.Objects.TrackObject> {
         public TrackCategories() : base(TracksManager.Instance) {
             InitializeComponent();
         }

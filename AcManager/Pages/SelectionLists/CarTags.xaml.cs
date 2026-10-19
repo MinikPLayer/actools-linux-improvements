@@ -4,7 +4,7 @@ using AcManager.Tools.Managers;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class CarTags : global::AcManager.Pages.SelectionLists.SelectionTagsList {
+    public partial class CarTags : global::AcManager.Pages.SelectionLists.SelectionTagsList<global::AcManager.Tools.Objects.CarObject> {
         public CarTags() : base(CarsManager.Instance) {
             InitializeComponent();
         }

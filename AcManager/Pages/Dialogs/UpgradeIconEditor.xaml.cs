@@ -10,7 +10,6 @@ using AcManager.Tools.Objects;
 using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
-using DataFormats = System.Windows.DataFormats;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace AcManager.Pages.Dialogs {
@@ -69,9 +68,7 @@ namespace AcManager.Pages.Dialogs {
         }
 
         private void OnDrop(object sender, DragEventArgs e) {
-            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) return;
-
-            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var files = e.Data.GetFiles()?.Select(x => x.TryGetLocalPath()).ToArray();
             if (files?.Length > 1 && files[0] != null) {
                 ApplyFile(files[0]);
             }

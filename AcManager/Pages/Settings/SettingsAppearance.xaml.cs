@@ -1,3 +1,4 @@
+using Microsoft.Win32;
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -18,7 +19,6 @@ using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Path = System.IO.Path;
 
 namespace AcManager.Pages.Settings {

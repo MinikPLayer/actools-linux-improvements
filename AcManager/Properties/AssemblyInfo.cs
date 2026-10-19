@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
@@ -25,7 +25,7 @@ using System.Windows.Media;
 
 // required to support per-monitor DPI awareness in Windows 8.1+
 // see also https://mui.codeplex.com/wikipage?title=Per-monitor%20DPI%20awareness
-[assembly: DisableDpiAwareness]
+// DisableDpiAwareness is WPF-only
 
 // Version information for an assembly consists of the following four values:
 //

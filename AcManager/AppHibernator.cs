@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -100,50 +100,43 @@ namespace AcManager {
         }
 
         private IList<Window> _hiddenWindows;
-        private NotifyIcon _trayIcon;
+        private Avalonia.Controls.TrayIcon _trayIcon;
+
+        private static Avalonia.Controls.NativeMenuItem CreateMenuItem(string header, Action action) {
+            var item = new Avalonia.Controls.NativeMenuItem { Header = header };
+            item.Click += (sender, args) => action();
+            return item;
+        }
 
         private void AddTrayIcon() {
             if (_trayIcon != null) return;
 
-            _trayIcon = new NotifyIcon {
-                Icon = AppIconService.GetTrayIcon(),
-                Text = AppStrings.Hibernate_TrayText
+            var menu = new Avalonia.Controls.NativeMenu();
+            if (SettingsShadersPatch.IsCustomShadersPatchInstalled()) {
+                menu.Items.Add(CreateMenuItem("Custom Shaders Patch settings", () => SettingsShadersPatch.GetShowSettingsCommand().Execute(null)));
+            }
+
+            if (RhmService.Instance.Active) {
+                menu.Items.Add(CreateMenuItem("RHM settings", () => RhmService.Instance.ShowSettingsCommand.ExecuteAsync().Ignore()));
+            }
+
+            menu.Items.Add(new Avalonia.Controls.NativeMenuItemSeparator());
+            menu.Items.Add(CreateMenuItem(UiStrings.Restore, WakeUp));
+            menu.Items.Add(CreateMenuItem(UiStrings.Close, () => OnCloseMenuItemClick(null, EventArgs.Empty)));
+
+            _trayIcon = new Avalonia.Controls.TrayIcon {
+                Icon = new Avalonia.Controls.WindowIcon(Avalonia.Platform.AssetLoader.Open(AppIconService.GetTrayIcon())),
+                ToolTipText = AppStrings.Hibernate_TrayText,
+                Menu = menu,
+                IsVisible = true
             };
 
-            _trayIcon.DoubleClick += OnTrayIconDoubleClick;
-
-            var patchSettings = SettingsShadersPatch.IsCustomShadersPatchInstalled() ? new ToolStripMenuItem { Text = "Custom Shaders Patch settings" } : null;
-            if (patchSettings != null) {
-                patchSettings.Click += (sender, args) => SettingsShadersPatch.GetShowSettingsCommand().Execute(null);
-            }
-
-            var rhm = RhmService.Instance.Active ? new ToolStripMenuItem { Text = "RHM settings" } : null;
-            if (rhm != null) {
-                rhm.Click += (sender, args) => RhmService.Instance.ShowSettingsCommand.ExecuteAsync().Ignore();
-            }
-
-            var restoreMenuItem = new ToolStripMenuItem { Text = UiStrings.Restore };
-            restoreMenuItem.Click += OnRestoreMenuItemClick;
-
-            var closeMenuItem = new ToolStripMenuItem { Text = UiStrings.Close };
-            closeMenuItem.Click += OnCloseMenuItemClick;
-
-            var contextMenu = new ContextMenuStrip();
-            contextMenu.Items.AddRange(new ToolStripItem[] {
-                patchSettings,
-                rhm,
-                new ToolStripSeparator(),
-                restoreMenuItem,
-                closeMenuItem
-            }.NonNull().ToArray());
-            _trayIcon.ContextMenuStrip = contextMenu;
-
-            _trayIcon.Visible = true;
+            _trayIcon.Clicked += OnTrayIconDoubleClick;
         }
 
         private void RemoveTrayIcon() {
             if (_trayIcon != null) {
-                _trayIcon.Visible = false;
+                _trayIcon.IsVisible = false;
                 Task.Delay(TimeSpan.FromSeconds(1d)).ContinueWith(r => ActionExtension.InvokeInMainThreadAsync(() => DisposeHelper.Dispose(ref _trayIcon)));
             }
         }
@@ -183,7 +176,6 @@ namespace AcManager {
                         if (value) {
                             /* add an icon to the tray for manual restoration just in case */
                             AddTrayIcon();
-                            // AddTrayIconWpf();
 
                             /* hide windows */
                             _hiddenWindows = Application.Current?.Windows.OfType<Window>().Where(x => x.Visibility == Visibility.Visible
@@ -208,7 +200,6 @@ namespace AcManager {
 
                             /* remove tray icon */
                             RemoveTrayIcon();
-                            RemoveTrayIconWpf();
                         }
                     } catch (Exception e) {
                         Logging.Error(e);
@@ -228,7 +219,6 @@ namespace AcManager {
 
         public void Dispose() {
             RemoveTrayIcon();
-            RemoveTrayIconWpf();
         }
     }
 }

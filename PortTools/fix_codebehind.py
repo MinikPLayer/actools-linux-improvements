@@ -94,6 +94,19 @@ def main(dirs):
                     continue
                 bases = m.group(3)
                 gbase = 'global::' + base
+                targs = rt.get('{http://schemas.microsoft.com/winfx/2006/xaml}TypeArguments')
+                if targs:
+                    args = []
+                    for a in targs.split(','):
+                        pfx, _, ln = a.strip().partition(':')
+                        ns = rt.nsmap.get(pfx)
+                        args.append('global::' + (resolve(ns, ln, type_index) or ln))
+                    gbase += '<' + ', '.join(args) + '>'
+                    if bases and bases.strip() == 'global::' + base:
+                        s = s[:m.start()] + '%s : %s {' % (m.group(1), gbase) + s[m.end():]
+                        open(cs, 'wb').write((b'\xef\xbb\xbf' if bom else b'') + s.encode('utf-8'))
+                        fixed += 1
+                        continue
                 if bases and (base in bases or base.split('.')[-1] in [b.strip().split('<')[0] for b in bases.split(',')]):
                     continue
                 if bases:

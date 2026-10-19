@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -56,7 +56,9 @@ namespace AcManager.UserControls {
                 }), new KeyGesture(Key.Enter)),
             });
             InitializeComponent();
-            SelectCarPopup.CustomPopupPlacementCallback = CustomPopupPlacementCallback;
+            // WPF’s custom placement callback is replaced with a fixed placement (to the right of the target, shifted up)
+            SelectCarPopup.Placement = PlacementMode.Right;
+            SelectCarPopup.VerticalOffset = -200;
         }
 
         private const string KeySelectedCar = ".RaceGridEditor:SelectedCar";
@@ -65,19 +67,6 @@ namespace AcManager.UserControls {
         private static CarObject LoadSelected() {
             var saved = ValuesStorage.Get<string>(KeySelectedCar);
             return saved == null ? null : CarsManager.Instance.GetById(saved);
-        }
-
-        private static CustomPopupPlacement[] CustomPopupPlacementCallback(Size popupSize, Size targetSize, Point offset) {
-            return new [] {
-                new CustomPopupPlacement {
-                    Point = new Point(targetSize.Width - 12, -targetSize.Height - 200),
-                    PrimaryAxis = PopupPrimaryAxis.Vertical
-                },
-                new CustomPopupPlacement {
-                    Point = new Point(-popupSize.Width, -targetSize.Height - 200),
-                    PrimaryAxis = PopupPrimaryAxis.Vertical
-                },
-            };
         }
 
         [CanBeNull]

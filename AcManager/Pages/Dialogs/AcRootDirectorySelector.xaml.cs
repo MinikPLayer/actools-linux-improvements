@@ -62,7 +62,7 @@ namespace AcManager.Pages.Dialogs {
             PluginsManager.Instance.UpdateIfObsolete().Ignore();
         }
 
-        protected override void OnClosingOverride(CancelEventArgs e) {
+        protected override void OnClosingOverride(Avalonia.Controls.WindowClosingEventArgs e) {
             AppUi.AppUiMessageInterception = null;
             base.OnClosingOverride(e);
         }

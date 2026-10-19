@@ -102,7 +102,7 @@ namespace AcManager.Pages.Lists {
         public IAcObjectListCollectionViewWrapper Model => (IAcObjectListCollectionViewWrapper)DataContext;
 
         private class TrackGroupDescription : GroupDescription {
-            public override object GroupNameFromItem(object item, int level, CultureInfo culture) {
+            public override object GroupKeyFromItem(object item, int level, CultureInfo culture) {
                 var v = (item as AcItemWrapper)?.Value as ICarSetupObject;
                 return v?.TrackId == null ? "" : (v.Track?.DisplayNameWithoutCount ?? $@"[{v.TrackId}]");
             }

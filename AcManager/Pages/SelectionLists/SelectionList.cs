@@ -24,47 +24,19 @@ using FirstFloor.ModernUI.Windows.Converters;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.SelectionLists {
-    internal class NothingFoundAdorner : Adorner {
-        private readonly FrameworkElement _contentPresenter;
-
-        public NothingFoundAdorner(UIElement adornedElement) : base(adornedElement) {
+    /// <summary>
+    /// "Nothing found" label shown over the list (Avalonia’s adorner layer takes any control, so it’s just a TextBlock).
+    /// </summary>
+    internal class NothingFoundAdorner : TextBlock {
+        public NothingFoundAdorner(Control adornedElement) {
             IsHitTestVisible = true;
+            Text = "Nothing found";
+            HorizontalAlignment = HorizontalAlignment.Center;
+            VerticalAlignment = VerticalAlignment.Center;
+            this.SetResourceReference(ForegroundProperty, "WindowText");
+            Classes.Add("Title");
 
-            _contentPresenter = new TextBlock {
-                Style = (Style)FindResource("Title"),
-                Text = "Nothing found",
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
-
-            _contentPresenter.SetResourceReference(TextBlock.ForegroundProperty, "WindowText");
-
-            /*SetBinding(VisibilityProperty, new Binding(@"IsVisible") {
-                Source = adornedElement,
-                Converter = new BooleanToVisibilityConverter()
-            });*/
-
-            SetBinding(VisibilityProperty, new Binding(@"ItemsSource.Count") {
-                Source = adornedElement,
-                Converter = new EnumToVisibilityConverter(),
-                ConverterParameter = "0"
-            });
-        }
-
-        protected override int VisualChildrenCount => 1;
-
-        protected override Visual GetVisualChild(int index) {
-            return _contentPresenter;
-        }
-
-        protected override Size MeasureOverride(Size constraint) {
-            _contentPresenter?.Measure(AdornedElement.RenderSize);
-            return AdornedElement.RenderSize;
-        }
-
-        protected override Size ArrangeOverride(Size finalSize) {
-            _contentPresenter?.Arrange(new Rect(finalSize));
-            return finalSize;
+            adornedElement.GetObservable(ItemsControl.ItemCountProperty).Subscribe(x => IsVisible = x == 0);
         }
     }
 
@@ -95,6 +67,7 @@ namespace AcManager.Pages.SelectionLists {
                 EnsureLoaded(isCacheable).Ignore();
             }
 
+            SelectionChanged += OnSelectionChangedFocus;
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
             this.AddPreviewKeyDown(OnPreviewKeyDown);
@@ -178,9 +151,10 @@ namespace AcManager.Pages.SelectionLists {
         [CanBeNull]
         protected abstract TItem LoadFromCache([NotNull] string serialized);
 
-        protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
-            base.OnSelectionChanged(e);
-            ((UIElement)ItemContainerGenerator.ContainerFromItem(SelectedItem))?.Focus();
+        private void OnSelectionChangedFocus(object sender, SelectionChangedEventArgs e) {
+            if (SelectedIndex >= 0) {
+                ContainerFromIndex(SelectedIndex)?.Focus();
+            }
         }
 
         private void SetSelectedItem(TItem item) {
@@ -301,7 +275,7 @@ namespace AcManager.Pages.SelectionLists {
         }
 
         private bool _loaded;
-        private AdornerLayer _adornerLayer;
+        private Avalonia.Controls.Primitives.AdornerLayer _adornerLayer;
         private NothingFoundAdorner _nothingFound;
 
         protected virtual void OnLoaded(object sender, RoutedEventArgs e) {
@@ -320,10 +294,13 @@ namespace AcManager.Pages.SelectionLists {
 
             if (_nothingFound == null) {
                 _nothingFound = new NothingFoundAdorner(this);
-                _adornerLayer = AdornedControl.GetAdornerLayer(this);
+                _adornerLayer = Avalonia.Controls.Primitives.AdornerLayer.GetAdornerLayer(this);
             }
 
-            _adornerLayer.Add(_nothingFound);
+            if (_adornerLayer != null && !_adornerLayer.Children.Contains(_nothingFound)) {
+                Avalonia.Controls.Primitives.AdornerLayer.SetAdornedElement(_nothingFound, this);
+                _adornerLayer.Children.Add(_nothingFound);
+            }
         }
 
         protected virtual void OnUnloaded(object sender, RoutedEventArgs e) {
@@ -335,7 +312,7 @@ namespace AcManager.Pages.SelectionLists {
             _baseCollection.ItemPropertyChanged -= OnWrappersListItemPropertyChanged;
 
             if (_nothingFound != null) {
-                _adornerLayer.Remove(_nothingFound);
+                _adornerLayer?.Children.Remove(_nothingFound);
             }
         }
 

@@ -105,7 +105,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        protected override void OnClosingOverride(CancelEventArgs e) {
+        protected override void OnClosingOverride(Avalonia.Controls.WindowClosingEventArgs e) {
             if (_closingGracefully) return;
             e.Cancel = e.Cancel
                     || (Model.GenerateCommand.IsInProcess || Model.HasDataToSave) && ShowMessage(Model.HasDataToSave

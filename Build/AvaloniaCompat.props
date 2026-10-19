@@ -114,6 +114,11 @@
     <Using Include="Avalonia.Controls.GridSplitter" Alias="GridSplitter" />
     <Using Include="Avalonia.Controls.TextBox" Alias="PasswordBox" />
     <Using Include="Avalonia.Media.TranslateTransform" Alias="TranslateTransform" />
+    <Using Include="Avalonia.Media.DropShadowEffect" Alias="DropShadowEffect" />
+    <Using Include="Avalonia.Media.VisualBrush" Alias="VisualBrush" />
+    <Using Include="Avalonia.Media.RotateTransform" Alias="RotateTransform" />
+    <Using Include="Avalonia.Media.ScaleTransform" Alias="ScaleTransform" />
+    <Using Include="Avalonia.Controls.Primitives.RangeBase" Alias="RangeBase" />
     <Using Include="Avalonia.Media.FontStretch" Alias="FontStretch" />
     <Using Include="Avalonia.Controls.ITemplate&lt;Avalonia.Controls.Panel&gt;" Alias="ItemsPanelTemplate" />
     <Using Include="Avalonia.Markup.Xaml.Templates.ControlTemplate" Alias="ControlTemplate" />

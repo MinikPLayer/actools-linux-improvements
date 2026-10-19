@@ -73,7 +73,7 @@ namespace AcManager.CustomShowroom {
             };
         }
 
-        protected override void OnClosingOverride(CancelEventArgs e) {
+        protected override void OnClosingOverride(Avalonia.Controls.WindowClosingEventArgs e) {
             if (_dispose != null && Model.IsChanged && ShowMessage(
                     "Some values are changed. Are you sure you want to dismiss changes?", "Some values are changed", MessageBoxButton.YesNo) !=
                     MessageBoxResult.Yes) {

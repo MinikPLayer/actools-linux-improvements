@@ -117,7 +117,7 @@ namespace AcManager.Pages.AcSettings {
             ReflectionsDistance,
         }
 
-        private sealed class SettingValue : Displayable {
+        private sealed class SettingValueEntry : Displayable {
             public Lazier<byte[]> Data { get; }
             public string Value { get; }
 
@@ -125,7 +125,7 @@ namespace AcManager.Pages.AcSettings {
             public double PerformanceHitPercentage { get; set; }
             public string CustomDescription { get; set; }
 
-            public SettingValue(string name, string value, ZipArchiveEntry entry, double performanceHitMs, bool isActive) {
+            public SettingValueEntry(string name, string value, ZipArchiveEntry entry, double performanceHitMs, bool isActive) {
                 DisplayName = name.ToSentenceMember();
                 Data = Lazier.Create(() => entry.Open().ReadAsBytesAndDispose());
                 Value = value;
@@ -247,7 +247,7 @@ namespace AcManager.Pages.AcSettings {
                 return false;
             }
 
-            private IReadOnlyList<SettingValue> GetValues(Setting setting, ZipArchive archive, out string description, out Action<string> selectCallback) {
+            private IReadOnlyList<SettingValueEntry> GetValues(Setting setting, ZipArchive archive, out string description, out Action<string> selectCallback) {
                 switch (setting) {
                     case Setting.AnisotropicFiltering:
                         description = DefaultDescription();
@@ -283,7 +283,7 @@ namespace AcManager.Pages.AcSettings {
                         return Result(archive.Entries.Where(x => x.FullName.StartsWith(msaaPrefix)).Take(3).Select(x => {
                             var isSmaa = x.FullName.EndsWith(@"__smaa.jpg");
                             var isEnabled = x.FullName.EndsWith(@"__fxaa.jpg");
-                            return new SettingValue(isSmaa ? "off, with SMAA instead" : isEnabled ? "on" : "off", isEnabled.As<string>(), x,
+                            return new SettingValueEntry(isSmaa ? "off, with SMAA instead" : isEnabled ? "on" : "off", isEnabled.As<string>(), x,
                                     GetPerformanceHit(x),
                                     isEnabled == (Video.PostProcessing && Video.Fxaa)) {
                                         CustomDescription = isSmaa ? fxaaDescription : null
@@ -323,7 +323,7 @@ namespace AcManager.Pages.AcSettings {
                         var resolutionPrefix = $@"{Video.MirrorsResolution.Value}__";
                         return Result(archive.Entries.Where(x => x.FullName.StartsWith(resolutionPrefix)).Take(2).Select(x => {
                             var isEnabled = x.FullName.EndsWith(@"__hq.jpg");
-                            return new SettingValue(isEnabled ? "on" : "off", isEnabled.As<string>(), x,
+                            return new SettingValueEntry(isEnabled ? "on" : "off", isEnabled.As<string>(), x,
                                     GetPerformanceHit(x),
                                     isEnabled == (Video.PostProcessing && Video.Fxaa));
                         }).OrderBy(x => x.IsActive ? 1 : 0));
@@ -358,14 +358,14 @@ namespace AcManager.Pages.AcSettings {
                     return bytes == null ? null : Encoding.UTF8.GetString(bytes);
                 }
 
-                IReadOnlyList<SettingValue> Flag(bool currentSetting) {
+                IReadOnlyList<SettingValueEntry> Flag(bool currentSetting) {
                     return Result(archive.Entries.Where(x => x.FullName.EndsWith(@".jpg")).Take(2).Select(x => {
                         var isEnabled = x.FullName.StartsWith(@"1");
-                        return new SettingValue(isEnabled ? "on" : "off", isEnabled.As<string>(), x, GetPerformanceHit(x), isEnabled == currentSetting);
+                        return new SettingValueEntry(isEnabled ? "on" : "off", isEnabled.As<string>(), x, GetPerformanceHit(x), isEnabled == currentSetting);
                     }).OrderBy(x => x.IsActive ? 1 : 0));
                 }
 
-                IReadOnlyList<SettingValue> Number(double currentSetting, Func<double, string> displayValueCallback, string filter = null) {
+                IReadOnlyList<SettingValueEntry> Number(double currentSetting, Func<double, string> displayValueCallback, string filter = null) {
                     var closestValue = double.MaxValue;
                     return Result(archive.Entries.Where(x => x.FullName.EndsWith(@".jpg") && EntriesFilter(x, filter, null)).Select(x => {
                         var value = x.FullName.Split(new[] { @"__" }, StringSplitOptions.RemoveEmptyEntries)[0].As(0d);
@@ -373,7 +373,7 @@ namespace AcManager.Pages.AcSettings {
                         if (difference < closestValue) {
                             closestValue = difference;
                         }
-                        return new SettingValue(displayValueCallback(value), value.As<string>(), x, GetPerformanceHit(x),
+                        return new SettingValueEntry(displayValueCallback(value), value.As<string>(), x, GetPerformanceHit(x),
                                 closestValue == difference);
                     }).ToList().Select(x => {
                         x.IsActive = (x.Value.As(0d) - currentSetting).Abs() == closestValue;
@@ -381,13 +381,13 @@ namespace AcManager.Pages.AcSettings {
                     }).OrderBy(x => x.Value.As(0d)));
                 }
 
-                IReadOnlyList<SettingValue> Entries(SettingEntry[] values, SettingEntry currentSetting, string filter = null, string appendExtra = null) {
+                IReadOnlyList<SettingValueEntry> Entries(SettingEntry[] values, SettingEntry currentSetting, string filter = null, string appendExtra = null) {
                     return Result(values.Select(x => new {
                         Value = x,
                         Entry = archive.Entries.FirstOrDefault(y => y.FullName.StartsWith(x.Value + @"__") && y.FullName.EndsWith(@".jpg")
                                 && EntriesFilter(y, filter, appendExtra)),
                     }).Where(x => x.Entry != null).Select(x =>
-                            new SettingValue(x.Value.DisplayName, x.Value.Value, x.Entry, GetPerformanceHit(x.Entry), x.Value == currentSetting)));
+                            new SettingValueEntry(x.Value.DisplayName, x.Value.Value, x.Entry, GetPerformanceHit(x.Entry), x.Value == currentSetting)));
                 }
 
                 bool EntriesFilter(ZipArchiveEntry entry, string filter, string appendExtra) {
@@ -395,14 +395,14 @@ namespace AcManager.Pages.AcSettings {
                             || appendExtra != null && entry.FullName.StartsWith($@"{appendExtra}__");
                 }
 
-                IReadOnlyList<SettingValue> Adjust(IReadOnlyList<SettingValue> items, Action<SettingValue> callback) {
+                IReadOnlyList<SettingValueEntry> Adjust(IReadOnlyList<SettingValueEntry> items, Action<SettingValueEntry> callback) {
                     foreach (var item in items) {
                         callback(item);
                     }
                     return items;
                 }
 
-                IReadOnlyList<SettingValue> Result(IEnumerable<SettingValue> items) {
+                IReadOnlyList<SettingValueEntry> Result(IEnumerable<SettingValueEntry> items) {
                     var result = items.ToList();
                     if (result.Count == 0) {
                         throw new Exception("Content not found");
@@ -445,7 +445,7 @@ namespace AcManager.Pages.AcSettings {
                     using (var archive = ZipFile.OpenRead(data)) {
                         var values = GetValues(setting, archive, out var description, out var selectCallback);
                         var alignment = GetAlignment(setting);
-                        var dialog = new ImageViewer<SettingValue>(values, values.FindIndex(x => x.IsActive),
+                        var dialog = new ImageViewer<SettingValueEntry>(values, values.FindIndex(x => x.IsActive),
                                 e => Task.FromResult((object)e?.Data.Value), e => {
                                     var ui = (Panel)_uiParent.FindResource(@"SettingDescription");
                                     if (e == null) return ui;

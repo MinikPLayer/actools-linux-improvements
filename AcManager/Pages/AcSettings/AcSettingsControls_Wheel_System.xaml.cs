@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.Threading;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -44,33 +45,28 @@ namespace AcManager.Pages.AcSettings {
             AcSettingsHolder.Controls.ClearWaiting();
         }
 
-        private readonly Dictionary<string, Storyboard> _storyboards = new Dictionary<string, Storyboard>();
+        private readonly Dictionary<string, DispatcherTimer> _highlightTimers = new Dictionary<string, DispatcherTimer>();
 
         private DelegateCommand<string> _highlightDetailsCommand;
 
+        // WPF storyboard replaced with a short-lived timer (flash for a moment, then fade out)
         public DelegateCommand<string> HighlightDetailsCommand => _highlightDetailsCommand ?? (_highlightDetailsCommand = new DelegateCommand<string>(name => {
             var p = this.FindVisualChildren<Border>().FirstOrDefault(x => x.Name == name);
             if (p == null) return;
 
-            var d = new Duration(TimeSpan.FromSeconds(0.15));
             var c = (TryFindResource(@"AccentColor") as Color? ?? Colors.White).SetAlpha(80);
-
-            if (_storyboards.TryGetValue(name, out var u)) {
+            if (_highlightTimers.TryGetValue(name, out var u)) {
                 u.Stop();
-            } else if (p.Background == null) {
-                p.Background = new SolidColorBrush(c.SetAlpha(0));
             }
 
-            u = new Storyboard {
-                Children = {
-                    new ColorAnimation { To = c, Duration = d },
-                    new ColorAnimation { To = c.SetAlpha(0), Duration = d, BeginTime = TimeSpan.FromSeconds(0.35) }
-                }
+            p.Background = new SolidColorBrush(c);
+            u = new DispatcherTimer { Interval = TimeSpan.FromSeconds(0.5) };
+            u.Tick += (sender, args) => {
+                u.Stop();
+                p.Background = new SolidColorBrush(c.SetAlpha(0));
             };
-
-            Storyboard.SetTargetProperty(u, new PropertyPath(@"(0).(1)", Border.BackgroundProperty, SolidColorBrush.ColorProperty));
-            p.BeginStoryboard(u);
-            _storyboards[name] = u;
+            u.Start();
+            _highlightTimers[name] = u;
         }));
 
         public event PropertyChangedEventHandler PropertyChanged {

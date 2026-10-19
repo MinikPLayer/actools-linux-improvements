@@ -9,7 +9,7 @@ using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using ConverterExtensions = OxyPlot.Wpf.ConverterExtensions;
+using ConverterExtensions = OxyPlot.Avalonia.ConverterExtensions;
 
 namespace AcManager.Pages.Dialogs {
     public class TyresMachineGraphData {

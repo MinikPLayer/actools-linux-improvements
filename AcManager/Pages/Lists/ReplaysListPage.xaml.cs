@@ -36,7 +36,7 @@ namespace AcManager.Pages.Lists {
         }
 
         private class CategoryGroupDescription : GroupDescription {
-            public override object GroupNameFromItem(object item, int level, CultureInfo culture) {
+            public override object GroupKeyFromItem(object item, int level, CultureInfo culture) {
                 var category = ((item as AcItemWrapper)?.Value as ReplayObject)?.EditableCategory;
                 return category == ReplayObject.AutosaveCategory ? "Autosave"  : category ?? "";
             }

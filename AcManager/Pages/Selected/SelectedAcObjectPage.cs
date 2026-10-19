@@ -82,14 +82,14 @@ namespace AcManager.Pages.Selected {
 
         private bool _set, _loaded;
 
-        private void OnLoaded(object sender, System.Windows.RoutedEventArgs e) {
+        private void OnLoaded(object sender, RoutedEventArgs e) {
             if (_loaded) return;
             _loaded = true;
 
             ((ISelectedAcObjectViewModel)DataContext).Load();
         }
 
-        private void OnUnloaded(object sender, System.Windows.RoutedEventArgs e) {
+        private void OnUnloaded(object sender, RoutedEventArgs e) {
             if (!_loaded) return;
             _loaded = false;
 

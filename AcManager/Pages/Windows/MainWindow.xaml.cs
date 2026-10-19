@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -52,7 +52,7 @@ using FirstFloor.ModernUI.Windows.Media;
 using FirstFloor.ModernUI.Windows.Navigation;
 using JetBrains.Annotations;
 using Microsoft.Win32;
-using Path = System.Windows.Shapes.Path;
+using Path = Avalonia.Controls.Shapes.Path;
 using QuickSwitchesBlock = AcManager.QuickSwitches.QuickSwitchesBlock;
 
 #if INCLUDE_WORKSHOP
@@ -620,7 +620,6 @@ namespace AcManager.Pages.Windows {
             }
         }
 
-        private HwndSourceHook _hook;
         private bool _loaded;
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
@@ -719,16 +718,6 @@ namespace AcManager.Pages.Windows {
 
             FancyBackgroundManager.Instance.RemoveListener(this);
             AboutHelper.Instance.PropertyChanged -= OnAboutPropertyChanged;
-
-            if (_hook == null) return;
-
-            try {
-                HwndSource.FromHwnd(new WindowInteropHelper(this).Handle)?.RemoveHook(_hook);
-            } catch (Exception) {
-                Logging.Warning("Can’t remove one-instance hook");
-            }
-
-            _hook = null;
         }
 
         private void OnDrop(object sender, DragEventArgs e) {

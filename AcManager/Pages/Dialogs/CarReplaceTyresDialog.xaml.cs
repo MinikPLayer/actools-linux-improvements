@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +35,7 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
+using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using Newtonsoft.Json.Linq;
@@ -838,7 +839,6 @@ namespace AcManager.Pages.Dialogs {
                         .Visual.RequireChild<FrameworkElement>("GeneratedMask");
                 _glowEffect = (DropShadowEffect)that.RequireChild<FrameworkElement>("RoomGlowAnimationPiece").Effect;
 
-                _glowEffect.RenderingBias = TakeItEasy ? RenderingBias.Performance : RenderingBias.Quality;
                 _glowEffect.BlurRadius = TakeItEasy ? 0 : 50;
 
                 if (that.IsLoaded) {

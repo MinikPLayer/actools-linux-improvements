@@ -6,6 +6,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
     /// Placeholder until Draggable is ported (see LinuxPortDocs.md).
     /// </summary>
     public static class Draggable {
+        public static event System.EventHandler<DraggableMovedEventArgs> DragStarted { add { } remove { } }
+        public static event System.EventHandler<DraggableMovedEventArgs> DragEnded { add { } remove { } }
+
         public const string SourceFormat = "X-Draggable-Source";
 
         public static readonly AttachedProperty<object> DataProperty = DP.RegisterAttached<object>("Data", typeof(Draggable), new PropertyMetadata(null));
