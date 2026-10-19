@@ -272,6 +272,10 @@ namespace AcManager {
 
         public override void Initialize() {
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
+
+            // Basic control templates (ItemsControl, ScrollViewer, …) come from Avalonia’s Simple theme,
+            // custom themes and application resources override them
+            Styles.Insert(0, new Avalonia.Themes.Simple.SimpleTheme());
         }
 
         public override void OnFrameworkInitializationCompleted() {
@@ -280,8 +284,9 @@ namespace AcManager {
             _started = true;
 
             // The whole initialization was done in WPF’s App constructor, but Avalonia’s Application.Current
-            // and resources are available only now
-            Start();
+            // and resources are available only now. Posted, so the main loop would be running (some of the startup code
+            // shows dialogs with nested loops)
+            Avalonia.Threading.Dispatcher.UIThread.Post(Start, Avalonia.Threading.DispatcherPriority.Send);
         }
 
         private bool _started;

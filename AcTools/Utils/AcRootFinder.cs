@@ -8,8 +8,46 @@ using Microsoft.Win32;
 
 namespace AcTools.Utils {
     public static class AcRootFinder {
+        /// <summary>
+        /// Native Linux: Steam directories (including additional libraries listed in libraryfolders.vdf).
+        /// </summary>
+        private static IEnumerable<string> GetNativeSteamDirectories() {
+            var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            if (string.IsNullOrEmpty(home)) yield break;
+
+            var roots = new[] {
+                Path.Combine(home, ".steam", "steam"),
+                Path.Combine(home, ".local", "share", "Steam"),
+                Path.Combine(home, ".var", "app", "com.valvesoftware.Steam", ".local", "share", "Steam")
+            };
+
+            var returned = new HashSet<string>();
+            foreach (var root in roots.Where(Directory.Exists)) {
+                if (returned.Add(Path.GetFullPath(root))) yield return root;
+
+                string text;
+                try {
+                    var vdf = Path.Combine(root, "steamapps", "libraryfolders.vdf");
+                    if (!File.Exists(vdf)) continue;
+                    text = File.ReadAllText(vdf);
+                } catch (Exception e) {
+                    AcToolsLogging.Write(e);
+                    continue;
+                }
+
+                foreach (Match m in Regex.Matches(text, "\"path\"\\s+\"(.+?)\"")) {
+                    var path = m.Groups[1].Value.Replace(@"\\", @"\");
+                    if (Directory.Exists(path) && returned.Add(Path.GetFullPath(path))) yield return path;
+                }
+            }
+        }
+
         private static string GetLinuxSteamAppsDirectory()
         {
+            if (!OperatingSystem.IsWindows()) {
+                return GetNativeSteamDirectories().FirstOrDefault();
+            }
+
             const string BASE_PATH = "Z:\\home";
             const string SUB_PATH = ".steam\\steam";
 
@@ -93,6 +131,14 @@ namespace AcTools.Utils {
         }
 
         private static IEnumerable<string> GetSteamAppsDirectories() {
+            if (!OperatingSystem.IsWindows()) {
+                foreach (var dir in GetNativeSteamDirectories()) {
+                    yield return Path.Combine(dir, "steamapps");
+                }
+
+                yield break;
+            }
+
             foreach(var dir in GetSteamDirectories(false))
                 yield return Path.Combine(dir, "steamapps");
             

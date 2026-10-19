@@ -120,11 +120,7 @@ namespace FirstFloor.ModernUI.Dialogs {
             }
 
             var task = fn();
-            if (!task.IsCompleted) {
-                var source = new CancellationTokenSource();
-                task.ContinueWith(_ => source.Cancel(), TaskScheduler.Default);
-                Dispatcher.UIThread.MainLoop(source.Token);
-            }
+            FirstFloor.ModernUI.Helpers.NestedLoop.RunUntilCompleted(task);
 
             return task.GetAwaiter().GetResult();
         }

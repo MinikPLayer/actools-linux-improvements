@@ -275,7 +275,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 SetValue(ShownAsDialogPropertyKey.DependencyProperty, true);
                 _dialogResult = null;
 
-                var cancellation = new CancellationTokenSource();
                 Task task;
                 if (Owner != null) {
                     task = base.ShowDialog(Owner);
@@ -286,10 +285,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     task = completion.Task;
                 }
 
-                task.ContinueWith(_ => cancellation.Cancel(), TaskScheduler.FromCurrentSynchronizationContext());
-                if (!task.IsCompleted) {
-                    Dispatcher.UIThread.MainLoop(cancellation.Token);
-                }
+                Helpers.NestedLoop.RunUntilCompleted(task);
 
                 return _dialogResult;
             } finally {
