@@ -183,4 +183,19 @@
     <Using Include="Avalonia.Collections.DataGridGroupDescription" Alias="GroupDescription" />
     <Using Include="Avalonia.Collections.IDataGridCollectionView" Alias="CollectionView" />
   </ItemGroup>
+  <!-- X.styles.axaml files (plain styles converted from WPF) can’t be enumerated at runtime, so the list goes to assembly metadata, see App.Initialize() -->
+  <Target Name="CmStylesAssemblyMetadata" BeforeTargets="CoreCompile">
+    <ItemGroup>
+      <_CmStyle Include="@(AvaloniaXaml)" Condition="$([System.String]::Copy('%(Identity)').EndsWith('.styles.axaml'))" />
+    </ItemGroup>
+    <PropertyGroup>
+      <_CmStylesList>@(_CmStyle->'%(RelativeDir)%(Filename)%(Extension)', ';')</_CmStylesList>
+      <_CmStylesList>$(_CmStylesList.Replace('\', '/'))</_CmStylesList>
+      <_CmStylesFile>$(IntermediateOutputPath)CmStyles.g.cs</_CmStylesFile>
+    </PropertyGroup>
+    <WriteLinesToFile File="$(_CmStylesFile)" Lines="[assembly: System.Reflection.AssemblyMetadata(&quot;CmStyles&quot;, &quot;$(_CmStylesList)&quot;)]" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup>
+      <Compile Include="$(_CmStylesFile)" />
+    </ItemGroup>
+  </Target>
 </Project>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -57,6 +57,8 @@ namespace AcManager.Workshop {
             }
 
             var steamId = ValuesStorage.GetEncrypted<string>(KeySteamId);
+            if (steamId == null) return; // no Steam profile (for example, on Linux without Steam), authorization is not possible
+
             AuthorizeAsync(steamId, ValuesStorage.GetEncrypted(KeyUserPassword,
                     WorkshopClient.GetPasswordChecksum(WorkshopClient.GetUserId(steamId), string.Empty))).Ignore();
         }

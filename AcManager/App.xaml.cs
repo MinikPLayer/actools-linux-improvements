@@ -278,6 +278,20 @@ namespace AcManager {
             Styles.Insert(0, new Avalonia.Themes.Simple.SimpleTheme());
         }
 
+        private void LoadConvertedStyles() {
+            // WPF styles which were not keyed (or were keyed, but used as a bundle) are converted into X.styles.axaml next to X.axaml
+            foreach (var assembly in new[] { typeof(FirstFloor.ModernUI.Helpers.Logging).Assembly, typeof(AcManager.Controls.ControlsStrings).Assembly, typeof(App).Assembly }) {
+                var list = System.Reflection.CustomAttributeExtensions.GetCustomAttributes<System.Reflection.AssemblyMetadataAttribute>(assembly).FirstOrDefault(x => x.Key == "CmStyles")?.Value;
+                if (string.IsNullOrEmpty(list)) continue;
+
+                var name = assembly.GetName().Name;
+                var root = new Uri($"avares://{name}/");
+                foreach (var path in list.Split(';').OrderBy(x => x, StringComparer.Ordinal)) {
+                    Styles.Add(new Avalonia.Markup.Xaml.Styling.StyleInclude(root) { Source = new Uri($"avares://{name}/{path}") });
+                }
+            }
+        }
+
         public override void OnFrameworkInitializationCompleted() {
             base.OnFrameworkInitializationCompleted();
             if (_started) return;
@@ -813,6 +827,8 @@ namespace AcManager {
             }
 
             // Let’s roll
+            // resources of these styles need the model objects, so they can’t be loaded in Initialize()
+            LoadConvertedStyles();
             new AppUi(this).Run(() => {
                 if (PatchHelper.OptionPatchSupport) {
                     PatchUpdater.Instance.Updated += OnPatchUpdated;
