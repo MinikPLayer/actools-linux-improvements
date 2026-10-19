@@ -239,6 +239,7 @@
     <Compile Include="Windows\User32.cs" />
     <Compile Include="Windows\Compat\Keys.cs" />
     <Compile Include="Windows\Compat\Screen.cs" />
+    <Compile Include="Windows\Compat\SystemInformation.cs" />
     <Compile Include="Windows\WineHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -162,5 +162,7 @@
     <Using Include="Avalonia.Controls.WindowStartupLocation" Alias="WindowStartupLocation" />
     <Using Include="FirstFloor.ModernUI.Windows.Media" />
     <Using Include="Avalonia" />
+    <Using Include="Avalonia.Collections.IDataGridCollectionView" Alias="ICollectionView" />
+    <Using Include="Avalonia.Media.Imaging" />
   </ItemGroup>
 </Project>

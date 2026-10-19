@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Helpers.AcSettings;
 using AcManager.Tools.Helpers.DirectInput;
 using AcTools.DataFile;

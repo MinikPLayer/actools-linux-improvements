@@ -77,9 +77,8 @@ namespace AcManager.Tools.Objects {
 
             width = Math.Min(width, 1d - x);
 
-            var rect = new Int32Rect((int)(x * _fontBitmapImage.PixelWidth), 0, (int)(width * _fontBitmapImage.PixelWidth), _fontBitmapImage.PixelHeight);
+            var rect = new PixelRect((int)(x * _fontBitmapImage.PixelSize.Width), 0, (int)(width * _fontBitmapImage.PixelSize.Width), _fontBitmapImage.PixelSize.Height);
             var result = new CroppedBitmap(_fontBitmapImage, rect);
-            result.Freeze();
             return result;
         }
 

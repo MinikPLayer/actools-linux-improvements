@@ -9,6 +9,16 @@ namespace System.Windows {
         public double Width;
         public double Height;
 
+        public static Rect Parse(string s) {
+            var p = s.Split(',');
+            return new Rect(double.Parse(p[0], System.Globalization.CultureInfo.InvariantCulture), double.Parse(p[1], System.Globalization.CultureInfo.InvariantCulture),
+                    double.Parse(p[2], System.Globalization.CultureInfo.InvariantCulture), double.Parse(p[3], System.Globalization.CultureInfo.InvariantCulture));
+        }
+
+        public string ToString(IFormatProvider provider) {
+            return string.Format(provider, "{0},{1},{2},{3}", X, Y, Width, Height);
+        }
+
         public Rect(double x, double y, double width, double height) {
             X = x;
             Y = y;

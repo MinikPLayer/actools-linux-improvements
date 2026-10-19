@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
@@ -89,13 +89,9 @@ namespace AcManager.Tools.Helpers {
 
             public DelegateCommand ChangeMontageTemporaryDirectoryCommand
                 => _changeMontageTemporaryDirectoryCommand ?? (_changeMontageTemporaryDirectoryCommand = new DelegateCommand(() => {
-                    var dialog = new FolderBrowserDialog {
-                        ShowNewFolderButton = true,
-                        SelectedPath = MontageTemporaryDirectory
-                    };
-
-                    if (dialog.ShowDialog() == DialogResult.OK) {
-                        MontageTemporaryDirectory = dialog.SelectedPath;
+                    var selected = FirstFloor.ModernUI.Dialogs.FileRelatedDialogs.PickFolder(null, MontageTemporaryDirectory);
+                    if (selected != null) {
+                        MontageTemporaryDirectory = selected;
                     }
                 }));
         }

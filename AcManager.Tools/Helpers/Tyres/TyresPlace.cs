@@ -4,11 +4,9 @@ using System.Windows.Media;
 
 namespace AcManager.Tools.Helpers.Tyres {
     public class TyresPlace : Border {
-        static TyresPlace() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TyresPlace), new FrameworkPropertyMetadata(typeof(TyresPlace)));
-        }
+        protected override System.Type StyleKeyOverride => typeof(TyresPlace);
 
-        public static readonly DependencyProperty HighlightColorProperty = DependencyProperty.Register(nameof(HighlightColor), typeof(Brush),
+        public static readonly StyledProperty<Brush> HighlightColorProperty = DP.Register<Brush>(nameof(HighlightColor),
                 typeof(TyresPlace));
 
         public Brush HighlightColor {
@@ -16,7 +14,7 @@ namespace AcManager.Tools.Helpers.Tyres {
             set => SetValue(HighlightColorProperty, value);
         }
 
-        public static readonly DependencyProperty LevelProperty = DependencyProperty.Register(nameof(Level), typeof(TyresAppropriateLevel),
+        public static readonly StyledProperty<TyresAppropriateLevel> LevelProperty = DP.Register<TyresAppropriateLevel>(nameof(Level),
                 typeof(TyresPlace));
 
         public TyresAppropriateLevel Level {

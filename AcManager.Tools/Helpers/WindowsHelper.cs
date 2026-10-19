@@ -34,11 +34,17 @@ namespace AcManager.Tools.Helpers {
 
         [Localizable(false)]
         public static void ViewDirectory([NotNull] string directory) {
-            ProcessExtension.Start(@"explorer", new [] { FileUtils.NormalizePath(directory) });
+            ProcessExtension.Start(OperatingSystem.IsWindows() ? @"explorer" : @"xdg-open", new [] { FileUtils.NormalizePath(directory) });
         }
 
         [Localizable(false)]
         public static void ViewFile([NotNull] string filename) {
+            if (!OperatingSystem.IsWindows()) {
+                // There is no way to preselect a file in a generic file manager
+                ViewDirectory(Path.GetDirectoryName(filename) ?? "");
+                return;
+            }
+
             Process.Start(new ProcessStartInfo {
                 FileName = "explorer",
                 WorkingDirectory = Path.GetDirectoryName(filename) ?? "",
@@ -75,8 +81,8 @@ namespace AcManager.Tools.Helpers {
 
         [NotNull]
         public static IEnumerable<string> GetInputFiles(this IDataObject data) {
-            return data.GetData(DataFormats.FileDrop) as string[] ??
-                    (data.GetData(DataFormats.UnicodeText) as string)?.Split('\n')
+            return data.GetFiles()?.Select(x => Avalonia.Platform.Storage.StorageProviderExtensions.TryGetLocalPath(x)).Where(x => x != null) ??
+                    data.GetText()?.Split('\n')
                                                                         .Select(x => x.Trim())
                                                                         .Select(x => x.Length > 1 && x.StartsWith(@"""") && x.EndsWith(@"""")
                                                                                 ? x.Substring(1, x.Length - 2) : x) ?? new string[0];

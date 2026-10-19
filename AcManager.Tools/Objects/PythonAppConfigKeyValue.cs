@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Tools.Miscellaneous;
 using AcTools.Utils.Helpers;

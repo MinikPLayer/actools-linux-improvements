@@ -5,7 +5,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Miscellaneous;
@@ -15,7 +14,6 @@ using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Commands;
-using FirstFloor.ModernUI.Effects;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
@@ -78,51 +76,10 @@ namespace AcManager.Tools.Objects {
             }
         }
 
-        [CanBeNull]
-        private static ShaderEffect GetEffect([CanBeNull] string textureEffect) {
-            if (textureEffect == null) return null;
-            var s = textureEffect.Split(':');
-            switch (s[0].ToLowerInvariant()) {
-                case "grayscale":
-                    return new GrayscaleEffect();
-                case "invert":
-                    return new InvertEffect();
-                case "color":
-                case "colour":
-                    return new OverlayColorEffect { OverlayColor = s[1].ToColor() ?? Colors.White };
-                case "invertkeepcolor":
-                case "invertkeepcolors":
-                case "invertkeepcolour":
-                case "invertkeepcolours":
-                    return new InvertKeepColorEffect();
-                default:
-                    return null;
-            }
-        }
-
         [NotNull]
         private byte[] PrepareTexture(string filename, string textureEffect) {
-            var effect = GetEffect(textureEffect);
-            if (effect == null) return File.ReadAllBytes(filename);
-
-            var image = BetterImage.LoadBitmapSource(filename);
-            var size = new Size(image.Width, image.Height);
-
-            var result = new Image {
-                Width = image.Width,
-                Height = image.Height,
-                Source = image.ImageSource,
-                Effect = effect,
-            };
-
-            result.Measure(size);
-            result.Arrange(new Rect(size));
-            result.ApplyTemplate();
-            result.UpdateLayout();
-
-            var bmp = new RenderTargetBitmap(image.Width, image.Height, 96, 96, PixelFormats.Pbgra32);
-            bmp.Render(result);
-            return bmp.ToBytes(ImageFormat.Png);
+            var effect = TextureEffects.Parse(textureEffect);
+            return effect == null ? File.ReadAllBytes(filename) : TextureEffects.ApplyToFile(filename, effect);
         }
 
         private void SaveExtraCmTexture([NotNull] string textureName, [NotNull] Func<byte[]> actualSave) {

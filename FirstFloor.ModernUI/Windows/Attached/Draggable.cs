@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -482,10 +482,5 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                 e.Effects = DragDropEffects.None;
             }
         }
-    }
-
-    public interface IDraggableDestinationConverter {
-        [CanBeNull]
-        object Convert([NotNull] IDataObject data);
     }
 }

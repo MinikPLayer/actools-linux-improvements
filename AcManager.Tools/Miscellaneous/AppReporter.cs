@@ -11,7 +11,6 @@ using AcTools;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
-using FirstFloor.ModernUI.Win32;
 using JetBrains.Annotations;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -26,8 +25,12 @@ namespace AcManager.Tools.Miscellaneous {
         }
 
         private static string GetWindowsName() {
-            return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion")?.GetValue("ProductName") as string ??
-                    WindowsVersionHelper.GetVersion();
+            if (OperatingSystem.IsWindows()) {
+                return Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion")?.GetValue("ProductName") as string ??
+                        Environment.OSVersion.ToString();
+            }
+
+            return System.Runtime.InteropServices.RuntimeInformation.OSDescription;
         }
 
         [Localizable(false)]

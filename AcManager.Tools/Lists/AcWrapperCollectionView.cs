@@ -13,7 +13,7 @@ namespace AcManager.Tools.Lists {
                 return;
             }
 
-            var current = InternalList.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
+            var current = SourceCollection.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
             MoveCurrentTo(current ?? (Count > 0 ? GetItemAt(0) : null));
         }
 
@@ -23,7 +23,7 @@ namespace AcManager.Tools.Lists {
                 return;
             }
 
-            var current = InternalList.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
+            var current = SourceCollection.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
             MoveCurrentTo(current);
         }
 
@@ -33,7 +33,7 @@ namespace AcManager.Tools.Lists {
                 return;
             }
 
-            var current = InternalList.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
+            var current = SourceCollection.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value == obj);
             if (current != null) {
                 MoveCurrentTo(current);
             }
@@ -45,7 +45,7 @@ namespace AcManager.Tools.Lists {
                 return;
             }
 
-            var current = InternalList.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value.Id == id);
+            var current = SourceCollection.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value.Id == id);
             MoveCurrentTo(current ?? (Count > 0 ? GetItemAt(0) : null));
         }
 
@@ -55,7 +55,7 @@ namespace AcManager.Tools.Lists {
                 return;
             }
 
-            var current = InternalList.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value.Id == id);
+            var current = SourceCollection.Cast<AcItemWrapper>().FirstOrDefault(x => x.Value.Id == id);
             if (current != null) {
                 MoveCurrentTo(current);
             }

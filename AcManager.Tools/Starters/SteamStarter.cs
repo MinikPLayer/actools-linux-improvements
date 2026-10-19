@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Managers;
 using AcTools.Utils;
@@ -94,12 +94,12 @@ namespace AcManager.Tools.Starters {
             if (!initialized) {
                 if (!IsFullyIntegrated) {
                     MessageBox.Show("Failed to initialize Steam. Make sure Steam is running, or change the starter in Drive settings to something else.",
-                            "Steam in not responding", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                            "Steam in not responding", MessageBoxButton.OK, MessageBoxImage.Error);
                 } else {
                     Logging.Write("Still not initialized, asking Steam to restart AC…");
                     if (!SteamAPI.RestartAppIfNecessary(new AppId_t(244210u))) {
                         MessageBox.Show("Failed to initialize Steam. Make sure Steam is running, or change the starter in Drive settings to something else.",
-                                "Steam in not responding", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                "Steam in not responding", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 Logging.Write("Steam failed to initialize, existing.");

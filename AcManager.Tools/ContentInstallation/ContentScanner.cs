@@ -10,7 +10,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
-using System.Xaml;
 using AcManager.Tools.ContentInstallation.Entries;
 using AcManager.Tools.ContentInstallation.Installators;
 using AcManager.Tools.Data;
@@ -884,12 +883,18 @@ namespace AcManager.Tools.ContentInstallation {
 
                             var icon = new FontObjectBitmap(bitmapData, fileData).GetIcon();
 
-                            byte[] ToBytes(BitmapSource cropped) {
-                                var encoder = new PngBitmapEncoder();
-                                using (var stream = new MemoryStream()) {
-                                    encoder.Frames.Add(BitmapFrame.Create(cropped));
-                                    encoder.Save(stream);
-                                    return stream.ToArray();
+                            byte[] ToBytes(Avalonia.Media.IImage cropped) {
+                                // Avalonia can’t save a cropped bitmap directly, so it’s drawn to a target first
+                                var size = new PixelSize((int)cropped.Size.Width, (int)cropped.Size.Height);
+                                using (var target = new RenderTargetBitmap(size, new Vector(96, 96))) {
+                                    using (var context = target.CreateDrawingContext()) {
+                                        context.DrawImage(cropped, new Rect(cropped.Size));
+                                    }
+
+                                    using (var stream = new MemoryStream()) {
+                                        target.Save(stream);
+                                        return stream.ToArray();
+                                    }
                                 }
                             }
 

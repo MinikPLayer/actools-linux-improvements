@@ -5,6 +5,7 @@
     <RootNamespace>AcManager.Workshop</RootNamespace>
     <AssemblyName>AcManager.Workshop</AssemblyName>
   </PropertyGroup>
+  <Import Project="..\Build\AvaloniaCompat.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\Output\x86\Debug\</OutputPath>

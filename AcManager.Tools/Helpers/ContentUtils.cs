@@ -1,4 +1,5 @@
 ﻿using System;
+using Path = Avalonia.Controls.Shapes.Path;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -15,8 +16,6 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
-using Path = System.Windows.Shapes.Path;
-using VerticalAlignment = System.Windows.VerticalAlignment;
 
 namespace AcManager.Tools.Helpers {
     public static class ContentUtils {
@@ -70,7 +69,7 @@ namespace AcManager.Tools.Helpers {
 
         private static FrameworkElement ToImage(ImageSource source) {
             var i = new Image { Source = source, Stretch = Stretch.Uniform };
-            i.SetValue(RenderOptions.BitmapScalingModeProperty, BitmapScalingMode.HighQuality);
+            Avalonia.Media.RenderOptions.SetBitmapInterpolationMode(i, BitmapInterpolationMode.HighQuality);
             i.SetResourceReference(UIElement.EffectProperty, @"TrackOutlineAloneEffect");
             return i;
         }
@@ -81,7 +80,8 @@ namespace AcManager.Tools.Helpers {
 
         private static FrameworkElement ToPath(Geometry geometry) {
             var p = new Path { Data = geometry, Stretch = Stretch.Uniform };
-            p.SetBinding(Shape.FillProperty, new Binding { Path = new PropertyPath(TextBlock.ForegroundProperty), RelativeSource = RelativeSource.Self });
+            // Foreground is inherited from the parent text element
+            p.Bind(Avalonia.Controls.Shapes.Shape.FillProperty, p.GetObservable(Avalonia.Controls.Documents.TextElement.ForegroundProperty));
             return p;
         }
 
@@ -94,7 +94,6 @@ namespace AcManager.Tools.Helpers {
                 VerticalAlignment = VerticalAlignment.Center,
                 TextAlignment = TextAlignment.Center
             };
-            p.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Ideal);
             return p;
         }
 
@@ -106,7 +105,6 @@ namespace AcManager.Tools.Helpers {
                 VerticalAlignment = VerticalAlignment.Center,
                 TextAlignment = TextAlignment.Center
             };
-            p.SetValue(TextOptions.TextFormattingModeProperty, TextFormattingMode.Ideal);
             return p;
         }
 

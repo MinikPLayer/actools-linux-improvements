@@ -51,6 +51,7 @@ namespace System.Windows {
     public static class FontWeights {
         public static FontWeight Thin => FontWeight.Thin;
         public static FontWeight ExtraLight => FontWeight.ExtraLight;
+        public static FontWeight UltraLight => FontWeight.ExtraLight;
         public static FontWeight Light => FontWeight.Light;
         public static FontWeight Normal => FontWeight.Normal;
         public static FontWeight Regular => FontWeight.Normal;
@@ -180,18 +181,48 @@ namespace System.Windows.Markup {
 }
 
 namespace System.Windows.Controls { }
-namespace System.Windows.Media { }
-namespace System.Windows.Documents { }
-namespace System.Windows.Shapes { }
-namespace System.Windows.Threading { }
+namespace System.Windows.Media {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Documents {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Shapes {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Threading {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
 namespace System.Windows.Data { }
-namespace System.Windows.Navigation { }
-namespace System.Windows.Controls.Primitives { }
-namespace System.Windows.Media.Effects { }
-namespace System.Windows.Media.Imaging { }
-namespace System.Windows.Media.Animation { }
+namespace System.Windows.Navigation {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Controls.Primitives {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Media.Effects {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Media.Imaging {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
+namespace System.Windows.Media.Animation {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
 namespace System.Windows.Interop { }
-namespace System.Windows.Interactivity { }
+namespace System.Windows.Interactivity {
+    /// <summary>Makes the namespace exist, so ‘using’ of WPF namespaces still works.</summary>
+    public static class NamespaceMarker { }
+}
 
 namespace System.Windows {
     /// <summary>
@@ -724,5 +755,58 @@ namespace System.Windows {
         public static double CaptionHeight => 30d;
         public static double PrimaryScreenWidth => 1920d;
         public static double PrimaryScreenHeight => 1080d;
+    }
+}
+
+namespace System.Windows {
+    using FirstFloor.ModernUI.Dialogs;
+
+    /// <summary>
+    /// WPF’s message box, shown with the app’s own dialog.
+    /// </summary>
+    public static class MessageBox {
+        public static MessageBoxResult Show(string text) => MessageDialog.Show(text);
+
+        public static MessageBoxResult Show(string text, string caption) => MessageDialog.Show(text, caption, MessageBoxButton.OK);
+
+        public static MessageBoxResult Show(string text, string caption, MessageBoxButton button) => MessageDialog.Show(text, caption, button);
+
+        public static MessageBoxResult Show(string text, string caption, MessageBoxButton button, MessageBoxImage icon) => MessageDialog.Show(text, caption, button);
+
+        public static MessageBoxResult Show(string text, string caption, MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult)
+                => MessageDialog.Show(text, caption, button);
+
+        public static MessageBoxResult Show(Window owner, string text) => MessageDialog.Show(text, null, MessageBoxButton.OK, owner);
+
+        public static MessageBoxResult Show(Window owner, string text, string caption) => MessageDialog.Show(text, caption, MessageBoxButton.OK, owner);
+
+        public static MessageBoxResult Show(Window owner, string text, string caption, MessageBoxButton button) => MessageDialog.Show(text, caption, button, owner);
+    }
+}
+
+namespace Microsoft.Win32 {
+    /// <summary>Custom places of a file dialog, not supported by Avalonia’s pickers.</summary>
+    public class FileDialogCustomPlace {
+        public FileDialogCustomPlace(string path) { Path = path; }
+        public FileDialogCustomPlace(Guid knownFolder) { KnownFolder = knownFolder; }
+        public string Path { get; }
+        public Guid KnownFolder { get; }
+    }
+}
+
+namespace System.Windows {
+    /// <summary>Implemented by classes that listen to events of WPF’s weak event managers.</summary>
+    public interface IWeakEventListener {
+        bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e);
+    }
+}
+
+namespace System.Windows.Controls {
+    /// <summary>
+    /// WPF’s WebBrowser (Internet Explorer control) is Windows-only and not ported; this is a placeholder so that
+    /// code referencing it still builds.
+    /// </summary>
+    public class WebBrowser {
+        public object Document { get; set; }
     }
 }

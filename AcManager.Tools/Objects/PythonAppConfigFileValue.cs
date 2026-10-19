@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Managers;
 using AcTools.Utils;
 using FirstFloor.ModernUI.Commands;
@@ -74,13 +74,10 @@ namespace AcManager.Tools.Objects {
 
             try {
                 if (DirectoryMode) {
-                    var dialog = new FolderBrowserDialog {
-                        ShowNewFolderButton = true,
-                        SelectedPath = currentValue != null && Directory.Exists(currentValue) ? currentValue : relativeDirectory,
-                        Description = $"Select {DisplayName.ToSentenceMember()}"
-                    };
-                    if (dialog.ShowDialog() == DialogResult.OK) {
-                        Value = FinalizeFilename(dialog.SelectedPath);
+                    var selected = FileRelatedDialogs.PickFolder($"Select {DisplayName.ToSentenceMember()}",
+                            currentValue != null && Directory.Exists(currentValue) ? currentValue : relativeDirectory);
+                    if (selected != null) {
+                        Value = FinalizeFilename(selected);
                     }
                 } else {
                     var filename = FileRelatedDialogs.Open(new OpenDialogParams {

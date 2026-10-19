@@ -30,7 +30,7 @@ namespace AcManager.Tools.Helpers {
         }
 
         public static void DisableBrowserEmulationMode() {
-            if (MainExecutingFile.IsInDevelopment) return;
+            if (!OperatingSystem.IsWindows() || MainExecutingFile.IsInDevelopment) return;
             SetBrowserFeatureControlKey(@"FEATURE_BROWSER_EMULATION", MainExecutingFile.Name, EmulationModeDisabled);
             SetBrowserFeatureControlKey(@"FEATURE_96DPI_PIXEL", MainExecutingFile.Name, 1);
         }

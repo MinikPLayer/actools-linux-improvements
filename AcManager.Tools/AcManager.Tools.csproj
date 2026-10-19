@@ -4,10 +4,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AcManager.Tools</RootNamespace>
     <AssemblyName>AcManager.Tools</AssemblyName>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <Import Project="..\Build\AvaloniaCompat.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\Output\x86\Debug\</OutputPath>
@@ -681,6 +680,7 @@
     <Compile Include="Objects\PythonAppObject.cs" />
     <Compile Include="GameProperties\DriverName.cs" />
     <Compile Include="GameProperties\GameCommandExecutorBase.cs" />
+    <Compile Include="Helpers\TextureEffects.cs" />
     <Compile Include="Objects\ServerPresetObject.cs" />
     <Compile Include="Objects\SpecialEventObject.cs" />
     <Compile Include="Objects\WeatherColorEntry.cs" />

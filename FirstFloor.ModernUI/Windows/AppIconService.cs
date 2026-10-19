@@ -1,7 +1,10 @@
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Windows;
+using Icon = System.Drawing.Icon;
+using Bitmap = Avalonia.Media.Imaging.Bitmap;
+using System.IO;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows {
@@ -19,17 +22,17 @@ namespace FirstFloor.ModernUI.Windows {
             _provider = provider;
         }
 
+        /// <summary>
+        /// Resources are addressed with avares:// URIs, plain files with file:// ones.
+        /// </summary>
         [NotNull]
-        private static Icon ReadIcon(Uri uri) {
-            var streamInfo = Application.GetResourceStream(uri);
-            if (streamInfo == null) throw new Exception($"Resource {uri} is missing");
-            using (var iconStream = streamInfo.Stream) {
-                return new Icon(iconStream);
-            }
+        private static Stream OpenStream(Uri uri) {
+            if (uri.IsAbsoluteUri && uri.Scheme == "file") return File.OpenRead(uri.LocalPath);
+            return AssetLoader.Open(uri);
         }
 
         [NotNull]
-        public static  Uri GetTrayIconUri() {
+        public static Uri GetTrayIconUri() {
             return _provider.GetTrayIcon();
         }
 
@@ -39,15 +42,51 @@ namespace FirstFloor.ModernUI.Windows {
         }
 
         private static Icon _trayIcon, _appIcon;
+        private static Bitmap _trayImage, _appImage;
 
-        [NotNull]
-        public static  Icon GetTrayIcon() {
+        /// <summary>
+        /// System.Drawing’s icons are only used by WinForms windows (renderers, tray icon), so Windows only.
+        /// </summary>
+        [CanBeNull]
+        public static Icon GetTrayIcon() {
+            if (!OperatingSystem.IsWindows()) return null;
             return _trayIcon ?? (_trayIcon = ReadIcon(GetTrayIconUri()));
         }
 
-        [NotNull]
+        [CanBeNull]
         public static Icon GetAppIcon() {
+            if (!OperatingSystem.IsWindows()) return null;
             return _appIcon ?? (_appIcon = ReadIcon(GetAppIconUri()));
+        }
+
+        [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+        private static Icon ReadIcon(Uri uri) {
+            using (var stream = OpenStream(uri)) {
+                return new Icon(stream);
+            }
+        }
+
+        [NotNull]
+        public static Bitmap GetTrayIconImage() {
+            return _trayImage ?? (_trayImage = ReadImage(GetTrayIconUri()));
+        }
+
+        [NotNull]
+        public static Bitmap GetAppIconImage() {
+            return _appImage ?? (_appImage = ReadImage(GetAppIconUri()));
+        }
+
+        private static Bitmap ReadImage(Uri uri) {
+            using (var stream = OpenStream(uri)) {
+                return new Bitmap(stream);
+            }
+        }
+
+        [NotNull]
+        public static Avalonia.Controls.WindowIcon GetWindowIcon() {
+            using (var stream = OpenStream(GetAppIconUri())) {
+                return new Avalonia.Controls.WindowIcon(stream);
+            }
         }
     }
 }

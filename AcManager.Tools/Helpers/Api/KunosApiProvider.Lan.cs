@@ -157,7 +157,7 @@ namespace AcManager.Tools.Helpers.Api {
 
             try {
                 if (holder != null) {
-                    timer = new DispatcherTimer(DispatcherPriority.Background, Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher) {
+                    timer = new DispatcherTimer(DispatcherPriority.Background) {
                         Interval = TimeSpan.FromSeconds(0.1),
                         IsEnabled = true
                     };

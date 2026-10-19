@@ -1,6 +1,6 @@
 using System;
 using System.Diagnostics;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Tools.SharedMemory;
 using AcTools.Processes;

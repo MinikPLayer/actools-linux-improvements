@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Drawing.Imaging;
+using Avalonia.Controls;
+using Avalonia.Layout;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -14,7 +16,6 @@ using AcManager.Tools.Miscellaneous;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI;
-using FirstFloor.ModernUI.Effects;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -35,6 +36,12 @@ namespace AcManager.Tools.Objects {
             private readonly Action<string, byte[]> _saveCallback;
 
             private Panel _canvas;
+
+            [CanBeNull]
+            private static byte[] ApplyEffect(byte[] data, string effect) {
+                var action = TextureEffects.Parse(effect);
+                return action == null ? data : TextureEffects.Apply(data, action);
+            }
             private readonly double _scale;
 
             public CmTexturesScriptTexture(Table v, [CanBeNull] ExtraDataProvider data, [NotNull] RaceTexturesContext texturesContext,
@@ -67,7 +74,7 @@ namespace AcManager.Tools.Objects {
                     var fontTxt = _data?.Get(font + ".txt");
                     if (fontPng != null && fontTxt != null) {
                         ActionExtension.InvokeInMainThread(() => {
-                            var bitmap = new FontObjectBitmap(fontPng, fontTxt);
+                            var bitmap = new FontObjectBitmap(TextureEffects.Apply(fontPng, TextureEffects.AsTransparencyMask(color)), fontTxt);
                             var charsPanel = new SpacingStackPanel {
                                 Spacing = v[@"spacing"].As(0d),
                                 Orientation = Orientation.Horizontal
@@ -79,28 +86,30 @@ namespace AcManager.Tools.Objects {
                                 charsPanel.Children.Add(new Image {
                                     Source = charBitmap,
                                     Height = fontSize,
-                                    Width = fontSize * charBitmap.Width / charBitmap.Height
+                                    Width = fontSize * charBitmap.Size.Width / charBitmap.Size.Height
                                 });
                             }
 
-                            ApplyParams(v, charsPanel);
-                            charsPanel.Effect = new AsTransparencyMask { OverlayColor = color };
-                            _canvas.Children.Add(charsPanel);
+                            _canvas.Children.Add(ApplyParams(v, charsPanel));
                         });
                         return true;
                     }
                 }
 
                 ActionExtension.InvokeInMainThread(() => {
-                    var block = v[@"bb"].As(false) ? new BbCodeBlock() : new TextBlock();
-                    block.Text = text;
-                    block.Foreground = new SolidColorBrush(color);
-                    block.FontFamily = new FontFamily(font ?? @"Segoe UI");
-                    block.FontWeight = FontWeight.FromOpenTypeWeight(v[@"fontWeight"].As(400));
-                    block.FontStyle = v[@"fontItalic"].As(false) ? FontStyles.Italic : FontStyles.Normal;
-                    block.FontSize = fontSize;
-                    ApplyParams(v, block);
-                    _canvas.Children.Add(block);
+                    FrameworkElement block;
+                    if (v[@"bb"].As(false)) {
+                        block = new BbCodeBlock { Text = text };
+                    } else {
+                        block = new TextBlock { Text = text };
+                    }
+
+                    block.SetValue(Avalonia.Controls.Documents.TextElement.ForegroundProperty, new SolidColorBrush(color));
+                    block.SetValue(Avalonia.Controls.Documents.TextElement.FontFamilyProperty, new FontFamily(font ?? @"Segoe UI"));
+                    block.SetValue(Avalonia.Controls.Documents.TextElement.FontWeightProperty, (FontWeight)v[@"fontWeight"].As(400));
+                    block.SetValue(Avalonia.Controls.Documents.TextElement.FontStyleProperty, v[@"fontItalic"].As(false) ? FontStyle.Italic : FontStyle.Normal);
+                    block.SetValue(Avalonia.Controls.Documents.TextElement.FontSizeProperty, fontSize);
+                    _canvas.Children.Add(ApplyParams(v, block));
                 });
                 return true;
             }
@@ -115,12 +124,10 @@ namespace AcManager.Tools.Objects {
 
                 ActionExtension.InvokeInMainThread(() => {
                     var image = new Image {
-                        Source = BetterImage.LoadBitmapSourceFromBytes(data).ImageSource,
-                        Stretch = v[@"stretch"].As(Stretch.Uniform),
-                        Effect = GetEffect(v[@"effect"]?.ToString())
+                        Source = BetterImage.LoadBitmapSourceFromBytes(ApplyEffect(data, v[@"effect"]?.ToString())).ImageSource,
+                        Stretch = v[@"stretch"].As(Stretch.Uniform)
                     };
-                    ApplyParams(v, image);
-                    _canvas.Children.Add(image);
+                    _canvas.Children.Add(ApplyParams(v, image));
                 });
                 return true;
             }
@@ -134,14 +141,14 @@ namespace AcManager.Tools.Objects {
                 }
 
                 ActionExtension.InvokeInMainThread(() => {
+                    var effect = TextureEffects.Parse(v[@"effect"]?.ToString());
                     var image = new BetterImage {
-                        Source = BetterImage.LoadBitmapSourceFromFilename(filename).ImageSource,
+                        Source = effect == null ? BetterImage.LoadBitmapSourceFromFilename(filename).ImageSource
+                                : BetterImage.LoadBitmapSourceFromBytes(TextureEffects.ApplyToFile(filename, effect)).ImageSource,
                         CropTransparentAreas = v[@"cropTransparent"].As(true),
-                        Stretch = v[@"stretch"].As(Stretch.Uniform),
-                        Effect = GetEffect(v[@"effect"]?.ToString())
+                        Stretch = v[@"stretch"].As(Stretch.Uniform)
                     };
-                    ApplyParams(v, image);
-                    _canvas.Children.Add(image);
+                    _canvas.Children.Add(ApplyParams(v, image));
                 });
                 return true;
             }
@@ -182,12 +189,10 @@ namespace AcManager.Tools.Objects {
 
                 ActionExtension.InvokeInMainThread(() => {
                     var image = new Image {
-                        Source = BetterImage.LoadBitmapSourceFromBytes(data).ImageSource,
-                        Stretch = v[@"stretch"].As(Stretch.Uniform),
-                        Effect = GetEffect(v[@"effect"]?.ToString())
+                        Source = BetterImage.LoadBitmapSourceFromBytes(ApplyEffect(data, v[@"effect"]?.ToString())).ImageSource,
+                        Stretch = v[@"stretch"].As(Stretch.Uniform)
                     };
-                    ApplyParams(v, image);
-                    _canvas.Children.Add(image);
+                    _canvas.Children.Add(ApplyParams(v, image));
                 });
                 return true;
             }
@@ -201,15 +206,12 @@ namespace AcManager.Tools.Objects {
                     _canvas.ApplyTemplate();
                     _canvas.UpdateLayout();
 
-                    foreach (var block in _canvas.FindVisualChildren<BbCodeBlock>()) {
-                        block.ForceUpdate();
-                    }
-
                     var dpi = (96 * _scale).RoundToInt();
-                    var bmp = new RenderTargetBitmap((_canvas.Width * _scale).RoundToInt(), (_canvas.Height * _scale).RoundToInt(),
-                            dpi, dpi, PixelFormats.Pbgra32);
-                    bmp.Render(_canvas);
-                    _saveCallback.Invoke(name, bmp.ToBytes(ImageFormat.Png));
+                    using (var bmp = new RenderTargetBitmap(new PixelSize((_canvas.Width * _scale).RoundToInt(), (_canvas.Height * _scale).RoundToInt()),
+                            new Vector(dpi, dpi))) {
+                        bmp.Render(_canvas);
+                        _saveCallback.Invoke(name, bmp.ToBytes(ImageFormat.Png));
+                    }
                 });
             }
 
@@ -238,7 +240,10 @@ namespace AcManager.Tools.Objects {
                 });
             }
 
-            private void ApplyParams(Table v, FrameworkElement fe) {
+            /// <summary>
+            /// Returns an element to be added to canvas (an original one or a wrapper with layout transform).
+            /// </summary>
+            private FrameworkElement ApplyParams(Table v, FrameworkElement fe) {
                 var top = v[@"y"].As(0d);
                 var left = v[@"x"].As(0d);
                 var height = v[@"height"].As(0d);
@@ -248,28 +253,35 @@ namespace AcManager.Tools.Objects {
                 var scaleX = v[@"scaleX"].As(1d);
                 var scaleY = v[@"scaleY"].As(1d);
 
+                Avalonia.Media.Transform transform = null;
                 if (scaleX != 1d || scaleY != 1d) {
                     if (rotate != 0d) {
-                        fe.LayoutTransform = new TransformGroup {
+                        transform = new Avalonia.Media.TransformGroup {
                             Children = {
-                                new ScaleTransform { ScaleX = scaleX, ScaleY = scaleY },
-                                new RotateTransform { Angle = rotate },
+                                new Avalonia.Media.ScaleTransform { ScaleX = scaleX, ScaleY = scaleY },
+                                new Avalonia.Media.RotateTransform { Angle = rotate },
                             }
                         };
                     } else {
-                        fe.LayoutTransform = new ScaleTransform { ScaleX = scaleX, ScaleY = scaleY };
+                        transform = new Avalonia.Media.ScaleTransform { ScaleX = scaleX, ScaleY = scaleY };
                     }
                 } else if (rotate != 0d) {
-                    fe.LayoutTransform = new RotateTransform { Angle = rotate };
+                    transform = new Avalonia.Media.RotateTransform { Angle = rotate };
                 }
 
-                fe.HorizontalAlignment = v[@"horizontalAlignment"].As(HorizontalAlignment.Left);
-                fe.VerticalAlignment = v[@"verticalAlignment"].As(VerticalAlignment.Top);
-                fe.Margin = new Thickness(
-                        fe.HorizontalAlignment == HorizontalAlignment.Right ? (width <= 0d ? 0 : _canvas.Width - width + left) : left,
-                        fe.VerticalAlignment == VerticalAlignment.Bottom ? (height <= 0d ? 0 : _canvas.Height - height + top) : top,
-                        fe.HorizontalAlignment == HorizontalAlignment.Right ? -left : width <= 0d ? 0 : _canvas.Width - width - left,
-                        fe.VerticalAlignment == VerticalAlignment.Bottom ? -top : height <= 0d ? 0 : _canvas.Height - height - top);
+                var result = fe;
+                if (transform != null) {
+                    result = new LayoutTransformControl { LayoutTransform = transform, Child = fe };
+                }
+
+                result.HorizontalAlignment = v[@"horizontalAlignment"].As(HorizontalAlignment.Left);
+                result.VerticalAlignment = v[@"verticalAlignment"].As(VerticalAlignment.Top);
+                result.Margin = new Thickness(
+                        result.HorizontalAlignment == HorizontalAlignment.Right ? (width <= 0d ? 0 : _canvas.Width - width + left) : left,
+                        result.VerticalAlignment == VerticalAlignment.Bottom ? (height <= 0d ? 0 : _canvas.Height - height + top) : top,
+                        result.HorizontalAlignment == HorizontalAlignment.Right ? -left : width <= 0d ? 0 : _canvas.Width - width - left,
+                        result.VerticalAlignment == VerticalAlignment.Bottom ? -top : height <= 0d ? 0 : _canvas.Height - height - top);
+                return result;
             }
         }
 

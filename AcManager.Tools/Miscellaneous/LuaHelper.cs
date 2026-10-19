@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Data;
 using AcManager.Tools.Objects;
 using AcTools.Processes;
@@ -13,7 +13,6 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using MoonSharp.Interpreter;
-using PowerLineStatus = System.Windows.Forms.PowerLineStatus;
 
 namespace AcManager.Tools.Miscellaneous {
     public static class LuaHelper {

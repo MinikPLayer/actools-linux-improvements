@@ -1,72 +1,67 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using Avalonia.Media.Imaging;
+using ImageMagick;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Helpers {
     public static class BitmapSourceExtension {
-        public static BitmapFrame Resize(this BitmapSource bitmap, int width, int height, BitmapScalingMode scalingMode = BitmapScalingMode.HighQuality) {
-            var group = new DrawingGroup();
-            RenderOptions.SetBitmapScalingMode(group, scalingMode);
-            group.Children.Add(new ImageDrawing(bitmap, new Rect(0, 0, width, height)));
-            var targetVisual = new DrawingVisual();
-            var targetContext = targetVisual.RenderOpen();
-            targetContext.DrawDrawing(group);
-            var target = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Default);
-            targetContext.Close();
-            target.Render(targetVisual);
-            var targetFrame = BitmapFrame.Create(target);
-            return targetFrame;
-        }
+        public static Bitmap Resize(this Bitmap bitmap, int width, int height, BitmapInterpolationMode mode = BitmapInterpolationMode.HighQuality) {
+            var target = new RenderTargetBitmap(new PixelSize(width, height), new Vector(96, 96));
+            using (var context = target.CreateDrawingContext()) {
+                using (context.PushRenderOptions(new Avalonia.Media.RenderOptions { BitmapInterpolationMode = mode })) {
+                    context.DrawImage(bitmap, new Rect(0, 0, bitmap.Size.Width, bitmap.Size.Height), new Rect(0, 0, width, height));
+                }
+            }
 
-        [NotNull]
-        private static BitmapEncoder GetEncoder([NotNull] ImageFormat format) {
-            if (Equals(format, ImageFormat.Png)) return new PngBitmapEncoder();
-            if (Equals(format, ImageFormat.Jpeg)) return new JpegBitmapEncoder();
-            if (Equals(format, ImageFormat.Bmp)) return new BmpBitmapEncoder();
-            if (Equals(format, ImageFormat.Tiff)) return new TiffBitmapEncoder();
-            if (Equals(format, ImageFormat.Gif)) return new GifBitmapEncoder();
-            throw new NotSupportedException();
+            return target;
         }
 
         [NotNull]
         public static ImageFormat GetImageFormat([CanBeNull] this string filename) {
             switch (Path.GetExtension(filename)?.ToLowerInvariant()) {
-                case "png":
+                case ".png":
                     return ImageFormat.Png;
-                case "bmp":
+                case ".bmp":
                     return ImageFormat.Bmp;
-                case "gif":
+                case ".gif":
                     return ImageFormat.Gif;
-                case "jpg":
-                case "jpeg":
+                case ".jpg":
+                case ".jpeg":
                     return ImageFormat.Jpeg;
-                case "tif":
-                case "tiff":
+                case ".tif":
+                case ".tiff":
                     return ImageFormat.Tiff;
                 default:
                     return ImageFormat.Png;
             }
         }
 
-        public static void SaveTo([NotNull] this BitmapSource bitmap, [NotNull] string filename, [CanBeNull] ImageFormat format = null) {
-            var encoder = GetEncoder(format ?? filename.GetImageFormat());
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
-            using (var s = File.Create(filename)) {
-                encoder.Save(s);
-            }
+        private static MagickFormat GetMagickFormat(ImageFormat format) {
+            if (Equals(format, ImageFormat.Jpeg)) return MagickFormat.Jpeg;
+            if (Equals(format, ImageFormat.Bmp)) return MagickFormat.Bmp;
+            if (Equals(format, ImageFormat.Tiff)) return MagickFormat.Tiff;
+            if (Equals(format, ImageFormat.Gif)) return MagickFormat.Gif;
+            return MagickFormat.Png;
+        }
+
+        public static void SaveTo([NotNull] this Bitmap bitmap, [NotNull] string filename, [CanBeNull] ImageFormat format = null) {
+            File.WriteAllBytes(filename, bitmap.ToBytes(format ?? filename.GetImageFormat()));
         }
 
         [NotNull]
-        public static byte[] ToBytes([NotNull] this BitmapSource bitmap, [NotNull] ImageFormat format) {
-            var encoder = GetEncoder(format);
-            encoder.Frames.Add(BitmapFrame.Create(bitmap));
+        public static byte[] ToBytes([NotNull] this Bitmap bitmap, [NotNull] ImageFormat format) {
             using (var s = new MemoryStream()) {
-                encoder.Save(s);
-                return s.ToArray();
+                bitmap.Save(s);
+                var png = s.ToArray();
+                if (Equals(format, ImageFormat.Png)) return png;
+
+                // Avalonia saves only PNG, other formats are converted
+                using (var image = new MagickImage(png)) {
+                    image.Format = GetMagickFormat(format);
+                    return image.ToByteArray();
+                }
             }
         }
     }

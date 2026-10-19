@@ -126,7 +126,7 @@ namespace AcManager.Tools.Lists {
         }
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e) {
-            return _view.ReceiveWeakEvent(managerType, sender, e);
+            return false;
         }
 
         public int IndexOf(T item) {

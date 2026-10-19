@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 

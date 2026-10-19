@@ -1,6 +1,6 @@
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Starters;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;

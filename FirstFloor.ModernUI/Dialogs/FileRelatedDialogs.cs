@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -6,7 +6,11 @@ using System.Linq;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using Microsoft.Win32;
+using Avalonia.Threading;
 
 namespace FirstFloor.ModernUI.Dialogs {
     public sealed class DialogFilterPiece : Displayable {
@@ -102,84 +106,88 @@ namespace FirstFloor.ModernUI.Dialogs {
 
     public static class FileRelatedDialogs {
         [CanBeNull]
-        private static string OpenFallback([CanBeNull] string key) {
-            var dialog = new OpenFileDialog();
+        private static Window GetOwner() {
+            return (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.Windows
+                    .FirstOrDefault(x => x.IsActive) ?? (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+        }
 
-            if (dialog.ShowDialog() != true) {
-                return null;
+        /// <summary>
+        /// Avalonia’s storage provider is async only, while the rest of the app expects blocking dialogs.
+        /// </summary>
+        private static T RunBlocking<T>(Func<Task<T>> fn) {
+            if (!Dispatcher.UIThread.CheckAccess()) {
+                return Dispatcher.UIThread.InvokeAsync(fn).GetAwaiter().GetResult();
             }
 
-            if (key != null) {
-                ValuesStorage.Set(key, Path.GetDirectoryName(dialog.FileName));
+            var task = fn();
+            if (!task.IsCompleted) {
+                var source = new CancellationTokenSource();
+                task.ContinueWith(_ => source.Cancel(), TaskScheduler.Default);
+                Dispatcher.UIThread.MainLoop(source.Token);
             }
 
-            return dialog.FileName;
+            return task.GetAwaiter().GetResult();
+        }
+
+        private static List<FilePickerFileType> ToFileTypes(IEnumerable<DialogFilterPiece> filters) {
+            return filters.Select(x => new FilePickerFileType(x.DisplayName) {
+                Patterns = x.Filter.Split(';')
+            }).ToList();
+        }
+
+        private static async Task<IStorageFolder> GetStartFolder(IStorageProvider provider, string directory) {
+            if (string.IsNullOrWhiteSpace(directory) || !Directory.Exists(directory)) return null;
+            return await provider.TryGetFolderFromPathAsync(directory);
         }
 
         [CanBeNull]
-        private static string SaveFallback([CanBeNull] string key) {
-            var dialog = new SaveFileDialog();
-            if (dialog.ShowDialog() != true) {
-                return null;
-            }
+        private static string[] OpenInner([NotNull] OpenDialogParams p, string currentFilename, bool multiselect) {
+            var key = p.ActualSaveKey;
+            var owner = GetOwner();
+            var provider = owner?.StorageProvider;
+            if (provider == null) return null;
 
+            var initial = currentFilename != null ? Path.GetDirectoryName(currentFilename)
+                    : key == null ? p.InitialDirectory : ValuesStorage.Get(key, p.InitialDirectory);
+            var result = RunBlocking(async () => await provider.OpenFilePickerAsync(new FilePickerOpenOptions {
+                Title = p.Title,
+                AllowMultiple = multiselect,
+                FileTypeFilter = ToFileTypes(p.GetFilters()),
+                SuggestedStartLocation = await GetStartFolder(provider, initial)
+            }));
+
+            var files = result.Select(x => x.TryGetLocalPath()).Where(x => x != null).ToArray();
+            if (files.Length == 0) return null;
             if (key != null) {
-                ValuesStorage.Set(key, Path.GetDirectoryName(dialog.FileName));
+                ValuesStorage.Set(key, Path.GetDirectoryName(files[0]));
             }
 
-            return dialog.FileName;
+            return files;
         }
 
-        private static OpenFileDialog ConfigureOpenDialog([NotNull] OpenDialogParams p, string currentFilename, bool multiselect) {
-            var filters = p.GetFilters().ToList();
-            var dialog = new OpenFileDialog {
-                Filter = string.Join("|", filters.Select(x => x.WinFilter)),
-                CheckFileExists = p.CheckFileExists,
-                RestoreDirectory = p.RestoreDirectory,
-                DereferenceLinks = p.DereferenceLinks,
-                ValidateNames = p.ValidateNames,
-                Multiselect = multiselect
-            };
+        /// <summary>
+        /// Replacement of WinForms’ FolderBrowserDialog.
+        /// </summary>
+        [CanBeNull]
+        public static string PickFolder([CanBeNull] string title = null, [CanBeNull] string initialDirectory = null) {
+            try {
+                var provider = GetOwner()?.StorageProvider;
+                if (provider == null) return null;
 
-            var extension = p.DetaultExtension ?? filters[0].BaseExtension;
-            if (extension != null) {
-                dialog.DefaultExt = extension;
-            }
-
-            if (p.Title != null) {
-                dialog.Title = p.Title;
-            }
-
-            var key = p.ActualSaveKey;
-            var initial = key == null ? p.InitialDirectory :
-                    ValuesStorage.Get(key, p.InitialDirectory);
-            if (initial != null) {
-                dialog.InitialDirectory = initial;
-            }
-
-            foreach (var place in p.CustomPlaces) {
-                dialog.CustomPlaces.Add(place);
-            }
-
-            if (currentFilename != null) {
-                dialog.InitialDirectory = Path.GetDirectoryName(currentFilename) ?? "";
-                dialog.FileName = Path.GetFileNameWithoutExtension(currentFilename);
-            }
-
-            if (dialog.ShowDialog() != true) {
+                var result = RunBlocking(async () => await provider.OpenFolderPickerAsync(new FolderPickerOpenOptions {
+                    Title = title,
+                    AllowMultiple = false,
+                    SuggestedStartLocation = await GetStartFolder(provider, initialDirectory)
+                }));
+                return result.FirstOrDefault()?.TryGetLocalPath();
+            } catch (Exception e) {
+                NonfatalError.NotifyBackground("Can’t use Folder Dialog properly", e);
                 return null;
             }
-
-            if (key != null) {
-                ValuesStorage.Set(key, Path.GetDirectoryName(dialog.FileName));
-            }
-
-            return dialog;
         }
 
         [CanBeNull]
         public static string Open([NotNull] OpenDialogParams p, string currentFilename = null) {
-            var key = p.ActualSaveKey;
             var cached = p.ActualSaveKey + @":cached";
 
             try {
@@ -191,21 +199,19 @@ namespace FirstFloor.ModernUI.Dialogs {
             }
 
             try {
-                var dialog = ConfigureOpenDialog(p, currentFilename, false);
-                if (dialog == null) return null;
-                if (p.UseCachedIfAny) {
-                    ValuesStorage.Set(cached, dialog.FileName);
+                var result = OpenInner(p, currentFilename, false)?.FirstOrDefault();
+                if (result != null && p.UseCachedIfAny) {
+                    ValuesStorage.Set(cached, result);
                 }
-                return dialog.FileName;
+                return result;
             } catch (Exception e) {
                 NonfatalError.NotifyBackground("Can’t use Open File Dialog properly", e);
-                return OpenFallback(key);
+                return null;
             }
         }
 
         [CanBeNull]
         public static string[] OpenMultiple([NotNull] OpenDialogParams p, string currentFilename = null) {
-            var key = p.ActualSaveKey;
             var cached = p.ActualSaveKey + @":cached";
 
             try {
@@ -217,15 +223,14 @@ namespace FirstFloor.ModernUI.Dialogs {
             }
 
             try {
-                var dialog = ConfigureOpenDialog(p, currentFilename, true);
-                if (dialog == null || dialog.FileNames.Length == 0) return null;
-                if (p.UseCachedIfAny) {
-                    ValuesStorage.Set(cached, dialog.FileNames);
+                var result = OpenInner(p, currentFilename, true);
+                if (result != null && p.UseCachedIfAny) {
+                    ValuesStorage.Set(cached, result);
                 }
-                return dialog.FileNames.Distinct().ToArray();
+                return result?.Distinct().ToArray();
             } catch (Exception e) {
                 NonfatalError.NotifyBackground("Can’t use Open File Dialog properly", e);
-                return new[]{ OpenFallback(key) };
+                return null;
             }
         }
 
@@ -233,58 +238,39 @@ namespace FirstFloor.ModernUI.Dialogs {
         public static string Save([NotNull] SaveDialogParams p, string currentFilename = null) {
             var key = p.ActualSaveKey;
             try {
+                var provider = GetOwner()?.StorageProvider;
+                if (provider == null) return null;
+
                 var filters = p.GetFilters().ToList();
-                var dialog = new SaveFileDialog {
-                    Filter = string.Join("|", filters.Select(x => $"{x.DisplayName}|{x.Filter}")),
-                    AddExtension = p.AddExtension,
-                    CheckPathExists = p.CheckPathExists,
-                    CreatePrompt = p.CreatePrompt,
-                    OverwritePrompt = p.OverwritePrompt,
-                    RestoreDirectory = p.RestoreDirectory,
-                    DereferenceLinks = p.DereferenceLinks,
-                    ValidateNames = p.ValidateNames,
-                };
+                var extension = (p.DetaultExtension ?? filters[0].BaseExtension)?.TrimStart('.');
+                var initial = currentFilename != null ? Path.GetDirectoryName(currentFilename)
+                        : key == null ? p.InitialDirectory : ValuesStorage.Get(key, p.InitialDirectory);
+                var name = currentFilename != null ? Path.GetFileNameWithoutExtension(currentFilename) : p.DefaultFileName;
 
-                var extension = p.DetaultExtension ?? filters[0].BaseExtension;
-                if (extension != null) {
-                    dialog.DefaultExt = extension;
-                }
+                var file = RunBlocking(async () => await provider.SaveFilePickerAsync(new FilePickerSaveOptions {
+                    Title = p.Title,
+                    SuggestedFileName = name,
+                    DefaultExtension = extension,
+                    ShowOverwritePrompt = p.OverwritePrompt,
+                    FileTypeChoices = ToFileTypes(filters),
+                    SuggestedStartLocation = await GetStartFolder(provider, initial)
+                }));
 
-                if (p.Title != null) {
-                    dialog.Title = p.Title;
-                }
+                var result = file?.TryGetLocalPath();
+                if (result == null) return null;
 
-                if (p.DefaultFileName != null) {
-                    dialog.FileName = p.DefaultFileName;
-                }
-
-                var initial = key == null ? p.InitialDirectory :
-                        ValuesStorage.Get(key, p.InitialDirectory);
-                if (initial != null) {
-                    dialog.InitialDirectory = initial;
-                }
-
-                foreach (var place in p.CustomPlaces) {
-                    dialog.CustomPlaces.Add(place);
-                }
-
-                if (currentFilename != null) {
-                    dialog.InitialDirectory = Path.GetDirectoryName(currentFilename) ?? "";
-                    dialog.FileName = Path.GetFileNameWithoutExtension(currentFilename);
-                }
-
-                if (dialog.ShowDialog() != true) {
-                    return null;
+                if (p.AddExtension && extension != null && !Path.HasExtension(result)) {
+                    result += "." + extension;
                 }
 
                 if (key != null) {
-                    ValuesStorage.Set(key, Path.GetDirectoryName(dialog.FileName));
+                    ValuesStorage.Set(key, Path.GetDirectoryName(result));
                 }
 
-                return dialog.FileName;
+                return result;
             } catch (Exception e) {
                 NonfatalError.NotifyBackground("Can’t use Save File Dialog properly", e);
-                return SaveFallback(key);
+                return null;
             }
         }
     }

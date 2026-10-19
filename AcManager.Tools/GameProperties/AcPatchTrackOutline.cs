@@ -42,9 +42,10 @@ namespace AcManager.Tools.GameProperties {
                     result.ApplyTemplate();
                     result.UpdateLayout();
 
-                    var bmp = new RenderTargetBitmap(256, 256, 96, 96, PixelFormats.Pbgra32);
-                    bmp.Render(result);
-                    File.WriteAllBytes(outlineCropped, bmp.ToBytes(ImageFormat.Png));
+                    using (var bmp = new RenderTargetBitmap(new PixelSize(256, 256), new Vector(96, 96))) {
+                        bmp.Render(result);
+                        File.WriteAllBytes(outlineCropped, bmp.ToBytes(ImageFormat.Png));
+                    }
                 } catch (Exception e) {
                     Logging.Error(e);
                 } finally {

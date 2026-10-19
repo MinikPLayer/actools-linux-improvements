@@ -548,7 +548,7 @@ namespace AcManager.Tools.Data {
             _installing = true;
 
             var installationEntry = new ContentInstallationEntry("Custom Shaders Patch", ContentInstallationParams.DefaultWithoutExecutables) {
-                FileIcon = AppIconService.GetAppIcon().ToImageSource(),
+                FileIcon = AppIconService.GetAppIconImage(),
                 Version = Version,
                 Virtual = true,
             };

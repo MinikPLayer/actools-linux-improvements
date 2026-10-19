@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -30,19 +30,13 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using SharpDX;
-using Point = System.Windows.Point;
-using Color = System.Windows.Media.Color;
 using AcManager.Tools.Helpers.DirectInput;
 using SharpDX.DirectInput;
 using Keyboard = System.Windows.Input.Keyboard;
-using Keys = System.Windows.Forms.Keys;
+using Keys = AcTools.Windows.Compat.Keys;
 using AcCommand = AcManager.Internal.InternalUtils.AcControlPointCommand;
-using Application = System.Windows.Application;
-using Control = System.Windows.Controls.Control;
-using Cursor = System.Windows.Forms.Cursor;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using Cursor = AcTools.Windows.Compat.Cursor;
 using KeyboardEventArgs = AcTools.Windows.Input.KeyboardEventArgs;
-using ProgressBar = System.Windows.Controls.ProgressBar;
 
 namespace AcManager.Tools.GameProperties {
     public class ExtraHotkeysRaceHelper : Game.GameHandler {
@@ -165,11 +159,6 @@ namespace AcManager.Tools.GameProperties {
                         Opacity = 0.4
                     };
 
-                    RenderOptions.SetClearTypeHint(_textBlock, ClearTypeHint.Auto);
-                    TextOptions.SetTextHintingMode(_textBlock, TextHintingMode.Animated);
-                    TextOptions.SetTextRenderingMode(_textBlock, TextRenderingMode.Grayscale);
-                    TextOptions.SetTextFormattingMode(_textBlock, TextFormattingMode.Display);
-
                     var dialog = new ModernDialog {
                         MinWidth = 300,
                         MinHeight = 40,
@@ -179,7 +168,6 @@ namespace AcManager.Tools.GameProperties {
                         MaxHeight = 40,
                         ConsiderPreferredFullscreen = false,
                         SizeToContent = SizeToContent.Manual,
-                        WindowStyle = WindowStyle.None,
                         BlurBackground = true,
                         PreventActivation = true,
                         ShowActivated = false,
@@ -197,16 +185,7 @@ namespace AcManager.Tools.GameProperties {
                             Children = { _progressBar, _textBlock }
                         },
                         ContentMargin = new Thickness(0, 0, 0, -24),
-                        WindowStartupLocation = WindowStartupLocation.Manual,
-                        OpacityMask = new VisualBrush {
-                            Stretch = Stretch.None,
-                            Visual = new Border {
-                                Background = new SolidColorBrush(Colors.Black),
-                                Width = 300,
-                                Height = 40,
-                                CornerRadius = new CornerRadius(4)
-                            }
-                        }
+                        WindowStartupLocation = WindowStartupLocation.Manual
                     };
 
                     dialog.Loaded += OnDialogLoaded;
@@ -271,11 +250,11 @@ namespace AcManager.Tools.GameProperties {
                 CompositionTargetEx.Rendering -= OnRendering;
 
                 Application.Current.Dispatcher?.InvokeAsync(async () => {
-                    var d = new Duration(TimeSpan.FromSeconds(0.12));
+                    // The original code animated these with storyboards, Avalonia version just sets final values
                     progress.Value = 1d;
-                    progress.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)Application.Current.Resources["GoColor"], d));
-                    progress.BeginAnimation(UIElement.OpacityProperty, new DoubleAnimation(1d, d));
-                    TextBlock.GetForeground(text).BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(Colors.Black, d));
+                    progress.Foreground = new SolidColorBrush((Color)Application.Current.Resources["GoColor"]);
+                    progress.Opacity = 1d;
+                    text.Foreground = new SolidColorBrush(Colors.Black);
                     await Task.Delay(500);
                     try {
                         dialog.Close();

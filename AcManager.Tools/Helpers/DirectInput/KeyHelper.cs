@@ -1,4 +1,4 @@
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 
 namespace AcManager.Tools.Helpers.DirectInput {

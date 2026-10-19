@@ -5,7 +5,7 @@
   -->
   <ItemGroup>
     <Compile Remove="Effects\**" />
-    <Compile Remove="Windows\Attached\Draggable.cs;Windows\Attached\DraggableMovedEventArgs.cs;Windows\Attached\IDraggableCloneable.cs" />
+    <Compile Remove="Windows\Attached\Draggable.cs;Windows\Attached\DraggableMovedEventArgs.cs" />
     <Compile Remove="Windows\Attached\FancyHintAdorner.cs;Windows\Attached\WatermarkAdorner.cs" />
     <Compile Remove="Windows\Attached\NewMarkAdorner.cs;Windows\Attached\LimitedMarkAdorner.cs" />
     <Compile Remove="Windows\Controls\AdornedControl_.cs" />
@@ -20,16 +20,16 @@
     <Compile Remove="Windows\Controls\StretchyWrapPanel.cs" />
     <Compile Remove="Windows\Controls\RelativeAnimatingContentControl.cs" />
     <!-- Pending port -->
-    <Compile Remove="BetterListCollectionView.cs;Windows\Controls\OutlinedTextBlock.cs;Windows\Controls\RoundSlider.cs;Windows\Controls\PathTrimmingTextBlock.cs" />
-    <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs;Windows\CompositionTargetEx.cs;Windows\Controls\TextBlockAutoShrink.cs" />
+    <Compile Remove="Windows\Controls\OutlinedTextBlock.cs;Windows\Controls\RoundSlider.cs;Windows\Controls\PathTrimmingTextBlock.cs" />
+    <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs;Windows\Controls\TextBlockAutoShrink.cs" />
     <Compile Remove="Windows\Controls\ThumbExt.cs;Windows\Controls\DoubleSlider.cs;Windows\Controls\FormattedSlider.cs;Windows\Controls\HierarchicalComboBox.cs;Windows\Controls\SplitButton.cs" />
     <Compile Remove="Windows\Controls\TagsList.cs;Windows\Controls\ModernProgressRing.cs;Windows\Controls\HistoricalTextBox.cs" />
     <Compile Remove="Windows\Controls\ButtonWithComboBox.cs;Windows\Controls\LabeledToggleButton.cs;Windows\Controls\AsyncButton.cs" />
     <Compile Remove="Windows\Controls\ExceptionDetails.cs;Windows\Controls\AlignableWrapPanel.cs" />
     <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Attached\FancyScroll.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
     <Compile Remove="Windows\Converters\ChainConverter.cs;Windows\CubicBesierEase.cs;Windows\Media\VisualExtension.Mouse.cs" />
-    <Compile Remove="Windows\Toast.cs;Windows\AppIconService.cs;Windows\Converters\IconPathToImageConverter.cs" />
-    <Compile Remove="Helpers\ScreenInterrogatory.cs;Helpers\BitmapSourceExtension.cs;Dialogs\FileRelatedDialogs.cs" />
+    <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
+    <Compile Remove="Helpers\ScreenInterrogatory.cs" />
     <!-- XAML not ported yet -->
     <AvaloniaXaml Remove="Assets\AsyncButton.axaml" />
     <AvaloniaXaml Remove="Assets\AsyncButton.styles.axaml" />

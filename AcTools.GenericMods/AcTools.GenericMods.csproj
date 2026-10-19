@@ -5,6 +5,7 @@
     <RootNamespace>AcTools.GenericMods</RootNamespace>
     <AssemblyName>AcTools.GenericMods</AssemblyName>
   </PropertyGroup>
+  <Import Project="..\Build\AvaloniaCompat.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\Output\x64\Debug\</OutputPath>

@@ -19,7 +19,7 @@ namespace AcManager.Tools.Helpers {
             _ticket = new byte[1024];
             var ticketHandle = SteamUser.GetAuthSessionTicket(_ticket, _ticket.Length, out var ticketSize);
             if (ticketHandle != HAuthTicket.Invalid && ticketSize != 0) {
-                Application.Current.Exit += (sender, args) => SteamUser.CancelAuthTicket(ticketHandle);
+                AppDomain.CurrentDomain.ProcessExit += (sender, args) => SteamUser.CancelAuthTicket(ticketHandle);
             } else {
                 _ticket = null;
             }

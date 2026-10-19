@@ -5,6 +5,7 @@
     <RootNamespace>AcTools.WheelAngles</RootNamespace>
     <AssemblyName>AcTools.WheelAngles</AssemblyName>
   </PropertyGroup>
+  <Import Project="..\Build\AvaloniaCompat.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>

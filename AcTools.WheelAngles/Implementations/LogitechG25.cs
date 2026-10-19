@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using System.Xml.Linq;
@@ -16,7 +15,6 @@ using AcTools.WheelAngles.Utils;
 using AcTools.Windows;
 using JetBrains.Annotations;
 using Microsoft.Win32;
-using Application = System.Windows.Application;
 
 namespace AcTools.WheelAngles.Implementations {
     [UsedImplicitly]
@@ -68,14 +66,13 @@ namespace AcTools.WheelAngles.Implementations {
         #region SDK-related stuff
         private static int _applyId;
 
-        private sealed class FormWithHandle : Form {
-            public FormWithHandle() {
-                CreateHandle();
-            }
+        /// <summary>
+        /// Logitech SDK needs a window handle, which is a Windows thing (a hidden WinForms window was used here).
+        /// </summary>
+        private sealed class FormWithHandle {
+            public IntPtr Handle => IntPtr.Zero;
 
-            public new void DestroyHandle() {
-                base.DestroyHandle();
-            }
+            public void DestroyHandle() { }
         }
 
         protected static IntPtr CreateNewFormForHandle() {

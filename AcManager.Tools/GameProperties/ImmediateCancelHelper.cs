@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.SharedMemory;

@@ -29,7 +29,7 @@ namespace AcManager.Tools.Profile {
 #else
             var log = new NullLog();
 #endif
-            _server = new WebServer($"http://+:{port}/", log, RoutingStrategy.Wildcard);
+            _server = new WebServer($"http://+:{port}/", log, Unosquare.Labs.EmbedIO.RoutingStrategy.Wildcard);
 
             // HTTP part: index webpage, static files nearby (if any)
             var pages = new PagesProvider(filename);

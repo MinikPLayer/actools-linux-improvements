@@ -24,6 +24,8 @@ namespace AcManager.Tools.Helpers {
             if (extension == null) return null;
             var cache = large ? LargeIconCache : SmallIconCache;
             if (cache.TryGetValue(extension, out var icon)) return icon;
+            // File icons come from Windows shell
+            if (!OperatingSystem.IsWindows()) return null;
             icon = IconReader.GetFileIcon(fileName, large ? IconReader.IconSize.Large : IconReader.IconSize.Small, false).ToImageSource();
             cache.Add(extension, icon);
             return icon;
@@ -33,7 +35,12 @@ namespace AcManager.Tools.Helpers {
         /// http://stackoverflow.com/a/6580799/1943849
         /// </summary>
         public static ImageSource ToImageSource(this Icon icon) {
-            return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            using (var bitmap = icon.ToBitmap())
+            using (var stream = new MemoryStream()) {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Position = 0;
+                return new Avalonia.Media.Imaging.Bitmap(stream);
+            }
         }
 
         /// <summary>

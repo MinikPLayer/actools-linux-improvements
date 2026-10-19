@@ -1,4 +1,4 @@
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Tools.Helpers.DirectInput {

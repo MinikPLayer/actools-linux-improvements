@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Tools.Data;
 using AcManager.Tools.GameProperties.InGameApp;
@@ -28,8 +28,6 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 using SharpDX.DirectInput;
 using StringBasedFilter;
-using Application = System.Windows.Application;
-using Key = System.Windows.Input.Key;
 
 namespace AcManager.Tools.Helpers.AcSettings {
     public class ControlsSettings : IniSettings, IDisposable {
