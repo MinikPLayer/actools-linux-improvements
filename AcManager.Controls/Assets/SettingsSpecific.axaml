@@ -6,19 +6,18 @@
 
   <ResourceDictionary x:Key="SettingsStyle">
 
-    <Style Selector="DockPanel" __plain="1">
+    <Style Selector="DockPanel">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="Margin" Value="0 0 0 8"/>
 
-      <Style.Resources>
-        <ResourceDictionary><Style Selector="Label" __plain="1">
+      <Style Selector="^ Label">
           <Setter Property="Margin" Value="0 4 8 0"/>
           <Setter Property="Width" Value="148"/>
           <Setter Property="VerticalAlignment" Value="Top"/>
           <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
 
-        <Style Selector="mui|ValueLabel" __plain="1">
+        <Style Selector="^ mui|ValueLabel">
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Margin" Value="0 0 16 0"/>
           <Setter Property="Width" Value="140"/>
@@ -26,7 +25,7 @@
           <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
 
-        <Style Selector="mui|DoubleValueLabel" __plain="1">
+        <Style Selector="^ mui|DoubleValueLabel">
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Margin" Value="0 0 16 0"/>
           <Setter Property="Width" Value="140"/>
@@ -34,7 +33,7 @@
           <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
 
-        <Style Selector="controls|TemperatureValueLabel" __plain="1">
+        <Style Selector="^ controls|TemperatureValueLabel">
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Margin" Value="0 0 16 0"/>
           <Setter Property="Width" Value="140"/>
@@ -42,7 +41,7 @@
           <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
 
-        <Style Selector="controls|DoubleTemperatureValueLabel" __plain="1">
+        <Style Selector="^ controls|DoubleTemperatureValueLabel">
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Margin" Value="0 0 16 0"/>
           <Setter Property="Width" Value="140"/>
@@ -50,41 +49,40 @@
           <Setter Property="DockPanel.Dock" Value="Left"/>
         </Style>
 
-        <Style Selector="Button" __plain="1">
+        <Style Selector="^ Button">
           <Setter Property="Margin" Value="8 0 0 0"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
           <Setter Property="DockPanel.Dock" Value="Right"/>
         </Style>
 
-        <Style Selector="mui|AsyncButton" __plain="1">
+        <Style Selector="^ mui|AsyncButton">
           <Setter Property="Margin" Value="8 0 0 0"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
           <Setter Property="DockPanel.Dock" Value="Right"/>
         </Style>
 
-        <Style Selector="mui|LabeledToggleButton" __plain="1">
+        <Style Selector="^ mui|LabeledToggleButton">
           <Setter Property="Margin" Value="8 0 0 0"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
           <Setter Property="DockPanel.Dock" Value="Right"/>
         </Style>
 
-        <Style Selector="TextBlock" __plain="1">
+        <Style Selector="^ TextBlock">
           <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
 
-        <Style Selector="CheckBox" __plain="1"><Setter Property="VerticalAlignment" Value="Center"/>
+        <Style Selector="^ CheckBox"><Setter Property="VerticalAlignment" Value="Center"/>
 
     </Style>
-      </ResourceDictionary></Style.Resources>
-    </Style>
+      </Style>
 
-    <Style Selector="CheckBox" __plain="1">
+    <Style Selector="CheckBox">
       <Setter Property="VerticalAlignment" Value="Center"/>
 
     <Setter Property="Margin" Value="0 0 0 8"/>
     </Style>
 
-    <Style Selector="controls|MessageBlock" __plain="1">
+    <Style Selector="controls|MessageBlock">
       <Setter Property="Margin" Value="0 0 0 8"/>
     </Style>
   </ResourceDictionary>

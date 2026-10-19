@@ -1,0 +1,8 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/OnlineSpecific.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ListBoxItem.SimpledListItemContainer"/>
+
+  <Style Selector="ListBoxItem.DetailedListItemContainer">
+    <Setter Property="Padding" Value="2"/>
+  </Style>
+
+  </Styles>

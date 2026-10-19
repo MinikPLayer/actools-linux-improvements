@@ -3,7 +3,7 @@
     <VisualBrush.Visual>
       <Grid Opacity="0.22" Width="355" Height="200" ClipToBounds="True">
         <Grid.Effect>
-          <BlurEffect Radius="20" KernelType="Box" RenderingBias="Quality"/>
+          <BlurEffect Radius="20"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
         </Grid.Effect>
         <mui:BetterImage x:Name="BackgroundImage0" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" RenderOptions.BitmapInterpolationMode="LowQuality"/>
         <mui:BetterImage x:Name="BackgroundImage1" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" Opacity="0" RenderOptions.BitmapInterpolationMode="LowQuality">

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -571,7 +571,7 @@ namespace AcManager.Controls.UserControls {
 
         private bool _usedForScrolling;
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             if (Mouse.RightButton == MouseButtonState.Pressed && Tabs.Count > 1) {
                 e.Handled = true;
                 _usedForScrolling = true;
@@ -579,11 +579,11 @@ namespace AcManager.Controls.UserControls {
             }
         }
 
-        private void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+        private void OnMouseRightButtonDown(object sender, PointerPressedEventArgs e) {
             _usedForScrolling = false;
         }
 
-        private void OnMouseRightButtonUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseRightButtonUp(object sender, PointerReleasedEventArgs e) {
             if (_usedForScrolling) {
                 e.Handled = true;
             }

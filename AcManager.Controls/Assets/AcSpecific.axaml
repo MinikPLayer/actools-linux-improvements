@@ -2,7 +2,7 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/DataGrid.axaml"/>
+    <!-- PORT: removed include of DataGrid -->
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
@@ -61,9 +61,9 @@
 
   <DataTemplate x:Key="DataGridCell.DriverName" DataType="{x:Type t:KunosCareerObject+ChampionshipDriverEntry}">
     <DockPanel HorizontalAlignment="Left" x:Name="__Dt0">
-      <DockPanel.Styles><Style Selector="#__Dt0"><Style Selector="^ #Ellipse"><Setter Property="IsVisible" Value="{Binding TakenPlacePrizePlace, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsPlayer, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Path=Fill.(SolidColorBrush.Color).A, ElementName=Ellipse, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True] #NameTextBlock"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-      </Style><Style Selector="^[(pa|T.S2)=True] #Ellipse"><Setter Property="IsVisible" Value="False"/>
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ Ellipse#Ellipse"><Setter Property="IsVisible" Value="{Binding TakenPlacePrizePlace, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsPlayer, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Path=Fill.(SolidColorBrush.Color).A, ElementName=Ellipse, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True] TextBlock#NameTextBlock"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+        <!-- PORT: removed setter of FontWeight (not in Avalonia) -->
+      </Style><Style Selector="^:is(Control)[(pa|T.S2)=True] Ellipse#Ellipse"><Setter Property="IsVisible" Value="False"/>
       </Style></Style></DockPanel.Styles><Ellipse x:Name="Ellipse" DockPanel.Dock="Right" Margin="6 1 4 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
       <TextBlock Text="{Binding Name}" x:Name="NameTextBlock" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
     </DockPanel>

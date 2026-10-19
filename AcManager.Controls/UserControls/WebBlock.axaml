@@ -40,7 +40,7 @@
           <DockPanel>
             <Button Margin="4 1 0 -1" Command="{Binding CloseCommand}" IsVisible="{Binding CloseCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource DeleteButton}"/>
             <mui:BetterImage Width="16" Height="16" Filename="{Binding Favicon}" Margin="0 0 4 0"/>
-            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontWeight="Normal" VerticalAlignment="Center" Classes="Small"/>
+            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontWeight="Normal" VerticalAlignment="Center" Theme="{StaticResource Small}"/>
           </DockPanel>
         </Border>
       </DataTemplate>
@@ -68,7 +68,7 @@
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
             <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
           </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-          </Style><Style Selector="^:selected /template/ Border#PART_Border"><Setter Property="Style" Value="{StaticResource HighlightedBackground}"/>
+          </Style><Style Selector="^:selected /template/ Border#PART_Border"><!-- PORT: removed setter of Style (not in Avalonia) -->
                 </Style></ControlTheme>
     </ResourceDictionary>
   </DockPanel.Resources>

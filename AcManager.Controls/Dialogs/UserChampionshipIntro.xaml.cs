@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AcManager.Controls.Presentation;
@@ -39,7 +39,7 @@ namespace AcManager.Controls.Dialogs {
             }
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseUp(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 Close();

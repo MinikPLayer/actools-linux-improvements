@@ -25,12 +25,12 @@
             <Path Data="{TemplateBinding Data}" StrokeThickness="{TemplateBinding BorderThickness}" Stroke="{TemplateBinding BorderBrush}" Stretch="Uniform" Fill="{TemplateBinding Foreground}"/>
             <Path x:Name="Path" Data="{TemplateBinding Data}" Stretch="Uniform">
               <Path.Fill>
-                <VisualBrush Stretch="UniformToFill" ViewboxUnits="Absolute" Viewbox="0,0,10,10">
-                  <VisualBrush.Visual>
+                <VisualBrush Stretch="UniformToFill">
+                  <!-- PORT: removed Viewbox (not in Avalonia) --><!-- PORT: removed ViewboxUnits (not in Avalonia) --><VisualBrush.Visual>
                     <mui:Cell Width="10" Height="10">
                       <Ellipse x:Name="Ellipse" Margin="-3" Fill="{TemplateBinding ActiveBrush}">
                         <Ellipse.RenderTransform>
-                          <ScaleTransform ScaleX="0" ScaleY="0" CenterX="8" CenterY="8"/>
+                          <ScaleTransform ScaleX="0" ScaleY="0"><!-- PORT: removed CenterY (not in Avalonia) --><!-- PORT: removed CenterX (not in Avalonia) --></ScaleTransform>
                         </Ellipse.RenderTransform>
                       </Ellipse>
                     </mui:Cell>

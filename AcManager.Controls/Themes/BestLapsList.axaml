@@ -14,7 +14,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="ac:BestLapsList">
           <StackPanel Background="Transparent">
-            <TextBlock Text="{x:Static t:ToolsStrings.BestLapsControl_BestLaps}" Margin="0 0 0 4" IsVisible="{TemplateBinding ShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Label"/>
+            <TextBlock Text="{x:Static t:ToolsStrings.BestLapsControl_BestLaps}" Margin="0 0 0 4" IsVisible="{TemplateBinding ShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Label}"/>
             <mui:Switch x:Name="PART_Switch" Margin="{TemplateBinding EntryPadding}">
               <ProgressBar mui:Switch.When="-1" Height="2" IsIndeterminate="True" Margin="0 4 0 0"/>
               <TextBlock mui:Switch.When="0" FontStyle="Italic" Opacity="0.5" Text="{x:Static t:ToolsStrings.Common_None}">
@@ -46,7 +46,7 @@
                     <TextBlock Text="{Binding Entry.LapTime, Converter={StaticResource MillisecondsTimeSpanConverter}}" TextAlignment="Right"/>
                   </mui:Cell>
                 </mui:Switch>
-                <TextBlock Text="{x:Static t:ToolsStrings.BestLapsControl_BestLap}" IsVisible="{TemplateBinding ShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Label"/>
+                <TextBlock Text="{x:Static t:ToolsStrings.BestLapsControl_BestLap}" IsVisible="{TemplateBinding ShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Label}"/>
               </DockPanel>
               </ControlTemplate>
           </Setter.Value>

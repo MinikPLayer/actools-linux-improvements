@@ -19,8 +19,8 @@
       <mui:SpacingStackPanel x:Name="NotAvailableMessage" mui:FallbackSwitch.Value="{Binding IsWorkshopAvailable}" mui:FallbackSwitch.When="False" Spacing="8">
         <DockPanel>
           <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0 4 8 0"/>
-          <TextBlock Margin="0 0 0 4" Text="CM Workshop is not available at the moment" DockPanel.Dock="Top" Classes="Heading2"/>
-          <TextBlock Text="Please, check your internet connection." Classes="Small"/>
+          <TextBlock Margin="0 0 0 4" Text="CM Workshop is not available at the moment" DockPanel.Dock="Top" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="Please, check your internet connection." Theme="{StaticResource Small}"/>
         </DockPanel>
         <mui:AsyncButton Command="{Binding RefreshCommand}" Content="Try again"/>
       </mui:SpacingStackPanel>
@@ -34,7 +34,7 @@
             <mui:BetterTextBox Placeholder="?" Text="{Binding SteamId}" />
           </DockPanel>-->
           <DockPanel>
-            <TextBlock Text="Password:" Width="80" Classes="Label"/>
+            <TextBlock Text="Password:" Width="80" Theme="{StaticResource Label}"/>
             <mui:ProperPasswordBox Placeholder="Empty" Password="{Binding Tag, RelativeSource={RelativeSource AncestorType={x:Type mui:SpacingStackPanel}, AncestorLevel=2}}"/>
           </DockPanel>
         </mui:SpacingStackPanel>
@@ -46,8 +46,8 @@
 
         <DockPanel IsVisible="{Binding LastError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse|hidden'}">
           <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0 4 8 0"/>
-          <TextBlock Margin="0 0 0 4" Text="Error:" DockPanel.Dock="Top" Classes="Heading2"/>
-          <TextBlock Text="{Binding LastError}" Classes="Small"/>
+          <TextBlock Margin="0 0 0 4" Text="Error:" DockPanel.Dock="Top" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{Binding LastError}" Theme="{StaticResource Small}"/>
         </DockPanel>
 
       </mui:SpacingStackPanel>
@@ -68,20 +68,17 @@
 
   <DataTemplate x:Key="WorkshopResources.ContentItem.Tile" DataType="{x:Type data:ContentInfoBase}">
     <ContentControl Content="{Binding}">
-      <ContentControl.Resources>
-        <!-- Placeholder -->
-        <DataTemplate DataType="{x:Type data:ContentInfoBase}">
+      <ContentControl.DataTemplates><DataTemplate DataType="{x:Type data:ContentInfoBase}">
           <mui:BbCodeBlock TextWrapping="NoWrap" Text="{Binding DisplayName}" Mode="WithoutBbCodes" Margin="10 2 2 2" FontSize="{DynamicResource SmallFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch" x:Name="PART_DisplayNameText"/>
         </DataTemplate>
 
-        <!-- Car -->
         <DataTemplate DataType="{x:Type data:WorkshopContentCar}">
           <mui:Cell x:Name="PART_Panel" mui:Draggable.Enabled="True" Background="{DynamicResource ThumbnailBackground}" ClipToBounds="True">
-            <Cell.Styles><Style Selector="#PART_Panel"><Style Selector="^ #PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] #PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
-            </Style></Style></Cell.Styles><mui:BetterImage Filename="{Binding PreviewImage}" AsyncDecode="True" ClearOnChange="True" DecodeWidth="320" Stretch="UniformToFill" Margin="-8 -10 -8 0"/>
+            <mui:Cell.Styles><Style Selector="mui|Cell#PART_Panel"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
+            </Style></Style></mui:Cell.Styles><mui:BetterImage Filename="{Binding PreviewImage}" AsyncDecode="True" ClearOnChange="True" DecodeWidth="320" Stretch="UniformToFill" Margin="-8 -10 -8 0"/>
             <DockPanel Background="{DynamicResource DarkStripeBackground}" VerticalAlignment="Bottom">
               <mui:BetterImage Width="12" Height="12" DockPanel.Dock="Left" Margin="2 0 4 0" VerticalAlignment="Center" Filename="{Binding BrandBadge}" ClearOnChange="True" AsyncDecode="True"/>
-              <mui:BbCodeBlock x:Name="PART_DisplayNameText" Margin="0 1 0 3" Text="{Binding ShortName}" TextAlignment="Left" Mode="WithoutBbCodes" Foreground="{DynamicResource DarkStripeText}" TextTrimming="CharacterEllipsis" FontWeight="Normal" TextWrapping="NoWrap" Classes="Small"/>
+              <mui:BbCodeBlock x:Name="PART_DisplayNameText" Margin="0 1 0 3" Text="{Binding ShortName}" TextAlignment="Left" Mode="WithoutBbCodes" Foreground="{DynamicResource DarkStripeText}" TextTrimming="CharacterEllipsis" FontWeight="Normal" TextWrapping="NoWrap" Theme="{StaticResource Small}"/>
             </DockPanel>
             <c:OriginIcon Author="AcClub" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="4" TextElement.Foreground="{DynamicResource DarkStripeText}"/>
             <DockPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 4 0 0">
@@ -93,22 +90,22 @@
             </DockPanel>
           </mui:Cell>
           </DataTemplate>
-      </ContentControl.Resources>
+      </ContentControl.DataTemplates><ContentControl.Resources>
+        <!-- Placeholder -->
+        <!-- Car -->
+        </ContentControl.Resources>
     </ContentControl>
   </DataTemplate>
 
   <DataTemplate x:Key="WorkshopResources.ContentItem.Row" DataType="{x:Type data:ContentInfoBase}">
     <ContentControl Content="{Binding}">
-      <ContentControl.Resources>
-        <!-- Placeholder -->
-        <DataTemplate DataType="{x:Type data:ContentInfoBase}">
+      <ContentControl.DataTemplates><DataTemplate DataType="{x:Type data:ContentInfoBase}">
           <mui:BbCodeBlock TextWrapping="NoWrap" Text="{Binding DisplayName}" Mode="WithoutBbCodes" Margin="10 2 2 2" FontSize="{DynamicResource SmallFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch" x:Name="PART_DisplayNameText"/>
         </DataTemplate>
 
-        <!-- Car -->
         <DataTemplate DataType="{x:Type data:WorkshopContentCar}">
           <DockPanel x:Name="__Dt1">
-            <DockPanel.Styles><Style Selector="#__Dt1"><Style Selector="^ #PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True] #PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
+            <DockPanel.Styles><Style Selector="DockPanel#__Dt1"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
             </Style></Style></DockPanel.Styles><mui:Cell ClipToBounds="True" Height="50" Width="80" Margin="0 0 12 0">
               <mui:BetterImage Filename="{Binding PreviewImage}" AsyncDecode="True" ClearOnChange="True" DecodeWidth="320" Stretch="UniformToFill" Margin="-4 -6 -2 0"/>
               <Ellipse Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="4" IsHitTestVisible="False" x:Name="PART_NewIcon"/>
@@ -117,17 +114,20 @@
               <DockPanel>
                 <mui:BetterImage Filename="{Binding BrandBadge.Value}" Width="16" Height="16" Margin="0 0 6 0" AsyncDecode="True"/>
                 <mui:BbCodeBlock Text="{Binding ShortName}" Margin="0 0 12 0" Mode="WithoutBbCodes" FontWeight="Normal" FontSize="14" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Text="{Binding Version, StringFormat='{}v{0}'}" Foreground="{DynamicResource WindowTextReadOnly}" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Classes="Small"/>
+                <TextBlock Text="{Binding Version, StringFormat='{}v{0}'}" Foreground="{DynamicResource WindowTextReadOnly}" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
               </DockPanel>
               <DockPanel>
-                <TextBlock Text="{Binding DisplayReleaseDate}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Classes="Small"/>
+                <TextBlock Text="{Binding DisplayReleaseDate}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
                 <mui:BetterImage Filename="{Binding UserInfo.Value.AvatarSmall}" Width="12" Height="12" Margin="12 0 4 0" AsyncDecode="True"/>
-                <TextBlock Text="{Binding UserInfo.Value.Username}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Classes="Small"/>
+                <TextBlock Text="{Binding UserInfo.Value.Username}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
               </DockPanel>
             </mui:SpacingStackPanel>
           </DockPanel>
           </DataTemplate>
-      </ContentControl.Resources>
+      </ContentControl.DataTemplates><ContentControl.Resources>
+        <!-- Placeholder -->
+        <!-- Car -->
+        </ContentControl.Resources>
     </ContentControl>
   </DataTemplate>
 
@@ -141,7 +141,7 @@
   <!-- DataTemplateArgument.Flag1: show reply counter and buttons -->
   <DataTemplate x:Key="WorkshopComment" DataType="{x:Type ws:WorkshopComment}">
     <DockPanel x:Name="__Dt3">
-      <DockPanel.Styles><Style Selector="#__Dt3"><Style Selector="^ #PART_Message"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/></Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding ReportWith, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S4)=True] #PART_Message"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^ mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding ReportWith, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^:is(Control)[(pa|T.S4)=True] mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
       </Style></Style></DockPanel.Styles><mui:BetterImage Filename="{Binding UserInfo.Value.AvatarSmall}" Height="24" Width="24" DockPanel.Dock="Left" Margin="0 4 12 0" AsyncDecode="True" VerticalAlignment="Top"/>
       <DockPanel Dock="Top" Margin="0 0 0 8">
         <mui:ContextMenuButton DockPanel.Dock="Right" Padding="4 0" Margin="0 0 8 0">
@@ -184,8 +184,8 @@
         <mui:ReferenceSwitch.NonNull>
           <DockPanel IsVisible="{Binding LastError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse|hidden'}">
             <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left" VerticalAlignment="Top" Margin="0 4 8 0"/>
-            <TextBlock Margin="0 0 0 4" Text="Error:" DockPanel.Dock="Top" Classes="Heading2"/>
-            <TextBlock Text="{Binding LastError}" Classes="Small"/>
+            <TextBlock Margin="0 0 0 4" Text="Error:" DockPanel.Dock="Top" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding LastError}" Theme="{StaticResource Small}"/>
           </DockPanel>
         </mui:ReferenceSwitch.NonNull>
         <mui:ReferenceSwitch.Null>
@@ -200,7 +200,7 @@
         <ContentControl ContentTemplate="{StaticResource WorkshopCommentForm}" Content="{Binding}" DockPanel.Dock="Top" Margin="0 0 0 20"/>
         <ItemsControl ItemsSource="{Binding Comments}" ItemTemplate="{StaticResource WorkshopComment}" Theme="{StaticResource VirtualizingItemsControl}">
           <ItemsControl.Styles>
-            <Style Selector="ListBoxItem" __plain="1">
+            <Style Selector="ListBoxItem">
               <Setter Property="TemplatedControl.Margin" Value="0 0 0 20"/>
             </Style>
           </ItemsControl.Styles>
@@ -213,7 +213,7 @@
     <mui:ReferenceSwitch Value="{Binding ShowRepliesOf}">
       <mui:ReferenceSwitch.Null>
         <DockPanel>
-          <TextBlock Text="Comments:" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Label Label.Padding"/>
+          <TextBlock Text="Comments:" DockPanel.Dock="Top" Margin="0 0 0 8" Theme="{StaticResource Label.Padding}"/>
           <ContentControl ContentTemplate="{StaticResource WorkshopCommentsGroup}" Content="{Binding GroupModel}" DockPanel.Dock="Top" Margin="0 0 0 20" mui:DataTemplateArgument.Flag1="True" mui:DataTemplateArgument.String1="No comments yet."/>
         </DockPanel>
       </mui:ReferenceSwitch.Null>
@@ -221,7 +221,7 @@
         <DockPanel>
           <DockPanel Dock="Top" Margin="0 -4 0 8">
             <mui:ModernButton DockPanel.Dock="Left" Command="{Binding BackFromRepliesCommand}" IconData="F1 M 33,22L 33,26L 19.75,26L 27,33L 20.5,33L 11,24L 20.5,15L 27,15L 19.75,22L 33,22 Z" ToolTip.Tip="{x:Static mui:UiStrings.Back}"/>
-            <TextBlock Text="{Binding ShowRepliesOf.UserInfo.Value.Username, StringFormat='{}Replies to a comment by {0}:'}" Margin="8 0 0 0" Classes="Label"/>
+            <TextBlock Text="{Binding ShowRepliesOf.UserInfo.Value.Username, StringFormat='{}Replies to a comment by {0}:'}" Margin="8 0 0 0" Theme="{StaticResource Label}"/>
           </DockPanel>
           <ContentControl ContentTemplate="{StaticResource WorkshopComment}" Content="{Binding ShowRepliesOf}" DockPanel.Dock="Top" Margin="0 0 0 20"/>
           <ContentControl ContentTemplate="{StaticResource WorkshopCommentsGroup}" Content="{Binding RepliesGroupModel}" mui:DataTemplateArgument.String1="No replies yet."/>
@@ -241,7 +241,7 @@
         <DockPanel Margin="0 0 0 8">
           <mui:BetterImage Filename="{Binding BrandBadge.Value}" Width="24" Height="24" Margin="0 0 4 0" AsyncDecode="True"/>
           <c:FavouriteButton DockPanel.Dock="Right" Margin="8 0 0 0"/>
-          <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding DisplayName}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Classes="Heading2"/>
+          <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding DisplayName}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Theme="{StaticResource Heading2}"/>
         </DockPanel>
 
         <Grid Margin="0 0 0 8">
@@ -293,29 +293,29 @@
 
                 <!-- First row -->
                 <DockPanel x:Name="PART_BrandArea" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
                   <mui:PlaceholderTextBlock Text="{Binding Brand}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                 </DockPanel>
 
                 <DockPanel x:Name="PART_CountryArea" Background="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
                   <c:CountryIcon Country="{Binding Country}" HorizontalAlignment="Right" Width="24" Height="16" DockPanel.Dock="Right" Margin="4 -6 0 0" VerticalAlignment="Bottom" RenderOptions.BitmapInterpolationMode="LowQuality"/>
                   <mui:PlaceholderTextBlock Text="{Binding Country}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                 </DockPanel>
 
                 <!-- Second row -->
                 <DockPanel x:Name="PART_ClassArea" Background="Transparent" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
                   <mui:PlaceholderTextBlock Text="{Binding CarClass}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                 </DockPanel>
 
                 <DockPanel x:Name="PART_YearArea" Background="Transparent" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
                   <mui:PlaceholderTextBlock Text="{Binding Year, TargetNullValue=''}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                 </DockPanel>
 
                 <!-- Third row -->
-                <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+                <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Theme="{StaticResource Label.Padding}"/>
                 <!--<TextBlock Grid.Column="2" Grid.Row="2" Style="{StaticResource Label.Padding}" ToolTip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}">
                   <TextBlock.Text>
                     <MultiBinding Converter="{StaticResource AuthorVersionUrlToLabelConverter}">
@@ -338,12 +338,12 @@
             </StackPanel>
 
             <mui:SpacingStackPanel Spacing="4" Margin="0 0 0 20">
-              <TextBlock Text="More skins:" Classes="Label Label.Padding"/>
+              <TextBlock Text="More skins:" Theme="{StaticResource Label.Padding}"/>
               <TextBlock Text="No custom skins yet."/>
             </mui:SpacingStackPanel>
 
             <mui:SpacingStackPanel Spacing="4" Margin="0 0 0 20">
-              <TextBlock Text="More setups:" Classes="Label Label.Padding"/>
+              <TextBlock Text="More setups:" Theme="{StaticResource Label.Padding}"/>
               <TextBlock Text="No custom setups yet."/>
             </mui:SpacingStackPanel>
 
@@ -364,8 +364,8 @@
               <mui:AsyncButton.Content>
                 <DockPanel>
                   <Path Width="20" Height="20" Margin="0 0 8 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
-                  <TextBlock Text="Install" DockPanel.Dock="Top" Classes="Heading2"/>
-                  <TextBlock Text="{Binding SizeToInstall, Converter={StaticResource FileSizeConverter}}" Classes="Small"/>
+                  <TextBlock Text="Install" DockPanel.Dock="Top" Theme="{StaticResource Heading2}"/>
+                  <TextBlock Text="{Binding SizeToInstall, Converter={StaticResource FileSizeConverter}}" Theme="{StaticResource Small}"/>
                 </DockPanel>
               </mui:AsyncButton.Content>
             </mui:AsyncButton>
@@ -403,12 +403,12 @@
             </c:PropertiesGrid>-->
 
             <mui:SpacingStackPanel Spacing="4" Margin="0 0 0 20">
-              <TextBlock Text="Created by:" Classes="Label Label.Padding"/>
+              <TextBlock Text="Created by:" Theme="{StaticResource Label.Padding}"/>
               <Border Background="{DynamicResource CardBackground}" Height="32" Padding="8 4">
                 <DockPanel>
                   <mui:BetterImage Filename="{Binding UserInfo.Value.AvatarSmall}" Height="24" Width="24" Margin="0 0 12 0" AsyncDecode="True"/>
                   <TextBlock Text="{Binding UserInfo.Value.Username}" Margin="0 0 8 0" VerticalAlignment="Center"/>
-                  <TextBlock Text="{Binding Collabs.MainUserRole}" VerticalAlignment="Center" Foreground="{DynamicResource WindowTextReadOnly}" FontWeight="Bold" Margin="0 2 0 -1" Classes="Small"/>
+                  <TextBlock Text="{Binding Collabs.MainUserRole}" VerticalAlignment="Center" Foreground="{DynamicResource WindowTextReadOnly}" FontWeight="Bold" Margin="0 2 0 -1" Theme="{StaticResource Small}"/>
                 </DockPanel>
               </Border>
               <ItemsControl ItemsSource="{Binding Collabs.CollabReferences}">
@@ -418,7 +418,7 @@
                       <DockPanel>
                         <mui:BetterImage Filename="{Binding UserInfo.Value.AvatarSmall}" Height="24" Width="24" Margin="0 0 12 0" AsyncDecode="True"/>
                         <TextBlock Text="{Binding UserInfo.Value.Username}" Margin="0 0 8 0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Role}" VerticalAlignment="Center" Foreground="{DynamicResource WindowTextReadOnly}" FontWeight="Bold" Margin="0 2 0 -1" Classes="Small"/>
+                        <TextBlock Text="{Binding Role}" VerticalAlignment="Center" Foreground="{DynamicResource WindowTextReadOnly}" FontWeight="Bold" Margin="0 2 0 -1" Theme="{StaticResource Small}"/>
                       </DockPanel>
                     </Border>
                   </DataTemplate>

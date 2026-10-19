@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
     public static class FancyScroll {

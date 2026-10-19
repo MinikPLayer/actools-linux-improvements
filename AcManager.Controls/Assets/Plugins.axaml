@@ -68,12 +68,12 @@
         <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsEnabled}" Margin="0 0 4 0" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <!-- Installed (or available) version -->
-        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Label">
+        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Theme="{StaticResource Label}">
           <TextBlock.Text>
-            <PriorityBinding>
+            <MultiBinding Converter="{x:Static pc:FirstNotNullConverter.Instance}">
               <Binding Path="InstalledVersion"/>
               <Binding Path="Version"/>
-            </PriorityBinding>
+            </MultiBinding>
           </TextBlock.Text>
         </TextBlock>
 
@@ -82,18 +82,18 @@
       </DockPanel>
 
       <!-- Description -->
-      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Classes="Small"/>
+      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Theme="{StaticResource Small}"/>
 
       <!-- Not available message -->
       <DockPanel IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
         <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" DockPanel.Dock="Left"/>
-        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Classes="Small"/>
+        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Theme="{StaticResource Small}"/>
       </DockPanel>
 
       <!-- Obsolete message -->
       <DockPanel IsVisible="{Binding IsObsolete, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left"/>
-        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Classes="Small">
+        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Theme="{StaticResource Small}">
         </TextBlock>
       </DockPanel>
 
@@ -112,38 +112,38 @@
 
   <DataTemplate x:Key="PluginItemTemplate" DataType="t:PluginEntry">
     <StackPanel Margin="0 0 0 20" x:Name="__Dt0">
-      <StackPanel.Styles><Style Selector="#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CanWork, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] #PART_Name"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
+      <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CanWork, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True] TextBlock#PART_Name"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
       </Style></Style></StackPanel.Styles><DockPanel IsEnabled="{Binding CanWork}">
         <!-- Enabling checkbox -->
         <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsEnabled}" Margin="0 0 4 0" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <!-- Installed (or available) version -->
-        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Label">
+        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Theme="{StaticResource Label}">
           <TextBlock.Text>
-            <PriorityBinding>
+            <MultiBinding Converter="{x:Static pc:FirstNotNullConverter.Instance}">
               <Binding Path="InstalledVersion"/>
               <Binding Path="Version"/>
-            </PriorityBinding>
+            </MultiBinding>
           </TextBlock.Text>
         </TextBlock>
 
         <!-- Name -->
-        <TextBlock x:Name="PART_Name" Text="{Binding Name}" ToolTip.Tip="{Binding Id}" Classes="Heading2"/>
+        <TextBlock x:Name="PART_Name" Text="{Binding Name}" ToolTip.Tip="{Binding Id}" Theme="{StaticResource Heading2}"/>
       </DockPanel>
 
       <!-- Description -->
-      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Classes="Small"/>
+      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Theme="{StaticResource Small}"/>
 
       <!-- Not available message -->
       <DockPanel IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
         <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" DockPanel.Dock="Left"/>
-        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Classes="Small"/>
+        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Theme="{StaticResource Small}"/>
       </DockPanel>
 
       <!-- Obsolete message -->
       <DockPanel IsVisible="{Binding IsObsolete, Converter={StaticResource BooleanToVisibilityConverter}}">
         <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left"/>
-        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Classes="Small">
+        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Theme="{StaticResource Small}">
         </TextBlock>
       </DockPanel>
 

@@ -1,5 +1,9 @@
 ﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:pr="clr-namespace:AcManager.Controls.Presentation" xmlns:sys="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.ImageViewer" Title="{Binding Current.DisplayName}" KeyDown="OnKeyDown" KeyUp="OnKeyUp" Loaded="OnLoaded" PointerReleased="OnMouseRightButtonUp">
-  <mui:ModernDialog.Resources>
+  <mui:ModernDialog.Styles><Style Selector="Border.FadingBorder">
+        <Setter Property="Opacity" Value="0"/>
+        <!-- PORT: storyboard actions of trigger :pointerover not converted --></Style>
+
+      </mui:ModernDialog.Styles><mui:ModernDialog.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://AcManager.Controls/Assets/FullscreenDialog.axaml"/>
@@ -29,11 +33,11 @@
                     </mui:Cell.CacheMode>
                     <Border Margin="{TemplateBinding InnerMargin}" Background="#606060">
                       <FrameworkElement.Effect>
-                        <BlurEffect Radius="{Binding BlurRadius, RelativeSource={RelativeSource TemplatedParent}}" KernelType="Gaussian" RenderingBias="{mui:BooleanBinding SoftwareRenderingMode, Source={x:Static pr:AppAppearanceManager.Instance}, TrueValue={x:Static RenderingBias.Performance}, FalseValue={x:Static RenderingBias.Quality}}"/>
+                        <BlurEffect Radius="{Binding BlurRadius, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
                       </FrameworkElement.Effect>
                       <Border>
                         <Border.Background>
-                          <VisualBrush Visual="{Binding Visual, RelativeSource={RelativeSource TemplatedParent}}" Stretch="None" TileMode="None" ViewboxUnits="Absolute" Viewbox="{Binding Viewbox, RelativeSource={RelativeSource TemplatedParent}}"/>
+                          <VisualBrush Visual="{Binding Visual, RelativeSource={RelativeSource TemplatedParent}}" Stretch="None" TileMode="None"><!-- PORT: removed Viewbox (not in Avalonia) --><!-- PORT: removed ViewboxUnits (not in Avalonia) --></VisualBrush>
                         </Border.Background>
                       </Border>
                     </Border>
@@ -43,10 +47,6 @@
               </Setter.Value>
             </Setter>
           </Style></ControlTheme>
-
-      <Style Selector="Border.FadingBorder" __plain="1">
-        <Setter Property="Opacity" Value="0"/>
-        <!-- PORT: storyboard actions of trigger :pointerover not converted --></Style>
 
       <ControlTheme x:Key="StyleSubtle" TargetType="di:ImageViewer">
         <Setter Property="BackgroundContent" Value="{x:Null}"/>
@@ -198,8 +198,8 @@
     <mui:BooleanSwitch Value="{Binding Current.IsFailedToLoad}" IsHitTestVisible="False">
       <mui:BooleanSwitch.True>
         <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-          <TextBlock Text="Image failed to load" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Title"/>
-          <TextBlock Text="{Binding Current.ErrorMessage}" Classes="Small"/>
+          <TextBlock Text="Image failed to load" Margin="0 0 0 8" DockPanel.Dock="Top" Theme="{StaticResource Title}"/>
+          <TextBlock Text="{Binding Current.ErrorMessage}" Theme="{StaticResource Small}"/>
         </DockPanel>
       </mui:BooleanSwitch.True>
       <mui:BooleanSwitch.False>

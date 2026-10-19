@@ -55,7 +55,7 @@
     <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1240" Height="560">
       <mui:BetterImage Filename="{Binding CareerObject.PreviewImage}" Stretch="UniformToFill" IsVisible="{Binding CareerObject.StartImage, Converter={StaticResource ExistToVisibilityConverter}, ConverterParameter=inverse}">
         <mui:BetterImage.Effect>
-          <BlurEffect Radius="160" RenderingBias="Performance" KernelType="Gaussian"/>
+          <BlurEffect Radius="160"><!-- PORT: removed KernelType (not in Avalonia) --><!-- PORT: removed RenderingBias (not in Avalonia) --></BlurEffect>
         </mui:BetterImage.Effect>
       </mui:BetterImage>
       <mui:BetterImage Filename="{Binding CareerObject.StartImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="1240" Height="560" ShowBroken="False"/>

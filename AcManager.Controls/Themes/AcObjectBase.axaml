@@ -94,7 +94,7 @@
             </ControlTemplate>
           </Setter.Value>
         </Setter>
-      </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding AcObject.Outdated, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Template">
+      </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding AcObject.Outdated, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True]"><Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ac:AcObjectBase">
               <TextBlock Margin="20" FontSize="30" Foreground="Red" Text="Outdated!">

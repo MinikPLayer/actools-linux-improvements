@@ -27,9 +27,9 @@
 
   <!-- Underlying color and filter for car upgrade icons -->
   <SolidColorBrush x:Key="CarIconBackground" Color="Transparent"/>
-  <mui:InvertKeepColorEffect x:Key="CarIconEffect"/>
+  <!-- PORT: removed InvertKeepColorEffect (pixel shader effect) -->
   <SolidColorBrush x:Key="TrackOutlineAloneBackground" Color="Transparent"/>
-  <mui:InvertKeepColorEffect x:Key="TrackOutlineAloneEffect"/>
+  <!-- PORT: removed InvertKeepColorEffect (pixel shader effect) -->
 
   <!-- Effect for game loading animation -->
   <!-- PORT: removed x:Null resource GameLoadingAnimationEffect -->
@@ -194,8 +194,8 @@
   <!-- Fancy hints -->
   <SolidColorBrush x:Key="FancyHintBackground" Color="#C4000000"/>
   <SolidColorBrush x:Key="FancyHintText" Color="#FFFFFF"/>
-  <mui:GrayscaleEffect x:Key="FancyHintTextEffect" SaturationFactor="1"/>
-  <mui:GrayscaleEffect x:Key="FancyHintButtonsEffect" SaturationFactor="1"/>
+  <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
+  <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
   <SolidColorBrush x:Key="FancyHintButtonBackground" Color="#333333"/>
   <SolidColorBrush x:Key="FancyHintButtonBackgroundHover" Color="#3E3E42"/>
   <SolidColorBrush x:Key="FancyHintButtonBackgroundPressed" Color="{DynamicResource AccentColor}"/>

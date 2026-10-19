@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -46,17 +46,17 @@ namespace AcManager.Controls.Dialogs {
 
         private bool _click;
 
-        private void OnHyperlinkMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnHyperlinkMouseDown(object sender, PointerPressedEventArgs e) {
             _click = true;
         }
 
-        private void OnHyperlinkMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnHyperlinkMouseUp(object sender, PointerReleasedEventArgs e) {
             if (_click) {
                 WindowsHelper.ViewInBrowser(Model.CupObject.CupUpdateInformation?.InformationUrl);
             }
         }
 
-        private void OnHyperlinkMouseSelection(object sender, RoutedEventArgs e) {
+        private void OnHyperlinkMouseSelection(object sender, SelectionChangedEventArgs e) {
             _click = false;
         }
     }

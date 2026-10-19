@@ -26,7 +26,7 @@
     <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\SplitButton.cs" />
     <Compile Remove="Windows\Controls\HistoricalTextBox.cs;Windows\Controls\LabeledToggleButton.cs" />
     
-    <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Attached\FancyScroll.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
+    <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
     <Compile Remove="Windows\Converters\ChainConverter.cs;Windows\Media\VisualExtension.Mouse.cs" />
     <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
     <Compile Remove="Helpers\ScreenInterrogatory.cs" />

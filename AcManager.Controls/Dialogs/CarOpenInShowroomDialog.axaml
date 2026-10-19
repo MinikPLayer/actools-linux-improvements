@@ -21,10 +21,10 @@
     </Grid.RowDefinitions>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="0">
-      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_ShowroomLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_ShowroomLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
       <ComboBox Margin="4 0 4 0" ItemsSource="{Binding Showrooms}" SelectedItem="{Binding SelectedShowroom}">
         <ComboBox.Styles>
-          <Style Selector="ComboBoxItem" __plain="1">
+          <Style Selector="ComboBoxItem">
             <Setter Property="ToolTip.Tip" Value="{StaticResource ShowroomPreviewToolTip}"/>
           </Style>
         </ComboBox.Styles>
@@ -32,16 +32,16 @@
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="1" Grid.Column="0">
-      <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
       <ComboBox Margin="4 0 4 0" SelectedItem="{Binding SelectedFilter}" ItemsSource="{Binding Filters}"/>
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="2" Grid.Column="0">
-      <TextBlock Text="Video settings:" Margin="0 0 0 4" Classes="Label Label.Padding"/>
+      <TextBlock Text="Video settings:" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
       <mui:HierarchicalComboBox ItemsSource="{Binding VideoPresets}" SelectedItem="{Binding SelectedVideoPreset}" FixedMode="False" Margin="4 0 4 0">
         <mui:HierarchicalComboBox.SelectedContent>
           <DataTemplate>
-            <TextBlock x:Name="TextBlock"><TextBlock.Styles><Style Selector="#TextBlock"><Style Selector="^ #TextBlock"><Setter Property="Text" Value="{Binding DataContext.DisplayVideoPreset, ElementName=This}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding DataContext.VideoPresetFilename, ElementName=This, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] #TextBlock"><Setter Property="Text" Value="Default"/>
+            <TextBlock x:Name="TextBlock"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding DataContext.DisplayVideoPreset, ElementName=This}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding DataContext.VideoPresetFilename, ElementName=This, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Text" Value="Default"/>
                 <Setter Property="FontStyle" Value="Italic"/>
               </Style></Style></TextBlock.Styles></TextBlock>
             </DataTemplate>
@@ -50,7 +50,7 @@
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="1">
-      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_FovLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_FovLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
       <mui:BetterTextBox Margin="4 0 4 0" Text="{Binding CameraFov}" Mode="Number"/>
     </StackPanel>
 

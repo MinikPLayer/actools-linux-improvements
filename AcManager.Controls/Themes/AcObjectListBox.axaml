@@ -19,9 +19,9 @@
             </DockPanel>
             <ListBox x:Name="PART_ListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{TemplateBinding InnerItemsSource}" SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" SelectionMode="{TemplateBinding SelectionMode}" mui:SaveScroll.Key="{TemplateBinding mui:SaveScroll.Key}">
               <ListBox.Styles>
-                <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}" x:Key="{x:Type ListBoxItem}" Selector="ListBoxItem">
+                <Style Selector="ListBoxItem">
                   <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </ControlTheme>
+                </Style>
               </ListBox.Styles>
             </ListBox>
           </DockPanel>

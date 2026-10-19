@@ -3,7 +3,7 @@
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
         <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
-        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/SelectableBbCodeBlock.axaml"/>
+        <!-- PORT: removed include of SelectableBbCodeBlock -->
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </mui:ModernDialog.Resources>

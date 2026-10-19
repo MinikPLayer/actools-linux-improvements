@@ -18,7 +18,7 @@ namespace AcManager.Controls.UserControls {
 
         public KunosCareerObject KunosCareerObject => DataContext as KunosCareerObject;
 
-        private void OnClick(object sender, MouseButtonEventArgs e) {
+        private void OnClick(object sender, PointerReleasedEventArgs e) {
             var career = KunosCareerObject;
             if (career == null) return;
 

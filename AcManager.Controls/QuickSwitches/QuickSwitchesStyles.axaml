@@ -34,7 +34,7 @@
               <Ellipse x:Name="PART_Mark" Fill="{DynamicResource Accent}" Width="8" Height="8" VerticalAlignment="Center">
                 <Ellipse.RenderTransform>
                   <TransformGroup>
-                    <ScaleTransform ScaleX="0" ScaleY="0" CenterX="4" CenterY="4"/>
+                    <ScaleTransform ScaleX="0" ScaleY="0"><!-- PORT: removed CenterY (not in Avalonia) --><!-- PORT: removed CenterX (not in Avalonia) --></ScaleTransform>
                   </TransformGroup>
                 </Ellipse.RenderTransform>
               </Ellipse>
@@ -201,7 +201,7 @@
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
                           </Style><Style Selector="^:disabled"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDisabled}"/>
-                          </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
+                          </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>
                           </Style></Style>
                     </Thumb.Styles>

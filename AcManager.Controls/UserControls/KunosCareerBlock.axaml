@@ -1,13 +1,5 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:objects="clr-namespace:AcManager.Tools.Objects;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:effects="clr-namespace:FirstFloor.ModernUI.Effects;assembly=FirstFloor.ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.KunosCareerBlock" DataContextChanged="KunosCareerBlock_OnDataContextChanged">
-  <UserControl.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
-        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
-        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
-      </ResourceDictionary.MergedDictionaries>
-
-      <Style Selector="TextBlock.CodeStyle" __plain="1">
+  <UserControl.Styles><Style Selector="TextBlock.CodeStyle">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="40"/>
         <Setter Property="FontWeight" Value="UltraLight"/>
@@ -15,6 +7,14 @@
         <Setter Property="TextTrimming" Value="None"/>
         <Setter Property="TextWrapping" Value="NoWrap"/>
         </Style>
+
+      </UserControl.Styles><UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
 
       <mui:ChainConverter x:Key="LowerCaseOrdinalizing">
         <mui:OrdinalizingConverter/>
@@ -28,8 +28,8 @@
     <Grid DockPanel.Dock="Left" Background="{DynamicResource ThumbnailBackground}" Margin="0 0 24 0" Width="100" Height="100">
       <mui:BetterImage Filename="{Binding PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="100" ToolTip.Tip="{Binding DisplayName}">
         <mui:BetterImage.Style>
-          <Style Selector="mui|BetterImage" __plain="1">
-            <Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsAvailable, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Effect">
+          <Style Selector="mui|BetterImage">
+            <Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsAvailable, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True]"><Setter Property="Effect">
                   <Setter.Value>
                     <effects:GrayscaleEffect x:Name="GrayscaleEffect" SaturationFactor="0"/>
                   </Setter.Value>
@@ -70,7 +70,7 @@
 
     <StackPanel VerticalAlignment="Bottom">
       <!--name-->
-      <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+      <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
 
       <!--without errors-->
       <StackPanel Margin="0 0 0 4" IsVisible="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
@@ -82,11 +82,10 @@
 
         <!--available-->
         <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal" IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
-          <StackPanel.Resources>
-            <Style Selector="DockPanel" __plain="1">
+          <StackPanel.Styles><Style Selector="DockPanel">
               <Setter Property="Margin" Value="0"/>
             </Style>
-            <Style Selector="Ellipse" __plain="1">
+            <Style Selector="Ellipse">
               <Setter Property="Width" Value="8"/>
     <Setter Property="Height" Value="8"/>
     <Setter Property="VerticalAlignment" Value="Center"/>
@@ -94,9 +93,7 @@
   <Setter Property="Margin" Value="4 0"/>
   <Setter Property="DockPanel.Dock" Value="Left"/>
             </Style>
-          </StackPanel.Resources>
-
-          <!--completed events: 0/0-->
+          </StackPanel.Styles><!--completed events: 0/0-->
           <TextBlock Text="{x:Static c:ControlsStrings.KunosCareer_CompletedLabel}"/>
           <TextBlock FontWeight="Bold" Classes="inline1">
             <TextBlock.Text>
@@ -107,7 +104,7 @@
             </TextBlock.Text>
             <TextBlock.Styles>
               <Style Selector="TextBlock.inline1">
-                <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsCompleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+                <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsCompleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
                   </Style></Style>
             </TextBlock.Styles>
           </TextBlock>
@@ -137,7 +134,7 @@
               <Run Text="{Binding ChampionshipPlace, Converter={StaticResource LowerCaseOrdinalizing}, Mode=OneWay}" FontWeight="Bold" Classes="inline2">
                 <Run.Styles>
                   <Style Selector="Run.inline2">
-                    <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding ChampionshipPlace, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=1}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+                    <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding ChampionshipPlace, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=1}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
                       </Style></Style>
                 </Run.Styles>
               </Run><Run Text=","/>

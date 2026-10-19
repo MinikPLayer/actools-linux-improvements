@@ -28,8 +28,8 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^ /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:expanded /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=(DependencyProperty.UnsetValue)}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^[(pa|T.S1)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=(DependencyProperty.UnsetValue)}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^:is(Control)[(pa|T.S1)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
             </Style></ControlTheme>
 
   <ControlTheme TargetType="ac:AcListPage" x:Key="{x:Type ac:AcListPage}">
@@ -63,7 +63,7 @@
                             <ControlTemplate TargetType="GroupItem">
                               <mui:RememberingExpander Key="{Binding Name, StringFormat='{}.content_category_{0}', Mode=OneTime}" Margin="0 0 0 20" DefaultValue="True" Theme="{StaticResource GroupBoxExpander}">
                                 <Expander.Header>
-                                  <TextBlock Classes="Label">
+                                  <TextBlock Theme="{StaticResource Label}">
                                     <Run Text="{Binding Name, Mode=OneWay}"/>
                                     <Run Text="{Binding ItemCount, Mode=OneWay, StringFormat='{}({0})'}"/>
                                   </TextBlock>
@@ -73,7 +73,7 @@
                             </ControlTemplate>
                           </Setter.Value>
                         </Setter>
-                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
+                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True]"><Setter Property="Template">
                               <Setter.Value>
                                 <ControlTemplate TargetType="GroupItem">
                                   <ItemsPresenter/>
@@ -93,16 +93,16 @@
                 </ListBox.Template>
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
-                    <VirtualizingStackPanel IsVirtualizingWhenGrouping="True" IsContainerVirtualizable="False"/>
+                    <VirtualizingStackPanel><!-- PORT: removed IsContainerVirtualizable (not in Avalonia) --><!-- PORT: removed IsVirtualizingWhenGrouping (not in Avalonia) --></VirtualizingStackPanel>
                   </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
               </ListBox>
 
               <DockPanel Grid.Row="1" Background="Transparent">
                 <mui:ContextMenuButton x:Name="PART_ListContextMenu" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}" Classes="NonTransparent"/>
-                <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Classes="NonTransparent"/>
-                <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Classes="NonTransparent"/>
+                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}" Theme="{StaticResource NonTransparent}"/>
+                <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Theme="{StaticResource NonTransparent}"/>
+                <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Theme="{StaticResource NonTransparent}"/>
                 <TextBlock Text="{Binding Status}" Margin="{StaticResource StatusMargin}" Foreground="{DynamicResource WindowTextReadOnly}"/>
               </DockPanel>
 
@@ -122,7 +122,7 @@
                         <SolidColorBrush Color="{DynamicResource AccentOverlayColor}" Opacity="0.32"/>
                       </mui:HierarchicalComboBox.BorderBrush>
                     </mui:HierarchicalComboBox>
-                    <TextBlock DataContext="{Binding SelectedBatchAction.Description, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AccentOverlay}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+                    <TextBlock DataContext="{Binding SelectedBatchAction.Description, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AccentOverlay}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
 
                     <Grid x:Name="PART_BatchBlock_ButtonsGrid" Height="27">
                       <Grid.ColumnDefinitions>
@@ -203,14 +203,7 @@
           </ControlTemplate>
 
         <ControlTheme x:Key="AcListPageCheckBoxItem" TargetType="ListBoxItem">
-          <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Margin" Value="0"/>
-    <Setter Property="Padding" Value="2"/>
-    <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemText}"/>
+          <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemText}"/>
           <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource AcListPageCheckBoxItemTemplate}"/>
           <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
               <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
@@ -223,7 +216,7 @@
     </ResourceDictionary></ControlTheme.Resources>
 
     <!-- Empty version -->
-    <Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="Template">
+    <Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S3)=True]"><Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ac:AcListPage">
               <DockPanel Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -233,10 +226,10 @@
                     <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_CreateNewItem}" VerticalAlignment="Center" Margin="4 0 0 0"/>
                   </DockPanel>
                 </Button>
-                <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" DockPanel.Dock="Top" Classes="Heading1"/>
+                <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" DockPanel.Dock="Top" Theme="{StaticResource Heading1}"/>
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Center" Width="220" Margin="0 8 0 0" IsVisible="{Binding Manager.IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse|hidden'}">
                   <ProgressBar Maximum="{Binding Manager.WrappersAsIList.Count}" Value="{Binding Manager.LoadedCount}" Height="4" DockPanel.Dock="Bottom" Margin="0 4 0 0"/>
-                  <TextBlock Classes="Small">
+                  <TextBlock Theme="{StaticResource Small}">
                     <TextBlock.Text>
                       <MultiBinding StringFormat="{x:Static mui:UiStrings.Progress_Downloading_KnownTotal}">
                         <Binding Path="Manager.LoadedCount"/>

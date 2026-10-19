@@ -67,7 +67,7 @@
               <Grid x:Name="PART_Grid"/>
               <mui:BooleanSwitch Value="{TemplateBinding IsEmpty}">
                 <Border Background="{DynamicResource DarkStripeBackground}" VerticalAlignment="Center" Padding="20" Margin="0 -40 0 0" TextElement.Foreground="{DynamicResource DarkStripeText}">
-                  <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" TextAlignment="Center" Classes="Title"/>
+                  <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" TextAlignment="Center" Theme="{StaticResource Title}"/>
                 </Border>
               </mui:BooleanSwitch>
             </mui:Cell>

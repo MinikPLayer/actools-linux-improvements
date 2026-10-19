@@ -22,14 +22,25 @@ NS_D = 'http://schemas.microsoft.com/expression/blend/2008'
 NS_MUI = 'http://firstfloorsoftware.com/ModernUI'
 # prefixes for helper namespaces added to every converted file (they are removed again if unused)
 HELPER_NS = {
+    'mui': 'http://firstfloorsoftware.com/ModernUI',
     'pa': 'clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI',
     'pc': 'clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI',
     'sw': 'clr-namespace:System.Windows;assembly=FirstFloor.ModernUI',
     'swi': 'clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI',
 }
+NS_MUI = 'http://firstfloorsoftware.com/ModernUI'
+NS_BLEND = 'http://schemas.microsoft.com/expression/2010/interactivity'
+NS_BLEND_AV = 'using:Avalonia.Xaml.Interactivity'
+NS_BLEND_AV_CORE = 'using:Avalonia.Xaml.Interactions.Core'
+# WPF controls which Avalonia doesn't have and which are replaced by ModernUI ones
+CUSTOM_ELEMENTS = {'ToolBar': NS_MUI, 'ToolBarTray': NS_MUI}
+# custom shader effects of ModernUI, there are no pixel shaders in Avalonia
+CUSTOM_EFFECTS = {'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
+# styles for types which don't exist in Avalonia
+UNSUPPORTED_TARGETS = {'GroupItem', 'Hyperlink_', 'ToolBarOverflowPanel', 'ToolBarPanel', 'DocumentViewer', 'FlowDocumentScrollViewer'}
 # resource dictionaries of ModernUI which aren't converted (Avalonia’s own templates are used instead)
-NOT_PORTED_ASSETS = {'MenuItem', 'ToolBar', 'DataGrid', 'DataGrid.Base', 'DataGrid.Cells', 'DataGrid.Headers', 'DataGrid.Rows', 'DatePicker',
-                     'Calendar', 'ListView', 'SelectableBbCodeBlock', 'ProperPasswordBox', 'PasswordBox', 'ExceptionDetails'}
+NOT_PORTED_ASSETS = {'MenuItem', 'DataGrid', 'DataGrid.Base', 'DataGrid.Cells', 'DataGrid.Headers', 'DataGrid.Rows', 'DatePicker',
+                     'Calendar', 'ListView', 'SelectableBbCodeBlock', 'ProperPasswordBox', 'PasswordBox'}
 SYSTEM_PARAMETER_VALUES = {
     'VerticalScrollBarWidthKey': '17', 'HorizontalScrollBarHeightKey': '17',
     'VerticalScrollBarButtonHeightKey': '17', 'HorizontalScrollBarButtonWidthKey': '17',
@@ -194,6 +205,17 @@ EVENT_RENAME = {
     'PreviewDrop': 'DragDrop.Drop', 'PreviewDragOver': 'DragDrop.DragOver',
 }
 
+# argument types of Avalonia events which have to match exactly the signature of handlers referenced from XAML
+EVENT_ARGS = {
+    'PointerPressed': 'PointerPressedEventArgs', 'PointerReleased': 'PointerReleasedEventArgs', 'PointerMoved': 'PointerEventArgs',
+    'PointerEntered': 'PointerEventArgs', 'PointerExited': 'PointerEventArgs', 'PointerWheelChanged': 'PointerWheelEventArgs',
+    'PointerCaptureLost': 'PointerCaptureLostEventArgs', 'KeyDown': 'KeyEventArgs', 'KeyUp': 'KeyEventArgs',
+    'TextInput': 'TextInputEventArgs', 'DoubleTapped': 'TappedEventArgs', 'Tapped': 'TappedEventArgs',
+    'DragDrop.Drop': 'DragEventArgs', 'DragDrop.DragOver': 'DragEventArgs', 'DragDrop.DragEnter': 'DragEventArgs', 'DragDrop.DragLeave': 'DragEventArgs',
+    'SelectionChanged': 'SelectionChangedEventArgs', 'TextChanged': 'TextChangedEventArgs', 'SizeChanged': 'SizeChangedEventArgs',
+    'GotFocus': 'GotFocusEventArgs', 'ContextRequested': 'ContextRequestedEventArgs',
+}
+
 CURSORS = {'SizeWE': 'SizeWestEast', 'SizeNS': 'SizeNorthSouth', 'IBeam': 'Ibeam', 'ScrollAll': 'SizeAll',
            'SizeNESW': 'TopRightCorner', 'SizeNWSE': 'TopLeftCorner'}
 
@@ -208,6 +230,31 @@ def local(tag):
 
 def ns_of(tag):
     return etree.QName(tag).namespace
+
+
+def retag(old_tag, new_local):
+    """New tag in the namespace of the old one (WPF’s becomes Avalonia’s, custom controls stay where they are)."""
+    ns = ns_of(old_tag)
+    return '{%s}%s' % (NS_AV if ns in (NS_WPF, None) else ns, new_local)
+
+
+def is_handler_name(v):
+    return bool(v) and re.match(r'^[A-Za-z_]\w*$', v) is not None
+
+
+def fix_handler_types(cs_path, handlers):
+    """Makes handlers referenced by XAML events match the exact Avalonia delegate types (`MouseButtonEventArgs` etc. are aliases of the base ones)."""
+    if not os.path.exists(cs_path) or not handlers:
+        return
+    src = open(cs_path, encoding='utf-8-sig').read()
+    orig = src
+    for name, (ev, args) in handlers.items():
+        if not args:
+            continue
+        pat = re.compile(r'(\b%s\s*\(\s*(?:object|\w+)\??\s+\w+\s*,\s*)([\w.<>]+)(\s+\w+\s*\))' % re.escape(name))
+        src = pat.sub(lambda m: m.group(1) + args + m.group(3), src)
+    if src != orig:
+        open(cs_path, 'w', encoding='utf-8').write(src)
 
 
 def is_el(n):
@@ -284,6 +331,7 @@ class Ctx:
         self.state_counter = 0
         self.style_parts = []   # plain styles which go to X.styles.axaml
         self.inline_counter = 0
+        self.handlers = {}
 
     def warn(self, el, msg):
         self.todo.append(msg)
@@ -401,6 +449,31 @@ class Converter:
         if '.' in tag:
             self.convert_property_element(el, tag, ns)
             return
+        if ns == NS_MUI and tag in CUSTOM_EFFECTS or ns == NS_WPF and tag in ('PriorityBinding_',):
+            self.ctx.todo.append('removed %s' % tag)
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s (pixel shader effect) ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
+        if ns == NS_WPF and tag == 'PriorityBinding':
+            # first binding which has a value
+            el.tag = qn('MultiBinding')
+            el.set('Converter', '{x:Static pc:FirstNotNullConverter.Instance}')
+            for c in list(el):
+                if is_el(c):
+                    self.convert_element(c)
+            return
+        if ns == NS_BLEND:
+            self.convert_blend(el, tag)
+            return
+        if ns == NS_WPF and tag in CUSTOM_ELEMENTS:
+            el.tag = '{%s}%s' % (CUSTOM_ELEMENTS[tag], tag)
+            self.convert_attributes(el)
+            for c in list(el):
+                if is_el(c):
+                    self.convert_element(c)
+            return
         if ns == NS_WPF and tag in UNSUPPORTED:
             self.ctx.todo.append('removed %s' % tag)
             parent = el.getparent()
@@ -408,6 +481,10 @@ class Converter:
             comment.tail = el.tail
             parent.replace(el, comment)
             return
+        if ns == NS_WPF and (tag.endswith('Transform') or (tag.startswith('DataGrid') and tag.endswith('Column')) or tag in ('SolidColorBrush', 'LinearGradientBrush', 'GradientStop')):
+            # not named in Avalonia (no Name property); transforms are reachable by the property path only
+            el.attrib.pop(X + 'Name', None)
+            el.attrib.pop('Name', None)
         if ns == NS_WPF:
             if tag == 'Style':
                 StyleConverter(self).convert(el)
@@ -496,7 +573,7 @@ class Converter:
         copy_el = copy.deepcopy(info['el'])
         copy_el.attrib.pop(X + 'Key', None)
         target = copy_el.get('TargetType') or 'ListBoxItem'
-        holder = etree.Element(qn(local(el.tag) + '.Styles'))
+        holder = etree.Element(retag(el.tag, local(el.tag) + '.Styles'))
         container = type_name(target)
         copy_el.set('TargetType', container)
         # use the converter for this (clone of) style as unkeyed implicit one, then give it the right selector
@@ -548,8 +625,11 @@ class Converter:
         m = re.match(r'^TextBlock\.(Foreground|FontSize|FontFamily|FontWeight|FontStyle)$', name)
         if m:
             return 'TextElement.' + m.group(1), convert_markup_value(val, self.ctx, name, el)
-        if name in EVENT_RENAME:
-            return EVENT_RENAME[name], val
+        if name in EVENT_RENAME or name in EVENT_ARGS:
+            new = EVENT_RENAME.get(name, name)
+            if is_handler_name(val):
+                self.ctx.handlers[val] = (new, EVENT_ARGS.get(new))
+            return new, val
         if name == 'Visibility':
             return 'IsVisible', self.convert_visibility(val, el)
         if name in PROP_RENAME:
@@ -667,6 +747,22 @@ class Converter:
             else:
                 self.convert_element(child)
 
+    def convert_blend(self, el, tag):
+        """Blend interactivity -> Avalonia.Xaml.Behaviors"""
+        if tag == 'Interaction.Triggers':
+            el.tag = '{%s}Interaction.Behaviors' % NS_BLEND_AV
+        elif tag == 'Interaction.Behaviors':
+            el.tag = '{%s}Interaction.Behaviors' % NS_BLEND_AV
+        elif tag == 'EventTrigger':
+            el.tag = '{%s}EventTriggerBehavior' % NS_BLEND_AV_CORE
+        elif tag in ('InvokeCommandAction', 'CallMethodAction', 'ChangePropertyAction'):
+            el.tag = '{%s}%s' % (NS_BLEND_AV_CORE, tag)
+        else:
+            self.ctx.warn(el, 'blend element %s' % tag)
+        for c in list(el):
+            if is_el(c):
+                self.convert_element(c)
+
     def convert_merged(self, d):
         t = local(d.tag)
         src = d.get('Source')
@@ -721,7 +817,7 @@ class Converter:
             tt = type_name(st.get('TargetType') or owner)
             StyleConverter(self).convert(st, class_name=cls)
             st.attrib['Selector'] = '%s.%s' % (tt, cls)
-            el.tag = qn('%s.Styles' % owner)
+            el.tag = retag(el.tag, '%s.Styles' % owner)
             classes = (parent.get('Classes') or '').split()
             classes.append(cls)
             parent.set('Classes', ' '.join(classes))
@@ -741,7 +837,7 @@ class Converter:
             tt = type_name(st.get('TargetType') or 'ListBoxItem')
             StyleConverter(self).convert(st, class_name=None)
             st.attrib['Selector'] = tt
-            el.tag = qn('%s.Styles' % owner)
+            el.tag = retag(el.tag, '%s.Styles' % owner)
 
 
 class StyleConverter:
@@ -755,7 +851,7 @@ class StyleConverter:
     def selector_type_of(self, el):
         tag = local(el.tag)
         ns = ns_of(el.tag)
-        if ns == NS_WPF:
+        if ns == NS_WPF or ns == NS_AV:
             return ELEMENT_RENAME.get(tag, tag) if '.' not in tag else '*'
         prefix = None
         for p, u in el.nsmap.items():
@@ -1004,12 +1100,21 @@ class StyleConverter:
         triggers = list(trig) if trig is not None else []
         if trig is not None:
             el.remove(trig)
+        res = next((c for c in el if is_el(c) and local(c.tag) == 'DataTemplate.Resources'), None)
+        if res is not None:
+            # Avalonia’s data templates have no resources, those go to the root element of the template
+            el.remove(res)
+            root0 = next((c for c in el if is_el(c)), None)
+            if root0 is not None:
+                res.tag = retag(root0.tag, local(root0.tag) + '.Resources')
+                root0.insert(0, res)
         self.template_names = {}
         for e in el.iter():
             if is_el(e):
                 n = e.get(X + 'Name') or e.get('Name')
                 if n:
                     self.template_names[n] = e
+        self.template_types = {n: self.selector_type_of(e) for n, e in self.template_names.items()}
         self.conv.convert_attributes(el)
         for child in list(el):
             if is_el(child):
@@ -1026,12 +1131,13 @@ class StyleConverter:
             self.ctx.state_counter += 1
             root.set(X + 'Name', rname)
             self.template_names[rname] = root
+            self.template_types[rname] = self.selector_type_of(root)
         outer = etree.Element(qn('Style'))
-        outer.set('Selector', '#%s' % rname)
+        outer.set('Selector', self.sel(rname))
         for n in self.make_base_styles(triggers, in_template=False, root_name=rname) + self.triggers_to_styles(triggers, in_template=False, theme_root=False, in_data_template=True):
             outer.append(n)
         holder = etree.Element(qn('Control.Styles'))  # fixed below to proper owner type
-        holder.tag = qn(local(root.tag) + '.Styles')
+        holder.tag = retag(root.tag, local(root.tag) + '.Styles')
         holder.append(outer)
         root.insert(0, holder)
 
@@ -1407,6 +1513,87 @@ def finalize_names(root):
                 del el.attrib[a]
 
 
+IMPLICIT_SOURCES = []   # avares URIs of dictionaries with keyless data templates (see implicit_templates_cs)
+
+
+def has_template_setter(style):
+    return any(is_el(c) and local(c.tag) == 'Setter' and c.get('Property') == 'Template' for c in style)
+
+
+def relocate_implicit(root, uri):
+    """
+    WPF dictionaries may contain implicit styles and data templates (without keys). Avalonia’s ones can’t, so
+    - styles from `X.Resources` are moved to `X.Styles` (or nested into the style/theme X)
+    - data templates from `X.Resources` are moved to `X.DataTemplates`
+    - keyless data templates in a dictionary itself get a key (they are registered at startup, see ImplicitDataTemplates.g.cs)
+    """
+    for res in [e for e in root.iter() if is_el(e) and local(e.tag).endswith('.Resources') and local(e.tag) != 'ResourceDictionary']:
+        owner = res.getparent()
+        if owner is None:
+            continue
+        container = res
+        inner = [c for c in res if is_el(c) and local(c.tag) == 'ResourceDictionary']
+        if len(inner) == 1:
+            container = inner[0]
+        for c in list(container):
+            if not is_el(c) or c.get(X + 'Key') is not None:
+                continue
+            t = local(c.tag)
+            ot = local(owner.tag)
+            if t == 'Style' and c.get('Selector'):
+                container.remove(c)
+                if ot in ('Style', 'ControlTheme'):
+                    sel = c.get('Selector')
+                    if ot == 'ControlTheme' and any(is_el(x) and local(x.tag) == 'Setter' and x.get('Property') == 'Template' for x in owner):
+                        c2 = copy.deepcopy(c)
+                        c2.set('Selector', '^ /template/ ' + sel)
+                        owner.append(c2)
+                    c.set('Selector', '^ ' + sel)
+                    owner.append(c)
+                else:
+                    holder_tag = retag(owner.tag, ot + '.Styles')
+                    holder = next((h for h in owner if is_el(h) and h.tag == holder_tag), None)
+                    if holder is None:
+                        holder = etree.Element(holder_tag)
+                        owner.insert(0, holder)
+                    holder.append(c)
+            elif t == 'DataTemplate' and c.get('DataType') and ot not in ('Style', 'ControlTheme'):
+                container.remove(c)
+                holder_tag = retag(owner.tag, ot + '.DataTemplates')
+                holder = next((h for h in owner if is_el(h) and h.tag == holder_tag), None)
+                if holder is None:
+                    holder = etree.Element(holder_tag)
+                    owner.insert(0, holder)
+                holder.append(c)
+        # empty leftovers
+        if len(container) == 0 and container is not res:
+            res.remove(container)
+        if len(res) == 0:
+            owner.remove(res)
+    if local(root.tag) == 'ResourceDictionary':
+        found = False
+        for c in root:
+            if is_el(c) and local(c.tag) == 'DataTemplate' and c.get(X + 'Key') is None and c.get('DataType'):
+                dt = c.get('DataType')
+                c.set(X + 'Key', 'ImplicitTemplate:' + re.sub(r'[{}]|x:Type\s*', '', dt).strip())
+                found = True
+        if found and uri:
+            IMPLICIT_SOURCES.append(uri)
+
+
+def implicit_templates_cs(namespace, assembly):
+    items = ',\n'.join('            "%s"' % u for u in sorted(set(IMPLICIT_SOURCES)))
+    return '''// <auto-generated> by PortTools/xaml_convert.py: dictionaries with implicit (keyless in WPF) data templates </auto-generated>
+namespace %s {
+    public static class ImplicitDataTemplates {
+        public static readonly string[] Sources = {
+%s
+        };
+    }
+}
+''' % (namespace, items)
+
+
 def convert_file(path, registry, out_dir=None):
     parser = etree.XMLParser(remove_blank_text=False, remove_comments=False, resolve_entities=False)
     tree = etree.parse(path, parser)
@@ -1419,6 +1606,9 @@ def convert_file(path, registry, out_dir=None):
     fix_text_hosts(root)
     drop_missing_members(root)
     fix_template_bindings(root)
+    cs = os.path.splitext(path)[0] + '.xaml.cs'
+    fix_handler_types(cs, ctx.handlers)
+    relocate_implicit(root, 'avares://%s/%s.axaml' % (ASM[0], os.path.relpath(os.path.splitext(path)[0], ASM[1]).replace(os.sep, '/')))
 
     # namespaces
     new_nsmap = {}
@@ -1471,6 +1661,13 @@ def convert_file(path, registry, out_dir=None):
             sroot.append(p)
         outputs.append((base + '.styles.axaml', sroot))
     for p, r in outputs:
+        for el in r.iter():
+            if not isinstance(el.tag, str):
+                continue
+            el.attrib.pop('__plain', None)
+            # attached property selectors need a type, `:is(Control)` matches everything
+            if local(el.tag) == 'Style' and el.get('Selector'):
+                el.set('Selector', re.sub(r'(^|[\s>^,])(\[\()', r'\1:is(Control)\2', el.get('Selector')))
         etree.cleanup_namespaces(r, top_nsmap=new_nsmap, keep_ns_prefixes=[k for k in new_nsmap if k])
         s = etree.tostring(r, encoding='unicode')
         # lxml likes to invent prefixes for elements which got created in other contexts
@@ -1478,6 +1675,12 @@ def convert_file(path, registry, out_dir=None):
             s = re.sub(r' xmlns:%s="%s"' % (m, re.escape(NS_AV)), '', s)
             s = re.sub(r'(</?)%s:' % m, r'\1', s)
             s = re.sub(r'(\s)%s:' % m, r'\1', s)
+        for m, uri in set(re.findall(r'xmlns:(ns\d+)="([^"]+)"', s)):
+            known = [k for k, v in new_nsmap.items() if v == uri and k]
+            if known:
+                s = re.sub(r' xmlns:%s="%s"' % (m, re.escape(uri)), '', s)
+                s = re.sub(r'(</?)%s:' % m, r'\g<1>%s:' % known[0], s)
+                s = re.sub(r'(\s)%s:' % m, r'\g<1>%s:' % known[0], s)
         with open(p, 'w', encoding='utf-8-sig') as f:
             f.write(s)
     return ctx, [p for p, _ in outputs]
@@ -1518,6 +1721,11 @@ def main(argv):
         print('%s -> %s (%d todo)' % (f, ', '.join(os.path.basename(o) for o in outs), len(ctx.todo)))
         for t in ctx.todo[:5]:
             print('    -', t)
+    if IMPLICIT_SOURCES:
+        out = os.path.join(ASM[1], 'ImplicitDataTemplates.g.cs')
+        with open(out, 'w', encoding='utf-8') as f:
+            f.write(implicit_templates_cs(ASM[0], ASM[0]))
+        print('implicit data templates in', len(set(IMPLICIT_SOURCES)), 'dictionaries ->', out)
     print('total todo', total)
 
 

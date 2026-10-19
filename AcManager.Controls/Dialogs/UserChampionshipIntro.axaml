@@ -65,7 +65,7 @@
 
   <mui:Cell>
     <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1022" Height="575">
-      <TextBlock Text="No preview" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Opacity="0.4" Classes="Heading1"/>
+      <TextBlock Text="No preview" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Opacity="0.4" Theme="{StaticResource Heading1}"/>
       <mui:BetterImage Filename="{Binding UserChampionshipObject.PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="1022" Height="575" ShowBroken="False" CollapseIfMissing="True"/>
     </mui:Cell>
     <Border Background="#ddffffff" Padding="60" Margin="200" Width="400" HorizontalAlignment="Right" TextElement.Foreground="Black" TextElement.FontSize="15">
@@ -85,7 +85,7 @@
         </mui:Switch>
 
         <mui:SpacingStackPanel Spacing="20">
-          <TextBlock Text="{Binding UserChampionshipObject.Name}" TextWrapping="Wrap" Classes="Heading1"/>
+          <TextBlock Text="{Binding UserChampionshipObject.Name}" TextWrapping="Wrap" Theme="{StaticResource Heading1}"/>
           <TextBlock Text="{Binding UserChampionshipObject.Description}" TextWrapping="Wrap" IsVisible="{Binding UserChampionshipObject.Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
           <c:PropertiesGrid>
             <TextBlock c:PropertiesGrid.Label="Author:" Text="{Binding UserChampionshipObject.Author}" TextWrapping="Wrap" IsVisible="{Binding UserChampionshipObject.Author, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>

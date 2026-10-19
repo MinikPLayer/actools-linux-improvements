@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -37,7 +37,7 @@ namespace AcManager.Controls.Dialogs {
             Player.Dispose();
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseUp(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 Close();

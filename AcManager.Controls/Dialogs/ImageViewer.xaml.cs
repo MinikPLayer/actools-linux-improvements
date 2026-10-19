@@ -254,7 +254,7 @@ namespace AcManager.Controls.Dialogs {
             }
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseUp(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1 && !Model.Saveable) {
                 e.Handled = true;
                 Close();
@@ -315,7 +315,7 @@ namespace AcManager.Controls.Dialogs {
             Close();
         }
 
-        private void OnMouseRightButtonUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseRightButtonUp(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
             Model.ContextMenuCallback?.Invoke(Model.CurrentPosition);
         }

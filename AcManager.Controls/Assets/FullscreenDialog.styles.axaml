@@ -1,5 +1,5 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:system="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
-  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/../Assets/FullscreenDialog.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="mui|ModernDialog.FullscreenDialog">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/FullscreenDialog.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="mui|ModernDialog.FullscreenDialog">
     <Setter Property="BackgroundContent" Value="{x:Null}"/>
     <Setter Property="Background" Value="#dd151515"/>
     <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
