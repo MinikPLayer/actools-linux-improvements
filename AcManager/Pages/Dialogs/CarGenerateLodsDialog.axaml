@@ -303,8 +303,8 @@
                         <mui:BetterComboBox.ItemTemplate>
                           <DataTemplate>
                             <StackPanel ToolTip.Tip="{Binding Filename}" x:Name="__Dt0">
-                              <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^ TextBlock#PART_DisplayName"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^ TextBlock#PART_Details"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_DisplayName"><!-- PORT: removed setter of Text (not in Avalonia) -->
-                                </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Details"><!-- PORT: removed setter of Text (not in Avalonia) -->
+                              <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^ TextBlock#PART_DisplayName"><Setter Property="Text" Value="{Binding DisplayName}"/></Style><Style Selector="^ TextBlock#PART_Details"><Setter Property="Text" Value="{Binding Details}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_DisplayName"><Setter Property="Text" Value="None"/>
+                                </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Details"><Setter Property="Text" Value="Model is missing"/>
                               </Style></Style></StackPanel.Styles><TextBlock x:Name="PART_DisplayName" DockPanel.Dock="Top" Margin="0 0 0 2" FontWeight="Normal"/>
                               <TextBlock x:Name="PART_Details" TextTrimming="CharacterEllipsis" FontSize="{StaticResource SmallFontSize}" FontWeight="Normal"/>
                             </StackPanel>

@@ -191,10 +191,10 @@
                         <ItemsControl.ItemTemplate>
                           <DataTemplate>
                             <Border BorderThickness="1" BorderBrush="{DynamicResource ButtonBorder}" Background="{DynamicResource ButtonBackground}" Padding="4 2" x:Name="__Dt0">
-                              <Border.Styles><Style Selector="Border#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=buggy}"/><Setter Property="pa:T.S2" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=untested}"/><Setter Property="pa:T.S3" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=preview}"/><Setter Property="pa:T.S4" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=recommended}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Text"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
-                              </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_Text"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
-                              </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#PART_Text"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
-                              </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#PART_Text"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                              <Border.Styles><Style Selector="Border#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=buggy}"/><Setter Property="pa:T.S2" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=untested}"/><Setter Property="pa:T.S3" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=preview}"/><Setter Property="pa:T.S4" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=recommended}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Text"><Setter Property="Foreground" Value="{DynamicResource Error}"/>
+                              </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_Text"><Setter Property="Foreground" Value="{DynamicResource RatingBrush}"/>
+                              </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#PART_Text"><Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/>
+                              </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#PART_Text"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
                               </Style></Style></Border.Styles><TextBlock x:Name="PART_Text" Text="{Binding}" Background="{DynamicResource ButtonBackground}" Classes="Small"/>
                             </Border>
                             </DataTemplate>

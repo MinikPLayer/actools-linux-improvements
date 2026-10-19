@@ -17,9 +17,20 @@ namespace AcManager.Tools.Helpers {
         [Localizable(false), ContractAnnotation("=> halt")]
         public static void RestartCurrentApplication() {
             try {
-                ProcessExtension.Start(MainExecutingFile.Location,
-                        Environment.GetCommandLineArgs().Skip(1).ApartFrom(RestartArg)
-                                   .Where(x => !x.StartsWith("acmanager:", StringComparison.OrdinalIgnoreCase)).Prepend(RestartArg));
+                var args = Environment.GetCommandLineArgs().Skip(1).ApartFrom(RestartArg)
+                                      .Where(x => !x.StartsWith("acmanager:", StringComparison.OrdinalIgnoreCase)).Prepend(RestartArg);
+                var location = MainExecutingFile.Location;
+                if (location.EndsWith(".dll", StringComparison.OrdinalIgnoreCase)) {
+                    // Linux: the app is launched by the dotnet host (or through its apphost, if there is one)
+                    var apphost = System.IO.Path.ChangeExtension(location, null);
+                    if (System.IO.File.Exists(apphost)) {
+                        ProcessExtension.Start(apphost, args);
+                    } else {
+                        ProcessExtension.Start("dotnet", args.Prepend(location));
+                    }
+                } else {
+                    ProcessExtension.Start(location, args);
+                }
 
                 var app = Application.Current;
                 if (app == null) {

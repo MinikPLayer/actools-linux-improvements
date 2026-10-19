@@ -59,7 +59,7 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate DataType="{x:Type di:CarCreateTyresMachineDialog+CommonTyres}">
             <DockPanel Margin="2" Background="Transparent" x:Name="__Dt0">
-              <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IncludedCount, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Name"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+              <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IncludedCount, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Name"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
               </Style></Style></DockPanel.Styles><ToolTip.Tip>
                 <TextBlock Text="{Binding DisplaySource.Value}" TextWrapping="Wrap" FontSize="{StaticResource SmallFontSize}" MaxWidth="400" DockPanel.Dock="Bottom"/>
               </ToolTip.Tip>

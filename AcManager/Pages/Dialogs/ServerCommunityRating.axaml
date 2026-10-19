@@ -61,8 +61,8 @@
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <DockPanel Margin="0 8 0 0" x:Name="PART_Panel">
-              <DockPanel.Styles><Style Selector="DockPanel#PART_Panel"><Style Selector="^ TextBlock#PART_You"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Rectangle#PART_Mark"><!-- PORT: removed setter of Fill (not in Avalonia) --><Setter Property="ToolTip.Tip" Value="Positive review"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsOwn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding Vote, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-1}"/></Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_You"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[(pa|T.S3)=True] Rectangle#PART_Mark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+              <DockPanel.Styles><Style Selector="DockPanel#PART_Panel"><Style Selector="^ TextBlock#PART_You"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Rectangle#PART_Mark"><Setter Property="Fill" Value="{DynamicResource Go}"/><Setter Property="ToolTip.Tip" Value="Positive review"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsOwn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding Vote, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-1}"/></Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_You"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[(pa|T.S3)=True] Rectangle#PART_Mark"><Setter Property="Fill" Value="{DynamicResource Error}"/>
                 <Setter Property="ToolTip.Tip" Value="Negative review"/>
               </Style></Style></DockPanel.Styles><Rectangle x:Name="PART_Mark" Width="4" Margin="0 0 8 0"/>
               <mui:BetterImage Filename="{Binding Avatar}" Height="28" Width="28" DockPanel.Dock="Left" Margin="0 4 12 0" AsyncDecode="True" VerticalAlignment="Top"/>

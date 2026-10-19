@@ -6,7 +6,7 @@
         <ControlTemplate TargetType="RadioButton">
           <DockPanel x:Name="LayoutRoot">
             <Border x:Name="CheckBorder" Width="16" Height="16" Margin="0 1 4 0" BorderThickness="1" CornerRadius="8">
-              <Ellipse x:Name="CheckMark" Width="8" Height="8" Margin="2"/>
+              <Ellipse x:Name="CheckMark" Width="8" Height="8" Margin="2" Fill="{TemplateBinding Foreground}"/>
             </Border>
             <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
             <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />-->
@@ -14,14 +14,14 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ Ellipse#CheckMark"><Setter Property="IsVisible" Value="False"/><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^ /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+  <Style Selector="^ /template/ Ellipse#CheckMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
             </Style><Style Selector="^:checked /template/ Ellipse#CheckMark"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:pointerover /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
-              </Style><Style Selector="^:pointerover /template/ Ellipse#CheckMark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+              </Style><Style Selector="^:pointerover /template/ Ellipse#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
             </Style><Style Selector="^:pressed /template/ Border#CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
-              </Style><Style Selector="^:pressed /template/ Ellipse#CheckMark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+              </Style><Style Selector="^:pressed /template/ Ellipse#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
             </Style><Style Selector="^:focus /template/ Border#CheckBorder"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></ControlTheme>
 </ResourceDictionary>

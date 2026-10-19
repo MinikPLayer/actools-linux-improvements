@@ -48,7 +48,7 @@
           <DataTemplate>
             <DockPanel IsEnabled="{Binding Enabled}" Background="Transparent" mui:Draggable.Data="{Binding}" Margin="10 2 2 2" x:Name="__Dt0">
               <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ Path#FavouriteIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsFavourite, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] Path#FavouriteIcon"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#AppTitle"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+              </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#AppTitle"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
               </Style></Style></DockPanel.Styles><ToolTip.Tip>
                 <ToolTip IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
                   <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" MaxWidth="400" TextWrapping="Wrap"/>

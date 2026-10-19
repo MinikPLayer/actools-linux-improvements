@@ -87,8 +87,8 @@
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <DockPanel Margin="0 0 0 4" x:Name="__Dt6">
-                <DockPanel.Styles><Style Selector="DockPanel#__Dt6"><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding IsSystemCommand, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/><Setter Property="pa:T.S8" Value="{Binding IsDirectAddress, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^[(pa|T.S7)=True] mui|SelectableBbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
-                </Style><Style Selector="^[(pa|T.S8)=True] mui|SelectableBbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                <DockPanel.Styles><Style Selector="DockPanel#__Dt6"><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding IsSystemCommand, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/><Setter Property="pa:T.S8" Value="{Binding IsDirectAddress, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^[(pa|T.S7)=True] mui|SelectableBbCodeBlock#PART_Message"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
+                </Style><Style Selector="^[(pa|T.S8)=True] mui|SelectableBbCodeBlock#PART_Message"><Setter Property="Foreground" Value="{DynamicResource AccentColor}"/>
                 </Style></Style></DockPanel.Styles><mui:ReferenceSwitch Value="{Binding Author}" Width="80" Margin="0 2 6 0" VerticalAlignment="Top" DockPanel.Dock="Left">
                   <mui:ReferenceSwitch.NonNull>
                     <TextBlock DataContext="{Binding Author}" Text="{Binding Driver.DriverName, FallbackValue='?'}" FontWeight="Bold" ContextMenu="{StaticResource DriverContextMenu}" ToolTip.Tip="{StaticResource DriverToolTip}" Classes="Small"/>

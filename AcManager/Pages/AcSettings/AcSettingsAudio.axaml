@@ -29,7 +29,7 @@
             <mui:BetterComboBox.ItemTemplate>
               <DataTemplate>
                 <DockPanel x:Name="__Dt2">
-                  <DockPanel.Styles><Style Selector="DockPanel#__Dt2"><Style Selector="^ TextBlock#PART_State"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding State, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NotPresent}"/></Style><Style Selector="^[(pa|T.S3)=True] TextBlock#PART_State"><!-- PORT: removed setter of Text (not in Avalonia) -->
+                  <DockPanel.Styles><Style Selector="DockPanel#__Dt2"><Style Selector="^ TextBlock#PART_State"><Setter Property="Text" Value="{Binding State, StringFormat='{} ({0})', Converter={StaticResource ToLowerConverter}}"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding State, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NotPresent}"/></Style><Style Selector="^[(pa|T.S3)=True] TextBlock#PART_State"><Setter Property="Text" Value="not present"/>
                   </Style></Style></DockPanel.Styles><mui:Cell Margin="0 0 8 0">
                     <Image Width="32" Height="32" Source="{Binding IconPath, Converter={StaticResource IconPathToImageConverter}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Path Width="10" Height="10" Margin="2" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Bottom" Fill="{DynamicResource Go}" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z" IsVisible="{Binding IsDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>

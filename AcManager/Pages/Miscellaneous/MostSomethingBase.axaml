@@ -26,7 +26,7 @@
 
       <StackPanel.Styles><Style Selector="StackPanel#PART_Panel"><!-- PORT: storyboard actions of trigger :checked not converted --><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Layouts.Count, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S0)=True] ToggleButton#PART_ExpandButton"><Setter Property="IsEnabled" Value="False"/>
         <Setter Property="Background" Value="Transparent"/>
-        <!-- PORT: removed setter of BorderBrush (not in Avalonia) -->
+        <Setter Property="BorderBrush" Value="Transparent"/>
       </Style></Style></StackPanel.Styles><StackPanel.Resources>
       <ResourceDictionary>
         <!-- PORT: removed Storyboard -->

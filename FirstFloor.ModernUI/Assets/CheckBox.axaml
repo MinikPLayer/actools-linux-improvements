@@ -12,7 +12,7 @@
           <DockPanel x:Name="LayoutRoot" Background="Transparent">
             <Border Width="16" Height="16" Margin="0 1 4 0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" DockPanel.Dock="Left" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
               <c:Cell>
-                <Path x:Name="CheckMark" Width="10" Height="10" Margin="2" Stretch="Fill" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z"/>
+                <Path x:Name="CheckMark" Width="10" Height="10" Margin="2" Stretch="Fill" Fill="{TemplateBinding Foreground}" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z"/>
                 <Rectangle x:Name="Indeterminate" Width="8" Height="8" Margin="4" Fill="{TemplateBinding Foreground}"/>
               </c:Cell>
             </Border>
@@ -22,7 +22,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Style Selector="^ /template/ Path#CheckMark"><Setter Property="IsVisible" Value="False"/><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^ /template/ Rectangle#Indeterminate"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+    <Style Selector="^ /template/ Path#CheckMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Rectangle#Indeterminate"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
       </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
@@ -30,8 +30,8 @@
       </Style><!-- PORT: DataTrigger with element binding not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
             </Style><Style Selector="^:checked /template/ Path#CheckMark"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^:checked /template/ Rectangle#Indeterminate"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^:pointerover /template/ Path#CheckMark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
-            </Style><Style Selector="^:pressed /template/ Path#CheckMark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+            </Style><Style Selector="^:pointerover /template/ Path#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ Path#CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
             </Style></ControlTheme>
 
   <!-- Specially for checkboxes with highlighted background -->

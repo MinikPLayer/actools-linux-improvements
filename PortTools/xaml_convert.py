@@ -1736,12 +1736,16 @@ def _setter_target_type(setter):
             t = el.get('TargetType')
             return t if ':' not in t else None
         if el.tag == qn('Style') and el.get('Selector'):
-            m = re.match(r'^([A-Za-z]\w*)(?=[.:\[#\s]|$)', el.get('Selector').strip())
-            if m and not el.get('Selector').strip().startswith('^'):
-                return m.group(1)
-            if m is None and not el.get('Selector').strip().startswith('^'):
-                return None
-            # nested style, the type is defined by the parent
+            sel = el.get('Selector').strip()
+            if ',' not in sel:
+                last = re.split(r'\s*>\s*|\s+', sel)[-1]
+                last = last.lstrip('^') if last.startswith('^') and len(re.split(r'\s*>\s*|\s+', sel)) > 1 else last
+                if not last.startswith('^'):
+                    if '|' in last.split('[')[0].split('#')[0].split(':')[0].split('.')[0]:
+                        return None
+                    m = re.match(r'^([A-Za-z]\w*)(?=[.:\[#\s]|$)', last)
+                    return m.group(1) if m else None
+            # nested style on the parent (^, ^:pseudo, ^[…]): the type is defined by the parent
         el = el.getparent()
     return None
 

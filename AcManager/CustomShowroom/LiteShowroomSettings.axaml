@@ -12,7 +12,7 @@
 
   <DataTemplate x:Key="VisualSettings.ShowroomItem" DataType="t:ShowroomObject">
     <DockPanel Height="18" x:Name="__Dt0">
-      <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NullValue}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) -->
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ TextBlock#Text"><Setter Property="Text" Value="{Binding DisplayName}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NullValue}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Text"><Setter Property="Text" Value="{x:Static t:ToolsStrings.Common_None}"/>
       </Style></Style></DockPanel.Styles><mui:BetterImage Margin="0 0 4 0" ClearOnChange="True" Filename="{Binding PreviewImage}" Width="18" Height="18" HideBroken="True"/>
       <TextBlock x:Name="Text" VerticalAlignment="Top"/>
     </DockPanel>

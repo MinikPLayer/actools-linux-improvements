@@ -11,9 +11,9 @@
 
       <DataTemplate x:Key="DataGridCell.DriverName" DataType="{x:Type t:UserChampionshipDriver}">
         <DockPanel x:Name="__Dt0">
-          <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ TextBlock#NameTextBlock"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsPlayer, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#NameTextBlock"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
-            <!-- PORT: removed setter of FontWeight (not in Avalonia) -->
-            <!-- PORT: removed setter of Text (not in Avalonia) -->
+          <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ TextBlock#NameTextBlock"><Setter Property="Text" Value="{Binding Name}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsPlayer, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#NameTextBlock"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Text" Value="{Binding PlayerName, Source={x:Static t:SettingsHolder.Drive}}"/>
           </Style></Style></DockPanel.Styles><Ellipse DockPanel.Dock="Left" Margin="0 0 8 4" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
           <TextBlock x:Name="NameTextBlock" TextTrimming="CharacterEllipsis"/>
         </DockPanel>

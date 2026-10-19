@@ -35,8 +35,8 @@
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="{x:Type t:LapTimeWrapped}">
             <StackPanel Orientation="Horizontal" x:Name="__Dt0">
-              <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^ TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Car, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|BetterImage#BrandBadge"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) -->
+              <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^ TextBlock#Text"><Setter Property="Text" Value="{Binding Car.DisplayName}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Car, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|BetterImage#BrandBadge"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Text"><Setter Property="Text" Value="{Binding Entry.CarId, StringFormat='{}Car {0} is missing'}"/>
               </Style></Style></StackPanel.Styles><mui:BetterImage x:Name="BrandBadge" Filename="{Binding Car.BrandBadge}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True"/>
               <TextBlock x:Name="Text" VerticalAlignment="Center"/>
             </StackPanel>
@@ -48,8 +48,8 @@
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="{x:Type t:LapTimeWrapped}">
             <StackPanel Orientation="Horizontal" x:Name="__Dt2">
-              <StackPanel.Styles><Style Selector="StackPanel#__Dt2"><Style Selector="^ TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding Track, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S3)=True] mui|BetterImage#Outline"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) -->
+              <StackPanel.Styles><Style Selector="StackPanel#__Dt2"><Style Selector="^ TextBlock#Text"><Setter Property="Text" Value="{Binding Track.Name}"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding Track, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S3)=True] mui|BetterImage#Outline"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#Text"><Setter Property="Text" Value="{Binding Entry.TrackId, StringFormat='{}Track {0} is missing'}"/>
               </Style></Style></StackPanel.Styles><mui:BetterImage x:Name="Outline" Filename="{Binding Track.OutlineImage}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True"/>
               <TextBlock x:Name="Text" VerticalAlignment="Center"/>
             </StackPanel>

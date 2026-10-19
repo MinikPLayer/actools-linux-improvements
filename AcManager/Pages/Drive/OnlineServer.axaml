@@ -444,8 +444,8 @@
                 <ItemsControl.ItemTemplate>
                   <DataTemplate DataType="{x:Type t:ServerEntry+Session}">
                     <DockPanel x:Name="__Dt3">
-                      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] TextBlock#TypeText"><!-- PORT: removed setter of FontWeight (not in Avalonia) -->
-                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#DurationText"><!-- PORT: removed setter of FontWeight (not in Avalonia) -->
+                      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] TextBlock#TypeText"><Setter Property="FontWeight" Value="Bold"/>
+                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#DurationText"><Setter Property="FontWeight" Value="Bold"/>
                       </Style></Style></DockPanel.Styles><TextBlock DockPanel.Dock="Left" Width="100" x:Name="TypeText" Text="{Binding DisplayType}"/>
                       <TextBlock x:Name="DurationText" Text="{Binding DisplayDuration}"/>
                     </DockPanel>

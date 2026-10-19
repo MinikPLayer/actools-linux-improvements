@@ -136,6 +136,12 @@ namespace AcManager {
 
         private void RemoveTrayIcon() {
             if (_trayIcon != null) {
+                if (!Avalonia.Threading.Dispatcher.UIThread.CheckAccess()) {
+                    // Process is exiting (UI loop is already gone), the icon is removed by the system
+                    _trayIcon = null;
+                    return;
+                }
+
                 _trayIcon.IsVisible = false;
                 Task.Delay(TimeSpan.FromSeconds(1d)).ContinueWith(r => ActionExtension.InvokeInMainThreadAsync(() => DisposeHelper.Dispose(ref _trayIcon)));
             }
