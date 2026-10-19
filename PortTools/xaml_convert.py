@@ -2079,6 +2079,10 @@ def convert_file(path, registry, out_dir=None):
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
         s = re.sub(r'\.\(Color\.([ARGB])\)', r'.\1', s)
         s = re.sub(r'\((?:Control|TextBlock)\.Foreground\)', '(TextElement.Foreground)', s)
+        # brushes with DynamicResource colors don't work in Avalonia resource dictionaries, see DynamicColorBrush
+        s = re.sub(r'<SolidColorBrush ((?:(?!>)[^>])*?x:Key="[^"]*"(?:(?!>)[^>])*?)Color="\{DynamicResource ([A-Za-z0-9_.]+)\}"', r'<SolidColorBrush \1cdb:DynamicColorBrush.ColorKey="\2"', s)
+        if 'cdb:DynamicColorBrush.' in s and 'xmlns:cdb=' not in s:
+            s = re.sub(r'<([A-Za-z:]+)\s', lambda m: '<%s xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" ' % m.group(1), s.lstrip('\ufeff'), count=1)
         # custom templates of items controls: the presenter doesn't take the panel from the control on its own
         def _items_panel(m, text=s):
             owner = text.rfind('TargetType="', 0, m.start())

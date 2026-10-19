@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://AcManager.Controls/Assets/ModernUI.Light.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -11,14 +11,14 @@
 	<SolidColorBrush x:Key="CardHeaderBackground" Color="#ffffff"/>
 	<Color x:Key="WindowBackgroundColor">#ffffff</Color>
 	<SolidColorBrush x:Key="ButtonBackground" Color="#ffffff"/>
-	<SolidColorBrush x:Key="ButtonTextPressed" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="ButtonTextPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
 	<SolidColorBrush x:Key="GoButtonBackground" Color="#ffffff"/>
 	<SolidColorBrush x:Key="GoButtonTextPressed" Color="#ffffff"/>
-	<SolidColorBrush x:Key="DataGridCellForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
-	<SolidColorBrush x:Key="DataGridHeaderForegroundPressed" Color="{DynamicResource AccentOverlayColor}"/>
-	<SolidColorBrush x:Key="DataGridHeaderForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="DataGridCellForegroundSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
+	<SolidColorBrush x:Key="DataGridHeaderForegroundPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
+	<SolidColorBrush x:Key="DataGridHeaderForegroundSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
 	<SolidColorBrush x:Key="InputBackground" Color="#ffffff"/>
 	<SolidColorBrush x:Key="InputBackgroundHover" Color="#ffffff"/>
-	<SolidColorBrush x:Key="ItemTextSelected" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="ItemTextSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
 	<SolidColorBrush x:Key="SliderThumbBackground" Color="#ffffff"/>
 </ResourceDictionary>

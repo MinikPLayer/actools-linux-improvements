@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:n="clr-namespace:FirstFloor.ModernUI.Windows.Navigation" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:n="clr-namespace:FirstFloor.ModernUI.Windows.Navigation" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
@@ -203,8 +203,8 @@
   <ControlTheme x:Key="Error.BaseButtonStyle" TargetType="Button" BasedOn="{StaticResource Go.BaseButtonStyle}">
     <Setter Property="FontWeight" Value="Normal"/>
   <ControlTheme.Resources>
-      <ResourceDictionary><SolidColorBrush x:Key="GoBrush" Color="{DynamicResource GoColor}"/>
-      <SolidColorBrush x:Key="ErrorBrush" Color="{DynamicResource ErrorColor}"/>
+      <ResourceDictionary><SolidColorBrush x:Key="GoBrush" cdb:DynamicColorBrush.ColorKey="GoColor"/>
+      <SolidColorBrush x:Key="ErrorBrush" cdb:DynamicColorBrush.ColorKey="ErrorColor"/>
     </ResourceDictionary></ControlTheme.Resources>
     </ControlTheme>
 

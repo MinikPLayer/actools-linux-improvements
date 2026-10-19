@@ -832,6 +832,7 @@ namespace AcManager {
             // Let’s roll
             // resources of these styles need the model objects, so they can’t be loaded in Initialize()
             LoadConvertedStyles();
+            FirstFloor.ModernUI.Presentation.DynamicColorBrush.Refresh();
             new AppUi(this).Run(() => {
                 if (PatchHelper.OptionPatchSupport) {
                     PatchUpdater.Instance.Updated += OnPatchUpdated;

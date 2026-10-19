@@ -18,6 +18,10 @@ namespace FirstFloor.ModernUI.Helpers {
                 Avalonia.Threading.Dispatcher.UIThread.Post(() => {
                     var windows = (Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.Windows;
                     if (windows == null) return;
+                    foreach (var key in new[] { "WindowBackgroundColor", "WindowBackground", "WindowBackgroundContentBrush", "AccentColor" }) {
+                        Application.Current.TryGetResource(key, Application.Current.ActualThemeVariant, out var value);
+                        System.IO.File.AppendAllText("/tmp/cm_tree.txt", "RES " + key + " = " + value + " (" + value?.GetType().Name + ")\n");
+                    }
                     foreach (var w in windows.ToList()) {
                         var sb = new StringBuilder();
                         Dump(w, 0, sb);
@@ -71,6 +75,7 @@ namespace FirstFloor.ModernUI.Helpers {
             if (v is Control c && !string.IsNullOrEmpty(c.Name)) sb.Append('#').Append(c.Name);
             sb.Append(' ').Append(v.Bounds.Width.ToString("F0")).Append('x').Append(v.Bounds.Height.ToString("F0"));
             if (!v.IsVisible) sb.Append(" (hidden)");
+            if (v is Border bd) sb.Append(" bg=").Append(bd.Background is Avalonia.Media.ISolidColorBrush sc ? sc.Color.ToString() : bd.Background?.GetType().Name ?? "null");
             if (v is Layoutable lay && lay.Margin != default) sb.Append(" m=").Append(lay.Margin);
             if (v is TemplatedControl tc && tc.Theme != null) sb.Append(" theme");
             if (v is ItemsControl ic) sb.Append(" items=").Append(ic.ItemCount).Append(" src=").Append(ic.ItemsSource?.GetType().Name ?? "null").Append(" tpl=").Append(ic.Template?.GetType().Name ?? "null").Append(" theme=").Append(ic.Theme != null).Append(" panel=").Append(ic.ItemsPanel?.GetType().Name ?? "null").Append(" vc=").Append(ic.GetVisualChildren().Count());

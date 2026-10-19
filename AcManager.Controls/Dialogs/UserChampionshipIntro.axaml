@@ -1,4 +1,4 @@
-﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:c="clr-namespace:AcManager.Controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.UserChampionshipIntro" KeyUp="OnKeyUp" PointerReleased="OnMouseUp">
+﻿<mui:ModernDialog xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:c="clr-namespace:AcManager.Controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.UserChampionshipIntro" KeyUp="OnKeyUp" PointerReleased="OnMouseUp">
   <mui:ModernDialog.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -10,10 +10,10 @@
 
       <SolidColorBrush x:Key="ButtonBackground" Color="#f8f8f8"/>
       <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#dddddd"/>
-      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource AccentColor}"/>
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
       <SolidColorBrush x:Key="ButtonBorder" Color="#f8f8f8"/>
       <SolidColorBrush x:Key="ButtonBorderHover" Color="#dddddd"/>
-      <SolidColorBrush x:Key="ButtonBorderPressed" Color="{DynamicResource AccentColor}"/>
+      <SolidColorBrush x:Key="ButtonBorderPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
       <SolidColorBrush x:Key="ButtonText" Color="#333333"/>
       <SolidColorBrush x:Key="ButtonTextHover" Color="#333333"/>
       <SolidColorBrush x:Key="ButtonTextPressed" Color="#ffffff"/>

@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <!-- Default values for themes are taken from here. Feel free to override any of them. But you don’t have to override all. -->
   <!-- Special colors -->
   <Color x:Key="AccentColor">#1BA1E2</Color>
@@ -52,7 +52,7 @@
   <SolidColorBrush x:Key="CardHeaderTextDisabled" Color="#444444"/>
 
   <!-- For semi-transparent list items -->
-	<SolidColorBrush x:Key="ItemBackgroundSelectedSubtle" Color="{DynamicResource AccentColor}" Opacity="0.08"/>
+	<SolidColorBrush x:Key="ItemBackgroundSelectedSubtle" cdb:DynamicColorBrush.ColorKey="AccentColor" Opacity="0.08"/>
 
 	<!-- Alternate version with diagonal lines -->
 	<!--<LinearGradientBrush x:Key="ItemBackgroundSelectedSubtle" EndPoint="0,0" StartPoint="8,8" MappingMode="Absolute" SpreadMethod="Repeat" Opacity="0.12">
@@ -64,13 +64,13 @@
 
   <!-- Windows -->
   <Color x:Key="WindowBackgroundColor">#252526</Color>
-  <SolidColorBrush x:Key="WindowBackground" Color="{DynamicResource WindowBackgroundColor}"/>
+  <SolidColorBrush x:Key="WindowBackground" cdb:DynamicColorBrush.ColorKey="WindowBackgroundColor"/>
   <SolidColorBrush x:Key="WindowBorder" Color="#01000000"/><!-- If it’ll be completely transparent, WindowBorderActive will be hidden -->
-  <SolidColorBrush x:Key="WindowBorderActive" Color="{DynamicResource AccentColor}" Opacity=".5"/>
+  <SolidColorBrush x:Key="WindowBorderActive" cdb:DynamicColorBrush.ColorKey="AccentColor" Opacity=".5"/>
   <SolidColorBrush x:Key="WindowHeaderGradient" Color="Transparent"/>
   <SolidColorBrush x:Key="WindowText" Color="#C1C1C1"/>
   <SolidColorBrush x:Key="WindowTextReadOnly" Color="#717171"/>
-  <SolidColorBrush x:Key="FocusBorder" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="FocusBorder" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
 
   <!-- Specific background if needed -->
   <!-- PORT: removed x:Null resource WindowBackgroundContentBrush -->
@@ -83,23 +83,23 @@
 
   <SolidColorBrush x:Key="ButtonBackground" Color="#333333"/>
   <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="ButtonBackgroundPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="ButtonBorder" Color="#333333"/>
   <SolidColorBrush x:Key="ButtonBorderHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="ButtonBorderPressed" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="ButtonBorderPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="ButtonText" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ButtonTextHover" Color="#FFFFFF"/>
-  <SolidColorBrush x:Key="ButtonTextPressed" Color="{DynamicResource AccentOverlayColor}"/>
+  <SolidColorBrush x:Key="ButtonTextPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
   <SolidColorBrush x:Key="ButtonTextDisabled" Color="#515151"/>
 
   <SolidColorBrush x:Key="GoButtonBackground" Color="#333333"/>
   <SolidColorBrush x:Key="GoButtonBackgroundHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="GoButtonBackgroundPressed" Color="{DynamicResource GoColor}"/>
+  <SolidColorBrush x:Key="GoButtonBackgroundPressed" cdb:DynamicColorBrush.ColorKey="GoColor"/>
   <SolidColorBrush x:Key="GoButtonBorder" Color="#333333"/>
   <SolidColorBrush x:Key="GoButtonBorderHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="GoButtonBorderPressed" Color="{DynamicResource GoColor}"/>
-  <SolidColorBrush x:Key="GoButtonText" Color="{DynamicResource GoColor}"/>
-  <SolidColorBrush x:Key="GoButtonTextHover" Color="{DynamicResource GoColor}"/>
+  <SolidColorBrush x:Key="GoButtonBorderPressed" cdb:DynamicColorBrush.ColorKey="GoColor"/>
+  <SolidColorBrush x:Key="GoButtonText" cdb:DynamicColorBrush.ColorKey="GoColor"/>
+  <SolidColorBrush x:Key="GoButtonTextHover" cdb:DynamicColorBrush.ColorKey="GoColor"/>
   <SolidColorBrush x:Key="GoButtonTextPressed" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="GoButtonTextDisabled" Color="#515151"/>
 
@@ -107,23 +107,23 @@
   <SolidColorBrush x:Key="DataGridForeground" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="DataGridCellBackground" Color="Transparent"/>
   <SolidColorBrush x:Key="DataGridCellBackgroundHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="DataGridCellBackgroundSelected" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="DataGridCellBackgroundSelected" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="DataGridCellForeground" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="DataGridCellForegroundHover" Color="#FFFFFF"/>
-  <SolidColorBrush x:Key="DataGridCellForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
+  <SolidColorBrush x:Key="DataGridCellForegroundSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
   <SolidColorBrush x:Key="DataGridHeaderBackground" Color="Transparent"/>
   <SolidColorBrush x:Key="DataGridHeaderBackgroundHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="DataGridHeaderBackgroundPressed" Color="{DynamicResource AccentColor}"/>
-  <SolidColorBrush x:Key="DataGridHeaderBackgroundSelected" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="DataGridHeaderBackgroundPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
+  <SolidColorBrush x:Key="DataGridHeaderBackgroundSelected" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="DataGridHeaderForeground" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="DataGridHeaderForegroundHover" Color="#FFFFFF"/>
-  <SolidColorBrush x:Key="DataGridHeaderForegroundPressed" Color="{DynamicResource AccentOverlayColor}"/>
-  <SolidColorBrush x:Key="DataGridHeaderForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
+  <SolidColorBrush x:Key="DataGridHeaderForegroundPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
+  <SolidColorBrush x:Key="DataGridHeaderForegroundSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
   <SolidColorBrush x:Key="DataGridGridLines" Color="#333333"/>
-  <SolidColorBrush x:Key="DataGridDropSeparator" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="DataGridDropSeparator" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
 
-  <SolidColorBrush x:Key="Hyperlink" Color="{DynamicResource AccentColor}"/>
-  <SolidColorBrush x:Key="HyperlinkHover" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="Hyperlink" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
+  <SolidColorBrush x:Key="HyperlinkHover" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="HyperlinkDisabled" Color="#717171"/>
 
   <SolidColorBrush x:Key="InputBackground" Color="#333333"/>
@@ -136,10 +136,10 @@
   <SolidColorBrush x:Key="InputTextPlaceholder" Color="Gray"/>
 
   <SolidColorBrush x:Key="ItemBackgroundHover" Color="#3E3E42"/>
-  <SolidColorBrush x:Key="ItemBackgroundSelected" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="ItemBackgroundSelected" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="ItemBorder" Color="#3E3E42"/>
   <SolidColorBrush x:Key="ItemText" Color="#FFFFFF"/>
-  <SolidColorBrush x:Key="ItemTextSelected" Color="{DynamicResource AccentOverlayColor}"/>
+  <SolidColorBrush x:Key="ItemTextSelected" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
   <SolidColorBrush x:Key="ItemTextHover" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ItemTextDisabled" Color="#717171"/>
 
@@ -157,16 +157,16 @@
   <SolidColorBrush x:Key="ModernButtonBorderHover" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ModernButtonBorderPressed" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ModernButtonBorderDisabled" Color="#515151"/>
-  <SolidColorBrush x:Key="ModernButtonIconBackgroundPressed" Color="{DynamicResource AccentColor}"/>
-  <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" Color="{DynamicResource AccentOverlayColor}"/>
+  <SolidColorBrush x:Key="ModernButtonIconBackgroundPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
+  <SolidColorBrush x:Key="ModernButtonIconForegroundPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
   <SolidColorBrush x:Key="ModernButtonText" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ModernButtonTextHover" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ModernButtonTextPressed" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ModernButtonTextDisabled" Color="#515151"/>
 
-  <SolidColorBrush x:Key="ScrollBarThumb" Color="{DynamicResource AccentColor}" Opacity="0.6"/>
-  <SolidColorBrush x:Key="ScrollBarThumbHover" Color="{DynamicResource AccentColor}" Opacity="0.8"/>
-  <SolidColorBrush x:Key="ScrollBarThumbDragging" Color="{DynamicResource AccentColor}" Opacity="1"/>
+  <SolidColorBrush x:Key="ScrollBarThumb" cdb:DynamicColorBrush.ColorKey="AccentColor" Opacity="0.6"/>
+  <SolidColorBrush x:Key="ScrollBarThumbHover" cdb:DynamicColorBrush.ColorKey="AccentColor" Opacity="0.8"/>
+  <SolidColorBrush x:Key="ScrollBarThumbDragging" cdb:DynamicColorBrush.ColorKey="AccentColor" Opacity="1"/>
   <SolidColorBrush x:Key="ScrollBarBackground" Color="#333333"/>
   <SolidColorBrush x:Key="ScrollBarThumbBackground" Color="Transparent"/>
   <SolidColorBrush x:Key="ScrollBarThumbBackgroundDragging" Color="Transparent"/>
@@ -176,14 +176,14 @@
   <SolidColorBrush x:Key="ScrollBarThumbForegroundDragging" Color="#FFFFFF"/>
   <SolidColorBrush x:Key="ScrollBarThumbForegroundHover" Color="#919191"/>
 
-  <SolidColorBrush x:Key="SliderSelectionBackground" Color="{DynamicResource AccentColor}"/>
-  <SolidColorBrush x:Key="SliderSelectionBorder" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="SliderSelectionBackground" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
+  <SolidColorBrush x:Key="SliderSelectionBorder" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="SliderThumbBackground" Color="#717171"/>
-  <SolidColorBrush x:Key="SliderThumbBackgroundDragging" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="SliderThumbBackgroundDragging" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="SliderThumbBackgroundHover" Color="#919191"/>
   <SolidColorBrush x:Key="SliderThumbBackgroundDisabled" Color="#333333"/>
   <SolidColorBrush x:Key="SliderThumbBorder" Color="#717171"/>
-  <SolidColorBrush x:Key="SliderThumbBorderDragging" Color="{DynamicResource AccentColor}"/>
+  <SolidColorBrush x:Key="SliderThumbBorderDragging" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
   <SolidColorBrush x:Key="SliderThumbBorderHover" Color="#919191"/>
   <SolidColorBrush x:Key="SliderThumbBorderDisabled" Color="#333333"/>
   <SolidColorBrush x:Key="SliderTrackBackground" Color="#333333"/>
@@ -202,13 +202,13 @@
 	<DropShadowEffect x:Key="FancyHintButtonsEffect" Opacity="0.6" Color="Black" BlurRadius="10" OffsetX="0" OffsetY="2"/>
 	<SolidColorBrush x:Key="FancyHintButtonBackground" Color="#333333"/>
 	<SolidColorBrush x:Key="FancyHintButtonBackgroundHover" Color="#3E3E42"/>
-	<SolidColorBrush x:Key="FancyHintButtonBackgroundPressed" Color="{DynamicResource AccentColor}"/>
+	<SolidColorBrush x:Key="FancyHintButtonBackgroundPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
 	<SolidColorBrush x:Key="FancyHintButtonBorder" Color="#333333"/>
 	<SolidColorBrush x:Key="FancyHintButtonBorderHover" Color="#3E3E42"/>
-	<SolidColorBrush x:Key="FancyHintButtonBorderPressed" Color="{DynamicResource AccentColor}"/>
+	<SolidColorBrush x:Key="FancyHintButtonBorderPressed" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
 	<SolidColorBrush x:Key="FancyHintButtonText" Color="#FFFFFF"/>
 	<SolidColorBrush x:Key="FancyHintButtonTextHover" Color="#FFFFFF"/>
-	<SolidColorBrush x:Key="FancyHintButtonTextPressed" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="FancyHintButtonTextPressed" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
 	<SolidColorBrush x:Key="FancyHintButtonTextDisabled" Color="#515151"/>
 
   <!-- Text editor, syntax highlighting -->

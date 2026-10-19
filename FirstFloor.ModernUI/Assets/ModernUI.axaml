@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns:cdb="clr-namespace:FirstFloor.ModernUI.Presentation;assembly=FirstFloor.ModernUI" xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="AsyncButton.axaml"/>
     <ResourceInclude Source="Button.axaml"/>
@@ -55,11 +55,11 @@
   <!-- PORT: removed PopupAnimation -->
 
   <!-- Basic color brushes -->
-  <SolidColorBrush x:Key="Accent" Color="{DynamicResource AccentColor}"/>
-  <SolidColorBrush x:Key="AccentOverlay" Color="{DynamicResource AccentOverlayColor}"/>
-  <SolidColorBrush x:Key="Go" Color="{DynamicResource GoColor}"/>
-  <SolidColorBrush x:Key="Error" Color="{DynamicResource ErrorColor}"/>
-  <SolidColorBrush x:Key="ThumbnailBackground" Color="{DynamicResource ThumbnailBackgroundColor}"/>
+  <SolidColorBrush x:Key="Accent" cdb:DynamicColorBrush.ColorKey="AccentColor"/>
+  <SolidColorBrush x:Key="AccentOverlay" cdb:DynamicColorBrush.ColorKey="AccentOverlayColor"/>
+  <SolidColorBrush x:Key="Go" cdb:DynamicColorBrush.ColorKey="GoColor"/>
+  <SolidColorBrush x:Key="Error" cdb:DynamicColorBrush.ColorKey="ErrorColor"/>
+  <SolidColorBrush x:Key="ThumbnailBackground" cdb:DynamicColorBrush.ColorKey="ThumbnailBackgroundColor"/>
 
   <!-- Font settings -->
   <sys:Double x:Key="DefaultFontSize">13</sys:Double>

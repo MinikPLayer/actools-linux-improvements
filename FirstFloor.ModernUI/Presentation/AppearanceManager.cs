@@ -71,6 +71,7 @@ namespace FirstFloor.ModernUI.Presentation {
             }
 
             CurrentThemeDictionary = dictionary;
+            DynamicColorBrush.Refresh();
             ThemeChange?.Invoke(this, EventArgs.Empty);
         }
 
@@ -162,6 +163,7 @@ namespace FirstFloor.ModernUI.Presentation {
                 var overlay = value.IsBright() ? Colors.Black : Colors.White;
                 Application.Current.Resources[KeyAccentOverlayColor] = overlay;
                 Application.Current.Resources[KeyAccentOverlay] = new SolidColorBrush(overlay);
+                DynamicColorBrush.Refresh();
 
                 if (CurrentThemeDictionary != null) {
                     if (((ResourceDictionary)CurrentThemeDictionary).Source != null) {
