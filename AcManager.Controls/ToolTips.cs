@@ -34,7 +34,7 @@ namespace AcManager.Controls {
             obj.SetValue(CarProperty, value);
         }
 
-        public static readonly DependencyProperty CarProperty = DependencyProperty.RegisterAttached("Car", typeof(CarObject),
+        public static readonly AttachedProperty<CarObject> CarProperty = DP.RegisterAttached<CarObject>("Car",
                 typeof(ToolTips), new UIPropertyMetadata(OnToolTipChanged));
 
         public static CarSkinObject GetCarSkin(DependencyObject obj) {
@@ -45,7 +45,7 @@ namespace AcManager.Controls {
             obj.SetValue(CarSkinProperty, value);
         }
 
-        public static readonly DependencyProperty CarSkinProperty = DependencyProperty.RegisterAttached("CarSkin", typeof(CarSkinObject),
+        public static readonly AttachedProperty<CarSkinObject> CarSkinProperty = DP.RegisterAttached<CarSkinObject>("CarSkin",
                 typeof(ToolTips), new UIPropertyMetadata(OnToolTipChanged));
 
         public static TrackObjectBase GetTrack(DependencyObject obj) {
@@ -56,7 +56,7 @@ namespace AcManager.Controls {
             obj.SetValue(TrackProperty, value);
         }
 
-        public static readonly DependencyProperty TrackProperty = DependencyProperty.RegisterAttached("Track", typeof(TrackObjectBase),
+        public static readonly AttachedProperty<TrackObjectBase> TrackProperty = DP.RegisterAttached<TrackObjectBase>("Track",
                 typeof(ToolTips), new UIPropertyMetadata(OnToolTipChanged));
 
         public static WeatherObject GetWeather(DependencyObject obj) {
@@ -67,7 +67,7 @@ namespace AcManager.Controls {
             obj.SetValue(WeatherProperty, value);
         }
 
-        public static readonly DependencyProperty WeatherProperty = DependencyProperty.RegisterAttached("Weather", typeof(WeatherObject),
+        public static readonly AttachedProperty<WeatherObject> WeatherProperty = DP.RegisterAttached<WeatherObject>("Weather",
                 typeof(ToolTips), new UIPropertyMetadata(OnToolTipChanged));
 
         public static ICupSupportedObject GetCupUpdate(DependencyObject obj) {
@@ -78,7 +78,7 @@ namespace AcManager.Controls {
             obj.SetValue(CupUpdateProperty, value);
         }
 
-        public static readonly DependencyProperty CupUpdateProperty = DependencyProperty.RegisterAttached("CupUpdate", typeof(ICupSupportedObject),
+        public static readonly AttachedProperty<ICupSupportedObject> CupUpdateProperty = DP.RegisterAttached<ICupSupportedObject>("CupUpdate",
                 typeof(ToolTips), new UIPropertyMetadata(OnToolTipChanged));
 
         private static void OnToolTipChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -89,8 +89,8 @@ namespace AcManager.Controls {
 
         private static void ResetToolTip(FrameworkElement element) {
             SetIsDirty(element, true);
-            element.MouseEnter -= OnElementMouseEnter;
-            element.MouseEnter += OnElementMouseEnter;
+            element.RemoveMouseEnter(OnElementMouseEnter);
+            element.AddMouseEnter(OnElementMouseEnter);
             element.PreviewGotKeyboardFocus -= OnElementMouseEnter;
             element.PreviewGotKeyboardFocus += OnElementMouseEnter;
 
@@ -107,7 +107,7 @@ namespace AcManager.Controls {
             obj.SetValue(GenericObjectProperty, value);
         }
 
-        public static readonly DependencyProperty GenericObjectProperty = DependencyProperty.RegisterAttached("GenericObject", typeof(AcObjectNew),
+        public static readonly AttachedProperty<AcObjectNew> GenericObjectProperty = DP.RegisterAttached<AcObjectNew>("GenericObject",
                 typeof(ToolTips), new UIPropertyMetadata(OnGenericObjectChanged));
 
         private static void OnGenericObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -129,7 +129,7 @@ namespace AcManager.Controls {
             obj.SetValue(IsDirtyProperty, value);
         }
 
-        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.RegisterAttached("IsDirty", typeof(bool),
+        public static readonly AttachedProperty<bool> IsDirtyProperty = DP.RegisterAttached<bool>("IsDirty",
                 typeof(ToolTips), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.None));
 
         [CanBeNull]

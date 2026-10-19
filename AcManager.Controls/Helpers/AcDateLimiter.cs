@@ -15,7 +15,7 @@ namespace AcManager.Controls.Helpers {
             obj.SetValue(After1970OnlyProperty, value);
         }
 
-        public static readonly DependencyProperty After1970OnlyProperty = DependencyProperty.RegisterAttached("After1970Only", typeof(bool),
+        public static readonly AttachedProperty<bool> After1970OnlyProperty = DP.RegisterAttached<bool>("After1970Only",
                 typeof(AcDateLimiter), new UIPropertyMetadata(OnAfter1970OnlyChanged));
 
         private static void OnAfter1970OnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

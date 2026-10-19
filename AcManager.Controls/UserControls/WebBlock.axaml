@@ -1,0 +1,111 @@
+﻿<DockPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sys="using:System" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity" xmlns:web="clr-namespace:AcManager.Controls.UserControls.Web" xmlns:uc="clr-namespace:AcManager.Controls.UserControls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.WebBlock" Loaded="OnLoaded" Unloaded="OnUnloaded" mui:InputBindingBehavior.PropagateToWindow="True" PointerWheelChanged="OnMouseWheel" PointerPressed="OnMouseRightButtonDown" PointerReleased="OnMouseRightButtonUp" DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop">
+  <!-- Propagate bindings to window? -->
+  <!-- PORT: removed DockPanel.CommandBindings -->
+  <DockPanel.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ControlTheme TargetType="mui:ModernButton" x:Key="{x:Type mui:ModernButton}">
+        <Setter Property="Width" Value="38"/>
+        <Setter Property="Background" Value="{DynamicResource Accent}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="mui:ModernButton">
+              <mui:Cell x:Name="Cell">
+                <Border x:Name="MouseOver" Background="{DynamicResource ButtonBackgroundHover}" BorderThickness="1" BorderBrush="{DynamicResource ButtonBorderHover}" Opacity="0"/>
+                <Border x:Name="Pressed" Background="{DynamicResource ButtonBackgroundPressed}" BorderThickness="1" Opacity="0"/>
+                <Path Data="{TemplateBinding IconData}" Width="13" Height="13" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+              </mui:Cell>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^ /template/ Border#Pressed"><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/></Style><!-- PORT: storyboard actions of trigger [Tag=None] not converted --><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+                </Style><Style Selector="^:focus /template/ Border#Pressed"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+                </Style></ControlTheme>
+
+      <ItemsPanelTemplate x:Key="TabsPanelTemplate">
+        <WrapPanel Orientation="Horizontal"/>
+      </ItemsPanelTemplate>
+
+      <DataTemplate x:Key="TabItemTemplate" DataType="{x:Type web:WebTab}">
+        <Border x:Name="PART_Border" Padding="4 3 4 5" Width="160">
+          <DockPanel>
+            <Button Margin="4 1 0 -1" Command="{Binding CloseCommand}" IsVisible="{Binding CloseCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource DeleteButton}"/>
+            <mui:BetterImage Width="16" Height="16" Filename="{Binding Favicon}" Margin="0 0 4 0"/>
+            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontWeight="Normal" VerticalAlignment="Center" Classes="Small"/>
+          </DockPanel>
+        </Border>
+      </DataTemplate>
+
+      <ControlTheme x:Key="TabItemStyle" TargetType="ListBoxItem">
+        <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CardBorder}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ListBoxItem">
+              <Border x:Name="PART_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Height="29">
+                <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+              </Border>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+        <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+          </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+          </Style><Style Selector="^:selected"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+          </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+          </Style><Style Selector="^:selected /template/ Border#PART_Border"><Setter Property="Style" Value="{StaticResource HighlightedBackground}"/>
+                </Style></ControlTheme>
+    </ResourceDictionary>
+  </DockPanel.Resources>
+
+  <DockPanel DockPanel.Dock="Top" Height="29" x:Name="AddressBar" ZIndex="1">
+    <mui:ModernButton DockPanel.Dock="Left" IconData="F1 M 33,22L 33,26L 19.75,26L 27,33L 20.5,33L 11,24L 20.5,15L 27,15L 19.75,22L 33,22 Z" ToolTip.Tip="{x:Static mui:UiStrings.Back}" Command="{x:Static swi:NavigationCommands.BrowseBack}"/>
+    <mui:ModernButton DockPanel.Dock="Left" IconData="F1 M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z" ToolTip.Tip="{x:Static mui:UiStrings.Forward}" Command="{x:Static swi:NavigationCommands.BrowseForward}"/>
+    <mui:ModernButton DockPanel.Dock="Left" IconData="F1 M 24.0033,56.0078L 24.0033,38.0053L 22.0031,40.0056L 19.0027,35.0049L 38.0053,20.0028L 45.0063,25.5299L 45.0063,21.753L 49.0068,21.0029L 49.0068,28.6882L 57.008,35.0049L 54.0075,40.0056L 52.0073,38.0053L 52.0073,56.0078L 24.0033,56.0078 Z M 38.0053,26.9204L 27.0038,36.005L 27.0038,53.0074L 33.0046,53.0074L 33.0046,42.006L 43.006,42.006L 43.006,53.0074L 49.0068,53.0074L 49.0068,36.005L 38.0053,26.9204 Z " ToolTip.Tip="{x:Static mui:UiStrings.Home}" Command="{x:Static swi:NavigationCommands.BrowseHome}"/>
+    <ItemsControl DockPanel.Dock="Right" ItemsSource="{Binding AddressBarButtons, RelativeSource={RelativeSource AncestorType={x:Type uc:WebBlock}}}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
+    <mui:ModernButton DockPanel.Dock="Right" IconData="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z" ToolTip.Tip="{x:Static mui:UiStrings.Go}" Command="{x:Static swi:NavigationCommands.Refresh}"/>
+    <mui:ModernButton DockPanel.Dock="Right" IconData="F1 M 19.0002,34L 19.0002,42L 43.7502,42L 33.7502,52L 44.2502,52L 58.2502,38L 44.2502,24L 33.7502,24L 43.7502,34L 19.0002,34 Z" ToolTip.Tip="{x:Static mui:UiStrings.Reload}" Command="{x:Static swi:NavigationCommands.GoToPage}"/>
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition MinWidth="200"/>
+      </Grid.ColumnDefinitions>
+      <ListBox Grid.Column="0" x:Name="TabsList" SelectionChanged="OnTabsListSelectionChanged" MaxWidth="400" ItemsPanel="{StaticResource TabsPanelTemplate}" ItemTemplate="{StaticResource TabItemTemplate}" ScrollViewer.VerticalScrollBarVisibility="Disabled" mui:FancyScroll.Outside="True" mui:FancyScroll.InvertLocation="True" IsVisible="{Binding Items.Count, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=1, RelativeSource={RelativeSource Self}}" ItemContainerTheme="{StaticResource TabItemStyle}">
+        <i:Interaction.Behaviors>
+          <mui:HorizontalScrollBehavior/>
+        </i:Interaction.Behaviors>
+      </ListBox>
+      <mui:Cell Grid.Column="1" MinWidth="200">
+        <mui:BetterTextBox x:Name="UrlTextBox" AcceptsReturn="True" FontSize="{DynamicResource SmallFontSize}" Padding="2 3 1 1" KeyDown="OnUrlTextBoxKeyDown" KeyUp="OnUrlTextBoxKeyUp"/>
+        <DockPanel HorizontalAlignment="Right">
+          <ContentControl x:Name="AddressBarExtra" DockPanel.Dock="Right" IsVisible="False"/>
+          <ProgressBar x:Name="ProgressBar" Height="4" VerticalAlignment="Center" Width="80" HorizontalAlignment="Right" Margin="8 0" IsIndeterminate="True" IsHitTestVisible="False"/>
+        </DockPanel>
+      </mui:Cell>
+    </Grid>
+  </DockPanel>
+  <ContentPresenter DockPanel.Dock="Left" Content="{Binding LeftSideContent, RelativeSource={RelativeSource AncestorType={x:Type uc:WebBlock}}}"/>
+  <ContentPresenter DockPanel.Dock="Right" Content="{Binding RightSideContent, RelativeSource={RelativeSource AncestorType={x:Type uc:WebBlock}}}"/>
+  <Border x:Name="PageParent"/>
+</DockPanel>

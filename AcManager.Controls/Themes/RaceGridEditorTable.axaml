@@ -1,0 +1,276 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls.ViewModels" xmlns:uc="clr-namespace:AcManager.Controls.UserControls" xmlns:co="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/CheckBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ContextMenuButton.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <DataTemplate x:Key="Detailed.CarDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <StackPanel Orientation="Horizontal">
+      <mui:BetterImage Filename="{Binding Car.BrandBadge}" Width="16" Height="16" Margin="0 0 4 0" ClearOnChange="True"/>
+      <TextBlock Text="{Binding Car.DisplayName}" VerticalAlignment="Center"/>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.SkinDataTemplateOld" DataType="{x:Type c:RaceGridEntry}">
+    <Button Theme="{StaticResource BaseButtonStyle.Nothing}" x:Name="__Dt0">
+      <Button.Styles><Style Selector="#__Dt0"><Style Selector="^ #SetButton"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ #RandomButton"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover #SetButton"><Setter Property="IsVisible" Value="True"/>
+        </Style><Style Selector="^:pointerover #RandomButton"><Setter Property="IsVisible" Value="True"/>
+      </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S2" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] #Livery"><Setter Property="IsVisible" Value="False"/>
+        </Style><Style Selector="^[(pa|T.S1)=True] #RandomButton"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S2)=True] #TextBox"><Setter Property="IsVisible" Value="False"/>
+      </Style></Style></Button.Styles><DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True">
+        <!-- PORT: removed DockPanel.InputBindings -->
+        <mui:BetterImage x:Name="Livery" Filename="{Binding CarSkin.LiveryImage}" Width="16" Height="16" Margin="0 0 4 0" DockPanel.Dock="Left" ClearOnChange="True"/>
+        <Button x:Name="RandomButton" DockPanel.Dock="Right" Width="16" Height="16" Margin="4 0 0 0" VerticalAlignment="Center" Padding="2" Command="{Binding RandomSkinCommand}">
+          <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+        </Button>
+        <Button x:Name="SetButton" DockPanel.Dock="Right" Width="16" Height="16" Margin="4 0 0 0" VerticalAlignment="Center" Padding="2" Command="{Binding SkinDialogCommand}">
+          <Border Width="9" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" ClipToBounds="True">
+            <Path Data="M4.4,0 L4.4,10 M0,4.4 L9,4.4 Z" Stretch="Fill" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+          </Border>
+        </Button>
+        <mui:PlaceholderTextBlock x:Name="TextBox" Text="{Binding CarSkin.DisplayName}" Placeholder="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/>
+      </DockPanel>
+    </Button>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.SkinDataTemplatePopup" DataType="{x:Type c:RaceGridEntry}">
+    <DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True" x:Name="__Dt3">
+      <DockPanel.Styles><Style Selector="#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S5" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] #Livery"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S5)=True] #TextBox"><Setter Property="IsVisible" Value="False"/>
+      </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
+      <mui:ContextMenuButton DockPanel.Dock="Right">
+        <uc:ModernPopup mui:PopupHelper.Group="1">
+          <DockPanel MaxWidth="240">
+            <Button DockPanel.Dock="Bottom" Margin="0 8 0 0" Command="{Binding RandomSkinCommand}" Content="Random"/>
+            <ListBox ItemsSource="{Binding Car.EnabledSkinsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="4" SelectedItem="{Binding CarSkin}" VerticalAlignment="Top" BorderThickness="0" ItemTemplate="{StaticResource CarSkinItemTemplate}">
+              <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal" VirtualizationMode="Recycling" IsVirtualizing="True" ScrollUnit="Pixel"/>
+                </ItemsPanelTemplate>
+              </ListBox.ItemsPanel>
+            </ListBox>
+          </DockPanel>
+        </uc:ModernPopup>
+      </mui:ContextMenuButton>
+      <mui:BetterImage x:Name="Livery" Filename="{Binding CarSkin.LiveryImage}" Width="16" Height="16" Margin="0 0 4 0" DockPanel.Dock="Left" ClearOnChange="True"/>
+      <mui:PlaceholderTextBlock x:Name="TextBox" Text="{Binding CarSkin.DisplayName}" Placeholder="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/>
+    </DockPanel>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.SkinDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True" x:Name="__Dt8">
+      <DockPanel.Styles><Style Selector="#__Dt8"><Style Selector="^ #ComboBox"><Setter Property="Nullable" Value="True"/><Setter Property="SelectedItem" Value="{Binding CarSkin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S10" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S10)=True] #ComboBox"><Setter Property="Nullable" Value="False"/>
+        <Setter Property="SelectedItem" Value="{Binding Car.SelectedSkin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+      </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
+      <mui:BetterComboBox x:Name="ComboBox" IsEditable="False" Placeholder="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}" ItemsSource="{Binding Car.EnabledSkinsListView}" Theme="{StaticResource BetterComboBox.Borderless.White}">
+        <ComboBox.ItemTemplate>
+          <DataTemplate DataType="{x:Type t:CarSkinObject}">
+            <DockPanel Height="18" x:Name="__Dt6">
+              <DockPanel.Styles><Style Selector="#__Dt6"><Style Selector="^ #Text"><Setter Property="Text" Value="{Binding DisplayName}"/></Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NullValue}"/></Style><Style Selector="^[(pa|T.S7)=True] #Image"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S7)=True] #Text"><Setter Property="Text" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/>
+              </Style></Style></DockPanel.Styles><mui:BetterImage x:Name="Image" Margin="0 0 4 0" ClearOnChange="True" Filename="{Binding LiveryImage}" Width="18" Height="18"/>
+              <TextBlock x:Name="Text" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
+            </DockPanel>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </mui:BetterComboBox>
+    </DockPanel>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.NameDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterTextBox x:Name="TextBox" Theme="{StaticResource Borderless.White}"><BetterTextBox.Styles><Style Selector="#TextBox"><Style Selector="^ #TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Name, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S11" Value="{Binding QuickDriveUseSkinNames, Source={x:Static t:SettingsHolder.Drive}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S12" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S13" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S13)=True] #TextBox"><Setter Property="Placeholder" Value="{Binding PlayerName, Source={x:Static t:SettingsHolder.Drive}}"/>
+        <Setter Property="Text" Value=""/>
+        <Setter Property="IsEnabled" Value="False"/>
+      </Style></Style></BetterTextBox.Styles></mui:BetterTextBox>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.NationalityDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterComboBox x:Name="TextBox" ItemsSource="{Binding KunosIdsCountries, Source={x:Static t:DataProvider.Instance}}" Theme="{StaticResource BetterComboBox.Borderless.White}"><BetterComboBox.Styles><Style Selector="#TextBox"><Style Selector="^ #TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Nationality, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S14" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S14)=True] #TextBox"><Setter Property="Placeholder" Value="{Binding PlayerNationality, Source={x:Static t:SettingsHolder.Drive}}"/>
+        <Setter Property="Text" Value=""/>
+        <Setter Property="IsEnabled" Value="False"/>
+      </Style></Style></BetterComboBox.Styles></mui:BetterComboBox>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.AiDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="50" Maximum="100" Mode="Integer" Text="{Binding InputAiLevel, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><BetterTextBox.Styles><Style Selector="#TextBox"><Style Selector="^"><Setter Property="pa:T.S15" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S15)=True] #TextBox"><Setter Property="IsVisible" Value="False"/>
+      </Style></Style></BetterTextBox.Styles></mui:BetterTextBox>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.AggressionDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="0" Maximum="100" Mode="Integer" Text="{Binding InputAiAggression, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><BetterTextBox.Styles><Style Selector="#TextBox"><Style Selector="^"><Setter Property="pa:T.S16" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S16)=True] #TextBox"><Setter Property="IsVisible" Value="False"/>
+      </Style></Style></BetterTextBox.Styles></mui:BetterTextBox>
+    </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.BallastDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="None" Minimum="0" Maximum="100" Mode="IntegerOrLabel" ModeLabel="None" Text="{Binding Ballast, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"/>
+  </DataTemplate>
+
+  <DataTemplate x:Key="Detailed.RestrictorDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="None" Minimum="0" Maximum="100" Mode="IntegerOrLabel" ModeLabel="None" Text="{Binding Restrictor, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"/>
+  </DataTemplate>
+
+  <mui:ContextMenuButton x:Key="AiLimitationButton" Padding="4" Margin="0 -4" VerticalAlignment="Center" DockPanel.Dock="Right" Command="{Binding AiLimitationDetails.ShowMenuCommand}" ForceNear="False" ExtraDelay="True" Theme="{StaticResource ContextMenuButton.AsButton}">
+    <uc:ModernPopup Padding="16 12 16 16" StaysOpen="False" TextElement.Foreground="{DynamicResource WindowText}">
+      <mui:SpacingStackPanel Spacing="4" Width="200">
+        <TextBlock Text="Allowed tyres:" Classes="Label"/>
+        <ItemsControl ItemsSource="{Binding AiLimitationDetails.Tyres}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <CheckBox IsChecked="{Binding IsAllowed}">
+                <TextBlock Text="{Binding DisplayName}"/>
+              </CheckBox>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <mui:ValueLabel Content="{x:Static t:ToolsStrings.Assists_TyreWear}" Value="{Binding AiLimitationDetails.TyresWearMultiplier}" Postfix="×" Margin="-8 8 0 0"/>
+        <Slider Minimum="0" Maximum="1" Margin="0 0 0 4" TickFrequency="0.1" TickPlacement="None" IsSnapToTickEnabled="False">
+          <Slider.Value>
+            <Binding Path="AiLimitationDetails.TyresWearMultiplier">
+              <Binding.Converter>
+                <mui:LogarithmicScale Minimum="0" Middle="2" Maximum="10" RoundTo="0.01"/>
+              </Binding.Converter>
+            </Binding>
+          </Slider.Value>
+        </Slider>
+
+        <mui:ValueLabel Content="Fuel tank size" Value="{Binding AiLimitationDetails.FuelMaxMultiplier}" Postfix="×" Margin="-8 4 0 0"/>
+        <Slider Minimum="0" Maximum="1" Margin="0 0 0 4" TickFrequency="0.1" TickPlacement="None" IsSnapToTickEnabled="False">
+          <Slider.Value>
+            <Binding Path="AiLimitationDetails.FuelMaxMultiplier">
+              <Binding.Converter>
+                <mui:LogarithmicScale Minimum="0" Middle="1" Maximum="4" RoundTo="0.01"/>
+              </Binding.Converter>
+            </Binding>
+          </Slider.Value>
+        </Slider>
+
+        <DockPanel DataContext="{Binding AiLimitationDetails.FinalGearRatio}" Margin="0 8 0 0" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
+            <Run Text="Maximum speed: "/>
+            <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
+          </TextBlock>
+          <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Classes="Label"/>
+          <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" DisplayMemberPath="Key" VerticalAlignment="Top"/>
+        </DockPanel>
+      </mui:SpacingStackPanel>
+    </uc:ModernPopup>
+  </mui:ContextMenuButton>
+
+  <DataTemplate x:Key="Detailed.AiLimitationDataTemplate" DataType="{x:Type c:RaceGridEntry}">
+    <DockPanel>
+      <!--<mui:BooleanLazySwitch DockPanel.Dock="Right" Value="{Binding AiLimitationDetails.IsEnabled}" TrueResourceKey="AiLimitationButton">
+        <mui:BooleanLazySwitch.Resources>
+          <mui:SharedResourceDictionary Source="/AcManager.Controls;component/Themes/RaceGridEditorTable.xaml" />
+        </mui:BooleanLazySwitch.Resources>
+      </mui:BooleanLazySwitch>-->
+      <mui:BooleanSwitch DockPanel.Dock="Right" Value="{Binding AiLimitationDetails.IsEnabled}">
+        <mui:BooleanSwitch.True>
+          <mui:ContextMenuButton Padding="4" Margin="0 -4" VerticalAlignment="Center" DockPanel.Dock="Right" Command="{Binding AiLimitationDetails.ShowMenuCommand}" ForceNear="False" ExtraDelay="True" Theme="{StaticResource ContextMenuButton.AsButton}">
+            <uc:ModernPopup Padding="16 12 16 16" StaysOpen="False" TextElement.Foreground="{DynamicResource WindowText}">
+              <mui:SpacingStackPanel Spacing="4" Width="200">
+                <TextBlock Text="Allowed tyres:" Classes="Label"/>
+                <ItemsControl ItemsSource="{Binding AiLimitationDetails.Tyres}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <CheckBox IsChecked="{Binding IsAllowed}">
+                        <TextBlock Text="{Binding DisplayName}"/>
+                      </CheckBox>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <mui:ValueLabel Content="{x:Static t:ToolsStrings.Assists_TyreWear}" Value="{Binding AiLimitationDetails.TyresWearMultiplier}" Postfix="×" Margin="-8 8 0 0"/>
+                <Slider Minimum="0" Maximum="1" Margin="0 0 0 4" TickFrequency="0.1" TickPlacement="None" IsSnapToTickEnabled="False">
+                  <Slider.Value>
+                    <Binding Path="AiLimitationDetails.TyresWearMultiplier">
+                      <Binding.Converter>
+                        <mui:LogarithmicScale Minimum="0" Middle="2" Maximum="10" RoundTo="0.01"/>
+                      </Binding.Converter>
+                    </Binding>
+                  </Slider.Value>
+                </Slider>
+
+                <mui:ValueLabel Content="Fuel tank size" Value="{Binding AiLimitationDetails.FuelMaxMultiplier}" Postfix="×" Margin="-8 4 0 0"/>
+                <Slider Minimum="0" Maximum="1" Margin="0 0 0 4" TickFrequency="0.1" TickPlacement="None" IsSnapToTickEnabled="False">
+                  <Slider.Value>
+                    <Binding Path="AiLimitationDetails.FuelMaxMultiplier">
+                      <Binding.Converter>
+                        <mui:LogarithmicScale Minimum="0" Middle="1" Maximum="4" RoundTo="0.01"/>
+                      </Binding.Converter>
+                    </Binding>
+                  </Slider.Value>
+                </Slider>
+
+                <DockPanel DataContext="{Binding AiLimitationDetails.FinalGearRatio}" Margin="0 8 0 0" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+                  <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
+                    <Run Text="Maximum speed: "/>
+                    <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
+                  </TextBlock>
+                  <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Classes="Label"/>
+                  <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" DisplayMemberPath="Key" VerticalAlignment="Top"/>
+                </DockPanel>
+              </mui:SpacingStackPanel>
+            </uc:ModernPopup>
+          </mui:ContextMenuButton>
+        </mui:BooleanSwitch.True>
+      </mui:BooleanSwitch>
+      <CheckBox IsChecked="{Binding AiLimitationDetails.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 0" Width="80" Classes="CheckBox.White">
+        <Label Content="Enable" TextElement.Foreground="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource AncestorType={x:Type DataGridCell}}}"/>
+      </CheckBox>
+    </DockPanel>
+  </DataTemplate>
+
+  <ControlTheme TargetType="co:RaceGridEditorTable" x:Key="{x:Type co:RaceGridEditorTable}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="co:RaceGridEditorTable">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition/>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DataGrid Grid.Row="0" ItemsSource="{Binding Model.FilteredView, RelativeSource={RelativeSource TemplatedParent}}" mui:Draggable.Enabled="True" MinRowHeight="20" x:Name="PART_DataGrid" mui:DataGridFix.Enabled="True" Theme="{StaticResource DataGrid.Lite}">
+              <DataGrid.Columns>
+                <DataGridTemplateColumn Width="*" Header="{x:Static co:ControlsStrings.TableHeader_Car}" SortMemberPath="Car.DisplayName" CellTemplate="{StaticResource Detailed.CarDataTemplate}"/>
+                <DataGridTemplateColumn Width="120" Header="{x:Static co:ControlsStrings.TableHeader_CarSkin}" SortMemberPath="CarSkin.DisplayName" CellTemplate="{StaticResource Detailed.SkinDataTemplate}"/>
+                <DataGridTemplateColumn x:Name="PART_NameColumn" Width="140" Header="{x:Static co:ControlsStrings.TableHeader_Name}" SortMemberPath="Name" CellTemplate="{StaticResource Detailed.NameDataTemplate}"/>
+                <DataGridTemplateColumn x:Name="PART_NationalityColumn" Width="100" Header="{x:Static co:ControlsStrings.TableHeader_Nationality}" SortMemberPath="Nationality" CellTemplate="{StaticResource Detailed.NationalityDataTemplate}"/>
+                <DataGridTemplateColumn Width="100" Header="Strength" SortMemberPath="InputAiLevel" CellTemplate="{StaticResource Detailed.AiDataTemplate}"/>
+                <DataGridTemplateColumn Width="100" Header="Aggression" SortMemberPath="InputAiAggression" CellTemplate="{StaticResource Detailed.AggressionDataTemplate}"/>
+                <DataGridTemplateColumn x:Name="PART_BallastColumn" Width="100" Header="{x:Static t:ToolsStrings.Common_Ballast}" SortMemberPath="Ballast" CellTemplate="{StaticResource Detailed.BallastDataTemplate}"/>
+                <DataGridTemplateColumn x:Name="PART_RestrictorColumn" Width="100" Header="{x:Static t:ToolsStrings.Common_Restrictor}" SortMemberPath="Restrictor" CellTemplate="{StaticResource Detailed.RestrictorDataTemplate}"/>
+                <DataGridTemplateColumn x:Name="PART_AiLimitationColumn" Width="120" Header="AI limitations" CanUserSort="False" CellTemplate="{StaticResource Detailed.AiLimitationDataTemplate}" IsVisible="False"/>
+              </DataGrid.Columns>
+            </DataGrid>
+
+            <co:PropertiesGrid HorizontalSpacing="20" Grid.Row="1" Margin="0 8 0 0" Rows="1" LabelWidth="120" Columns="0" LabelPadding="0">
+              <mui:BetterTextBox x:Name="PART_PlayerBallast" co:PropertiesGrid.Label="Your ballast:" Text="{Binding Model.PlayerBallast, RelativeSource={RelativeSource TemplatedParent}}" Mode="IntegerOrLabel" ModeLabel="None" Placeholder="None"/>
+              <mui:BetterTextBox x:Name="PART_PlayerRestrictor" co:PropertiesGrid.Label="Your restrictor:" Text="{Binding Model.PlayerRestrictor, RelativeSource={RelativeSource TemplatedParent}}" Mode="IntegerOrLabel" ModeLabel="None" Placeholder="None"/>
+              <mui:HistoricalTextBox co:PropertiesGrid.Label="Random skins filter:" Text="{Binding Model.RandomSkinsFilter, RelativeSource={RelativeSource TemplatedParent}}" Placeholder="*" SaveKey="__randomSkinsFilters"/>
+              <CheckBox IsChecked="{Binding Model.SequentialSkins, RelativeSource={RelativeSource TemplatedParent}}" Margin="-120 -4 0 4" ToolTip.Tip="App will try to arrange skins in ascending order, while respecting filter and keeping everything shuffled if needed">
+                <Label Content="Pick skins sequentially"/>
+              </CheckBox>
+            </co:PropertiesGrid>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
+              <co:UserPresetsControl Margin="0 0 4 0" UserPresetable="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}" MinWidth="300"/>
+              <Button Command="{Binding Model.ShareCommand, RelativeSource={RelativeSource TemplatedParent}}" Margin="0 0 4 0" Content="Share link"/>
+              <!--ToolTip="{x:Static g:AppStrings.Common_Share_SettingsTooltip}"-->
+              <Button Command="{TemplateBinding AddOpponentCommand}" Content="{x:Static mui:UiStrings.Common_Add}"/>
+              <Button Command="{TemplateBinding CloseCommand}" Content="{x:Static mui:UiStrings.Close}" Margin="4 0 0 0"/>
+            </StackPanel>
+          </Grid>
+
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

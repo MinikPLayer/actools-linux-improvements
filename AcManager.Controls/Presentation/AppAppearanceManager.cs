@@ -428,7 +428,7 @@ namespace AcManager.Controls.Presentation {
             set {
                 if (_loading) {
                     _bitmapScalingMode = value;
-                    RenderOptions.BitmapScalingModeProperty.OverrideMetadata(typeof(BetterImage), new FrameworkPropertyMetadata(_bitmapScalingMode));
+                    DP.OverrideMetadata(RenderOptions.BitmapScalingModeProperty, typeof(BetterImage), new FrameworkPropertyMetadata(_bitmapScalingMode));
                     return;
                 }
 

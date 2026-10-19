@@ -5,7 +5,7 @@ using AcManager.Controls.Presentation;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Controls.Dialogs {
-    public partial class KunosCareerIntro {
+    public partial class KunosCareerIntro : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public KunosCareerObject CareerObject { get; }
 
         public KunosCareerIntro(KunosCareerObject careerObject) {

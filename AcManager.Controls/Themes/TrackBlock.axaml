@@ -1,0 +1,173 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/SelectableBbCodeBlock.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="c:TrackBlock" x:Key="{x:Type c:TrackBlock}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:TrackBlock">
+          <!-- Data section -->
+          <ScrollViewer DataContext="{Binding Track, RelativeSource={RelativeSource TemplatedParent}}" Margin="0 8 -8 0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" mui:FancyScroll.Outside="True" Padding="0 0 8 0" IsVisible="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel>
+              <!-- Tags -->
+              <mui:TagsList ItemsSource="{Binding Tags}" IsReadOnly="True" DockPanel.Dock="Top" Margin="0 0 0 8"/>
+
+              <StackPanel DockPanel.Dock="Right" Margin="20 0 0 0" Width="240" IsVisible="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=640}">
+                <c:PropertiesGrid Columns="1" LabelPadding="0 1 0 0" VerticalSpacing="4">
+                  <c:RatingBar c:PropertiesGrid.Label="Rating:" Rating="{Binding MainTrackObject.Rating}" HorizontalAlignment="Left"/>
+                  <c:NotesBlock c:PropertiesGrid.Label="Notes:" AcObject="{Binding MainTrackObject}"/>
+                  <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Total driven:" Placeholder="…" Text="{Binding TotalDrivenDistanceKm, Converter={StaticResource MultiplyConverter}, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.DistanceFormat}}"/>
+                </c:PropertiesGrid>
+                <c:BestLapsList TrackId="{Binding IdWithLayout}" Margin="0 4 0 0" Limit="10"/>
+              </StackPanel>
+
+              <StackPanel>
+                <Grid Margin="0 0 0 8">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition Width="*"/>
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                  </Grid.RowDefinitions>
+
+                  <!-- First row -->
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Grid.Column="0" Grid.Row="0" Classes="Label Label.Padding"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Grid.Column="2" Grid.Row="0" Classes="Label Label.Padding"/>
+
+                  <DockPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left">
+                    <c:CountryIcon Country="{Binding Country}" HorizontalAlignment="Right" Width="24" Height="16" DockPanel.Dock="Right" Margin="4 -6 0 0" VerticalAlignment="Bottom" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+                    <mui:PlaceholderTextBlock Text="{Binding Country}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                  </DockPanel>
+                  <mui:PlaceholderTextBlock Text="{Binding Year, TargetNullValue=''}" Grid.Column="3" Grid.Row="0" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+
+                  <!-- Second row -->
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CityLabel}" Grid.Column="0" Grid.Row="1" Classes="Label Label.Padding"/>
+                  <TextBlock Grid.Column="2" Grid.Row="1" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Classes="Label Label.Padding">
+                    <TextBlock.Text>
+                      <MultiBinding Converter="{StaticResource AuthorVersionUrlToLabelConverter}">
+                        <Binding Path="Author"/>
+                        <Binding Path="Version"/>
+                        <Binding Path="Url"/>
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
+
+                  <mui:PlaceholderTextBlock Text="{Binding City}" Grid.Column="1" Grid.Row="1" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                  <mui:BbCodeBlock Text="{Binding VersionInfoDisplay}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Grid.Column="3" Grid.Row="1"/>
+
+                  <!-- Third row -->
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_TrackGeoTagsLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+                  <mui:PlaceholderTextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GeoTags}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+
+                  <!-- Last row -->
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Classes="Label Label.Padding"/>
+                  <mui:PlaceholderTextBlock Text="{Binding SpecsInfoDisplay}" Placeholder="?" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+
+                <!-- Description -->
+                <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" TextWrapping="Wrap"/>
+              </StackPanel>
+            </DockPanel>
+          </ScrollViewer>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^[ShowPreview=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="c:TrackBlock">
+              <DockPanel>
+                <mui:Cell VerticalAlignment="Center" DockPanel.Dock="Top">
+                  <mui:Cell Height="200" Width="355" VerticalAlignment="Top" HorizontalAlignment="Center">
+                    <mui:BetterImage StretchDirection="Both" Filename="{Binding Track.PreviewImage, RelativeSource={RelativeSource TemplatedParent}}" Width="355" Height="200" Stretch="UniformToFill"/>
+                    <mui:BetterImage StretchDirection="Both" Filename="{Binding Track.OutlineImage, RelativeSource={RelativeSource TemplatedParent}}" Width="365" Height="192" Stretch="Uniform" Margin="-5 4"/>
+                  </mui:Cell>
+                  <ContentPresenter Content="{TemplateBinding PreviewContent}"/>
+                </mui:Cell>
+
+                <!-- Data section -->
+                <ScrollViewer DataContext="{Binding Track, RelativeSource={RelativeSource TemplatedParent}}" Margin="0 8 -8 0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" mui:FancyScroll.Outside="True" Padding="0 0 8 0" IsVisible="{Binding HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                  <DockPanel>
+                    <!-- Tags -->
+                    <mui:TagsList ItemsSource="{Binding Tags}" IsReadOnly="True" DockPanel.Dock="Top" Margin="0 0 0 8"/>
+
+                    <StackPanel DockPanel.Dock="Right" Margin="20 0 0 0" Width="240" IsVisible="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=640}">
+                      <c:PropertiesGrid Columns="1" LabelPadding="0 1 0 0" VerticalSpacing="4">
+                        <c:RatingBar c:PropertiesGrid.Label="Rating:" Rating="{Binding MainTrackObject.Rating}" HorizontalAlignment="Left"/>
+                        <c:NotesBlock c:PropertiesGrid.Label="Notes:" AcObject="{Binding MainTrackObject}"/>
+                        <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Total driven:" Placeholder="…" Text="{Binding TotalDrivenDistanceKm, Converter={StaticResource MultiplyConverter}, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.DistanceFormat}}"/>
+                      </c:PropertiesGrid>
+                      <c:BestLapsList TrackId="{Binding IdWithLayout}" Margin="0 4 0 0" Limit="10"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                      <Grid Margin="0 0 0 8">
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="80"/>
+                          <ColumnDefinition Width="*"/>
+                          <ColumnDefinition Width="80"/>
+                          <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                          <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- First row -->
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Grid.Column="0" Grid.Row="0" Classes="Label Label.Padding"/>
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Grid.Column="2" Grid.Row="0" Classes="Label Label.Padding"/>
+
+                        <DockPanel Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left">
+                          <c:CountryIcon Country="{Binding Country}" HorizontalAlignment="Right" Width="24" Height="16" DockPanel.Dock="Right" Margin="4 -6 0 0" VerticalAlignment="Bottom" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+                          <mui:PlaceholderTextBlock Text="{Binding Country}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+                        <mui:PlaceholderTextBlock Text="{Binding Year, TargetNullValue=''}" Grid.Column="3" Grid.Row="0" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+
+                        <!-- Second row -->
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CityLabel}" Grid.Column="0" Grid.Row="1" Classes="Label Label.Padding"/>
+                        <TextBlock Grid.Column="2" Grid.Row="1" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Classes="Label Label.Padding">
+                          <TextBlock.Text>
+                            <MultiBinding Converter="{StaticResource AuthorVersionUrlToLabelConverter}">
+                              <Binding Path="Author"/>
+                              <Binding Path="Version"/>
+                              <Binding Path="Url"/>
+                            </MultiBinding>
+                          </TextBlock.Text>
+                        </TextBlock>
+
+                        <mui:PlaceholderTextBlock Text="{Binding City}" Grid.Column="1" Grid.Row="1" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                        <mui:BbCodeBlock Text="{Binding VersionInfoDisplay}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Grid.Column="3" Grid.Row="1"/>
+
+                        <!-- Third row -->
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_TrackGeoTagsLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+                        <mui:PlaceholderTextBlock Grid.Column="1" Grid.Row="2" Text="{Binding GeoTags}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+
+                        <!-- Last row -->
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Classes="Label Label.Padding"/>
+                        <mui:PlaceholderTextBlock Text="{Binding SpecsInfoDisplay}" Placeholder="?" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                      </Grid>
+
+                      <!-- Description -->
+                      <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" TextWrapping="Wrap"/>
+                    </StackPanel>
+                  </DockPanel>
+                </ScrollViewer>
+              </DockPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></ControlTheme>
+</ResourceDictionary>

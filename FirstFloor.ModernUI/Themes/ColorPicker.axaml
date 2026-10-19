@@ -25,10 +25,10 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^ /template/ Path#PART_Icon"><Setter Property="Fill" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
-            </Style><Style Selector="^:checked /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
-            </Style><Style Selector="^:pressed /template/ Path#PART_Icon"><Setter Property="Fill" Value="{DynamicResource ModernButtonText}"/>
+  <Style Selector="^ /template/ Path#PART_Icon"><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ Path#PART_Icon"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+            </Style><Style Selector="^:checked /template/ Path#PART_Icon"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+            </Style><Style Selector="^:pressed /template/ Path#PART_Icon"><!-- PORT: removed setter of Fill (not in Avalonia) -->
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}"/>
             </Style></ControlTheme>
 
@@ -48,7 +48,7 @@
     </Setter>
   <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
-            </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDisabled}"/>
@@ -63,12 +63,12 @@
         <ControlTemplate TargetType="Slider">
           <c:Cell Background="Transparent" MinWidth="{TemplateBinding Slider.MinWidth}">
             <Track x:Name="PART_Track">
-              <Track.DecreaseRepeatButton>
-                <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-              </Track.DecreaseRepeatButton>
-              <Track.IncreaseRepeatButton>
-                <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-              </Track.IncreaseRepeatButton>
+              <Track.DecreaseButton>
+                <RepeatButton x:Name="PART_DecreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton x:Name="PART_IncreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+              </Track.IncreaseButton>
               <Track.Thumb>
                 <Thumb x:Name="Thumb" Theme="{StaticResource ColorPickerSliderThumb}"/>
               </Track.Thumb>
@@ -126,7 +126,7 @@
                     <e:ColorPickerHueSliderEffect/>
                   </Rectangle.Effect>
                 </Rectangle>
-                <Slider x:Name="PART_Slider" Minimum="0" IsMoveToPointEnabled="True" Theme="{StaticResource ColorPickerSlider}"/>
+                <Slider x:Name="PART_Slider" Minimum="0" Theme="{StaticResource ColorPickerSlider}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
               </c:Cell>
 
               <Grid>
@@ -168,13 +168,13 @@
                 <c:ValueLabel Grid.Column="1" Grid.Row="2" Content="S" Postfix="%" Value="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}"/>
                 <c:ValueLabel Grid.Column="1" Grid.Row="3" Content="B" Postfix="%" Value="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}"/>
 
-                <Slider Grid.Column="2" Grid.Row="4" Minimum="0" Maximum="255" Value="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
-                <Slider Grid.Column="2" Grid.Row="5" Minimum="0" Maximum="255" Value="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
-                <Slider Grid.Column="2" Grid.Row="6" Minimum="0" Maximum="255" Value="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
+                <Slider Grid.Column="2" Grid.Row="4" Minimum="0" Maximum="255" Value="{Binding Red, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
+                <Slider Grid.Column="2" Grid.Row="5" Minimum="0" Maximum="255" Value="{Binding Green, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
+                <Slider Grid.Column="2" Grid.Row="6" Minimum="0" Maximum="255" Value="{Binding Blue, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
 
-                <Slider Grid.Column="2" Grid.Row="1" Minimum="0" Maximum="359" Value="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
-                <Slider Grid.Column="2" Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
-                <Slider Grid.Column="2" Grid.Row="3" Minimum="0" Maximum="100" Value="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}" IsMoveToPointEnabled="True"/>
+                <Slider Grid.Column="2" Grid.Row="1" Minimum="0" Maximum="359" Value="{Binding Hue, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
+                <Slider Grid.Column="2" Grid.Row="2" Minimum="0" Maximum="100" Value="{Binding Saturation, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
+                <Slider Grid.Column="2" Grid.Row="3" Minimum="0" Maximum="100" Value="{Binding Brightness, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
               </Grid>
             </StackPanel>
           </Border>
@@ -253,8 +253,8 @@
           <c:Cell>
             <c:BetterTextBox x:Name="PART_TextBox" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}"/>
             <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="2 0 0 0" Foreground="{Binding OverlayColor, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-            <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5" StaysOpen="False">
-              <c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
+            <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5">
+              <!-- PORT: removed StaysOpen (not in Avalonia) --><c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
                 <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
               </c:Cell>

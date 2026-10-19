@@ -22,7 +22,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty CountryProperty = DependencyProperty.Register(nameof(Country), typeof(string),
+        public static readonly StyledProperty<string> CountryProperty = DP.Register<string>(nameof(Country),
                 typeof(CountryIcon), new PropertyMetadata(OnCountryChanged));
 
         public string Country {

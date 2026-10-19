@@ -5,10 +5,9 @@ using AcManager.Tools.AcObjectsNew;
 namespace AcManager.Controls {
     public class AcObjectErrorsSection : Control {
         static AcObjectErrorsSection() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcObjectErrorsSection), new FrameworkPropertyMetadata(typeof(AcObjectErrorsSection)));
         }
 
-        public static readonly DependencyProperty AcObjectProperty = DependencyProperty.Register(nameof(AcObject), typeof(AcCommonObject),
+        public static readonly StyledProperty<AcCommonObject> AcObjectProperty = DP.Register<AcCommonObject>(nameof(AcObject),
                 typeof(AcObjectErrorsSection));
 
         public AcCommonObject AcObject {

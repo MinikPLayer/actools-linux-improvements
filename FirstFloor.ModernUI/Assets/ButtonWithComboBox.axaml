@@ -2,7 +2,7 @@
 
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme x:Key="ButtonWithComboBoxExtraMenu" TargetType="MenuItem">
@@ -11,8 +11,8 @@
 
     <Setter Property="BorderThickness" Value="0"/>
     <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="IsVisible" Value="True"/>
     <Setter Property="Template">
@@ -56,7 +56,7 @@
     <Setter Property="BorderThickness" Value="0"/>
 
     <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
 
     <Setter Property="Template">
       <Setter.Value>
@@ -84,8 +84,8 @@
           <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <DockPanel>
               <c:Cell DockPanel.Dock="Right">
-                <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
-                  <c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
+                <Menu VerticalAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+                  <!-- PORT: removed VerticalContentAlignment (not in Avalonia) --><c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
                 </Menu>
                 <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Width="1" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
                 <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
@@ -134,8 +134,8 @@
           <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <DockPanel>
               <c:Cell DockPanel.Dock="Right" TextElement.FontWeight="Normal">
-                <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
-                  <c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
+                <Menu VerticalAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+                  <!-- PORT: removed VerticalContentAlignment (not in Avalonia) --><c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
                 </Menu>
                 <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Width="1" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
                 <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>

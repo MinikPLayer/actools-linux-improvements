@@ -8,10 +8,9 @@ using FirstFloor.ModernUI.Dialogs;
 namespace AcManager.Controls {
     public class NotesBlock : Control {
         static NotesBlock() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(NotesBlock), new FrameworkPropertyMetadata(typeof(NotesBlock)));
         }
 
-        public static readonly DependencyProperty AcObjectProperty = DependencyProperty.Register(nameof(AcObject), typeof(AcObjectNew),
+        public static readonly StyledProperty<AcObjectNew> AcObjectProperty = DP.Register<AcObjectNew>(nameof(AcObject),
                 typeof(NotesBlock));
 
         public AcObjectNew AcObject {
@@ -19,9 +18,10 @@ namespace AcManager.Controls {
             set => SetValue(AcObjectProperty, value);
         }
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
-            if (GetTemplateChild(@"PART_EditButton") is Button button) {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
+            if (this.GetTemplateChild(@"PART_EditButton") is Button button) {
                 button.Click += OnEditClick;
             }
         }
@@ -40,7 +40,7 @@ namespace AcManager.Controls {
             Edit();
         }
 
-        protected override void OnMouseUp(MouseButtonEventArgs e) {
+        protected override void OnPointerReleased(PointerReleasedEventArgs e) {
             base.OnMouseDown(e);
             if (!e.Handled && e.ChangedButton == MouseButton.Left) {
                 e.Handled = true;

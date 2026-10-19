@@ -3,7 +3,7 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
   </ResourceDictionary.MergedDictionaries>
 
   <Thickness x:Key="BorderlessOutline">-3</Thickness>
@@ -11,7 +11,7 @@
   <!-- PORT: ControlTemplate with triggers outside of a style (6 triggers) --><ControlTemplate x:Key="BetterTextBoxControlTemplate.Basic" TargetType="c:BetterTextBox">
     <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
       <c:Cell>
-        <ScrollViewer x:Name="PART_ContentHost" Padding="0"/>
+        <ScrollViewer x:Name="PART_ScrollViewer" Padding="0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Placeholder}" Margin="2 0" Padding="{TemplateBinding Padding}" Opacity="{TemplateBinding PlaceholderOpacity}" IsHitTestVisible="False" IsVisible="False"/>
       </c:Cell>
     </Border>
@@ -19,7 +19,7 @@
 
   <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate x:Key="BetterTextBoxControlTemplate.Simple" TargetType="c:BetterTextBox">
     <c:Cell>
-      <ScrollViewer x:Name="PART_ContentHost" Padding="{TemplateBinding Padding}" Margin="-2 0"/>
+      <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Margin="-2 0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
       <TextBlock x:Name="Placeholder" Text="{TemplateBinding Placeholder}" Padding="{TemplateBinding Padding}" Opacity="{TemplateBinding PlaceholderOpacity}" IsHitTestVisible="False" IsVisible="False"/>
     </c:Cell>
     </ControlTemplate>
@@ -30,7 +30,7 @@
         <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
       </c:AdornedControl.AdornerContent>
       <c:Cell>
-        <ScrollViewer x:Name="PART_ContentHost" Margin="-2 0"/>
+        <ScrollViewer x:Name="PART_ScrollViewer" Margin="-2 0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
         <TextBlock x:Name="Placeholder" Text="{TemplateBinding Placeholder}" Opacity="{TemplateBinding PlaceholderOpacity}" IsHitTestVisible="False" IsVisible="False"/>
       </c:Cell>
     </c:AdornedControl>
@@ -38,7 +38,7 @@
 
   <!-- PORT: ControlTemplate with triggers outside of a style (2 triggers) --><ControlTemplate x:Key="BetterTextBoxControlTemplate.Borderless.ReadOnly" TargetType="c:BetterTextBox">
     <c:Cell>
-      <ScrollViewer x:Name="PART_ContentHost" Margin="-2 0"/>
+      <ScrollViewer x:Name="PART_ScrollViewer" Margin="-2 0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
       <TextBlock x:Name="Placeholder" Text="{TemplateBinding Placeholder}" Opacity="{TemplateBinding PlaceholderOpacity}" IsHitTestVisible="False" IsVisible="False"/>
     </c:Cell>
     </ControlTemplate>

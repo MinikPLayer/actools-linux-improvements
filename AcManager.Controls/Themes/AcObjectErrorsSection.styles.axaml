@@ -1,0 +1,32 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/../Themes/AcObjectErrorsSection.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ac|AcObjectErrorsSection">
+    <Setter Property="Padding" Value="0 4 0 8"/>
+    <Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding AcObject.HasErrors, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcObjectErrorsSection">
+              <Grid Margin="{TemplateBinding Padding}" DataContext="{Binding AcObject, RelativeSource={RelativeSource TemplatedParent}}">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Margin="10 2 2 2" Text="{Binding Errors.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.AcObject_ErrorsHeader}}" Classes="Heading2"/>
+                <Path Grid.Row="0" Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" HorizontalAlignment="Right"/>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Errors}" x:Name="AcObjectInDataContext" HorizontalAlignment="Left">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Margin="40 0 0 0" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left">
+                        <!-- PORT: Hyperlink needs manual conversion --><TextBlock Command="{Binding StartErrorFixerCommand}">
+                          <Hyperlink.Inlines>
+                            <Run Text="{Binding Message, Mode=OneWay}"/>
+                          </Hyperlink.Inlines>
+                        </TextBlock>
+                      </TextBlock>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></Style>
+</Styles>

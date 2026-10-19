@@ -3,7 +3,7 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme x:Key="RichTextBox.ReadOnly" TargetType="RichTextBox">
@@ -23,7 +23,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TextBox">
-          <ScrollViewer x:Name="PART_ContentHost" Padding="0" Margin="-4 0"/>
+          <ScrollViewer x:Name="PART_ScrollViewer" Padding="0" Margin="-4 0" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
           </ControlTemplate>
       </Setter.Value>
     </Setter>

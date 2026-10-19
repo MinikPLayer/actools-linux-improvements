@@ -37,7 +37,7 @@ namespace AcManager.Controls {
             obj.SetValue(AdditionalItemsProperty, value);
         }
 
-        public static readonly DependencyProperty AdditionalItemsProperty = DependencyProperty.RegisterAttached("AdditionalItems", typeof(IList),
+        public static readonly AttachedProperty<IList> AdditionalItemsProperty = DP.RegisterAttached<IList>("AdditionalItems",
                 typeof(ContextMenus), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -49,7 +49,7 @@ namespace AcManager.Controls {
             obj.SetValue(CarProperty, value);
         }
 
-        public static readonly DependencyProperty CarProperty = DependencyProperty.RegisterAttached("Car", typeof(CarObject),
+        public static readonly AttachedProperty<CarObject> CarProperty = DP.RegisterAttached<CarObject>("Car",
                 typeof(ContextMenus), new UIPropertyMetadata(OnContextMenuChanged));
 
         public static CarSkinObject GetCarSkin(DependencyObject obj) {
@@ -60,7 +60,7 @@ namespace AcManager.Controls {
             obj.SetValue(CarSkinProperty, value);
         }
 
-        public static readonly DependencyProperty CarSkinProperty = DependencyProperty.RegisterAttached("CarSkin", typeof(CarSkinObject),
+        public static readonly AttachedProperty<CarSkinObject> CarSkinProperty = DP.RegisterAttached<CarSkinObject>("CarSkin",
                 typeof(ContextMenus), new UIPropertyMetadata(OnContextMenuChanged));
 
         public static TrackObjectBase GetTrack(DependencyObject obj) {
@@ -71,7 +71,7 @@ namespace AcManager.Controls {
             obj.SetValue(TrackProperty, value);
         }
 
-        public static readonly DependencyProperty TrackProperty = DependencyProperty.RegisterAttached("Track", typeof(TrackObjectBase),
+        public static readonly AttachedProperty<TrackObjectBase> TrackProperty = DP.RegisterAttached<TrackObjectBase>("Track",
                 typeof(ContextMenus), new UIPropertyMetadata(OnContextMenuChanged));
 
         public static WeatherObject GetWeather(DependencyObject obj) {
@@ -82,7 +82,7 @@ namespace AcManager.Controls {
             obj.SetValue(WeatherProperty, value);
         }
 
-        public static readonly DependencyProperty WeatherProperty = DependencyProperty.RegisterAttached("Weather", typeof(WeatherObject),
+        public static readonly AttachedProperty<WeatherObject> WeatherProperty = DP.RegisterAttached<WeatherObject>("Weather",
                 typeof(ContextMenus), new UIPropertyMetadata(OnContextMenuChanged));
 
         public static ICupSupportedObject GetCupUpdate(DependencyObject obj) {
@@ -93,7 +93,7 @@ namespace AcManager.Controls {
             obj.SetValue(CupUpdateProperty, value);
         }
 
-        public static readonly DependencyProperty CupUpdateProperty = DependencyProperty.RegisterAttached("CupUpdate", typeof(ICupSupportedObject),
+        public static readonly AttachedProperty<ICupSupportedObject> CupUpdateProperty = DP.RegisterAttached<ICupSupportedObject>("CupUpdate",
                 typeof(ContextMenus), new UIPropertyMetadata(OnContextMenuChanged));
 
         private static void OnContextMenuChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -104,8 +104,8 @@ namespace AcManager.Controls {
 
         private static void ResetContextMenu(FrameworkElement element) {
             SetIsDirty(element, true);
-            element.MouseRightButtonDown -= OnElementMouseEnter;
-            element.MouseRightButtonDown += OnElementMouseEnter;
+            element.RemoveMouseRightButtonDown(OnElementMouseEnter);
+            element.AddMouseRightButtonDown(OnElementMouseEnter);
             element.PreviewGotKeyboardFocus -= OnElementMouseEnter;
             element.PreviewGotKeyboardFocus += OnElementMouseEnter;
         }
@@ -118,7 +118,7 @@ namespace AcManager.Controls {
             obj.SetValue(GenericObjectProperty, value);
         }
 
-        public static readonly DependencyProperty GenericObjectProperty = DependencyProperty.RegisterAttached("GenericObject", typeof(AcObjectNew),
+        public static readonly AttachedProperty<AcObjectNew> GenericObjectProperty = DP.RegisterAttached<AcObjectNew>("GenericObject",
                 typeof(ContextMenus), new UIPropertyMetadata(OnGenericObjectChanged));
 
         private static void OnGenericObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -140,7 +140,7 @@ namespace AcManager.Controls {
             obj.SetValue(IsDirtyProperty, value);
         }
 
-        public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.RegisterAttached("IsDirty", typeof(bool),
+        public static readonly AttachedProperty<bool> IsDirtyProperty = DP.RegisterAttached<bool>("IsDirty",
                 typeof(ContextMenus), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         private static ContextMenu CreateContextMenu([CanBeNull] FrameworkElement element, [CanBeNull] Action<ContextMenu> action) {

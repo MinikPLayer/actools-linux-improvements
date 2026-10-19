@@ -1,0 +1,98 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:c="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.UserChampionshipIntro" KeyUp="OnKeyUp" PointerReleased="OnMouseUp">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/FullscreenDialog.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <SolidColorBrush x:Key="ButtonBackground" Color="#f8f8f8"/>
+      <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#dddddd"/>
+      <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{DynamicResource AccentColor}"/>
+      <SolidColorBrush x:Key="ButtonBorder" Color="#f8f8f8"/>
+      <SolidColorBrush x:Key="ButtonBorderHover" Color="#dddddd"/>
+      <SolidColorBrush x:Key="ButtonBorderPressed" Color="{DynamicResource AccentColor}"/>
+      <SolidColorBrush x:Key="ButtonText" Color="#333333"/>
+      <SolidColorBrush x:Key="ButtonTextHover" Color="#333333"/>
+      <SolidColorBrush x:Key="ButtonTextPressed" Color="#ffffff"/>
+      <SolidColorBrush x:Key="ButtonTextDisabled" Color="#a1a1a1"/>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.Style>
+    <ControlTheme TargetType="mui:ModernDialog" x:Key="{x:Type mui:ModernDialog}">
+      <Setter Property="BackgroundContent" Value="{x:Null}"/>
+    <Setter Property="Background" Value="#dd151515"/>
+    <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+    <Setter Property="MaxHeight" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+    <Setter Property="WindowState" Value="Maximized"/>
+    <Setter Property="SizeToContent" Value="Manual"/>
+    <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="mui:ModernDialog">
+            <Grid Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static sw:SystemParameters.WindowNonClientFrameThickness}}">
+              <Panel>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="{StaticResource FullscreenDialog.ButtonGridLength}"/>
+                  </Grid.ColumnDefinitions>
+
+                  <!-- content -->
+                  <mui:TransitioningContentControl Margin="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{TemplateBinding Content}"/>
+
+                  <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="{StaticResource FullscreenDialog.ButtonGridLength}"/>
+                      <RowDefinition/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Height="{StaticResource FullscreenDialog.ButtonSize}" Click="OnCloseButtonClick" IsVisible="{Binding DialogMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static di:UserChampionshipIntroMode.Intro}}" Theme="{StaticResource FullscreenDialogButton}">
+                      <Path Data="{StaticResource CheckIconData}"/>
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Panel>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    <Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
+      </Style></ControlTheme>
+  </mui:ModernDialog.Style>
+
+  <mui:Cell>
+    <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1022" Height="575">
+      <TextBlock Text="No preview" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" Opacity="0.4" Classes="Heading1"/>
+      <mui:BetterImage Filename="{Binding UserChampionshipObject.PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="1022" Height="575" ShowBroken="False" CollapseIfMissing="True"/>
+    </mui:Cell>
+    <Border Background="#ddffffff" Padding="60" Margin="200" Width="400" HorizontalAlignment="Right" TextElement.Foreground="Black" TextElement.FontSize="15">
+      <DockPanel>
+        <mui:Switch Value="{Binding DialogMode}" DockPanel.Dock="Bottom">
+          <mui:SpacingUniformGrid mui:Switch.When="{x:Static di:UserChampionshipIntroMode.InstallationPreview}" VerticalSpacing="4" Columns="1" Margin="0 8 0 0">
+            <Button Content="Install" mui:ModernDialog.ButtonBehavior="OK"/>
+            <Button Content="Cancel" mui:ModernDialog.ButtonBehavior="Cancel"/>
+          </mui:SpacingUniformGrid>
+          <mui:SpacingUniformGrid mui:Switch.When="{x:Static di:UserChampionshipIntroMode.InstallationAlreadyExistingPreview}" VerticalSpacing="4" Columns="1" Margin="0 8 0 0">
+            <Button Content="Install as new" mui:ModernDialog.ButtonBehavior="OK"/>
+            <Button Content="{Binding ExistingName}" mui:ModernDialog.ButtonBehavior="Yes">
+              <Button.ContentStringFormat>Replace “{0}”</Button.ContentStringFormat>
+            </Button>
+            <Button Content="Cancel" mui:ModernDialog.ButtonBehavior="Cancel"/>
+          </mui:SpacingUniformGrid>
+        </mui:Switch>
+
+        <mui:SpacingStackPanel Spacing="20">
+          <TextBlock Text="{Binding UserChampionshipObject.Name}" TextWrapping="Wrap" Classes="Heading1"/>
+          <TextBlock Text="{Binding UserChampionshipObject.Description}" TextWrapping="Wrap" IsVisible="{Binding UserChampionshipObject.Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+          <c:PropertiesGrid>
+            <TextBlock c:PropertiesGrid.Label="Author:" Text="{Binding UserChampionshipObject.Author}" TextWrapping="Wrap" IsVisible="{Binding UserChampionshipObject.Author, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+            <TextBlock c:PropertiesGrid.Label="Difficulty:" Text="{Binding UserChampionshipObject.Difficulty}" TextWrapping="Wrap" IsVisible="{Binding UserChampionshipObject.Difficulty, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+          </c:PropertiesGrid>
+        </mui:SpacingStackPanel>
+      </DockPanel>
+    </Border>
+  </mui:Cell>
+</mui:ModernDialog>

@@ -5,8 +5,8 @@
     <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
     <Setter Property="Padding" Value="16 1 16 2"/>
   </Style>
 

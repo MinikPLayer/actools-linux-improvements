@@ -10,7 +10,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Controls.Dialogs {
-    public partial class CupInformationDialog {
+    public partial class CupInformationDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public class ViewModel : NotifyPropertyChanged {
             public ICupSupportedObject CupObject { get; }
             public string DisplayAlternativeIds { get; }

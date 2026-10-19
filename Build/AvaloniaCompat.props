@@ -164,5 +164,11 @@
     <Using Include="Avalonia" />
     <Using Include="Avalonia.Collections.IDataGridCollectionView" Alias="ICollectionView" />
     <Using Include="Avalonia.Media.Imaging" />
+    <Using Include="Avalonia.Media.Pen" Alias="Pen" />
+    <Using Include="Avalonia.Media.Typeface" Alias="Typeface" />
+    <Using Include="Avalonia.Media.StreamGeometry" Alias="StreamGeometry" />
+    <Using Include="Avalonia.Media.DrawingGroup" Alias="DrawingGroup" />
+    <Using Include="Avalonia.Collections.DataGridGroupDescription" Alias="GroupDescription" />
+    <Using Include="Avalonia.Collections.IDataGridCollectionView" Alias="CollectionView" />
   </ItemGroup>
 </Project>

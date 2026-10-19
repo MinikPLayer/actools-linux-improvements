@@ -9,7 +9,7 @@ namespace AcManager.Controls.Dialogs {
         Intro, InstallationPreview, InstallationAlreadyExistingPreview
     }
 
-    public partial class UserChampionshipIntro {
+    public partial class UserChampionshipIntro : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public IUserChampionshipInformation UserChampionshipObject { get; }
 
         public UserChampionshipIntroMode DialogMode { get; }

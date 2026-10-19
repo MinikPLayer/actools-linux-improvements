@@ -8,7 +8,6 @@ using AcManager.Tools.Miscellaneous;
 using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace AcManager.Controls.Helpers {
     public class LocalKeyBindingsController : NotifyPropertyChanged {

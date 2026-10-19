@@ -7,10 +7,9 @@ using OxyPlot.Wpf;
 namespace AcManager.Controls.Graphs {
     public class CustomTrackerControl : TrackerControl {
         static CustomTrackerControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomTrackerControl), new FrameworkPropertyMetadata(typeof(CustomTrackerControl)));
         }
 
-        public static readonly DependencyProperty PositionOverrideProperty = DependencyProperty.Register(nameof(PositionOverride), typeof(ScreenPoint),
+        public static readonly StyledProperty<ScreenPoint> PositionOverrideProperty = DP.Register<ScreenPoint>(nameof(PositionOverride),
                 typeof(CustomTrackerControl), new PropertyMetadata(OnPositionOverrideChanged));
 
         public ScreenPoint PositionOverride {
@@ -22,7 +21,7 @@ namespace AcManager.Controls.Graphs {
             ((CustomTrackerControl)o).UpdatePositionAndLineExtents();
         }
 
-        public static readonly DependencyProperty LineExtentsOverrideProperty = DependencyProperty.Register(nameof(LineExtentsOverride), typeof(OxyRect),
+        public static readonly StyledProperty<OxyRect> LineExtentsOverrideProperty = DP.Register<OxyRect>(nameof(LineExtentsOverride),
                 typeof(CustomTrackerControl), new PropertyMetadata(OnLineExtentsOverrideChanged));
 
         public OxyRect LineExtentsOverride {
@@ -36,10 +35,11 @@ namespace AcManager.Controls.Graphs {
 
         // private Popup _popup;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             UpdatePositionAndLineExtents();
-            // _popup = GetTemplateChild("PART_Popup") as Popup;
-            base.OnApplyTemplate();
+            // _popup = this.GetTemplateChild("PART_Popup") as Popup;
+            base.OnApplyTemplate(e);
         }
 
         private void UpdatePositionAndLineExtents() {

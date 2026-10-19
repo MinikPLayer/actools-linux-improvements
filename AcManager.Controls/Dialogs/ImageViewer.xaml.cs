@@ -108,7 +108,7 @@ namespace AcManager.Controls.Dialogs {
     [NotNull]
     public delegate Task ImageViewerSaveCallback(int index, string destination);
 
-    public partial class ImageViewer {
+    public partial class ImageViewer : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public ImageViewer(string value, [CanBeNull] ImageViewerDetailsCallback detailsCallback = null) {
             FinishInitialization(new ViewModel(i => Task.FromResult((object)value), 1, 0, detailsCallback));
         }
@@ -162,9 +162,9 @@ namespace AcManager.Controls.Dialogs {
             }
 
             if (AppAppearanceManager.Instance.HideImageViewerButtons) {
-                Style = (Style)FindResource(@"StyleSubtle");
+                this.SetStyle(@"StyleSubtle");
             } else {
-                Style = (Style)FindResource(@"StyleNotSubtle");
+                this.SetStyle(@"StyleNotSubtle");
             }
         }
 
@@ -186,7 +186,7 @@ namespace AcManager.Controls.Dialogs {
             set => Image.Margin = value;
         }
 
-        public static readonly DependencyProperty MaxAreaWidthProperty = DependencyProperty.Register(nameof(MaxAreaWidth), typeof(double),
+        public static readonly StyledProperty<double> MaxAreaWidthProperty = DP.Register<double>(nameof(MaxAreaWidth),
                 typeof(ImageViewer), new FrameworkPropertyMetadata(double.PositiveInfinity));
 
         public double MaxAreaWidth {
@@ -194,7 +194,7 @@ namespace AcManager.Controls.Dialogs {
             set => SetValue(MaxAreaWidthProperty, value);
         }
 
-        public static readonly DependencyProperty MaxAreaHeightProperty = DependencyProperty.Register(nameof(MaxAreaHeight), typeof(double),
+        public static readonly StyledProperty<double> MaxAreaHeightProperty = DP.Register<double>(nameof(MaxAreaHeight),
                 typeof(ImageViewer), new FrameworkPropertyMetadata(double.PositiveInfinity));
 
         public double MaxAreaHeight {

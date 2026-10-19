@@ -7,16 +7,15 @@ namespace AcManager.Controls {
     [ContentProperty(nameof(ToolBars))]
     public class AcToolBar : Control {
         static AcToolBar() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcToolBar), new FrameworkPropertyMetadata(typeof(AcToolBar)));
         }
 
         public AcToolBar() {
             SetCurrentValue(ToolBarsProperty, new Collection<ToolBar>());
         }
 
-        private ToolBarTray ToolBarTray => GetTemplateChild(@"PART_ToolBarTray") as ToolBarTray;
+        private ToolBarTray ToolBarTray => this.GetTemplateChild(@"PART_ToolBarTray") as ToolBarTray;
 
-        public static readonly DependencyProperty ToolBarsProperty = DependencyProperty.Register(nameof(ToolBars), typeof(Collection<ToolBar>),
+        public static readonly StyledProperty<Collection<ToolBar>> ToolBarsProperty = DP.Register<Collection<ToolBar>>(nameof(ToolBars),
                                                                                              typeof(AcToolBar));
 
         public Collection<ToolBar> ToolBars {
@@ -24,8 +23,9 @@ namespace AcManager.Controls {
             set => SetValue(ToolBarsProperty, value);
         }
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             var tray = ToolBarTray;
             if (tray == null) return;
@@ -34,7 +34,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty FitWidthProperty = DependencyProperty.Register(nameof(FitWidth), typeof(bool),
+        public static readonly StyledProperty<bool> FitWidthProperty = DP.Register<bool>(nameof(FitWidth),
                 typeof(AcToolBar), new PropertyMetadata(false));
 
         public bool FitWidth {
@@ -43,7 +43,7 @@ namespace AcManager.Controls {
         }
 
         #region Toggling attributes
-        public static readonly DependencyProperty IsTogglableProperty = DependencyProperty.Register("IsTogglable", typeof(bool),
+        public static readonly StyledProperty<bool> IsTogglableProperty = DP.Register<bool>("IsTogglable",
             typeof(AcToolBar), new PropertyMetadata());
 
         public bool IsTogglable {
@@ -51,7 +51,7 @@ namespace AcManager.Controls {
             set => SetValue(IsTogglableProperty, value);
         }
 
-        public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register("IsActive", typeof(bool),
+        public static readonly StyledProperty<bool> IsActiveProperty = DP.Register<bool>("IsActive",
             typeof(AcToolBar), new PropertyMetadata(false));
 
         public bool IsActive {

@@ -1,0 +1,110 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:controls="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/../Assets/SettingsSpecific.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="CheckBox.SettingsCheckBox">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Style.Resources>
+      <ResourceDictionary><Style Selector="Label" __plain="1">
+        <Setter Property="Margin" Value="0 0 0 0"/>
+        <Setter Property="Width" Value="NaN"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+      </Style>
+    </ResourceDictionary></Style.Resources>
+  </Style>
+
+  <Style Resources="{StaticResource SettingsStyle}" Selector="StackPanel.SettingsPanel">
+    <Setter Property="Margin" Value="0 0 20 20"/>
+    <Setter Property="MinWidth" Value="240"/>
+
+  </Style>
+
+  <Style Selector="StackPanel.SettingsCompactPanel">
+    <Setter Property="Margin" Value="0 0 20 20"/>
+    <Setter Property="MinWidth" Value="200"/>
+
+    <Style.Resources>
+      <ResourceDictionary><Style Selector="DockPanel" __plain="1">
+        <Setter Property="Margin" Value="0 0 0 8"/>
+
+        <Style.Resources>
+          <ResourceDictionary><Style Selector="Label" __plain="1">
+            <Setter Property="Margin" Value="0 4 16 0"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+          </Style>
+
+          <Style Selector="mui|ValueLabel" __plain="1">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0 0 16 0"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+          </Style>
+
+          <Style Selector="Button" __plain="1">
+            <Setter Property="Margin" Value="8 0 0 0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+          </Style>
+
+          <Style Selector="mui|AsyncButton" __plain="1">
+            <Setter Property="Margin" Value="8 0 0 0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+          </Style>
+
+          <Style Selector="TextBlock" __plain="1">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+          </Style>
+
+          <Style Selector="CheckBox" __plain="1"><Setter Property="VerticalAlignment" Value="Center"/>
+
+    </Style>
+        </ResourceDictionary></Style.Resources>
+      </Style>
+
+      <Style Selector="CheckBox" __plain="1">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Setter Property="Margin" Value="0 0 0 8"/>
+      </Style>
+    </ResourceDictionary></Style.Resources>
+  </Style>
+
+  <Style Selector="TextBlock.SettingsPanel.Heading2.First">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Margin" Value="0 0 0 8"/>
+  </Style>
+
+  <Style Selector="TextBlock.SettingsPanel.Heading2">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Margin" Value="0 20 0 8"/>
+  </Style>
+
+  <Style Selector="TextBlock.SettingsPanel.Small">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+    <Setter Property="Margin" Value="0 8 0 8"/>
+    <Setter Property="TextWrapping" Value="Wrap"/>
+  </Style>
+
+  <Style Selector="TextBlock.SettingsPanel.Warning">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+    <Setter Property="Margin" Value="160 0 0 8"/>
+    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+  </Style>
+
+  <Style Selector="mui|BbCodeBlock.SettingsPanel.Warning.BbCodeBlock">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+    <Setter Property="Margin" Value="160 0 0 8"/>
+    <Setter Property="Foreground" Value="{DynamicResource Error}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+  </Style>
+</Styles>

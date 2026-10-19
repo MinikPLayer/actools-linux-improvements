@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/ModernUI.Light.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- White theme — white background, dark text. Based in Light. -->
+	<SolidColorBrush x:Key="DarkStripeBackground" Color="#aaffffff"/>
+	<SolidColorBrush x:Key="OverlayBackground" Color="#88ffffff"/>
+	<DropShadowEffect x:Key="OverlayEffect" Opacity="0.5" BlurRadius="8" Color="#ffffff" OffsetX="0" OffsetY="0"/>
+	<SolidColorBrush x:Key="CardBackground" Color="#ffffff"/>
+	<SolidColorBrush x:Key="CardHeaderBackground" Color="#ffffff"/>
+	<Color x:Key="WindowBackgroundColor">#ffffff</Color>
+	<SolidColorBrush x:Key="ButtonBackground" Color="#ffffff"/>
+	<SolidColorBrush x:Key="ButtonTextPressed" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="GoButtonBackground" Color="#ffffff"/>
+	<SolidColorBrush x:Key="GoButtonTextPressed" Color="#ffffff"/>
+	<SolidColorBrush x:Key="DataGridCellForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="DataGridHeaderForegroundPressed" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="DataGridHeaderForegroundSelected" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="InputBackground" Color="#ffffff"/>
+	<SolidColorBrush x:Key="InputBackgroundHover" Color="#ffffff"/>
+	<SolidColorBrush x:Key="ItemTextSelected" Color="{DynamicResource AccentOverlayColor}"/>
+	<SolidColorBrush x:Key="SliderThumbBackground" Color="#ffffff"/>
+</ResourceDictionary>

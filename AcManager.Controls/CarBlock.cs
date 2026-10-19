@@ -48,7 +48,6 @@ namespace AcManager.Controls {
         public static ICarSetupsView CarSetupsView { get; set; }
 
         static CarBlock() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(CarBlock), new FrameworkPropertyMetadata(typeof(CarBlock)));
         }
 
         [CanBeNull]
@@ -72,43 +71,44 @@ namespace AcManager.Controls {
         private FrameworkElement _previewImage;
         private Button _showroomButton;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             // Event handlers
             if (_previewImage != null) {
-                _previewImage.MouseUp -= OnPreviewImageClick;
+                _previewImage.RemoveMouseUp(OnPreviewImageClick);
             }
 
             if (_showroomButton != null) {
                 _showroomButton.Click -= OnShowroomButtonClick;
-                _showroomButton.PreviewMouseRightButtonDown -= OnShowroomContextMenu;
+                _showroomButton.RemovePreviewMouseRightButtonDown(OnShowroomContextMenu);
             }
 
-            _previewImage = GetTemplateChild("PART_PreviewImage") as FrameworkElement;
-            _showroomButton = GetTemplateChild("PART_ShowroomButton") as Button;
+            _previewImage = this.GetTemplateChild("PART_PreviewImage") as FrameworkElement;
+            _showroomButton = this.GetTemplateChild("PART_ShowroomButton") as Button;
 
             if (_previewImage != null) {
-                _previewImage.MouseUp += OnPreviewImageClick;
+                _previewImage.AddMouseUp(OnPreviewImageClick);
             }
 
             if (_showroomButton != null) {
                 _showroomButton.Click += OnShowroomButtonClick;
-                _showroomButton.PreviewMouseRightButtonDown += OnShowroomContextMenu;
+                _showroomButton.AddPreviewMouseRightButtonDown(OnShowroomContextMenu);
             }
             
             // Various areas and footer
-            TagsList = GetTemplateChild("PART_TagsList") as TagsList;
-            BrandArea = GetTemplateChild("PART_BrandArea") as FrameworkElement;
-            ClassArea = GetTemplateChild("PART_ClassArea") as FrameworkElement;
-            YearArea = GetTemplateChild("PART_YearArea") as FrameworkElement;
-            CountryArea = GetTemplateChild("PART_CountryArea") as FrameworkElement;
-            Footer = GetTemplateChild("PART_Footer") as Border;
+            TagsList = this.GetTemplateChild("PART_TagsList") as TagsList;
+            BrandArea = this.GetTemplateChild("PART_BrandArea") as FrameworkElement;
+            ClassArea = this.GetTemplateChild("PART_ClassArea") as FrameworkElement;
+            YearArea = this.GetTemplateChild("PART_YearArea") as FrameworkElement;
+            CountryArea = this.GetTemplateChild("PART_CountryArea") as FrameworkElement;
+            Footer = this.GetTemplateChild("PART_Footer") as Border;
 
             UpdateDescription();
         }
 
-        public static readonly DependencyProperty ShowSkinsAndPreviewProperty = DependencyProperty.Register(nameof(ShowSkinsAndPreview), typeof(bool),
+        public static readonly StyledProperty<bool> ShowSkinsAndPreviewProperty = DP.Register<bool>(nameof(ShowSkinsAndPreview),
                 typeof(CarBlock), new PropertyMetadata(true));
 
         public bool ShowSkinsAndPreview {
@@ -116,7 +116,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowSkinsAndPreviewProperty, value);
         }
 
-        public static readonly DependencyProperty ShowDescriptionProperty = DependencyProperty.Register(nameof(ShowDescription), typeof(bool),
+        public static readonly StyledProperty<bool> ShowDescriptionProperty = DP.Register<bool>(nameof(ShowDescription),
                 typeof(CarBlock), new PropertyMetadata(true, (o, e) => { ((CarBlock)o)._showDescription = (bool)e.NewValue; }));
 
         private bool _showDescription = true;
@@ -126,7 +126,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowDescriptionProperty, value);
         }
 
-        public static readonly DependencyProperty SelectSkinProperty = DependencyProperty.Register(nameof(SelectSkin), typeof(bool),
+        public static readonly StyledProperty<bool> SelectSkinProperty = DP.Register<bool>(nameof(SelectSkin),
                 typeof(CarBlock));
 
         public bool SelectSkin {
@@ -134,7 +134,7 @@ namespace AcManager.Controls {
             set => SetValue(SelectSkinProperty, value);
         }
 
-        public static readonly DependencyProperty OpenShowroomProperty = DependencyProperty.Register(nameof(OpenShowroom), typeof(bool),
+        public static readonly StyledProperty<bool> OpenShowroomProperty = DP.Register<bool>(nameof(OpenShowroom),
                 typeof(CarBlock));
 
         public bool OpenShowroom {
@@ -142,7 +142,7 @@ namespace AcManager.Controls {
             set => SetValue(OpenShowroomProperty, value);
         }
 
-        public static readonly DependencyProperty CarProperty = DependencyProperty.Register(nameof(Car), typeof(CarObject),
+        public static readonly StyledProperty<CarObject> CarProperty = DP.Register<CarObject>(nameof(Car),
                 typeof(CarBlock), new PropertyMetadata(OnCarChanged));
 
         public CarObject Car {
@@ -252,7 +252,7 @@ namespace AcManager.Controls {
             return value.StartsWith(@"ui/") && !value.Contains(@"..") ? value : value.Urlify();
         }
 
-        public static readonly DependencyProperty SelectedSkinProperty = DependencyProperty.Register(nameof(SelectedSkin), typeof(CarSkinObject),
+        public static readonly StyledProperty<CarSkinObject> SelectedSkinProperty = DP.Register<CarSkinObject>(nameof(SelectedSkin),
                 typeof(CarBlock));
 
         public CarSkinObject SelectedSkin {
@@ -260,7 +260,7 @@ namespace AcManager.Controls {
             set => SetValue(SelectedSkinProperty, value);
         }
 
-        public static readonly DependencyProperty PreviewContentProperty = DependencyProperty.Register(nameof(PreviewContent), typeof(object),
+        public static readonly StyledProperty<object> PreviewContentProperty = DP.Register<object>(nameof(PreviewContent),
                 typeof(CarBlock));
 
         public object PreviewContent {

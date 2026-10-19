@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ControlTheme TargetType="controls:AcToolBar" x:Key="{x:Type controls:AcToolBar}">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="Margin" Value="-20 0 -16 0"/>
+    <Setter Property="Height" Value="Auto"/>
+    <Setter Property="IsTogglable" Value="False"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource SeparatorBackground}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="controls:AcToolBar">
+          <mui:Cell>
+            <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Fill="{TemplateBinding BorderBrush}" Margin="-1 -1 0 0"/>
+            <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="1" Fill="{TemplateBinding BorderBrush}" Margin="-1 -1 0 0"/>
+            <ToolBarTray x:Name="PART_ToolBarTray"/>
+          </mui:Cell>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^[FitWidth=True]"><Setter Property="Margin" Value="-16 0 -16 0"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="controls:AcToolBar">
+              <mui:Cell>
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Fill="{TemplateBinding BorderBrush}" Margin="0 -1 0 0"/>
+                <ToolBarTray x:Name="PART_ToolBarTray"/>
+              </mui:Cell>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></ControlTheme>
+</ResourceDictionary>

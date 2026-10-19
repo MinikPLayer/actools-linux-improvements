@@ -1,0 +1,32 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:viewModels="clr-namespace:AcManager.Controls.ViewModels" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.TrackStateDescription">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <StackPanel>
+    <TextBlock Text="Track state:" Margin="0 0 0 8" Classes="Heading2"/>
+
+    <DockPanel Margin="0 0 0 4">
+      <Label Width="180" DockPanel.Dock="Left" Content="Grip at the start:"/>
+      <TextBlock Text="{Binding GripStart, Converter={StaticResource PercentageConverter}, StringFormat='{}{0}%'}"/>
+    </DockPanel>
+
+    <DockPanel Margin="0 0 0 4">
+      <Label Width="180" DockPanel.Dock="Left" Content="Grip transfer:"/>
+      <TextBlock Text="{Binding GripTransfer, Converter={StaticResource PercentageConverter}, StringFormat='{}{0}%'}"/>
+    </DockPanel>
+
+    <DockPanel Margin="0 0 0 4">
+      <Label Width="180" DockPanel.Dock="Left" Content="Randomness"/>
+      <TextBlock Text="{Binding GripRandomness, Converter={StaticResource PercentageConverter}, StringFormat='{}{0}%'}"/>
+    </DockPanel>
+
+    <TextBlock Text="{Binding Description}" Classes="Small"/>
+  </StackPanel>
+</UserControl>

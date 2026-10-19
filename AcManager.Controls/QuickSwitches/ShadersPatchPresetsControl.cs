@@ -5,7 +5,6 @@ using FirstFloor.ModernUI;
 namespace AcManager.Controls.QuickSwitches {
     public class ShadersPatchPresetsControl : QuickSwitchPresetsControl {
         static ShadersPatchPresetsControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ShadersPatchPresetsControl), new FrameworkPropertyMetadata(typeof(ShadersPatchPresetsControl)));
         }
 
         private PatchSettingsModel _model;

@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="c:AcObjectHeaderSection" x:Key="{x:Type c:AcObjectHeaderSection}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:AcObjectHeaderSection">
+          <DockPanel>
+            <c:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+            <mui:BetterTextBox Text="{Binding AcObject.NameEditable, RelativeSource={RelativeSource TemplatedParent}}" FontStyle="{Binding AcObject.Changed, Converter={StaticResource BooleanToFontStyleConverter}, RelativeSource={RelativeSource TemplatedParent}}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Theme="{StaticResource Borderless.Heading2}"/>
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^[ShowIcon=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="c:AcObjectHeaderSection">
+              <DockPanel>
+                <Border DockPanel.Dock="Left" Width="24" Height="24" Margin="0 0 4 0" Background="{TemplateBinding IconBackground}">
+                  <ContentPresenter x:Name="PART_IconImage" Content="{Binding IconContent, RelativeSource={RelativeSource TemplatedParent}}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                </Border>
+                <c:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+                <mui:BetterTextBox Text="{Binding AcObject.NameEditable, RelativeSource={RelativeSource TemplatedParent}}" FontStyle="{Binding AcObject.Changed, Converter={StaticResource BooleanToFontStyleConverter}, RelativeSource={RelativeSource TemplatedParent}}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Theme="{StaticResource Borderless.Heading2}"/>
+              </DockPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^[IconContent=null]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="c:AcObjectHeaderSection">
+              <DockPanel>
+                <mui:BetterImage x:Name="PART_IconImage" Width="24" Height="24" Margin="0 0 4 0" Filename="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Left" Background="{TemplateBinding IconBackground}" RenderOptions.BitmapInterpolationMode="HighQuality"/>
+                <c:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+                <mui:BetterTextBox Text="{Binding AcObject.NameEditable, RelativeSource={RelativeSource TemplatedParent}}" FontStyle="{Binding AcObject.Changed, Converter={StaticResource BooleanToFontStyleConverter}, RelativeSource={RelativeSource TemplatedParent}}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Theme="{StaticResource Borderless.Heading2}"/>
+              </DockPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></Style></ControlTheme>
+</ResourceDictionary>

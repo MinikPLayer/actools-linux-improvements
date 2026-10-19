@@ -13,7 +13,7 @@ namespace AcManager.Controls.Services {
             obj.SetValue(IsTimeSliderProperty, value);
         }
 
-        public static readonly DependencyProperty IsTimeSliderProperty = DependencyProperty.RegisterAttached("IsTimeSlider", typeof(bool),
+        public static readonly AttachedProperty<bool> IsTimeSliderProperty = DP.RegisterAttached<bool>("IsTimeSlider",
                 typeof(TimeSliderService), new UIPropertyMetadata(OnIsTimeSliderChanged));
 
         private static void OnIsTimeSliderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

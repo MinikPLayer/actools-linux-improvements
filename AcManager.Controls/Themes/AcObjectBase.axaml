@@ -1,0 +1,107 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="ac:AcObjectBase" x:Key="{x:Type ac:AcObjectBase}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:AcObjectBase">
+          <Grid x:Name="PART_Main">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto"/>
+              <RowDefinition/>
+              <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ac:AcObjectHeaderSection AcObject="{TemplateBinding AcObject}" ShowIcon="{TemplateBinding ShowIcon}" IconBackground="{TemplateBinding IconBackground}" Icon="{TemplateBinding Icon}" IconContent="{TemplateBinding IconContent}" x:Name="PART_Header"/>
+            <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" Margin="-8 8 -14 0" Padding="0 0 8 0">
+              <StackPanel MinWidth="500" Margin="0 0 0 40">
+                <ac:AcObjectErrorsSection AcObject="{TemplateBinding AcObject}"/>
+                <ContentPresenter Margin="0 4 0 0" Content="{TemplateBinding Content}"/>
+              </StackPanel>
+            </ScrollViewer>
+            <ac:AcToolBar Grid.Row="2" x:Name="PART_ToolBar" ToolBars="{TemplateBinding ToolBars}" ZIndex="1"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^[Scrollable=False]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcObjectBase">
+              <Grid x:Name="PART_Main">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ac:AcObjectHeaderSection AcObject="{TemplateBinding AcObject}" ShowIcon="{TemplateBinding ShowIcon}" IconBackground="{TemplateBinding IconBackground}" Icon="{TemplateBinding Icon}" x:Name="PART_Header" Margin="{TemplateBinding HeaderPadding}"/>
+                <ac:AcObjectErrorsSection AcObject="{TemplateBinding AcObject}" Grid.Row="1" Margin="0 4 0 0"/>
+                <ContentPresenter Grid.Row="2" Content="{TemplateBinding Content}" Margin="-8 4 -8 0"/>
+                <ac:AcToolBar Grid.Row="3" x:Name="PART_ToolBar" ToolBars="{TemplateBinding ToolBars}"/>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^[IsNameReadOnly=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcObjectBase">
+              <Grid x:Name="PART_Main">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel>
+                  <mui:BetterImage x:Name="PART_IconImage" Width="24" Height="24" Margin="0 0 4 0" ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Left" RenderOptions.BitmapInterpolationMode="HighQuality" IsVisible="{Binding ShowIcon, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  <ac:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+                  <mui:BetterTextBox Text="{Binding AcObject.DisplayName, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" IsReadOnly="True" Theme="{StaticResource Borderless.Heading2}"/>
+                </DockPanel>
+                <ac:AcObjectErrorsSection AcObject="{TemplateBinding AcObject}" Grid.Row="1" Margin="0 4 0 0"/>
+                <ContentPresenter Grid.Row="2" Content="{TemplateBinding Content}" Margin="-8 4 -8 0"/>
+                <ac:AcToolBar Grid.Row="3" x:Name="PART_ToolBar" ToolBars="{TemplateBinding ToolBars}"/>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></Style><Style Selector="^[IsNameReadOnly=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcObjectBase">
+              <Grid x:Name="PART_Main">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="Auto"/>
+                  <RowDefinition/>
+                  <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <DockPanel>
+                  <mui:BetterImage x:Name="PART_IconImage" Width="24" Height="24" Margin="0 0 4 0" ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Left" RenderOptions.BitmapInterpolationMode="HighQuality" IsVisible="{Binding ShowIcon, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  <ac:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+                  <mui:BetterTextBox Text="{Binding AcObject.DisplayName, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" IsReadOnly="True" Theme="{StaticResource Borderless.Heading2}"/>
+                </DockPanel>
+                <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" Margin="-8 8 -14 0" Padding="0 0 8 0">
+                  <StackPanel MinWidth="500" Margin="0 0 0 40">
+                    <ac:AcObjectErrorsSection AcObject="{TemplateBinding AcObject}"/>
+                    <ContentPresenter Margin="0 4 0 0" Content="{TemplateBinding Content}"/>
+                  </StackPanel>
+                </ScrollViewer>
+                <ac:AcToolBar Grid.Row="2" x:Name="PART_ToolBar" ToolBars="{TemplateBinding ToolBars}" ZIndex="1"/>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding AcObject.Outdated, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcObjectBase">
+              <TextBlock Margin="20" FontSize="30" Foreground="Red" Text="Outdated!">
+                <ToolTip.Tip>You weren’t supposed to see this, something’ve gone terribly wrong</ToolTip.Tip>
+              </TextBlock>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></ControlTheme>
+</ResourceDictionary>

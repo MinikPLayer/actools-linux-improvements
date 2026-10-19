@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace AcManager.Controls {
     public class StatEntry : Control {
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string),
+        public static readonly StyledProperty<string> TitleProperty = DP.Register<string>(nameof(Title),
                 typeof(StatEntry));
 
         public string Title {
@@ -12,7 +12,7 @@ namespace AcManager.Controls {
             set => SetValue(TitleProperty, value);
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(string),
+        public static readonly StyledProperty<string> ValueProperty = DP.Register<string>(nameof(Value),
                 typeof(StatEntry));
 
         public string Value {
@@ -20,7 +20,7 @@ namespace AcManager.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty ValueUnitsProperty = DependencyProperty.Register(nameof(ValueUnits), typeof(string),
+        public static readonly StyledProperty<string> ValueUnitsProperty = DP.Register<string>(nameof(ValueUnits),
                 typeof(StatEntry));
 
         public string ValueUnits {
@@ -28,7 +28,7 @@ namespace AcManager.Controls {
             set => SetValue(ValueUnitsProperty, value);
         }
 
-        public static readonly DependencyProperty CarIdProperty = DependencyProperty.Register(nameof(CarId), typeof(string),
+        public static readonly StyledProperty<string> CarIdProperty = DP.Register<string>(nameof(CarId),
                 typeof(StatEntry));
 
         public string CarId {
@@ -36,7 +36,7 @@ namespace AcManager.Controls {
             set => SetValue(CarIdProperty, value);
         }
 
-        public static readonly DependencyProperty TrackIdProperty = DependencyProperty.Register(nameof(TrackId), typeof(string),
+        public static readonly StyledProperty<string> TrackIdProperty = DP.Register<string>(nameof(TrackId),
                 typeof(StatEntry));
 
         public string TrackId {
@@ -44,7 +44,7 @@ namespace AcManager.Controls {
             set => SetValue(TrackIdProperty, value);
         }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(Geometry),
+        public static readonly StyledProperty<Geometry> IconProperty = DP.Register<Geometry>(nameof(Icon),
                 typeof(StatEntry));
 
         public Geometry Icon {

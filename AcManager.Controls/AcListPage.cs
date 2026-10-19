@@ -29,17 +29,11 @@ using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
-using Binding = System.Windows.Data.Binding;
-using Button = System.Windows.Controls.Button;
-using Control = System.Windows.Controls.Control;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using ListBox = System.Windows.Controls.ListBox;
 
 namespace AcManager.Controls {
     [ContentProperty(nameof(Resources))]
     public class AcListPage : Control {
         static AcListPage() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcListPage), new FrameworkPropertyMetadata(typeof(AcListPage)));
         }
 
         private readonly DelayedPropertyWrapper<AcItemWrapper> _selectedWrapper;
@@ -63,7 +57,7 @@ namespace AcManager.Controls {
             }
         }
 
-        private static readonly DependencyPropertyKey SelectedWrapperPropertyKey = DependencyProperty.RegisterReadOnly(nameof(SelectedWrapper), typeof(AcItemWrapper),
+        private static readonly DependencyPropertyKey SelectedWrapperPropertyKey = DP.RegisterReadOnly(nameof(SelectedWrapper), typeof(AcItemWrapper),
                 typeof(AcListPage), new PropertyMetadata(null));
 
         public static readonly DependencyProperty SelectedWrapperProperty = SelectedWrapperPropertyKey.DependencyProperty;
@@ -104,7 +98,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty BatchMenuVisibleProperty = DependencyProperty.Register(nameof(BatchMenuVisible), typeof(bool),
+        public static readonly StyledProperty<bool> BatchMenuVisibleProperty = DP.Register<bool>(nameof(BatchMenuVisible),
                 typeof(AcListPage), new PropertyMetadata(false, (o, e) => {
                     ((AcListPage)o)._batchMenuVisible = (bool)e.NewValue;
                 }));
@@ -202,7 +196,7 @@ namespace AcManager.Controls {
             obj.SetValue(ActiveBoolHolderProperty, value);
         }
 
-        public static readonly DependencyProperty ActiveBoolHolderProperty = DependencyProperty.RegisterAttached("ActiveBoolHolder", typeof(BoolHolder),
+        public static readonly AttachedProperty<BoolHolder> ActiveBoolHolderProperty = DP.RegisterAttached<BoolHolder>("ActiveBoolHolder",
                 typeof(AcListPage), new FrameworkPropertyMetadata(new BoolHolder(), FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetNarrowList(DependencyObject obj) {
@@ -213,7 +207,7 @@ namespace AcManager.Controls {
             obj.SetValue(NarrowListProperty, value);
         }
 
-        public static readonly DependencyProperty NarrowListProperty = DependencyProperty.RegisterAttached("NarrowList", typeof(bool),
+        public static readonly AttachedProperty<bool> NarrowListProperty = DP.RegisterAttached<bool>("NarrowList",
                 typeof(AcListPage), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetUsePaddingForChildObjects(DependencyObject obj) {
@@ -224,7 +218,7 @@ namespace AcManager.Controls {
             obj.SetValue(UsePaddingForChildObjectsProperty, value);
         }
 
-        public static readonly DependencyProperty UsePaddingForChildObjectsProperty = DependencyProperty.RegisterAttached("UsePaddingForChildObjects", typeof(bool),
+        public static readonly AttachedProperty<bool> UsePaddingForChildObjectsProperty = DP.RegisterAttached<bool>("UsePaddingForChildObjects",
                 typeof(AcListPage), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.Inherits));
 
         private bool _batchActionsSet;
@@ -261,7 +255,7 @@ namespace AcManager.Controls {
                 list.SelectionChanged += OnMultiSelectionChanged;
                 SetBatchActions();
                 SetCheckBoxMode(true).Ignore();
-                SetValue(SelectedAmountPropertyKey, (DataContext as IAcListPageViewModel)?.GetNumberString(list.SelectedItems.Count));
+                SetValue(SelectedAmountPropertyKey.DependencyProperty, (DataContext as IAcListPageViewModel)?.GetNumberString(list.SelectedItems.Count));
                 list.Focus();
 
                 if (_batchMenu != null && _batchMenu.ContextMenu == null) {
@@ -391,7 +385,7 @@ namespace AcManager.Controls {
                     grouped.Flatten().OfType<BatchAction>().OrderByDescending(x => x.Priority).FirstOrDefault();
         }
 
-        public static readonly DependencyProperty SelectedBatchActionProperty = DependencyProperty.Register(nameof(SelectedBatchAction), typeof(BatchAction),
+        public static readonly StyledProperty<BatchAction> SelectedBatchActionProperty = DP.Register<BatchAction>(nameof(SelectedBatchAction),
                 typeof(AcListPage), new PropertyMetadata(OnSelectedBatchActionChanged));
 
         public BatchAction SelectedBatchAction {
@@ -430,7 +424,7 @@ namespace AcManager.Controls {
             var hasParams = actionParams != null;
             if (hasParams != SelectedBatchActionHasParams) {
                 _selectedBatchActionHasParams = hasParams;
-                SetValue(SelectedBatchActionHasParamsPropertyKey, hasParams);
+                SetValue(SelectedBatchActionHasParamsPropertyKey.DependencyProperty, hasParams);
 
                 if (_batchActionParams != null) {
                     try {
@@ -459,14 +453,14 @@ namespace AcManager.Controls {
             if (list == null) return;
 
             var count = _selectedBatchAction?.OnSelectionChanged(list.SelectedItems) ?? 0;
-            SetValue(SelectedAmountPropertyKey, (DataContext as IAcListPageViewModel)?.GetNumberString(count));
+            SetValue(SelectedAmountPropertyKey.DependencyProperty, (DataContext as IAcListPageViewModel)?.GetNumberString(count));
             if (_batchActionRunButton != null) {
                 _batchActionRunButton.IsEnabled = count > 0;
             }
         }
 
         private static readonly DependencyPropertyKey SelectedBatchActionHasParamsPropertyKey =
-                DependencyProperty.RegisterReadOnly(nameof(SelectedBatchActionHasParams), typeof(bool),
+                DP.RegisterReadOnly(nameof(SelectedBatchActionHasParams), typeof(bool),
                         typeof(AcListPage), new PropertyMetadata(false));
 
         public static readonly DependencyProperty SelectedBatchActionHasParamsProperty = SelectedBatchActionHasParamsPropertyKey.DependencyProperty;
@@ -478,7 +472,7 @@ namespace AcManager.Controls {
             PrepareBatchAction();
         }
 
-        public static readonly DependencyPropertyKey SelectedAmountPropertyKey = DependencyProperty.RegisterReadOnly(nameof(SelectedAmount), typeof(string),
+        public static readonly DependencyPropertyKey SelectedAmountPropertyKey = DP.RegisterReadOnly(nameof(SelectedAmount), typeof(string),
                 typeof(AcListPage), new PropertyMetadata(null));
 
         public static readonly DependencyProperty SelectedAmountProperty = SelectedAmountPropertyKey.DependencyProperty;
@@ -494,7 +488,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty AddNewCommandProperty = DependencyProperty.Register(nameof(AddNewCommand), typeof(CommandBase),
+        public static readonly StyledProperty<CommandBase> AddNewCommandProperty = DP.Register<CommandBase>(nameof(AddNewCommand),
                 typeof(AcListPage), new PropertyMetadata(OnAddNewCommandChanged));
 
         public CommandBase AddNewCommand {
@@ -538,15 +532,16 @@ namespace AcManager.Controls {
         //private FrameworkElement _frame;
         //private DoubleAnimation _batchActionParamsAnimation;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             DisposeHelper.Dispose(ref _listSizeConditions);
 
             var list = _list;
             if (list != null) {
-                list.PreviewMouseLeftButtonDown -= OnLeftMouseDown;
-                list.PreviewMouseRightButtonDown -= OnRightMouseDown;
-                list.PreviewMouseRightButtonUp -= OnRightMouseUp;
-                list.PreviewKeyDown -= OnKeyDown;
+                list.RemovePreviewMouseLeftButtonDown(OnLeftMouseDown);
+                list.RemovePreviewMouseRightButtonDown(OnRightMouseDown);
+                list.RemovePreviewMouseRightButtonUp(OnRightMouseUp);
+                list.RemovePreviewKeyDown(OnKeyDown);
                 list.SizeChanged -= OnListSizeChanged;
             }
 
@@ -574,42 +569,42 @@ namespace AcManager.Controls {
                 _listContextMenuButton.Click -= OnListContextMenuClick;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
             _batchActionsSet = false;
-            _list = GetTemplateChild(@"ItemsList") as ListBox;
-            _addButton = GetTemplateChild(@"AddNewButton") as Button;
-            _saveAllButton = GetTemplateChild(@"SaveAllButton") as Button;
-            _scrollToSelectedButton = GetTemplateChild(@"ScrollToSelectedButton") as Button;
-            _batchActions = GetTemplateChild(@"PART_BatchActions") as HierarchicalComboBox;
-            _batchAction = GetTemplateChild(@"PART_BatchAction") as ContentPresenter;
-            _batchMenu = GetTemplateChild(@"PART_BatchMenuTransform") as FrameworkElement;
-            _batchActionParams = GetTemplateChild(@"PART_BatchActionParams") as FrameworkElement;
-            _batchActionRunButton = GetTemplateChild(@"PART_BatchBlock_RunButton") as Button;
-            _batchActionCloseButton = GetTemplateChild(@"PART_BatchBlock_CloseButton") as Button;
-            _listContextMenuButton = GetTemplateChild(@"PART_ListContextMenu") as ContextMenuButton;
-            //_frame = GetTemplateChild(@"PART_Frame") as FrameworkElement;
-            //_batchActionParamsAnimation = GetTemplateChild(@"PART_BatchActionParams_Animation") as DoubleAnimation;
+            _list = this.GetTemplateChild(@"ItemsList") as ListBox;
+            _addButton = this.GetTemplateChild(@"AddNewButton") as Button;
+            _saveAllButton = this.GetTemplateChild(@"SaveAllButton") as Button;
+            _scrollToSelectedButton = this.GetTemplateChild(@"ScrollToSelectedButton") as Button;
+            _batchActions = this.GetTemplateChild(@"PART_BatchActions") as HierarchicalComboBox;
+            _batchAction = this.GetTemplateChild(@"PART_BatchAction") as ContentPresenter;
+            _batchMenu = this.GetTemplateChild(@"PART_BatchMenuTransform") as FrameworkElement;
+            _batchActionParams = this.GetTemplateChild(@"PART_BatchActionParams") as FrameworkElement;
+            _batchActionRunButton = this.GetTemplateChild(@"PART_BatchBlock_RunButton") as Button;
+            _batchActionCloseButton = this.GetTemplateChild(@"PART_BatchBlock_CloseButton") as Button;
+            _listContextMenuButton = this.GetTemplateChild(@"PART_ListContextMenu") as ContextMenuButton;
+            //_frame = this.GetTemplateChild(@"PART_Frame") as FrameworkElement;
+            //_batchActionParamsAnimation = this.GetTemplateChild(@"PART_BatchActionParams_Animation") as DoubleAnimation;
 
             list = _list;
             if (list != null) {
                 list.ScrollIntoView(list.SelectedItem);
-                list.PreviewMouseLeftButtonDown += OnLeftMouseDown;
-                list.PreviewMouseRightButtonDown += OnRightMouseDown;
-                list.PreviewMouseRightButtonUp += OnRightMouseUp;
-                list.PreviewKeyDown += OnKeyDown;
+                list.AddPreviewMouseLeftButtonDown(OnLeftMouseDown);
+                list.AddPreviewMouseRightButtonDown(OnRightMouseDown);
+                list.AddPreviewMouseRightButtonUp(OnRightMouseUp);
+                list.AddPreviewKeyDown(OnKeyDown);
                 list.SizeChanged += OnListSizeChanged;
                 _listSizeConditions = new SizeRelatedCondition[] {
                     list.AddWidthCondition(80)
                          .Add(() => _batchActionCloseButton)
-                         .Add(x => (Grid)GetTemplateChild("PART_BatchBlock_ButtonsGrid"),
+                         .Add(x => (Grid)this.GetTemplateChild("PART_BatchBlock_ButtonsGrid"),
                                  (c, x) => c.ColumnDefinitions[1].Width = new GridLength(x ? 8 : 0, GridUnitType.Pixel)),
                     list.AddWidthCondition(140)
                          .Add(() => _scrollToSelectedButton)
-                         .Add(() => (FrameworkElement)GetTemplateChild("PART_BatchBlock_RunButton_Text")),
+                         .Add(() => (FrameworkElement)this.GetTemplateChild("PART_BatchBlock_RunButton_Text")),
                     list.AddWidthCondition(180)
-                         .Add(() => (FrameworkElement)GetTemplateChild("PART_BatchBlock_CloseButton_Text"))
-                         .Add(x => (Grid)GetTemplateChild("PART_BatchBlock_ButtonsGrid"),
+                         .Add(() => (FrameworkElement)this.GetTemplateChild("PART_BatchBlock_CloseButton_Text"))
+                         .Add(x => (Grid)this.GetTemplateChild("PART_BatchBlock_ButtonsGrid"),
                                  (c, x) => c.ColumnDefinitions.Last().Width = new GridLength(1, x ? GridUnitType.Star : GridUnitType.Auto)),
                     list.AddWidthCondition(200).Add(x => SetNarrowList(list, !x)),
                 };
@@ -703,7 +698,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty SaveScrollKeyProperty = DependencyProperty.Register(nameof(SaveScrollKey), typeof(string),
+        public static readonly StyledProperty<string> SaveScrollKeyProperty = DP.Register<string>(nameof(SaveScrollKey),
                 typeof(AcListPage));
 
         public string SaveScrollKey {
@@ -739,7 +734,7 @@ namespace AcManager.Controls {
 
         private void OnCurrentChanged(object sender, EventArgs e) {
             var newValue = ItemsSource.CurrentItem as AcItemWrapper;
-            SetValue(SelectedWrapperPropertyKey, newValue);
+            SetValue(SelectedWrapperPropertyKey.DependencyProperty, newValue);
 
             if (ItemsSource.Contains(_selectedWrapper.Value)) {
                 _selectedWrapper.Value = newValue;
@@ -776,12 +771,12 @@ namespace AcManager.Controls {
         }
 
         #region Control Properties
-        public static readonly DependencyProperty SelectedSourceProperty = DependencyProperty.Register(nameof(SelectedSource), typeof(Uri),
+        public static readonly StyledProperty<Uri> SelectedSourceProperty = DP.Register<Uri>(nameof(SelectedSource),
             typeof(AcListPage), new PropertyMetadata());
 
         public Uri SelectedSource => (Uri)GetValue(SelectedSourceProperty);
 
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource), typeof(AcWrapperCollectionView),
+        public static readonly StyledProperty<AcWrapperCollectionView> ItemsSourceProperty = DP.Register<AcWrapperCollectionView>(nameof(ItemsSource),
             typeof(AcListPage), new PropertyMetadata(OnItemsSourceChanged));
 
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -796,7 +791,7 @@ namespace AcManager.Controls {
             if (newValue != null) {
                 newValue.CurrentChanged += OnCurrentChanged;
                 _selectedWrapper.Value = newValue.CurrentItem as AcItemWrapper;
-                SetValue(SelectedWrapperPropertyKey, newValue.CurrentItem as AcItemWrapper);
+                SetValue(SelectedWrapperPropertyKey.DependencyProperty, newValue.CurrentItem as AcItemWrapper);
             }
         }
 
@@ -805,7 +800,7 @@ namespace AcManager.Controls {
             set => SetValue(ItemsSourceProperty, value);
         }
 
-        public static readonly DependencyProperty IsGroupingEnabledProperty = DependencyProperty.Register(nameof(IsGroupingEnabled), typeof(bool),
+        public static readonly StyledProperty<bool> IsGroupingEnabledProperty = DP.Register<bool>(nameof(IsGroupingEnabled),
                 typeof(AcListPage));
 
         public bool IsGroupingEnabled {

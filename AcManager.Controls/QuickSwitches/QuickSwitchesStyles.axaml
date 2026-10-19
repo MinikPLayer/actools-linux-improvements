@@ -1,0 +1,249 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:qs="clr-namespace:AcManager.Controls.QuickSwitches" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/QuickSwitches/QuickSwitchesIconData.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <sys:Double x:Key="BlockSize">80</sys:Double>
+  <Thickness x:Key="BlockMargin">0 4</Thickness>
+  <Thickness x:Key="LabelMargin">0 0 0 4</Thickness>
+  <sys:Double x:Key="IconSize">24</sys:Double>
+  <sys:Double x:Key="FontSize">11</sys:Double>
+  <FontWeight x:Key="FontWeight">Bold</FontWeight>
+
+  <ControlTheme TargetType="mui:ModernToggleButton" x:Key="{x:Type mui:ModernToggleButton}">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Margin" Value="{StaticResource BlockMargin}"/>
+    <Setter Property="Width" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Height" Value="{StaticResource BlockSize}"/>
+    <Setter Property="IconWidth" Value="{StaticResource IconSize}"/>
+    <Setter Property="IconHeight" Value="{StaticResource IconSize}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="mui:ModernToggleButton">
+          <DockPanel Margin="{TemplateBinding Padding}" Background="Transparent">
+            <StackPanel HorizontalAlignment="Center" DockPanel.Dock="Bottom" Margin="{StaticResource LabelMargin}" Orientation="Horizontal">
+              <Ellipse x:Name="PART_Mark" Fill="{DynamicResource Accent}" Width="8" Height="8" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                  <TransformGroup>
+                    <ScaleTransform ScaleX="0" ScaleY="0" CenterX="4" CenterY="4"/>
+                  </TransformGroup>
+                </Ellipse.RenderTransform>
+              </Ellipse>
+              <DockPanel x:Name="PART_Text">
+                <mui:ContextMenuButton x:Name="PART_MoreButton" Command="{TemplateBinding MoreCommand}" DockPanel.Dock="Right"/>
+                <TextBlock DataContext="{TemplateBinding Content}" Text="{Binding Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" FontFamily="{StaticResource CondensedFont}" FontWeight="{StaticResource FontWeight}" FontSize="{StaticResource FontSize}" Margin="4 0 0 0"/>
+                <DockPanel.RenderTransform>
+                  <TransformGroup>
+                    <TranslateTransform X="-6"/>
+                  </TransformGroup>
+                </DockPanel.RenderTransform>
+              </DockPanel>
+            </StackPanel>
+            <Path x:Name="PART_Icon" Data="{TemplateBinding IconData}" Width="{TemplateBinding IconWidth}" Height="{TemplateBinding IconHeight}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ Path#PART_Icon"><Setter Property="Opacity" Value="0.36"/></Style><Style Selector="^:checked /template/ Path#PART_Icon"><Setter Property="Opacity" Value="1"/>
+              </Style><!-- PORT: storyboard actions of trigger :checked not converted --><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+              <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+              </Style><Style Selector="^[MoreCommand=null] /template/ mui|ContextMenuButton#PART_MoreButton"><Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="mui:ModernButton" x:Key="{x:Type mui:ModernButton}">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Margin" Value="{StaticResource BlockMargin}"/>
+    <Setter Property="Width" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Height" Value="{StaticResource BlockSize}"/>
+    <Setter Property="IconWidth" Value="{StaticResource IconSize}"/>
+    <Setter Property="IconHeight" Value="{StaticResource IconSize}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="mui:ModernButton">
+          <DockPanel Margin="{TemplateBinding Padding}" Background="Transparent">
+            <TextBlock DataContext="{TemplateBinding Content}" Text="{Binding Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" FontFamily="{StaticResource CondensedFont}" FontWeight="{StaticResource FontWeight}" FontSize="{StaticResource FontSize}" HorizontalAlignment="Center" DockPanel.Dock="Bottom" Margin="{StaticResource LabelMargin}"/>
+            <Path x:Name="PART_Icon" Data="{TemplateBinding IconData}" Width="{TemplateBinding IconWidth}" Height="{TemplateBinding IconHeight}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Path.RenderTransform>
+                <TranslateTransform Y="0"/>
+              </Path.RenderTransform>
+            </Path>
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+              <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+              </Style></ControlTheme>
+
+  <ControlTheme TargetType="qs:QuickSwitchComboBox" x:Key="{x:Type qs:QuickSwitchComboBox}">
+    <Setter Property="Margin" Value="{StaticResource BlockMargin}"/>
+    <Setter Property="Width" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Height" Value="{StaticResource BlockSize}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+    <Setter Property="Padding" Value="1 0 3 0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="qs:QuickSwitchComboBox">
+          <DockPanel>
+            <mui:Cell x:Name="MainGrid" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="0 0 0 4" Background="Transparent">
+              <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                <mui:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
+                  <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+                    <!-- popup border thickness not dependent on BorderThickness property-->
+                    <ScrollViewer x:Name="DropDownScrollViewer">
+                      <ItemsPresenter x:Name="ItemsPresenter"/>
+                    </ScrollViewer>
+                  </Border>
+                </mui:Cell>
+              </Popup>
+              <ToggleButton Background="Transparent" BorderThickness="0" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+              <Path x:Name="Arrow" Margin="3 1 0 0" Fill="{TemplateBinding Foreground}" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
+              <TextBlock x:Name="PART_Text" IsHitTestVisible="False" DataContext="{TemplateBinding SelectionBoxItem}" Text="{Binding Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" FontFamily="{StaticResource CondensedFont}" FontWeight="{StaticResource FontWeight}" FontSize="{StaticResource FontSize}" Margin="0 0 11 0"/>
+            </mui:Cell>
+            <Path x:Name="PART_Icon" Data="{TemplateBinding IconData}" Width="{StaticResource IconSize}" Height="{StaticResource IconSize}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[HasItems=False] /template/ Border#DropDownBorder"><Setter Property="Height" Value="95"/>
+            </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="qs:QuickSwitchPresetsControl" x:Key="{x:Type qs:QuickSwitchPresetsControl}">
+    <Setter Property="Margin" Value="{StaticResource BlockMargin}"/>
+    <Setter Property="Width" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Height" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="qs:QuickSwitchPresetsControl">
+          <DockPanel Background="Transparent">
+            <mui:HierarchicalComboBox x:Name="PART_ComboBox" ItemsSource="{TemplateBinding SavedPresetsGrouped}" HorizontalAlignment="Center" DockPanel.Dock="Bottom" Margin="{StaticResource LabelMargin}" Background="Transparent" BorderThickness="0" Padding="1 0 3 0" InnerMargin="8 6 -2 0" HorizontalContentAlignment="Center" FixedMode="False">
+              <mui:HierarchicalComboBox.SelectedContent>
+                <DataTemplate>
+                  <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Center" FontWeight="{StaticResource FontWeight}" FontFamily="{StaticResource CondensedFont}" FontSize="{StaticResource FontSize}" Text="{Binding CurrentUserPreset.DisplayName, RelativeSource={RelativeSource AncestorType={x:Type qs:QuickSwitchPresetsControl}}, Converter={StaticResource ToUpperConverter}}"/>
+                </DataTemplate>
+              </mui:HierarchicalComboBox.SelectedContent>
+            </mui:HierarchicalComboBox>
+            <Path Data="{TemplateBinding IconData}" Width="{StaticResource IconSize}" Height="{StaticResource IconSize}" Fill="{DynamicResource ButtonText}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[Changed=True] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
+                <Setter.Value>
+                  <DataTemplate>
+                    <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Center" FontWeight="{StaticResource FontWeight}" FontFamily="{StaticResource CondensedFont}" FontSize="{StaticResource FontSize}" FontStyle="Italic" Text="{Binding CurrentUserPreset.DisplayName, RelativeSource={RelativeSource AncestorType={x:Type qs:QuickSwitchPresetsControl}}, Converter={StaticResource ToUpperConverter}}"/>
+                  </DataTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^[CurrentUserPreset=null] /template/ mui|HierarchicalComboBox#PART_ComboBox"><Setter Property="SelectedContent">
+                <Setter.Value>
+                  <DataTemplate>
+                    <TextBlock TextTrimming="CharacterEllipsis" TextAlignment="Center" FontWeight="{StaticResource FontWeight}" FontFamily="{StaticResource CondensedFont}" FontSize="{StaticResource FontSize}" FontStyle="Italic" Text="{x:Static ac:ControlsStrings.Presets_Unsaved}"/>
+                  </DataTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="qs:QuickSwitchSlider" x:Key="{x:Type qs:QuickSwitchSlider}">
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Margin" Value="{StaticResource BlockMargin}"/>
+    <Setter Property="Width" Value="{StaticResource BlockSize}"/>
+    <Setter Property="Height" Value="{StaticResource BlockSize}"/>
+    <Setter Property="IsSnapToTickEnabled" Value="True"/>
+    <Setter Property="TickFrequency" Value="5"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="qs:QuickSwitchSlider">
+          <Border x:Name="PART_Border" Background="Transparent" BorderThickness="0">
+            <Grid Margin="{TemplateBinding Padding}">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <Viewbox Grid.Row="0" x:Name="PART_Wrapper">
+                <Canvas Width="80" Height="80" Background="Transparent">
+                  <Thumb x:Name="PART_Thumb" Width="20" Height="20" BorderThickness="0" Classes="inline1">
+                    <Thumb.Template>
+                      <ControlTemplate>
+                        <Ellipse Margin="6" Width="8" Height="8" Fill="{TemplateBinding Background}" StrokeThickness="1" Stroke="{TemplateBinding BorderBrush}"/>
+                      </ControlTemplate>
+                    </Thumb.Template>
+                    <Thumb.Styles>
+                      <Style Selector="Thumb.inline1">
+                        <Setter Property="Background" Value="{DynamicResource SliderThumbBackground}"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorder}"/>
+                        <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundHover}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
+                          </Style><Style Selector="^:disabled"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDisabled}"/>
+                          </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>
+                          </Style></Style>
+                    </Thumb.Styles>
+                    <Thumb.RenderTransform>
+                      <TransformGroup>
+                        <TranslateTransform X="30" Y="60"/>
+                        <RotateTransform CenterX="40" CenterY="40">
+                          <RotateTransform.Angle>
+                            <MultiBinding Converter="{x:Static mui:RoundSlider.Converter}">
+                              <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
+                              <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Minimum"/>
+                              <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Maximum"/>
+                            </MultiBinding>
+                          </RotateTransform.Angle>
+                        </RotateTransform>
+                      </TransformGroup>
+                    </Thumb.RenderTransform>
+                  </Thumb>
+                </Canvas>
+              </Viewbox>
+
+              <Path Grid.Row="0" x:Name="PART_Icon" Data="{TemplateBinding IconData}" Width="{StaticResource IconSize}" Height="{StaticResource IconSize}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+              <TextBlock x:Name="PART_Text" DataContext="{TemplateBinding Content}" Text="{Binding Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" FontFamily="{StaticResource CondensedFont}" FontWeight="{StaticResource FontWeight}" FontSize="{StaticResource FontSize}" Grid.Row="1" HorizontalAlignment="Center" Margin="{StaticResource LabelMargin}">
+                <TextBlock.RenderTransform>
+                  <TransformGroup>
+                    <TranslateTransform Y="0"/>
+                  </TransformGroup>
+                </TextBlock.RenderTransform>
+              </TextBlock>
+              <TextBlock x:Name="PART_DisplayValue" DataContext="{TemplateBinding DisplayValue}" Text="{Binding Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" FontFamily="{StaticResource CondensedFont}" FontWeight="{StaticResource FontWeight}" FontSize="{StaticResource FontSize}" Opacity="0" Grid.Row="1" HorizontalAlignment="Center" Margin="{StaticResource LabelMargin}">
+                <TextBlock.RenderTransform>
+                  <TransformGroup>
+                    <TranslateTransform Y="10"/>
+                  </TransformGroup>
+                </TextBlock.RenderTransform>
+              </TextBlock>
+            </Grid>
+          </Border>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <!-- PORT: storyboard actions of trigger :pointerover not converted --></ControlTheme>
+</ResourceDictionary>

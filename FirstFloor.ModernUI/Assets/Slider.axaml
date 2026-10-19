@@ -26,7 +26,7 @@
     </Setter>
   <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
-            </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDisabled}"/>
@@ -58,18 +58,18 @@
               </Grid.RowDefinitions>
               <!-- PORT: removed TickBar -->
               <!-- PORT: removed TickBar -->
-              <Border x:Name="TrackBackground" Grid.Row="1" VerticalAlignment="center" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Height="4.0">
+              <Border x:Name="TrackBackground" Grid.Row="1" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Height="4.0" VerticalAlignment="Center">
                 <Canvas Margin="-6,-1">
                   <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource SliderSelectionBackground}" Height="4.0" StrokeThickness="1.0" Stroke="{DynamicResource SliderSelectionBorder}"/>
                 </Canvas>
               </Border>
               <Track Grid.Row="1" x:Name="PART_Track">
-                <Track.DecreaseRepeatButton>
-                  <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-                </Track.DecreaseRepeatButton>
-                <Track.IncreaseRepeatButton>
-                  <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-                </Track.IncreaseRepeatButton>
+                <Track.DecreaseButton>
+                  <RepeatButton x:Name="PART_DecreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+                </Track.DecreaseButton>
+                <Track.IncreaseButton>
+                  <RepeatButton x:Name="PART_IncreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+                </Track.IncreaseButton>
                 <Track.Thumb>
                   <controls:ThumbExt x:Name="Thumb" Theme="{StaticResource HorizontalSliderThumbStyle}"/>
                 </Track.Thumb>
@@ -79,7 +79,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-    <Style Selector="^ /template/ Border#TrackBackground"><Setter Property="Margin" Value="5,0"/></Style><Style Selector="^ /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ TickBar#TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^ /template/ TickBar#BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTick}"/></Style><Style Selector="^[Orientation=Vertical]"><Setter Property="Template">
+    <Style Selector="^ /template/ Border#TrackBackground"><Setter Property="Margin" Value="5,0"/></Style><Style Selector="^ /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ TickBar#TopTick"><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^ /template/ TickBar#BottomTick"><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^[Orientation=Vertical]"><Setter Property="Template">
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate TargetType="Slider">
               <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
@@ -91,7 +91,7 @@
                   </Grid.ColumnDefinitions>
                   <!-- PORT: removed TickBar -->
                   <!-- PORT: removed TickBar -->
-                  <Border x:Name="TrackBackground" Grid.Column="1" Margin="0,5" HorizontalAlignment="center" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Width="4.0">
+                  <Border x:Name="TrackBackground" Grid.Column="1" Margin="0,5" BorderBrush="{DynamicResource SliderTrackBorder}" BorderThickness="1" Background="{DynamicResource SliderTrackBackground}" Width="4.0" HorizontalAlignment="Center">
 
                     <Canvas Margin="-1,-6">
                       <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource SliderSelectionBackground}" Width="4.0" StrokeThickness="1.0" Stroke="{DynamicResource SliderSelectionBorder}" IsVisible="False"/>
@@ -99,12 +99,12 @@
                   </Border>
 
                   <Track Grid.Column="1" x:Name="PART_Track">
-                    <Track.DecreaseRepeatButton>
-                      <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-                    </Track.DecreaseRepeatButton>
-                    <Track.IncreaseRepeatButton>
-                      <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Theme="{StaticResource SliderRepeatButtonStyle}"/>
-                    </Track.IncreaseRepeatButton>
+                    <Track.DecreaseButton>
+                      <RepeatButton x:Name="PART_DecreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+                    </Track.DecreaseButton>
+                    <Track.IncreaseButton>
+                      <RepeatButton x:Name="PART_IncreaseButton" Theme="{StaticResource SliderRepeatButtonStyle}"/>
+                    </Track.IncreaseButton>
                     <Track.Thumb>
                       <controls:ThumbExt x:Name="Thumb" Theme="{StaticResource VerticalSliderThumbStyle}"/>
                     </Track.Thumb>
@@ -121,8 +121,8 @@
             </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^[IsSelectionRangeEnabled=True] /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^:disabled /template/ TickBar#TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
-              </Style><Style Selector="^:disabled /template/ TickBar#BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
+            </Style><Style Selector="^:disabled /template/ TickBar#TopTick"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+              </Style><Style Selector="^:disabled /template/ TickBar#BottomTick"><!-- PORT: removed setter of Fill (not in Avalonia) -->
             </Style></ControlTheme>
 
   </ResourceDictionary>

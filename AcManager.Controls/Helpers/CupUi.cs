@@ -22,7 +22,7 @@ namespace AcManager.Controls.Helpers {
             obj.SetValue(InformationModeProperty, value);
         }
 
-        public static readonly DependencyProperty InformationModeProperty = DependencyProperty.RegisterAttached("InformationMode", typeof(bool),
+        public static readonly AttachedProperty<bool> InformationModeProperty = DP.RegisterAttached<bool>("InformationMode",
                 typeof(CupUi), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -30,13 +30,13 @@ namespace AcManager.Controls.Helpers {
             obj.SetValue(ObjectProperty, value);
         }
 
-        public static readonly DependencyProperty ObjectProperty = DependencyProperty.RegisterAttached("Object", typeof(ICupSupportedObject),
+        public static readonly AttachedProperty<ICupSupportedObject> ObjectProperty = DP.RegisterAttached<ICupSupportedObject>("Object",
                 typeof(CupUi), new UIPropertyMetadata(OnObjectChanged));
 
         private static void OnObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (d is ButtonBase element && e.NewValue is ICupSupportedObject newValue) {
-                element.PreviewMouseLeftButtonUp -= OnButtonMouseUp;
-                element.PreviewMouseLeftButtonUp += OnButtonMouseUp;
+                element.RemovePreviewMouseLeftButtonUp(OnButtonMouseUp);
+                element.AddPreviewMouseLeftButtonUp(OnButtonMouseUp);
 
                 element.Command = new AsyncCommand(() => CupClient.Instance?.InstallUpdateAsync(newValue.CupContentType, newValue.Id));
                 element.SetBinding(UIElement.VisibilityProperty, new Binding {

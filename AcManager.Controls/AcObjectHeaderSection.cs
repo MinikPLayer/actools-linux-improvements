@@ -7,10 +7,9 @@ using AcManager.Tools.AcObjectsNew;
 namespace AcManager.Controls {
     public class AcObjectHeaderSection : Control {
         static AcObjectHeaderSection() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcObjectHeaderSection), new FrameworkPropertyMetadata(typeof(AcObjectHeaderSection)));
         }
 
-        public static readonly DependencyProperty AcObjectProperty = DependencyProperty.Register(nameof(AcObject), typeof(AcCommonObject),
+        public static readonly StyledProperty<AcCommonObject> AcObjectProperty = DP.Register<AcCommonObject>(nameof(AcObject),
                 typeof(AcObjectHeaderSection));
 
         public AcCommonObject AcObject {
@@ -18,7 +17,7 @@ namespace AcManager.Controls {
             set => SetValue(AcObjectProperty, value);
         }
 
-        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(nameof(ShowIcon), typeof(bool),
+        public static readonly StyledProperty<bool> ShowIconProperty = DP.Register<bool>(nameof(ShowIcon),
                 typeof(AcObjectHeaderSection));
 
         public bool ShowIcon {
@@ -26,7 +25,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowIconProperty, value);
         }
 
-        public static readonly DependencyProperty IconBackgroundProperty = DependencyProperty.Register(nameof(IconBackground), typeof(Brush),
+        public static readonly StyledProperty<Brush> IconBackgroundProperty = DP.Register<Brush>(nameof(IconBackground),
                 typeof(AcObjectHeaderSection));
 
         public Brush IconBackground {
@@ -34,7 +33,7 @@ namespace AcManager.Controls {
             set => SetValue(IconBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(string),
+        public static readonly StyledProperty<string> IconProperty = DP.Register<string>(nameof(Icon),
                 typeof(AcObjectHeaderSection));
 
         public string Icon {
@@ -42,7 +41,7 @@ namespace AcManager.Controls {
             set => SetValue(IconProperty, value);
         }
 
-        public static readonly DependencyProperty IconContentProperty = DependencyProperty.Register(nameof(IconContent), typeof(object),
+        public static readonly StyledProperty<object> IconContentProperty = DP.Register<object>(nameof(IconContent),
                 typeof(AcObjectHeaderSection));
 
         public object IconContent {
@@ -52,17 +51,18 @@ namespace AcManager.Controls {
 
         private UIElement _iconImage;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_iconImage != null) {
-                _iconImage.MouseUp -= OnIconMouseUp;
+                _iconImage.RemoveMouseUp(OnIconMouseUp);
             }
 
-            _iconImage = GetTemplateChild(@"PART_IconImage") as UIElement;
+            _iconImage = this.GetTemplateChild(@"PART_IconImage") as UIElement;
 
             if (_iconImage != null) {
-                _iconImage.MouseUp += OnIconMouseUp;
+                _iconImage.AddMouseUp(OnIconMouseUp);
             }
         }
 

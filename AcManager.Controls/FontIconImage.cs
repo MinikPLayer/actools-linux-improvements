@@ -54,7 +54,6 @@ namespace AcManager.Controls {
         }
 
         static FontIconImage() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(FontIconImage), new FrameworkPropertyMetadata(typeof(FontIconImage)));
         }
     }
 }

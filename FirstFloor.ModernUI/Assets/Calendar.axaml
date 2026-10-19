@@ -5,15 +5,15 @@
     <Setter Property="Background" Value="Transparent"/>
     <Setter Property="BorderBrush" Value="{DynamicResource ItemBorder}"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="CalendarButtonStyle" Value="{DynamicResource {x:Type CalendarButton}}"/>
-    <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource {x:Type CalendarDayButton}}"/>
-    <Setter Property="CalendarItemStyle" Value="{DynamicResource {x:Type CalendarItem}}"/>
+    <!-- PORT: removed setter of CalendarButtonStyle (not in Avalonia) -->
+    <!-- PORT: removed setter of CalendarDayButtonStyle (not in Avalonia) -->
+    <!-- PORT: removed setter of CalendarItemStyle (not in Avalonia) -->
 
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Calendar">
           <StackPanel x:Name="PART_Root" HorizontalAlignment="Center">
-            <CalendarItem x:Name="PART_CalendarItem" Style="{TemplateBinding CalendarItemStyle}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+            <CalendarItem x:Name="PART_CalendarItem" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"><!-- PORT: removed Style (not in Avalonia) --></CalendarItem>
           </StackPanel>
         </ControlTemplate>
       </Setter.Value>

@@ -1,0 +1,30 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ControlTheme TargetType="controls:AcToolBar" x:Key="{x:Type controls:AcToolBar}">
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="VerticalAlignment" Value="Bottom"/>
+    <Setter Property="VerticalContentAlignment" Value="Bottom"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="0 -200 0 0"/>
+    <Setter Property="IsTogglable" Value="True"/>
+    <Setter Property="Height" Value="0"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource SeparatorBackground}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Effect">
+      <Setter.Value>
+        <DropShadowEffect Opacity="0.4" BlurRadius="5" OffsetX="0" OffsetY="-0"/>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="controls:AcToolBar">
+          <ToolBarTray x:Name="PART_ToolBarTray" VerticalAlignment="Bottom" Margin="{TemplateBinding Padding}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="RenderTransform">
+      <Setter.Value>
+        <TranslateTransform X="0" Y="200"/>
+      </Setter.Value>
+    </Setter>
+    <!-- PORT: storyboard actions of trigger [IsActive=True] not converted --></ControlTheme>
+</ResourceDictionary>

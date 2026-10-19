@@ -6,7 +6,7 @@ using AcManager.Controls.Dialogs;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Controls.UserControls {
-    public partial class KunosCareerBlock {
+    public partial class KunosCareerBlock : global::Avalonia.Controls.UserControl {
         public KunosCareerBlock() {
             InitializeComponent();
         }

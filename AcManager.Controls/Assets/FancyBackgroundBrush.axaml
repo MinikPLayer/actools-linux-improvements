@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <VisualBrush x:Key="FancyBackgroundBrush" Stretch="UniformToFill">
+    <VisualBrush.Visual>
+      <Grid Opacity="0.22" Width="355" Height="200" ClipToBounds="True">
+        <Grid.Effect>
+          <BlurEffect Radius="20" KernelType="Box" RenderingBias="Quality"/>
+        </Grid.Effect>
+        <mui:BetterImage x:Name="BackgroundImage0" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+        <mui:BetterImage x:Name="BackgroundImage1" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" Opacity="0" RenderOptions.BitmapInterpolationMode="LowQuality">
+          <!-- PORT: removed VisualStateManager.VisualStateGroups -->
+        </mui:BetterImage>
+      </Grid>
+    </VisualBrush.Visual>
+  </VisualBrush>
+</ResourceDictionary>

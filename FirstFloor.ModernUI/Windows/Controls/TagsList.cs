@@ -73,7 +73,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             base.OnApplyTemplate(e);
 
-            if (!(Template.FindName("PART_NewTagTextBox", this) is ComboBox textBox)) return;
+            if (!(e.NameScope.Find("PART_NewTagTextBox") is ComboBox textBox)) return;
             textBox.AddPreviewKeyDown(TextBox_KeyDown);
             textBox.LostFocus += TextBox_LostFocus;
             _previousTextBox = textBox;

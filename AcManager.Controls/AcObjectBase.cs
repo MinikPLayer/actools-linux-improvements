@@ -12,7 +12,6 @@ namespace AcManager.Controls {
     [ContentProperty(nameof(Content))]
     public class AcObjectBase : Control {
         static AcObjectBase() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcObjectBase), new FrameworkPropertyMetadata(typeof(AcObjectBase)));
         }
 
         public AcObjectBase() {
@@ -23,31 +22,32 @@ namespace AcManager.Controls {
         private AcObjectHeaderSection _iconImage;
         private AcToolBar _toolBar;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_main != null) {
-                _main.MouseRightButtonUp -= OnMainMouseUp;
+                _main.RemoveMouseRightButtonUp(OnMainMouseUp);
             }
 
             if (_toolBar != null) {
-                _toolBar.PreviewMouseUp -= OnToolBarMouseUp;
+                _toolBar.RemovePreviewMouseUp(OnToolBarMouseUp);
             }
 
             if (_iconImage != null) {
                 _iconImage.IconMouseUp -= OnHeaderIconMouseUp;
             }
 
-            _main = GetTemplateChild(@"PART_Main") as Grid;
-            _toolBar = GetTemplateChild(@"PART_ToolBar") as AcToolBar;
-            _iconImage = GetTemplateChild(@"PART_Header") as AcObjectHeaderSection;
+            _main = this.GetTemplateChild(@"PART_Main") as Grid;
+            _toolBar = this.GetTemplateChild(@"PART_ToolBar") as AcToolBar;
+            _iconImage = this.GetTemplateChild(@"PART_Header") as AcObjectHeaderSection;
 
             if (_main != null) {
-                _main.MouseRightButtonUp += OnMainMouseUp;
+                _main.AddMouseRightButtonUp(OnMainMouseUp);
             }
 
             if (_toolBar != null) {
-                _toolBar.PreviewMouseUp += OnToolBarMouseUp;
+                _toolBar.AddPreviewMouseUp(OnToolBarMouseUp);
             }
 
             if (_iconImage != null) {
@@ -77,7 +77,7 @@ namespace AcManager.Controls {
 
         public event MouseButtonEventHandler IconMouseUp;
 
-        public static readonly DependencyProperty AcObjectProperty = DependencyProperty.Register(nameof(AcObject), typeof(AcObjectNew),
+        public static readonly StyledProperty<AcObjectNew> AcObjectProperty = DP.Register<AcObjectNew>(nameof(AcObject),
                 typeof(AcObjectBase));
 
         public AcObjectNew AcObject {
@@ -85,7 +85,7 @@ namespace AcManager.Controls {
             set => SetValue(AcObjectProperty, value);
         }
 
-        public static readonly DependencyProperty IsNameReadOnlyProperty = DependencyProperty.Register(nameof(IsNameReadOnly), typeof(bool),
+        public static readonly StyledProperty<bool> IsNameReadOnlyProperty = DP.Register<bool>(nameof(IsNameReadOnly),
                 typeof(AcObjectBase), new PropertyMetadata(false));
 
         public bool IsNameReadOnly {
@@ -93,7 +93,7 @@ namespace AcManager.Controls {
             set => SetValue(IsNameReadOnlyProperty, value);
         }
 
-        public static readonly DependencyProperty ShowIconProperty = DependencyProperty.Register(nameof(ShowIcon), typeof(bool),
+        public static readonly StyledProperty<bool> ShowIconProperty = DP.Register<bool>(nameof(ShowIcon),
                 typeof(AcObjectBase));
 
         public bool ShowIcon {
@@ -101,7 +101,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowIconProperty, value);
         }
 
-        public static readonly DependencyProperty IconBackgroundProperty = DependencyProperty.Register(nameof(IconBackground), typeof(Brush),
+        public static readonly StyledProperty<Brush> IconBackgroundProperty = DP.Register<Brush>(nameof(IconBackground),
                 typeof(AcObjectBase));
 
         public Brush IconBackground {
@@ -109,7 +109,7 @@ namespace AcManager.Controls {
             set => SetValue(IconBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(string),
+        public static readonly StyledProperty<string> IconProperty = DP.Register<string>(nameof(Icon),
                 typeof(AcObjectBase));
 
         public string Icon {
@@ -117,7 +117,7 @@ namespace AcManager.Controls {
             set => SetValue(IconProperty, value);
         }
 
-        public static readonly DependencyProperty IconContentProperty = DependencyProperty.Register(nameof(IconContent), typeof(object),
+        public static readonly StyledProperty<object> IconContentProperty = DP.Register<object>(nameof(IconContent),
                 typeof(AcObjectBase));
 
         public object IconContent {
@@ -125,7 +125,7 @@ namespace AcManager.Controls {
             set => SetValue(IconContentProperty, value);
         }
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(object),
+        public static readonly StyledProperty<object> ContentProperty = DP.Register<object>(nameof(Content),
                 typeof(AcObjectBase));
 
         public object Content {
@@ -133,7 +133,7 @@ namespace AcManager.Controls {
             set => SetValue(ContentProperty, value);
         }
 
-        public static readonly DependencyProperty ToolBarsProperty = DependencyProperty.Register(nameof(ToolBars), typeof(Collection<ToolBar>),
+        public static readonly StyledProperty<Collection<ToolBar>> ToolBarsProperty = DP.Register<Collection<ToolBar>>(nameof(ToolBars),
                 typeof(AcObjectBase));
 
         public Collection<ToolBar> ToolBars {
@@ -141,7 +141,7 @@ namespace AcManager.Controls {
             set => SetValue(ToolBarsProperty, value);
         }
 
-        public static readonly DependencyProperty ScrollableProperty = DependencyProperty.Register(nameof(Scrollable), typeof(bool),
+        public static readonly StyledProperty<bool> ScrollableProperty = DP.Register<bool>(nameof(Scrollable),
                 typeof(AcObjectBase), new PropertyMetadata(true));
 
         public bool Scrollable {
@@ -149,7 +149,7 @@ namespace AcManager.Controls {
             set => SetValue(ScrollableProperty, value);
         }
 
-        public static readonly DependencyProperty HeaderPaddingProperty = DependencyProperty.Register(nameof(HeaderPadding), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> HeaderPaddingProperty = DP.Register<Thickness>(nameof(HeaderPadding),
                 typeof(AcObjectBase));
 
         public Thickness HeaderPadding {

@@ -5,10 +5,9 @@ using FirstFloor.ModernUI.Windows.Controls;
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchSlider : RoundSlider {
         static QuickSwitchSlider() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(QuickSwitchSlider), new FrameworkPropertyMetadata(typeof(QuickSwitchSlider)));
         }
         
-        public static readonly DependencyProperty IconDataProperty = DependencyProperty.Register(nameof(IconData), typeof(Geometry),
+        public static readonly StyledProperty<Geometry> IconDataProperty = DP.Register<Geometry>(nameof(IconData),
                 typeof(QuickSwitchSlider));
 
         public Geometry IconData {
@@ -16,7 +15,7 @@ namespace AcManager.Controls.QuickSwitches {
             set { SetValue(IconDataProperty, value); }
         }
 
-        public static readonly DependencyProperty DisplayValueProperty = DependencyProperty.Register(nameof(DisplayValue), typeof(string),
+        public static readonly StyledProperty<string> DisplayValueProperty = DP.Register<string>(nameof(DisplayValue),
                 typeof(QuickSwitchSlider));
 
         public string DisplayValue {

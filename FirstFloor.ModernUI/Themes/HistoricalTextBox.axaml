@@ -3,7 +3,7 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 

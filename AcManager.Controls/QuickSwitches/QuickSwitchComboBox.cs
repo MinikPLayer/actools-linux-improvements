@@ -5,10 +5,9 @@ using System.Windows.Media;
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchComboBox : ComboBox {
         static QuickSwitchComboBox() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(QuickSwitchComboBox), new FrameworkPropertyMetadata(typeof(QuickSwitchComboBox)));
         }
 
-        public static readonly DependencyProperty IconDataProperty = DependencyProperty.Register(nameof(IconData), typeof(Geometry),
+        public static readonly StyledProperty<Geometry> IconDataProperty = DP.Register<Geometry>(nameof(IconData),
                 typeof(QuickSwitchComboBox));
 
         public Geometry IconData {

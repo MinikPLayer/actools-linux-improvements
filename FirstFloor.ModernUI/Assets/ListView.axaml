@@ -65,7 +65,7 @@
         <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListBox">

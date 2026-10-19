@@ -37,7 +37,6 @@ namespace AcManager.Controls {
         private static event EventHandler<ChangedPresetEventArgs> PresetSelected;
 
         static UserPresetsControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(UserPresetsControl), new FrameworkPropertyMetadata(typeof(UserPresetsControl)));
         }
 
         public UserPresetsControl() {
@@ -206,7 +205,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty ShowSaveButtonProperty = DependencyProperty.Register(nameof(ShowSaveButton), typeof(bool),
+        public static readonly StyledProperty<bool> ShowSaveButtonProperty = DP.Register<bool>(nameof(ShowSaveButton),
                 typeof(UserPresetsControl), new FrameworkPropertyMetadata(true));
 
         public bool ShowSaveButton {
@@ -214,7 +213,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowSaveButtonProperty, value);
         }
 
-        public static readonly DependencyProperty CurrentUserPresetProperty = DependencyProperty.Register("CurrentUserPreset", typeof(ISavedPresetEntry),
+        public static readonly StyledProperty<ISavedPresetEntry> CurrentUserPresetProperty = DP.Register<ISavedPresetEntry>("CurrentUserPreset",
                 typeof(UserPresetsControl), new PropertyMetadata(OnCurrentUserPresetChanged));
 
         private static void OnCurrentUserPresetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -302,7 +301,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyPropertyKey PreviewProviderPropertyKey = DependencyProperty.RegisterReadOnly(nameof(PreviewProvider),
+        public static readonly DependencyPropertyKey PreviewProviderPropertyKey = DP.RegisterReadOnly(nameof(PreviewProvider),
                 typeof(IPresetsPreviewProvider),
                 typeof(UserPresetsControl), new PropertyMetadata(null));
 
@@ -310,21 +309,21 @@ namespace AcManager.Controls {
 
         public IPresetsPreviewProvider PreviewProvider => (IPresetsPreviewProvider)GetValue(PreviewProviderProperty);
 
-        public static readonly DependencyProperty UserPresetableProperty = DependencyProperty.Register("UserPresetable", typeof(IUserPresetable),
+        public static readonly StyledProperty<IUserPresetable> UserPresetableProperty = DP.Register<IUserPresetable>("UserPresetable",
                 typeof(UserPresetsControl), new PropertyMetadata(OnUserPresetableChanged));
 
         private static void OnUserPresetableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((UserPresetsControl)d).OnUserPresetableChanged((IUserPresetable)e.OldValue, (IUserPresetable)e.NewValue);
         }
 
-        private static readonly DependencyPropertyKey SavedPresetsPropertyKey = DependencyProperty.RegisterReadOnly("SavedPresets",
+        private static readonly DependencyPropertyKey SavedPresetsPropertyKey = DP.RegisterReadOnly("SavedPresets",
                 typeof(ObservableCollection<ISavedPresetEntry>), typeof(UserPresetsControl), null);
 
         public static readonly DependencyProperty SavedPresetsProperty = SavedPresetsPropertyKey.DependencyProperty;
 
         public ObservableCollection<ISavedPresetEntry> SavedPresets => (ObservableCollection<ISavedPresetEntry>)GetValue(SavedPresetsProperty);
 
-        private static readonly DependencyPropertyKey SavedPresetsGroupedPropertyKey = DependencyProperty.RegisterReadOnly("SavedPresetsGrouped",
+        private static readonly DependencyPropertyKey SavedPresetsGroupedPropertyKey = DP.RegisterReadOnly("SavedPresetsGrouped",
                 typeof(HierarchicalGroup), typeof(UserPresetsControl), null);
 
         public static readonly DependencyProperty SavedPresetsGroupedProperty = SavedPresetsGroupedPropertyKey.DependencyProperty;
@@ -348,7 +347,7 @@ namespace AcManager.Controls {
             }
 
             _presetable = newValue;
-            SetValue(PreviewProviderPropertyKey, _presetable as IPresetsPreviewProvider);
+            SetValue(PreviewProviderPropertyKey.DependencyProperty, _presetable as IPresetsPreviewProvider);
             if (_presetable == null) return;
 
             PresetsManager.Instance.Watcher(_presetable.PresetableCategory).Update += OnPresetsUpdate;
@@ -474,8 +473,8 @@ namespace AcManager.Controls {
             if (_presetable == null) return;
 
             var presets = new ObservableCollection<ISavedPresetEntry>(PresetsManager.Instance.GetSavedPresets(_presetable.PresetableCategory));
-            SetValue(SavedPresetsPropertyKey, presets);
-            SetValue(SavedPresetsGroupedPropertyKey, new HierarchicalGroup("",
+            SetValue(SavedPresetsPropertyKey.DependencyProperty, presets);
+            SetValue(SavedPresetsGroupedPropertyKey.DependencyProperty, new HierarchicalGroup("",
                     GroupPresets(presets, PresetsManager.Instance.GetDirectory(_presetable.PresetableCategory), _presetable as IUserPresetableCustomDisplay,
                             _presetable as IUserPresetableCustomSorting)));
 
@@ -486,7 +485,7 @@ namespace AcManager.Controls {
             _ignoreNext = false;
         }
 
-        private static readonly DependencyPropertyKey ChangedPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Changed),
+        private static readonly DependencyPropertyKey ChangedPropertyKey = DP.RegisterReadOnly(nameof(Changed),
                 typeof(bool), typeof(UserPresetsControl), null);
 
         public static readonly DependencyProperty ChangedProperty = ChangedPropertyKey.DependencyProperty;
@@ -507,7 +506,7 @@ namespace AcManager.Controls {
                 value = ValuesStorage.Get(key, false);
             }
 
-            SetValue(ChangedPropertyKey, value.Value);
+            SetValue(ChangedPropertyKey.DependencyProperty, value.Value);
         }
 
         private string _currentUserPresetData;
@@ -531,19 +530,20 @@ namespace AcManager.Controls {
 
         private HierarchicalComboBox _comboBox;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_comboBox != null) {
                 _comboBox.ItemSelected -= OnSelectionChanged;
                 _comboBox.PreviewProvider = null;
             }
 
-            _comboBox = GetTemplateChild(@"PART_ComboBox") as HierarchicalComboBox;
+            _comboBox = this.GetTemplateChild(@"PART_ComboBox") as HierarchicalComboBox;
             if (_comboBox != null) {
                 _comboBox.ItemSelected += OnSelectionChanged;
                 _comboBox.PreviewProvider = this;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
         }
 
         private void OnSelectionChanged(object sender, SelectedItemChangedEventArgs e) {

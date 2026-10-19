@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 namespace AcManager.Controls {
     [ContentProperty(nameof(NonNull))]
     public class LazierSwitch : BaseSwitch {
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(Lazier),
+        public static readonly StyledProperty<Lazier> ValueProperty = DP.Register<Lazier>(nameof(Value),
                 typeof(LazierSwitch), new FrameworkPropertyMetadata(null, OnValuePropertyChanged));
 
         protected static void OnValuePropertyChanged(object sender, DependencyPropertyChangedEventArgs e) {
@@ -34,7 +34,7 @@ namespace AcManager.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty NullProperty = DependencyProperty.Register(nameof(Null), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> NullProperty = DP.Register<UIElement>(nameof(Null),
                 typeof(LazierSwitch), new PropertyMetadata(null, (o, e) => {
                     ((LazierSwitch)o)._null = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -47,7 +47,7 @@ namespace AcManager.Controls {
             set => SetValue(NullProperty, value);
         }
 
-        public static readonly DependencyProperty NonNullProperty = DependencyProperty.Register(nameof(NonNull), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> NonNullProperty = DP.Register<UIElement>(nameof(NonNull),
                 typeof(LazierSwitch), new PropertyMetadata(null, (o, e) => {
                     ((LazierSwitch)o)._nonNull = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -60,7 +60,7 @@ namespace AcManager.Controls {
             set => SetValue(NonNullProperty, value);
         }
 
-        public static readonly DependencyProperty LoadingProperty = DependencyProperty.Register(nameof(Loading), typeof(UIElement),
+        public static readonly StyledProperty<UIElement> LoadingProperty = DP.Register<UIElement>(nameof(Loading),
                 typeof(LazierSwitch), new PropertyMetadata(null, (o, e) => {
                     ((LazierSwitch)o)._loading = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);

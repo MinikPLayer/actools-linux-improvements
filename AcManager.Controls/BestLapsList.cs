@@ -14,40 +14,39 @@ namespace AcManager.Controls {
 
     public class BestLapsList : Control {
         static BestLapsList() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(BestLapsList), new FrameworkPropertyMetadata(typeof(BestLapsList)));
         }
 
         private readonly BetterObservableCollection<LapTimeWrapped> _lapTimes;
 
         public BestLapsList() {
             _lapTimes = new BetterObservableCollection<LapTimeWrapped>();
-            SetValue(EntriesPropertyKey, _lapTimes);
+            SetValue(EntriesPropertyKey.DependencyProperty, _lapTimes);
             AddHandler(FrameworkContentElement.LoadedEvent, new RoutedEventHandler(OnLoaded));
             AddHandler(FrameworkContentElement.UnloadedEvent, new RoutedEventHandler(OnUnloaded));
         }
 
-        public static readonly DependencyPropertyKey EntriesPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Entries), typeof(IList<LapTimeWrapped>),
+        public static readonly DependencyPropertyKey EntriesPropertyKey = DP.RegisterReadOnly(nameof(Entries), typeof(IList<LapTimeWrapped>),
                 typeof(BestLapsList), new PropertyMetadata(null));
 
         public static readonly DependencyProperty EntriesProperty = EntriesPropertyKey.DependencyProperty;
 
         public IList<LapTimeWrapped> Entries => (IList<LapTimeWrapped>)GetValue(EntriesProperty);
 
-        public static readonly DependencyPropertyKey LoadingPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Loading), typeof(bool),
+        public static readonly DependencyPropertyKey LoadingPropertyKey = DP.RegisterReadOnly(nameof(Loading), typeof(bool),
                 typeof(BestLapsList), new PropertyMetadata(true));
 
         public static readonly DependencyProperty LoadingProperty = LoadingPropertyKey.DependencyProperty;
 
         public bool Loading => GetValue(LoadingProperty) as bool? == true;
 
-        public static readonly DependencyPropertyKey SingleEntryModePropertyKey = DependencyProperty.RegisterReadOnly(nameof(SingleEntryMode), typeof(bool),
+        public static readonly DependencyPropertyKey SingleEntryModePropertyKey = DP.RegisterReadOnly(nameof(SingleEntryMode), typeof(bool),
                 typeof(BestLapsList), new PropertyMetadata(false));
 
         public static readonly DependencyProperty SingleEntryModeProperty = SingleEntryModePropertyKey.DependencyProperty;
 
         public bool SingleEntryMode => GetValue(SingleEntryModeProperty) as bool? == true;
 
-        public static readonly DependencyProperty CarIdProperty = DependencyProperty.Register(nameof(CarId), typeof(string),
+        public static readonly StyledProperty<string> CarIdProperty = DP.Register<string>(nameof(CarId),
                 typeof(BestLapsList), new PropertyMetadata(null, (o, e) => {
                     ((BestLapsList)o)._carId = (string)e.NewValue;
                     ((BestLapsList)o).UpdateDirty();
@@ -60,7 +59,7 @@ namespace AcManager.Controls {
             set => SetValue(CarIdProperty, value);
         }
 
-        public static readonly DependencyProperty TrackIdProperty = DependencyProperty.Register(nameof(TrackId), typeof(string),
+        public static readonly StyledProperty<string> TrackIdProperty = DP.Register<string>(nameof(TrackId),
                 typeof(BestLapsList), new PropertyMetadata(null, (o, e) => {
                     ((BestLapsList)o)._trackId = (string)e.NewValue;
                     ((BestLapsList)o).UpdateDirty();
@@ -73,7 +72,7 @@ namespace AcManager.Controls {
             set => SetValue(TrackIdProperty, value);
         }
 
-        public static readonly DependencyProperty LimitProperty = DependencyProperty.Register(nameof(Limit), typeof(int),
+        public static readonly StyledProperty<int> LimitProperty = DP.Register<int>(nameof(Limit),
                 typeof(BestLapsList), new PropertyMetadata(10, (o, e) => {
                     ((BestLapsList)o)._limit = (int)e.NewValue;
                     ((BestLapsList)o).UpdateDirty();
@@ -86,7 +85,7 @@ namespace AcManager.Controls {
             set => SetValue(LimitProperty, value);
         }
 
-        public static readonly DependencyProperty OrderProperty = DependencyProperty.Register(nameof(Order), typeof(BestLapsOrder),
+        public static readonly StyledProperty<BestLapsOrder> OrderProperty = DP.Register<BestLapsOrder>(nameof(Order),
                 typeof(BestLapsList), new PropertyMetadata(BestLapsOrder.FastestFirst, (o, e) => {
                     ((BestLapsList)o)._order = (BestLapsOrder)e.NewValue;
                 }));
@@ -130,9 +129,9 @@ namespace AcManager.Controls {
                 var trackAcId = TrackId?.Replace('/', '-');
 
                 var singleEntryMode = carId != null && TrackId != null;
-                SetValue(SingleEntryModePropertyKey, singleEntryMode);
+                SetValue(SingleEntryModePropertyKey.DependencyProperty, singleEntryMode);
 
-                SetValue(LoadingPropertyKey, true);
+                SetValue(LoadingPropertyKey.DependencyProperty, true);
                 await LapTimesManager.Instance.UpdateAsync();
 
                 if (singleEntryMode) {
@@ -160,12 +159,12 @@ namespace AcManager.Controls {
             } finally {
                 _dirty = false;
                 _busy = false;
-                ActionExtension.InvokeInMainThreadAsync(() => SetValue(LoadingPropertyKey, false));
+                ActionExtension.InvokeInMainThreadAsync(() => SetValue(LoadingPropertyKey.DependencyProperty, false));
             }
         }
 
         // visual only properties
-        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(nameof(ShowTitle), typeof(bool),
+        public static readonly StyledProperty<bool> ShowTitleProperty = DP.Register<bool>(nameof(ShowTitle),
                 typeof(BestLapsList), new FrameworkPropertyMetadata(true));
 
         public bool ShowTitle {
@@ -173,7 +172,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowTitleProperty, value);
         }
 
-        public static readonly DependencyProperty EntryPaddingProperty = DependencyProperty.Register(nameof(EntryPadding), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> EntryPaddingProperty = DP.Register<Thickness>(nameof(EntryPadding),
                 typeof(BestLapsList), new FrameworkPropertyMetadata(new Thickness(20d, 0d, 0d, 0d)));
 
         public Thickness EntryPadding {

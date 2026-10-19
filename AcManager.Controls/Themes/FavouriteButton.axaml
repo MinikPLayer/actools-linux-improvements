@@ -1,0 +1,111 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/FavouritesSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="ac:FavouriteButton" x:Key="{x:Type ac:FavouriteButton}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Width" Value="16"/>
+    <Setter Property="Height" Value="16"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Data" Value="{StaticResource BookmarkIconData}"/>
+    <Setter Property="ActiveBrush" Value="{DynamicResource FavouriteBrush}"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:FavouriteButton">
+          <mui:Cell Background="{TemplateBinding Background}">
+            <Path Data="{TemplateBinding Data}" StrokeThickness="{TemplateBinding BorderThickness}" Stroke="{TemplateBinding BorderBrush}" Stretch="Uniform" Fill="{TemplateBinding Foreground}"/>
+            <Path x:Name="Path" Data="{TemplateBinding Data}" Stretch="Uniform">
+              <Path.Fill>
+                <VisualBrush Stretch="UniformToFill" ViewboxUnits="Absolute" Viewbox="0,0,10,10">
+                  <VisualBrush.Visual>
+                    <mui:Cell Width="10" Height="10">
+                      <Ellipse x:Name="Ellipse" Margin="-3" Fill="{TemplateBinding ActiveBrush}">
+                        <Ellipse.RenderTransform>
+                          <ScaleTransform ScaleX="0" ScaleY="0" CenterX="8" CenterY="8"/>
+                        </Ellipse.RenderTransform>
+                      </Ellipse>
+                    </mui:Cell>
+                  </VisualBrush.Visual>
+                </VisualBrush>
+              </Path.Fill>
+            </Path>
+          </mui:Cell>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonBackgroundHover}"/>
+            </Style><!-- PORT: storyboard actions of trigger :checked not converted --></ControlTheme>
+
+  <ControlTheme TargetType="ac:NotesBlock" x:Key="{x:Type ac:NotesBlock}">
+    <Setter Property="Focusable" Value="True"/>
+    <Setter Property="IsTabStop" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:NotesBlock">
+          <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel>
+              <Button x:Name="PART_EditButton" Padding="4" DockPanel.Dock="Right" Margin="4 -4 0 -4" VerticalAlignment="Center">
+                <Path Width="8" Height="8" Stretch="Fill" VerticalAlignment="Center" HorizontalAlignment="Center" Data="{StaticResource NotesIconData}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+              </Button>
+              <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding AcObject.Notes, RelativeSource={RelativeSource TemplatedParent}}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Placeholder="{x:Static t:ToolsStrings.Common_None}" VerticalAlignment="Center"/>
+            </DockPanel>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ Button#PART_EditButton"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover /template/ Button#PART_EditButton"><Setter Property="IsVisible" Value="True"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="ac:RatingBar" x:Key="{x:Type ac:RatingBar}">
+    <Setter Property="Focusable" Value="True"/>
+    <Setter Property="IsTabStop" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="Width" Value="92"/>
+    <Setter Property="Height" Value="16"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Data" Value="{StaticResource RatingGeometry}"/>
+    <Setter Property="ActiveBrush" Value="{DynamicResource RatingBrush}"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:RatingBar">
+          <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+            <mui:Cell>
+              <Path Data="{TemplateBinding Data}" StrokeThickness="1" Stretch="Uniform" Stroke="{TemplateBinding BorderBrush}" Fill="{TemplateBinding Foreground}"/>
+              <Path Data="{TemplateBinding Data}" Stretch="Uniform" StrokeThickness="1" Stroke="{Binding Fill, RelativeSource={RelativeSource Self}}">
+                <Path.Fill>
+                  <VisualBrush Stretch="Fill">
+                    <VisualBrush.Visual>
+                      <ProgressBar Minimum="0" Maximum="5" Value="{Binding Rating, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Height="16" Width="92" Foreground="{Binding ActiveBrush, RelativeSource={RelativeSource TemplatedParent}}" Background="Transparent"/>
+                    </VisualBrush.Visual>
+                  </VisualBrush>
+                </Path.Fill>
+              </Path>
+              <Slider x:Name="Slider" Minimum="0" Maximum="5" TickFrequency="0.5" TickPlacement="None" IsSnapToTickEnabled="True" IsTabStop="True" Focusable="True" Value="{Binding Rating, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0" IsHitTestVisible="False" TabIndex="0"/>
+            </mui:Cell>
+          </Border>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonBackgroundHover}"/>
+            </Style><Style Selector="^:readonly /template/ Slider#Slider"><Setter Property="IsEnabled" Value="False"/>
+              <Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

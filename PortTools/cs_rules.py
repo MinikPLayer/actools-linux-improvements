@@ -24,6 +24,8 @@ RULES = [
     (r'[ \t]*DP\.OverrideMetadata\(DefaultStyleKeyProperty, typeof\(\w+\), new FrameworkPropertyMetadata\(typeof\(\w+\)\)\);[ \t]*\r?\n', ''),
     (r'[ \t]*(?:this\.)?DefaultStyleKey = typeof\(\w+\);[ \t]*\r?\n', ''),
     (r'\bInternalChildren\b', 'Children'),
+    (r'protected override void OnRender\(DrawingContext (\w+)\)', r'public override void Render(DrawingContext \1)'),
+    (r'\bbase\.OnRender\(', 'base.Render('),
     (r'\bPlacementMode\.MousePoint\b', 'PlacementMode.Pointer'),
     (r'(?<![\w.])(\w+(?:\.\w+)*)\.Style = \(Style\)(?:this\.)?(?:\w+\.)?(?:Try)?FindResource\((@?"[^"]+")\);', r'\1.SetStyle(\2);'),
     (r'(?<![\w.])Style = \(Style\)(?:this\.)?(?:\w+\.)?(?:Try)?FindResource\((@?"[^"]+")\);', r'this.SetStyle(\1);'),

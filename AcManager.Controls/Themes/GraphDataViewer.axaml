@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:oxy="http://oxyplot.org/wpf" xmlns:gr="clr-namespace:AcManager.Controls.Graphs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <oxy:ThicknessConverter x:Key="ThicknessConverter"/>
+
+  <ControlTheme TargetType="gr:CustomTrackerControl" x:Key="{x:Type gr:CustomTrackerControl}">
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="LineDashArray" Value="4 2"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderEdgeMode" Value="Aliased"/>
+    <Setter Property="LineStroke" Value="{DynamicResource Accent}"/>
+    <Setter Property="HorizontalLineVisibility" Value="Visible"/>
+    <Setter Property="VerticalLineVisibility" Value="Visible"/>
+    <Setter Property="Distance" Value="7"/>
+    <Setter Property="CornerRadius" Value="0"/>
+    <Setter Property="IsHitTestVisible" Value="False"/>
+    <Setter Property="CanCenterHorizontally" Value="True"/>
+    <Setter Property="CanCenterVertically" Value="True"/>
+    <Setter Property="ShowPointer" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="gr:CustomTrackerControl">
+          <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Line x:Name="PART_HorizontalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding HorizontalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
+            <Line x:Name="PART_VerticalLine" Stroke="{TemplateBinding LineStroke}" StrokeDashArray="{TemplateBinding LineDashArray}" StartPoint="0,0" EndPoint="0,0" IsVisible="{TemplateBinding VerticalLineVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}"/>
+
+            <Grid x:Name="PART_ContentContainer">
+              <Path x:Name="PART_Path" Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness, Converter={StaticResource ThicknessConverter}}"/>
+              <ContentPresenter x:Name="PART_Content" HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" IsVisible="False"/>
+              <Border Margin="{Binding Margin, ElementName=PART_Content}">
+                <mui:BbCodeBlock Text="{Binding}" Margin="5 4" TextWrapping="NoWrap" TextTrimming="None" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{DynamicResource WindowText}"/>
+              </Border>
+            </Grid>
+          </Canvas>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme TargetType="gr:GraphDataViewerBase" x:Key="{x:Type gr:GraphDataViewerBase}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="IsMouseWheelEnabled" Value="False"/>
+
+    <Setter Property="DefaultTrackerTemplate">
+      <Setter.Value>
+        <ControlTemplate>
+          <gr:CustomTrackerControl PositionOverride="{Binding Position}" LineExtentsOverride="{Binding PlotModel.PlotArea}">
+            <gr:CustomTrackerControl.Content>
+              <!--this is just horrible-->
+              <TextBlock Text="{Binding}" Margin="-54 4 0 4" TextWrapping="NoWrap" TextTrimming="None" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="{DynamicResource WindowText}"/>
+            </gr:CustomTrackerControl.Content>
+          </gr:CustomTrackerControl>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="gr:GraphDataViewerBase">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <mui:Cell>
+              <Grid x:Name="PART_Grid"/>
+              <mui:BooleanSwitch Value="{TemplateBinding IsEmpty}">
+                <Border Background="{DynamicResource DarkStripeBackground}" VerticalAlignment="Center" Padding="20" Margin="0 -40 0 0" TextElement.Foreground="{DynamicResource DarkStripeText}">
+                  <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" TextAlignment="Center" Classes="Title"/>
+                </Border>
+              </mui:BooleanSwitch>
+            </mui:Cell>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  </ResourceDictionary>

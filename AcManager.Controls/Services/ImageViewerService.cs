@@ -12,8 +12,7 @@ namespace AcManager.Controls.Services {
             obj.SetValue(ImageProperty, value);
         }
 
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.RegisterAttached("Image",
-                typeof(string), typeof(ImageViewerService), new FrameworkPropertyMetadata(null, OnImageChanged));
+        public static readonly AttachedProperty<string> ImageProperty = DP.RegisterAttached<string>("Image", typeof(ImageViewerService), new FrameworkPropertyMetadata(null, OnImageChanged));
 
         public static double GetMaxWidth(DependencyObject obj) {
             return obj.GetValue(MaxWidthProperty) as double? ?? 0d;
@@ -23,8 +22,7 @@ namespace AcManager.Controls.Services {
             obj.SetValue(MaxWidthProperty, value);
         }
 
-        public static readonly DependencyProperty MaxWidthProperty = DependencyProperty.RegisterAttached("MaxWidth",
-                typeof(double), typeof(ImageViewerService), new FrameworkPropertyMetadata(double.MaxValue));
+        public static readonly AttachedProperty<double> MaxWidthProperty = DP.RegisterAttached<double>("MaxWidth", typeof(ImageViewerService), new FrameworkPropertyMetadata(double.MaxValue));
 
         public static double GetMaxHeight(DependencyObject obj) {
             return obj.GetValue(MaxHeightProperty) as double? ?? 0d;
@@ -34,14 +32,13 @@ namespace AcManager.Controls.Services {
             obj.SetValue(MaxHeightProperty, value);
         }
 
-        public static readonly DependencyProperty MaxHeightProperty = DependencyProperty.RegisterAttached("MaxHeight",
-                typeof(double), typeof(ImageViewerService), new FrameworkPropertyMetadata(double.MaxValue));
+        public static readonly AttachedProperty<double> MaxHeightProperty = DP.RegisterAttached<double>("MaxHeight", typeof(ImageViewerService), new FrameworkPropertyMetadata(double.MaxValue));
 
         private static void OnImageChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is UIElement control)) return;
-            control.MouseLeftButtonUp -= OnMouseUp;
+            control.RemoveMouseLeftButtonUp(OnMouseUp);
             if (e.NewValue != null) {
-                control.MouseLeftButtonUp += OnMouseUp;
+                control.AddMouseLeftButtonUp(OnMouseUp);
             }
         }
 

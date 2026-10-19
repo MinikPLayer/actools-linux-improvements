@@ -9,7 +9,6 @@ namespace AcManager.Controls.Dialogs {
         public static StoredValue<bool> IsActive { get; } = Stored.Get("BlurredPiece.IsActive", false);
 
         public BlurredPiece() {
-            DefaultStyleKey = typeof(BlurredPiece);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -31,7 +30,7 @@ namespace AcManager.Controls.Dialogs {
             }
         }
 
-        public static readonly DependencyProperty VisualProperty = DependencyProperty.Register(nameof(Visual), typeof(Visual),
+        public static readonly StyledProperty<Visual> VisualProperty = DP.Register<Visual>(nameof(Visual),
                 typeof(BlurredPiece), new PropertyMetadata(OnVisualChanged));
 
         public Visual Visual {
@@ -61,7 +60,7 @@ namespace AcManager.Controls.Dialogs {
             UpdateOffset();
         }
 
-        public static readonly DependencyProperty ViewboxProperty = DependencyProperty.Register(nameof(Viewbox), typeof(Rect),
+        public static readonly StyledProperty<Rect> ViewboxProperty = DP.Register<Rect>(nameof(Viewbox),
                 typeof(BlurredPiece));
 
         public Rect Viewbox {
@@ -69,7 +68,7 @@ namespace AcManager.Controls.Dialogs {
             set => SetValue(ViewboxProperty, value);
         }
 
-        public static readonly DependencyProperty BlurRadiusProperty = DependencyProperty.Register(nameof(BlurRadius), typeof(double),
+        public static readonly StyledProperty<double> BlurRadiusProperty = DP.Register<double>(nameof(BlurRadius),
                 typeof(BlurredPiece), new PropertyMetadata(OnBlurRadiusChanged));
 
         public double BlurRadius {
@@ -86,10 +85,10 @@ namespace AcManager.Controls.Dialogs {
 
         private void OnBlurRadiusChanged(double newValue) {
             _blurRadius = newValue;
-            SetValue(InnerMarginPropertyKey, new Thickness(-_blurRadius));
+            SetValue(InnerMarginPropertyKey.DependencyProperty, new Thickness(-_blurRadius));
         }
 
-        public static readonly DependencyPropertyKey InnerMarginPropertyKey = DependencyProperty.RegisterReadOnly(nameof(InnerMargin), typeof(Thickness),
+        public static readonly DependencyPropertyKey InnerMarginPropertyKey = DP.RegisterReadOnly(nameof(InnerMargin), typeof(Thickness),
                 typeof(BlurredPiece), new PropertyMetadata(default(Thickness)));
 
         public static readonly DependencyProperty InnerMarginProperty = InnerMarginPropertyKey.DependencyProperty;

@@ -20,7 +20,7 @@ namespace AcManager.Controls.UserControls {
             };
         }
 
-        public static readonly DependencyProperty PaddingProperty = DependencyProperty.Register(nameof(Padding), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> PaddingProperty = DP.Register<Thickness>(nameof(Padding),
                 typeof(ModernPopup), new PropertyMetadata(new Thickness(4d)));
 
         public Thickness Padding {
@@ -28,7 +28,7 @@ namespace AcManager.Controls.UserControls {
             set => SetValue(PaddingProperty, value);
         }
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(object),
+        public static readonly StyledProperty<object> ContentProperty = DP.Register<object>(nameof(Content),
                 typeof(ModernPopup), new PropertyMetadata(OnContentChanged));
 
         public object Content {

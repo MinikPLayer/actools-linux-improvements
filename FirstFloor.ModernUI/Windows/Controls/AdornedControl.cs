@@ -15,8 +15,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static readonly StyledProperty<bool> IsAdornerVisibleProperty = DP.Register<bool>(nameof(IsAdornerVisible), typeof(AdornedControl), new PropertyMetadata(false));
         public bool IsAdornerVisible { get => GetValue(IsAdornerVisibleProperty); set => SetValue(IsAdornerVisibleProperty, value); }
 
-        public static readonly StyledProperty<Control> AdornerContentProperty = DP.Register<Control>(nameof(AdornerContent), typeof(AdornedControl));
-        public Control AdornerContent { get => GetValue(AdornerContentProperty); set => SetValue(AdornerContentProperty, value); }
+        public static readonly StyledProperty<FrameworkElement> AdornerContentProperty = DP.Register<FrameworkElement>(nameof(AdornerContent), typeof(AdornedControl));
+        public FrameworkElement AdornerContent { get => GetValue(AdornerContentProperty); set => SetValue(AdornerContentProperty, value); }
 
         public static readonly StyledProperty<AdornerPlacement> HorizontalAdornerPlacementProperty = DP.Register<AdornerPlacement>(nameof(HorizontalAdornerPlacement),
                 typeof(AdornedControl), new PropertyMetadata(AdornerPlacement.Inside));

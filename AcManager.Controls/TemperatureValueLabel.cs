@@ -9,10 +9,9 @@ using FirstFloor.ModernUI.Windows.Controls;
 namespace AcManager.Controls {
     public class TemperatureBlock : TextBlock {
         static TemperatureBlock() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TemperatureBlock), new FrameworkPropertyMetadata(typeof(TemperatureBlock)));
         }
 
-        public static readonly DependencyProperty SpaceProperty = DependencyProperty.Register(nameof(Space), typeof(string),
+        public static readonly StyledProperty<string> SpaceProperty = DP.Register<string>(nameof(Space),
                 typeof(TemperatureBlock), new FrameworkPropertyMetadata("\u202A", OnModeChanged));
 
         public string Space {
@@ -20,7 +19,7 @@ namespace AcManager.Controls {
             set => SetValue(SpaceProperty, value);
         }
 
-        public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register(nameof(Prefix), typeof(string),
+        public static readonly StyledProperty<string> PrefixProperty = DP.Register<string>(nameof(Prefix),
                 typeof(TemperatureBlock), new FrameworkPropertyMetadata("", OnModeChanged));
 
         public string Prefix {
@@ -28,7 +27,7 @@ namespace AcManager.Controls {
             set => SetValue(PrefixProperty, value);
         }
 
-        public static readonly DependencyProperty RoundingProperty = DependencyProperty.Register(nameof(Rounding), typeof(double),
+        public static readonly StyledProperty<double> RoundingProperty = DP.Register<double>(nameof(Rounding),
                 typeof(TemperatureBlock), new FrameworkPropertyMetadata(1d));
 
         public double Rounding {
@@ -36,7 +35,7 @@ namespace AcManager.Controls {
             set => SetValue(RoundingProperty, value);
         }
 
-        public new static readonly DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(double),
+        public new static readonly StyledProperty<double> TextProperty = DP.Register<double>(nameof(Text),
                 typeof(TemperatureBlock), new PropertyMetadata(0d, (o, e) => {
                     ((TemperatureBlock)o)._text = (double)e.NewValue;
                     ((TemperatureBlock)o).Update();
@@ -49,7 +48,7 @@ namespace AcManager.Controls {
             set => SetValue(TextProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), typeof(TemperatureUnitMode),
+        public static readonly StyledProperty<TemperatureUnitMode> ModeProperty = DP.Register<TemperatureUnitMode>(nameof(Mode),
                 typeof(TemperatureBlock), new PropertyMetadata(OnModeChanged));
 
         public TemperatureUnitMode Mode {
@@ -82,10 +81,9 @@ namespace AcManager.Controls {
 
     public class TemperatureValueLabel : ValueLabel {
         static TemperatureValueLabel() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TemperatureValueLabel), new FrameworkPropertyMetadata(typeof(TemperatureValueLabel)));
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), typeof(TemperatureUnitMode),
+        public static readonly StyledProperty<TemperatureUnitMode> ModeProperty = DP.Register<TemperatureUnitMode>(nameof(Mode),
                 typeof(TemperatureValueLabel));
 
         public TemperatureUnitMode Mode {
@@ -93,7 +91,7 @@ namespace AcManager.Controls {
             set => SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty FahrenheitPostfixProperty = DependencyProperty.Register(nameof(FahrenheitPostfix), typeof(string),
+        public static readonly StyledProperty<string> FahrenheitPostfixProperty = DP.Register<string>(nameof(FahrenheitPostfix),
                 typeof(TemperatureValueLabel));
 
         public string FahrenheitPostfix {
@@ -104,10 +102,9 @@ namespace AcManager.Controls {
 
     public class DoubleTemperatureValueLabel : DoubleValueLabel {
         static DoubleTemperatureValueLabel() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleTemperatureValueLabel), new FrameworkPropertyMetadata(typeof(DoubleTemperatureValueLabel)));
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), typeof(TemperatureUnitMode),
+        public static readonly StyledProperty<TemperatureUnitMode> ModeProperty = DP.Register<TemperatureUnitMode>(nameof(Mode),
                 typeof(DoubleTemperatureValueLabel));
 
         public TemperatureUnitMode Mode {
@@ -115,7 +112,7 @@ namespace AcManager.Controls {
             set => SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty FahrenheitPostfixProperty = DependencyProperty.Register(nameof(FahrenheitPostfix), typeof(string),
+        public static readonly StyledProperty<string> FahrenheitPostfixProperty = DP.Register<string>(nameof(FahrenheitPostfix),
                 typeof(DoubleTemperatureValueLabel));
 
         public string FahrenheitPostfix {

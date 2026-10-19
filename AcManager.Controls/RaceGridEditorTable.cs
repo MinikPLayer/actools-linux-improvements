@@ -11,10 +11,9 @@ using FirstFloor.ModernUI.Windows.Media;
 namespace AcManager.Controls {
     public class RaceGridEditorTable : Control {
         static RaceGridEditorTable() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RaceGridEditorTable), new FrameworkPropertyMetadata(typeof(RaceGridEditorTable)));
         }
 
-        public static readonly DependencyProperty ModelProperty = DependencyProperty.Register(nameof(Model), typeof(RaceGridViewModel),
+        public static readonly StyledProperty<RaceGridViewModel> ModelProperty = DP.Register<RaceGridViewModel>(nameof(Model),
                 typeof(RaceGridEditorTable), new PropertyMetadata(null, (o, e) => {
                     var t = (RaceGridEditorTable)o;
                     t._model = (RaceGridViewModel)e.NewValue;
@@ -28,7 +27,7 @@ namespace AcManager.Controls {
             set => SetValue(ModelProperty, value);
         }
 
-        public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register(nameof(CloseCommand), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> CloseCommandProperty = DP.Register<ICommand>(nameof(CloseCommand),
                 typeof(RaceGridEditorTable), new PropertyMetadata(null, (o, e) => {
                     ((RaceGridEditorTable)o)._closeCommand = (ICommand)e.NewValue;
                 }));
@@ -40,7 +39,7 @@ namespace AcManager.Controls {
             set => SetValue(CloseCommandProperty, value);
         }
 
-        public static readonly DependencyProperty AddOpponentCommandProperty = DependencyProperty.Register(nameof(AddOpponentCommand), typeof(ICommand),
+        public static readonly StyledProperty<ICommand> AddOpponentCommandProperty = DP.Register<ICommand>(nameof(AddOpponentCommand),
                 typeof(RaceGridEditorTable), new PropertyMetadata(null, (o, e) => {
                     ((RaceGridEditorTable)o)._addOpponentCommand = (ICommand)e.NewValue;
                 }));
@@ -57,18 +56,18 @@ namespace AcManager.Controls {
 
         public RaceGridEditorTable() {
             _sizeRelated = new SizeRelatedCondition[] {
-                this.AddWidthCondition(640).Add(t => GetTemplateChild(@"PART_NameColumn") as DataGridColumn),
-                this.AddWidthCondition(740).Add(t => GetTemplateChild(@"PART_BallastColumn") as DataGridColumn),
-                this.AddWidthCondition(840).Add(t => GetTemplateChild(@"PART_RestrictorColumn") as DataGridColumn),
-                this.AddWidthCondition(980).Add(t => GetTemplateChild(@"PART_NationalityColumn") as DataGridColumn),
+                this.AddWidthCondition(640).Add(t => this.GetTemplateChild(@"PART_NameColumn") as DataGridColumn),
+                this.AddWidthCondition(740).Add(t => this.GetTemplateChild(@"PART_BallastColumn") as DataGridColumn),
+                this.AddWidthCondition(840).Add(t => this.GetTemplateChild(@"PART_RestrictorColumn") as DataGridColumn),
+                this.AddWidthCondition(980).Add(t => this.GetTemplateChild(@"PART_NationalityColumn") as DataGridColumn),
 
                 SettingsHolder.Drive.QuickDriveAiLimitations ?
-                        this.AddWidthCondition(1140).Add(t => GetTemplateChild(@"PART_AiLimitationColumn") as DataGridColumn) : null,
+                        this.AddWidthCondition(1140).Add(t => this.GetTemplateChild(@"PART_AiLimitationColumn") as DataGridColumn) : null,
 
                 this.AddSizeCondition(p => p.ActualWidth >= 740 && p._model.PlayerCar != null).Add(
-                        t => GetTemplateChild(@"PART_PlayerBallast") as FrameworkElement),
+                        t => this.GetTemplateChild(@"PART_PlayerBallast") as FrameworkElement),
                 this.AddSizeCondition(p => p.ActualWidth >= 840 && p._model.PlayerCar != null).Add(
-                        t => GetTemplateChild(@"PART_PlayerRestrictor") as FrameworkElement)
+                        t => this.GetTemplateChild(@"PART_PlayerRestrictor") as FrameworkElement)
             };
         }
 
@@ -78,17 +77,18 @@ namespace AcManager.Controls {
             }
         }
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_dataGrid != null) {
-                _dataGrid.Drop -= OnDrop;
+                _dataGrid.RemoveDrop(OnDrop);
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _dataGrid = GetTemplateChild(@"PART_DataGrid") as DataGrid;
+            _dataGrid = this.GetTemplateChild(@"PART_DataGrid") as DataGrid;
 
             if (_dataGrid != null) {
-                _dataGrid.Drop += OnDrop;
+                _dataGrid.AddDrop(OnDrop);
             }
 
             UpdateConditions();

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows;
-using System.Windows.Media.Animation;
+using Avalonia.Animation.Easings;
 
 namespace FirstFloor.ModernUI.Windows {
-    public class CubicBesierEase : EasingFunctionBase {
+    public class CubicBesierEase : Easing {
         private const int NewtonIterations = 4;
         private const double NewtonMinSlope = 0.001;
         private const double SubdivisionPrecision = 0.0000001;
@@ -98,65 +97,41 @@ namespace FirstFloor.ModernUI.Windows {
             _sampleValues = sampleValues;
         }
 
-        #region Properties
-        public static readonly StyledProperty<double> X1Property = DP.Register<double>(nameof(X1),
-                typeof(CubicBesierEase), new PropertyMetadata(0.4, (o, e) => {
-                    var f = (CubicBesierEase)o;
-                    f._x1 = (double)e.NewValue;
-                    f._dirty = true;
-                }));
-
-        private double _x1 = 0.4;
+        private double _x1 = 0.4, _x2 = 0.2, _y1, _y2 = 1d;
 
         public double X1 {
             get => _x1;
-            set => SetValue(X1Property, value);
+            set {
+                _x1 = value;
+                _dirty = true;
+            }
         }
-
-        public static readonly StyledProperty<double> X2Property = DP.Register<double>(nameof(X2),
-                typeof(CubicBesierEase), new PropertyMetadata(0d, (o, e) => {
-                    var f = (CubicBesierEase)o;
-                    f._x2 = (double)e.NewValue;
-                    f._dirty = true;
-                }));
-
-        private double _y1;
-
-        public double Y1 {
-            get => _y1;
-            set => SetValue(Y1Property, value);
-        }
-
-        public static readonly StyledProperty<double> Y2Property = DP.Register<double>(nameof(Y2),
-                typeof(CubicBesierEase), new PropertyMetadata(0.2, (o, e) => {
-                    var f = (CubicBesierEase)o;
-                    f._y2 = (double)e.NewValue;
-                    f._dirty = true;
-                }));
-
-        private double _x2 = 0.2;
 
         public double X2 {
             get => _x2;
-            set => SetValue(X2Property, value);
+            set {
+                _x2 = value;
+                _dirty = true;
+            }
         }
 
-        public static readonly StyledProperty<double> Y1Property = DP.Register<double>(nameof(Y1),
-                typeof(CubicBesierEase), new PropertyMetadata(1d, (o, e) => {
-                    var f = (CubicBesierEase)o;
-                    f._y1 = (double)e.NewValue;
-                    f._dirty = true;
-                }));
-
-        private double _y2 = 1d;
+        public double Y1 {
+            get => _y1;
+            set {
+                _y1 = value;
+                _dirty = true;
+            }
+        }
 
         public double Y2 {
             get => _y2;
-            set => SetValue(Y2Property, value);
+            set {
+                _y2 = value;
+                _dirty = true;
+            }
         }
-        #endregion
 
-        protected override double EaseInCore(double x) {
+        public override double Ease(double x) {
             if (_dirty) {
                 UpdateValues();
                 _dirty = false;
@@ -164,10 +139,6 @@ namespace FirstFloor.ModernUI.Windows {
 
             return _linearMode || x == 0d || x == 1d ? x :
                     CalcBezier(GetTForX(x), Y1, Y2);
-        }
-
-        protected override Freezable CreateInstanceCore() {
-            return new CubicBesierEase();
         }
     }
 }

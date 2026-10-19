@@ -45,7 +45,7 @@ namespace AcManager.Controls {
             obj.SetValue(InitializedProperty, value);
         }
 
-        public static readonly DependencyProperty InitializedProperty = DependencyProperty.RegisterAttached("Initialized", typeof(bool),
+        public static readonly AttachedProperty<bool> InitializedProperty = DP.RegisterAttached<bool>("Initialized",
                 typeof(AvalonExtension), new UIPropertyMetadata(OnInitializedChanged));
 
         private static bool _isBusy;
@@ -97,7 +97,7 @@ namespace AcManager.Controls {
             obj.SetValue(TextProperty, value);
         }
 
-        public static readonly DependencyProperty TextProperty = DependencyProperty.RegisterAttached("Text", typeof(string), typeof(AvalonExtension),
+        public static readonly AttachedProperty<string> TextProperty = DP.RegisterAttached<string>("Text", typeof(AvalonExtension),
                 new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged, null, true,
                         UpdateSourceTrigger.PropertyChanged));
 
@@ -129,7 +129,7 @@ namespace AcManager.Controls {
             obj.SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.RegisterAttached("Mode", typeof(AvalonEditMode),
+        public static readonly AttachedProperty<AvalonEditMode> ModeProperty = DP.RegisterAttached<AvalonEditMode>("Mode",
                 typeof(AvalonExtension), new UIPropertyMetadata(AvalonEditMode.Text, OnModeChanged));
 
         private static void OnModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

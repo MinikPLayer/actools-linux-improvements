@@ -9,16 +9,7 @@
   </ControlTheme>
 
   <ControlTheme TargetType="DataGridColumnHeadersPresenter" x:Key="{x:Type DataGridColumnHeadersPresenter}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="DataGridColumnHeadersPresenter">
-          <c:Cell>
-            <DataGridColumnHeader IsHitTestVisible="False" x:Name="PART_FillerColumnHeader"/>
-            <ItemsPresenter/>
-          </c:Cell>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
+    <!-- PORT: removed setter of Template (not in Avalonia) -->
   </ControlTheme>
 
   <ControlTheme x:Key="ColumnHeaderGripperStyle" TargetType="Thumb">
@@ -73,13 +64,7 @@
   </ControlTheme>
 
   <ControlTheme TargetType="DataGridCellsPresenter" x:Key="{x:Type DataGridCellsPresenter}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="DataGridCellsPresenter">
-          <ItemsPresenter/>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
+    <!-- PORT: removed setter of Template (not in Avalonia) -->
   </ControlTheme>
 
 </ResourceDictionary>

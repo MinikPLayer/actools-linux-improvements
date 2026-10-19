@@ -48,33 +48,38 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue) {
-            base.OnItemsSourceChanged(oldValue, newValue);
-            if (AutoPrepare) {
-                (ItemsSource as HierarchicalItemsView)?.Prepare();
-            }
+        static LazyMenuItem() {
+            ItemsSourceProperty.Changed.AddClassHandler<LazyMenuItem>((o, e) => {
+                if (o.AutoPrepare) {
+                    (e.NewValue as HierarchicalItemsView)?.Prepare();
+                }
+            });
+
+            IsSubMenuOpenProperty.Changed.AddClassHandler<LazyMenuItem>((o, e) => {
+                if (e.NewValue is true) {
+                    o.OnSubmenuOpened();
+                } else {
+                    o.OnSubmenuClosed();
+                }
+            });
         }
 
-        protected override void OnSubmenuOpened(RoutedEventArgs e) {
+        private void OnSubmenuOpened() {
             if (ItemsSource is HierarchicalItemsView view) {
                 view.Prepare();
                 foreach (var item in view.OfType<LazyMenuItem>()) {
                     (item.ItemsSource as HierarchicalItemsView)?.Prepare();
                 }
             }
-
-            base.OnSubmenuOpened(e);
         }
 
-        protected override void OnSubmenuClosed(RoutedEventArgs e) {
+        private void OnSubmenuClosed() {
             if (ItemsSource is HierarchicalItemsView view) {
                 view.Release();
                 foreach (var item in view.OfType<LazyMenuItem>()) {
                     (item.ItemsSource as HierarchicalItemsView)?.Release();
                 }
             }
-
-            base.OnSubmenuClosed(e);
         }
     }
 
@@ -106,8 +111,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (_view?.PreviewProvider != null) {
                 SetValue(PreviewValuePropertyKey.DependencyProperty, _view.PreviewProvider.GetPreview(OriginalValue));
                 SetValue(ToolTipPlacementPropertyKey.DependencyProperty, _view.PreviewProvider.GetPlacementMode(OriginalValue));
-            } else if (ToolTip != null) {
-                SetValue(PreviewValuePropertyKey.DependencyProperty, ToolTip);
+            } else if (this.ToolTip != null) {
+                SetValue(PreviewValuePropertyKey.DependencyProperty, this.ToolTip);
             }
         }
 
@@ -121,7 +126,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public static readonly DependencyPropertyKey ToolTipPlacementPropertyKey = DP.RegisterReadOnly(nameof(ToolTipPlacement),
                 typeof(PlacementMode),
-                typeof(HierarchicalItem), new PropertyMetadata(PlacementMode.Mouse));
+                typeof(HierarchicalItem), new PropertyMetadata(PlacementMode.Pointer));
 
         public static readonly DependencyProperty ToolTipPlacementProperty = ToolTipPlacementPropertyKey.DependencyProperty;
 
@@ -212,10 +217,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        [ValueConversion(typeof(int), typeof(Visibility))]
+        [ValueConversion(typeof(int), typeof(bool))]
         private class InnerCountToVisibilityConverter : IValueConverter {
             public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-                return value.As<int>() > 0 ? Visibility.Visible : Visibility.Collapsed;
+                return value.As<int>() > 0;
             }
 
             public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
@@ -260,14 +265,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var view = value as HierarchicalItemsView;
 
             if ((view?._source ?? value) is IShortDisplayable shortDisplayable) {
-                result.SetBinding(HeaderedItemsControl.HeaderProperty, new Binding {
+                result.SetBinding(MenuItem.HeaderProperty, new Binding {
                     Source = shortDisplayable,
                     Path = new PropertyPath(nameof(IShortDisplayable.ShortDisplayName)),
                     Converter = headerConverter,
                     Mode = BindingMode.OneWay
                 });
             } else {
-                result.SetBinding(HeaderedItemsControl.HeaderProperty, new Binding {
+                result.SetBinding(MenuItem.HeaderProperty, new Binding {
                     Source = view?._source ?? value,
                     Path = new PropertyPath(nameof(Displayable.DisplayName)),
                     Converter = headerConverter,
@@ -279,7 +284,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 view._temporaryParent = Parent == null ? null : new WeakReference<HierarchicalComboBox>(Parent);
 
                 result.ItemsSource = view;
-                result.SetBinding(UIElement.VisibilityProperty, new Binding {
+                result.SetBinding(Avalonia.Visual.IsVisibleProperty, new Binding {
                     Source = view,
                     Path = new PropertyPath(nameof(view.Count)),
                     Mode = BindingMode.OneWay,
@@ -291,7 +296,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     result.CommandParameter = value;
                 } else {
                     result.ItemsSource = Parent == null ? new HierarchicalItemsView(Handler, group, _lazy) : new HierarchicalItemsView(Parent, group, _lazy);
-                    result.SetBinding(UIElement.VisibilityProperty, new Binding {
+                    result.SetBinding(Avalonia.Visual.IsVisibleProperty, new Binding {
                         Source = group,
                         Path = new PropertyPath(nameof(group.Count)),
                         Mode = BindingMode.OneWay,
@@ -380,7 +385,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private void OnKeyDown(object sender, KeyEventArgs args) {
-            if (_menu?.IsSubmenuOpen == true) return;
+            if (_menu?.IsSubMenuOpen == true) return;
 
             switch (args.Key) {
                 case Key.Down:

@@ -10,7 +10,7 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ScrollBarThumbHover}"/>
-            </Style><Style Selector="^[IsDragging=True]"><Setter Property="Foreground" Value="{DynamicResource ScrollBarThumbDragging}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ScrollBarThumbDragging}"/>
             </Style></ControlTheme>
 
   <ControlTheme TargetType="RepeatButton" x:Key="{x:Type RepeatButton}">
@@ -37,12 +37,12 @@
         <ControlTemplate TargetType="ScrollBar">
           <Border x:Name="Bg" Width="8" Margin="0 0 0 0">
             <Track x:Name="PART_Track" IsDirectionReversed="True" IsEnabled="{TemplateBinding IsMouseOver}">
-              <Track.DecreaseRepeatButton>
-                <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-              </Track.DecreaseRepeatButton>
-              <Track.IncreaseRepeatButton>
-                <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-              </Track.IncreaseRepeatButton>
+              <Track.DecreaseButton>
+                <RepeatButton Background="Transparent" BorderBrush="Transparent" BorderThickness="0" x:Name="PART_PageUpButton"/>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton Background="Transparent" BorderBrush="Transparent" BorderThickness="0" x:Name="PART_PageDownButton"/>
+              </Track.IncreaseButton>
               <Track.Thumb>
                 <Thumb x:Name="PART_Thumb" Theme="{StaticResource ScrollBarThumbStyle}">
                   <Thumb.RenderTransform>
@@ -83,12 +83,12 @@
         <ControlTemplate TargetType="ScrollBar">
           <Border x:Name="Bg" Height="8" Background="Transparent">
             <Track x:Name="PART_Track" IsDirectionReversed="False" IsEnabled="{TemplateBinding IsMouseOver}">
-              <Track.DecreaseRepeatButton>
-                <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-              </Track.DecreaseRepeatButton>
-              <Track.IncreaseRepeatButton>
-                <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
-              </Track.IncreaseRepeatButton>
+              <Track.DecreaseButton>
+                <RepeatButton Background="Transparent" BorderBrush="Transparent" BorderThickness="0" x:Name="PART_PageUpButton"/>
+              </Track.DecreaseButton>
+              <Track.IncreaseButton>
+                <RepeatButton Background="Transparent" BorderBrush="Transparent" BorderThickness="0" x:Name="PART_PageDownButton"/>
+              </Track.IncreaseButton>
               <Track.Thumb>
                 <Thumb x:Name="PART_Thumb" Theme="{StaticResource ScrollBarThumbStyle}">
                   <Thumb.RenderTransform>

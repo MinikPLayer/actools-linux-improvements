@@ -30,7 +30,8 @@
         <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
         <Setter Property="FontWeight" Value="Bold"/>
       </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
-      </Style></ControlTheme>
+      </Style><Style Selector="^:selected /template/ Border#PART_Border"><!-- PORT: removed setter of Style (not in Avalonia) -->
+            </Style></ControlTheme>
 
   <ControlTheme x:Key="RibbonListBoxItem.Left" TargetType="ListBoxItem">
     <Setter Property="Background" Value="Transparent"/>

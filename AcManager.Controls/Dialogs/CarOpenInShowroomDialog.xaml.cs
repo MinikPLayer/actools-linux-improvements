@@ -48,7 +48,7 @@ namespace AcManager.Controls.Dialogs {
         }
     }
 
-    public partial class CarOpenInShowroomDialog {
+    public partial class CarOpenInShowroomDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public const string PresetableKeyValue = "Showroom";
 
         public class ViewModel : NotifyPropertyChanged, IUserPresetable, IDisposable {

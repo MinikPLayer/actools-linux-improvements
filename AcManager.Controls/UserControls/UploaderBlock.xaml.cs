@@ -12,7 +12,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls.UserControls {
-    public partial class UploaderBlock {
+    public partial class UploaderBlock : global::Avalonia.Controls.UserControl {
         [CanBeNull]
         private UploaderParams Model => DataContext as UploaderParams;
 

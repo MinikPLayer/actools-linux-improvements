@@ -9,14 +9,13 @@ namespace AcManager.Controls {
     [ContentProperty(nameof(Children))]
     public class MessageBlock : ContentControl {
         static MessageBlock() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(MessageBlock), new FrameworkPropertyMetadata(typeof(MessageBlock)));
         }
 
         public MessageBlock() {
             Children = new UIElementCollection(this, this);
         }
 
-        public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(nameof(Children), typeof(UIElementCollection),
+        public static readonly StyledProperty<UIElementCollection> ChildrenProperty = DP.Register<UIElementCollection>(nameof(Children),
                 typeof(MessageBlock));
 
         public UIElementCollection Children {
@@ -27,14 +26,15 @@ namespace AcManager.Controls {
         private Panel _panel;
         private Button _closeButton;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_closeButton != null) {
                 _closeButton.Click -= OnCloseButtonClick;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _panel = GetTemplateChild(@"PART_Panel") as Panel;
+            _panel = this.GetTemplateChild(@"PART_Panel") as Panel;
             if (_panel != null) {
                 var newChildren = _panel.Children;
                 if (!ReferenceEquals(Children, newChildren)) {
@@ -49,7 +49,7 @@ namespace AcManager.Controls {
                 }
             }
 
-            _closeButton = GetTemplateChild(@"PART_CloseButton") as Button;
+            _closeButton = this.GetTemplateChild(@"PART_CloseButton") as Button;
             if (_closeButton != null) {
                 _closeButton.Click += OnCloseButtonClick;
             }
@@ -62,7 +62,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public new static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register(nameof(Visibility), typeof(Visibility),
+        public new static readonly StyledProperty<Visibility> VisibilityProperty = DP.Register<Visibility>(nameof(Visibility),
                 typeof(MessageBlock), new PropertyMetadata(Visibility.Visible, (o, e) => {
                     var b = (MessageBlock)o;
                     b._visibility = (Visibility)e.NewValue;
@@ -76,7 +76,7 @@ namespace AcManager.Controls {
             set => SetValue(VisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty CloseKeyProperty = DependencyProperty.Register(nameof(CloseKey), typeof(string),
+        public static readonly StyledProperty<string> CloseKeyProperty = DP.Register<string>(nameof(CloseKey),
                 typeof(MessageBlock), new PropertyMetadata(null, (o, e) => {
                     var b = (MessageBlock)o;
                     b._closeKey = (string)e.NewValue;
@@ -96,7 +96,7 @@ namespace AcManager.Controls {
         }
 
         private void SetClosed(bool value) {
-            SetValue(ClosedPropertyKey, value);
+            SetValue(ClosedPropertyKey.DependencyProperty, value);
             UpdateVisibility();
         }
 
@@ -104,14 +104,14 @@ namespace AcManager.Controls {
             base.Visibility = Closed ? Visibility.Collapsed : Visibility;
         }
 
-        public static readonly DependencyPropertyKey ClosedPropertyKey = DependencyProperty.RegisterReadOnly(nameof(Closed), typeof(bool),
+        public static readonly DependencyPropertyKey ClosedPropertyKey = DP.RegisterReadOnly(nameof(Closed), typeof(bool),
                 typeof(MessageBlock), new PropertyMetadata(false));
 
         public static readonly DependencyProperty ClosedProperty = ClosedPropertyKey.DependencyProperty;
 
         public bool Closed => GetValue(ClosedProperty) as bool? == true;
 
-        public static readonly DependencyProperty CloseButtonContentProperty = DependencyProperty.Register(nameof(CloseButtonContent), typeof(object),
+        public static readonly StyledProperty<object> CloseButtonContentProperty = DP.Register<object>(nameof(CloseButtonContent),
                 typeof(MessageBlock), new PropertyMetadata(null));
 
         public object CloseButtonContent {
@@ -119,7 +119,7 @@ namespace AcManager.Controls {
             set => SetValue(CloseButtonContentProperty, value);
         }
 
-        public static readonly DependencyProperty CloseButtonContentStringFormatProperty = DependencyProperty.Register(nameof(CloseButtonContentStringFormat), typeof(string),
+        public static readonly StyledProperty<string> CloseButtonContentStringFormatProperty = DP.Register<string>(nameof(CloseButtonContentStringFormat),
                 typeof(MessageBlock));
 
         public string CloseButtonContentStringFormat {

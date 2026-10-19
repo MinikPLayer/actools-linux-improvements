@@ -37,11 +37,9 @@ namespace AcManager.Controls {
         public const double AutoThumbnailModeThresholdValue = 322d;
 
         static AcObjectListBox() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AcObjectListBox), new FrameworkPropertyMetadata(typeof(AcObjectListBox)));
         }
 
-        public static readonly DependencyProperty AutoThumbnailModeThresholdProperty = DependencyProperty.Register(nameof(AutoThumbnailModeThreshold),
-                typeof(double), typeof(AcObjectListBox),
+        public static readonly StyledProperty<double> AutoThumbnailModeThresholdProperty = DP.Register<double>(nameof(AutoThumbnailModeThreshold), typeof(AcObjectListBox),
                 new PropertyMetadata(AutoThumbnailModeThresholdValue, (o, e) => ((AcObjectListBox)o)._autoThumbnailModeThreshold = (double)e.NewValue));
 
         private double _autoThumbnailModeThreshold = AutoThumbnailModeThresholdValue;
@@ -51,7 +49,7 @@ namespace AcManager.Controls {
             set => SetValue(AutoThumbnailModeThresholdProperty, value);
         }
 
-        public static readonly DependencyPropertyKey ActualThumbnailModePropertyKey = DependencyProperty.RegisterReadOnly(nameof(ActualThumbnailMode),
+        public static readonly DependencyPropertyKey ActualThumbnailModePropertyKey = DP.RegisterReadOnly(nameof(ActualThumbnailMode),
                 typeof(bool),
                 typeof(AcObjectListBox), new PropertyMetadata(false));
 
@@ -59,7 +57,7 @@ namespace AcManager.Controls {
 
         public bool ActualThumbnailMode => GetValue(ActualThumbnailModeProperty) as bool? == true;
 
-        public static readonly DependencyProperty ThumbnailModeProperty = DependencyProperty.Register(nameof(ThumbnailMode), typeof(ThumbnailMode),
+        public static readonly StyledProperty<ThumbnailMode> ThumbnailModeProperty = DP.Register<ThumbnailMode>(nameof(ThumbnailMode),
                 typeof(AcObjectListBox), new PropertyMetadata(ThumbnailMode.Auto, (o, e) => {
                     var l = (AcObjectListBox)o;
                     l._thumbnailMode = (ThumbnailMode)e.NewValue;
@@ -73,7 +71,7 @@ namespace AcManager.Controls {
             set => SetValue(ThumbnailModeProperty, value);
         }
 
-        public static readonly DependencyProperty BasicFilterProperty = DependencyProperty.Register(nameof(BasicFilter), typeof(string),
+        public static readonly StyledProperty<string> BasicFilterProperty = DP.Register<string>(nameof(BasicFilter),
                 typeof(AcObjectListBox), new PropertyMetadata(OnFilterChanged));
 
         public string BasicFilter {
@@ -81,7 +79,7 @@ namespace AcManager.Controls {
             set => SetValue(BasicFilterProperty, value);
         }
 
-        public static readonly DependencyProperty UserFilterProperty = DependencyProperty.Register(nameof(UserFilter), typeof(string),
+        public static readonly StyledProperty<string> UserFilterProperty = DP.Register<string>(nameof(UserFilter),
                 typeof(AcObjectListBox), new PropertyMetadata(OnFilterChanged));
 
         public string UserFilter {
@@ -89,7 +87,7 @@ namespace AcManager.Controls {
             set => SetValue(UserFilterProperty, value);
         }
 
-        public static readonly DependencyProperty UserFiltersKeyProperty = DependencyProperty.Register(nameof(UserFiltersKey), typeof(string),
+        public static readonly StyledProperty<string> UserFiltersKeyProperty = DP.Register<string>(nameof(UserFiltersKey),
                 typeof(AcObjectListBox), new PropertyMetadata(@"AcObjectListBox:FiltersHistory"));
 
         public string UserFiltersKey {
@@ -97,7 +95,7 @@ namespace AcManager.Controls {
             set => SetValue(UserFiltersKeyProperty, value);
         }
 
-        public static readonly DependencyProperty SortKeyProperty = DependencyProperty.Register(nameof(SortKey), typeof(string),
+        public static readonly StyledProperty<string> SortKeyProperty = DP.Register<string>(nameof(SortKey),
                 typeof(AcObjectListBox), new PropertyMetadata((string)null));
 
         public string SortKey {
@@ -109,7 +107,7 @@ namespace AcManager.Controls {
             ((AcObjectListBox)d).UpdateFilter();
         }
 
-        public static readonly DependencyProperty IsFilteringEnabledProperty = DependencyProperty.Register(nameof(IsFilteringEnabled), typeof(bool),
+        public static readonly StyledProperty<bool> IsFilteringEnabledProperty = DP.Register<bool>(nameof(IsFilteringEnabled),
                 typeof(AcObjectListBox), new PropertyMetadata(true));
 
         public bool IsFilteringEnabled {
@@ -117,7 +115,7 @@ namespace AcManager.Controls {
             set => SetValue(IsFilteringEnabledProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(nameof(SelectedItem), typeof(AcObjectNew),
+        public static readonly StyledProperty<AcObjectNew> SelectedItemProperty = DP.Register<AcObjectNew>(nameof(SelectedItem),
                 typeof(AcObjectListBox), new PropertyMetadata(OnSelectedItemChanged));
 
         private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -145,15 +143,14 @@ namespace AcManager.Controls {
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource), typeof(IAcObjectList),
+        public static readonly StyledProperty<IAcObjectList> ItemsSourceProperty = DP.Register<IAcObjectList>(nameof(ItemsSource),
                 typeof(AcObjectListBox), new PropertyMetadata(OnItemsSourceChanged));
 
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((AcObjectListBox)d).OnItemsSourceChanged((IAcObjectList)e.NewValue);
         }
 
-        public static readonly DependencyProperty InnerItemsSourceProperty = DependencyProperty.Register(nameof(InnerItemsSource),
-                typeof(AcWrapperCollectionView),
+        public static readonly StyledProperty<AcWrapperCollectionView> InnerItemsSourceProperty = DP.Register<AcWrapperCollectionView>(nameof(InnerItemsSource),
                 typeof(AcObjectListBox), new PropertyMetadata());
 
         public IAcObjectList ItemsSource {
@@ -166,7 +163,7 @@ namespace AcManager.Controls {
             set => SetValue(InnerItemsSourceProperty, value);
         }
 
-        public static readonly DependencyProperty SelectionModeProperty = DependencyProperty.Register(nameof(SelectionMode), typeof(SelectionMode),
+        public static readonly StyledProperty<SelectionMode> SelectionModeProperty = DP.Register<SelectionMode>(nameof(SelectionMode),
                 typeof(AcObjectListBox), new PropertyMetadata(SelectionMode.Single));
 
         public SelectionMode SelectionMode {
@@ -184,7 +181,7 @@ namespace AcManager.Controls {
         }
 
         private void UpdateThumbnailMode() {
-            SetValue(ActualThumbnailModePropertyKey, ThumbnailMode == ThumbnailMode.Auto ?
+            SetValue(ActualThumbnailModePropertyKey.DependencyProperty, ThumbnailMode == ThumbnailMode.Auto ?
                     ActualWidth > AutoThumbnailModeThreshold : ThumbnailMode == ThumbnailMode.Enabled);
         }
 
@@ -204,7 +201,7 @@ namespace AcManager.Controls {
         }
 
         private void FocusTextBox() {
-            (GetTemplateChild("PART_FilterTextBox") as IInputElement)?.Focus();
+            (this.GetTemplateChild("PART_FilterTextBox") as IInputElement)?.Focus();
         }
 
         internal void OnUnloaded(object sender, RoutedEventArgs e) {
@@ -335,14 +332,15 @@ namespace AcManager.Controls {
 
         private ListBox _listBox;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_listBox != null) {
                 _listBox.SelectionChanged -= OnListBoxSelectionChanged;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _listBox = GetTemplateChild(@"PART_ListBox") as ListBox;
+            _listBox = this.GetTemplateChild(@"PART_ListBox") as ListBox;
             if (_listBox != null) {
                 if (SelectionMode != SelectionMode.Single && InnerItemsSource != null) {
                     _listBox.SelectedItems.Clear();

@@ -14,21 +14,19 @@ using OxyPlot.Series;
 
 namespace AcManager.Controls.Graphs {
     public class CarGraphViewer : GraphDataViewerBase {
-        public static readonly DependencyProperty SourceTorqueProperty =
-            DependencyProperty.Register(nameof(SourceTorque), typeof(GraphData), typeof(CarGraphViewer), new PropertyMetadata(OnSourceTorqueChanged));
+        public static readonly StyledProperty<GraphData> SourceTorqueProperty = DP.Register<GraphData>(nameof(SourceTorque), typeof(CarGraphViewer), new PropertyMetadata(OnSourceTorqueChanged));
 
         private static void OnSourceTorqueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((CarGraphViewer)d).UpdateTorque();
         }
 
-        public static readonly DependencyProperty SourcePowerProperty =
-            DependencyProperty.Register(nameof(SourcePower), typeof(GraphData), typeof(CarGraphViewer), new PropertyMetadata(OnSourcePowerChanged));
+        public static readonly StyledProperty<GraphData> SourcePowerProperty = DP.Register<GraphData>(nameof(SourcePower), typeof(CarGraphViewer), new PropertyMetadata(OnSourcePowerChanged));
 
         private static void OnSourcePowerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             ((CarGraphViewer)d).UpdatePower();
         }
 
-        public static readonly DependencyProperty CarProperty = DependencyProperty.Register(nameof(Car), typeof(CarObject),
+        public static readonly StyledProperty<CarObject> CarProperty = DP.Register<CarObject>(nameof(Car),
                 typeof(CarGraphViewer), new PropertyMetadata(OnCarChanged));
 
         public CarObject Car {

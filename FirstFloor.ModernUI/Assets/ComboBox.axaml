@@ -40,7 +40,7 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="TextBox">
-          <ScrollViewer x:Name="PART_ContentHost" Background="Transparent" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+          <ScrollViewer x:Name="PART_ScrollViewer" Background="Transparent" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -50,7 +50,7 @@
     <Grid x:Name="MainGrid">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
+        <ColumnDefinition Width="0" MinWidth="17"/>
       </Grid.ColumnDefinitions>
       <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
@@ -97,7 +97,7 @@
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
+              <ColumnDefinition Width="0" MinWidth="17"/>
             </Grid.ColumnDefinitions>
             <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <c:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}" TextElement.Foreground="{DynamicResource WindowText}">

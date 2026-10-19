@@ -4,9 +4,9 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/FancyScroll.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
-    <ResourceInclude Source="DataGrid.Base.axaml"/>
-    <ResourceInclude Source="DataGrid.Cells.axaml"/>
-    <ResourceInclude Source="DataGrid.Rows.axaml"/>
+    <!-- PORT: removed include of DataGrid.Base -->
+    <!-- PORT: removed include of DataGrid.Cells -->
+    <!-- PORT: removed include of DataGrid.Rows -->
   </ResourceDictionary.MergedDictionaries>
 
   <ControlTheme TargetType="DataGrid" x:Key="{x:Type DataGrid}">
@@ -16,10 +16,10 @@
     <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
     <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource DataGridGridLines}"/>
     <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource DataGridGridLines}"/>
-    <Setter Property="DragIndicatorStyle" Value="{StaticResource ColumnFloatingHeaderStyle}"/>
-    <Setter Property="DropLocationIndicatorStyle" Value="{StaticResource ColumnHeaderDropSeparatorStyle}"/>
+    <!-- PORT: removed setter of DragIndicatorStyle (not in Avalonia) -->
+    <!-- PORT: removed setter of DropLocationIndicatorStyle (not in Avalonia) -->
     <Setter Property="GridLinesVisibility" Value="None"/>
-    <Setter Property="AlternationCount" Value="2"/>
+    <!-- PORT: removed setter of AlternationCount (not in Avalonia) -->
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="DataGrid">
@@ -67,15 +67,15 @@
     </ControlTheme>
 
   <ControlTheme x:Key="DataGrid.Lite" TargetType="DataGrid">
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="SelectionUnit" Value="FullRow"/>
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
+    <!-- PORT: removed setter of SelectionUnit (not in Avalonia) -->
     <Setter Property="SelectionMode" Value="Single"/>
-    <Setter Property="MinRowHeight" Value="24"/>
+    <!-- PORT: removed setter of MinRowHeight (not in Avalonia) -->
     <Setter Property="IsReadOnly" Value="False"/>
     <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
 
-    <Setter Property="EnableRowVirtualization" Value="True"/>
-    <Setter Property="EnableColumnVirtualization" Value="False"/>
+    <!-- PORT: removed setter of EnableRowVirtualization (not in Avalonia) -->
+    <!-- PORT: removed setter of EnableColumnVirtualization (not in Avalonia) -->
     <Setter Property="VirtualizingStackPanel.IsVirtualizingWhenGrouping" Value="True"/>
     <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
     <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
@@ -84,10 +84,10 @@
 
     <Setter Property="AutoGenerateColumns" Value="False"/>
     <Setter Property="CanUserResizeColumns" Value="False"/>
-    <Setter Property="CanUserResizeRows" Value="False"/>
+    <!-- PORT: removed setter of CanUserResizeRows (not in Avalonia) -->
     <Setter Property="CanUserReorderColumns" Value="False"/>
-    <Setter Property="CanUserAddRows" Value="False"/>
-    <Setter Property="CanUserDeleteRows" Value="False"/>
+    <!-- PORT: removed setter of CanUserAddRows (not in Avalonia) -->
+    <!-- PORT: removed setter of CanUserDeleteRows (not in Avalonia) -->
 
     <Setter Property="Template">
       <Setter.Value>
@@ -112,14 +112,14 @@
       </Setter.Value>
     </Setter>
 
-    <Setter Property="RowStyle" Value="{StaticResource DataGridRow.RibbonLeft}"/>
+    <!-- PORT: removed setter of RowStyle (not in Avalonia) -->
 
     <!-- Virtualization -->
     <!-- Scrolling -->
     <!-- Simplifying -->
     <!-- Styles -->
-    <Style Selector="^[RowDetailsVisibilityMode=Visible]"><Setter Property="RowStyle" Value="{StaticResource DataGridRow.DetailsAlways.RibbonLeft}"/>
-      </Style><Style Selector="^[RowDetailsVisibilityMode=VisibleWhenSelected]"><Setter Property="RowStyle" Value="{StaticResource DataGridRow.DetailsAnimated.RibbonLeft}"/>
+    <Style Selector="^[RowDetailsVisibilityMode=Visible]"><!-- PORT: removed setter of RowStyle (not in Avalonia) -->
+      </Style><Style Selector="^[RowDetailsVisibilityMode=VisibleWhenSelected]"><!-- PORT: removed setter of RowStyle (not in Avalonia) -->
       </Style></ControlTheme>
 
 </ResourceDictionary>

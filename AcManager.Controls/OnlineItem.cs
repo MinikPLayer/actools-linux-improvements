@@ -29,6 +29,7 @@ namespace AcManager.Controls {
         private readonly BbCodeBlock _name;
 
         static OnlineItem() {
+            InputElement.PointerReleasedEvent.AddClassHandler<OnlineItem>((x, e) => { if (e is PointerEventArgs p && p.IsButton(MouseButton.Right)) x.OnPreviewMouseRightButtonUp(p); }, Avalonia.Interactivity.RoutingStrategies.Tunnel);
             AppearanceManager.Instance.ThemeChange += OnThemeChange;
             AppearanceManager.Instance.PropertyChanged += OnThemeChange;
             FileBasedOnlineSources.Instance.Update += OnUserSourcesUpdated;
@@ -161,7 +162,7 @@ namespace AcManager.Controls {
             }
         }
 
-        protected override void OnPreviewMouseRightButtonUp(MouseButtonEventArgs e) {
+        protected void OnPreviewMouseRightButtonUp(MouseButtonEventArgs e) {
             if (_scrolling) return;
 
             var size = _size;
@@ -198,7 +199,7 @@ namespace AcManager.Controls {
             e.Handled = handled;
         }
 
-        protected override void OnMouseMove(MouseEventArgs e) {
+        protected override void OnPointerMoved(PointerEventArgs e) {
             if (_scrolling) return;
 
             var size = _size;
@@ -333,11 +334,11 @@ namespace AcManager.Controls {
             return new Rect(20, 30, 120, 30);
         }
 
-        protected override void OnMouseLeave(MouseEventArgs e) {
+        protected override void OnPointerExited(PointerEventArgs e) {
             ShowToolTip(null, null);
         }
 
-        public static readonly DependencyProperty ServerProperty = DependencyProperty.Register(nameof(Server), typeof(ServerEntry),
+        public static readonly StyledProperty<ServerEntry> ServerProperty = DP.Register<ServerEntry>(nameof(Server),
                 typeof(OnlineItem), new PropertyMetadata(null,
                         (o, e) => ((OnlineItem)o).SetServer((ServerEntry)e.NewValue)));
 
@@ -504,7 +505,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty HideSourceIconsProperty = DependencyProperty.Register(nameof(HideSourceIcons), typeof(string[]),
+        public static readonly StyledProperty<string[]> HideSourceIconsProperty = DP.Register<string[]>(nameof(HideSourceIcons),
                 typeof(OnlineItem), new PropertyMetadata(null, (o, e) => ((OnlineItem)o)._hideSourceIcons = (string[])e.NewValue));
 
         [CanBeNull]
@@ -1182,8 +1183,8 @@ namespace AcManager.Controls {
 
         // private bool _renderInProcess;
 
-        protected override void OnRender(DrawingContext dc) {
-            base.OnRender(dc);
+        public override void Render(DrawingContext dc) {
+            base.Render(dc);
 
             if (_renderDirty) {
                 _renderDirty = false;
@@ -1197,7 +1198,7 @@ namespace AcManager.Controls {
 
             /*if (!_renderInProcess && (_renderDirty || _fullyLoaded && _wideMode && _renderTimeDirty)) {
                 _renderInProcess = true;
-                Dispatcher.BeginInvoke((Action)(() => {
+                Dispatcher.UIThread.BeginInvoke((Action)(() => {
                     if (_renderDirty) {
                         _renderDirty = false;
                         RenderMainLayer();

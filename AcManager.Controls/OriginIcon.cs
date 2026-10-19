@@ -32,7 +32,7 @@ namespace AcManager.Controls {
             Height = 16d;
         }
 
-        public static readonly DependencyProperty AuthorProperty = DependencyProperty.Register(nameof(Author), typeof(string),
+        public static readonly StyledProperty<string> AuthorProperty = DP.Register<string>(nameof(Author),
                 typeof(OriginIcon), new PropertyMetadata(OnAuthorChanged));
 
         public string Author {

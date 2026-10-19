@@ -2,7 +2,7 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
-    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -16,8 +16,8 @@
     <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Padding" Value="7 3 8 3"/>
-    <Setter Property="HorizontalContentAlignment" Value="Left"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
     <Setter Property="VerticalAlignment" Value="Stretch"/>
     <Setter Property="IsVisible" Value="True"/>
     <Setter Property="Template">
@@ -26,7 +26,7 @@
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
+              <ColumnDefinition Width="0" MinWidth="17"/>
             </Grid.ColumnDefinitions>
             <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <ToolTip.Tip>
@@ -67,17 +67,17 @@
         </Setter>
       </Trigger>
     </Style.Triggers>-->
-  <Style Selector="^ /template/ Path#Arrow"><Setter Property="Fill" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^:pointerover /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+  <Style Selector="^ /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) --></Style><Style Selector="^ /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
               </Style><Style Selector="^:pointerover /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
             </Style><Style Selector="^:focus"><Style Selector="^[IsSubmenuOpen=False] /template/ ToggleButton#PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
             </Style></Style><Style Selector="^[IsSubmenuOpen=True] /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
               </Style><Style Selector="^[IsSubmenuOpen=True] /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
             </Style><Style Selector="^:disabled /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextDisabled}"/>
-              </Style><Style Selector="^:disabled /template/ Path#Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextDisabled}"/>
+              </Style><Style Selector="^:disabled /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
             </Style></ControlTheme>
 
   <!-- PORT: ControlTemplate with triggers outside of a style (3 triggers) --><ControlTemplate x:Key="SpecialMenuItemHeaderControlTemplate" TargetType="c:HierarchicalItem">
@@ -122,8 +122,8 @@
       </Style></ControlTheme>
 
   <!-- PORT: ControlTemplate with triggers outside of a style (3 triggers) --><ControlTemplate x:Key="HierarchicalComboBox.DefaultTemplate" TargetType="c:HierarchicalComboBox">
-    <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
-      <c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding InnerMargin}" Padding="{TemplateBinding Padding}" Theme="{StaticResource HierarchicalComboBoxMenuItem}">
+    <Menu VerticalAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+      <!-- PORT: removed HorizontalContentAlignment (not in Avalonia) --><!-- PORT: removed VerticalContentAlignment (not in Avalonia) --><c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding InnerMargin}" Padding="{TemplateBinding Padding}" Theme="{StaticResource HierarchicalComboBoxMenuItem}">
         <MenuItem.Header>
           <ContentPresenter x:Name="PART_Text" Content="{TemplateBinding SelectedItem}" ContentTemplate="{TemplateBinding SelectedContent}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
         </MenuItem.Header>
@@ -138,7 +138,7 @@
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="0" MinWidth="{DynamicResource {x:Static sw:SystemParameters.VerticalScrollBarWidthKey}}"/>
+              <ColumnDefinition Width="0" MinWidth="17"/>
             </Grid.ColumnDefinitions>
             <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <Grid Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
@@ -170,8 +170,8 @@
       <c:AdornedControl.AdornerContent>
         <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
       </c:AdornedControl.AdornerContent>
-      <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
-        <c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Margin="{TemplateBinding InnerMargin}" Padding="0" Theme="{StaticResource HierarchicalComboBoxMenuItem.Borderless}">
+      <Menu VerticalAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+        <!-- PORT: removed HorizontalContentAlignment (not in Avalonia) --><!-- PORT: removed VerticalContentAlignment (not in Avalonia) --><c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Margin="{TemplateBinding InnerMargin}" Padding="0" Theme="{StaticResource HierarchicalComboBoxMenuItem.Borderless}">
           <MenuItem.Header>
             <ContentPresenter x:Name="PART_Text" Content="{TemplateBinding SelectedItem}" ContentTemplate="{TemplateBinding SelectedContent}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </MenuItem.Header>

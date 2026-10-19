@@ -1,0 +1,46 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Path x:Key="CloseButtonContent" Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+
+  <ControlTheme TargetType="ac:MessageBlock" x:Key="{x:Type ac:MessageBlock}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource SeparatorBackground}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="8"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:MessageBlock">
+          <mui:Cell Background="{TemplateBinding Background}">
+            <Rectangle Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeDashArray="4 4"/>
+            <DockPanel Margin="{TemplateBinding Padding}">
+              <Button DockPanel.Dock="Right" x:Name="PART_CloseButton" Margin="4 0 0 0" VerticalAlignment="Top"/>
+              <mui:ReferenceSwitch Value="{TemplateBinding Content}">
+                <mui:ReferenceSwitch.Null>
+                  <DockPanel x:Name="PART_Panel"/>
+                </mui:ReferenceSwitch.Null>
+                <mui:ReferenceSwitch.NonNull>
+                  <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                </mui:ReferenceSwitch.NonNull>
+              </mui:ReferenceSwitch>
+            </DockPanel>
+          </mui:Cell>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^ /template/ Button#PART_CloseButton"><Setter Property="Content" Value="{Binding CloseButtonContent, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[Closed=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:MessageBlock"/>
+          </Setter.Value>
+        </Setter>
+      </Style><Style Selector="^[CloseKey=null] /template/ Button#PART_CloseButton"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[CloseButtonContent=null] /template/ Button#PART_CloseButton"><Setter Property="Width" Value="13"/>
+              <Setter Property="Height" Value="13"/>
+              <Setter Property="Padding" Value="2"/>
+              <Setter Property="Content" Value="{StaticResource CloseButtonContent}"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

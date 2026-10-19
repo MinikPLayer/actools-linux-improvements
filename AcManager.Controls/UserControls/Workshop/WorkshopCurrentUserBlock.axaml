@@ -1,0 +1,25 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:ws="http://acstuff.club/app/workshop" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.Workshop.WorkshopCurrentUserBlock">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <DockPanel Background="Transparent" DataContext="{Binding Source={x:Static ws:WorkshopHolder.Model}}" IsVisible="{Binding AuthorizedAs, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+    <mui:ContextMenuButton DockPanel.Dock="Right" Padding="4 0 0 0" VerticalAlignment="Center">
+      <ContextMenu>
+        <MenuItem Header="Edit profile" Command="mui:BbCodeBlock.LinkCommand" CommandParameter="cmd://workshop/editUserProfile"/>
+        <MenuItem Header="Log out" Command="{Binding LogOutCommand}"/>
+      </ContextMenu>
+    </mui:ContextMenuButton>
+    <mui:BetterImage Width="40" Height="40" Source="{Binding AuthorizedAs.AvatarSmall}" Margin="0 0 8 0"/>
+    <StackPanel VerticalAlignment="Center">
+      <mui:PlaceholderTextBlock Text="{Binding AuthorizedAs.Username}" Placeholder="Login"/>
+      <mui:PlaceholderTextBlock Text="{Binding AuthorizedAs.Name}" Placeholder="Name is not set" Classes="Small"/>
+    </StackPanel>
+  </DockPanel>
+</UserControl>

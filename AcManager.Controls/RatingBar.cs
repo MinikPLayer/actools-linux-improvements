@@ -8,10 +8,9 @@ using AcTools.Utils;
 namespace AcManager.Controls {
     public class RatingBar : Control {
         static RatingBar() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RatingBar), new FrameworkPropertyMetadata(typeof(RatingBar)));
         }
 
-        public static readonly DependencyProperty ActiveBrushProperty = DependencyProperty.Register(nameof(ActiveBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> ActiveBrushProperty = DP.Register<Brush>(nameof(ActiveBrush),
                 typeof(RatingBar));
 
         public Brush ActiveBrush {
@@ -19,7 +18,7 @@ namespace AcManager.Controls {
             set => SetValue(ActiveBrushProperty, value);
         }
 
-        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data), typeof(PathData),
+        public static readonly StyledProperty<PathData> DataProperty = DP.Register<PathData>(nameof(Data),
                 typeof(RatingBar));
 
         public PathData Data {
@@ -27,7 +26,7 @@ namespace AcManager.Controls {
             set => SetValue(DataProperty, value);
         }
 
-        public static readonly DependencyProperty RatingProperty = DependencyProperty.Register(nameof(Rating), typeof(double),
+        public static readonly StyledProperty<double> RatingProperty = DP.Register<double>(nameof(Rating),
                 typeof(RatingBar), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double Rating {
@@ -35,7 +34,7 @@ namespace AcManager.Controls {
             set => SetValue(RatingProperty, value);
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly), typeof(bool),
+        public static readonly StyledProperty<bool> IsReadOnlyProperty = DP.Register<bool>(nameof(IsReadOnly),
                 typeof(RatingBar));
 
         public bool IsReadOnly {
@@ -49,13 +48,13 @@ namespace AcManager.Controls {
             Focus();
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e) {
-            base.OnMouseDown(e);
+        protected override void OnPointerPressed(PointerPressedEventArgs e) {
+            base.OnPointerPressed(e);
             Update(e);
         }
 
-        protected override void OnMouseMove(MouseEventArgs e) {
-            base.OnMouseMove(e);
+        protected override void OnPointerMoved(PointerEventArgs e) {
+            base.OnPointerMoved(e);
             if (e.LeftButton == MouseButtonState.Pressed) {
                 Update(e);
             }

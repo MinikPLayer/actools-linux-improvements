@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using Path = System.IO.Path;
 
 namespace AcManager.Controls.Dialogs {
-    public partial class VideoViewer {
+    public partial class VideoViewer : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public VideoViewer([NotNull] string filename, string title = null) {
             if (filename == null) throw new ArgumentNullException(nameof(filename));
 

@@ -1,0 +1,79 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="using:System" xmlns:con="clr-namespace:AcManager.Controls.Converters" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:controls="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/DataGrid.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Brush x:Key="DarkenPanel">#99000000</Brush>
+  <Brush x:Key="Completed">GreenYellow</Brush>
+
+  <VisualBrush x:Key="UltimateAnimated">
+    <VisualBrush.Visual>
+      <Ellipse Fill="Aqua" Width="8" Height="8">
+        <Ellipse.Triggers>
+          <!-- PORT: removed EventTrigger -->
+        </Ellipse.Triggers>
+      </Ellipse>
+    </VisualBrush.Visual>
+  </VisualBrush>
+
+  <VisualBrush x:Key="UltimateBrush">
+    <VisualBrush.Visual>
+      <Canvas Width="8" Height="8">
+        <Rectangle Fill="{DynamicResource GoldBrush}" Width="8" Height="8"/>
+        <Rectangle Fill="OliveDrab" Margin="0 4 0 0" Width="8" Height="4"/>
+        <Path Fill="{DynamicResource GoldBrush}" Width="8" Height="8">
+          <Path.Data>
+            <PathGeometry>
+              <PathGeometry.Figures>
+                <PathFigureCollection>
+                  <PathFigure StartPoint="0,4">
+                    <PathFigure.Segments>
+                      <PathSegmentCollection>
+                        <ArcSegment Size="8,8" RotationAngle="0" IsLargeArc="False" SweepDirection="CounterClockwise" Point="8,4"/>
+                      </PathSegmentCollection>
+                    </PathFigure.Segments>
+                  </PathFigure>
+                </PathFigureCollection>
+              </PathGeometry.Figures>
+            </PathGeometry>
+          </Path.Data>
+        </Path>
+      </Canvas>
+    </VisualBrush.Visual>
+  </VisualBrush>
+
+  <VisualBrush x:Key="UltimateBrushEllipse">
+    <VisualBrush.Visual>
+      <Canvas Width="8" Height="8">
+        <Rectangle Fill="DarkOliveGreen" Width="8" Height="8"/>
+        <Ellipse Fill="{DynamicResource GoldBrush}" Width="5" Height="7" Margin="1.5 -2 1.5 3"/>
+      </Canvas>
+    </VisualBrush.Visual>
+  </VisualBrush>
+
+  <sys:Double x:Key="TileSize">160</sys:Double>
+
+  <con:PlaceToBrushConverter x:Key="PlaceToColorConverter" FirstPlaceBrush="{DynamicResource GoldBrush}" SecondPlaceBrush="{DynamicResource SilverBrush}" ThirdPlaceBrush="{DynamicResource BronzeBrush}" DefaultBrush="Transparent"/>
+  <con:KunosCareerTypeToIconConverter x:Key="KunosCareerTypeToIconConverter" ChampionshipIconData="{StaticResource LeaderboardIconData}" SingleEventsIconData="{StaticResource ListCheckIconData}"/>
+
+  <DataTemplate x:Key="DataGridCell.DriverName" DataType="{x:Type t:KunosCareerObject+ChampionshipDriverEntry}">
+    <DockPanel HorizontalAlignment="Left" x:Name="__Dt0">
+      <DockPanel.Styles><Style Selector="#__Dt0"><Style Selector="^ #Ellipse"><Setter Property="IsVisible" Value="{Binding TakenPlacePrizePlace, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsPlayer, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Path=Fill.(SolidColorBrush.Color).A, ElementName=Ellipse, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True] #NameTextBlock"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style><Style Selector="^[(pa|T.S2)=True] #Ellipse"><Setter Property="IsVisible" Value="False"/>
+      </Style></Style></DockPanel.Styles><Ellipse x:Name="Ellipse" DockPanel.Dock="Right" Margin="6 1 4 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
+      <TextBlock Text="{Binding Name}" x:Name="NameTextBlock" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+    </DockPanel>
+    </DataTemplate>
+
+  <DataTemplate x:Key="DataGridCell.Car" DataType="{x:Type t:KunosCareerObject+ChampionshipDriverEntry}">
+    <StackPanel Orientation="Horizontal" controls:ToolTips.Car="{Binding Car}">
+      <mui:BetterImage Width="16" Height="16" Margin="0 2 6 2" Filename="{Binding CarSkin.LiveryImage}" ClearOnChange="True"/>
+      <TextBlock Text="{Binding Car.DisplayName}" VerticalAlignment="Center"/>
+    </StackPanel>
+  </DataTemplate>
+
+  </ResourceDictionary>

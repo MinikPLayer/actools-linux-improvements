@@ -70,7 +70,7 @@ namespace AcManager.Controls.Video {
             _player.Pause();
         }
 
-        public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register(nameof(AutoPlay), typeof(bool),
+        public static readonly StyledProperty<bool> AutoPlayProperty = DP.Register<bool>(nameof(AutoPlay),
                 typeof(VideoPlayer));
 
         public bool AutoPlay {
@@ -78,7 +78,7 @@ namespace AcManager.Controls.Video {
             set => SetValue(AutoPlayProperty, value);
         }
 
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(VideoPlayer),
+        public static readonly StyledProperty<Stretch> StretchProperty = DP.Register<Stretch>(nameof(Stretch), typeof(VideoPlayer),
                 new PropertyMetadata(Stretch.Uniform, OnStretchChanged));
 
         public Stretch Stretch {
@@ -94,7 +94,7 @@ namespace AcManager.Controls.Video {
             _player.Stretch = newValue;
         }
 
-        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(nameof(Source), typeof(Uri), typeof(VideoPlayer),
+        public static readonly StyledProperty<Uri> SourceProperty = DP.Register<Uri>(nameof(Source), typeof(VideoPlayer),
                 new PropertyMetadata(OnSourceChanged));
 
         public Uri Source {
@@ -110,7 +110,7 @@ namespace AcManager.Controls.Video {
             _player.Source = newValue == null || !File.Exists(newValue.OriginalString) ? null : newValue;
         }
 
-        public static readonly DependencyProperty IsLoopedProperty = DependencyProperty.Register(nameof(IsLooped), typeof(bool), typeof(VideoPlayer),
+        public static readonly StyledProperty<bool> IsLoopedProperty = DP.Register<bool>(nameof(IsLooped), typeof(VideoPlayer),
                 new PropertyMetadata(false, OnIsLoopedChanged));
 
         public bool IsLooped {
@@ -126,7 +126,7 @@ namespace AcManager.Controls.Video {
             _player.IsLooped = newValue;
         }
 
-        public static readonly DependencyProperty VolumeProperty = DependencyProperty.Register(nameof(Volume), typeof(double), typeof(VideoPlayer),
+        public static readonly StyledProperty<double> VolumeProperty = DP.Register<double>(nameof(Volume), typeof(VideoPlayer),
                 new PropertyMetadata(1d, OnVolumeChanged));
 
         public double Volume {

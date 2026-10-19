@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcObjectBase.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcObjectErrorsSection.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcObjectHeaderSection.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcObjectListBox.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/AcToolBar.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/BestLapsList.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/CarBlock.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/GraphDataViewer.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/FavouriteButton.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/FontIconImage.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/MessageBlock.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/RaceGridEditorTable.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/TemperatureValueLabel.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/TrackBlock.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Themes/UserPresetsControl.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

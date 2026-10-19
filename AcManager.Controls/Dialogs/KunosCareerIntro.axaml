@@ -1,0 +1,65 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.KunosCareerIntro" KeyUp="OnKeyUp" PointerReleased="OnMouseUp">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/FullscreenDialog.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.Style>
+    <ControlTheme TargetType="mui:ModernDialog" x:Key="{x:Type mui:ModernDialog}">
+      <Setter Property="BackgroundContent" Value="{x:Null}"/>
+    <Setter Property="Background" Value="#dd151515"/>
+    <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+    <Setter Property="MaxHeight" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+    <Setter Property="WindowState" Value="Maximized"/>
+    <Setter Property="SizeToContent" Value="Manual"/>
+    <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="mui:ModernDialog">
+            <Grid Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static sw:SystemParameters.WindowNonClientFrameThickness}}">
+              <Panel>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="{StaticResource FullscreenDialog.ButtonGridLength}"/>
+                  </Grid.ColumnDefinitions>
+
+                  <!-- content -->
+                  <mui:TransitioningContentControl Margin="0" Grid.Column="0" Grid.ColumnSpan="2" Content="{TemplateBinding Content}"/>
+
+                  <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="{StaticResource FullscreenDialog.ButtonGridLength}"/>
+                      <RowDefinition/>
+                      <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Height="{StaticResource FullscreenDialog.ButtonSize}" Click="OnCloseButtonClick" Theme="{StaticResource FullscreenDialogButton}">
+                      <Path Data="{StaticResource CheckIconData}"/>
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Panel>
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    <Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
+      </Style></ControlTheme>
+  </mui:ModernDialog.Style>
+
+  <mui:Cell>
+    <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1240" Height="560">
+      <mui:BetterImage Filename="{Binding CareerObject.PreviewImage}" Stretch="UniformToFill" IsVisible="{Binding CareerObject.StartImage, Converter={StaticResource ExistToVisibilityConverter}, ConverterParameter=inverse}">
+        <mui:BetterImage.Effect>
+          <BlurEffect Radius="160" RenderingBias="Performance" KernelType="Gaussian"/>
+        </mui:BetterImage.Effect>
+      </mui:BetterImage>
+      <mui:BetterImage Filename="{Binding CareerObject.StartImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="1240" Height="560" ShowBroken="False"/>
+    </mui:Cell>
+    <TextBlock HorizontalAlignment="Right" Margin="200" Width="400" Padding="60" Foreground="Black" Background="#ddffffff" Text="{Binding CareerObject.Description}" TextWrapping="Wrap" FontSize="15"/>
+  </mui:Cell>
+</mui:ModernDialog>

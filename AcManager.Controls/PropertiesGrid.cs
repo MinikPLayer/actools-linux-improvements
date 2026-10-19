@@ -7,16 +7,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using AcTools.Utils;
 using FirstFloor.ModernUI.Windows.Attached;
-using FlowDirection = System.Windows.FlowDirection;
-using Panel = System.Windows.Controls.Panel;
 
 namespace AcManager.Controls {
     public class PropertiesGrid : Panel {
         static PropertiesGrid() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PropertiesGrid), new FrameworkPropertyMetadata(typeof(PropertiesGrid)));
         }
 
-        public static readonly DependencyProperty FirstColumnProperty = DependencyProperty.Register(nameof(FirstColumn), typeof(int), typeof(PropertiesGrid),
+        public static readonly StyledProperty<int> FirstColumnProperty = DP.Register<int>(nameof(FirstColumn), typeof(PropertiesGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int FirstColumn {
@@ -24,7 +21,7 @@ namespace AcManager.Controls {
             set => SetValue(FirstColumnProperty, value);
         }
 
-        public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(nameof(Columns), typeof(int), typeof(PropertiesGrid),
+        public static readonly StyledProperty<int> ColumnsProperty = DP.Register<int>(nameof(Columns), typeof(PropertiesGrid),
                 new FrameworkPropertyMetadata(2, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public int Columns {
@@ -32,7 +29,7 @@ namespace AcManager.Controls {
             set => SetValue(ColumnsProperty, value);
         }
 
-        public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(nameof(Rows), typeof(int),
+        public static readonly StyledProperty<int> RowsProperty = DP.Register<int>(nameof(Rows),
                 typeof(PropertiesGrid));
 
         public int Rows {
@@ -40,15 +37,14 @@ namespace AcManager.Controls {
             set => SetValue(RowsProperty, value);
         }
 
-        public static readonly DependencyProperty WithoutMarginForEmptyLabelsProperty = DependencyProperty.Register(nameof(WithoutMarginForEmptyLabels),
-                typeof(bool), typeof(PropertiesGrid), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly StyledProperty<bool> WithoutMarginForEmptyLabelsProperty = DP.Register<bool>(nameof(WithoutMarginForEmptyLabels), typeof(PropertiesGrid), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public bool WithoutMarginForEmptyLabels {
             get => GetValue(WithoutMarginForEmptyLabelsProperty) as bool? ?? false;
             set => SetValue(WithoutMarginForEmptyLabelsProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(nameof(HorizontalSpacing), typeof(double),
+        public static readonly StyledProperty<double> HorizontalSpacingProperty = DP.Register<double>(nameof(HorizontalSpacing),
                 typeof(PropertiesGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double HorizontalSpacing {
@@ -56,7 +52,7 @@ namespace AcManager.Controls {
             set => SetValue(HorizontalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(nameof(VerticalSpacing), typeof(double),
+        public static readonly StyledProperty<double> VerticalSpacingProperty = DP.Register<double>(nameof(VerticalSpacing),
                 typeof(PropertiesGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double VerticalSpacing {
@@ -64,7 +60,7 @@ namespace AcManager.Controls {
             set => SetValue(VerticalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty LabelWidthProperty = DependencyProperty.Register(nameof(LabelWidth), typeof(double), typeof(PropertiesGrid),
+        public static readonly StyledProperty<double> LabelWidthProperty = DP.Register<double>(nameof(LabelWidth), typeof(PropertiesGrid),
                 new FrameworkPropertyMetadata(80d, FrameworkPropertyMetadataOptions.AffectsMeasure | FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public double LabelWidth {
@@ -72,7 +68,7 @@ namespace AcManager.Controls {
             set => SetValue(LabelWidthProperty, value);
         }
 
-        public static readonly DependencyProperty LabelFontFamilyProperty = DependencyProperty.Register(nameof(LabelFontFamily), typeof(FontFamily),
+        public static readonly StyledProperty<FontFamily> LabelFontFamilyProperty = DP.Register<FontFamily>(nameof(LabelFontFamily),
                 typeof(PropertiesGrid));
 
         public FontFamily LabelFontFamily {
@@ -80,7 +76,7 @@ namespace AcManager.Controls {
             set => SetValue(LabelFontFamilyProperty, value);
         }
 
-        public static readonly DependencyProperty LabelFontWeightProperty = DependencyProperty.Register(nameof(LabelFontWeight), typeof(FontWeight),
+        public static readonly StyledProperty<FontWeight> LabelFontWeightProperty = DP.Register<FontWeight>(nameof(LabelFontWeight),
                 typeof(PropertiesGrid));
 
         public FontWeight LabelFontWeight {
@@ -88,7 +84,7 @@ namespace AcManager.Controls {
             set => SetValue(LabelFontWeightProperty, value);
         }
 
-        public static readonly DependencyProperty LabelPaddingProperty = DependencyProperty.Register(nameof(LabelPadding), typeof(Thickness),
+        public static readonly StyledProperty<Thickness> LabelPaddingProperty = DP.Register<Thickness>(nameof(LabelPadding),
                 typeof(PropertiesGrid));
 
         public Thickness LabelPadding {
@@ -104,7 +100,7 @@ namespace AcManager.Controls {
             obj.SetValue(LabelProperty, value);
         }
 
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.RegisterAttached("Label", typeof(string),
+        public static readonly AttachedProperty<string> LabelProperty = DP.RegisterAttached<string>("Label",
                 typeof(PropertiesGrid), new FrameworkPropertyMetadata(OnLabelChanged));
 
         private static void OnLabelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -120,8 +116,8 @@ namespace AcManager.Controls {
         public PropertiesGrid() {
             Background = new SolidColorBrush(Colors.Transparent);
             ToolTip = _toolTip = new ToolTip { Visibility = Visibility.Hidden };
-            PreviewMouseRightButtonDown += OnPreviewMouseRightButtonDown;
-            PreviewMouseMove += OnMouseMove;
+            this.AddPreviewMouseRightButtonDown(OnPreviewMouseRightButtonDown);
+            this.AddPreviewMouseMove(OnMouseMove);
         }
 
         private int GetChildId(MouseEventArgs e, out double relx) {
@@ -152,7 +148,7 @@ namespace AcManager.Controls {
 
             _id = id;
 
-            var child = InternalChildren.OfType<FrameworkElement>().ElementAtOrDefault(id);
+            var child = Children.OfType<FrameworkElement>().ElementAtOrDefault(id);
             var childToolTip = child?.ToolTip;
 
             /* if (ReferenceEquals(_toolTipDonor, child)) return;
@@ -195,7 +191,7 @@ namespace AcManager.Controls {
 
         private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
             double relx;
-            var child = InternalChildren.OfType<FrameworkElement>().ElementAtOrDefault(GetChildId(e, out relx));
+            var child = Children.OfType<FrameworkElement>().ElementAtOrDefault(GetChildId(e, out relx));
             var menu = child?.ContextMenu;
             if (menu != null) {
                 if (relx < _labelWidth) {
@@ -225,8 +221,8 @@ namespace AcManager.Controls {
             InvalidateVisual();
         }*/
 
-        protected override void OnRender(DrawingContext dc) {
-            base.OnRender(dc);
+        public override void Render(DrawingContext dc) {
+            base.Render(dc);
 
             var y = 0.0;
             for (int i = 0, c = 0; i < _labels.Length; i++, c++) {
@@ -254,7 +250,7 @@ namespace AcManager.Controls {
                 _labelElements = new UIElement[_nonCollapsedCount];
             }
 
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, j = 0, count = children.Count; i < count; ++i) {
                 var child = children[i];
                 if (child.Visibility != Visibility.Collapsed) {
@@ -286,8 +282,8 @@ namespace AcManager.Controls {
             var nonCollapsedCount = 0;
 
             if (_rows == 0 || _columns == 0) {
-                for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                    var child = InternalChildren[i];
+                for (int i = 0, count = Children.Count; i < count; ++i) {
+                    var child = Children[i];
                     if (child.Visibility != Visibility.Collapsed) {
                         nonCollapsedCount++;
                     }
@@ -311,8 +307,8 @@ namespace AcManager.Controls {
                     _columns = (nonCollapsedCount + (_rows - 1)) / _rows;
                 }
             } else {
-                for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                    var child = InternalChildren[i];
+                for (int i = 0, count = Children.Count; i < count; ++i) {
+                    var child = Children[i];
                     if (child.Visibility != Visibility.Collapsed) {
                         nonCollapsedCount++;
                     }
@@ -343,8 +339,8 @@ namespace AcManager.Controls {
             var maxChildDesiredWidth = 0d;
             var maxChildDesiredHeight = 0d;
 
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                var child = InternalChildren[i];
+            for (int i = 0, count = Children.Count; i < count; ++i) {
+                var child = Children[i];
                 var noLabel = _withoutMarginForEmptyLabels && _labels[i] == null;
                 child.Measure(noLabel ? childConstraintNoLabel : childConstraint);
                 var childDesiredSize = child.DesiredSize;
@@ -381,8 +377,8 @@ namespace AcManager.Controls {
             _xStep += _horizontalSpacing;
             _yStep += _verticalSpacing;
 
-            for (var i = 0; i < InternalChildren.Count; i++) {
-                var child = InternalChildren[i];
+            for (var i = 0; i < Children.Count; i++) {
+                var child = Children[i];
                 var noLabel = _withoutMarginForEmptyLabels && _labels[i] == null;
 
                 var delta = childBounds.Height - child.DesiredSize.Height;

@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ModernUI.Dark.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Color x:Key="ErrorColor">#FF4400</Color>
+  <Color x:Key="GoColor">GreenYellow</Color>
+  <Color x:Key="ThumbnailBackgroundColor">Black</Color>
+
+  <!--<Color x:Key="WindowBackgroundColor">#262626</Color>-->
+  <!--<ImageBrush Opacity=".2" ImageSource="/AcManager.Controls;component/Assets/Background.jpg" Stretch="UniformToFill"
+      AlignmentX="Center" AlignmentY="Center" />-->
+  <!--<SolidColorBrush x:Key="DialogBackgroundContentBrush" Color="#262626" />-->
+  <VisualBrush x:Key="WindowBackgroundContentBrush" TileMode="None" Stretch="UniformToFill" AlignmentX="Center" AlignmentY="Center">
+    <VisualBrush.Visual>
+      <Border Background="#060606">
+        <Image Opacity="0.2" Width="960" Height="720" Source="avares://AcManager.Controls/Assets/Background.jpg"/>
+      </Border>
+    </VisualBrush.Visual>
+  </VisualBrush>
+
+  <DropShadowEffect x:Key="GameLoadingAnimationEffect" Color="{DynamicResource AccentColor}" BlurRadius="40" Opacity="0.8" OffsetX="0" OffsetY="-0"/>
+</ResourceDictionary>

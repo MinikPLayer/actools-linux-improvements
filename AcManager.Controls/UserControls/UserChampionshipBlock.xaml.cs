@@ -5,7 +5,7 @@ using AcManager.Controls.Dialogs;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Controls.UserControls {
-    public partial class UserChampionshipBlock {
+    public partial class UserChampionshipBlock : global::Avalonia.Controls.UserControl {
         public UserChampionshipBlock() {
             InitializeComponent();
         }

@@ -30,7 +30,7 @@ namespace AcManager.Controls {
     public class WeatherComboBox : HierarchicalComboBox {
         public static AcEnabledOnlyCollection<WeatherObject> WeatherList { get; } = WeatherManager.Instance.Enabled;
 
-        public static readonly DependencyProperty UseWeatherFXProperty = DependencyProperty.Register(nameof(UseWeatherFX), typeof(bool),
+        public static readonly StyledProperty<bool> UseWeatherFXProperty = DP.Register<bool>(nameof(UseWeatherFX),
                 typeof(WeatherComboBox), new PropertyMetadata(false, (o, e) => {
                     ((WeatherComboBox)o)._useWeatherFX = (bool)e.NewValue;
                 }));
@@ -42,7 +42,7 @@ namespace AcManager.Controls {
             set => SetValue(UseWeatherFXProperty, value);
         }
 
-        public static readonly DependencyProperty TimeProperty = DependencyProperty.Register(nameof(Time), typeof(int?),
+        public static readonly StyledProperty<int?> TimeProperty = DP.Register<int?>(nameof(Time),
                 typeof(WeatherComboBox), new PropertyMetadata(null, (o, e) => {
                     var w = (WeatherComboBox)o;
                     w._time = (int?)e.NewValue;
@@ -56,7 +56,7 @@ namespace AcManager.Controls {
             set => SetValue(TimeProperty, value);
         }
 
-        public static readonly DependencyProperty TemperatureProperty = DependencyProperty.Register(nameof(Temperature), typeof(double?),
+        public static readonly StyledProperty<double?> TemperatureProperty = DP.Register<double?>(nameof(Temperature),
                 typeof(WeatherComboBox), new PropertyMetadata(null, (o, e) => {
                     var w = (WeatherComboBox)o;
                     w._temperature = (double?)e.NewValue;
@@ -114,7 +114,7 @@ namespace AcManager.Controls {
             WeatherChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public static readonly DependencyProperty SelectedWeatherProperty = DependencyProperty.Register(nameof(SelectedWeather), typeof(WeatherObject),
+        public static readonly StyledProperty<WeatherObject> SelectedWeatherProperty = DP.Register<WeatherObject>(nameof(SelectedWeather),
                 typeof(WeatherComboBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedWeatherChanged));
 
         public WeatherObject SelectedWeather {
@@ -130,7 +130,7 @@ namespace AcManager.Controls {
             _busy.Do(() => SelectedItem = newValue);
         }
 
-        public static readonly DependencyProperty AllowRandomWeatherProperty = DependencyProperty.Register(nameof(AllowRandomWeather), typeof(bool),
+        public static readonly StyledProperty<bool> AllowRandomWeatherProperty = DP.Register<bool>(nameof(AllowRandomWeather),
                 typeof(WeatherComboBox), new PropertyMetadata(false, (o, e) => {
                     var c = (WeatherComboBox)o;
                     c._allowRandomWeather = (bool)e.NewValue;
@@ -144,7 +144,7 @@ namespace AcManager.Controls {
             set => SetValue(AllowRandomWeatherProperty, value);
         }
 
-        public static readonly DependencyProperty AllowWeatherByTypeProperty = DependencyProperty.Register(nameof(AllowWeatherByType), typeof(bool),
+        public static readonly StyledProperty<bool> AllowWeatherByTypeProperty = DP.Register<bool>(nameof(AllowWeatherByType),
                 typeof(WeatherComboBox), new PropertyMetadata(false, (o, e) => {
                     var c = (WeatherComboBox)o;
                     c._allowWeatherByType = (bool)e.NewValue;
@@ -393,11 +393,11 @@ namespace AcManager.Controls {
                                             ? @"PythonAppConfig.Compact.InlineSingle" : @"PythonAppConfig.Compact.Inline"],
                                     Content = item.ControllerRef.Config
                                 };
-                                editor.MouseUp += (sender, args) => {
+                                editor.AddMouseUp((sender, args) => {
                                     if (args.ChangedButton == MouseButton.Left) {
                                         args.Handled = true;
                                     }
-                                };
+                                });
                                 editor.SetResourceReference(TextBlock.ForegroundProperty, "WindowText");
                             
                                 var menuItem = new MenuItem {
@@ -429,14 +429,14 @@ namespace AcManager.Controls {
                                         SelectedItem = item;
                                     }
                                 };
-                                menuItem.PreviewMouseDown += (sender, args) => {
+                                menuItem.AddPreviewMouseDown((sender, args) => {
                                     var selected = (MenuItem)sender;
                                     SelectedItem = item;
                                     item.RefreshName();
                                     if (selected.FindVisualChild<Popup>()?.IsOpen != true) {
                                         if (this.FindVisualChild<Popup>() is Popup p) p.IsOpen = false;
                                     }
-                                };
+                                });
                                 
                                 list.Add(menuItem);
                             } else {

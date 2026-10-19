@@ -10,6 +10,7 @@
     <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
     <Setter Property="BorderThickness" Value="1"/>
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
     <Setter Property="Padding" Value="0 6 0 6"/>
     <Setter Property="MinWidth" Value="150"/>
     <Setter Property="Grid.IsSharedSizeScope" Value="True"/>

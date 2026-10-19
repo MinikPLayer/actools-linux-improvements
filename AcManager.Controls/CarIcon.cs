@@ -24,7 +24,7 @@ namespace AcManager.Controls {
             }
         }
 
-        public static readonly DependencyProperty CarProperty = DependencyProperty.Register(nameof(Car), typeof(CarObject),
+        public static readonly StyledProperty<CarObject> CarProperty = DP.Register<CarObject>(nameof(Car),
                 typeof(CarIcon), new PropertyMetadata(OnCarChanged));
 
         public CarObject Car {

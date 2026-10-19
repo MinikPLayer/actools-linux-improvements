@@ -7,7 +7,7 @@ using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls.UserControls {
-    public partial class DynamicBackground : IDisposable {
+    public partial class DynamicBackground : global::FirstFloor.ModernUI.Windows.Controls.Cell, IDisposable {
         public static bool OptionUseVlc = false;
 
         [NotNull]
@@ -28,7 +28,7 @@ namespace AcManager.Controls.UserControls {
             ShowVideo();
         }
 
-        public static readonly DependencyProperty StaticProperty = DependencyProperty.Register(nameof(Static), typeof(string),
+        public static readonly StyledProperty<string> StaticProperty = DP.Register<string>(nameof(Static),
                 typeof(DynamicBackground));
 
         [CanBeNull]
@@ -37,7 +37,7 @@ namespace AcManager.Controls.UserControls {
             set { SetValue(StaticProperty, value); }
         }
 
-        public static readonly DependencyProperty AnimatedProperty = DependencyProperty.Register(nameof(Animated), typeof(string),
+        public static readonly StyledProperty<string> AnimatedProperty = DP.Register<string>(nameof(Animated),
                 typeof(DynamicBackground), new PropertyMetadata(OnAnimatedChanged));
 
         [CanBeNull]

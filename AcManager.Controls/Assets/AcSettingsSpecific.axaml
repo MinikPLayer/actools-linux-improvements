@@ -1,0 +1,742 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:acs="clr-namespace:AcManager.Tools.Helpers.AcSettingsControls;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:acset="clr-namespace:AcManager.Tools.Helpers.AcSettings;assembly=AcManager.Tools" xmlns:t="http://acstuff.club/app/tools" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:helpers="clr-namespace:AcManager.Controls.Helpers" xmlns:se="clr-namespace:AcManager.Controls.Services" xmlns:system="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ValueLabel.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ItemsPanelTemplate x:Key="OneColumnPanel">
+    <UniformGrid Columns="1"/>
+  </ItemsPanelTemplate>
+
+  <ItemsPanelTemplate x:Key="TwoColumnsPanel">
+    <UniformGrid Columns="2" Tag="TwoColumnsGrid"/>
+  </ItemsPanelTemplate>
+
+  <DataTemplate x:Key="AxisEntryTemplate" DataType="{x:Type acs:WheelAxleEntry}">
+    <DockPanel Margin="0 0 0 20" Background="Transparent">
+      <DockPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+        </ContextMenu>
+      </DockPanel.ContextMenu>
+
+      <mui:BooleanSwitch DockPanel.Dock="Bottom" Value="{Binding RangeMode}" IsVisible="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+        <mui:BooleanSwitch.True>
+          <mui:Cell>
+            <Rectangle Fill="{DynamicResource ButtonBackground}" Stroke="{DynamicResource ButtonBorder}" StrokeThickness="1"/>
+            <Rectangle Fill="{DynamicResource Accent}" Height="4" Margin="2" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+              <Rectangle.RenderTransform>
+                <ScaleTransform ScaleY="1" ScaleX="{Binding Value}"/>
+              </Rectangle.RenderTransform>
+            </Rectangle>
+          </mui:Cell>
+        </mui:BooleanSwitch.True>
+        <mui:BooleanSwitch.False>
+          <mui:Cell>
+            <Rectangle Margin="2 0 10 0" x:Name="Helper"/>
+            <Rectangle Fill="{DynamicResource ButtonBackground}" Stroke="{DynamicResource ButtonBorder}" StrokeThickness="1"/>
+            <Rectangle Fill="{DynamicResource Accent}" Height="4" Width="8" Margin="2" HorizontalAlignment="Left" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+              <Rectangle.RenderTransform>
+                <TranslateTransform Y="0">
+                  <TranslateTransform.X>
+                    <MultiBinding Converter="{StaticResource MultiMultiplyConverter}">
+                      <Binding Path="Value"/>
+                      <Binding ElementName="Helper" Path="ActualWidth"/>
+                    </MultiBinding>
+                  </TranslateTransform.X>
+                </TranslateTransform>
+              </Rectangle.RenderTransform>
+            </Rectangle>
+          </mui:Cell>
+        </mui:BooleanSwitch.False>
+      </mui:BooleanSwitch>
+
+      <DockPanel Margin="0 0 0 4" VerticalAlignment="Top" Width="200" DockPanel.Dock="Left">
+        <TextBlock Text="{Binding DisplayName}" Margin="0 -8 0 2" DockPanel.Dock="Top" Classes="Heading1"/>
+        <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Classes="WaitingButton">
+
+          <Grid HorizontalAlignment="Left">
+            <Grid IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+              <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+              <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" x:Name="ProviderName" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+              <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            </Grid>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontWeight="Normal" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+          </Grid>
+        </Button>
+      </DockPanel>
+
+      <StackPanel Margin="16 4 0 0" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <CheckBox IsChecked="{Binding Invert}" Margin="0 0 0 4">
+          <Label Content="{x:Static c:ControlsStrings.Controls_InvertAxis}"/>
+        </CheckBox>
+
+        <mui:BooleanSwitch Value="{Binding RangeMode}">
+          <mui:BooleanSwitch.True>
+            <StackPanel>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding RangeFrom}" mui:BetterTextBox.Mode="Integer" Postfix="%" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_RangeFromAxis}"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding RangeFrom}"/>
+              </DockPanel>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding RangeTo}" mui:BetterTextBox.Mode="Integer" Postfix="%" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_RangeToAxis}"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding RangeTo}"/>
+              </DockPanel>
+              <DockPanel Margin="0 0 0 4" IsVisible="{Binding GammaMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="120">
+                  <mui:ValueLabel Value="{Binding Gamma, StringFormat='{}{0:F2}'}" mui:BetterTextBox.Mode="Number" VerticalAlignment="Center" Padding="0" Content="{x:Static c:ControlsStrings.Controls_GammaAxis}"/>
+                  <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="4 0 0 0" VerticalAlignment="Center" ToolTip.Tip="With newer steering wheels with load cells for brakes, gamma should be set to 100%" IsVisible="{Binding ShowGammaWarning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </StackPanel>
+                <Slider Minimum="1" Maximum="5" Value="{Binding Gamma}"/>
+              </DockPanel>
+            </StackPanel>
+          </mui:BooleanSwitch.True>
+          <mui:BooleanSwitch.False>
+            <StackPanel>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding DegreesOfRotation}" mui:BetterTextBox.Mode="Positive" Postfix="°" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_DegreesLabel}"/>
+                <Slider Minimum="40" Maximum="1180" Value="{Binding DegreesOfRotation}" TickFrequency="20" TickPlacement="None" IsSnapToTickEnabled="True"/>
+              </DockPanel>
+              <DockPanel Margin="0 0 0 4" IsVisible="{Binding GammaMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <mui:ValueLabel Value="{Binding Gamma, StringFormat='{}{0:F2}'}" mui:BetterTextBox.Mode="Number" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_GammaAxis}"/>
+                <Slider Minimum="1" Maximum="5" Value="{Binding Gamma}"/>
+              </DockPanel>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding Scale}" mui:BetterTextBox.Mode="Integer" Postfix="%" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="Scale"/>
+                <Slider Minimum="0" Maximum="1">
+                  <Slider.Value>
+                    <Binding Path="Scale">
+                      <Binding.Converter>
+                        <mui:LogarithmicScale Minimum="10" Middle="100" Maximum="500"/>
+                      </Binding.Converter>
+                    </Binding>
+                  </Slider.Value>
+                </Slider>
+              </DockPanel>
+              <CheckBox IsChecked="{Binding WheelSteerScaleAutoAdjust, Source={x:Static acset:AcSettingsHolder.Controls}}" Margin="0 0 0 8">
+                <ToolTip.Tip>
+                  <mui:BbCodeBlock MaxWidth="480" Text="With this option enabled, Content Manager will adjust [mono]STEER/SCALE[/mono] value to ensure virtual steering wheel is in sync with the controller.[br][br]The only drawback: turning radius will increase, since you won’t be able to put virtual steering wheel to angles beyond your steering wheel’s capacity."/>
+                </ToolTip.Tip>
+                <Label Content="Auto-adjust scale to match car’s steer lock"/>
+              </CheckBox>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding Filter}" mui:BetterTextBox.Mode="Integer" Postfix="%" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_FilterAxis}"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding Filter}"/>
+              </DockPanel>
+              <DockPanel Margin="0 0 0 4">
+                <mui:ValueLabel Value="{Binding SpeedSensitivity}" mui:BetterTextBox.Mode="Integer" Postfix="%" VerticalAlignment="Center" Padding="0" Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Controls_SpeedSensitivity}"/>
+                <Slider Minimum="0" Maximum="100" Value="{Binding SpeedSensitivity}"/>
+              </DockPanel>
+            </StackPanel>
+          </mui:BooleanSwitch.False>
+        </mui:BooleanSwitch>
+      </StackPanel>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="ButtonEntryTemplate" DataType="{x:Type acs:WheelButtonCombined}">
+    <Grid Margin="0 0 0 4" Background="Transparent">
+      <Grid.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearWheelBinding}" Command="{Binding WheelButton.ClearCommand}"/>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearKeyboardBinding}" Command="{Binding KeyboardButton.ClearCommand}"/>
+        </ContextMenu>
+      </Grid.ContextMenu>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="160"/>
+        <ColumnDefinition Width="1.5*" MinWidth="160"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
+
+      <Button Grid.Column="1" DataContext="{Binding WheelButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_SteeringWheelButton}" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+
+      <Button Grid.Column="2" Margin="4 0 0 0" IsEnabled="{Binding CombineWithKeyboardInput, Source={x:Static acset:AcSettingsHolder.Controls}}" DataContext="{Binding KeyboardButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_KeyboardButton}" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </Grid>
+  </DataTemplate>
+
+  <DataTemplate x:Key="ControllerButtonEntryTemplate" DataType="{x:Type acs:ControllerButtonCombined}">
+    <Grid Margin="0 0 0 4" Background="Transparent">
+      <Grid.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearWheelBinding}" Command="{Binding ControllerButton.ClearCommand}"/>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearKeyboardBinding}" Command="{Binding KeyboardButton.ClearCommand}"/>
+        </ContextMenu>
+      </Grid.ContextMenu>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="160"/>
+        <ColumnDefinition Width="1.5*" MinWidth="160"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Text="{Binding ControllerButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
+
+      <Button Grid.Column="1" DataContext="{Binding ControllerButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="Controller button" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+
+      <Button Grid.Column="2" Margin="4 0 0 0" IsEnabled="{Binding CombineWithKeyboardInput, Source={x:Static acset:AcSettingsHolder.Controls}}" DataContext="{Binding KeyboardButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_KeyboardButton}" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </Grid>
+  </DataTemplate>
+
+  <DataTemplate x:Key="ButtonAltEntryTemplate" DataType="{x:Type acs:WheelButtonCombinedAlt}">
+    <Grid Margin="0 0 0 4" Background="Transparent">
+      <Grid.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearWheelBinding}" Command="{Binding WheelButton.ClearCommand}"/>
+          <MenuItem Header="{x:Static c:ControlsStrings.Controls_ClearKeyboardBinding}" Command="{Binding KeyboardButton.ClearCommand}"/>
+        </ContextMenu>
+      </Grid.ContextMenu>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="160"/>
+        <ColumnDefinition Width="1.5*" MinWidth="100"/>
+        <ColumnDefinition Width="1.5*" MinWidth="100"/>
+        <ColumnDefinition Width="1*"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
+
+      <Button Grid.Column="1" DataContext="{Binding WheelButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_SteeringWheelButton}" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+
+      <Button Grid.Column="2" DataContext="{Binding WheelButtonAlt}" Margin="4 0 0 0" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="Steering wheel button (secondary; binded keyboard button is required)" Classes="WaitingButton">
+        <Button.IsEnabled>
+          <MultiBinding Converter="{StaticResource AndConverter}">
+            <Binding Path="CombineWithKeyboardInput" Source="{x:Static acset:AcSettingsHolder.Controls}"/>
+            <Binding Path="IsAvailable"/>
+          </MultiBinding>
+        </Button.IsEnabled>
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+
+      <Button Grid.Column="3" Margin="4 0 0 0" IsEnabled="{Binding CombineWithKeyboardInput, Source={x:Static acset:AcSettingsHolder.Controls}}" DataContext="{Binding KeyboardButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_KeyboardButton}" Classes="WaitingButton">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </Grid>
+  </DataTemplate>
+
+  <DataTemplate x:Key="HShifterButtonEntryTemplate" DataType="{x:Type acs:WheelHShifterButtonEntry}">
+    <DockPanel Margin="2" Background="Transparent">
+      <DockPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+        </ContextMenu>
+      </DockPanel.ContextMenu>
+
+      <TextBlock Text="{Binding ShortName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="20" TextAlignment="Right" Classes="Label"/>
+      <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Classes="WaitingButton">
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="KeyboardCombinedButtonEntryTemplate" DataType="{x:Type acs:WheelButtonCombined}">
+    <DockPanel Margin="2" Background="Transparent" DataContext="{Binding KeyboardButton}">
+      <DockPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+        </ContextMenu>
+      </DockPanel.ContextMenu>
+
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
+      <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Margin="0 0 8 0" Classes="WaitingButton">
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="KeyboardButtonEntryTemplate" DataType="{x:Type acs:KeyboardButtonEntry}">
+    <DockPanel Margin="2" Background="Transparent">
+      <DockPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+        </ContextMenu>
+      </DockPanel.ContextMenu>
+
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
+      <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Margin="0 0 8 0" Classes="WaitingButton">
+        <mui:Cell HorizontalAlignment="Stretch">
+          <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
+            <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
+        </mui:Cell>
+      </Button>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.ItemTemplate" DataType="t:IPythonAppConfigValue">
+    <Border mui:ContextMenuAdvancement.PropagateToChildren="True" Background="Transparent" x:Name="__Dt5">
+      <Border.Styles><Style Selector="#__Dt5"><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
+      </Style></Style></Border.Styles><Control.ContextMenu>
+        <ContextMenu IsEnabled="{Binding IsResettable}">
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsEnabled="{Binding IsNonDefault}"/>
+        </ContextMenu>
+      </Control.ContextMenu>
+
+      <ContentControl Content="{Binding}" IsEnabled="{Binding IsEnabled}">
+        <ToolTip.Tip>
+          <ToolTip IsVisible="{Binding ToolTip.Length, Converter={StaticResource MoreToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}">
+            <ToolTip.Content>
+              <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="{Binding ToolTip}"/>
+            </ToolTip.Content>
+          </ToolTip>
+        </ToolTip.Tip>
+        <ContentControl.Resources>
+          <DataTemplate DataType="{x:Type t:PythonAppConfigBoolValue}">
+            <CheckBox IsChecked="{Binding Value}" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}" x:Name="__Dt1">
+              <CheckBox.Styles><Style Selector="#__Dt1"><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True] #Label"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+              </Style></Style></CheckBox.Styles><Label x:Name="Label" Content="{Binding DisplayName}"/>
+            </CheckBox>
+            </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigRangeValue}">
+            <DockPanel>
+              <mui:ValueLabel Content="{Binding DisplayName}" Value="{Binding DisplayValue}" mui:BetterTextBox.Mode="Number" Postfix="{Binding DisplayPostix}" Classes="PythonAppConfig.ValueLabel"/>
+              <Slider Minimum="{Binding Minimum.Value}" Maximum="{Binding Maximum.Value}" Value="{Binding Value}" TickFrequency="{Binding Tick}" TickPlacement="BottomRight" mui:NewMarkService.New="{Binding IsNew}"/>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigKeyValue}">
+            <DockPanel Margin="2" Background="Transparent">
+              <DockPanel.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="{x:Static c:ControlsStrings.Common_Clear}" Command="{Binding ClearCommand}"/>
+                </ContextMenu>
+              </DockPanel.ContextMenu>
+
+              <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
+              <Button CommandParameter="{Binding}" Margin="0 0 8 0" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}" Command="{Binding KeyBindingsController.ToggleWaitingCommand, RelativeSource={RelativeSource AncestorType={x:Type helpers:ILocalKeyBindings}}}" Classes="WaitingButton">
+                <mui:Cell>
+                  <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+                    <TextBlock Text="{Binding DisplayValue}" FontWeight="Bold" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" IsVisible="{Binding Value, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static forms:Keys.None}}"/>
+                    <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding IsPressed, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  </mui:Cell>
+                  <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" VerticalAlignment="Center" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </mui:Cell>
+              </Button>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigNumberValue}">
+            <DockPanel>
+              <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
+              <mui:BetterTextBox Text="{Binding Value}" Mode="Number" Placeholder="?" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}"/>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigOptionsValue}">
+            <DockPanel>
+              <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
+              <mui:BetterComboBox ItemsSource="{Binding Values}" SelectedItem="{Binding Value, Mode=TwoWay}" IsEditable="False" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}">
+                <mui:BetterComboBox.ItemTemplateSelector>
+                  <t:PythonAppConfigOptionsTemplateSelector>
+                    <t:PythonAppConfigOptionsTemplateSelector.NullTemplate>
+                      <DataTemplate>
+                        <Separator Background="{DynamicResource SeparatorBackground}"/>
+                      </DataTemplate>
+                    </t:PythonAppConfigOptionsTemplateSelector.NullTemplate>
+                    <t:PythonAppConfigOptionsTemplateSelector.DataTemplate>
+                      <DataTemplate>
+                        <TextBlock Text="{Binding DisplayName}"/>
+                      </DataTemplate>
+                    </t:PythonAppConfigOptionsTemplateSelector.DataTemplate>
+                  </t:PythonAppConfigOptionsTemplateSelector>
+                </mui:BetterComboBox.ItemTemplateSelector>
+              </mui:BetterComboBox>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigPluginValue}">
+            <DockPanel>
+              <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
+              <mui:BetterComboBox ItemsSource="{Binding Plugins}" SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}" IsEditable="False" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}">
+                <mui:BetterComboBox.ItemTemplate>
+                  <DataTemplate>
+                    <DockPanel Background="Transparent" x:Name="__Dt3">
+                      <DockPanel.Styles><Style Selector="#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S4)=True] #PART_Details"><Setter Property="IsVisible" Value="False"/>
+                      </Style></Style></DockPanel.Styles><DockPanel.ContextMenu>
+                        <ContextMenu>
+                          <MenuItem Header="View in Explorer" Command="{Binding ViewInExplorerCommand}"/>
+                          <MenuItem Header="Pack" Command="{Binding PackCommand}"/>
+                        </ContextMenu>
+                      </DockPanel.ContextMenu>
+                      <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding DisplayName}" DockPanel.Dock="Top"/>
+                      <DockPanel x:Name="PART_Details">
+                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding Description}" DockPanel.Dock="Bottom" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding AuthorVersionLine}" IsVisible="{Binding AuthorVersionLine, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+                      </DockPanel>
+                    </DockPanel>
+                    </DataTemplate>
+                </mui:BetterComboBox.ItemTemplate>
+              </mui:BetterComboBox>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigFileValue}">
+            <DockPanel>
+              <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
+              <Button Padding="4 2" Margin="2 0 0 0" Content="…" Command="{Binding ChangeFileCommand}" DockPanel.Dock="Right"/>
+              <mui:PathTrimmingTextBlock MinWidth="1" Text="{Binding Value}" Placeholder="?" mui:NewMarkService.New="{Binding IsNew}"/>
+            </DockPanel>
+          </DataTemplate>
+
+          <DataTemplate DataType="{x:Type t:PythonAppConfigValue}">
+            <DockPanel>
+              <Label Content="{Binding DisplayName}" Classes="PythonAppConfig.PropertyLabel"/>
+              <mui:BetterTextBox Text="{Binding Value}" Placeholder="?" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}"/>
+            </DockPanel>
+          </DataTemplate>
+        </ContentControl.Resources>
+      </ContentControl>
+    </Border>
+  </DataTemplate>
+
+  <ItemsPanelTemplate x:Key="PythonAppConfig.SectionItemsPanel">
+    <mui:UniformGridWithOrientation Orientation="Horizontal" VerticalSpacing="4" HorizontalSpacing="20" Margin="0 0 20 0">
+      <mui:UniformGridWithOrientation.Style>
+        <Style Selector="mui|UniformGridWithOrientation" __plain="1">
+          <Setter Property="Columns" Value="2"/>
+          <Style.Resources>
+            <ResourceDictionary><system:Boolean x:Key="True">True</system:Boolean>
+          </ResourceDictionary></Style.Resources>
+          <Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/><Setter Property="pa:T.S8" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/></Style><Style Selector="^[(pa|T.S7)=True]"><Setter Property="Columns" Value="3"/>
+            </Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="Columns" Value="4"/>
+            </Style></Style>
+      </mui:UniformGridWithOrientation.Style>
+    </mui:UniformGridWithOrientation>
+  </ItemsPanelTemplate>
+
+  <ItemsPanelTemplate x:Key="PythonAppConfig.SectionItemsPanel.Wide">
+    <mui:UniformGridWithOrientation Orientation="Vertical" VerticalSpacing="4" HorizontalSpacing="20" Columns="2"/>
+  </ItemsPanelTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.SectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
+    <mui:Switch Value="{Binding Key}">
+      <DockPanel mui:Switch.When="ℹ" Margin="0 0 0 20">
+        <mui:BetterImage Filename="{Binding Preview}" Height="160" Width="160" DockPanel.Dock="Left" Stretch="UniformToFill" DecodeWidth="640" Margin="0 0 20 0" CollapseIfNull="True" se:ImageViewerService.Image="{Binding Preview}"/>
+        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding FullName}" DockPanel.Dock="Top" TextWrapping="Wrap" Classes="Heading2"/>
+        <mui:BbCodeBlock Text="{Binding Description}" DockPanel.Dock="Top" Margin="0 20 0 0" TextWrapping="Wrap" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+        <mui:BbCodeBlock Text="{Binding Url}" DockPanel.Dock="Top" Margin="0 8 0 0" TextWrapping="Wrap" IsVisible="{Binding Url, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+      </DockPanel>
+      <DockPanel Margin="0 0 0 20">
+        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
+        <c:MessageBlock DockPanel.Dock="Top" Margin="20 0 20 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+          <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
+        </c:MessageBlock>
+        <c:MessageBlock DockPanel.Dock="Bottom" Margin="20 8 20 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+          <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
+        </c:MessageBlock>
+        <!--<mui:BbCodeBlock DockPanel.Dock="Bottom" Text="{Binding HintBottom}" Style="{StaticResource Small}" Margin="20 8 0 0"
+            Visibility="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}" />-->
+        <ItemsControl x:Name="Items" ItemsSource="{Binding}" Margin="20 0 0 0" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.SectionItemsPanel}" Tag="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource MoreConverter}, ConverterParameter=800}"><ItemsControl.Styles><Style Selector="ContentPresenter">
+    <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </Style>
+
+  </ItemsControl.Styles></ItemsControl>
+      </DockPanel>
+    </mui:Switch>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig" DataType="{x:Type t:PythonAppConfig}">
+    <DockPanel>
+      <Button DockPanel.Dock="Bottom" Margin="0 8 0 0" Content="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsVisible="{Binding IsNonDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Heading2"/>
+      <ItemsControl ItemsSource="{Binding SectionsDisplay}" Margin="20 0 0 -20" ItemTemplate="{StaticResource PythonAppConfig.SectionTemplate}"/>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.SectionTemplate.NoHeader" DataType="{x:Type t:PythonAppConfig}">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <DockPanel VerticalAlignment="Top">
+        <Button DockPanel.Dock="Bottom" Margin="0 20 0 0" Content="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsVisible="{Binding IsNonDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <ItemsControl ItemsSource="{Binding SectionsDisplay[0]}" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.SectionItemsPanel}" VerticalAlignment="Top"><ItemsControl.Styles><Style Selector="ContentPresenter">
+    <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </Style>
+
+  </ItemsControl.Styles></ItemsControl>
+      </DockPanel>
+    </ScrollViewer>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.NoHeader" DataType="{x:Type t:PythonAppConfig}">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <DockPanel VerticalAlignment="Top">
+        <Button DockPanel.Dock="Bottom" Margin="0 20 0 0" Content="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsVisible="{Binding IsNonDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <ItemsControl ItemsSource="{Binding SectionsDisplay}" ItemTemplate="{StaticResource PythonAppConfig.SectionTemplate}" Margin="0 0 0 -20"/>
+      </DockPanel>
+    </ScrollViewer>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.SectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
+    <mui:Switch Value="{Binding Key}">
+      <Border mui:Switch.When="ℹ"/>
+      <DockPanel>
+        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
+        <ItemsControl ItemsSource="{Binding}" Margin="20 0 0 20" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.SectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
+    <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </Style>
+
+  </ItemsControl.Styles></ItemsControl>
+      </DockPanel>
+    </mui:Switch>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.NoHeader" DataType="{x:Type t:PythonAppConfig}">
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <DockPanel VerticalAlignment="Top">
+        <Button DockPanel.Dock="Bottom" Margin="0 20 0 0" Content="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsVisible="{Binding IsNonDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <ItemsControl ItemsSource="{Binding SectionsDisplay}" ItemTemplate="{StaticResource PythonAppConfig.Compact.SectionTemplate}" Margin="0 0 0 -20"/>
+      </DockPanel>
+    </ScrollViewer>
+  </DataTemplate>
+
+  <ItemsPanelTemplate x:Key="PythonAppConfig.InlineSectionItemsPanel">
+    <mui:UniformGridWithOrientation Orientation="Horizontal" VerticalSpacing="4" HorizontalSpacing="12" Margin="0 0 12 0" Columns="1"/>
+  </ItemsPanelTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.InlineSectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
+    <DockPanel>
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
+      <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+        <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
+      </c:MessageBlock>
+      <c:MessageBlock DockPanel.Dock="Bottom" Margin="0 8 0 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+        <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
+      </c:MessageBlock>
+      <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.InlineSectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
+    <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </Style>
+
+  </ItemsControl.Styles></ItemsControl>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.Inline" DataType="{x:Type t:PythonAppConfig}">
+    <Border Margin="-28 -2 -64 -2" Width="400" Background="{DynamicResource PopupBackground}" Padding="28 8 28 8">
+      <ItemsControl ItemsSource="{Binding SectionsDisplay}" ItemTemplate="{StaticResource PythonAppConfig.Compact.InlineSectionTemplate}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:SpacingStackPanel Spacing="20" Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
+    </Border>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.InlineSingleSectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
+    <DockPanel>
+      <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+        <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
+      </c:MessageBlock>
+      <c:MessageBlock DockPanel.Dock="Bottom" Margin="0 8 0 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+        <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
+      </c:MessageBlock>
+      <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.InlineSectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
+    <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </Style>
+
+  </ItemsControl.Styles></ItemsControl>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PythonAppConfig.Compact.InlineSingle" DataType="{x:Type t:PythonAppConfig}">
+    <Border Margin="-28 -2 -64 -2" Width="400" Background="{DynamicResource PopupBackground}" Padding="28 8 28 8">
+      <ItemsControl ItemsSource="{Binding SectionsDisplay}" ItemTemplate="{StaticResource PythonAppConfig.Compact.InlineSingleSectionTemplate}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:SpacingStackPanel Spacing="20" Orientation="Vertical"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
+    </Border>
+  </DataTemplate>
+
+  <ControlTheme x:Key="WeatherLiveControllerMenuItem" TargetType="MenuItem">
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="MenuItem">
+    <mui:Cell>
+      <Rectangle x:Name="Bg"/>
+      <Grid x:Name="Fg" Margin="7 0 8.5 0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="37"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+          <ColumnDefinition Width="17"/>
+        </Grid.ColumnDefinitions>
+        <ContentPresenter Grid.Column="0" Margin="0 2 8 2" RecognizesAccessKey="True"/>
+        <Path x:Name="RightArrow" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="4 0 0 0" Data="{StaticResource RightArrow}"/>
+      </Grid>
+      <Popup x:Name="PART_Popup" Placement="Right" VerticalOffset="-3" HorizontalOffset="-2" Focusable="False" IsOpen="{Binding Path=IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+        <mui:Cell Margin="0" Background="{DynamicResource PopupBackground}">
+          <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+            <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
+              <Grid>
+                <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
+              </Grid>
+            </ScrollViewer>
+          </Border>
+        </mui:Cell>
+      </Popup>
+    </mui:Cell>
+    </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <!--<Setter Property="HorizontalContentAlignment"
+        Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+    <Setter Property="VerticalContentAlignment"
+        Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />-->
+    <!--<Style.Triggers>
+      <Trigger Property="Role" Value="TopLevelHeader">
+        <Setter Property="Padding" Value="7,2,8,2" />
+        <Setter Property="Template"
+            Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type MenuItem}, ResourceId=TopLevelHeaderTemplateKey}}" />
+      </Trigger>
+      <Trigger Property="Role" Value="TopLevelItem">
+        <Setter Property="Padding" Value="7,2,8,2" />
+        <Setter Property="Template" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type MenuItem}, ResourceId=TopLevelItemTemplateKey}}" />
+      </Trigger>
+      <Trigger Property="Role" Value="SubmenuHeader">
+        <Setter Property="Padding" Value="2,3,2,3" />
+        <Setter Property="Template"
+            Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type MenuItem}, ResourceId=SubmenuHeaderTemplateKey}}" />
+      </Trigger>
+      <Trigger Property="Role" Value="SubmenuItem" />
+    </Style.Triggers>-->
+  <Style Selector="^ /template/ Rectangle#Bg"><Setter Property="Fill" Value="{Binding MenuItem.Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^ /template/ Path#RightArrow"><Setter Property="Fill" Value="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/></Style><Style Selector="^[IsHighlighted=True] /template/ Rectangle#Bg"><Setter Property="Fill" Value="{DynamicResource Accent}"/>
+        </Style><Style Selector="^[IsHighlighted=True]"><Setter Property="TemplatedControl.Foreground" Value="{DynamicResource ItemTextSelected}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemTextSelected}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="TemplatedControl.Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+        <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+        </Style><Style Selector="^:disabled /template/ Path#RightArrow"><Setter Property="Fill" Value="{DynamicResource ItemTextDisabled}"/>
+      </Style></ControlTheme>
+</ResourceDictionary>

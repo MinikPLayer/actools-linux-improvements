@@ -52,7 +52,7 @@
                         <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorder}"/>
                         <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundHover}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderHover}"/>
-                          </Style><Style Selector="^[IsDragging=True]"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
+                          </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDragging}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDragging}"/>
                           </Style><Style Selector="^:disabled"><Setter Property="Background" Value="{DynamicResource SliderThumbBackgroundDisabled}"/>
                             <Setter Property="BorderBrush" Value="{DynamicResource SliderThumbBorderDisabled}"/>

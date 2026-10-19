@@ -49,7 +49,6 @@ namespace AcManager.Controls.Graphs {
         protected virtual void OnLoadedOverride() {}
 
         static GraphDataViewerBase() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphDataViewerBase), new FrameworkPropertyMetadata(typeof(GraphDataViewerBase)));
         }
 
         protected abstract PlotModel CreateModel();
@@ -91,7 +90,7 @@ namespace AcManager.Controls.Graphs {
             }
         }
 
-        public static readonly DependencyPropertyKey IsEmptyPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsEmpty), typeof(bool),
+        public static readonly DependencyPropertyKey IsEmptyPropertyKey = DP.RegisterReadOnly(nameof(IsEmpty), typeof(bool),
                 typeof(GraphDataViewerBase), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsEmptyProperty = IsEmptyPropertyKey.DependencyProperty;
@@ -99,7 +98,7 @@ namespace AcManager.Controls.Graphs {
         public bool IsEmpty => GetValue(IsEmptyProperty) as bool? == true;
 
         protected void SetEmpty(bool isEmpty) {
-            SetValue(IsEmptyPropertyKey, isEmpty);
+            SetValue(IsEmptyPropertyKey.DependencyProperty, isEmpty);
         }
     }
 }

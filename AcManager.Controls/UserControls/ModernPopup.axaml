@@ -1,0 +1,21 @@
+﻿<Popup xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.ModernPopup" StaysOpen="False" Placement="Custom" HorizontalAlignment="Left" mui:PopupHelper.Register="True">
+  <Popup.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Popup.Resources>
+
+  <mui:Cell x:Name="Root" Margin="0" HorizontalAlignment="Center" TextElement.FontFamily="{StaticResource DefaultFont}" TextElement.FontSize="{DynamicResource DefaultFontSize}">
+    <Border Background="{DynamicResource PopupBackground}" Padding="{Binding Padding}">
+      <Panel>
+        <ContentPresenter Content="{Binding Content}" TextElement.FontStyle="Normal" TextElement.FontWeight="Normal"/>
+      </Panel>
+    </Border>
+    <Border BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1"/>
+  </mui:Cell>
+</Popup>

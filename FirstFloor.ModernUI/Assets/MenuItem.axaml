@@ -71,8 +71,8 @@
     </ControlTemplate>
 
   <ControlTheme TargetType="MenuItem" x:Key="{x:Type MenuItem}">
-    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
+    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
     <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type MenuItem}, ResourceId=SubmenuItemTemplateKey}}"/>

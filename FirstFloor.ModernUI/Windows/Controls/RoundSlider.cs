@@ -108,14 +108,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnRender(DrawingContext dc) {
-            base.OnRender(dc);
+        public override void Render(DrawingContext dc) {
+            base.Render(dc);
 
-            if (TickPlacement != TickPlacement.None) {
+            if (TickPlacement != Avalonia.Controls.TickPlacement.None) {
                 var ticks = (Maximum - Minimum) / TickFrequency;
                 var p = new Pen(TickBrush, TickThickness);
-                var w = ActualWidth / 2;
-                var h = ActualHeight / 2;
+                var w = Bounds.Width / 2;
+                var h = Bounds.Height / 2;
                 var f = -TickOffset - TickLength / 2;
                 var t = -TickOffset + TickLength / 2;
                 for (var i = 0; i < ticks; i++) {
@@ -141,9 +141,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private void OnThumbDragDelta(object sender, DragDeltaEventArgs e) {
-            var position = Mouse.GetPosition(_wrapper);
-            position.X -= _wrapper.ActualWidth / 2d;
-            position.Y -= _wrapper.ActualHeight / 2d;
+            var mouse = Mouse.GetPosition(_wrapper);
+            var position = new Point(mouse.X - _wrapper.Bounds.Width / 2d, mouse.Y - _wrapper.Bounds.Height / 2d);
 
             var angle = Math.Atan2(Math.Abs(position.X), position.X > 0 ? -position.Y : position.Y) / Math.PI + (position.X > 0 ? 1d : 0d);
             var value = Minimum + (Maximum - Minimum) * angle / 2d;
@@ -151,8 +150,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private void OnWrapperMouseWheel(object sender, MouseWheelEventArgs e) {
-            Value += IsSnapToTickEnabled ? (e.Delta < 0 ? -TickFrequency : +TickFrequency)
-                    : (Maximum - Minimum) * e.Delta / 100d;
+            Value += IsSnapToTickEnabled ? (e.Delta.Y < 0 ? -TickFrequency : +TickFrequency)
+                    : (Maximum - Minimum) * e.Delta.Y / 100d;
         }
 
         private class InnerConverter : IMultiValueConverter {

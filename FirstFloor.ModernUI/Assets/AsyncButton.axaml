@@ -57,7 +57,7 @@
                         <Canvas>
                           <c:ModernProgressRing Width="80" Height="80" IsActive="True" Theme="{StaticResource CompactProgressRingStyle}">
                             <c:ModernProgressRing.RenderTransform>
-                              <ScaleTransform ScaleX="0.15" ScaleY="0.15" CenterX="0" CenterY="0"/>
+                              <ScaleTransform ScaleX="0.15" ScaleY="0.15"><!-- PORT: removed CenterY (not in Avalonia) --><!-- PORT: removed CenterX (not in Avalonia) --></ScaleTransform>
                             </c:ModernProgressRing.RenderTransform>
                           </c:ModernProgressRing>
                         </Canvas>

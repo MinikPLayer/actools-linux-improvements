@@ -1,0 +1,260 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls.Helpers" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Layout.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TreeView.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/HierarchicalComboBox.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="GroupBoxExpander" TargetType="Expander">
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Expander">
+          <StackPanel>
+            <DockPanel x:Name="PART_Header" Margin="8 0 8 4">
+              <ToggleButton DockPanel.Dock="Left" VerticalAlignment="Center" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ExpandCollapseToggleStyle}"/>
+              <ContentPresenter RecognizesAccessKey="False"/>
+            </DockPanel>
+            <ContentPresenter x:Name="PART_ExpandSite" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+          </StackPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:expanded /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=(DependencyProperty.UnsetValue)}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="ac:AcListPage" x:Key="{x:Type ac:AcListPage}">
+    <Setter Property="mui:InputBindingBehavior.PropagateToWindow" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ac:AcListPage">
+          <Grid ClipToBounds="True">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition MinWidth="50" MaxWidth="400"/>
+              <ColumnDefinition Width="9"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid ZIndex="10">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="33"/>
+              </Grid.RowDefinitions>
+
+              <Border HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.MultiSelectionMode}, Mode=OneTime}" mui:FancyHintsService.OffsetY="180" mui:FancyHintsService.OffsetX="80"/>
+              <Border HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DoubleClickToQuickDrive}, Mode=OneTime}" mui:FancyHintsService.OffsetY="10" mui:FancyHintsService.OffsetX="80"/>
+
+              <ListBox Grid.Row="0" x:Name="ItemsList" ItemsSource="{TemplateBinding ItemsSource}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="False" ItemTemplate="{StaticResource AcItemWrapperSpecific.ListItemTemplate}" mui:SaveScroll.Key="{TemplateBinding SaveScrollKey}">
+                <ListBox.GroupStyle>
+                  <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                      <ControlTheme TargetType="GroupItem" x:Key="{x:Type GroupItem}">
+                        <Setter Property="Template">
+                          <Setter.Value>
+                            <ControlTemplate TargetType="GroupItem">
+                              <mui:RememberingExpander Key="{Binding Name, StringFormat='{}.content_category_{0}', Mode=OneTime}" Margin="0 0 0 20" DefaultValue="True" Theme="{StaticResource GroupBoxExpander}">
+                                <Expander.Header>
+                                  <TextBlock Classes="Label">
+                                    <Run Text="{Binding Name, Mode=OneWay}"/>
+                                    <Run Text="{Binding ItemCount, Mode=OneWay, StringFormat='{}({0})'}"/>
+                                  </TextBlock>
+                                </Expander.Header>
+                                <ItemsPresenter/>
+                              </mui:RememberingExpander>
+                            </ControlTemplate>
+                          </Setter.Value>
+                        </Setter>
+                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
+                              <Setter.Value>
+                                <ControlTemplate TargetType="GroupItem">
+                                  <ItemsPresenter/>
+                                </ControlTemplate>
+                              </Setter.Value>
+                            </Setter>
+                          </Style></ControlTheme>
+                    </GroupStyle.ContainerStyle>
+                  </GroupStyle>
+                </ListBox.GroupStyle>
+                <ListBox.Template>
+                  <ControlTemplate TargetType="ListBox">
+                    <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                      <ItemsPresenter/>
+                    </ScrollViewer>
+                  </ControlTemplate>
+                </ListBox.Template>
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsVirtualizingWhenGrouping="True" IsContainerVirtualizable="False"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+              </ListBox>
+
+              <DockPanel Grid.Row="1" Background="Transparent">
+                <mui:ContextMenuButton x:Name="PART_ListContextMenu" VerticalAlignment="Center" DockPanel.Dock="Right"/>
+                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}" Classes="NonTransparent"/>
+                <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Classes="NonTransparent"/>
+                <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Classes="NonTransparent"/>
+                <TextBlock Text="{Binding Status}" Margin="{StaticResource StatusMargin}" Foreground="{DynamicResource WindowTextReadOnly}"/>
+              </DockPanel>
+
+              <mui:Cell x:Name="PART_BatchMenuTransform" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Bottom" Height="95.000" Background="{DynamicResource Accent}" Margin="0 0 -4 0" TextElement.Foreground="White">
+                <Control.RenderTransform>
+                  <TranslateTransform Y="95.000"/>
+                </Control.RenderTransform>
+
+                <Border x:Name="PART_BatchBlock" Padding="8" Background="{DynamicResource Accent}" ZIndex="2">
+                  <mui:SpacingStackPanel VerticalAlignment="Top" Spacing="8">
+                    <Control.Resources>
+                      <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
+                    </Control.Resources>
+
+                    <mui:HierarchicalComboBox x:Name="PART_BatchActions">
+                      <mui:HierarchicalComboBox.BorderBrush>
+                        <SolidColorBrush Color="{DynamicResource AccentOverlayColor}" Opacity="0.32"/>
+                      </mui:HierarchicalComboBox.BorderBrush>
+                    </mui:HierarchicalComboBox>
+                    <TextBlock DataContext="{Binding SelectedBatchAction.Description, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AccentOverlay}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+
+                    <Grid x:Name="PART_BatchBlock_ButtonsGrid" Height="27">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="1*"/>
+                      </Grid.ColumnDefinitions>
+
+                      <Button x:Name="PART_BatchBlock_RunButton" Padding="8 3 8 5" Height="27" IsEnabled="{Binding SelectedAmount, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MoreConverter}}">
+                        <DockPanel>
+                          <Path Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Stretch="Fill" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 30.0833,22.1667L 50.6665,37.6043L 50.6665,38.7918L 30.0833,53.8333L 30.0833,22.1667 Z"/>
+                          <TextBlock x:Name="PART_BatchBlock_RunButton_Text" VerticalAlignment="Center" Margin="4 0 0 0">
+                            <TextBlock.Text>
+                              <MultiBinding StringFormat="{x:Static mui:ColonConverter.FormatBoth}">
+                                <Binding Path="SelectedBatchAction.DisplayApply" TargetNullValue="Run" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                <Binding Path="SelectedAmount" RelativeSource="{RelativeSource TemplatedParent}"/>
+                              </MultiBinding>
+                            </TextBlock.Text>
+                          </TextBlock>
+                        </DockPanel>
+                      </Button>
+                      <Button x:Name="PART_BatchBlock_CloseButton" Padding="8 3 8 5" Height="27" Grid.Column="2">
+                        <DockPanel>
+                          <mui:Cell Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0">
+                            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
+                            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
+                          </mui:Cell>
+                          <TextBlock x:Name="PART_BatchBlock_CloseButton_Text" Text="{x:Static mui:UiStrings.Close}" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                        </DockPanel>
+                      </Button>
+                    </Grid>
+                  </mui:SpacingStackPanel>
+                </Border>
+              </mui:Cell>
+            </Grid>
+
+            <!-- Separator -->
+            <mui:ModernTabSplitter Grid.Column="1" SaveKey="AcListPage"/>
+            <mui:ModernFrame x:Name="PART_Frame" Grid.Column="2" Source="{TemplateBinding SelectedSource}" Margin="16 0" TransitionName="Normal" TopSource="{x:Null}"/>
+
+            <!-- Batch params -->
+            <Border Grid.Column="2" x:Name="PART_BatchActionParams_Wrapper" Margin="-9 0 0 0" VerticalAlignment="Bottom" Height="95.000" ZIndex="2">
+              <Control.RenderTransform>
+                <TranslateTransform Y="95.000"/>
+              </Control.RenderTransform>
+              <Border x:Name="PART_BatchActionParams" Background="{DynamicResource Accent}" Padding="8">
+                <Control.RenderTransform>
+                  <TranslateTransform X="0"/>
+                </Control.RenderTransform>
+                <Control.Resources>
+                  <mui:SharedResourceDictionary Source="AcListPage.BatchStyle.xaml"/>
+                </Control.Resources>
+                <DockPanel TextElement.Foreground="{DynamicResource AccentOverlay}">
+                  <ContentPresenter x:Name="PART_BatchAction" Margin="20 0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                </DockPanel>
+              </Border>
+            </Border>
+          </Grid>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <ControlTheme.Resources>
+      <ResourceDictionary><ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+          <ResourceInclude Source="AcListPage.CommonBatchActions.axaml"/>
+        </ResourceDictionary.MergedDictionaries>
+
+        <!-- PORT: ControlTemplate with triggers outside of a style (2 triggers) --><ControlTemplate x:Key="AcListPageCheckBoxItemTemplate" TargetType="ListBoxItem">
+          <Border Background="{TemplateBinding Background}" Padding="2">
+            <DockPanel>
+              <CheckBox x:Name="PART_CheckBox" IsHitTestVisible="False" DockPanel.Dock="Left" Margin="10 0 -11 0" Width="0" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"/>
+              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" TextElement.Foreground="{TemplateBinding Foreground}"/>
+            </DockPanel>
+          </Border>
+
+          </ControlTemplate>
+
+        <ControlTheme x:Key="AcListPageCheckBoxItem" TargetType="ListBoxItem">
+          <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemText}"/>
+          <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource AcListPageCheckBoxItemTemplate}"/>
+          <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+              <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+            </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+              <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+              <Setter Property="FontWeight" Value="Bold"/>
+            </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+            </Style></ControlTheme>
+      </ResourceDictionary>
+    </ResourceDictionary></ControlTheme.Resources>
+
+    <!-- Empty version -->
+    <Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ac:AcListPage">
+              <DockPanel Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button DockPanel.Dock="Bottom" x:Name="AddNewButton" Padding="8 3 8 5" Margin="0 8 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{TemplateBinding AddNewCommand, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+                  <DockPanel>
+                    <Path Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 0 0" Data="{StaticResource AddIconData}" DockPanel.Dock="Left" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                    <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_CreateNewItem}" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                  </DockPanel>
+                </Button>
+                <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" DockPanel.Dock="Top" Classes="Heading1"/>
+                <DockPanel VerticalAlignment="Top" HorizontalAlignment="Center" Width="220" Margin="0 8 0 0" IsVisible="{Binding Manager.IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse|hidden'}">
+                  <ProgressBar Maximum="{Binding Manager.WrappersAsIList.Count}" Value="{Binding Manager.LoadedCount}" Height="4" DockPanel.Dock="Bottom" Margin="0 4 0 0"/>
+                  <TextBlock Classes="Small">
+                    <TextBlock.Text>
+                      <MultiBinding StringFormat="{x:Static mui:UiStrings.Progress_Downloading_KnownTotal}">
+                        <Binding Path="Manager.LoadedCount"/>
+                        <Binding Path="Manager.WrappersAsIList.Count"/>
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
+                </DockPanel>
+              </DockPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style><Style Selector="^[IsGroupingEnabled=True] /template/ ListBox#ItemsList"><Setter Property="ItemsPanel">
+                <Setter.Value>
+                  <ItemsPanelTemplate>
+                    <StackPanel/>
+                  </ItemsPanelTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style><!-- PORT: storyboard actions of trigger [BatchMenuVisible=True] not converted --></ControlTheme>
+</ResourceDictionary>

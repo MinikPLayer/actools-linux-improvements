@@ -83,3 +83,7 @@ AcManager/Assets/Icons/Source/*-256.png
 IgnoreVersionFiles.bat
 *tmp.csproj
 .vscode/*
+PortTools/api.json
+PortTools/apidump/out/
+PortTools/apidump/obj/
+PortTools/apidump/bin/

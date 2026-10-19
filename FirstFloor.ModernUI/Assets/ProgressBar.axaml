@@ -52,11 +52,7 @@
       </Setter.Value>
     </Setter>
 
-  <Style Selector="^ /template/ c|Cell#IndeterminateRoot"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#PART_Track"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[Orientation=Vertical] /template/ c|Cell#Root"><Setter Property="LayoutTransform">
-                <Setter.Value>
-                  <RotateTransform Angle="-90"/>
-                </Setter.Value>
-              </Setter>
+  <Style Selector="^ /template/ c|Cell#IndeterminateRoot"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#PART_Track"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[Orientation=Vertical] /template/ c|Cell#Root"><!-- PORT: removed setter of LayoutTransform (not in Avalonia) -->
             </Style><Style Selector="^[IsIndeterminate=True] /template/ c|Cell#IndeterminateRoot"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[IsIndeterminate=True] /template/ Border#DeterminateRoot"><Setter Property="IsVisible" Value="False"/>
               </Style><Style Selector="^[IsIndeterminate=True] /template/ Border#PART_Track"><Setter Property="Background" Value="Transparent"/>

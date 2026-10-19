@@ -96,7 +96,7 @@ namespace AcManager.Controls.UserControls {
             }
         }
 
-        public static readonly DependencyProperty KeepAliveKeyProperty = DependencyProperty.Register(nameof(KeepAliveKey), typeof(string),
+        public static readonly StyledProperty<string> KeepAliveKeyProperty = DP.Register<string>(nameof(KeepAliveKey),
                 typeof(WebBlock));
 
         [CanBeNull]
@@ -105,7 +105,7 @@ namespace AcManager.Controls.UserControls {
             set => SetValue(KeepAliveKeyProperty, value);
         }
 
-        public static readonly DependencyProperty AlwaysKeepAliveProperty = DependencyProperty.Register(nameof(AlwaysKeepAlive), typeof(bool),
+        public static readonly StyledProperty<bool> AlwaysKeepAliveProperty = DP.Register<bool>(nameof(AlwaysKeepAlive),
                 typeof(WebBlock));
 
         public bool AlwaysKeepAlive {
@@ -358,7 +358,7 @@ namespace AcManager.Controls.UserControls {
             }
         }
 
-        public static readonly DependencyProperty IsAddressBarVisibleProperty = DependencyProperty.Register(nameof(IsAddressBarVisible), typeof(bool),
+        public static readonly StyledProperty<bool> IsAddressBarVisibleProperty = DP.Register<bool>(nameof(IsAddressBarVisible),
                 typeof(WebBlock), new PropertyMetadata(true, OnIsAddressBarVisibleChanged));
 
         public bool IsAddressBarVisible {
@@ -374,16 +374,14 @@ namespace AcManager.Controls.UserControls {
             AddressBar.Visibility = newValue ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public static readonly DependencyProperty PreferTransparentBackgroundProperty = DependencyProperty.Register(nameof(PreferTransparentBackground),
-                typeof(bool), typeof(WebBlock));
+        public static readonly StyledProperty<bool> PreferTransparentBackgroundProperty = DP.Register<bool>(nameof(PreferTransparentBackground), typeof(WebBlock));
 
         public bool PreferTransparentBackground {
             get => (bool)GetValue(PreferTransparentBackgroundProperty);
             set => SetValue(PreferTransparentBackgroundProperty, value);
         }
 
-        public static readonly DependencyProperty NewWindowsBehaviorProperty = DependencyProperty.Register(nameof(NewWindowsBehavior),
-                typeof(NewWindowsBehavior),
+        public static readonly StyledProperty<NewWindowsBehavior> NewWindowsBehaviorProperty = DP.Register<NewWindowsBehavior>(nameof(NewWindowsBehavior),
                 typeof(WebBlock), new PropertyMetadata(NewWindowsBehavior.Ignore));
 
         public NewWindowsBehavior NewWindowsBehavior {
@@ -391,7 +389,7 @@ namespace AcManager.Controls.UserControls {
             set => SetValue(NewWindowsBehaviorProperty, value);
         }
 
-        public static readonly DependencyProperty UserAgentProperty = DependencyProperty.Register(nameof(UserAgent), typeof(string),
+        public static readonly StyledProperty<string> UserAgentProperty = DP.Register<string>(nameof(UserAgent),
                 typeof(WebBlock), new PropertyMetadata(OnUserAgentChanged));
 
         public string UserAgent {
@@ -408,31 +406,28 @@ namespace AcManager.Controls.UserControls {
             Tabs.ForEach(x => x.SetUserAgent(newValue));
         }
 
-        public static readonly DependencyProperty AddressBarButtonsProperty = DependencyProperty.Register(nameof(AddressBarButtons),
-                typeof(ObservableCollection<UIElement>), typeof(WebBlock));
+        public static readonly StyledProperty<ObservableCollection<UIElement>> AddressBarButtonsProperty = DP.Register<ObservableCollection<UIElement>>(nameof(AddressBarButtons), typeof(WebBlock));
 
         public ObservableCollection<UIElement> AddressBarButtons {
             get => (ObservableCollection<UIElement>)GetValue(AddressBarButtonsProperty);
             set => SetValue(AddressBarButtonsProperty, value);
         }
 
-        public static readonly DependencyProperty LeftSideContentProperty = DependencyProperty.Register(nameof(LeftSideContent),
-                typeof(object), typeof(WebBlock));
+        public static readonly StyledProperty<object> LeftSideContentProperty = DP.Register<object>(nameof(LeftSideContent), typeof(WebBlock));
 
         public object LeftSideContent {
             get => GetValue(LeftSideContentProperty);
             set => SetValue(LeftSideContentProperty, value);
         }
 
-        public static readonly DependencyProperty RightSideContentProperty = DependencyProperty.Register(nameof(RightSideContent),
-                typeof(object), typeof(WebBlock));
+        public static readonly StyledProperty<object> RightSideContentProperty = DP.Register<object>(nameof(RightSideContent), typeof(WebBlock));
 
         public object RightSideContent {
             get => GetValue(RightSideContentProperty);
             set => SetValue(RightSideContentProperty, value);
         }
 
-        public static readonly DependencyProperty StyleProviderProperty = DependencyProperty.Register(nameof(StyleProvider), typeof(ICustomStyleProvider),
+        public static readonly StyledProperty<ICustomStyleProvider> StyleProviderProperty = DP.Register<ICustomStyleProvider>(nameof(StyleProvider),
                 typeof(WebBlock), new PropertyMetadata(OnStyleProviderChanged));
 
         [CanBeNull]
@@ -449,7 +444,7 @@ namespace AcManager.Controls.UserControls {
             Tabs.ForEach(x => x.SetStyleProvider(newValue));
         }
 
-        public static readonly DependencyProperty DownloadListenerProperty = DependencyProperty.Register(nameof(DownloadListener), typeof(IWebDownloadListener),
+        public static readonly StyledProperty<IWebDownloadListener> DownloadListenerProperty = DP.Register<IWebDownloadListener>(nameof(DownloadListener),
                 typeof(WebBlock), new PropertyMetadata(OnDownloadListenerChanged));
 
         [CanBeNull]
@@ -466,7 +461,7 @@ namespace AcManager.Controls.UserControls {
             Tabs.ForEach(x => x.SetDownloadListener(newValue ?? DefaultDownloadListener));
         }
 
-        public static readonly DependencyProperty SaveKeyProperty = DependencyProperty.Register(nameof(SaveKey), typeof(string),
+        public static readonly StyledProperty<string> SaveKeyProperty = DP.Register<string>(nameof(SaveKey),
                 typeof(WebBlock));
 
         [CanBeNull]
@@ -475,7 +470,7 @@ namespace AcManager.Controls.UserControls {
             set => SetValue(SaveKeyProperty, value);
         }
 
-        public static readonly DependencyProperty StartPageProperty = DependencyProperty.Register(nameof(StartPage), typeof(string),
+        public static readonly StyledProperty<string> StartPageProperty = DP.Register<string>(nameof(StartPage),
                 typeof(WebBlock), new PropertyMetadata(OnStartPageChanged));
 
         [CanBeNull]
@@ -494,8 +489,7 @@ namespace AcManager.Controls.UserControls {
             }
         }
 
-        public static readonly DependencyProperty AddressBarExtraTemplateProperty = DependencyProperty.Register(nameof(AddressBarExtraTemplate),
-                typeof(DataTemplate),
+        public static readonly StyledProperty<DataTemplate> AddressBarExtraTemplateProperty = DP.Register<DataTemplate>(nameof(AddressBarExtraTemplate),
                 typeof(WebBlock), new PropertyMetadata(OnAddressBarExtraTemplateChanged));
 
         public DataTemplate AddressBarExtraTemplate {

@@ -1,0 +1,14 @@
+<Project>
+  <!--
+    Sources which are not ported to Avalonia yet (excluded from the build, see LinuxPortDocs.md).
+    Move files out of this list as they get ported.
+  -->
+  <ItemGroup>
+    <!-- CefSharp (Chromium Embedded Framework) is Windows-only -->
+    <Compile Remove="UserControls\Cef\**;Helpers\CefSharpResolverService.cs" />
+    <!-- libvlc based video player (xZune.Vlc) is Windows-only -->
+    <Compile Remove="Video\**" />
+    <!-- OxyPlot (old WPF version) graphs -->
+    <Compile Remove="Graphs\**" />
+  </ItemGroup>
+</Project>

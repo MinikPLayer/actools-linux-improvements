@@ -17,7 +17,7 @@ namespace AcManager.Controls.Graphs {
             Recreate();
         }
 
-        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(nameof(Source), typeof(GraphData),
+        public static readonly StyledProperty<GraphData> SourceProperty = DP.Register<GraphData>(nameof(Source),
                 typeof(CustomGraphViewer), new PropertyMetadata(OnSourceChanged));
 
         public GraphData Source {
@@ -37,7 +37,7 @@ namespace AcManager.Controls.Graphs {
             InvalidatePlot();
         }
 
-        public static readonly DependencyProperty XAxisTitleProperty = DependencyProperty.Register(nameof(XAxisTitle), typeof(string),
+        public static readonly StyledProperty<string> XAxisTitleProperty = DP.Register<string>(nameof(XAxisTitle),
                 typeof(CustomGraphViewer), new PropertyMetadata(OnXAxisTitleChanged));
 
         public string XAxisTitle {
@@ -49,7 +49,7 @@ namespace AcManager.Controls.Graphs {
             ((CustomGraphViewer)o).Invalidate();
         }
 
-        public static readonly DependencyProperty YAxisTitleProperty = DependencyProperty.Register(nameof(YAxisTitle), typeof(string),
+        public static readonly StyledProperty<string> YAxisTitleProperty = DP.Register<string>(nameof(YAxisTitle),
                 typeof(CustomGraphViewer), new PropertyMetadata(OnYAxisTitleChanged));
 
         public string YAxisTitle {
@@ -61,7 +61,7 @@ namespace AcManager.Controls.Graphs {
             ((CustomGraphViewer)o).Invalidate();
         }
 
-        public static readonly DependencyProperty ValueBrushProperty = DependencyProperty.Register(nameof(ValueBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> ValueBrushProperty = DP.Register<Brush>(nameof(ValueBrush),
                 typeof(CustomGraphViewer), new PropertyMetadata(OnValueBrushChanged));
 
         public Brush ValueBrush {
@@ -73,7 +73,7 @@ namespace AcManager.Controls.Graphs {
             ((CustomGraphViewer)o).Invalidate();
         }
 
-        public static readonly DependencyProperty TrackerFormatStringProperty = DependencyProperty.Register(nameof(TrackerFormatString), typeof(string),
+        public static readonly StyledProperty<string> TrackerFormatStringProperty = DP.Register<string>(nameof(TrackerFormatString),
                 typeof(CustomGraphViewer), new PropertyMetadata("[b]{4:F1}[/b] at [b]{2:F1}[/b]", OnTrackerFormatStringChanged));
 
         public string TrackerFormatString {

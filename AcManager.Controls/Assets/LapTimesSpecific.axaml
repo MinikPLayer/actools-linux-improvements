@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:h="clr-namespace:AcManager.Controls.Helpers" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ContextMenu x:Key="BestLapWrappedContextMenu">
+    <MenuItem Header="Setup hotlap" Command="{x:Static h:CommonCommands.SetupHotlapCommand}">
+      <MenuItem.CommandParameter>
+        <MultiBinding Converter="{StaticResource MultiParameterConverter}">
+          <Binding Path="Entry.CarId"/>
+          <Binding Path="Entry.TrackId"/>
+        </MultiBinding>
+      </MenuItem.CommandParameter>
+    </MenuItem>
+    <MenuItem Header="Start hotlap" Command="{x:Static h:CommonCommands.RunHotlapCommand}" Foreground="{DynamicResource Go}" FontWeight="Bold">
+      <MenuItem.CommandParameter>
+        <MultiBinding Converter="{StaticResource MultiParameterConverter}">
+          <Binding Path="Entry.CarId"/>
+          <Binding Path="Entry.TrackId"/>
+        </MultiBinding>
+      </MenuItem.CommandParameter>
+    </MenuItem>
+    <Separator/>
+    <MenuItem Header="Get link to result" Command="{x:Static h:CommonCommands.ShareLapTimeEntryCommand}" CommandParameter="{Binding Entry}">
+      <MenuItem.Icon>
+        <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Remove entry" Command="{x:Static h:CommonCommands.RemoveLapTimeEntryCommand}" CommandParameter="{Binding Entry}">
+      <MenuItem.Icon>
+        <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource CloseIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+      </MenuItem.Icon>
+    </MenuItem>
+  </ContextMenu>
+
+  <c:ContextMenusItems x:Key="BestLapWrappedContextMenuItems">
+    <MenuItem Header="Setup hotlap" Command="{x:Static h:CommonCommands.SetupHotlapCommand}">
+      <MenuItem.CommandParameter>
+        <MultiBinding Converter="{StaticResource MultiParameterConverter}">
+          <Binding Path="Entry.CarId"/>
+          <Binding Path="Entry.TrackId"/>
+        </MultiBinding>
+      </MenuItem.CommandParameter>
+    </MenuItem>
+    <MenuItem Header="Start hotlap" Command="{x:Static h:CommonCommands.RunHotlapCommand}" Foreground="{DynamicResource Go}" FontWeight="Bold">
+      <MenuItem.CommandParameter>
+        <MultiBinding Converter="{StaticResource MultiParameterConverter}">
+          <Binding Path="Entry.CarId"/>
+          <Binding Path="Entry.TrackId"/>
+        </MultiBinding>
+      </MenuItem.CommandParameter>
+    </MenuItem>
+    <Separator/>
+    <MenuItem Header="Get link to result" Command="{x:Static h:CommonCommands.ShareLapTimeEntryCommand}" CommandParameter="{Binding Entry}">
+      <MenuItem.Icon>
+        <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource ShareIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+      </MenuItem.Icon>
+    </MenuItem>
+    <MenuItem Header="Remove entry" Command="{x:Static h:CommonCommands.RemoveLapTimeEntryCommand}" CommandParameter="{Binding Entry}">
+      <MenuItem.Icon>
+        <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource CloseIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+      </MenuItem.Icon>
+    </MenuItem>
+  </c:ContextMenusItems>
+</ResourceDictionary>

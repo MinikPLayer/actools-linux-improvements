@@ -7,10 +7,9 @@ namespace AcManager.Controls {
     [ContentProperty(nameof(PreviewContent))]
     public class TrackBlock : Control {
         static TrackBlock() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TrackBlock), new FrameworkPropertyMetadata(typeof(TrackBlock)));
         }
 
-        public static readonly DependencyProperty ShowPreviewProperty = DependencyProperty.Register(nameof(ShowPreview), typeof(bool),
+        public static readonly StyledProperty<bool> ShowPreviewProperty = DP.Register<bool>(nameof(ShowPreview),
                 typeof(TrackBlock), new PropertyMetadata(true));
 
         public bool ShowPreview {
@@ -18,7 +17,7 @@ namespace AcManager.Controls {
             set => SetValue(ShowPreviewProperty, value);
         }
 
-        public static readonly DependencyProperty TrackProperty = DependencyProperty.Register(nameof(Track), typeof(TrackObjectBase),
+        public static readonly StyledProperty<TrackObjectBase> TrackProperty = DP.Register<TrackObjectBase>(nameof(Track),
                 typeof(TrackBlock));
 
         public TrackObjectBase Track {
@@ -26,7 +25,7 @@ namespace AcManager.Controls {
             set => SetValue(TrackProperty, value);
         }
 
-        public static readonly DependencyProperty PreviewContentProperty = DependencyProperty.Register(nameof(PreviewContent), typeof(object),
+        public static readonly StyledProperty<object> PreviewContentProperty = DP.Register<object>(nameof(PreviewContent),
                 typeof(TrackBlock));
 
         public object PreviewContent {

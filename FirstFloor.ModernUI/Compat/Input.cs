@@ -65,9 +65,29 @@ namespace System.Windows.Input {
 
         internal static IInputElement LastOver { get; set; }
 
+        private static TopLevel _lastTopLevel;
+        private static Point _lastPoint;
+
+        /// <summary>
+        /// Last known position of the pointer relative to some element (null means screen-independent top level coordinates).
+        /// </summary>
+        public static Point GetPosition(IInputElement relativeTo) {
+            if (_lastTopLevel == null) return default;
+            if (relativeTo is Visual visual) {
+                return _lastTopLevel.TranslatePoint(_lastPoint, visual) ?? default;
+            }
+
+            return _lastPoint;
+        }
+
         internal static void Update(PointerEventArgs e) {
             Keyboard.Hook();
             LastOver = e.Source as IInputElement ?? LastOver;
+            if (e.Source is Visual source && TopLevel.GetTopLevel(source) is TopLevel topLevel) {
+                _lastTopLevel = topLevel;
+                _lastPoint = e.GetPosition(topLevel);
+            }
+
             var p = e.GetCurrentPoint(null).Properties;
             LeftButton = p.IsLeftButtonPressed ? MouseButtonState.Pressed : MouseButtonState.Released;
             RightButton = p.IsRightButtonPressed ? MouseButtonState.Pressed : MouseButtonState.Released;

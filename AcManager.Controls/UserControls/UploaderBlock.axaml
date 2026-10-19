@@ -1,0 +1,138 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lo="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:h="http://acstuff.club/app/sharing" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.UploaderBlock">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Expander.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
+      <mui:SpacingUniformGrid x:Key="UploaderCredentials.MegaUploader" HorizontalSpacing="4" Rows="1" DataContext="{Binding SelectedUploader}">
+        <mui:BetterTextBox Text="{Binding UserEmail}" Placeholder="E-mail"/>
+        <mui:ProperPasswordBox Password="{Binding UserPassword}" Placeholder="Password"/>
+      </mui:SpacingUniformGrid>
+
+      <mui:SpacingUniformGrid x:Key="UploaderSettings.DropboxUploader" HorizontalSpacing="4" Rows="1" DataContext="{Binding SelectedUploader}">
+        <CheckBox IsChecked="{Binding MuteUpload}" ToolTip.Tip="Disable Dropbox notification">
+          <Label Content="Mute upload"/>
+        </CheckBox>
+      </mui:SpacingUniformGrid>
+      <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <StackPanel Margin="0" Classes="SettingsPanel">
+    <DockPanel>
+      <mui:BooleanSwitch x:Name="UploaderParams" Value="{Binding SelectedUploader.IsReady}" IsVisible="{Binding SelectedUploader.SupportsSigning, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <mui:BooleanSwitch.True>
+          <mui:AsyncButton Margin="0" Content="Log out" Command="{Binding LogOutCommand}" Padding="16 1 16 3"/>
+        </mui:BooleanSwitch.True>
+        <mui:BooleanSwitch.False>
+          <DockPanel DockPanel.Dock="Left" Margin="0">
+            <mui:BooleanLazySwitch x:Name="UploaderParamsSwitch" TrueResourceKey="{Binding SelectedUploader.Id}" TrueResourceKeyStringFormat="UploaderCredentials.{0}" Value="True" DockPanel.Dock="Left" CollapseIfMissing="True" Margin="0 0 4 0"/>
+            <mui:AsyncButton Margin="0" Content="Sign in" Command="{Binding SignInCommand}" Padding="16 1 16 3"/><!-- {x:Static g:AppStrings.Common_SignIn} -->
+          </DockPanel>
+        </mui:BooleanSwitch.False>
+      </mui:BooleanSwitch>
+
+      <Label Content="Destination:"/><!-- {x:Static g:AppStrings.Settings_Sharing_BigFilesDestinationLabel} -->
+      <ComboBox ItemsSource="{Binding UploadersList}" SelectedItem="{Binding SelectedUploader}" Height="23">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <DockPanel x:Name="Panel" MaxWidth="320" HorizontalAlignment="Left">
+              <DockPanel.Styles><Style Selector="#Panel"><Style Selector="^ #Panel"><Setter Property="Margin" Value="0 4"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] #Description"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S0)=True] #Panel"><Setter Property="Margin" Value="0"/>
+              </Style></Style></DockPanel.Styles><mui:BetterImage ImageSource="{Binding Icon}" Margin="0 0 6 0" ShowBroken="False" Width="16" Height="16" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="Linear">
+                <mui:BetterImage.Effect>
+                  <mui:OverlayColorEffect OverlayColor="{Binding Path=(TextBlock.Foreground).(SolidColorBrush.Color), RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}}"/>
+                </mui:BetterImage.Effect>
+              </mui:BetterImage>
+              <mui:BbCodeBlock x:Name="Description" Margin="0 4 0 0" Text="{Binding Description}" DockPanel.Dock="Bottom" TextWrapping="Wrap" Classes="Small"/>
+              <TextBlock Text="{Binding DisplayName}"/>
+            </DockPanel>
+            </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+    </DockPanel>
+
+    <mui:BooleanLazySwitch TrueResourceKey="{Binding Id}" TrueResourceKeyStringFormat="UploaderSettings.{0}" Value="True" DataContext="{Binding SelectedUploader}" CollapseIfMissing="True" Margin="0 0 0 8"/>
+
+    <DockPanel IsVisible="{Binding SelectedUploader.SupportsDirectories, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <Label Content="Folder:"/><!-- {x:Static g:AppStrings.Settings_Sharing_BigFilesFolderLabel} -->
+      <mui:AsyncButton Width="120" Command="{Binding UpdateDirectoriesCommand}" VerticalAlignment="Top" Content="Update" Padding="16 1 16 3" ToolTip.Tip="Press “Update” to reload list of folders"/>
+      <!-- {x:Static g:AppStrings.Common_Update} {x:Static g:AppStrings.Settings_Sharing_BigFilesFoldersUpdate_Tooltip} -->
+      <mui:ReferenceSwitch Value="{Binding UploaderDirectories}" Height="240">
+        <mui:ReferenceSwitch.Null>
+          <mui:Switch Value="{Binding IsBusy}" Height="20" VerticalAlignment="Top">
+            <TextBlock mui:Switch.When="0" Text="N/A" VerticalAlignment="Center"/>
+            <DockPanel Margin="0" Height="20">
+              <Canvas Width="20" Height="20" DockPanel.Dock="Left" Margin="0 0 8 0">
+                <mui:ModernProgressRing Width="80" Height="80" IsActive="True">
+                  <mui:ModernProgressRing.RenderTransform>
+                    <ScaleTransform ScaleX="0.25" ScaleY="0.25" CenterX="0" CenterY="0"/>
+                  </mui:ModernProgressRing.RenderTransform>
+                </mui:ModernProgressRing>
+              </Canvas>
+              <TextBlock Text="Loading…" VerticalAlignment="Center" Foreground="{DynamicResource WindowText}"/>
+            </DockPanel>
+          </mui:Switch>
+        </mui:ReferenceSwitch.Null>
+        <mui:ReferenceSwitch.NonNull>
+          <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" SelectedItemChanged="OnTreeSelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+            <TreeView.Resources>
+              <ControlTheme TargetType="TreeViewItem" x:Key="{x:Type TreeViewItem}">
+                <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate>
+                      <mui:RememberingExpander DefaultValue="False" Key="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.Id, StringFormat='{}.sharing_dir_{0}', Mode=OneTime}" Header="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=Header}" Theme="{StaticResource Expander.Animated}">
+                        <ItemsPresenter x:Name="ItemsHost" Margin="20 0 0 0"/>
+                      </mui:RememberingExpander>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+                <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate>
+                          <ContentPresenter Margin="16 0 0 0" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=Header}"/>
+                        </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  </Style></ControlTheme>
+              <HierarchicalDataTemplate DataType="{x:Type h:DirectoryEntry}" ItemsSource="{Binding Children}">
+                <Border x:Name="Panel" Padding="4 3" Background="Transparent">
+                  <DockPanel>
+                    <TextBlock Text="{Binding Size, Converter={StaticResource FileSizeConverter}}" VerticalAlignment="Center" DockPanel.Dock="Right" IsVisible="{Binding Size, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+                    <TextBlock Text="{Binding DisplayName}">
+                      <ToolTip.Tip>
+                        <TextBlock Text="{Binding Id, StringFormat='{}ID: {0}', TargetNullValue='?'}"/><!-- {x:Static g:AppStrings.Common_IdFormat} -->
+                      </ToolTip.Tip>
+                    </TextBlock>
+                  </DockPanel>
+                </Border>
+                <HierarchicalDataTemplate.Triggers>
+                  <Trigger SourceName="Panel" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Panel" Property="Control.Foreground" Value="{DynamicResource ItemTextHover}"/>
+                    <Setter TargetName="Panel" Property="Control.Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                  </Trigger>
+                  <DataTrigger Value="True">
+                    <DataTrigger.Binding>
+                      <MultiBinding Converter="{StaticResource EqualToBooleanConverter}">
+                        <Binding Path="DataContext.UploaderDirectory.Id" RelativeSource="{RelativeSource AncestorType={x:Type lo:UploaderBlock}}"/>
+                        <Binding Path="Id"/>
+                      </MultiBinding>
+                    </DataTrigger.Binding>
+                    <Setter TargetName="Panel" Property="TextBlock.FontWeight" Value="Bold"/>
+                    <Setter TargetName="Panel" Property="Control.Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                    <Setter TargetName="Panel" Property="Control.Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                  </DataTrigger>
+                </HierarchicalDataTemplate.Triggers>
+              </HierarchicalDataTemplate>
+            </TreeView.Resources>
+          </TreeView>
+        </mui:ReferenceSwitch.NonNull>
+      </mui:ReferenceSwitch>
+    </DockPanel>
+
+  </StackPanel>
+</UserControl>

@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Serialization;
 namespace AcManager.Controls.Converters {
     [ValueConversion(typeof(int), typeof(Brush))]
     public class PlaceToBrushConverter : DependencyObject, IValueConverter {
-        public static readonly DependencyProperty FirstPlaceBrushProperty = DependencyProperty.Register(nameof(FirstPlaceBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> FirstPlaceBrushProperty = DP.Register<Brush>(nameof(FirstPlaceBrush),
                 typeof(PlaceToBrushConverter), new PropertyMetadata(null, (o, e) => ((PlaceToBrushConverter)o)._firstPlaceBrush = (Brush)e.NewValue));
         private Brush _firstPlaceBrush;
         public Brush FirstPlaceBrush {
@@ -16,7 +16,7 @@ namespace AcManager.Controls.Converters {
             set => SetValue(FirstPlaceBrushProperty, value);
         }
 
-        public static readonly DependencyProperty SecondPlaceBrushProperty = DependencyProperty.Register(nameof(SecondPlaceBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> SecondPlaceBrushProperty = DP.Register<Brush>(nameof(SecondPlaceBrush),
                 typeof(PlaceToBrushConverter), new PropertyMetadata(null, (o, e) => ((PlaceToBrushConverter)o)._secondPlaceBrush = (Brush)e.NewValue));
         private Brush _secondPlaceBrush;
         public Brush SecondPlaceBrush {
@@ -24,7 +24,7 @@ namespace AcManager.Controls.Converters {
             set => SetValue(SecondPlaceBrushProperty, value);
         }
 
-        public static readonly DependencyProperty ThirdPlaceBrushProperty = DependencyProperty.Register(nameof(ThirdPlaceBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> ThirdPlaceBrushProperty = DP.Register<Brush>(nameof(ThirdPlaceBrush),
                 typeof(PlaceToBrushConverter), new PropertyMetadata(null, (o, e) => ((PlaceToBrushConverter)o)._thirdPlaceBrush = (Brush)e.NewValue));
         private Brush _thirdPlaceBrush;
         public Brush ThirdPlaceBrush {
@@ -32,7 +32,7 @@ namespace AcManager.Controls.Converters {
             set => SetValue(ThirdPlaceBrushProperty, value);
         }
 
-        public static readonly DependencyProperty ForthPlaceBrushProperty = DependencyProperty.Register(nameof(ForthPlaceBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> ForthPlaceBrushProperty = DP.Register<Brush>(nameof(ForthPlaceBrush),
                 typeof(PlaceToBrushConverter), new PropertyMetadata(null, (o, e) => ((PlaceToBrushConverter)o)._forthPlaceBrush = (Brush)e.NewValue));
         private Brush _forthPlaceBrush;
         public Brush ForthPlaceBrush {
@@ -40,7 +40,7 @@ namespace AcManager.Controls.Converters {
             set => SetValue(ForthPlaceBrushProperty, value);
         }
 
-        public static readonly DependencyProperty DefaultBrushProperty = DependencyProperty.Register(nameof(DefaultBrush), typeof(Brush),
+        public static readonly StyledProperty<Brush> DefaultBrushProperty = DP.Register<Brush>(nameof(DefaultBrush),
                 typeof(PlaceToBrushConverter), new PropertyMetadata(null, (o, e) => ((PlaceToBrushConverter)o)._defaultBrush = (Brush)e.NewValue));
         private Brush _defaultBrush;
         public Brush DefaultBrush {

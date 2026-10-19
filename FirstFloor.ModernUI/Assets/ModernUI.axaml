@@ -3,21 +3,21 @@
     <ResourceInclude Source="AsyncButton.axaml"/>
     <ResourceInclude Source="Button.axaml"/>
     <ResourceInclude Source="ButtonWithComboBox.axaml"/>
-    <ResourceInclude Source="Calendar.axaml"/>
+    <!-- PORT: removed include of Calendar -->
     <ResourceInclude Source="CheckBox.axaml"/>
     <ResourceInclude Source="ColorPicker.axaml"/>
     <ResourceInclude Source="ComboBox.axaml"/>
     <ResourceInclude Source="ContextMenu.axaml"/>
 
-    <ResourceInclude Source="DataGrid.Base.axaml"/>
-    <ResourceInclude Source="DataGrid.Cells.axaml"/>
-    <ResourceInclude Source="DataGrid.Headers.axaml"/>
-    <ResourceInclude Source="DataGrid.Rows.axaml"/>
-    <ResourceInclude Source="DataGrid.axaml"/>
+    <!-- PORT: removed include of DataGrid.Base -->
+    <!-- PORT: removed include of DataGrid.Cells -->
+    <!-- PORT: removed include of DataGrid.Headers -->
+    <!-- PORT: removed include of DataGrid.Rows -->
+    <!-- PORT: removed include of DataGrid -->
 
-    <ResourceInclude Source="DatePicker.axaml"/>
+    <!-- PORT: removed include of DatePicker -->
     <ResourceInclude Source="Easing.axaml"/>
-    <ResourceInclude Source="ExceptionDetails.axaml"/>
+    <!-- PORT: removed include of ExceptionDetails -->
     <ResourceInclude Source="Expander.axaml"/>
     <ResourceInclude Source="Fonts.axaml"/>
     <ResourceInclude Source="GridSplitter.axaml"/>
@@ -25,25 +25,25 @@
     <ResourceInclude Source="Label.axaml"/>
     <ResourceInclude Source="Layout.axaml"/>
     <ResourceInclude Source="ListBox.axaml"/>
-    <ResourceInclude Source="ListView.axaml"/>
+    <!-- PORT: removed include of ListView -->
     <ResourceInclude Source="ModernProgressRing.Special.axaml"/>
-    <ResourceInclude Source="MenuItem.axaml"/>
-    <ResourceInclude Source="PasswordBox.axaml"/>
+    <!-- PORT: removed include of MenuItem -->
+    <!-- PORT: removed include of PasswordBox -->
     <ResourceInclude Source="ProgressBar.axaml"/>
     <ResourceInclude Source="RadioButton.axaml"/>
     <ResourceInclude Source="ScrollBar.axaml"/>
-    <ResourceInclude Source="SelectableBbCodeBlock.axaml"/>
+    <!-- PORT: removed include of SelectableBbCodeBlock -->
     <ResourceInclude Source="Slider.axaml"/>
     <ResourceInclude Source="TextBlock.axaml"/>
     <ResourceInclude Source="TextBox.axaml"/>
-    <ResourceInclude Source="ToolBar.axaml"/>
+    <!-- PORT: removed include of ToolBar -->
     <ResourceInclude Source="ToolTip.axaml"/>
     <ResourceInclude Source="TreeView.axaml"/>
 
     <ResourceInclude Source="FancyHint.axaml"/>
     <ResourceInclude Source="FancyScroll.axaml"/>
     <ResourceInclude Source="Marks.axaml"/>
-    <ResourceInclude Source="ProperPasswordBox.axaml"/>
+    <!-- PORT: removed include of ProperPasswordBox -->
     <ResourceInclude Source="Watermark.axaml"/>
 
     <ResourceInclude Source="BetterTextBox.axaml"/>

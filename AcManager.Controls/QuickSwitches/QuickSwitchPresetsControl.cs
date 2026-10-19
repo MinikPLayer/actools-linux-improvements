@@ -4,10 +4,9 @@ using System.Windows.Media;
 namespace AcManager.Controls.QuickSwitches {
     public class QuickSwitchPresetsControl : UserPresetsControl {
         static QuickSwitchPresetsControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(QuickSwitchPresetsControl), new FrameworkPropertyMetadata(typeof(QuickSwitchPresetsControl)));
         }
 
-        public static readonly DependencyProperty IconDataProperty = DependencyProperty.Register(nameof(IconData), typeof(Geometry),
+        public static readonly StyledProperty<Geometry> IconDataProperty = DP.Register<Geometry>(nameof(IconData),
                 typeof(QuickSwitchPresetsControl));
 
         public Geometry IconData {

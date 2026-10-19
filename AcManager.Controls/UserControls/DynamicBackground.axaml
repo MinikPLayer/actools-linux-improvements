@@ -1,0 +1,11 @@
+﻿<mui:Cell xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.DynamicBackground" Loaded="OnLoaded" Background="{DynamicResource ThumbnailBackground}" x:Name="This">
+    <Viewbox Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <mui:Cell>
+            <Image Source="{Binding Static, ElementName=This}"/>
+            <Border x:Name="VideoWrapper" Opacity="0" IsHitTestVisible="False">
+                <!-- PORT: removed VisualStateManager.VisualStateGroups -->
+            </Border>
+        </mui:Cell>
+    </Viewbox>
+    <Border Background="{DynamicResource DynamicBackgroundOverlay}"/>
+</mui:Cell>

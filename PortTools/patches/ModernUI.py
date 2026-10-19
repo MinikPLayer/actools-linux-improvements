@@ -55,4 +55,38 @@ PATCHES = [
         ('    <Setter Property="BorderBrush" Value="{x:Null}"/>\n', ''),
         (' c:ModernFrame.KeepContentAlive="False"', ''),
     ]),
+
+    ('Assets/Easing.axaml', [
+        (' EasingMode="EaseIn"', ''),
+    ]),
+
+    ('Assets/ScrollBar.axaml', [
+        ('re', r'<ControlTheme x:Key="\{x:Static GridView.GridViewScrollViewerStyleKey\}".*?</ControlTheme>', ''),
+        ('re', r'<Setter Property="Width" Value="Auto"/>\s*', ''),
+        ('re', r' IsEnabled="\{TemplateBinding IsMouseOver\}"', ''),
+        ('re', r'<ControlTheme TargetType="ScrollViewer" x:Key="\{x:Type ScrollViewer\}">.*?</ControlTheme>',
+         '''<ControlTheme TargetType="ScrollViewer" x:Key="{x:Type ScrollViewer}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+          <ScrollContentPresenter Name="PART_ContentPresenter" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"
+              HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}" VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+              HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}" VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+              ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}">
+            <ScrollContentPresenter.GestureRecognizers>
+              <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                  CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                  IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}"/>
+            </ScrollContentPresenter.GestureRecognizers>
+          </ScrollContentPresenter>
+          <ScrollBar Name="PART_HorizontalScrollBar" Grid.Row="1" Orientation="Horizontal"/>
+          <ScrollBar Name="PART_VerticalScrollBar" Grid.Column="1" Orientation="Vertical"/>
+          <Panel Grid.Row="1" Grid.Column="1" Background="{DynamicResource ScrollBarBackground}"/>
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>'''),
+    ]),
 ]

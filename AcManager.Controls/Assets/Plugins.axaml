@@ -1,0 +1,164 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <StackPanel x:Key="PluginSettings.CefSharp" Margin="20 8 0 0" DataContext="{x:Static t:SettingsHolder.Plugins}" Classes="SettingsPanel">
+    <CheckBox IsChecked="{Binding CefWinForms}" ToolTip.Tip="Much, much faster, but browser can’t be semi-transparent, so you might want to use some custom CSS for SRS to fix it">
+      <Label Content="WinForms mode (restart might be required)"/>
+    </CheckBox>
+
+    <CheckBox IsChecked="{Binding Cef60Fps}" IsVisible="{Binding CefWinForms, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+      <Label Content="Work in glorious 60 frames per second"/>
+    </CheckBox>
+
+    <CheckBox IsChecked="{Binding CefFilterAds}" VerticalContentAlignment="Top">
+      <ToolTip.Tip>
+        <mui:BbCodeBlock MaxWidth="480" Text="Please, keep in mind most ads will be filtered out, and [b]ads are needed so people can pay for servers[/b]. On the other hand, that Chromium-to-WPF integration is several times slower than regular Chromium-based browser, so it might be necessary in some cases." TextWrapping="Wrap"/>
+      </ToolTip.Tip>
+      <Label Content="Filter third-party scripts (not recommended, might break some things, but might help if you’re experiencing performance issues)"/>
+    </CheckBox>
+  </StackPanel>
+
+  <StackPanel x:Key="PluginSettings.ImageMontage" Margin="20 8 0 0" DataContext="{x:Static t:SettingsHolder.Plugins}" Classes="SettingsPanel">
+    <DockPanel ToolTip.Tip="Used for smoothing pieces if SSLR or SSAO is enabled">
+      <mui:ValueLabel Value="{Binding MontageVramCache, Converter={StaticResource FileSizeConverter}}" mui:BetterTextBox.Minimum="0" Content="VRAM cache size"/>
+      <Slider Minimum="0" Maximum="1" TickFrequency="0.1" TickPlacement="BottomRight">
+        <Slider.Value>
+          <Binding Path="MontageVramCache">
+            <Binding.Converter>
+              <mui:LogarithmicScale Minimum="268435456" Middle="536870912" Maximum="2147483648"/>
+            </Binding.Converter>
+          </Binding>
+        </Slider.Value>
+      </Slider>
+    </DockPanel>
+
+    <DockPanel>
+      <mui:ValueLabel Value="{Binding MontageMemoryLimit, Converter={StaticResource FileSizeConverter}}" mui:BetterTextBox.Minimum="0" Content="RAM limitation"/>
+      <Slider Minimum="0" Maximum="1" TickFrequency="0.1" TickPlacement="BottomRight">
+        <Slider.Value>
+          <Binding Path="MontageMemoryLimit">
+            <Binding.Converter>
+              <mui:LogarithmicScale Minimum="1073741824" Middle="2147483648" Maximum="17179869184"/>
+            </Binding.Converter>
+          </Binding>
+        </Slider.Value>
+      </Slider>
+    </DockPanel>
+
+    <DockPanel>
+      <Label Content="Temporary files location:"/>
+      <Button Command="{Binding ChangeMontageTemporaryDirectoryCommand}" Content="{x:Static c:ControlsStrings.Common_Change}"/>
+      <mui:BetterTextBox Text="{Binding MontageTemporaryDirectory}" Placeholder="{Binding MontageDefaultTemporaryDirectory}"/>
+    </DockPanel>
+
+    <c:MessageBlock>
+      <mui:BbCodeBlock Text="If you’re going to create huge screenshots, it might require quite a lot of memory to combine the piecese — for example, creating 30720×17280 image takes 4 GB of RAM. Here, you can specify how much of RAM ImageMagick is allowed to use, and, if it won’t be enough, where it should store temporary files to keep going."/>
+    </c:MessageBlock>
+  </StackPanel>
+
+  <DataTemplate x:Key="PluginItemTemplate.NoOptions" DataType="t:PluginEntry">
+    <StackPanel Margin="0 0 0 12">
+      <DockPanel IsEnabled="{Binding CanWork}">
+        <!-- Enabling checkbox -->
+        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsEnabled}" Margin="0 0 4 0" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- Installed (or available) version -->
+        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Label">
+          <TextBlock.Text>
+            <PriorityBinding>
+              <Binding Path="InstalledVersion"/>
+              <Binding Path="Version"/>
+            </PriorityBinding>
+          </TextBlock.Text>
+        </TextBlock>
+
+        <!-- Name -->
+        <TextBlock Text="{Binding Name}" FontWeight="Bold" ToolTip.Tip="{Binding Id}"/>
+      </DockPanel>
+
+      <!-- Description -->
+      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Classes="Small"/>
+
+      <!-- Not available message -->
+      <DockPanel IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+        <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" DockPanel.Dock="Left"/>
+        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Classes="Small"/>
+      </DockPanel>
+
+      <!-- Obsolete message -->
+      <DockPanel IsVisible="{Binding IsObsolete, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left"/>
+        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Classes="Small">
+        </TextBlock>
+      </DockPanel>
+
+      <mui:BooleanSwitch Value="{Binding HasUpdate}" IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <mui:BooleanSwitch.True>
+          <!-- Update button -->
+          <mui:AsyncButton Command="{Binding InstallCommand}" Content="{Binding Version}" Progress="{Binding Progress}" ProgressPercentage="True" ProgressMessage="True" CancelCommand="{Binding CancelCommand}" FontSize="{DynamicResource SmallFontSize}" Height="21"/>
+        </mui:BooleanSwitch.True>
+        <mui:BooleanSwitch.False>
+          <!-- Installation button -->
+          <mui:AsyncButton Command="{Binding InstallCommand}" Content="{Binding DisplaySize}" Progress="{Binding Progress}" ProgressPercentage="True" ProgressMessage="True" CancelCommand="{Binding CancelCommand}" FontSize="{DynamicResource SmallFontSize}" Height="21" IsVisible="{Binding AvailableToInstall, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </mui:BooleanSwitch.False>
+      </mui:BooleanSwitch>
+    </StackPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="PluginItemTemplate" DataType="t:PluginEntry">
+    <StackPanel Margin="0 0 0 20" x:Name="__Dt0">
+      <StackPanel.Styles><Style Selector="#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CanWork, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] #PART_Name"><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
+      </Style></Style></StackPanel.Styles><DockPanel IsEnabled="{Binding CanWork}">
+        <!-- Enabling checkbox -->
+        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsEnabled}" Margin="0 0 4 0" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- Installed (or available) version -->
+        <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Label">
+          <TextBlock.Text>
+            <PriorityBinding>
+              <Binding Path="InstalledVersion"/>
+              <Binding Path="Version"/>
+            </PriorityBinding>
+          </TextBlock.Text>
+        </TextBlock>
+
+        <!-- Name -->
+        <TextBlock x:Name="PART_Name" Text="{Binding Name}" ToolTip.Tip="{Binding Id}" Classes="Heading2"/>
+      </DockPanel>
+
+      <!-- Description -->
+      <TextBlock Text="{Binding Description}" Margin="0 4 0 8" TextWrapping="Wrap" Classes="Small"/>
+
+      <!-- Not available message -->
+      <DockPanel IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+        <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" DockPanel.Dock="Left"/>
+        <TextBlock Text="{Binding AppVersion, StringFormat={x:Static c:ControlsStrings.Plugins_NotAvailable}}" FontWeight="Bold" Margin="4 4 0 8" VerticalAlignment="Center" Classes="Small"/>
+      </DockPanel>
+
+      <!-- Obsolete message -->
+      <DockPanel IsVisible="{Binding IsObsolete, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left"/>
+        <TextBlock VerticalAlignment="Center" FontWeight="Bold" Margin="4 4 0 8" Text="{x:Static c:ControlsStrings.Plugin_ObsoleteMessage}" Classes="Small">
+        </TextBlock>
+      </DockPanel>
+
+      <mui:BooleanSwitch Value="{Binding HasUpdate}" IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <mui:BooleanSwitch.True>
+          <!-- Update button -->
+          <mui:AsyncButton Command="{Binding InstallCommand}" Content="{Binding Version}" Progress="{Binding Progress}" ProgressPercentage="True" ProgressMessage="True" CancelCommand="{Binding CancelCommand}"/>
+        </mui:BooleanSwitch.True>
+        <mui:BooleanSwitch.False>
+          <!-- Installation button -->
+          <mui:AsyncButton Command="{Binding InstallCommand}" Content="{Binding DisplaySize}" Progress="{Binding Progress}" ProgressPercentage="True" ProgressMessage="True" CancelCommand="{Binding CancelCommand}" IsVisible="{Binding AvailableToInstall, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </mui:BooleanSwitch.False>
+      </mui:BooleanSwitch>
+
+      <mui:BooleanLazySwitch TrueResourceKey="{Binding GroupId}" TrueResourceKeyStringFormat="PluginSettings.{0}" Value="{Binding IsReady}"/>
+    </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

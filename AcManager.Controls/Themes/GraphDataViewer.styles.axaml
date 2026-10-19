@@ -1,0 +1,18 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:oxy="http://oxyplot.org/wpf" xmlns:gr="clr-namespace:AcManager.Controls.Graphs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/../Themes/GraphDataViewer.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ac|PropertiesGrid">
+    <Setter Property="LabelFontFamily" Value="{StaticResource CondensedFont}"/>
+    <Setter Property="LabelFontWeight" Value="Bold"/>
+    <Setter Property="LabelPadding" Value="8 1 0 0"/>
+    </Style>
+
+  <Style Selector="gr|CarGraphViewer">
+    <Setter Property="Height" Value="200"/>
+    <Setter Property="ContextMenu">
+      <Setter.Value>
+        <ContextMenu>
+          <MenuItem Header="Smooth" IsCheckable="True" IsChecked="{Binding SmoothCurves, Source={x:Static t:SettingsHolder.Content}}"/>
+        </ContextMenu>
+      </Setter.Value>
+    </Setter>
+  </Style>
+</Styles>

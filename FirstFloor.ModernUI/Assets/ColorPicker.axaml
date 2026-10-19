@@ -16,8 +16,8 @@
             <c:Cell>
               <c:BetterTextBox x:Name="PART_TextBox" Template="{StaticResource BetterTextBoxControlTemplate.Simple}" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}" Theme="{StaticResource Borderless}"/>
               <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="3 2 5 0" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5" StaysOpen="False">
-                <c:Cell x:Name="PART_Root" HorizontalAlignment="Center">
+              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5">
+                <!-- PORT: removed StaysOpen (not in Avalonia) --><c:Cell x:Name="PART_Root" HorizontalAlignment="Center">
                   <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                   <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
                 </c:Cell>
@@ -51,8 +51,8 @@
             <c:Cell>
               <c:BetterTextBox x:Name="PART_TextBox" Template="{StaticResource BetterTextBoxControlTemplate.Simple}" Text="{Binding DisplayColor, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" Padding="{TemplateBinding Padding}" Placeholder="{x:Static mui:UiStrings.SelectColor}" Theme="{StaticResource Borderless}"/>
               <ToggleButton x:Name="PART_Button" HorizontalAlignment="Right" Margin="3 2 5 0" Background="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Converter={x:Static c:ColorPicker.ColorToBrushConverter}}" IsHitTestVisible="{Binding ElementName=PART_Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource ColorPickerToggleButton}"/>
-              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5" StaysOpen="False">
-                <c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
+              <Popup x:Name="PART_Popup" PlacementTarget="{Binding ElementName=PART_TextBox}" Placement="Bottom" HorizontalOffset="-4" IsOpen="{Binding IsChecked, ElementName=PART_Button, Mode=TwoWay}" VerticalOffset="-5">
+                <!-- PORT: removed StaysOpen (not in Avalonia) --><c:Cell x:Name="PART_Root" Margin="0" HorizontalAlignment="Center">
                   <c:ColorPickerPanel x:Name="PART_Panel" Background="{DynamicResource PopupBackground}" BorderThickness="0" Margin="1" Color="{Binding Color, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                   <Border BorderBrush="{DynamicResource Accent}" BorderThickness="1"/>
                 </c:Cell>

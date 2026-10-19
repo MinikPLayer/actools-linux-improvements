@@ -152,7 +152,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             TextDecorations = new TextDecorationCollection();
         }
 
-        protected override void OnRender(DrawingContext drawingContext) {
+        public override void Render(DrawingContext drawingContext) {
             EnsureGeometry();
 
             drawingContext.DrawGeometry(null, _pen, _textGeometry);

@@ -27,11 +27,19 @@ HELPER_NS = {
     'sw': 'clr-namespace:System.Windows;assembly=FirstFloor.ModernUI',
     'swi': 'clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI',
 }
+# resource dictionaries of ModernUI which aren't converted (Avalonia’s own templates are used instead)
+NOT_PORTED_ASSETS = {'MenuItem', 'ToolBar', 'DataGrid', 'DataGrid.Base', 'DataGrid.Cells', 'DataGrid.Headers', 'DataGrid.Rows', 'DatePicker',
+                     'Calendar', 'ListView', 'SelectableBbCodeBlock', 'ProperPasswordBox', 'PasswordBox', 'ExceptionDetails'}
+SYSTEM_PARAMETER_VALUES = {
+    'VerticalScrollBarWidthKey': '17', 'HorizontalScrollBarHeightKey': '17',
+    'VerticalScrollBarButtonHeightKey': '17', 'HorizontalScrollBarButtonWidthKey': '17',
+}
 COMPAT_STATICS = {'SystemCommands': 'sw', 'SystemParameters': 'sw', 'NavigationCommands': 'swi', 'ApplicationCommands': 'swi', 'ComponentCommands': 'swi'}
 X = '{%s}' % NS_X
 
 ELEMENT_RENAME = {
     'Page': 'UserControl',
+    'PasswordBox': 'TextBox',
     'ListView': 'ListBox',
     'ListViewItem': 'ListBoxItem',
     'AdornerDecorator': 'Panel',
@@ -84,6 +92,8 @@ PSEUDO = {
     ('ToggleButton.IsChecked', 'True'): ':checked',
     ('ToggleButton.IsChecked', 'False'): ':unchecked',
     ('IsEditable', 'True'): ':editable',
+    ('IsDragging', 'True'): ':pressed',
+    ('IsDragging', 'False'): ':not(:pressed)',
 }
 
 PROP_RENAME = {
@@ -342,6 +352,12 @@ def convert_markup(mk, ctx, prop=None, el=None):
     elif name == 'x:Type':
         if mk.args and isinstance(mk.args[0], str):
             mk.args[0] = type_name(mk.args[0])
+    elif name in ('DynamicResource', 'StaticResource') and mk.args and isinstance(mk.args[0], Markup) and mk.args[0].name == 'x:Static' \
+            and mk.args[0].args and isinstance(mk.args[0].args[0], str) and re.match(r'(sw:)?SystemParameters\.\w+Key$', mk.args[0].args[0]):
+        # system metrics have no counterpart, constants are used (sizes of Windows scroll bars)
+        key = mk.args[0].args[0].split('.')[-1]
+        if key in SYSTEM_PARAMETER_VALUES:
+            return SYSTEM_PARAMETER_VALUES[key]
     elif name == 'x:Static':
         if mk.args and isinstance(mk.args[0], str):
             owner = mk.args[0].split('.')[0]
@@ -414,6 +430,21 @@ class Converter:
                 el.tag = qn('TextBlock')
             else:
                 el.tag = qn(ELEMENT_RENAME.get(tag, tag))
+                if tag == 'PasswordBox':
+                    # a text box which hides its text
+                    el.set('PasswordChar', '\u25cf')
+                    if el.get('Password') is not None:
+                        el.set('Text', el.attrib.pop('Password'))
+        if tag == 'RepeatButton' and el.get('Command'):
+            # parts of a scroll bar are recognized by names in Avalonia
+            m = re.match(r'\{x:Static (?:\w+:)?ScrollBar\.(Line|Page)(Up|Down|Left|Right)Command\}$', el.get('Command'))
+            if m:
+                del el.attrib['Command']
+                el.set(X + 'Name', 'PART_%s%sButton' % (m.group(1), 'Up' if m.group(2) in ('Up', 'Left') else 'Down'))
+            m = re.match(r'\{x:Static (?:\w+:)?Slider\.(Decrease|Increase)Large\}$', el.get('Command'))
+            if m:
+                del el.attrib['Command']
+                el.set(X + 'Name', 'PART_%sButton' % m.group(1))
         self.convert_attributes(el)
         self.convert_tree(el)
 
@@ -511,6 +542,9 @@ class Converter:
             return None, val
         if name == 'SelectionMode' and val == 'Extended':
             return name, 'Multiple'
+        if name in ('HorizontalAlignment', 'VerticalAlignment', 'HorizontalContentAlignment', 'VerticalContentAlignment') and val and val[0].islower():
+            # enums are case-insensitive in WPF
+            return name, val[0].upper() + val[1:]
         m = re.match(r'^TextBlock\.(Foreground|FontSize|FontFamily|FontWeight|FontStyle)$', name)
         if m:
             return 'TextElement.' + m.group(1), convert_markup_value(val, self.ctx, name, el)
@@ -614,6 +648,7 @@ class Converter:
             el.tag = qn('%s.Effect' % owner)
             self.convert_tree(el)
             return
+        prop = {'DecreaseRepeatButton': 'DecreaseButton', 'IncreaseRepeatButton': 'IncreaseButton'}.get(prop, prop)
         el.tag = qn('%s.%s' % (TYPE_RENAME.get(owner, owner), prop))
         self.convert_tree(el)
 
@@ -636,6 +671,14 @@ class Converter:
         t = local(d.tag)
         src = d.get('Source')
         if t in ('ResourceDictionary', 'SharedResourceDictionary') and src:
+            base = os.path.basename(src)[:-5] if src.endswith('.xaml') else ''
+            if base in NOT_PORTED_ASSETS:
+                # the resource dictionary is replaced by the default Avalonia theme (see FirstFloor.ModernUI/Deferred.props)
+                parent = d.getparent()
+                comment = etree.Comment(' PORT: removed include of %s ' % base)
+                comment.tail = d.tail
+                parent.replace(d, comment)
+                return
             d.tag = qn('ResourceInclude')
             d.set('Source', convert_pack_uri(src).replace('.xaml', '.axaml'))
             for a in list(d.attrib):
@@ -1180,6 +1223,141 @@ def fix_template_bindings(root):
                 setter.set('Value', _TB_RX.sub(lambda m: '{Binding %s, RelativeSource={RelativeSource TemplatedParent}}' % m.group(1).strip(), v))
 
 
+_TEXT_PRESENTER_ATTRS = {
+    'Text': '{TemplateBinding Text, Mode=TwoWay}', 'CaretIndex': '{TemplateBinding CaretIndex}',
+    'SelectionStart': '{TemplateBinding SelectionStart}', 'SelectionEnd': '{TemplateBinding SelectionEnd}',
+    'TextAlignment': '{TemplateBinding TextAlignment}', 'TextWrapping': '{TemplateBinding TextWrapping}',
+    'PasswordChar': '{TemplateBinding PasswordChar}', 'RevealPassword': '{TemplateBinding RevealPassword}',
+    'SelectionBrush': '{TemplateBinding SelectionBrush}', 'SelectionForegroundBrush': '{TemplateBinding SelectionForegroundBrush}',
+    'CaretBrush': '{TemplateBinding CaretBrush}',
+}
+
+
+def fix_text_hosts(root):
+    """WPF text boxes host text in a ScrollViewer called PART_ContentHost, Avalonia needs a TextPresenter called PART_TextPresenter."""
+    for sv in list(root.iter(qn('ScrollViewer'))):
+        if sv.get(X + 'Name') != 'PART_ContentHost':
+            continue
+        tmpl = sv.getparent()
+        while tmpl is not None and tmpl.tag != qn('ControlTemplate'):
+            tmpl = tmpl.getparent()
+        target = (tmpl.get('TargetType') or '') if tmpl is not None else ''
+        if 'TextBox' not in target and 'PasswordBox' not in target:
+            continue
+        sv.set(X + 'Name', 'PART_ScrollViewer')
+        for k, v in (('HorizontalScrollBarVisibility', 'Disabled'), ('VerticalScrollBarVisibility', 'Disabled')):
+            if sv.get(k) is None:
+                sv.set(k, '{TemplateBinding (ScrollViewer.%s)}' % k)
+        presenter = etree.SubElement(sv, qn('TextPresenter'))
+        presenter.set(X + 'Name', 'PART_TextPresenter')
+        for k, v in _TEXT_PRESENTER_ATTRS.items():
+            presenter.set(k, v)
+
+
+class ApiInfo:
+    """Public members of Avalonia types (see gen_api_json.sh): members which don't exist there are dropped from converted XAML."""
+    def __init__(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'api.json')
+        self.types = json.load(open(path)) if os.path.exists(path) else {}
+        self.by_name = {}
+        for full, info in self.types.items():
+            if info.get('asm', '').startswith('Avalonia') and (info.get('ns') or '').startswith('Avalonia'):
+                self.by_name.setdefault(full.split('.')[-1], []).append(full)
+        self.cache = {}
+
+    def resolve(self, name):
+        cands = self.by_name.get(name)
+        if not cands:
+            return None
+        for pref in ('Avalonia.Controls.', 'Avalonia.Controls.Primitives.', 'Avalonia.Controls.Shapes.', 'Avalonia.Controls.Presenters.', 'Avalonia.Controls.Documents.'):
+            for c in cands:
+                if c.startswith(pref) and c.count('.') == pref.count('.'):
+                    return c
+        return cands[0]
+
+    def members(self, name):
+        if name in self.cache:
+            return self.cache[name]
+        full = self.resolve(name)
+        if full is None:
+            self.cache[name] = None
+            return None
+        props, events = set(), set()
+        while full in self.types:
+            info = self.types[full]
+            props.update(info['p'])
+            events.update(info['e'])
+            full = info['b']
+            if not full:
+                break
+        self.cache[name] = (props, events)
+        return self.cache[name]
+
+    def has(self, type_name, member):
+        m = self.members(type_name)
+        return True if m is None else member in m[0] or member in m[1]
+
+
+_API = None
+
+
+def api():
+    global _API
+    if _API is None:
+        _API = ApiInfo()
+    return _API
+
+
+def _setter_target_type(setter):
+    """Type name which the setter belongs to (TargetType of a theme, or the type in a selector), or None."""
+    el = setter.getparent()
+    while el is not None:
+        if el.tag == qn('ControlTheme') and el.get('TargetType'):
+            t = el.get('TargetType')
+            return t if ':' not in t else None
+        if el.tag == qn('Style') and el.get('Selector'):
+            m = re.match(r'^([A-Za-z]\w*)(?=[.:\[#\s]|$)', el.get('Selector').strip())
+            if m and not el.get('Selector').strip().startswith('^'):
+                return m.group(1)
+            if m is None and not el.get('Selector').strip().startswith('^'):
+                return None
+            # nested style, the type is defined by the parent
+        el = el.getparent()
+    return None
+
+
+def drop_missing_members(root, ctx_todo=None):
+    """Setters and attributes of properties which Avalonia's controls don't have."""
+    a = api()
+    if not a.types:
+        return
+    # attributes on elements of the default namespace
+    for el in root.iter():
+        if not is_el(el) or el.tag.split('}')[0] != '{' + NS_AV:
+            continue
+        name = local(el.tag)
+        if name in ('Setter', 'Style', 'ControlTheme', 'ControlTemplate', 'DataTemplate', 'Styles', 'ResourceDictionary', 'Template', 'ResourceInclude', 'StyleInclude'):
+            continue
+        if a.members(name) is None:
+            continue
+        for attr in list(el.attrib):
+            if attr.startswith('{') or '.' in attr or attr in ('Name',):
+                continue
+            if not a.has(name, attr):
+                del el.attrib[attr]
+                el.insert(0, etree.Comment(' PORT: removed %s (not in Avalonia) ' % attr))
+    for setter in list(root.iter(qn('Setter'))):
+        prop = setter.get('Property')
+        if not prop or '.' in prop:
+            continue
+        t = _setter_target_type(setter)
+        if t and not a.has(t, prop):
+            parent = setter.getparent()
+            comment = etree.Comment(' PORT: removed setter of %s (not in Avalonia) ' % prop)
+            comment.tail = setter.tail
+            parent.replace(setter, comment)
+
+
 def merge_duplicate_styles(root):
     """Avalonia refuses duplicate setters (and merging equal selectors is cheaper): merge nested styles with identical selectors, last setter wins."""
     for parent in list(root.iter()):
@@ -1238,6 +1416,8 @@ def convert_file(path, registry, out_dir=None):
     conv.convert_root(root)
     finalize_names(root)
     merge_duplicate_styles(root)
+    fix_text_hosts(root)
+    drop_missing_members(root)
     fix_template_bindings(root)
 
     # namespaces

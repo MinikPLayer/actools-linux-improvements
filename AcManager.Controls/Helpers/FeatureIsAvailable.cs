@@ -12,7 +12,7 @@ namespace AcManager.Controls.Helpers {
             obj.SetValue(FeatureProperty, value);
         }
 
-        public static readonly DependencyProperty FeatureProperty = DependencyProperty.RegisterAttached("Feature", typeof(string),
+        public static readonly AttachedProperty<string> FeatureProperty = DP.RegisterAttached<string>("Feature",
                 typeof(FeatureIsAvailable), new UIPropertyMetadata(OnFeatureChanged));
 
         private static void OnFeatureChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
