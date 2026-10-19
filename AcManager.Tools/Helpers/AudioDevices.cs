@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using AcManager.Tools.Helpers.AcSettings;
@@ -12,8 +12,13 @@ namespace AcManager.Tools.Helpers {
         private MMDeviceEnumerator _mm;
 
         public AudioDevices() {
-            _mm = new MMDeviceEnumerator();
-            _mm.RegisterEndpointNotificationCallback(this);
+            try {
+                _mm = new MMDeviceEnumerator();
+                _mm.RegisterEndpointNotificationCallback(this);
+            } catch (Exception e) when (e is PlatformNotSupportedException || e is System.Runtime.InteropServices.COMException) {
+                // Core Audio is Windows-only
+                _mm = null;
+            }
         }
 
         [CanBeNull]

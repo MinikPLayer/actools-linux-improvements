@@ -23,7 +23,8 @@ cd Output/x64/Debug && dotnet AssettoCorsa.dll
 ```
 
 Environment variables for debugging: `CM_AVALONIA_LOG=1` (Avalonia trace log to console), `CM_DUMP_TREE=<seconds>`
-(dumps visual trees of open windows to `/tmp/cm_tree.txt`).
+(dumps visual trees of open windows to `/tmp/cm_tree.txt`), `CM_CRAWL=<seconds>` (navigates the main window through every link of the
+menu, current page is written to `/tmp/cm_crawl.txt`; see `FirstFloor.ModernUI/Helpers/VisualTreeDumper.cs`).
 
 The app still targets Windows as well: platform-specific code is guarded with `OperatingSystem.IsWindows()` / `#if`, and Windows
 build paths of the libraries are unchanged. The UI is Avalonia on both platforms (WPF is gone from the code base).
@@ -78,6 +79,14 @@ Anything marked “stub” keeps compiling and the feature is hidden or disabled
   `VisualStateManager`, storyboard actions of triggers (marked `<!-- PORT: … -->` in the converted XAML), `TickPlacement=Both` (→ Outside),
   `x:Reference` (→ `ElementName`), `Duration` (→ `x:TimeSpan`), trigger comparison with resources (→ state properties).
 - **`Assets/Development/**`** XAML of AcManager is excluded from the build.
+- **`*.styles.axaml`** (plain WPF styles converted next to `X.axaml`) are listed at build time into assembly metadata (`CmStyles`, see
+  `Build/AvaloniaCompat.props`) and added to `Application.Styles` in `App.LoadConvertedStyles()`. Avalonia doesn’t load `Themes/Generic.axaml`
+  of libraries, so `AcManager.Controls/Themes/Generic.axaml` is merged in `ModernUI.AcTheme.axaml`. Derived custom controls need
+  `StyleKeyOverride` (WPF’s `DefaultStyleKey` metadata).
+- **ModernTab** layouts `TabWithTitle` / `List` are style-selected templates; the pin/unpin buttons (adorners) are missing. `LinksWithTitle` replaces
+  WPF’s `CompositeCollection`. Sub-menu item themes are chosen per item in `ModernMenu.OnSubMenuContainerPrepared`.
+- **Implicit WPF styles for built-in controls** can’t be ported 1:1 (Avalonia styles override control themes); the one for `ListBoxItem` was removed.
+- Windows-path assumptions: `FileUtils.NormalizePath` uses the platform directory separator (it produced `\` before).
 - **Basic control templates** come from Avalonia’s Simple theme (`App.Initialize` adds `SimpleTheme`), ModernUI themes override them.
 
 ## Status
@@ -90,4 +99,6 @@ OutlinedTextBlock, BbCode parser extras/Emoji, virtualizing panels, DataGrid hel
 Calendar/DatePicker/ListView/MenuItem/PasswordBox themes. Other projects still WPF/Windows only: CustomShowroom, PreviewUpdater,
 CustomPreviewUpdater, CustomTracksBakery, LicensePlatesGenerator, FirstFloor.ModernUI.Win8Extension, tests.
 
-Known visual issues (work in progress): some links lists are rendered via `ToString()`, text clipping in a few sliders.
+Crawling all ~70 menu pages produces no navigation failures except the ones fixed along the way (COM audio, missing browser). Known visual
+issues (work in progress): DataGrid based pages (lap times table) show nothing yet, FancyScroll/hints are missing, some pages need real AC content
+to be checked (only fake test cars/tracks were used).

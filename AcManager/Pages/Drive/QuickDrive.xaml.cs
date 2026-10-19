@@ -126,13 +126,13 @@ namespace AcManager.Pages.Drive {
                 Model.Dispose();
             });
 
-            if (NewRaceModeData.Instance.IsReady) {
-                OnNewModesChanged(null, null);
-            }
-
             _current = new WeakReference<QuickDrive>(this);
 
             InitializeComponent();
+
+            if (NewRaceModeData.Instance.IsReady) {
+                OnNewModesChanged(null, null);
+            }
             this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.GoCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
