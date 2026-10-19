@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -6,7 +6,7 @@ using System.Windows.Markup;
 namespace AcManager.Controls {
     [ContentProperty(nameof(DataTemplate))]
     public class FlexibleDataTemplateSelector : DataTemplateSelector {
-        public DataTemplate DataTemplate { get; set; }
+        [Avalonia.Metadata.Content] public DataTemplate DataTemplate { get; set; }
 
         private DataTemplate _uiElementTemplate;
 

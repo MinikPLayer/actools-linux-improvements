@@ -38,7 +38,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private UIElement _nonNull;
 
-        public UIElement NonNull {
+        [Avalonia.Metadata.Content] public UIElement NonNull {
             get => _nonNull;
             set => SetValue(NonNullProperty, value);
         }

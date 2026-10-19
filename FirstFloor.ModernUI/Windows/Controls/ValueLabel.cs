@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -145,7 +145,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static readonly StyledProperty<string> ContentProperty = DP.Register<string>(nameof(Content),
                 typeof(ValueLabel));
 
-        public string Content {
+        [Avalonia.Metadata.Content] public string Content {
             get => (string)GetValue(ContentProperty);
             set => SetValue(ContentProperty, value);
         }

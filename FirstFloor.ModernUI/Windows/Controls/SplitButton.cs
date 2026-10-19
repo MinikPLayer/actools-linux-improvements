@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -87,7 +87,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// The Split Button’s Items property maps to the base classes ContextMenu.Items property
         /// </summary>
-        public ItemCollection Items => ContextMenu.Items;
+        [Avalonia.Metadata.Content] public ItemCollection Items => ContextMenu.Items;
 
         /*
          * DependencyProperty CLR wrappers

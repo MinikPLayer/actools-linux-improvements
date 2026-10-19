@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Bindings {
             Initialize();
         }
 
-        public object TrueValue { get; set; }
+        [Avalonia.Metadata.Content] public object TrueValue { get; set; }
         public object FalseValue { get; set; }
 
         private void Initialize() {

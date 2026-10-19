@@ -10,7 +10,6 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class FormattedSlider : Slider {
         public FormattedSlider() {
-            AutoToolTipPrecision = 10;
         }
 
         public static readonly StyledProperty<string> AutoToolTipFormatProperty = DP.Register<string>(nameof(AutoToolTipFormat),
@@ -38,45 +37,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             get => _autoToolTipConverter;
             set => SetValue(AutoToolTipConverterProperty, value);
         }
-
-        protected override void OnThumbDragStarted(DragStartedEventArgs e) {
-            base.OnThumbDragStarted(e);
-            FormatAutoToolTipContent();
-        }
-
-        protected override void OnThumbDragDelta(DragDeltaEventArgs e) {
-            base.OnThumbDragDelta(e);
-            FormatAutoToolTipContent();
-        }
-
-        private void FormatAutoToolTipContent() {
-            if (!string.IsNullOrEmpty(AutoToolTipFormat) || AutoToolTipConverter != null) {
-                var autoToolTip = AutoToolTip;
-                if (autoToolTip != null) {
-                    autoToolTip.Content = string.Format(AutoToolTipFormat ?? @"{0}",
-                            AutoToolTipConverter?.Convert(autoToolTip.Content, typeof(string), null, null) ?? autoToolTip.Content);
-                }
-            }
-        }
-
-        private bool _autoToolTipSet;
-        private ToolTip _autoToolTip;
-
-        [CanBeNull]
-        private ToolTip AutoToolTip {
-            get {
-                if (!_autoToolTipSet) {
-                    _autoToolTipSet = true;
-
-                    try {
-                        _autoToolTip = typeof(Slider).GetField("_autoToolTip", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this) as ToolTip;
-                    } catch (Exception e) {
-                        Logging.Warning(e.Message);
-                    }
-                }
-
-                return _autoToolTip;
-            }
-        }
+        // PORT: Avalonia has no auto tooltip for the slider thumb, so the format and converter are kept for the bindings only
     }
 }

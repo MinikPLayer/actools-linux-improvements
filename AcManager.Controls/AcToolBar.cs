@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -18,7 +18,7 @@ namespace AcManager.Controls {
         public static readonly StyledProperty<Collection<ToolBar>> ToolBarsProperty = DP.Register<Collection<ToolBar>>(nameof(ToolBars),
                                                                                              typeof(AcToolBar));
 
-        public Collection<ToolBar> ToolBars {
+        [Avalonia.Metadata.Content] public Collection<ToolBar> ToolBars {
             get => (Collection<ToolBar>)GetValue(ToolBarsProperty);
             set => SetValue(ToolBarsProperty, value);
         }

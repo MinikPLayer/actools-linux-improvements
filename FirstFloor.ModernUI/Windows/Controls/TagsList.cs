@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
@@ -49,6 +49,12 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         public TagsList() {
+            // replaces the Blend EventTrigger which was invoking ChangeCommand when a tag editor loses focus
+            AddHandler(LostFocusEvent, (sender, args) => {
+                if (args.Source is TextBox tb && tb.Name == "PART_TextBox") {
+                    ChangeCommand.Execute(tb);
+                }
+            });
         }
 
         public ObservableCollection<string> ItemsSource {
@@ -141,16 +147,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public bool IsReadOnly {
             get => GetValue(IsReadOnlyProperty) as bool? == true;
             set => SetValue(IsReadOnlyProperty, value);
-        }
-    }
-
-    public class TagsListDataTemplateSelector : DataTemplateSelector {
-        public DataTemplate TagDataTemplate { get; set; }
-
-        public DataTemplate NewTagDataTemplate { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container) {
-            return item is string ? TagDataTemplate : NewTagDataTemplate;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -18,7 +18,7 @@ namespace AcManager.Controls {
         public static readonly StyledProperty<UIElementCollection> ChildrenProperty = DP.Register<UIElementCollection>(nameof(Children),
                 typeof(MessageBlock));
 
-        public UIElementCollection Children {
+        [Avalonia.Metadata.Content] public UIElementCollection Children {
             get => (UIElementCollection)GetValue(ChildrenProperty);
             set => SetValue(ChildrenProperty, value);
         }

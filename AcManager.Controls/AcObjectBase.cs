@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -128,7 +128,7 @@ namespace AcManager.Controls {
         public static readonly StyledProperty<object> ContentProperty = DP.Register<object>(nameof(Content),
                 typeof(AcObjectBase));
 
-        public object Content {
+        [Avalonia.Metadata.Content] public object Content {
             get => GetValue(ContentProperty);
             set => SetValue(ContentProperty, value);
         }

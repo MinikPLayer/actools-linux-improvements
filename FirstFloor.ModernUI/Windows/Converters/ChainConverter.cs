@@ -8,7 +8,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Windows.Converters {
     [ContentProperty(nameof(Converters)), ContentWrapper(typeof(ValueConverterCollection))]
     public class ChainConverter : IValueConverter {
-        public ValueConverterCollection Converters { get; } = new ValueConverterCollection();
+        [Avalonia.Metadata.Content] public ValueConverterCollection Converters { get; } = new ValueConverterCollection();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             return Converters

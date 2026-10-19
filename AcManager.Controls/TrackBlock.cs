@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using AcManager.Tools.Objects;
@@ -28,7 +28,7 @@ namespace AcManager.Controls {
         public static readonly StyledProperty<object> PreviewContentProperty = DP.Register<object>(nameof(PreviewContent),
                 typeof(TrackBlock));
 
-        public object PreviewContent {
+        [Avalonia.Metadata.Content] public object PreviewContent {
             get => GetValue(PreviewContentProperty);
             set => SetValue(PreviewContentProperty, value);
         }

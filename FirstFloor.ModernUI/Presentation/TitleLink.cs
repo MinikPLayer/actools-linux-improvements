@@ -7,7 +7,7 @@ namespace FirstFloor.ModernUI.Presentation {
         private object _content;
 
         [Bindable(true)]
-        public object Content {
+        [Avalonia.Metadata.Content] public object Content {
             get => _content;
             set => Apply(value, ref _content);
         }

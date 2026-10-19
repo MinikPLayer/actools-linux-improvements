@@ -28,7 +28,7 @@
                 <Canvas Width="80" Height="80" Background="Transparent">
                   <Border x:Name="PART_Temporary" IsHitTestVisible="False" Width="0" Height="0">
                     <Border.RenderTransform>
-                      <RotateTransform x:Name="RotateTransform" CenterX="4" CenterY="4">
+                      <RotateTransform CenterX="4" CenterY="4">
                         <RotateTransform.Angle>
                           <MultiBinding Converter="{x:Static c:RoundSlider.Converter}">
                             <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>
@@ -61,7 +61,7 @@
                     <Thumb.RenderTransform>
                       <TransformGroup>
                         <TranslateTransform X="30" Y="60"/>
-                        <RotateTransform x:Name="RotateTransform" CenterX="40" CenterY="40">
+                        <RotateTransform CenterX="40" CenterY="40">
                           <RotateTransform.Angle>
                             <MultiBinding Converter="{x:Static c:RoundSlider.Converter}">
                               <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Value"/>

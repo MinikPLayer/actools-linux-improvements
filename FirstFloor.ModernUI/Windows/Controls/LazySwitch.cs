@@ -37,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private readonly ObservableCollection<LazySwitchDefinition> _definitions;
 
-        public ObservableCollection<LazySwitchDefinition> Definitions {
+        [Avalonia.Metadata.Content] public ObservableCollection<LazySwitchDefinition> Definitions {
             get => _definitions;
             set => SetValue(DefinitionsProperty, value);
         }

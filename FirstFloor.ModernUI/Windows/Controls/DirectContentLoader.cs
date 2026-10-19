@@ -8,7 +8,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(Entries))]
     public class DirectContentLoader : IContentLoader {
-        public List<DirectContentLoaderEntry> Entries { get; }
+        [Avalonia.Metadata.Content] public List<DirectContentLoaderEntry> Entries { get; }
 
         public DirectContentLoader() {
             Entries = new List<DirectContentLoaderEntry>(3);

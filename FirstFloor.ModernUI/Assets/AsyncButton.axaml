@@ -1,22 +1,11 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:s="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:s="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
   <s:Double x:Key="AsyncButton.ProgressBarOpacity">0.08</s:Double>
   <ControlTheme TargetType="c:AsyncButton" BasedOn="{StaticResource BaseButtonStyle}" x:Key="{x:Type c:AsyncButton}">
-    <ControlTheme.Resources>
-            <ResourceDictionary><ResourceDictionary>
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-              <!-- PORT: removed Storyboard -->
-            </ResourceDictionary>
-          </ResourceDictionary></ControlTheme.Resources>
+    
           <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="c:AsyncButton">
@@ -33,7 +22,7 @@
                   <Border ClipToBounds="True" Margin="-1">
                     <Border HorizontalAlignment="Right">
                       <Border.RenderTransform>
-                        <TranslateTransform x:Name="PART_CancelTranslate" X="23"/>
+                        <TranslateTransform X="23"/>
                       </Border.RenderTransform>
                       <Button x:Name="PART_CancelButton" Content="×" Padding="6 1 5 2" BorderThickness="0" ToolTip.Tip="Cancel">
                         <Button.Resources>
@@ -45,7 +34,7 @@
                 </c:AdornedControl.AdornerContent>
                 <DockPanel x:Name="PART_PaddingPanel" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
                   <DockPanel.RenderTransform>
-                    <TranslateTransform x:Name="PART_PaddingTranslate" X="0"/>
+                    <TranslateTransform X="0"/>
                   </DockPanel.RenderTransform>
                   <Border VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                     <Border.RenderTransform>
@@ -53,7 +42,7 @@
                     </Border.RenderTransform>
                     <Border Width="12" Height="12" Margin="0 -3 0 -4" DockPanel.Dock="Left" VerticalAlignment="Center" ClipToBounds="True">
                       <!-- PORT: removed Border.LayoutTransform -->
-                      <c:BooleanSwitch x:Name="PART_ProgressRing" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}">
+                      <c:BooleanSwitch x:Name="PART_ProgressRing">
                         <Canvas>
                           <c:ModernProgressRing Width="80" Height="80" IsActive="True" Theme="{StaticResource CompactProgressRingStyle}">
                             <c:ModernProgressRing.RenderTransform>
@@ -66,7 +55,7 @@
                   </Border>
                   <c:Cell>
                     <c:Cell.RenderTransform>
-                      <TranslateTransform x:Name="PART_ContentTranslate" Y="0"/>
+                      <TranslateTransform Y="0"/>
                     </c:Cell.RenderTransform>
                     <Border Margin="0 -20 0 20">
                       <TextBlock Text="{Binding Progress.Message, RelativeSource={RelativeSource TemplatedParent}}" Foreground="{DynamicResource ButtonText}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" TextTrimming="CharacterEllipsis"/>

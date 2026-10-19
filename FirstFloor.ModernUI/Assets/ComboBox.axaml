@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="ContextMenu.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -24,8 +24,8 @@
         Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
     <Setter Property="VerticalContentAlignment"
         Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />-->
-    <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[IsHighlighted=True] /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource Accent}"/>
-              </Style><Style Selector="^[IsHighlighted=True]"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+    <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource Accent}"/>
+              </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
             </Style></ControlTheme>
 
@@ -124,14 +124,11 @@
     <Style Selector="^:editable"><Setter Property="IsTabStop" Value="False"/>
         <Setter Property="Padding" Value="3"/>
         <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
-      </Style><Style Selector="^[HasItems=False] /template/ Border#DropDownBorder"><Setter Property="Height" Value="95"/>
-            </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource InputTextHover}"/>
               <Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
             </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style><Style Selector="^[(ScrollViewer.CanContentScroll)=False] /template/ Rectangle#OpaqueRect"><Setter Property="Canvas.Top" Value="{Binding ElementName=DropDownScrollViewer, Path=VerticalOffset}"/>
-              <Setter Property="Canvas.Left" Value="{Binding ElementName=DropDownScrollViewer, Path=HorizontalOffset}"/>
             </Style></ControlTheme>
 
   </ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,21 +16,21 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private void OnRightClick(object sender, MouseButtonEventArgs args) {
             if (_item != null) {
                 args.Handled = true;
-                _item.IsSubmenuOpen = true;
+                _item.IsSubMenuOpen = true;
             }
         }
 
-        private MenuItem _item;
+        private Avalonia.Controls.MenuItem _item;
 
         protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
             this.RememberTemplateScope(e);
-            if (_item != null) {
+                        if (_item != null) {
                 _item.KeyDown -= OnMenuKeyDown;
             }
 
             base.OnApplyTemplate(e);
 
-            _item = this.GetTemplateChild("PART_MenuItem") as MenuItem;
+            _item = this.GetTemplateChild("PART_MenuItem") as Avalonia.Controls.MenuItem;
             if (_item != null) {
                 _item.KeyDown += OnMenuKeyDown;
             }
@@ -38,12 +38,12 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void OnMenuKeyDown(object sender, KeyEventArgs args) {
             if (_item == null) return;
-            if (_item.IsSubmenuOpen != true && (args.Key == Key.Enter || args.Key == Key.Space)) {
-                _item.IsSubmenuOpen = true;
+            if (_item.IsSubMenuOpen != true && (args.Key == Key.Enter || args.Key == Key.Space)) {
+                _item.IsSubMenuOpen = true;
             }
         }
 
-        public IList MenuItems {
+        [Avalonia.Metadata.Content] public IList MenuItems {
             get => (Collection<DependencyObject>)GetValue(MenuItemsProperty);
             set => SetValue(MenuItemsProperty, value);
         }

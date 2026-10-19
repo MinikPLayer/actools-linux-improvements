@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ControlTheme x:Key="SliderRepeatButtonStyle" TargetType="RepeatButton">
     <Setter Property="IsTabStop" Value="False"/>
     <Setter Property="Focusable" Value="False"/>
@@ -118,9 +118,6 @@
               </Style><Style Selector="^[TickPlacement=TopLeft] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 2 5 0"/>
             </Style><Style Selector="^[TickPlacement=BottomRight] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[TickPlacement=BottomRight] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 0 5 2"/>
-            </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^[IsSelectionRangeEnabled=True] /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:disabled /template/ TickBar#TopTick"><!-- PORT: removed setter of Fill (not in Avalonia) -->
               </Style><Style Selector="^:disabled /template/ TickBar#BottomTick"><!-- PORT: removed setter of Fill (not in Avalonia) -->
             </Style></ControlTheme>

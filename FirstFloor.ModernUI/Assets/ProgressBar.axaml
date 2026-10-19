@@ -1,60 +1,24 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
-
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- PORT: hand-written; the WPF template relied on RelativeAnimatingContentControl and VisualStateManager -->
   <ControlTheme TargetType="ProgressBar" x:Key="{x:Type ProgressBar}">
     <Setter Property="Foreground" Value="{DynamicResource Accent}"/>
     <Setter Property="Background" Value="{DynamicResource ProgressBackground}"/>
     <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="MinHeight" Value="4"/>
     <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="ProgressBar">
-          <c:RelativeAnimatingContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-            <c:RelativeAnimatingContentControl.Resources>
-              <!-- PORT: removed ExponentialEase -->
-              <!-- PORT: removed ExponentialEase -->
-            </c:RelativeAnimatingContentControl.Resources>
-            <!-- PORT: removed VisualStateManager.VisualStateGroups -->
-            <c:Cell x:Name="Root" ClipToBounds="True">
-              <Border x:Name="PART_Track" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
-              <c:Cell x:Name="IndeterminateRoot" IsHitTestVisible="False">
-                <Rectangle Fill="{TemplateBinding Foreground}" Height="4" Width="4" x:Name="R1" Opacity="0" HorizontalAlignment="Left">
-                  <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="R1TT"/>
-                  </Rectangle.RenderTransform>
-                </Rectangle>
-                <Rectangle Fill="{TemplateBinding Foreground}" Height="4" Width="4" x:Name="R2" Opacity="0" HorizontalAlignment="Left">
-                  <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="R2TT"/>
-                  </Rectangle.RenderTransform>
-                </Rectangle>
-                <Rectangle Fill="{TemplateBinding Foreground}" Height="4" Width="4" x:Name="R3" Opacity="0" HorizontalAlignment="Left">
-                  <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="R3TT"/>
-                  </Rectangle.RenderTransform>
-                </Rectangle>
-                <Rectangle Fill="{TemplateBinding Foreground}" Height="4" Width="4" x:Name="R4" Opacity="0" HorizontalAlignment="Left">
-                  <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="R4TT"/>
-                  </Rectangle.RenderTransform>
-                </Rectangle>
-                <Rectangle Fill="{TemplateBinding Foreground}" Height="4" Width="4" x:Name="R5" Opacity="0" HorizontalAlignment="Left">
-                  <Rectangle.RenderTransform>
-                    <TranslateTransform x:Name="R5TT"/>
-                  </Rectangle.RenderTransform>
-                </Rectangle>
-              </c:Cell>
-              <Border x:Name="DeterminateRoot">
-                <Border x:Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left"/>
-              </Border>
-            </c:Cell>
-          </c:RelativeAnimatingContentControl>
-
-          </ControlTemplate>
-      </Setter.Value>
+      <ControlTemplate TargetType="ProgressBar">
+        <Border Name="PART_Track" ClipToBounds="True" Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+          <Border Name="PART_Indicator" Background="{TemplateBinding Foreground}" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        </Border>
+      </ControlTemplate>
     </Setter>
-
-  <Style Selector="^ /template/ c|Cell#IndeterminateRoot"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#PART_Track"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[Orientation=Vertical] /template/ c|Cell#Root"><!-- PORT: removed setter of LayoutTransform (not in Avalonia) -->
-            </Style><Style Selector="^[IsIndeterminate=True] /template/ c|Cell#IndeterminateRoot"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[IsIndeterminate=True] /template/ Border#DeterminateRoot"><Setter Property="IsVisible" Value="False"/>
-              </Style><Style Selector="^[IsIndeterminate=True] /template/ Border#PART_Track"><Setter Property="Background" Value="Transparent"/>
-            </Style></ControlTheme>
+    <Style Selector="^:vertical /template/ Border#PART_Indicator">
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
+    <Style Selector="^:indeterminate /template/ Border#PART_Track">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+  </ControlTheme>
 </ResourceDictionary>

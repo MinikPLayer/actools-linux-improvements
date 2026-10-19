@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -263,7 +263,7 @@ namespace AcManager.Controls {
         public static readonly StyledProperty<object> PreviewContentProperty = DP.Register<object>(nameof(PreviewContent),
                 typeof(CarBlock));
 
-        public object PreviewContent {
+        [Avalonia.Metadata.Content] public object PreviewContent {
             get => GetValue(PreviewContentProperty);
             set => SetValue(PreviewContentProperty, value);
         }

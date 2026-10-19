@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
@@ -122,7 +122,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StrokeThicknessProperty, value);
         }
 
-        public string Text {
+        [Avalonia.Metadata.Content] public string Text {
             get => (string)GetValue(TextProperty);
             set => SetValue(TextProperty, value);
         }

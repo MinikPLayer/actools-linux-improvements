@@ -4,8 +4,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Presentation {
     [ContentProperty(nameof(Children))]
     public class LinkWithList : Link {
-        [Avalonia.Metadata.Content]
-        public BetterObservableCollection<Link> Children { get; } = new BetterObservableCollection<Link>();
+        [Avalonia.Metadata.Content] public BetterObservableCollection<Link> Children { get; } = new BetterObservableCollection<Link>();
         
         public void AddChild(object value) {
             if (value is Link link) {

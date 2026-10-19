@@ -17,11 +17,27 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     public class ContextMenuButtonEventArgs : HandledEventArgs {
         internal ContextMenuButtonEventArgs() {}
 
-        public object Menu { internal get; set; }
+        [Avalonia.Metadata.Content] public object Menu { internal get; set; }
     }
 
     [ContentProperty(nameof(Menu))]
     public class ContextMenuButton : Control {
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
+                ContentControl.HorizontalContentAlignmentProperty.AddOwner<ContextMenuButton>();
+
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
+                ContentControl.VerticalContentAlignmentProperty.AddOwner<ContextMenuButton>();
+
+        public HorizontalAlignment HorizontalContentAlignment {
+            get => GetValue(HorizontalContentAlignmentProperty);
+            set => SetValue(HorizontalContentAlignmentProperty, value);
+        }
+
+        public VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
+        }
+
         public ContextMenuButton() {
         }
 

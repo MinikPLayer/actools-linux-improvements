@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Bindings {
             Initialize();
         }
 
-        public MapValues Values { get; set; } = new MapValues();
+        [Avalonia.Metadata.Content] public MapValues Values { get; set; } = new MapValues();
 
         private void Initialize() {
             Converter = this;

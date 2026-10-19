@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -273,7 +273,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static readonly StyledProperty<object> AdditionalContentProperty = DP.Register<object>(nameof(AdditionalContent),
                 typeof(ModernWindow));
 
-        public object AdditionalContent {
+        [Avalonia.Metadata.Content] public object AdditionalContent {
             get => GetValue(AdditionalContentProperty);
             set => SetValue(AdditionalContentProperty, value);
         }

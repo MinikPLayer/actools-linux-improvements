@@ -24,6 +24,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SelectionChanged += (sender, e) => OnSelectionChanged(e);
         }
 
+        public static readonly StyledProperty<bool> IsReadOnlyProperty = TextBox.IsReadOnlyProperty.AddOwner<BetterComboBox>();
+
+        public bool IsReadOnly {
+            get => GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+
         public static readonly StyledProperty<int> MaxLengthProperty = DP.Register<int>(nameof(MaxLength),
                 typeof(BetterComboBox));
 

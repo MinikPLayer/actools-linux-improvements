@@ -34,6 +34,22 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class LazyMenuItem : MenuItem {
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
+                ContentControl.HorizontalContentAlignmentProperty.AddOwner<LazyMenuItem>();
+
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
+                ContentControl.VerticalContentAlignmentProperty.AddOwner<LazyMenuItem>();
+
+        public HorizontalAlignment HorizontalContentAlignment {
+            get => GetValue(HorizontalContentAlignmentProperty);
+            set => SetValue(HorizontalContentAlignmentProperty, value);
+        }
+
+        public VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
+        }
+
         public static readonly StyledProperty<bool> AutoPrepareProperty = DP.Register<bool>(nameof(AutoPrepare),
                 typeof(LazyMenuItem), new PropertyMetadata(OnAutoPrepareChanged));
 
@@ -368,6 +384,22 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class HierarchicalComboBox : Control {
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
+                ContentControl.HorizontalContentAlignmentProperty.AddOwner<HierarchicalComboBox>();
+
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
+                ContentControl.VerticalContentAlignmentProperty.AddOwner<HierarchicalComboBox>();
+
+        public HorizontalAlignment HorizontalContentAlignment {
+            get => GetValue(HorizontalContentAlignmentProperty);
+            set => SetValue(HorizontalContentAlignmentProperty, value);
+        }
+
+        public VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
+        }
+
         public HierarchicalComboBox() {
             this.AddPreviewKeyDown(OnKeyDown);
         }

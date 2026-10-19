@@ -25,7 +25,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private UIElement _true;
 
-        public UIElement True {
+        [Avalonia.Metadata.Content] public UIElement True {
             get => _true;
             set => SetValue(TrueProperty, value);
         }

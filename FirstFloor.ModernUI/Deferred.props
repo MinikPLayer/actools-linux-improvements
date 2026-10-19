@@ -23,9 +23,8 @@
     <!-- Pending port -->
     <Compile Remove="Windows\Controls\OutlinedTextBlock.cs;Windows\Controls\PathTrimmingTextBlock.cs" />
     <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs;Windows\Controls\TextBlockAutoShrink.cs" />
-    <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\FormattedSlider.cs;Windows\Controls\SplitButton.cs" />
-    <Compile Remove="Windows\Controls\ModernProgressRing.cs;Windows\Controls\HistoricalTextBox.cs" />
-    <Compile Remove="Windows\Controls\ButtonWithComboBox.cs;Windows\Controls\LabeledToggleButton.cs;Windows\Controls\AsyncButton.cs" />
+    <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\SplitButton.cs" />
+    <Compile Remove="Windows\Controls\HistoricalTextBox.cs;Windows\Controls\LabeledToggleButton.cs" />
     <Compile Remove="Windows\Controls\ExceptionDetails.cs;Windows\Controls\AlignableWrapPanel.cs" />
     <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Attached\FancyScroll.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
     <Compile Remove="Windows\Converters\ChainConverter.cs;Windows\Media\VisualExtension.Mouse.cs" />

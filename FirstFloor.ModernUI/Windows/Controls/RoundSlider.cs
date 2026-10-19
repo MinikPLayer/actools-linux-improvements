@@ -10,6 +10,22 @@ using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class RoundSlider : Slider {
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty =
+                ContentControl.HorizontalContentAlignmentProperty.AddOwner<RoundSlider>();
+
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty =
+                ContentControl.VerticalContentAlignmentProperty.AddOwner<RoundSlider>();
+
+        public HorizontalAlignment HorizontalContentAlignment {
+            get => GetValue(HorizontalContentAlignmentProperty);
+            set => SetValue(HorizontalContentAlignmentProperty, value);
+        }
+
+        public VerticalAlignment VerticalContentAlignment {
+            get => GetValue(VerticalContentAlignmentProperty);
+            set => SetValue(VerticalContentAlignmentProperty, value);
+        }
+
         static RoundSlider() {
         }
 

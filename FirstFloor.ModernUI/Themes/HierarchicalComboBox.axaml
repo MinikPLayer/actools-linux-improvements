@@ -7,7 +7,7 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <ControlTheme x:Key="HierarchicalComboBoxMenuItem" TargetType="MenuItem">
+  <ControlTheme x:Key="HierarchicalComboBoxMenuItem" TargetType="c:LazyMenuItem">
     <Setter Property="Focusable" Value="True"/>
 
     <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
@@ -22,13 +22,13 @@
     <Setter Property="IsVisible" Value="True"/>
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="MenuItem">
+        <ControlTemplate TargetType="c:LazyMenuItem">
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="0" MinWidth="17"/>
             </Grid.ColumnDefinitions>
-            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubMenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <ToolTip.Tip>
                 <ToolTip IsVisible="False"/>
               </ToolTip.Tip>
@@ -47,7 +47,7 @@
                 </Border>
               </Grid>
             </Popup>
-            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
+            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubMenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
             <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
             <ContentPresenter x:Name="PART_Text" Grid.Column="0" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </Grid>
@@ -58,7 +58,7 @@
       <Trigger Binding="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TypeToBooleanConverter}, ConverterParameter=ContentControl}" Value="True">
         <Setter Property="Template">
           <Setter.Value>
-            <ControlTemplate TargetType="{x:Type MenuItem}">
+            <ControlTemplate TargetType="{x:Type c:LazyMenuItem}">
               <ContentPresenter x:Name="PART_Text" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}"
                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" IsHitTestVisible="False"
                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
@@ -71,10 +71,10 @@
               </Style><Style Selector="^:pointerover /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
               </Style><Style Selector="^:pointerover /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
-            </Style><Style Selector="^:focus"><Style Selector="^[IsSubmenuOpen=False] /template/ ToggleButton#PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style></Style><Style Selector="^[IsSubmenuOpen=True] /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
-              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
-              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+            </Style><Style Selector="^:focus"><Style Selector="^[IsSubMenuOpen=False] /template/ ToggleButton#PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></Style><Style Selector="^[IsSubMenuOpen=True] /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubMenuOpen=True] /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+              </Style><Style Selector="^[IsSubMenuOpen=True] /template/ ToggleButton#PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
               <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
             </Style><Style Selector="^:disabled /template/ ContentPresenter#PART_Text"><Setter Property="TextElement.Foreground" Value="{DynamicResource InputTextDisabled}"/>
               </Style><Style Selector="^:disabled /template/ Path#Arrow"><!-- PORT: removed setter of Fill (not in Avalonia) -->
@@ -88,7 +88,7 @@
       </Grid.ColumnDefinitions>
       <ContentPresenter Grid.Column="0" Margin="7 2 8 2" RecognizesAccessKey="False"/>
       <Path x:Name="RightArrow" Grid.Column="1" VerticalAlignment="Center" Margin="41 0 0 0" Fill="{TemplateBinding MenuItem.Foreground}" Data="{StaticResource RightArrow}" IsHitTestVisible="False"/>
-      <Popup x:Name="PART_Popup" Grid.Column="0" Grid.ColumnSpan="2" Placement="Right" Focusable="False" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+      <Popup x:Name="PART_Popup" Grid.Column="0" Grid.ColumnSpan="2" Placement="Right" Focusable="False" IsOpen="{Binding IsSubMenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
         <Grid Margin="0" Background="{DynamicResource PopupBackground}">
           <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
             <ScrollViewer x:Name="SubMenuScrollViewer" Foreground="{DynamicResource ItemText}">
@@ -115,9 +115,9 @@
     <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>
     <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
     <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource SpecialMenuItemControlTemplate}"/>
-    <Style Selector="^[Role=TopLevelHeader]"><Setter Property="Padding" Value="7 2 8 2"/>
+    <Style Selector="^:toplevel"><Setter Property="Padding" Value="7 2 8 2"/>
         <Setter Property="Template" Value="{StaticResource SpecialMenuItemHeaderControlTemplate}"/>
-      </Style><Style Selector="^[Role=SubmenuHeader]"><Setter Property="Padding" Value="2 3 2 3"/>
+      </Style><Style Selector="^:not(:toplevel)"><Setter Property="Padding" Value="2 3 2 3"/>
         <Setter Property="Template" Value="{StaticResource SpecialMenuItemHeaderControlTemplate}"/>
       </Style></ControlTheme>
 
@@ -131,16 +131,16 @@
     </Menu>
     </ControlTemplate>
 
-  <ControlTheme x:Key="HierarchicalComboBoxMenuItem.Borderless" TargetType="MenuItem" BasedOn="{StaticResource HierarchicalComboBoxMenuItem}">
+  <ControlTheme x:Key="HierarchicalComboBoxMenuItem.Borderless" TargetType="c:LazyMenuItem" BasedOn="{StaticResource HierarchicalComboBoxMenuItem}">
     <Setter Property="Template">
       <Setter.Value>
-        <ControlTemplate TargetType="MenuItem">
+        <ControlTemplate TargetType="c:LazyMenuItem">
           <Grid x:Name="MainGrid">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="0" MinWidth="17"/>
             </Grid.ColumnDefinitions>
-            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+            <Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubMenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
               <Grid Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
 
                 <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource ItemText}">
@@ -156,7 +156,7 @@
                 </Border>
               </Grid>
             </Popup>
-            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
+            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubMenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
             <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Fill="{TemplateBinding Foreground}" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
             <ContentPresenter x:Name="PART_Text" Grid.Column="0" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
           </Grid>
