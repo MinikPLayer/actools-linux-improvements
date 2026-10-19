@@ -201,6 +201,17 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             Child = TextBlock;
         }
 
+        /// <summary>Parses BB codes into a single inline (to be used in other text blocks).</summary>
+        public static Inline ParseEmoji([CanBeNull] string text, AllowBbCodes allowBbCodes = AllowBbCodes.All, bool highlightUrls = false,
+                [CanBeNull] object source = null, [CanBeNull] FirstFloor.ModernUI.Windows.Controls.BbCode.IBbCodeLinkParser linkParser = null, [CanBeNull] ILinkNavigator linkNavigator = null) {
+            var span = new Span();
+            if (!string.IsNullOrEmpty(text)) {
+                SimpleBbCodeParser.Fill(span.Inlines, text);
+            }
+
+            return span;
+        }
+
         private static void OnBbCodeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
             ((BbCodeBlock)o).Update();
         }

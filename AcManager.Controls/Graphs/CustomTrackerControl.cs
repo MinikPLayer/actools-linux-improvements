@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 
 namespace AcManager.Controls.Graphs {
     public class CustomTrackerControl : TrackerControl {

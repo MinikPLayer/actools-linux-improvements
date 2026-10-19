@@ -25,7 +25,7 @@
     <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs;Windows\Controls\TextBlockAutoShrink.cs" />
     <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\SplitButton.cs" />
     <Compile Remove="Windows\Controls\HistoricalTextBox.cs;Windows\Controls\LabeledToggleButton.cs" />
-    <Compile Remove="Windows\Controls\ExceptionDetails.cs;Windows\Controls\AlignableWrapPanel.cs" />
+    
     <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Attached\FancyScroll.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
     <Compile Remove="Windows\Converters\ChainConverter.cs;Windows\Media\VisualExtension.Mouse.cs" />
     <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
@@ -62,9 +62,6 @@
     <AvaloniaXaml Remove="Assets\SelectableBbCodeBlock.axaml" />
     <AvaloniaXaml Remove="Assets\ProperPasswordBox.axaml" />
     <AvaloniaXaml Remove="Assets\PasswordBox.axaml" />
-    <AvaloniaXaml Remove="Assets\ExceptionDetails.axaml" />
     <AvaloniaXaml Remove="Assets\MenuItem.axaml" />
-    <AvaloniaXaml Remove="Assets\ToolBar.axaml" />
-    <AvaloniaXaml Remove="Assets\ToolBar.styles.axaml" />
   </ItemGroup>
 </Project>

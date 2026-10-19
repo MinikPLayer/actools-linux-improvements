@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/AsyncButton.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
@@ -43,205 +43,30 @@
     <Setter Property="Padding" Value="8 3 8 5"/>
   </ControlTheme>
 
-  <ControlTheme x:Key="{x:Static ToolBar.ButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="Button"/>
-  <ControlTheme x:Key="{x:Static ToolBar.ToggleButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="ToggleButton">
+  <ControlTheme x:Key="ToolBar.ButtonStyle" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="Button"/>
+  <ControlTheme x:Key="ToolBar.ToggleButtonStyle" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="ToggleButton">
     <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></ControlTheme>
-  <ControlTheme x:Key="{x:Static ToolBar.CheckBoxStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="CheckBox">
+  <ControlTheme x:Key="ToolBar.CheckBoxStyle" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="CheckBox">
     <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></ControlTheme>
-  <ControlTheme x:Key="{x:Static ToolBar.RadioButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="RadioButton">
+  <ControlTheme x:Key="ToolBar.RadioButtonStyle" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="RadioButton">
     <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></ControlTheme>
 
-  <ControlTheme x:Key="{x:Static ToolBar.MenuStyleKey}" TargetType="Menu">
-    <Setter Property="Focusable" Value="False"/>
-    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
-    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
-    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <!-- PORT: removed setter of HorizontalContentAlignment (not in Avalonia) -->
-    <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
-    <Setter Property="Padding" Value="8 3 8 5"/>
-    <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="Menu">
-          <ItemsPresenter x:Name="ItemsPresenter" VerticalAlignment="Stretch"/>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-
-    <ControlTheme.Resources>
-      <ResourceDictionary><ControlTheme x:Key="Disabled" TargetType="MenuItem">
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
-        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-        <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}"/>
-        <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
-
-        <Setter Property="BorderThickness" Value="1"/>
-        <!-- PORT: removed setter of VerticalContentAlignment (not in Avalonia) -->
-        <Setter Property="Padding" Value="0 6 0 6"/>
-        <Setter Property="MinWidth" Value="150"/>
-        <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
-        <Setter Property="Template">
-          <Setter.Value>
-            <ControlTemplate TargetType="MenuItem">
-              <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                <Grid>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="Col0" MinWidth="17" Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
-                    <ColumnDefinition x:Name="Col3"/>
-                  </Grid.ColumnDefinitions>
-
-                  <!-- ContentPresenter to show an Icon if needed -->
-                  <ContentPresenter Grid.Column="0" Margin="4 0 6 0" x:Name="Icon" VerticalAlignment="Center"/>
-
-                  <!-- Glyph is a checkmark if needed for a checkable menu -->
-                  <c:Cell Grid.Column="0" Margin="4 0 6 0" x:Name="GlyphPanel" VerticalAlignment="Center">
-                    <Path x:Name="GlyphPanelpath" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z" FlowDirection="LeftToRight"/>
-                  </c:Cell>
-
-                  <!-- Content for the menu text etc -->
-                  <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" x:Name="HeaderHost" RecognizesAccessKey="True"/>
-
-                  <!-- Content for the menu IGT -->
-                  <ContentPresenter Grid.Column="2" Margin="8 1 8 1" x:Name="IGTHost" VerticalAlignment="Center"/>
-
-                  <!-- Arrow drawn path which points to the next level of the menu -->
-                  <c:Cell Grid.Column="3" Margin="4 0 6 0" x:Name="ArrowPanel" VerticalAlignment="Center">
-                    <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
-                  </c:Cell>
-
-                  <!-- The Popup is the body of the menu which expands down or across depending on the level of the item -->
-                  <Popup Grid.Column="0" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" x:Name="SubMenuPopup" Focusable="False">
-                    <Border x:Name="SubMenuBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="2 2 2 2">
-                      <c:Cell x:Name="SubMenu" Grid.IsSharedSizeScope="True">
-                        <!-- StackPanel holds children of the menu. This is set by IsItemsHost=True -->
-                        <StackPanel/>
-                      </c:Cell>
-                    </Border>
-                  </Popup>
-                </Grid>
-              </Border>
-
-              <!-- These triggers re-configure the four arrangements of MenuItem to show different levels of menu via Role -->
-              </ControlTemplate>
-          </Setter.Value>
-        </Setter>
-      <Style Selector="^ /template/ Popup#SubMenuPopup"><!-- PORT: removed setter of Placement (not in Avalonia) --></Style><Style Selector="^ /template/ ColumnDefinition#Col3"><Setter Property="Width" Value="14"/></Style><Style Selector="^ /template/ c|Cell#GlyphPanel"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ Border#Border"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^[Role=TopLevelHeader]"><Setter Property="Padding" Value="6 1 6 1"/>
-                  <Setter Property="MinWidth" Value="0"/>
-                  <Setter Property="Background" Value="Yellow"/>
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ Popup#SubMenuPopup"><!-- PORT: removed setter of Placement (not in Avalonia) -->
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ ColumnDefinition#Col3"><Setter Property="Width" Value="Auto"/>
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ ContentPresenter#Icon"><Setter Property="IsVisible" Value="False"/>
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ c|Cell#GlyphPanel"><Setter Property="IsVisible" Value="False"/>
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ ContentPresenter#IGTHost"><Setter Property="IsVisible" Value="False"/>
-                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ c|Cell#ArrowPanel"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[Role=TopLevelItem]"><Setter Property="Padding" Value="6 1 6 1"/>
-                  </Style><Style Selector="^[Role=TopLevelItem] /template/ c|Cell#ArrowPanel"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[Role=SubmenuHeader]"><Setter Property="DockPanel.Dock" Value="Top"/>
-                  <Setter Property="Padding" Value="0 2 0 2"/>
-                </Style><Style Selector="^[Role=SubmenuItem]"><Setter Property="DockPanel.Dock" Value="Top"/>
-                  <Setter Property="Padding" Value="0 2 0 2"/>
-                  </Style><Style Selector="^[Role=SubmenuItem] /template/ c|Cell#ArrowPanel"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[Icon=null] /template/ ContentPresenter#Icon"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^:checked /template/ c|Cell#GlyphPanel"><Setter Property="IsVisible" Value="True"/>
-                  </Style><Style Selector="^:checked /template/ ContentPresenter#Icon"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^[IsHighlighted=True] /template/ Border#Border"><Setter Property="Background" Value="LightGray"/>
-                  </Style><Style Selector="^[IsHighlighted=True]"><Setter Property="Foreground" Value="Black"/>
-                </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="LightGray"/>
-                </Style></ControlTheme>
-    </ResourceDictionary></ControlTheme.Resources>
-  </ControlTheme>
-
-  <ControlTheme x:Key="ToolBarThumbStyle" TargetType="Thumb">
-    <Setter Property="Cursor" Value="SizeAll"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="Thumb">
-          <Border Background="Transparent">
-            <Rectangle Margin="0 3 0 4">
-              <Rectangle.Fill>
-                <DrawingBrush TileMode="Tile">
-                  <!-- PORT: removed ViewboxUnits (not in Avalonia) --><!-- PORT: removed Viewbox (not in Avalonia) --><!-- PORT: removed ViewportUnits (not in Avalonia) --><!-- PORT: removed Viewport (not in Avalonia) --><DrawingBrush.Drawing>
-                    <DrawingGroup>
-                      <GeometryDrawing Brush="{DynamicResource SeparatorBackground}" Geometry="M 4 4 L 4 8 L 8 8 L 8 4 z"/>
-                    </DrawingGroup>
-                  </DrawingBrush.Drawing>
-                </DrawingBrush>
-              </Rectangle.Fill>
-            </Rectangle>
-          </Border>
-        </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  </ControlTheme>
-
-  <ControlTheme x:Key="ToolBarOverflowButtonStyle" TargetType="ToggleButton">
+  
+  <ControlTheme x:Key="ToolBar.MenuStyle" TargetType="Menu">
     <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="IsVisible" Value="True"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="ToggleButton">
-          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
-            <Grid>
-              <Path x:Name="Arrow" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" Margin="2,3" Data="M -0.5 3 L 5.5 3 L 2.5 6 Z"/>
-              <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
-            </Grid>
-          </Border>
-          </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  <Style Selector="^ /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
-              <Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
-              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
-              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
-            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
-              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
-              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
-            </Style><Style Selector="^:focus /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-            </Style></ControlTheme>
+  </ControlTheme>
 
-  <ControlTheme TargetType="ToolBar" x:Key="{x:Type ToolBar}">
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="ToolBar">
-          <DockPanel Background="{DynamicResource WindowBackground}">
-            <ToggleButton DockPanel.Dock="Right" IsEnabled="{TemplateBinding HasOverflowItems}" ClickMode="Press" IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ToolBarOverflowButtonStyle}">
-              <Popup x:Name="OverflowPopup" Placement="Bottom" Focusable="False" IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}">
-                <!-- PORT: removed StaysOpen (not in Avalonia) --><Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}">
-                  <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel" Margin="2" WrapWidth="200" Focusable="True"/>
-                </Border>
-              </Popup>
-            </ToggleButton>
-
-            <Thumb x:Name="ToolBarThumb" Width="10" Theme="{StaticResource ToolBarThumbStyle}"/>
-            <ToolBarPanel x:Name="PART_ToolBarPanel" IsItemsHost="True" Margin="0"/>
-          </DockPanel>
-          </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-
-    <ControlTheme.Resources>
-      <ResourceDictionary><ControlTheme TargetType="c:ModernButton" x:Key="{x:Type c:ModernButton}">
+  <ControlTheme TargetType="c:ModernButton" x:Key="ToolBar.ModernButton">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -274,36 +99,60 @@
                 </Style><Style Selector="^:focus /template/ Border#Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
                 </Style></ControlTheme>
 
-      <Style Selector="c|BooleanSwitch" __plain="1">
-        <Style.Resources>
-          <ResourceDictionary><Style Selector="Button" __plain="1"/>
-        </ResourceDictionary></Style.Resources>
-      </Style>
+  <ControlTheme x:Key="ToolBarThumbStyle" TargetType="Thumb">
+    <Setter Property="Cursor" Value="SizeAll"/>
+    <Setter Property="Width" Value="10"/>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="Thumb">
+        <Border Background="Transparent">
+          <Rectangle Margin="0 3 0 4" Width="4" HorizontalAlignment="Center" Fill="{DynamicResource SeparatorBackground}" Opacity="0.6"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
 
-      <Style Selector="c|ButtonWithComboBox" __plain="1">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Padding" Value="8 3 8 5"/>
-      </Style>
+  <!-- PORT: hand-written, Avalonia has no ToolBar. No overflow popup, items just follow each other. -->
+  <ControlTheme TargetType="c:ToolBar" x:Key="{x:Type c:ToolBar}">
+    <Setter Property="Template">
+      <ControlTemplate TargetType="c:ToolBar">
+        <DockPanel Background="{DynamicResource WindowBackground}">
+          <Thumb x:Name="ToolBarThumb" DockPanel.Dock="Left" Theme="{StaticResource ToolBarThumbStyle}"/>
+          <ItemsPresenter x:Name="PART_ToolBarPanel" Margin="0" ItemsPanel="{TemplateBinding ItemsPanel}"/>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <StackPanel Orientation="Horizontal"/>
+      </ItemsPanelTemplate>
+    </Setter>
+    <Style Selector="^ Button"><Setter Property="Theme" Value="{StaticResource ToolBar.ButtonStyle}"/></Style>
+    <Style Selector="^ ToggleButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ToggleButtonStyle}"/></Style>
+    <Style Selector="^ CheckBox"><Setter Property="Theme" Value="{StaticResource ToolBar.CheckBoxStyle}"/></Style>
+    <Style Selector="^ RadioButton"><Setter Property="Theme" Value="{StaticResource ToolBar.RadioButtonStyle}"/></Style>
+    <Style Selector="^ Menu"><Setter Property="Theme" Value="{StaticResource ToolBar.MenuStyle}"/></Style>
+    <Style Selector="^ c|ModernButton"><Setter Property="Theme" Value="{StaticResource ToolBar.ModernButton}"/></Style>
+    <Style Selector="^ c|ButtonWithComboBox, ^ c|AsyncButton">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="Focusable" Value="False"/>
+      <Setter Property="Padding" Value="8 3 8 5"/>
+    </Style>
+  </ControlTheme>
 
-      <Style Selector="c|AsyncButton" __plain="1">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="Focusable" Value="False"/>
-        <Setter Property="Padding" Value="8 3 8 5"/>
-      </Style>
-    </ResourceDictionary></ControlTheme.Resources>
-  <Style Selector="^[IsOverflowOpen=True] /template/ Thumb#ToolBarThumb"><Setter Property="IsEnabled" Value="False"/>
-            </Style><Style Selector="^[(ToolBarTray.IsLocked)=True] /template/ Thumb#ToolBarThumb"><Setter Property="IsVisible" Value="False"/>
-            </Style></ControlTheme>
-
-  <!--<Style x:Key="{x:Type ToolBarTray}" TargetType="{x:Type ToolBarTray}">
-        <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Opacity="0.4" Direction="0" ShadowDepth="0" BlurRadius="5" />
-            </Setter.Value>
-        </Setter>
-    </Style>-->
+  <ControlTheme TargetType="c:ToolBarTray" x:Key="{x:Type c:ToolBarTray}">
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="Template">
+      <ControlTemplate TargetType="c:ToolBarTray">
+        <Border Background="{TemplateBinding Background}">
+          <ItemsPresenter ItemsPanel="{TemplateBinding ItemsPanel}"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal"/>
+      </ItemsPanelTemplate>
+    </Setter>
+  </ControlTheme>
 </ResourceDictionary>

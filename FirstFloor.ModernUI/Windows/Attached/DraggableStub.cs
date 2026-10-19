@@ -20,6 +20,13 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         public static bool GetEnabled(DependencyObject o) => o.GetValue(EnabledProperty);
         public static void SetEnabled(DependencyObject o, bool value) => o.SetValue(EnabledProperty, value);
 
-        public static int GetMouseItemIndex(this ListBox listBox) => -1;
+        public static readonly AttachedProperty<bool> ForceDisabledProperty = DP.RegisterAttached<bool>("ForceDisabled", typeof(Draggable), new PropertyMetadata(false));
+        public static bool GetForceDisabled(DependencyObject o) => o.GetValue(ForceDisabledProperty);
+        public static void SetForceDisabled(DependencyObject o, bool value) => o.SetValue(ForceDisabledProperty, value);
+
+        public static int GetMouseItemIndex(this ItemsControl itemsControl) => -1;
+
+        public static bool IsCopyAction(this Avalonia.Input.DragEventArgs e) => e.KeyModifiers.HasFlag(Avalonia.Input.KeyModifiers.Control);
+        public static bool IsSpecificAction(this Avalonia.Input.DragEventArgs e) => e.KeyModifiers.HasFlag(Avalonia.Input.KeyModifiers.Shift);
     }
 }

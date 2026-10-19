@@ -41,8 +41,8 @@ namespace AcManager.Controls {
         }
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e) {
-            base.OnMouseDown(e);
-            if (!e.Handled && e.ChangedButton == MouseButton.Left) {
+            base.OnPointerReleased(e);
+            if (!e.Handled && e.InitialPressMouseButton == MouseButton.Left) {
                 e.Handled = true;
                 Edit();
             }

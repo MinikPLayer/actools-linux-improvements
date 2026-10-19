@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -9,6 +9,7 @@ using AcManager.Tools.Objects;
 using FirstFloor.ModernUI;
 using JetBrains.Annotations;
 using OxyPlot;
+using OxyPlot.Legends;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 
@@ -69,13 +70,17 @@ namespace AcManager.Controls.Graphs {
             return new PlotModel {
                 TextColor = BaseTextColor,
                 PlotAreaBorderColor = OxyColors.Transparent,
-                LegendTextColor = BaseLegendTextColor,
-                LegendPosition = LegendPosition.RightBottom,
+                Legends = {
+                    new OxyPlot.Legends.Legend {
+                        LegendTextColor = BaseLegendTextColor,
+                        LegendPosition = LegendPosition.RightBottom,
+                        LegendPadding = 0d,
+                        LegendMargin = 0d
+                    }
+                },
 
                 Padding = new OxyThickness(0d),
-                LegendPadding = 0d,
                 TitlePadding = 0d,
-                LegendMargin = 0d,
                 PlotMargins = new OxyThickness(40d, 0d, 40d, 32d),
 
                 Axes = {
@@ -134,7 +139,7 @@ namespace AcManager.Controls.Graphs {
 
         private void OnContentSettingsChanged(object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName != nameof(SettingsHolder.Content.SmoothCurves) || Model == null) return;
-            foreach (var series in Model.Series.OfType<LineSeries>()) {
+            foreach (var series in Model.Series.OfType<CatmulLineSeries>()) {
                 series.Smooth = SettingsHolder.Content.SmoothCurves;
             }
             InvalidatePlot();

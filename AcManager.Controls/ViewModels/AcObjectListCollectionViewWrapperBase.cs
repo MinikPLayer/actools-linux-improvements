@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Globalization;
@@ -114,7 +114,7 @@ namespace AcManager.Controls.ViewModels {
                 _groupNameFactory = groupNameFactory;
             }
 
-            public override object GroupNameFromItem(object item, int level, CultureInfo culture) {
+            public override object GroupKeyFromItem(object item, int level, CultureInfo culture) {
                 string ret = null;
                 if ((item as AcItemWrapper)?.Value is T t) ret = _groupNameFactory(t);
                 return string.IsNullOrEmpty(ret) ? @"?" : ret;

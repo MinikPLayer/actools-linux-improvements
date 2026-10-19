@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -581,7 +581,7 @@ namespace AcManager.Controls {
         }
 
         PlacementMode IHierarchicalItemPreviewProvider.GetPlacementMode(object item) {
-            return PlacementMode.Mouse;
+            return PlacementMode.Pointer;
         }
     }
 }

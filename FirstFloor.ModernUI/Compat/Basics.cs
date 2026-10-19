@@ -84,7 +84,41 @@ namespace System.Windows {
             }
         }
 
+        extension(Avalonia.Controls.MenuItem m) {
+            public bool IsCheckable {
+                get => m.ToggleType != Avalonia.Controls.MenuItemToggleType.None;
+                set => m.ToggleType = value ? Avalonia.Controls.MenuItemToggleType.CheckBox : Avalonia.Controls.MenuItemToggleType.None;
+            }
+        }
+
+        /// <summary>Emulates MenuItem.SubmenuClosed.</summary>
+        public static void AddSubmenuClosed(this Avalonia.Controls.MenuItem item, EventHandler<RoutedEventArgs> handler) {
+            item.PropertyChanged += (sender, e) => {
+                if (e.Property == Avalonia.Controls.MenuItem.IsSubMenuOpenProperty && e.NewValue is false) {
+                    handler(sender, new RoutedEventArgs());
+                }
+            };
+        }
+
+        extension(Avalonia.Controls.ContextMenu menu) {
+            /// <summary>Emulates `menu.IsOpen = true` (also for menus which aren’t attached to any control yet).</summary>
+            public void Show() {
+                if (menu.Parent is Avalonia.Controls.Control || menu.PlacementTarget != null) {
+                    menu.Open();
+                } else if (FirstFloor.ModernUI.Windows.Controls.DpiAwareWindow.LastActiveWindow is Avalonia.Controls.Control target) {
+                    menu.Open(target);
+                }
+            }
+        }
+
+        extension(Visual v2) {
+            public Point PointFromScreen(Point screenPoint) => v2.PointToClient(new PixelPoint((int)screenPoint.X, (int)screenPoint.Y));
+        }
+
         extension(Avalonia.Controls.Control c) {
+            public bool IsMouseOver => c.IsPointerOver;
+            public bool IsKeyboardFocused => c.IsFocused;
+            public bool IsKeyboardFocusWithin => c.IsKeyboardFocusWithin;
             public double ActualWidth => c.Bounds.Width;
             public double ActualHeight => c.Bounds.Height;
 
@@ -164,6 +198,12 @@ namespace System.Windows.Data {
         object Avalonia.Data.Converters.IMultiValueConverter.Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture) {
             return Convert(values.ToArray(), targetType, parameter, culture);
         }
+    }
+}
+
+namespace System.Windows {
+    public enum WindowStyle {
+        None, SingleBorderWindow, ThreeDBorderWindow, ToolWindow
     }
 }
 
@@ -575,7 +615,7 @@ namespace System.Windows.Controls {
 
         public bool Match(object data) => true;
 
-        public Avalonia.Controls.Control Build(object param) {
+        public virtual Avalonia.Controls.Control Build(object param) {
             return SelectTemplate(param, null)?.Build(param);
         }
     }

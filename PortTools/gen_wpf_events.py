@@ -24,6 +24,8 @@ EVENTS += [
     ('MouseLeave', PTR, 'InputElement.PointerExitedEvent', 'RoutingStrategies.Direct', None),
     ('LostMouseCapture', 'PointerCaptureLostEventArgs', 'InputElement.PointerCaptureLostEvent', 'RoutingStrategies.Direct', None),
     ('GotKeyboardFocus', 'GotFocusEventArgs', 'InputElement.GotFocusEvent', 'RoutingStrategies.Bubble', None),
+    ('PreviewGotKeyboardFocus', 'GotFocusEventArgs', 'InputElement.GotFocusEvent', 'RoutingStrategies.Tunnel', None),
+    ('PreviewLostKeyboardFocus', 'RoutedEventArgs', 'InputElement.LostFocusEvent', 'RoutingStrategies.Tunnel', None),
     ('LostKeyboardFocus', 'RoutedEventArgs', 'InputElement.LostFocusEvent', 'RoutingStrategies.Bubble', None),
     ('ContextMenuOpening', 'ContextRequestedEventArgs', 'Control.ContextRequestedEvent', 'RoutingStrategies.Bubble', None),
     ('Drop', 'DragEventArgs', 'DragDrop.DropEvent', 'RoutingStrategies.Bubble', None),

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -157,12 +157,12 @@ namespace AcManager.Controls.Helpers {
                 return;
             }
 
-            var rectangle = backgroundContent as Rectangle;
-            var visualBrush = rectangle?.Fill as VisualBrush;
+            var rectangle = backgroundContent as Avalonia.Controls.Shapes.Rectangle;
+            var visualBrush = rectangle?.Fill as Avalonia.Media.VisualBrush;
 
             if (visualBrush == null) {
-                visualBrush = (VisualBrush)anyElement.FindResource(@"FancyBackgroundBrush");
-                rectangle = new Rectangle {
+                visualBrush = (Avalonia.Media.VisualBrush)anyElement.FindResource(@"FancyBackgroundBrush");
+                rectangle = new Avalonia.Controls.Shapes.Rectangle {
                     Fill = visualBrush,
                     Tag = backgroundContent
                 };
@@ -170,14 +170,16 @@ namespace AcManager.Controls.Helpers {
                 backgroundContent = rectangle;
             }
 
-            var frameworkElement = (FrameworkElement)visualBrush.Visual;
-            var backgroundImage0 = (BetterImage)LogicalTreeHelper.FindLogicalNode(frameworkElement, @"BackgroundImage0");
-            var backgroundImage1 = (BetterImage)LogicalTreeHelper.FindLogicalNode(frameworkElement, @"BackgroundImage1");
+            // PORT: no names lookup in a brush’s visual and no VisualStateManager, images are fading using animations
+            var frameworkElement = (Avalonia.Controls.Panel)visualBrush.Visual;
+            var backgroundImage0 = frameworkElement?.Children.ElementAtOrDefault(0) as BetterImage;
+            var backgroundImage1 = frameworkElement?.Children.ElementAtOrDefault(1) as BetterImage;
             if (backgroundImage0 == null || backgroundImage1 == null) return;
 
             var state = frameworkElement.Tag as int? ?? 0;
             (state == 0 ? backgroundImage1 : backgroundImage0).Filename = Instance.BackgroundFilename;
-            VisualStateManager.GoToElementState(backgroundImage1, @"State" + state, true);
+            backgroundImage1.BeginAnimation(Avalonia.Visual.OpacityProperty,
+                    new DoubleAnimation(state == 0 ? 1d : 0d, new Duration(TimeSpan.FromSeconds(0.3))));
             frameworkElement.Tag = 1 - state;
         }
     }

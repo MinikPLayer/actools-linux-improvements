@@ -6,7 +6,8 @@ using OxyPlot.Series;
 
 namespace AcManager.Controls.Graphs {
     public class PieSeriesExt : PieSeries {
-        public override void Render(IRenderContext rc, PlotModel model) {
+        public override void Render(IRenderContext rc) {
+            var model = PlotModel;
             if (Slices.Count == 0) {
                 return;
             }
@@ -69,7 +70,7 @@ namespace AcManager.Controls.Graphs {
                 var points = outerPoints;
                 points.AddRange(innerPoints);
 
-                rc.DrawPolygon(points, slice.ActualFillColor, Stroke, StrokeThickness, null, LineJoin.Bevel);
+                rc.DrawPolygon(points, slice.ActualFillColor, Stroke, StrokeThickness, EdgeRenderingMode, null, LineJoin.Bevel);
             }
 
             angle = StartAngle;
@@ -98,12 +99,12 @@ namespace AcManager.Controls.Graphs {
                             tp0.X + TickRadialLength * Math.Cos(midAngleRadians),
                             tp0.Y + TickRadialLength * Math.Sin(midAngleRadians));
                     var tp2 = new ScreenPoint(tp1.X + TickHorizontalLength * sign, tp1.Y);
-                    rc.DrawLine(new[] { tp0, tp1, tp2 }, Stroke, 1d, null, LineJoin.Bevel);
+                    rc.DrawLine(new[] { tp0, tp1, tp2 }, Stroke, 1d, EdgeRenderingMode, null, LineJoin.Bevel);
 
                     // label
                     var labelPosition = new ScreenPoint(tp2.X + TickLabelDistance * sign, tp2.Y);
                     DrawTextWithShadow(rc, labelPosition, label, ActualTextColor, ActualFont, ActualFontSize, ActualFontWeight,
-                            0, sign > 0 ? HorizontalAlignment.Left : HorizontalAlignment.Right, VerticalAlignment.Middle);
+                            0, sign > 0 ? OxyPlot.HorizontalAlignment.Left : OxyPlot.HorizontalAlignment.Right, OxyPlot.VerticalAlignment.Middle);
                 }
 
                 // Render label inside the slice
@@ -122,13 +123,13 @@ namespace AcManager.Controls.Graphs {
                     }
 
                     DrawTextWithShadow(rc, labelPosition, label, ActualTextColor, ActualFont, ActualFontSize, ActualFontWeight,
-                            textAngle, HorizontalAlignment.Center, VerticalAlignment.Middle);
+                            textAngle, OxyPlot.HorizontalAlignment.Center, OxyPlot.VerticalAlignment.Middle);
                 }
             }
 
             void DrawTextWithShadow(IRenderContext context, ScreenPoint p, string text, OxyColor fill, string fontFamily = null, double fontSize = 10.0, double fontWeight = 400.0,
-                    double rotation = 0.0, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment verticalAlignment = VerticalAlignment.Top, OxySize? maxSize = null) {
+                    double rotation = 0.0, OxyPlot.HorizontalAlignment horizontalAlignment = OxyPlot.HorizontalAlignment.Left,
+                    OxyPlot.VerticalAlignment verticalAlignment = OxyPlot.VerticalAlignment.Top, OxySize? maxSize = null) {
                 for (var i = -1; i <= 1; ++i) {
                     for (var j = -1; j <= 1; ++j) {
                         if (Math.Abs(i) + Math.Abs(j) != 1) continue;

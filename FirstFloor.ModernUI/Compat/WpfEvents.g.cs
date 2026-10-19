@@ -283,6 +283,26 @@ namespace System.Windows {
             if (Get(target).Remove(("GotKeyboardFocus", handler), out var w)) target.RemoveHandler(InputElement.GotFocusEvent, (EventHandler<GotFocusEventArgs>)w);
         }
 
+        public static void AddPreviewGotKeyboardFocus(this Interactive target, EventHandler<GotFocusEventArgs> handler) {
+            EventHandler<GotFocusEventArgs> wrapper = (s, e) => { handler(s, e); };
+            Get(target)[("PreviewGotKeyboardFocus", handler)] = wrapper;
+            target.AddHandler(InputElement.GotFocusEvent, wrapper, RoutingStrategies.Tunnel, false);
+        }
+
+        public static void RemovePreviewGotKeyboardFocus(this Interactive target, EventHandler<GotFocusEventArgs> handler) {
+            if (Get(target).Remove(("PreviewGotKeyboardFocus", handler), out var w)) target.RemoveHandler(InputElement.GotFocusEvent, (EventHandler<GotFocusEventArgs>)w);
+        }
+
+        public static void AddPreviewLostKeyboardFocus(this Interactive target, EventHandler<RoutedEventArgs> handler) {
+            EventHandler<RoutedEventArgs> wrapper = (s, e) => { handler(s, e); };
+            Get(target)[("PreviewLostKeyboardFocus", handler)] = wrapper;
+            target.AddHandler(InputElement.LostFocusEvent, wrapper, RoutingStrategies.Tunnel, false);
+        }
+
+        public static void RemovePreviewLostKeyboardFocus(this Interactive target, EventHandler<RoutedEventArgs> handler) {
+            if (Get(target).Remove(("PreviewLostKeyboardFocus", handler), out var w)) target.RemoveHandler(InputElement.LostFocusEvent, (EventHandler<RoutedEventArgs>)w);
+        }
+
         public static void AddLostKeyboardFocus(this Interactive target, EventHandler<RoutedEventArgs> handler) {
             EventHandler<RoutedEventArgs> wrapper = (s, e) => { handler(s, e); };
             Get(target)[("LostKeyboardFocus", handler)] = wrapper;

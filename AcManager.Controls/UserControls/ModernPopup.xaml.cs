@@ -1,23 +1,15 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace AcManager.Controls.UserControls {
     [ContentProperty(nameof(Content))]
-    public partial class ModernPopup {
+    public partial class ModernPopup : Avalonia.Controls.Primitives.Popup {
         public ModernPopup() {
             InitializeComponent();
             Root.DataContext = this;
-            CustomPopupPlacementCallback += OnPlacementCallback;
-        }
-
-        private static CustomPopupPlacement[] OnPlacementCallback(Size popupSize, Size targetSize, Point offset) {
-            return new[] {
-                new CustomPopupPlacement {
-                    Point = new Point(0, targetSize.Height)
-                }
-            };
+            Placement = PlacementMode.Bottom;
         }
 
         public static readonly StyledProperty<Thickness> PaddingProperty = DP.Register<Thickness>(nameof(Padding),
@@ -42,11 +34,11 @@ namespace AcManager.Controls.UserControls {
 
         private void OnContentChanged(FrameworkElement oldValue, FrameworkElement newValue) {
             if (oldValue != null) {
-                BindingOperations.ClearBinding(oldValue, DataContextProperty);
+                oldValue.ClearValue(Avalonia.StyledElement.DataContextProperty);
             }
 
             if (newValue != null && newValue.DataContext == null) {
-                newValue.SetBinding(DataContextProperty, new Binding {
+                newValue.SetBinding(Avalonia.StyledElement.DataContextProperty, new Binding {
                     Path = new PropertyPath(nameof(DataContext)),
                     Source = this
                 });

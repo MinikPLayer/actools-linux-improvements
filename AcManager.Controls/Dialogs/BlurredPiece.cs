@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -106,9 +106,9 @@ namespace AcManager.Controls.Dialogs {
             _updateOffset.Yield(() => {
                 try {
                     if (_loaded && _visual != null) {
-                        var offset = _visual.PointFromScreen(PointToScreen(default));
+                        var offset = _visual.PointFromScreen(new Point(this.PointToScreen(default).X, this.PointToScreen(default).Y));
                         Viewbox = new Rect(offset.X - _blurRadius, offset.Y - _blurRadius,
-                                ActualWidth + _blurRadius * 2, ActualHeight + _blurRadius * 2);
+                                this.ActualWidth + _blurRadius * 2, this.ActualHeight + _blurRadius * 2);
                     }
                 } catch (InvalidOperationException) { }
             });

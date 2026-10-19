@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lo="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:h="http://acstuff.club/app/sharing" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.UploaderBlock">
+<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lo="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:h="http://acstuff.club/app/sharing" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.UploaderBlock">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -78,7 +78,7 @@
           </mui:Switch>
         </mui:ReferenceSwitch.Null>
         <mui:ReferenceSwitch.NonNull>
-          <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" SelectedItemChanged="OnTreeSelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" SelectionChanged="OnTreeSelectedItemChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
             <TreeView.Resources>
               <ControlTheme TargetType="TreeViewItem" x:Key="{x:Type TreeViewItem}">
                 <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>

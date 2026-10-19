@@ -17,7 +17,7 @@ using JetBrains.Annotations;
 namespace AcManager.Controls {
     public class ToolTips {
         static ToolTips (){
-            EventManager.RegisterClassHandler(typeof(ScrollViewer), ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(OnScrollChanged));
+            ScrollViewer.ScrollChangedEvent.AddClassHandler<ScrollViewer>((sender, e) => OnScrollChanged(sender, e));
         }
 
         private static ResourceDictionary _dictionary;
@@ -91,8 +91,8 @@ namespace AcManager.Controls {
             SetIsDirty(element, true);
             element.RemoveMouseEnter(OnElementMouseEnter);
             element.AddMouseEnter(OnElementMouseEnter);
-            element.PreviewGotKeyboardFocus -= OnElementMouseEnter;
-            element.PreviewGotKeyboardFocus += OnElementMouseEnter;
+            element.RemovePreviewGotKeyboardFocus(OnElementMouseEnter);
+            element.AddPreviewGotKeyboardFocus(OnElementMouseEnter);
 
             if (element.IsMouseOver) {
                 UpdateToolTip(element);
@@ -174,12 +174,7 @@ namespace AcManager.Controls {
                 return;
             }
 
-            if (obj.ToolTip == null) {
-                obj.SetBinding(ToolTipService.IsEnabledProperty, new Binding {
-                    Path = new PropertyPath(nameof(ToolTipIsEnabledValue.IsEnabled)),
-                    Source = _isIsEnabledValue
-                });
-            }
+            // PORT: no ToolTipService.IsEnabled in Avalonia
 
             t.DataContext = dataContext;
             obj.ToolTip = t;

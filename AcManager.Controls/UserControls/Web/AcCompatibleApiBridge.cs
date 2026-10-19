@@ -19,7 +19,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace AcManager.Controls.UserControls.Web {
-    [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+    [ComVisible(true)]
     public class AcCompableApiProxy : JsProxyCSharp {
         private readonly AcCompatibleApiBridge _parent;
 

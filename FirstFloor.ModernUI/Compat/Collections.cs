@@ -125,7 +125,18 @@ namespace System.Windows.Data {
     }
 
     public class PropertyGroupDescription : DataGridPathGroupDescription {
+        private readonly IValueConverter _converter;
+
         public PropertyGroupDescription(string propertyName) : base(propertyName) { }
+
+        public PropertyGroupDescription(string propertyName, IValueConverter converter) : base(propertyName) {
+            _converter = converter;
+        }
+
+        public override object GroupKeyFromItem(object item, int level, System.Globalization.CultureInfo culture) {
+            var value = base.GroupKeyFromItem(item, level, culture);
+            return _converter == null ? value : _converter.Convert(value, typeof(object), null, culture);
+        }
     }
 
     public static class CollectionViewSource {

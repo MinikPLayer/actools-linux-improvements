@@ -18,7 +18,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls.UserControls {
-    public partial class WebBlock {
+    public partial class WebBlock : DockPanel {
         [CanBeNull]
         public static Action<string> CmCommandHandler;
         

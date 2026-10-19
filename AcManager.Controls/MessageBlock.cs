@@ -12,14 +12,14 @@ namespace AcManager.Controls {
         }
 
         public MessageBlock() {
-            Children = new UIElementCollection(this, this);
+            Children = new Avalonia.Controls.Controls();
         }
 
-        public static readonly StyledProperty<UIElementCollection> ChildrenProperty = DP.Register<UIElementCollection>(nameof(Children),
+        public static readonly StyledProperty<Avalonia.Controls.Controls> ChildrenProperty = DP.Register<Avalonia.Controls.Controls>(nameof(Children),
                 typeof(MessageBlock));
 
-        [Avalonia.Metadata.Content] public UIElementCollection Children {
-            get => (UIElementCollection)GetValue(ChildrenProperty);
+        [Avalonia.Metadata.Content] public Avalonia.Controls.Controls Children {
+            get => (Avalonia.Controls.Controls)GetValue(ChildrenProperty);
             set => SetValue(ChildrenProperty, value);
         }
 
@@ -101,7 +101,7 @@ namespace AcManager.Controls {
         }
 
         private void UpdateVisibility() {
-            base.Visibility = Closed ? Visibility.Collapsed : Visibility;
+            IsVisible = !Closed && Visibility == Visibility.Visible;
         }
 
         public static readonly DependencyPropertyKey ClosedPropertyKey = DP.RegisterReadOnly(nameof(Closed), typeof(bool),

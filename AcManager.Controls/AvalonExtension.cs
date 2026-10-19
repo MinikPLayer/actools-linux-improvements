@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,12 +11,12 @@ using System.Windows.Media;
 using System.Xml;
 using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
-using ICSharpCode.AvalonEdit;
-using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Folding;
-using ICSharpCode.AvalonEdit.Highlighting;
-using ICSharpCode.AvalonEdit.Highlighting.Xshd;
-using ICSharpCode.AvalonEdit.Rendering;
+using AvaloniaEdit;
+using AvaloniaEdit.Document;
+using AvaloniaEdit.Folding;
+using AvaloniaEdit.Highlighting;
+using AvaloniaEdit.Highlighting.Xshd;
+using AvaloniaEdit.Rendering;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls {
@@ -98,8 +98,7 @@ namespace AcManager.Controls {
         }
 
         public static readonly AttachedProperty<string> TextProperty = DP.RegisterAttached<string>("Text", typeof(AvalonExtension),
-                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged, null, true,
-                        UpdateSourceTrigger.PropertyChanged));
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnTextChanged));
 
         private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (_isBusy) return;
@@ -167,7 +166,7 @@ namespace AcManager.Controls {
             foreach (var rect in BackgroundGeometryBuilder.GetRectsForSegment(textView, currentLine)) {
                 drawingContext.DrawRectangle(
                         new SolidColorBrush(Color.FromArgb(0x40, 0, 0, 0xFF)), null,
-                        new Rect(rect.Location, new Size(textView.ActualWidth - 32, rect.Height)));
+                        new Rect(rect.TopLeft, new Size(textView.ActualWidth - 32, rect.Height)));
             }
         }
     }

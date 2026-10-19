@@ -298,8 +298,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private readonly Avalonia.Controls.Image _image;
         private int _version;
 
+        /// <summary>Replaces WPF’s overriding of metadata of RenderOptions.BitmapScalingMode.</summary>
+        public static BitmapScalingMode DefaultBitmapScalingMode = BitmapScalingMode.Unspecified;
+
         public BetterImage() {
             _image = new Avalonia.Controls.Image();
+            if (DefaultBitmapScalingMode != BitmapScalingMode.Unspecified) {
+                System.Windows.Media.RenderOptions.SetBitmapScalingMode(_image, DefaultBitmapScalingMode);
+            }
             Child = _image;
             _image[!Avalonia.Controls.Image.StretchProperty] = this[!StretchProperty];
             _image[!Avalonia.Controls.Image.StretchDirectionProperty] = this[!StretchDirectionProperty];
@@ -314,6 +320,17 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected override void OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs e) {
             base.OnAttachedToVisualTree(e);
             if (_image.Source == null) Reload();
+        }
+
+        protected int InnerDecodeWidth => DecodeWidth;
+
+        /// <summary>Sets an already loaded image (for derived controls which load images on their own).</summary>
+        protected void SetCurrent(Image image, string filename) {
+            Apply(image, ++_version);
+        }
+
+        protected virtual void OnFilenameChanged(string filename) {
+            Filename = filename;
         }
 
         public void Reload() {

@@ -3,8 +3,9 @@ using System.Windows.Media;
 using AcManager.Tools.Data;
 using FirstFloor.ModernUI.Helpers;
 using OxyPlot;
+using OxyPlot.Legends;
 using OxyPlot.Axes;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 using LinearAxis = OxyPlot.Axes.LinearAxis;
 
 namespace AcManager.Controls.Graphs {
@@ -103,8 +104,12 @@ namespace AcManager.Controls.Graphs {
             return new PlotModel {
                 TextColor = BaseTextColor,
                 PlotAreaBorderColor = OxyColors.Transparent,
-                LegendTextColor = BaseLegendTextColor,
-                LegendPosition = LegendPosition.RightBottom,
+                Legends = {
+                    new OxyPlot.Legends.Legend {
+                        LegendTextColor = BaseLegendTextColor,
+                        LegendPosition = LegendPosition.RightBottom
+                    }
+                },
 
                 Axes = {
                     new LinearAxis {

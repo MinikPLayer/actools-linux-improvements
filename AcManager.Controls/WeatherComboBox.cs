@@ -405,7 +405,7 @@ namespace AcManager.Controls {
                                     Style = (Style)SettingsDictionary[@"WeatherLiveControllerMenuItem"],
                                     ItemsSource = new[] { editor }
                                 };
-                                menuItem.SetBinding(HeaderedItemsControl.HeaderProperty, new Binding {
+                                menuItem.SetBinding(Avalonia.Controls.MenuItem.HeaderProperty, new Binding {
                                     Source = item,
                                     Path = new PropertyPath(nameof(item.DisplayName)),
                                     Mode = BindingMode.OneWay
@@ -416,7 +416,7 @@ namespace AcManager.Controls {
                                         item.ControllerSettings = w.ControllerSettings;
                                     }
                                 };
-                                menuItem.SubmenuClosed += (sender, args) => {
+                                menuItem.AddSubmenuClosed((sender, args) => {
                                     if (SelectedItem is WeatherTypeWrapped w1 && w1.ControllerId == item.ControllerId) {
                                         Logging.Write("OLD: " + w1.ControllerSettings);
                                         Logging.Write("NEW: " + item.ControllerRef.SerializeSettings());
@@ -428,7 +428,7 @@ namespace AcManager.Controls {
                                         SelectedItem = null;
                                         SelectedItem = item;
                                     }
-                                };
+                                });
                                 menuItem.AddPreviewMouseDown((sender, args) => {
                                     var selected = (MenuItem)sender;
                                     SelectedItem = item;

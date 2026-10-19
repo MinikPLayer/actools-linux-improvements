@@ -18,7 +18,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsWidthHeightValid);
 
-        [TypeConverter(typeof(LengthConverter))]
         public double ItemWidth {
             get => GetValue(ItemWidthProperty) as double? ?? 0d;
             set => SetValue(ItemWidthProperty, value);
@@ -28,7 +27,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 typeof(AlignableWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsWidthHeightValid);
 
-        [TypeConverter(typeof(LengthConverter))]
         public double ItemHeight {
             get => GetValue(ItemHeightProperty) as double? ?? 0d;
             set => SetValue(ItemHeightProperty, value);

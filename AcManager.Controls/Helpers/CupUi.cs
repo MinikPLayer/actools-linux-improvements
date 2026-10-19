@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -34,14 +34,13 @@ namespace AcManager.Controls.Helpers {
                 typeof(CupUi), new UIPropertyMetadata(OnObjectChanged));
 
         private static void OnObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            if (d is ButtonBase element && e.NewValue is ICupSupportedObject newValue) {
+            if (d is Avalonia.Controls.Button element && e.NewValue is ICupSupportedObject newValue) {
                 element.RemovePreviewMouseLeftButtonUp(OnButtonMouseUp);
                 element.AddPreviewMouseLeftButtonUp(OnButtonMouseUp);
 
                 element.Command = new AsyncCommand(() => CupClient.Instance?.InstallUpdateAsync(newValue.CupContentType, newValue.Id));
-                element.SetBinding(UIElement.VisibilityProperty, new Binding {
+                element.SetBinding(Avalonia.Visual.IsVisibleProperty, new Binding {
                     Path = new PropertyPath(nameof(newValue.IsCupUpdateAvailable)),
-                    Converter = new BooleanToVisibilityConverter(),
                     Source = newValue
                 });
 

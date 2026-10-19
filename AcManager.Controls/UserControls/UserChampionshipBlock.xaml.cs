@@ -1,4 +1,4 @@
-﻿using System.Windows;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using AcManager.Controls.Dialogs;
@@ -28,7 +28,7 @@ namespace AcManager.Controls.UserControls {
             var career = KunosCareerObject;
             if (career == null) return;
 
-            InformationIcon.Data = TryFindResource(@"InformationIconData") as Geometry;
+            InformationIcon.Data = this.TryFindResource(@"InformationIconData") as Geometry;
         }
     }
 }

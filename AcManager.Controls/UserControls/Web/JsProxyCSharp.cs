@@ -5,7 +5,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls.UserControls.Web {
-    [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+    [ComVisible(true)]
     public abstract class JsProxyCSharp : JsProxyBase {
         protected JsProxyCSharp(JsBridgeBase bridge) : base(bridge) { }
 

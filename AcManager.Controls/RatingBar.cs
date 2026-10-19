@@ -44,7 +44,7 @@ namespace AcManager.Controls {
 
         private void Update(MouseEventArgs e) {
             if (IsReadOnly) return;
-            Rating = (5d * e.GetPosition(this).X / ActualWidth).Round(0.5);
+            Rating = (5d * e.GetPosition(this).X / this.ActualWidth).Round(0.5);
             Focus();
         }
 

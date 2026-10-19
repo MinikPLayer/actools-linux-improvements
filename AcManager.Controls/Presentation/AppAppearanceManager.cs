@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -93,13 +93,10 @@ namespace AcManager.Controls.Presentation {
 
             private void ApplyInner() {
                 if (_filename != null) {
-                    var parserContext = new ParserContext {
-                        BaseUri = new Uri(AssetsDirectory ?? "", UriKind.Absolute)
-                    };
-
-                    using (var fs = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
-                        AppearanceManager.Instance.SetTheme((ResourceDictionary)XamlReader.Load(fs, parserContext));
-                    }
+                    // PORT: themes are Avalonia resource dictionaries now (not compatible with the WPF ones)
+                    var xaml = File.ReadAllText(_filename);
+                    AppearanceManager.Instance.SetTheme((ResourceDictionary)Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(xaml,
+                            typeof(AppAppearanceManager).Assembly, null, new Uri(AssetsDirectory ?? "", UriKind.Absolute)));
                 } else {
                     AppearanceManager.Instance.SetTheme(Source);
                 }
@@ -255,36 +252,33 @@ namespace AcManager.Controls.Presentation {
             if (image.ImageSource == null) {
                 brush = null;
             } else if (_backgroundBlur <= 0.01d || _backgroundStretch == Stretch.None) {
-                var imageBrush = new ImageBrush {
-                    ImageSource = image.ImageSource,
+                var imageBrush = new Avalonia.Media.ImageBrush {
+                    Source = image.ImageSource as Avalonia.Media.Imaging.Bitmap,
                     Opacity = _backgroundOpacity,
                     Stretch = _backgroundStretch,
-                    AlignmentX = AlignmentX.Center,
-                    AlignmentY = AlignmentY.Center
+                    AlignmentX = Avalonia.Media.AlignmentX.Center,
+                    AlignmentY = Avalonia.Media.AlignmentY.Center
                 };
                 if (_backgroundStretch == Stretch.None) {
-                    imageBrush.TileMode = TileMode.Tile;
-                    imageBrush.Viewport = new Rect(0, 0, image.Width, image.Height);
-                    imageBrush.ViewportUnits = BrushMappingMode.Absolute;
+                    imageBrush.TileMode = Avalonia.Media.TileMode.Tile;
+                    imageBrush.DestinationRect = new Avalonia.RelativeRect(0, 0, image.Width, image.Height, Avalonia.RelativeUnit.Absolute);
                 }
-                imageBrush.Freeze();
                 brush = imageBrush;
             } else {
-                brush = new VisualBrush {
+                brush = new Avalonia.Media.VisualBrush {
                     Visual = new Border {
                         Child = new BetterImage {
                             ImageSource = image.ImageSource,
                             Stretch = _backgroundStretch,
                             Margin = new Thickness(-_backgroundBlur * 100d),
-                            Effect = new BlurEffect { Radius = _backgroundBlur * 100d }
+                            Effect = new Avalonia.Media.BlurEffect { Radius = _backgroundBlur * 100d }
                         },
-                        CacheMode = new BitmapCache(0.5d),
                         ClipToBounds = true
                     },
                     Opacity = _backgroundOpacity,
                     Stretch = _backgroundStretch,
-                    AlignmentX = AlignmentX.Center,
-                    AlignmentY = AlignmentY.Center
+                    AlignmentX = Avalonia.Media.AlignmentX.Center,
+                    AlignmentY = Avalonia.Media.AlignmentY.Center
                 };
             }
 
@@ -428,7 +422,7 @@ namespace AcManager.Controls.Presentation {
             set {
                 if (_loading) {
                     _bitmapScalingMode = value;
-                    DP.OverrideMetadata(RenderOptions.BitmapScalingModeProperty, typeof(BetterImage), new FrameworkPropertyMetadata(_bitmapScalingMode));
+                    BetterImage.DefaultBitmapScalingMode = _bitmapScalingMode;
                     return;
                 }
 

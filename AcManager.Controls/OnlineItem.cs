@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -25,7 +25,7 @@ using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 
 namespace AcManager.Controls {
-    public class OnlineItem : Panel {
+    public class OnlineItem : RenderablePanel {
         private readonly BbCodeBlock _name;
 
         static OnlineItem() {
@@ -575,7 +575,7 @@ namespace AcManager.Controls {
                             return null;
                         }
 
-                        var baseIcon = (Decorator)TryFindResource(@"BaseIcon");
+                        var baseIcon = (Decorator)this.TryFindResource(@"BaseIcon");
                         if (baseIcon == null) {
                             toolTip = null;
                             return null;
@@ -880,7 +880,6 @@ namespace AcManager.Controls {
             _blocks = null;
         }
 
-        private static readonly NumberSubstitution NumberSubstitution = new NumberSubstitution();
 
         private static readonly TextConfiguration TextConfigurationClients = new TextConfiguration { TextAlignment = TextAlignment.Center, MaxWidth = 32d };
         private static readonly TextConfiguration TextConfigurationBase = new TextConfiguration();
@@ -904,8 +903,7 @@ namespace AcManager.Controls {
             if (text == null) return null;
             var formattedText = new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                     isLabel ? _labelTypeface : _typeface, isLabel ? 12d : 11d,
-                    isBlock ? isHint ? _blockTextActive : _blockText : isHint ? _hint : _foreground,
-                    NumberSubstitution, _formattingMode) {
+                    isBlock ? isHint ? _blockTextActive : _blockText : isHint ? _hint : _foreground) {
                         Trimming = TextTrimming.CharacterEllipsis,
                         TextAlignment = textAlignment,
                         MaxLineCount = 1

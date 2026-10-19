@@ -164,7 +164,7 @@ namespace AcManager.Controls.ViewModels {
 
             new ContextMenu()
                     .AddItem(tyres)
-                    .IsOpen = true;
+                    .Show();
         }));
 
         public string GetChecksum() {

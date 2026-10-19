@@ -6,9 +6,7 @@
   <ItemGroup>
     <!-- CefSharp (Chromium Embedded Framework) is Windows-only -->
     <Compile Remove="UserControls\Cef\**;Helpers\CefSharpResolverService.cs" />
-    <!-- libvlc based video player (xZune.Vlc) is Windows-only -->
-    <Compile Remove="Video\**" />
-    <!-- OxyPlot (old WPF version) graphs -->
-    <Compile Remove="Graphs\**" />
+    <!-- WinForms based web browser wrapper and the Cef bridges -->
+    <Compile Remove="UserControls\CarBlock.xaml.cs;UserControls\Web\FormsWebBrowserWrapper.cs;UserControls\Web\AcCompatibleApiBridge.cs" />
   </ItemGroup>
 </Project>

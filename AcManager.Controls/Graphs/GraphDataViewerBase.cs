@@ -8,7 +8,7 @@ using AcTools.Utils;
 using FirstFloor.ModernUI.Helpers;
 using OxyPlot;
 using OxyPlot.Axes;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 using PlotCommands = OxyPlot.PlotCommands;
 
 namespace AcManager.Controls.Graphs {
@@ -27,7 +27,7 @@ namespace AcManager.Controls.Graphs {
         }
 
         protected void LoadColor(ref OxyColor color, [Localizable(false)] string key, byte alpha = 255) {
-            var r = TryFindResource(key);
+            var r = this.TryFindResource(key);
             var v = r as Color? ?? (r as SolidColorBrush)?.Color;
             if (v != null) {
                 color = v.Value.SetAlpha(alpha).ToOxyColor();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,12 +25,12 @@ namespace AcManager.Controls.UserControls {
                                             if (UploaderParamsSwitch.Visibility == Visibility.Visible && Model?.SelectedUploader.IsReady != true) {
                                                 var v = x > 0d ? 200 * (x.Saturate() + 1.5) : double.NaN;
                                                 UploaderParams.Width = v;
-                                                UploaderParamsSwitch.Width = Math.Max(double.IsNaN(v) ? ActualWidth - 144d : v - 124d, 1d);
-                                                UploaderParams.SetValue(DockPanel.DockProperty, x > 0d ? Dock.Right : Dock.Bottom);
+                                                UploaderParamsSwitch.Width = Math.Max(double.IsNaN(v) ? this.ActualWidth - 144d : v - 124d, 1d);
+                                                UploaderParams.SetValue(DockPanel.DockProperty, x > 0d ? Avalonia.Controls.Dock.Right : Avalonia.Controls.Dock.Bottom);
                                                 UploaderParams.Margin = x > 0d ? new Thickness(4, 0, 0, 0) : new Thickness(0, 8, 0, 0);
                                             } else {
                                                 UploaderParams.Width = 120d;
-                                                UploaderParams.SetValue(DockPanel.DockProperty, Dock.Right);
+                                                UploaderParams.SetValue(DockPanel.DockProperty, Avalonia.Controls.Dock.Right);
                                                 UploaderParams.Margin = new Thickness(4, 0, 0, 0);
                                             }
                                         })
@@ -59,7 +59,7 @@ namespace AcManager.Controls.UserControls {
             }
         }
 
-        private void OnTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
+        private void OnTreeSelectedItemChanged(object sender, SelectionChangedEventArgs e) {
             var model = Model;
             if (model == null) return;
             model.UploaderDirectory = UploaderDirectoriesTreeView.SelectedItem as DirectoryEntry ?? model.UploaderDirectories?.FirstOrDefault();

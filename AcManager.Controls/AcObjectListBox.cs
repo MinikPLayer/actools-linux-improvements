@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -182,7 +182,7 @@ namespace AcManager.Controls {
 
         private void UpdateThumbnailMode() {
             SetValue(ActualThumbnailModePropertyKey.DependencyProperty, ThumbnailMode == ThumbnailMode.Auto ?
-                    ActualWidth > AutoThumbnailModeThreshold : ThumbnailMode == ThumbnailMode.Enabled);
+                    this.ActualWidth > AutoThumbnailModeThreshold : ThumbnailMode == ThumbnailMode.Enabled);
         }
 
         private bool _unloaded;

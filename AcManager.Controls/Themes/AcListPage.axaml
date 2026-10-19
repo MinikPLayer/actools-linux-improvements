@@ -73,7 +73,7 @@
                             </ControlTemplate>
                           </Setter.Value>
                         </Setter>
-                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
+                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
                               <Setter.Value>
                                 <ControlTemplate TargetType="GroupItem">
                                   <ItemsPresenter/>

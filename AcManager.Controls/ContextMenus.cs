@@ -106,8 +106,8 @@ namespace AcManager.Controls {
             SetIsDirty(element, true);
             element.RemoveMouseRightButtonDown(OnElementMouseEnter);
             element.AddMouseRightButtonDown(OnElementMouseEnter);
-            element.PreviewGotKeyboardFocus -= OnElementMouseEnter;
-            element.PreviewGotKeyboardFocus += OnElementMouseEnter;
+            element.RemovePreviewGotKeyboardFocus(OnElementMouseEnter);
+            element.AddPreviewGotKeyboardFocus(OnElementMouseEnter);
         }
 
         public static AcObjectNew GetGenericObject(DependencyObject obj) {

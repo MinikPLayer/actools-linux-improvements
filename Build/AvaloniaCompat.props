@@ -100,6 +100,7 @@
     <Using Include="Avalonia.Controls.ScrollChangedEventArgs" Alias="ScrollChangedEventArgs" />
     <Using Include="Avalonia.Animation.Animatable" Alias="Freezable" />
     <Using Include="Avalonia.Input.PointerEventArgs" Alias="MouseButtonEventArgs" />
+    <Using Include="System.EventHandler&lt;Avalonia.Input.PointerEventArgs&gt;" Alias="MouseButtonEventHandler" />
     <Using Include="Avalonia.Input.PointerEventArgs" Alias="MouseEventArgs" />
     <Using Include="Avalonia.Input.PointerWheelEventArgs" Alias="MouseWheelEventArgs" />
     <Using Include="Avalonia.Input.DragEventArgs" Alias="DragEventArgs" />
@@ -139,7 +140,6 @@
     <Using Include="System.Drawing.ColorTranslator" Alias="ColorTranslator" />
     <Using Include="Avalonia.Controls.WindowState" Alias="WindowState" />
     <Using Include="Avalonia.Controls.TextBox" Alias="TextBoxEx" />
-    <Using Include="System.TimeSpan" Alias="Duration" />
     <Using Include="Avalonia.Controls.Primitives.Track" Alias="Track" />
     <Using Include="Avalonia.Controls.RepeatButton" Alias="RepeatButton" />
     <Using Include="Avalonia.Controls.Shapes.Ellipse" Alias="Ellipse" />
@@ -150,6 +150,8 @@
     <Using Include="System.Windows.Controls" />
     <Using Include="System.Windows.Media" />
     <Using Include="System.Windows.Threading" />
+    <Using Include="System.Windows.Media.Animation" />
+    <Using Include="Avalonia.Animation.Easings.Easing" Alias="EasingFunctionBase" />
     <Using Include="System.Windows.Markup" />
     <Using Include="Avalonia.Input.NavigationDirection" Alias="FocusNavigationDirection" />
     <Using Include="Avalonia.Input" />

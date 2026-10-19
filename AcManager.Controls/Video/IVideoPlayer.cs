@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,7 +11,7 @@ namespace AcManager.Controls.Video {
         private readonly IVideoPlayer _player;
 
         public VideoPlayer(bool useSystemPlayer) {
-            _player = !useSystemPlayer && PluginsManager.Instance.IsPluginEnabled("VLC") ? (IVideoPlayer)new VlcPlayer() : new WindowsMediaPlayer();
+            _player = new NoVideoPlayer();
 
             _player.Stretch = Stretch;
             _player.IsLooped = IsLooped;
@@ -29,8 +29,8 @@ namespace AcManager.Controls.Video {
 
         public VideoPlayer() : this(false) {}
 
-        protected override void OnVisualParentChanged(DependencyObject oldParent) {
-            base.OnVisualParentChanged(oldParent);
+        protected override void OnAttachedToVisualTree(Avalonia.VisualTreeAttachmentEventArgs e) {
+            base.OnAttachedToVisualTree(e);
             Initialize();
         }
 
@@ -151,7 +151,7 @@ namespace AcManager.Controls.Video {
     }
 
     internal interface IVideoPlayer : IDisposable {
-        UIElement Initialize();
+        Avalonia.Controls.Control Initialize();
 
         Uri Source { get; set; }
         Stretch Stretch { get; set; }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -229,7 +229,7 @@ namespace AcManager.Controls.Dialogs {
 
         public bool AutoHideDescriptionIfExpanded {
             get => DetailsWrapper.Style != null;
-            set => DetailsWrapper.Style = value ? (Style)FindResource(@"FadingBorder") : null;
+            set => DetailsWrapper.Style = value ? (Style)this.FindResource(@"FadingBorder") : null;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
@@ -250,7 +250,7 @@ namespace AcManager.Controls.Dialogs {
             if (Image.MaxWidth > 1600 && Image.MaxHeight > 960) {
                 Details.Children.Insert(0, new BlurredPiece { Visual = Image });
             } else {
-                this.FindVisualChildren<BlurredPiece>().ForEach(x => x.Tag = false);
+                FirstFloor.ModernUI.Windows.Media.VisualTreeHelperEx.FindVisualChildren<BlurredPiece>(this).ForEach(x => x.Tag = false);
             }
         }
 

@@ -19,11 +19,11 @@ namespace AcManager.Controls.Helpers {
                 typeof(AcDateLimiter), new UIPropertyMetadata(OnAfter1970OnlyChanged));
 
         private static void OnAfter1970OnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
-            var element = d as DatePicker;
+            var element = d as Avalonia.Controls.CalendarDatePicker;
             if (element == null || !(e.NewValue is bool)) return;
 
             if ((bool)e.NewValue) {
-                element.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, 0L.ToDateTime()));
+                element.BlackoutDates.Add(new Avalonia.Controls.CalendarDateRange(DateTime.MinValue, 0L.ToDateTime()));
             } else {
                 element.BlackoutDates.Clear();
             }

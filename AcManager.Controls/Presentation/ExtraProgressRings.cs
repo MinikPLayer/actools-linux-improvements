@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -82,38 +82,15 @@ namespace AcManager.Controls.Presentation {
             }
         }
 
+        /// <summary>
+        /// PORT: downloaded progress ring styles are WPF XAML (storyboards, VisualStateManager), they can’t be loaded by Avalonia.
+        /// Only the default one is available.
+        /// </summary>
         [Pure, CanBeNull]
         private static Dictionary<string, Lazy<Style>> ReadStyles([CanBeNull] Stream stream) {
             if (stream == null) return null;
-
-            var memory = new MemoryStream();
-            stream.CopyTo(memory);
-            memory.Position = 0;
-
-            var result = new Dictionary<string, Lazy<Style>> { ["Default"] = null };
-            ActionExtension.InvokeInMainThreadAsync(() => {
-                var dictionary = (ResourceDictionary)XamlReader.Load(memory);
-                var list = (string[])dictionary["ProgressRingStyles"];
-                foreach (var key in list) {
-                    result[key] = new Lazy<Style>(() => {
-                        try {
-                            var ret = (Style)dictionary[key];
-                            ret.Seal();
-                            return ret;
-                        } catch (Exception e) {
-#if DEBUG
-                            NonfatalError.Notify("Can’t parse style", e);
-#endif
-                            Logging.Warning(e);
-                            return null;
-                        }
-                    });
-                }
-                Logging.Write($"{result.Count} styles loaded");
-                StylesUpdated?.Invoke(null, EventArgs.Empty);
-            });
-
-            return result;
+            Logging.Warning("Extra progress ring styles are not supported on this platform");
+            return new Dictionary<string, Lazy<Style>> { ["Default"] = null };
         }
     }
 }

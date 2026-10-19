@@ -179,47 +179,39 @@ namespace AcManager.Controls {
             }
 
             if (ShowDescription) {
-                var textBox = new RichTextBox {
+                // PORT: there are no flow documents in Avalonia, so the graph is not a floater anymore, but a block next to the description
+                var carDescription = car.Description?.Trim();
+                var textBlock = new Avalonia.Controls.SelectableTextBlock {
+                    TextWrapping = Avalonia.Media.TextWrapping.Wrap,
                     Margin = new Thickness(0, 8, 0, 0),
-                    Style = (Style)FindResource(@"RichTextBox.Small.ReadOnly"),
-                    IsReadOnly = true,
-                    IsInactiveSelectionHighlightEnabled = false,
-                    AutoWordSelection = true,
-                    Focusable = false,
-                    Cursor = Cursors.Arrow,
-                    IsDocumentEnabled = true
+                    Focusable = false
                 };
 
-                var carDescription = car.Description?.Trim();
-                textBox.Document.Blocks.Clear();
-
-                var item = new Paragraph();
-
-                if (SettingsHolder.Content.CurversInDrive) {
-                    item.Inlines.Add(new Floater {
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        Blocks = {
-                            new Paragraph(new InlineUIContainer {
-                                Child = new CarGraphViewer {
-                                    Car = car,
-                                    Margin = new Thickness(8, 0, 0, 0),
-                                    Padding = new Thickness(0, 0, 0, 0),
-                                    Width = 240,
-                                    Height = 160,
-                                    Style = (Style)FindResource(typeof(CarGraphViewer)),
-                                }
-                            })
-                        }
-                    });
+                if (string.IsNullOrEmpty(carDescription)) {
+                    textBlock.Inlines.Add(PlaceholderTextBlock.GetPlaceholder(textBlock, "Description is missing."));
+                } else {
+                    textBlock.Inlines.Add(BbCodeBlock.ParseEmoji(carDescription, BbCodeBlock.AllowBbCodes.Limited, false, this, linkParser: this));
                 }
 
-                item.Inlines.Add(string.IsNullOrEmpty(carDescription) ?
-                        PlaceholderTextBlock.GetPlaceholder(textBox, "Description is missing.") :
-                        BbCodeBlock.ParseEmoji(carDescription, BbCodeBlock.AllowBbCodes.Limited, false, this, linkParser: this));
-
-                textBox.Document.Blocks.Add(item);
-
-                footer.Child = textBox;
+                if (SettingsHolder.Content.CurversInDrive) {
+                    var graph = new CarGraphViewer {
+                        Car = car,
+                        Margin = new Thickness(8, 8, 0, 0),
+                        Padding = new Thickness(0, 0, 0, 0),
+                        Width = 240,
+                        Height = 160,
+                        VerticalAlignment = VerticalAlignment.Top
+                    };
+                    graph.Theme = (Avalonia.Styling.ControlTheme)this.FindResource(typeof(CarGraphViewer));
+                    var grid = new Grid {
+                        ColumnDefinitions = new Avalonia.Controls.ColumnDefinitions("*,Auto"),
+                        Children = { textBlock, graph }
+                    };
+                    Grid.SetColumn(graph, 1);
+                    footer.Child = grid;
+                } else {
+                    footer.Child = textBlock;
+                }
             } else if (SettingsHolder.Content.CurversInDrive) {
                 footer.Child = new CarGraphViewer {
                     Car = car,
@@ -370,7 +362,7 @@ namespace AcManager.Controls {
         public static void OnShowroomContextMenu(CarObject car, CarSkinObject skin = null) {
             var contextMenu = new ContextMenu();
             OnShowroomContextMenu(contextMenu, car, skin);
-            contextMenu.IsOpen = true;
+            contextMenu.Show();
         }
 
         private void OnShowroomContextMenu(object sender, RoutedEventArgs e) {

@@ -12,7 +12,7 @@
           <mui:Cell>
             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Fill="{TemplateBinding BorderBrush}" Margin="-1 -1 0 0"/>
             <Rectangle HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="1" Fill="{TemplateBinding BorderBrush}" Margin="-1 -1 0 0"/>
-            <ToolBarTray x:Name="PART_ToolBarTray"/>
+            <mui:ToolBarTray x:Name="PART_ToolBarTray"/>
           </mui:Cell>
         </ControlTemplate>
       </Setter.Value>
@@ -23,7 +23,7 @@
             <ControlTemplate TargetType="controls:AcToolBar">
               <mui:Cell>
                 <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="1" Fill="{TemplateBinding BorderBrush}" Margin="0 -1 0 0"/>
-                <ToolBarTray x:Name="PART_ToolBarTray"/>
+                <mui:ToolBarTray x:Name="PART_ToolBarTray"/>
               </mui:Cell>
             </ControlTemplate>
           </Setter.Value>

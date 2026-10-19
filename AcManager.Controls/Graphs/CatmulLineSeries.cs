@@ -8,6 +8,8 @@ namespace AcManager.Controls.Graphs {
     public class CatmulLineSeries : LineSeries {
         private readonly double _smoothessMultiplier;
 
+        public bool Smooth { get; set; }
+
         public CatmulLineSeries(double smoothessMultiplier = 0.1) {
             _smoothessMultiplier = smoothessMultiplier;
 
@@ -16,20 +18,20 @@ namespace AcManager.Controls.Graphs {
             CanTrackerInterpolatePoints = SettingsHolder.Content.SmoothCurves;
         }
 
-        protected override void RenderLineAndMarkers(IRenderContext rc, OxyRect clippingRect, IList<ScreenPoint> pointsToRender) {
+        protected override void RenderLineAndMarkers(IRenderContext rc, IList<ScreenPoint> pointsToRender) {
             if (Smooth) {
                 pointsToRender = CatmullRomSplineHelper.CreateSpline(ScreenPointHelper.ResamplePoints(pointsToRender, MinimumSegmentLength), 0.5,
                         0.25 / _smoothessMultiplier);
             }
 
             if (StrokeThickness > 0.0 && ActualLineStyle != LineStyle.None) {
-                RenderLine(rc, clippingRect, pointsToRender);
+                RenderLine(rc, pointsToRender);
             }
 
             if (MarkerType != MarkerType.None) {
-                var binOffset = MarkerResolution > 0 ? Transform(MinX, MinY) : new ScreenPoint();
-                rc.DrawMarkers(clippingRect, pointsToRender, MarkerType, MarkerOutline, new[] { MarkerSize }, ActualMarkerFill, MarkerStroke,
-                        MarkerStrokeThickness, MarkerResolution, binOffset);
+                var binOffset = MarkerResolution > 0 ? Transform(new DataPoint(MinX, MinY)) : new ScreenPoint();
+                rc.DrawMarkers(pointsToRender, MarkerType, MarkerOutline, new[] { MarkerSize }, ActualMarkerFill, MarkerStroke,
+                        MarkerStrokeThickness, EdgeRenderingMode, MarkerResolution, binOffset);
             }
         }
 
@@ -41,8 +43,5 @@ namespace AcManager.Controls.Graphs {
             return Points.Count < 2 ? null : base.HitTestOverride(args);
         }
 
-        protected override void ResetSmoothedPoints() {
-            SmoothedPoints = CatmullRomSplineHelper.CreateSpline(ActualPoints, 0.5, Math.Abs(Math.Max(MaxX - MinX, MaxY - MinY) / 200d));
-        }
     }
 }

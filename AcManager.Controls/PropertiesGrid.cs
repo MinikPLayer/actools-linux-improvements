@@ -7,9 +7,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using AcTools.Utils;
 using FirstFloor.ModernUI.Windows.Attached;
+using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Controls {
-    public class PropertiesGrid : Panel {
+    public class PropertiesGrid : RenderablePanel {
         static PropertiesGrid() {
         }
 
@@ -115,7 +116,7 @@ namespace AcManager.Controls {
 
         public PropertiesGrid() {
             Background = new SolidColorBrush(Colors.Transparent);
-            ToolTip = _toolTip = new ToolTip { Visibility = Visibility.Hidden };
+            this.ToolTip = _toolTip = new ToolTip { Visibility = Visibility.Hidden };
             this.AddPreviewMouseRightButtonDown(OnPreviewMouseRightButtonDown);
             this.AddPreviewMouseMove(OnMouseMove);
         }
@@ -154,7 +155,7 @@ namespace AcManager.Controls {
             /* if (ReferenceEquals(_toolTipDonor, child)) return;
 
             if (_toolTipDonor != null) {
-                ToolTip = null;
+                this.ToolTip = null;
                 _toolTipDonor.ToolTip = _toolTipDonored;
                 _toolTipDonor = null;
                 _toolTipDonored = null;
@@ -164,7 +165,7 @@ namespace AcManager.Controls {
                 _toolTipDonored = childToolTip;
                 _toolTipDonor = child;
                 _toolTipDonor.ToolTip = null;
-                ToolTip = _toolTipDonored;
+                this.ToolTip = _toolTipDonored;
             }*/
 
             if (childToolTip == null) {
@@ -177,14 +178,10 @@ namespace AcManager.Controls {
                 var toolTip = childToolTip as ToolTip;
                 if (toolTip == null) {
                     _toolTip.Content = childToolTip;
-                    _toolTip.ContentStringFormat = null;
                     _toolTip.ContentTemplate = null;
-                    _toolTip.ContentTemplateSelector = null;
                 } else {
                     _toolTip.Content = toolTip.Content;
-                    _toolTip.ContentStringFormat = toolTip.ContentStringFormat;
                     _toolTip.ContentTemplate = toolTip.ContentTemplate;
-                    _toolTip.ContentTemplateSelector = toolTip.ContentTemplateSelector;
                 }
             }
         }
@@ -195,7 +192,7 @@ namespace AcManager.Controls {
             var menu = child?.ContextMenu;
             if (menu != null) {
                 if (relx < _labelWidth) {
-                    menu.IsOpen = true;
+                    menu.Show();
                     e.Handled = true;
                 } else if (ContextMenuAdvancement.GetPropagateToChildren(child)) {
                     ContextMenuAdvancement.PropagateToChildren(child);
@@ -233,7 +230,7 @@ namespace AcManager.Controls {
 
                 if (_labels[i] != null && _labelElements[i].Visibility != Visibility.Collapsed) {
                     var text = new FormattedText(_labels[i], CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                            _labelTypeface, _labelFontSize, _labelForeground, new NumberSubstitution(), _formattingMode) {
+                            _labelTypeface, _labelFontSize, _labelForeground) {
                                 Trimming = TextTrimming.CharacterEllipsis,
                                 TextAlignment = TextAlignment.Left,
                                 MaxLineCount = 1,

@@ -21,8 +21,8 @@ namespace AcManager.Controls {
         public BestLapsList() {
             _lapTimes = new BetterObservableCollection<LapTimeWrapped>();
             SetValue(EntriesPropertyKey.DependencyProperty, _lapTimes);
-            AddHandler(FrameworkContentElement.LoadedEvent, new RoutedEventHandler(OnLoaded));
-            AddHandler(FrameworkContentElement.UnloadedEvent, new RoutedEventHandler(OnUnloaded));
+            AddHandler(Control.LoadedEvent, new RoutedEventHandler(OnLoaded));
+            AddHandler(Control.UnloadedEvent, new RoutedEventHandler(OnUnloaded));
         }
 
         public static readonly DependencyPropertyKey EntriesPropertyKey = DP.RegisterReadOnly(nameof(Entries), typeof(IList<LapTimeWrapped>),

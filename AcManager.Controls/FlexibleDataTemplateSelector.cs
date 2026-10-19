@@ -8,18 +8,13 @@ namespace AcManager.Controls {
     public class FlexibleDataTemplateSelector : DataTemplateSelector {
         [Avalonia.Metadata.Content] public DataTemplate DataTemplate { get; set; }
 
-        private DataTemplate _uiElementTemplate;
-
         public override DataTemplate SelectTemplate(object item, DependencyObject container) {
-            if (_uiElementTemplate == null) {
-                var visualTree = new FrameworkElementFactory(typeof(ContentPresenter));
-                visualTree.SetBinding(ContentPresenter.ContentProperty, new Binding());
-                _uiElementTemplate = new DataTemplate {
-                    VisualTree = visualTree
-                };
-            }
+            return DataTemplate;
+        }
 
-            return item is UIElement ? _uiElementTemplate : DataTemplate;
+        public override Avalonia.Controls.Control Build(object param) {
+            // controls are shown as they are
+            return param is UIElement ? new ContentPresenter { Content = param } : DataTemplate?.Build(param);
         }
     }
 }

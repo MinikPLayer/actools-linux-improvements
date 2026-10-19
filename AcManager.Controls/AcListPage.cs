@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -75,7 +75,7 @@ namespace AcManager.Controls {
             });
 
             SizeChanged += OnSizeChanged;
-            InputBindings.Add(new InputBinding(new DelegateCommand(() => {
+            this.InputBindings.Add(new InputBinding(new DelegateCommand(() => {
                 OnScrollToSelectedButtonClick(null, null);
             }), new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift)));
         }
@@ -175,8 +175,8 @@ namespace AcManager.Controls {
             }
         }
 
-        private Style _baseItemStyle;
-        private Style _checkBoxListBoxItemStyle;
+        private Avalonia.Styling.ControlTheme _baseItemStyle;
+        private Avalonia.Styling.ControlTheme _checkBoxListBoxItemStyle;
         private readonly BoolHolder _holder = new BoolHolder();
 
         public class BoolHolder : NotifyPropertyChanged {
@@ -230,27 +230,19 @@ namespace AcManager.Controls {
             if (list == null || !BatchMenuVisible && GetBatchActionsArray().Length == 0) return;
 
             if (_checkBoxListBoxItemStyle == null) {
-                _baseItemStyle = list.ItemContainerStyle;
+                _baseItemStyle = list.ItemContainerTheme;
 
-                var originStyle = (Style)FindResource("AcListPageCheckBoxItem");
+                var originStyle = (Avalonia.Styling.ControlTheme)this.FindResource("AcListPageCheckBoxItem");
 
-                var style = new Style(typeof(ListBoxItem));
-                foreach (var setter in originStyle.Setters) {
-                    style.Setters.Add(setter);
-                }
-
-                foreach (var trigger in originStyle.Triggers) {
-                    style.Triggers.Add(trigger);
-                }
-
-                style.Setters.Add(new Setter(ActiveBoolHolderProperty, _holder));
-                style.Seal();
+                // PORT: Avalonia has item container themes instead of styles
+                var style = new Avalonia.Styling.ControlTheme(typeof(Avalonia.Controls.ListBoxItem)) { BasedOn = originStyle };
+                style.Add(new Avalonia.Styling.Setter(ActiveBoolHolderProperty, _holder));
 
                 _checkBoxListBoxItemStyle = style;
             }
 
             if (newValue ?? !BatchMenuVisible) {
-                list.ItemContainerStyle = _checkBoxListBoxItemStyle;
+                list.ItemContainerTheme = _checkBoxListBoxItemStyle;
                 list.SetValue(ListBoxHelper.ProperMultiSelectionModeProperty, true);
                 list.SelectionChanged += OnMultiSelectionChanged;
                 SetBatchActions();
@@ -264,7 +256,7 @@ namespace AcManager.Controls {
             } else {
                 list.SelectionChanged -= OnMultiSelectionChanged;
                 SetCheckBoxMode(false, () => {
-                    list.ItemContainerStyle = _baseItemStyle;
+                    list.ItemContainerTheme = _baseItemStyle;
                     list.SetValue(ListBoxHelper.ProperMultiSelectionModeProperty, false);
                 }).Ignore();
             }
@@ -432,7 +424,7 @@ namespace AcManager.Controls {
                             To = hasParams ? 0d : -_batchActionParams.ActualWidth,
                             Duration = TimeSpan.FromMilliseconds(_batchActionParams.ActualWidth / 4),
                             FillBehavior = FillBehavior.HoldEnd,
-                            EasingFunction = (EasingFunctionBase)FindResource(hasParams ? "DecelerationEase" : "AccelerationEase")
+                            EasingFunction = (EasingFunctionBase)this.FindResource(hasParams ? "DecelerationEase" : "AccelerationEase")
                         });
                     } catch (Exception e) {
                         Logging.Warning(e);
@@ -501,8 +493,8 @@ namespace AcManager.Controls {
         }
 
         private void OnAddNewCommandChanged(ICommand newValue) {
-            InputBindings.Remove(InputBindings.OfType<InputBinding>().FirstOrDefault(x => (x.Gesture as KeyGesture)?.Key == Key.N));
-            InputBindings.Add(new InputBinding(newValue, new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift)));
+            this.InputBindings.Remove(this.InputBindings.OfType<InputBinding>().FirstOrDefault(x => (x.Gesture as KeyGesture)?.Key == Key.N));
+            this.InputBindings.Add(new InputBinding(newValue, new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift)));
         }
 
         [CanBeNull]

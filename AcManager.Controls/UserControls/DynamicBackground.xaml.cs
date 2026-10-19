@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -114,11 +114,11 @@ namespace AcManager.Controls.UserControls {
 
         private async void ShowVideo() {
             await Task.Delay(300);
-            VisualStateManager.GoToElementState(VideoWrapper, @"Visible", true);
+            VideoWrapper.BeginAnimation(Avalonia.Visual.OpacityProperty, new DoubleAnimation(1d, new Duration(TimeSpan.FromSeconds(0.3))));
         }
 
         private void HideVideo() {
-            VisualStateManager.GoToElementState(VideoWrapper, @"Hidden", true);
+            VideoWrapper.BeginAnimation(Avalonia.Visual.OpacityProperty, new DoubleAnimation(0d, new Duration(TimeSpan.FromSeconds(0.3))));
         }
         public void Dispose() {
             _player.Dispose();

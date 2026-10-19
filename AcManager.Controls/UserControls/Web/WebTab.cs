@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using AcManager.Controls.UserControls.Cef;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Managers.Plugins;
 using AcTools.Utils.Helpers;
@@ -18,22 +17,11 @@ using Newtonsoft.Json;
 
 namespace AcManager.Controls.UserControls.Web {
     public class WebTab : NotifyPropertyChanged {
-        private static bool? _cefSharpMode;
-
+        // PORT: CefSharp and the WinForms WebBrowser are Windows-only and tied to WPF, so there is no embedded browser,
+        // see NoWebBrowser.
         [NotNull]
         private static IWebSomething GetSomething() {
-            return PluginsManager.Instance.IsPluginEnabled(KnownPlugins.CefSharp)
-                    ? GetCefSomething()
-                    : new FormsWebBrowserWrapper();
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static IWebSomething GetCefSomething() {
-            if (_cefSharpMode ?? (_cefSharpMode = SettingsHolder.Plugins.CefWinForms).Value) {
-                return new FormsCefSharpWrapper();
-            }
-
-            return new CefSharpWrapper();
+            return new NoWebBrowser();
         }
 
         private readonly IWebSomething _something;
@@ -105,17 +93,6 @@ namespace AcManager.Controls.UserControls.Web {
         }
 
         private string GetBrokenSuggestions() {
-            if (_something is CefSharpWrapper || _something is FormsCefSharpWrapper) {
-                var directory = PluginsManager.Instance.GetPluginDirectory(KnownPlugins.CefSharp);
-
-                // Bundled with the app, nothing to remove
-                if (string.Equals(directory.TrimEnd('\\', '/'), AppContext.BaseDirectory.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase)) return null;
-
-                directory = @"file://" + directory;
-                return
-                        $"Try to reinstall CefSharp plugin, its installation could be damaged. To do that, [url={BbCodeBlock.EncodeAttribute(directory)}]remove this directory[/url] (you’ll need to close the app to be able to remove it).";
-            }
-
             return null;
         }
 

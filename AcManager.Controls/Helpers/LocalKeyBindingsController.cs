@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Tools.Miscellaneous;
 using FirstFloor.ModernUI.Commands;
@@ -31,8 +31,8 @@ namespace AcManager.Controls.Helpers {
         private void SetListeners(DependencyObject parentElement) {
             var window = Window.GetWindow(parentElement);
             if (window != null) {
-                WeakEventManager<UIElement, KeyEventArgs>.AddHandler(window, nameof(window.PreviewKeyDown), OnKeyDown);
-                WeakEventManager<UIElement, KeyEventArgs>.AddHandler(window, nameof(window.PreviewKeyUp), OnKeyUp);
+                window.AddPreviewKeyDown(OnKeyDown);
+                window.AddPreviewKeyUp(OnKeyUp);
                 WeakEventManager<Window, EventArgs>.AddHandler(window, nameof(window.Deactivated), OnFocusLost);
             }
         }

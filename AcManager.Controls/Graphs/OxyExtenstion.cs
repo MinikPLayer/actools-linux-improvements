@@ -5,7 +5,7 @@ using System.Windows.Media;
 using AcManager.Tools.Data;
 using JetBrains.Annotations;
 using OxyPlot;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 using LineSeries = OxyPlot.Series.LineSeries;
 
 namespace AcManager.Controls.Graphs {

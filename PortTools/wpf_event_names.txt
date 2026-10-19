@@ -25,6 +25,8 @@ MouseEnter
 MouseLeave
 LostMouseCapture
 GotKeyboardFocus
+PreviewGotKeyboardFocus
+PreviewLostKeyboardFocus
 LostKeyboardFocus
 ContextMenuOpening
 Drop
@@ -33,3 +35,5 @@ DragEnter
 DragLeave
 PreviewDrop
 PreviewDragOver
+PreviewGotKeyboardFocus
+PreviewLostKeyboardFocus

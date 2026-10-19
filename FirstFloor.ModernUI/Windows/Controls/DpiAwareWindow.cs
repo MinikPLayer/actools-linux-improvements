@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -107,6 +107,35 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Dialogs and windows are moved by their title bar; override to restrict.
         /// </summary>
         protected virtual bool IsTitleBarArea(PointerPressedEventArgs e) => true;
+        #endregion
+
+        #region WPF window properties
+        private WindowStyle _windowStyle = WindowStyle.SingleBorderWindow;
+
+        /// <summary>Windows are always drawn by the theme, so this only marks borderless ones (":borderless" pseudo-class).</summary>
+        public WindowStyle WindowStyle {
+            get => _windowStyle;
+            set {
+                _windowStyle = value;
+                Classes.Set(":borderless", value == WindowStyle.None);
+            }
+        }
+
+        private bool _allowsTransparency;
+
+        public bool AllowsTransparency {
+            get => _allowsTransparency;
+            set {
+                _allowsTransparency = value;
+                TransparencyLevelHint = value ? new[] { WindowTransparencyLevel.Transparent, WindowTransparencyLevel.None }
+                        : new[] { WindowTransparencyLevel.None };
+            }
+        }
+
+        [NotNull]
+        public Avalonia.Platform.Screen GetScreen() {
+            return Screens.ScreenFromWindow(this) ?? Screens.Primary;
+        }
         #endregion
 
         #region Owner (settable, unlike in Avalonia)

@@ -52,10 +52,10 @@ namespace AcManager.Controls {
             _description?.Icon.Release(Child as FrameworkElement);
             if (description == null) {
                 Child = null;
-                ToolTip = null;
+                this.ToolTip = null;
             } else {
                 Child = description.Icon.Get();
-                ToolTip = description.Name;
+                this.ToolTip = description.Name;
             }
 
             _description = description;
