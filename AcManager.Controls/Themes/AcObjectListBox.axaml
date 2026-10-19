@@ -18,11 +18,11 @@
               <mui:HistoricalTextBox x:Name="PART_FilterTextBox" Placeholder="*" Text="{Binding UserFilter, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" SaveKey="{TemplateBinding UserFiltersKey}" Theme="{StaticResource BetterComboBox.Borderless}"/>
             </DockPanel>
             <ListBox x:Name="PART_ListBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{TemplateBinding InnerItemsSource}" SelectedItem="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" SelectionMode="{TemplateBinding SelectionMode}" mui:SaveScroll.Key="{TemplateBinding mui:SaveScroll.Key}">
-              <ListBox.Styles>
-                <Style Selector="ListBoxItem">
+              <ListBox.ItemContainerTheme>
+                <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
                   <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                </Style>
-              </ListBox.Styles>
+                </ControlTheme>
+              </ListBox.ItemContainerTheme>
             </ListBox>
           </DockPanel>
           </ControlTemplate>

@@ -49,30 +49,30 @@
 
                   <!-- First row -->
                   <DockPanel x:Name="PART_BrandArea" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                     <mui:PlaceholderTextBlock Text="{Binding Brand}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                   </DockPanel>
 
                   <DockPanel x:Name="PART_CountryArea" Background="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                     <c:CountryIcon Country="{Binding Country}" HorizontalAlignment="Right" Width="24" Height="16" DockPanel.Dock="Right" Margin="4 -6 0 0" VerticalAlignment="Bottom" RenderOptions.BitmapInterpolationMode="LowQuality"/>
                     <mui:PlaceholderTextBlock Text="{Binding Country}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                   </DockPanel>
 
                   <!-- Second row -->
                   <DockPanel x:Name="PART_ClassArea" Background="Transparent" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                     <mui:PlaceholderTextBlock Text="{Binding CarClass}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                   </DockPanel>
 
                   <DockPanel x:Name="PART_YearArea" Background="Transparent" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
-                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                    <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                     <mui:PlaceholderTextBlock Text="{Binding Year, TargetNullValue=''}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                   </DockPanel>
 
                   <!-- Third row -->
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Theme="{StaticResource Label.Padding}"/>
-                  <TextBlock Grid.Column="2" Grid.Row="2" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Theme="{StaticResource Label.Padding}">
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+                  <TextBlock Grid.Column="2" Grid.Row="2" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Classes="Label Label.Padding">
                     <TextBlock.Text>
                       <MultiBinding Converter="{StaticResource AuthorVersionUrlToLabelConverter}">
                         <Binding Path="Author"/>
@@ -86,7 +86,7 @@
                   <mui:BbCodeBlock Text="{Binding VersionInfoDisplay}" Placeholder="?" Grid.Column="3" Grid.Row="2" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
 
                   <!-- Last row -->
-                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Theme="{StaticResource Label.Padding}"/>
+                  <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Classes="Label Label.Padding"/>
                   <mui:PlaceholderTextBlock Text="{Binding SpecsInfoDisplay}" Placeholder="?" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                 </Grid>
 
@@ -148,30 +148,30 @@
 
                         <!-- First row -->
                         <DockPanel x:Name="PART_BrandArea" Background="Transparent" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2">
-                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarBrandLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                           <mui:PlaceholderTextBlock Text="{Binding Brand}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                         </DockPanel>
 
                         <DockPanel x:Name="PART_CountryArea" Background="Transparent" Grid.Column="2" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Left">
-                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_ContryLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                           <c:CountryIcon Country="{Binding Country}" HorizontalAlignment="Right" Width="24" Height="16" DockPanel.Dock="Right" Margin="4 -6 0 0" VerticalAlignment="Bottom" RenderOptions.BitmapInterpolationMode="LowQuality"/>
                           <mui:PlaceholderTextBlock Text="{Binding Country}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                         </DockPanel>
 
                         <!-- Second row -->
                         <DockPanel x:Name="PART_ClassArea" Background="Transparent" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
-                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarClassLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                           <mui:PlaceholderTextBlock Text="{Binding CarClass}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                         </DockPanel>
 
                         <DockPanel x:Name="PART_YearArea" Background="Transparent" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2">
-                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label.Padding}"/>
+                          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_YearLabel}" Width="80" DockPanel.Dock="Left" Classes="Label Label.Padding"/>
                           <mui:PlaceholderTextBlock Text="{Binding Year, TargetNullValue=''}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                         </DockPanel>
 
                         <!-- Third row -->
-                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Theme="{StaticResource Label.Padding}"/>
-                        <TextBlock Grid.Column="2" Grid.Row="2" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Theme="{StaticResource Label.Padding}">
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_CarParentLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+                        <TextBlock Grid.Column="2" Grid.Row="2" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}" Classes="Label Label.Padding">
                           <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource AuthorVersionUrlToLabelConverter}">
                               <Binding Path="Author"/>
@@ -185,7 +185,7 @@
                         <mui:BbCodeBlock Text="{Binding VersionInfoDisplay}" Placeholder="?" Grid.Column="3" Grid.Row="2" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
 
                         <!-- Last row -->
-                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Theme="{StaticResource Label.Padding}"/>
+                        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_SpecsLabel}" Grid.Column="0" Grid.Row="3" Classes="Label Label.Padding"/>
                         <mui:PlaceholderTextBlock Text="{Binding SpecsInfoDisplay}" Placeholder="?" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                       </Grid>
 

@@ -117,7 +117,7 @@
   <mui:ContextMenuButton x:Key="AiLimitationButton" Padding="4" Margin="0 -4" VerticalAlignment="Center" DockPanel.Dock="Right" Command="{Binding AiLimitationDetails.ShowMenuCommand}" ForceNear="False" ExtraDelay="True" Theme="{StaticResource ContextMenuButton.AsButton}">
     <uc:ModernPopup Padding="16 12 16 16" StaysOpen="False" TextElement.Foreground="{DynamicResource WindowText}">
       <mui:SpacingStackPanel Spacing="4" Width="200">
-        <TextBlock Text="Allowed tyres:" Theme="{StaticResource Label}"/>
+        <TextBlock Text="Allowed tyres:" Classes="Label"/>
         <ItemsControl ItemsSource="{Binding AiLimitationDetails.Tyres}">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
@@ -151,11 +151,11 @@
         </Slider>
 
         <DockPanel DataContext="{Binding AiLimitationDetails.FinalGearRatio}" Margin="0 8 0 0" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
-          <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}">
+          <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
             <Run Text="Maximum speed: "/>
             <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
           </TextBlock>
-          <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Theme="{StaticResource Label}"/>
+          <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Classes="Label"/>
           <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" VerticalAlignment="Top" DisplayMemberBinding="{Binding Key}"/>
         </DockPanel>
       </mui:SpacingStackPanel>
@@ -174,7 +174,7 @@
           <mui:ContextMenuButton Padding="4" Margin="0 -4" VerticalAlignment="Center" DockPanel.Dock="Right" Command="{Binding AiLimitationDetails.ShowMenuCommand}" ForceNear="False" ExtraDelay="True" Theme="{StaticResource ContextMenuButton.AsButton}">
             <uc:ModernPopup Padding="16 12 16 16" StaysOpen="False" TextElement.Foreground="{DynamicResource WindowText}">
               <mui:SpacingStackPanel Spacing="4" Width="200">
-                <TextBlock Text="Allowed tyres:" Theme="{StaticResource Label}"/>
+                <TextBlock Text="Allowed tyres:" Classes="Label"/>
                 <ItemsControl ItemsSource="{Binding AiLimitationDetails.Tyres}">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -208,11 +208,11 @@
                 </Slider>
 
                 <DockPanel DataContext="{Binding AiLimitationDetails.FinalGearRatio}" Margin="0 8 0 0" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
-                  <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}">
+                  <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
                     <Run Text="Maximum speed: "/>
                     <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
                   </TextBlock>
-                  <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Theme="{StaticResource Label}"/>
+                  <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Classes="Label"/>
                   <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" VerticalAlignment="Top" DisplayMemberBinding="{Binding Key}"/>
                 </DockPanel>
               </mui:SpacingStackPanel>
@@ -220,7 +220,7 @@
           </mui:ContextMenuButton>
         </mui:BooleanSwitch.True>
       </mui:BooleanSwitch>
-      <CheckBox IsChecked="{Binding AiLimitationDetails.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 0" Width="80" Theme="{StaticResource CheckBox.White}">
+      <CheckBox IsChecked="{Binding AiLimitationDetails.IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 0" Width="80" Classes="CheckBox.White">
         <Label Content="Enable" TextElement.Foreground="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource AncestorType={x:Type DataGridCell}}}"/>
       </CheckBox>
     </DockPanel>

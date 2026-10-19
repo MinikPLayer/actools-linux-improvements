@@ -71,9 +71,9 @@
 
               <DockPanel Grid.Row="1" Background="Transparent">
                 <mui:ContextMenuButton x:Name="PART_ListContextMenu" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource NonTransparent}"/>
-                <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Theme="{StaticResource NonTransparent}"/>
-                <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Theme="{StaticResource NonTransparent}"/>
+                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="NonTransparent"/>
+                <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Classes="NonTransparent"/>
+                <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Classes="NonTransparent"/>
                 <TextBlock Text="{Binding Status}" Margin="{StaticResource StatusMargin}" Foreground="{DynamicResource WindowTextReadOnly}"/>
               </DockPanel>
 
@@ -93,7 +93,7 @@
                         <SolidColorBrush Color="{DynamicResource AccentOverlayColor}" Opacity="0.32"/>
                       </mui:HierarchicalComboBox.BorderBrush>
                     </mui:HierarchicalComboBox>
-                    <TextBlock DataContext="{Binding SelectedBatchAction.Description, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AccentOverlay}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
+                    <TextBlock DataContext="{Binding SelectedBatchAction.Description, RelativeSource={RelativeSource TemplatedParent}}" Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource AccentOverlay}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
 
                     <Grid x:Name="PART_BatchBlock_ButtonsGrid" Height="27">
                       <Grid.ColumnDefinitions>
@@ -174,7 +174,14 @@
           </ControlTemplate>
 
         <ControlTheme x:Key="AcListPageCheckBoxItem" TargetType="ListBoxItem">
-          <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemText}"/>
+          <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="TextElement.Foreground" Value="{DynamicResource ItemText}"/>
           <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource AcListPageCheckBoxItemTemplate}"/>
           <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
               <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
@@ -197,10 +204,10 @@
                     <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_CreateNewItem}" VerticalAlignment="Center" Margin="4 0 0 0"/>
                   </DockPanel>
                 </Button>
-                <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" DockPanel.Dock="Top" Theme="{StaticResource Heading1}"/>
+                <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" DockPanel.Dock="Top" Classes="Heading1"/>
                 <DockPanel VerticalAlignment="Top" HorizontalAlignment="Center" Width="220" Margin="0 8 0 0" IsVisible="{Binding Manager.IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse|hidden'}">
                   <ProgressBar Maximum="{Binding Manager.WrappersAsIList.Count}" Value="{Binding Manager.LoadedCount}" Height="4" DockPanel.Dock="Bottom" Margin="0 4 0 0"/>
-                  <TextBlock Theme="{StaticResource Small}">
+                  <TextBlock Classes="Small">
                     <TextBlock.Text>
                       <MultiBinding StringFormat="{x:Static mui:UiStrings.Progress_Downloading_KnownTotal}">
                         <Binding Path="Manager.LoadedCount"/>

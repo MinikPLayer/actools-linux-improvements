@@ -9,7 +9,7 @@
                   <RowDefinition Height="Auto"/>
                   <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Margin="10 2 2 2" Text="{Binding Errors.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.AcObject_ErrorsHeader}}" Theme="{StaticResource Heading2}"/>
+                <TextBlock Grid.Row="0" Margin="10 2 2 2" Text="{Binding Errors.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.AcObject_ErrorsHeader}}" Classes="Heading2"/>
                 <Path Grid.Row="0" Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" HorizontalAlignment="Right"/>
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding Errors}" x:Name="AcObjectInDataContext" HorizontalAlignment="Left">
                   <ItemsControl.ItemTemplate>

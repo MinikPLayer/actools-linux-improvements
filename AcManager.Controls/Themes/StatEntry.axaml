@@ -31,7 +31,7 @@
                     <Border DataContext="{TemplateBinding CarId, Converter={StaticResource CarIdToCarWrapperConverter}}">
                       <mui:Cell DataContext="{Binding Value}" Background="Transparent" ac:ToolTips.Car="{Binding}" ac:ContextMenus.Car="{Binding}" mui:Draggable.Data="{Binding}">
                         <mui:BetterImage Filename="{Binding SelectedSkinLazy.Value.PreviewImage}" HideIfNull="True" Margin="0 8 0 0"/>
-                        <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{DynamicResource CardHeaderBackground}" Text="{Binding DisplayName}" Foreground="{DynamicResource CardHeaderText}" TextAlignment="Center" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
+                        <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{DynamicResource CardHeaderBackground}" Text="{Binding DisplayName}" Foreground="{DynamicResource CardHeaderText}" TextAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Small"/>
                       </mui:Cell>
                     </Border>
                   </mui:ReferenceSwitch.NonNull>
@@ -41,7 +41,7 @@
                         <Border DataContext="{TemplateBinding TrackId, Converter={StaticResource TrackIdToTrackWrapperConverter}}">
                           <mui:Cell DataContext="{Binding Value}" Background="Transparent" ac:ToolTips.Track="{Binding}" ac:ContextMenus.Track="{Binding}" mui:Draggable.Data="{Binding}">
                             <mui:BetterImage Filename="{Binding OutlineImage}" Margin="0 20 0 0" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
-                            <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{DynamicResource CardHeaderBackground}" Text="{Binding Name}" Foreground="{DynamicResource CardHeaderText}" TextAlignment="Center" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
+                            <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{DynamicResource CardHeaderBackground}" Text="{Binding Name}" Foreground="{DynamicResource CardHeaderText}" TextAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Small"/>
                           </mui:Cell>
                         </Border>
                       </mui:ReferenceSwitch.NonNull>
@@ -56,17 +56,17 @@
                   <mui:ReferenceSwitch Value="{TemplateBinding ValueUnits}" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <mui:ReferenceSwitch.NonNull>
                       <DockPanel HorizontalAlignment="Center">
-                        <TextBlock Text="{TemplateBinding Value}" DockPanel.Dock="Left" VerticalAlignment="Center" Theme="{StaticResource Heading1}"/>
-                        <TextBlock Text="{TemplateBinding ValueUnits}" FontSize="18" Margin="6 0 0 4" VerticalAlignment="Bottom" Theme="{StaticResource Heading1}"/>
+                        <TextBlock Text="{TemplateBinding Value}" DockPanel.Dock="Left" VerticalAlignment="Center" Classes="Heading1"/>
+                        <TextBlock Text="{TemplateBinding ValueUnits}" FontSize="18" Margin="6 0 0 4" VerticalAlignment="Bottom" Classes="Heading1"/>
                       </DockPanel>
                     </mui:ReferenceSwitch.NonNull>
                     <mui:ReferenceSwitch.Null>
-                      <TextBlock Text="{TemplateBinding Value}" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="200" Theme="{StaticResource Heading1}"/>
+                      <TextBlock Text="{TemplateBinding Value}" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="200" Classes="Heading1"/>
                     </mui:ReferenceSwitch.Null>
                   </mui:ReferenceSwitch>
                 </Viewbox>
 
-                <TextBlock Text="{TemplateBinding Title, Converter={StaticResource ToTitleConverter}}" Foreground="{DynamicResource Accent}" Margin="0 8 0 0" TextAlignment="Center" DockPanel.Dock="Top" Theme="{StaticResource Heading2}"/>
+                <TextBlock Text="{TemplateBinding Title, Converter={StaticResource ToTitleConverter}}" Foreground="{DynamicResource Accent}" Margin="0 8 0 0" TextAlignment="Center" DockPanel.Dock="Top" Classes="Heading2"/>
               </DockPanel>
 
             </mui:Cell>

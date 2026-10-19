@@ -6,7 +6,7 @@
       <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="AcListPage.BatchStyle.axaml"/>
     </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <DockPanel VerticalAlignment="Top">
-        <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
+        <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Classes="Label"/>
         <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4"/>
       </DockPanel>
       <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
@@ -27,11 +27,11 @@
     </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
     <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
         <DockPanel VerticalAlignment="Top">
-          <TextBlock Text="Find:" Width="60" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
+          <TextBlock Text="Find:" Width="60" DockPanel.Dock="Left" Classes="Label"/>
           <mui:BetterTextBox Text="{Binding Find}" Width="120"/>
         </DockPanel>
         <DockPanel VerticalAlignment="Top">
-          <TextBlock Text="Replace:" Width="60" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
+          <TextBlock Text="Replace:" Width="60" DockPanel.Dock="Left" Classes="Label"/>
           <mui:BetterTextBox Text="{Binding Replace}" Width="120"/>
         </DockPanel>
       </mui:SpacingUniformGrid>
@@ -57,7 +57,7 @@
         </CheckBox>
       </mui:SpacingUniformGrid>
       <DockPanel VerticalAlignment="Top" IsEnabled="{Binding RemoveRating, Converter={StaticResource InvertBooleanConverter}}" IsVisible="{Binding RemoveRating, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
-        <TextBlock Text="Rating:" Width="80" DockPanel.Dock="Left" Theme="{StaticResource Label}"/>
+        <TextBlock Text="Rating:" Width="80" DockPanel.Dock="Left" Classes="Label"/>
         <ac:RatingBar Rating="{Binding Rating}"/>
       </DockPanel>
     </mui:SpacingStackPanel>

@@ -5,8 +5,26 @@
     <Style Selector="^ DockPanel">
         <Setter Property="Height" Value="18"/>
         <Setter Property="Margin" Value="0 0 0 2"/>
-        <Style Selector="^ TextBlock">
-            <Setter Property="VerticalAlignment" Value="Top"/>
+        <Style.Resources>
+          <ResourceDictionary><ControlTheme TargetType="mui:BetterComboBox" BasedOn="{StaticResource BetterComboBox.Borderless}" x:Key="{x:Type mui:BetterComboBox}">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Placeholder" Value="?"/>
+          </ControlTheme>
+
+          <ControlTheme TargetType="mui:BetterTextBox" BasedOn="{StaticResource Borderless}" x:Key="{x:Type mui:BetterTextBox}">
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Placeholder" Value="?"/>
+          </ControlTheme>
+        </ResourceDictionary></Style.Resources>
+      <Style Selector="^ TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource CondensedFont}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="TextWrapping" Value="NoWrap"/>
+    <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    <Setter Property="Padding" Value="8 0 0 0"/>
+  <Setter Property="VerticalAlignment" Value="Top"/>
             <Setter Property="Width" Value="80"/>
             <Setter Property="Margin" Value="0 2 0 1"/>
             <Setter Property="DockPanel.Dock" Value="Left"/>
@@ -19,28 +37,26 @@
           </Style>
 
           <Style Selector="^ ComboBox">
-            <Setter Property="IsEditable" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Padding" Value="-1"/>
+    <Setter Property="IsEditable" Value="True"/>
             <Setter Property="attached:FocusAdvancement.AdvancesByEnterKey" Value="True"/>
             <Setter Property="attached:WatermarkService.Watermark" Value="?"/>
-          </Style>
+          <Style Selector="^:editable"><Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Padding" Value="-3 -1 -3 -1"/>
+      </Style></Style>
 
           <Style Selector="^ TextBox">
-            <Setter Property="attached:FocusAdvancement.AdvancesByEnterKey" Value="True"/>
+            <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Padding" Value="-3 -1 -3 -1"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+  <Setter Property="attached:FocusAdvancement.AdvancesByEnterKey" Value="True"/>
             <Setter Property="attached:WatermarkService.Watermark" Value="?"/>
           </Style>
 
-          <Style Selector="^ mui|BetterComboBox">
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Placeholder" Value="?"/>
           </Style>
-
-          <Style Selector="^ mui|BetterTextBox">
-            <Setter Property="VerticalAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Placeholder" Value="?"/>
-          </Style>
-        </Style>
     </Style>
 
   <Style Selector="TextBlock.TextBlockValue"/>

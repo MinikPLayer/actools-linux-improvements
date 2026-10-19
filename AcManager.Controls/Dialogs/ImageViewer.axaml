@@ -196,8 +196,8 @@
     <mui:BooleanSwitch Value="{Binding Current.IsFailedToLoad}" IsHitTestVisible="False">
       <mui:BooleanSwitch.True>
         <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-          <TextBlock Text="Image failed to load" Margin="0 0 0 8" DockPanel.Dock="Top" Theme="{StaticResource Title}"/>
-          <TextBlock Text="{Binding Current.ErrorMessage}" Theme="{StaticResource Small}"/>
+          <TextBlock Text="Image failed to load" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Title"/>
+          <TextBlock Text="{Binding Current.ErrorMessage}" Classes="Small"/>
         </DockPanel>
       </mui:BooleanSwitch.True>
       <mui:BooleanSwitch.False>

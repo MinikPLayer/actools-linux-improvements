@@ -10,7 +10,7 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <TextBlock Text="{x:Static c:ControlsStrings.Assists_Header}" Margin="0 0 0 8" Theme="{StaticResource Heading2}"/>
+        <TextBlock Text="{x:Static c:ControlsStrings.Assists_Header}" Margin="0 0 0 8" Classes="Heading2"/>
 
         <DockPanel Margin="0 0 0 4">
             <Label Width="120" DockPanel.Dock="Left" Content="{x:Static c:ControlsStrings.Assists_IdealLineLabel}"/>

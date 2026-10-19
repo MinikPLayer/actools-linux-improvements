@@ -19,7 +19,7 @@
     <mui:BetterImage Width="40" Height="40" Source="{Binding AuthorizedAs.AvatarSmall}" Margin="0 0 8 0"/>
     <StackPanel VerticalAlignment="Center">
       <mui:PlaceholderTextBlock Text="{Binding AuthorizedAs.Username}" Placeholder="Login"/>
-      <mui:PlaceholderTextBlock Text="{Binding AuthorizedAs.Name}" Placeholder="Name is not set" Theme="{StaticResource Small}"/>
+      <mui:PlaceholderTextBlock Text="{Binding AuthorizedAs.Name}" Placeholder="Name is not set" Classes="Small"/>
     </StackPanel>
   </DockPanel>
 </UserControl>

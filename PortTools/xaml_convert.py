@@ -1009,6 +1009,9 @@ class Converter:
             return
         st = styles[0]
         has_t = any(is_el(s) and local(s.tag) == 'Setter' and s.get('Property') == 'Template' for s in st)
+        reg = self.ctx.registry
+        based = reg.key_of(st.get('BasedOn')) if (reg and st.get('BasedOn')) else None
+        has_t = has_t or (based is not None and reg.is_theme(based))
         if has_t:
             el.tag = retag(el.tag, '%s.Theme' % owner)
             StyleConverter(self).convert(st, force_theme=True)
@@ -1033,6 +1036,9 @@ class Converter:
             return
         st = styles[0]
         has_t = any(is_el(s) and local(s.tag) == 'Setter' and s.get('Property') == 'Template' for s in st)
+        reg = self.ctx.registry
+        based = reg.key_of(st.get('BasedOn')) if (reg and st.get('BasedOn')) else None
+        has_t = has_t or (based is not None and reg.is_theme(based))
         if has_t:
             el.tag = retag(el.tag, '%s.ItemContainerTheme' % owner)
             StyleConverter(self).convert(st, force_theme=True)

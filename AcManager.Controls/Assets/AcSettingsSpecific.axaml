@@ -53,16 +53,16 @@
       </mui:BooleanSwitch>
 
       <DockPanel Margin="0 0 0 4" VerticalAlignment="Top" Width="200" DockPanel.Dock="Left">
-        <TextBlock Text="{Binding DisplayName}" Margin="0 -8 0 2" DockPanel.Dock="Top" Theme="{StaticResource Heading1}"/>
+        <TextBlock Text="{Binding DisplayName}" Margin="0 -8 0 2" DockPanel.Dock="Top" Classes="Heading1"/>
         <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Classes="WaitingButton">
 
           <Grid HorizontalAlignment="Left">
             <Grid IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-              <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Theme="{StaticResource Small}"/>
-              <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" x:Name="ProviderName" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-              <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+              <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+              <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" x:Name="ProviderName" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+              <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             </Grid>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontWeight="Normal" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" FontWeight="Normal" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
           </Grid>
         </Button>
       </DockPanel>
@@ -150,7 +150,7 @@
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
 
       <Button Grid.Column="1" DataContext="{Binding WheelButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_SteeringWheelButton}" Classes="WaitingButton">
         <Button.ContextMenu>
@@ -161,12 +161,12 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Theme="{StaticResource Small}"/>
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
 
@@ -179,11 +179,11 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </Grid>
@@ -204,7 +204,7 @@
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Text="{Binding ControllerButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding ControllerButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
 
       <Button Grid.Column="1" DataContext="{Binding ControllerButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="Controller button" Classes="WaitingButton">
         <Button.ContextMenu>
@@ -215,12 +215,12 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Theme="{StaticResource Small}"/>
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
 
@@ -233,11 +233,11 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </Grid>
@@ -259,7 +259,7 @@
         <ColumnDefinition Width="1*"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding WheelButton.DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Grid.Column="0" Margin="20 0 0 0" Classes="Label"/>
 
       <Button Grid.Column="1" DataContext="{Binding WheelButton}" Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" ToolTip.Tip="{x:Static c:ControlsStrings.Controls_SteeringWheelButton}" Classes="WaitingButton">
         <Button.ContextMenu>
@@ -270,12 +270,12 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Theme="{StaticResource Small}"/>
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
 
@@ -294,12 +294,12 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Theme="{StaticResource Small}"/>
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.Device.DisplayName}" DockPanel.Dock="Top" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" FontStyle="{Binding Input.Device.IsVirtual, Converter={StaticResource BooleanToFontStyleConverter}}" Classes="Small"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" Margin="0 8 0 0" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
 
@@ -312,11 +312,11 @@
 
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </Grid>
@@ -330,15 +330,15 @@
         </ContextMenu>
       </DockPanel.ContextMenu>
 
-      <TextBlock Text="{Binding ShortName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="20" TextAlignment="Right" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding ShortName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="20" TextAlignment="Right" Classes="Label"/>
       <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Classes="WaitingButton">
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </DockPanel>
@@ -352,15 +352,15 @@
         </ContextMenu>
       </DockPanel.ContextMenu>
 
-      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
       <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Margin="0 0 8 0" Classes="WaitingButton">
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </DockPanel>
@@ -374,15 +374,15 @@
         </ContextMenu>
       </DockPanel.ContextMenu>
 
-      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
       <Button Command="{Binding ToggleWaitingCommand, Source={x:Static acset:AcSettingsHolder.Controls}}" CommandParameter="{Binding}" Margin="0 0 8 0" Classes="WaitingButton">
         <mui:Cell HorizontalAlignment="Stretch">
           <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
-            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
-            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding Input.DisplayName}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Controls_ClickToAssign}" Opacity="0.5" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding Input, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading2"/>
             <Rectangle Fill="{DynamicResource Accent}" Width="4" Margin="-4 0" HorizontalAlignment="Right" IsVisible="{Binding Input.Value, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
           </mui:Cell>
-          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Controls_WaitingForInput}" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Normal" TextTrimming="CharacterEllipsis" IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2"/>
         </mui:Cell>
       </Button>
     </DockPanel>
@@ -420,7 +420,7 @@
                 </ContextMenu>
               </DockPanel.ContextMenu>
 
-              <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Theme="{StaticResource Label}"/>
+              <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="120" TextAlignment="Left" Classes="Label"/>
               <Button CommandParameter="{Binding}" Margin="0 0 8 0" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}" Command="{Binding KeyBindingsController.ToggleWaitingCommand, RelativeSource={RelativeSource AncestorType={x:Type helpers:ILocalKeyBindings}}}" Classes="WaitingButton">
                 <mui:Cell>
                   <mui:Cell IsVisible="{Binding IsWaiting, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
@@ -479,8 +479,8 @@
                       </DockPanel.ContextMenu>
                       <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding DisplayName}" DockPanel.Dock="Top"/>
                       <DockPanel x:Name="PART_Details">
-                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding Description}" DockPanel.Dock="Bottom" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
-                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding AuthorVersionLine}" IsVisible="{Binding AuthorVersionLine, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
+                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding Description}" DockPanel.Dock="Bottom" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+                        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding AuthorVersionLine}" IsVisible="{Binding AuthorVersionLine, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
                       </DockPanel>
                     </DockPanel>
                     </DataTemplate>
@@ -537,17 +537,17 @@
     <mui:Switch Value="{Binding Key}">
       <DockPanel mui:Switch.When="ℹ" Margin="0 0 0 20">
         <mui:BetterImage Filename="{Binding Preview}" Height="160" Width="160" DockPanel.Dock="Left" Stretch="UniformToFill" DecodeWidth="640" Margin="0 0 20 0" CollapseIfNull="True" se:ImageViewerService.Image="{Binding Preview}"/>
-        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding FullName}" DockPanel.Dock="Top" TextWrapping="Wrap" Theme="{StaticResource Heading2}"/>
+        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding FullName}" DockPanel.Dock="Top" TextWrapping="Wrap" Classes="Heading2"/>
         <mui:BbCodeBlock Text="{Binding Description}" DockPanel.Dock="Top" Margin="0 20 0 0" TextWrapping="Wrap" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
         <mui:BbCodeBlock Text="{Binding Url}" DockPanel.Dock="Top" Margin="0 8 0 0" TextWrapping="Wrap" IsVisible="{Binding Url, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
       </DockPanel>
       <DockPanel Margin="0 0 0 20">
-        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Theme="{StaticResource Label}"/>
+        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
         <c:MessageBlock DockPanel.Dock="Top" Margin="20 0 20 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-          <mui:BbCodeBlock Text="{Binding HintTop}" Theme="{StaticResource Small}"/>
+          <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
         </c:MessageBlock>
         <c:MessageBlock DockPanel.Dock="Bottom" Margin="20 8 20 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-          <mui:BbCodeBlock Text="{Binding HintBottom}" Theme="{StaticResource Small}"/>
+          <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
         </c:MessageBlock>
         <!--<mui:BbCodeBlock DockPanel.Dock="Bottom" Text="{Binding HintBottom}" Style="{StaticResource Small}" Margin="20 8 0 0"
             Visibility="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}" />-->
@@ -563,7 +563,7 @@
   <DataTemplate x:Key="PythonAppConfig" DataType="{x:Type t:PythonAppConfig}">
     <DockPanel>
       <Button DockPanel.Dock="Bottom" Margin="0 8 0 0" Content="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsVisible="{Binding IsNonDefault, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-      <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 8" Theme="{StaticResource Heading2}"/>
+      <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Heading2"/>
       <ItemsControl ItemsSource="{Binding SectionsDisplay}" Margin="20 0 0 -20" ItemTemplate="{StaticResource PythonAppConfig.SectionTemplate}"/>
     </DockPanel>
   </DataTemplate>
@@ -594,7 +594,7 @@
     <mui:Switch Value="{Binding Key}">
       <Border mui:Switch.When="ℹ"/>
       <DockPanel>
-        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Theme="{StaticResource Label}"/>
+        <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
         <ItemsControl ItemsSource="{Binding}" Margin="20 0 0 20" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.SectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
     <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
   </Style>
@@ -619,12 +619,12 @@
 
   <DataTemplate x:Key="PythonAppConfig.Compact.InlineSectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
     <DockPanel>
-      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Theme="{StaticResource Label}"/>
+      <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Top" Margin="0 0 0 8" TextWrapping="Wrap" ToolTip.Tip="{Binding ToolTip}" Classes="Label"/>
       <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-        <mui:BbCodeBlock Text="{Binding HintTop}" Theme="{StaticResource Small}"/>
+        <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
       </c:MessageBlock>
       <c:MessageBlock DockPanel.Dock="Bottom" Margin="0 8 0 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-        <mui:BbCodeBlock Text="{Binding HintBottom}" Theme="{StaticResource Small}"/>
+        <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
       </c:MessageBlock>
       <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.InlineSectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
     <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
@@ -649,10 +649,10 @@
   <DataTemplate x:Key="PythonAppConfig.Compact.InlineSingleSectionTemplate" DataType="{x:Type t:PythonAppConfigSection}">
     <DockPanel>
       <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding HintTop, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-        <mui:BbCodeBlock Text="{Binding HintTop}" Theme="{StaticResource Small}"/>
+        <mui:BbCodeBlock Text="{Binding HintTop}" Classes="Small"/>
       </c:MessageBlock>
       <c:MessageBlock DockPanel.Dock="Bottom" Margin="0 8 0 0" IsVisible="{Binding HintBottom, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
-        <mui:BbCodeBlock Text="{Binding HintBottom}" Theme="{StaticResource Small}"/>
+        <mui:BbCodeBlock Text="{Binding HintBottom}" Classes="Small"/>
       </c:MessageBlock>
       <ItemsControl ItemsSource="{Binding}" ItemTemplate="{StaticResource PythonAppConfig.ItemTemplate}" ItemsPanel="{StaticResource PythonAppConfig.InlineSectionItemsPanel}"><ItemsControl.Styles><Style Selector="ContentPresenter">
     <Setter Property="IsVisible" Value="{Binding IsHidden, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>

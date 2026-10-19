@@ -21,7 +21,7 @@
     </Grid.RowDefinitions>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="0">
-      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_ShowroomLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_ShowroomLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
       <ComboBox Margin="4 0 4 0" ItemsSource="{Binding Showrooms}" SelectedItem="{Binding SelectedShowroom}">
         <ComboBox.Styles>
           <Style Selector="ComboBoxItem">
@@ -32,12 +32,12 @@
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="1" Grid.Column="0">
-      <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
       <ComboBox Margin="4 0 4 0" SelectedItem="{Binding SelectedFilter}" ItemsSource="{Binding Filters}"/>
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="2" Grid.Column="0">
-      <TextBlock Text="Video settings:" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
+      <TextBlock Text="Video settings:" Margin="0 0 0 4" Classes="Label Label.Padding"/>
       <mui:HierarchicalComboBox ItemsSource="{Binding VideoPresets}" SelectedItem="{Binding SelectedVideoPreset}" FixedMode="False" Margin="4 0 4 0">
         <mui:HierarchicalComboBox.SelectedContent>
           <DataTemplate>
@@ -50,7 +50,7 @@
     </StackPanel>
 
     <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="1">
-      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_FovLabel}" Margin="0 0 0 4" Theme="{StaticResource Label.Padding}"/>
+      <TextBlock Text="{x:Static c:ControlsStrings.Showroom_FovLabel}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
       <mui:BetterTextBox Margin="4 0 4 0" Text="{Binding CameraFov}" Mode="Number"/>
     </StackPanel>
 

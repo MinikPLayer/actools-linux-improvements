@@ -19,10 +19,10 @@
       <Setter.Value>
         <ControlTemplate TargetType="ac:TemperatureValueLabel">
           <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
             <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Theme="{StaticResource Label}"/>
+            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
           </StackPanel>
 
           </ControlTemplate>
@@ -32,10 +32,10 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (4 triggers) --><ControlTemplate TargetType="ac:TemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>
@@ -45,12 +45,12 @@
           <Setter.Value>
             <ControlTemplate TargetType="ac:TemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox_F" Text="{Binding Value, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
             </ControlTemplate>
           </Setter.Value>
@@ -72,12 +72,12 @@
       <Setter.Value>
         <ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
           <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
             <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-            <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Theme="{StaticResource Label}"/>
+            <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Classes="Label"/>
             <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding SecondValue, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Theme="{StaticResource Label}"/>
+            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
           </StackPanel>
 
           </ControlTemplate>
@@ -87,12 +87,12 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding SecondValue, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>
@@ -102,18 +102,18 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
 
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding SecondValue, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Classes="Label"/>
 
                 <mui:BetterTextBox x:Name="PART_TextBox_F" Text="{Binding Value, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator_F" Text="{TemplateBinding Separator}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator_F" Text="{TemplateBinding Separator}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2_F" Text="{Binding SecondValue, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>
@@ -123,12 +123,12 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding RelativeRangeBase, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator" Text="±" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="±" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding RelativeRangeHalf, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>
@@ -138,12 +138,12 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (5 triggers) --><ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding RelativeRangeBase, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator" Text="±" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="±" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding RelativeRangeHalf, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, ConverterParameter=relative, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>
@@ -153,18 +153,18 @@
           <Setter.Value>
             <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="ac:DoubleTemperatureValueLabel">
               <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
-                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Label}"/>
-                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Theme="{StaticResource Label}"/>
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
 
                 <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding RelativeRangeBase, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator" Text="±" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="±" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2" Text="{Binding RelativeRangeHalf, StringFormat='{}{0:F1}', RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{Binding Postfix, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}, '}" Classes="Label"/>
 
                 <mui:BetterTextBox x:Name="PART_TextBox_F" Text="{Binding RelativeRangeBase, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Separator_F" Text="±" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Separator_F" Text="±" Classes="Label"/>
                 <mui:BetterTextBox x:Name="PART_TextBox2_F" Text="{Binding RelativeRangeHalf, StringFormat='{}{0:F1}', Converter={StaticResource TemperatureToFahrenheitConverter}, ConverterParameter=relative, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
-                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Theme="{StaticResource Label}"/>
+                <TextBlock x:Name="PART_Postfix_F" Text="{TemplateBinding FahrenheitPostfix}" Classes="Label"/>
               </StackPanel>
 
               </ControlTemplate>

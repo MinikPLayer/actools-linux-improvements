@@ -67,7 +67,7 @@
 
     <StackPanel VerticalAlignment="Bottom">
       <!--name-->
-      <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
+      <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
 
       <!--without errors-->
       <StackPanel Margin="0 0 0 4" IsVisible="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">

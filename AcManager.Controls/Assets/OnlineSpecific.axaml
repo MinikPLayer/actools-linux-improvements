@@ -96,7 +96,7 @@
     <mui:BooleanSwitch Value="{Binding CarExists}" Margin="4">
       <mui:BooleanSwitch.True>
         <StackPanel Margin="4" TextElement.Foreground="{DynamicResource WindowText}">
-          <TextBlock Text="{Binding CarWrapper.Value.DisplayName}" Margin="0 0 0 4" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{Binding CarWrapper.Value.DisplayName}" Margin="0 0 0 4" Classes="Heading2"/>
           <c:CarBlock Car="{Binding CarWrapper.Value}" ShowSkinsAndPreview="False" SelectSkin="False" Width="480" MaxHeight="640" ShowDescription="False"/>
         </StackPanel>
       </mui:BooleanSwitch.True>
@@ -116,7 +116,7 @@
     <mui:ReferenceSwitch Value="{Binding Track}" Margin="4">
       <mui:ReferenceSwitch.NonNull>
         <StackPanel Margin="4" TextElement.Foreground="{DynamicResource WindowText}">
-          <TextBlock Text="{Binding Track.Name}" Margin="0 0 0 4" Theme="{StaticResource Heading2}"/>
+          <TextBlock Text="{Binding Track.Name}" Margin="0 0 0 4" Classes="Heading2"/>
           <c:TrackBlock Track="{Binding Track}" Width="480" MaxHeight="640"/>
         </StackPanel>
       </mui:ReferenceSwitch.NonNull>
@@ -152,7 +152,7 @@
           </ItemsControl.ItemsPanel>
         </ItemsControl>
       </DockPanel>
-      <mui:PlaceholderTextBlock Text="{Binding Car.DisplayName}" Placeholder="{Binding CarId}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Theme="{StaticResource Small}"/>
+      <mui:PlaceholderTextBlock Text="{Binding Car.DisplayName}" Placeholder="{Binding CarId}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Classes="Small"/>
     </DockPanel>
   </DataTemplate>
 
@@ -161,7 +161,7 @@
     <mui:Switch Value="{Binding CurrentDrivers.Count, FallbackValue=0}">
       <TextBlock mui:Switch.When="0" Text="No drivers connected"/>
       <StackPanel Margin="4">
-        <TextBlock Text="{x:Static c:ControlsStrings.Online_DriversOnlineLabel}" Theme="{StaticResource Label}"/>
+        <TextBlock Text="{x:Static c:ControlsStrings.Online_DriversOnlineLabel}" Classes="Label"/>
         <ItemsControl ItemsSource="{Binding CurrentDrivers}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="480" MaxWidth="450" ItemTemplate="{StaticResource OnlineDriverEntry}" ItemsPanel="{StaticResource WrapItemsPanel}"/>
       </StackPanel>
     </mui:Switch>
@@ -169,7 +169,7 @@
 
   <ToolTip x:Key="SessionItemTooltip">
     <StackPanel>
-      <TextBlock Text="{Binding DisplayType}" HorizontalAlignment="Left" Theme="{StaticResource Heading2}"/>
+      <TextBlock Text="{Binding DisplayType}" HorizontalAlignment="Left" Classes="Heading2"/>
       <TextBlock Text="{Binding DisplayDuration}" HorizontalAlignment="Left" Margin="0 4 0 0"/>
     </StackPanel>
   </ToolTip>
@@ -189,14 +189,14 @@
 
   <!-- Session block -->
   <DataTemplate x:Key="SessionItem" DataType="{x:Type t:ServerEntry+Session}">
-    <TextBlock Text="{Binding DisplayTypeShort}" x:Name="TextBlock" Height="20" Width="20" TextAlignment="Center" Padding="0 2 0 0" ToolTip.Tip="{StaticResource SessionItemTooltip}" Theme="{StaticResource Label}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+    <TextBlock Text="{Binding DisplayTypeShort}" x:Name="TextBlock" Height="20" Width="20" TextAlignment="Center" Padding="0 2 0 0" ToolTip.Tip="{StaticResource SessionItemTooltip}" Classes="Label"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></Style></TextBlock.Styles></TextBlock>
     </DataTemplate>
 
   <!-- Car block -->
   <DataTemplate x:Key="CarItem" DataType="{x:Type t:ServerEntry+CarEntry}">
-    <TextBlock x:Name="TextBlock" HorizontalAlignment="Center" Margin="4 0" Height="20" Padding="2" ToolTip.Tip="{StaticResource CarPreviewTooltip.Online}" Theme="{StaticResource Small}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding CarWrapper.Value.DisplayName}"/><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarExists, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Text" Value="{Binding Id}"/>
+    <TextBlock x:Name="TextBlock" HorizontalAlignment="Center" Margin="4 0" Height="20" Padding="2" ToolTip.Tip="{StaticResource CarPreviewTooltip.Online}" Classes="Small"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding CarWrapper.Value.DisplayName}"/><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarExists, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Text" Value="{Binding Id}"/>
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></Style></TextBlock.Styles></TextBlock>
@@ -237,17 +237,17 @@
         <TextBlock Text="{Binding DisplayName}" FontSize="{DynamicResource SmallFontSize}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="2" x:Name="DisplayNameText"/>
       </DockPanel>
 
-      <TextBlock Text="{Binding DisplayClients}" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Theme="{StaticResource Small}"/>
+      <TextBlock Text="{Binding DisplayClients}" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Classes="Small"/>
 
       <StackPanel x:Name="PingPanel" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-        <TextBlock Text="{Binding Ping, TargetNullValue='?'}" Theme="{StaticResource Small}"/>
-        <TextBlock Text="{x:Static c:ControlsStrings.Common_MillisecondsPostfix}" Opacity="0.5" Theme="{StaticResource Small}"/>
+        <TextBlock Text="{Binding Ping, TargetNullValue='?'}" Classes="Small"/>
+        <TextBlock Text="{x:Static c:ControlsStrings.Common_MillisecondsPostfix}" Opacity="0.5" Classes="Small"/>
       </StackPanel>
 
       <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" Grid.Column="2" HorizontalAlignment="Right">
         <ToolTip.Tip>
           <StackPanel>
-            <TextBlock Text="{x:Static c:ControlsStrings.Common_Error}" Margin="4" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{x:Static c:ControlsStrings.Common_Error}" Margin="4" Classes="Heading2"/>
             <mui:BbCodeBlock Text="{Binding Errors}" Margin="4"/>
           </StackPanel>
         </ToolTip.Tip>
@@ -255,6 +255,12 @@
     </Grid>
 
     </DataTemplate>
+
+  <ControlTheme x:Key="SimpledListItemContainer" TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}"/>
+
+  <ControlTheme x:Key="DetailedListItemContainer" TargetType="ListBoxItem" BasedOn="{StaticResource RibbonListBoxItem.Left}">
+    <Setter Property="Padding" Value="2"/>
+  </ControlTheme>
 
   <!-- Quick filter buttons -->
   <ControlTheme TargetType="mui:ModernToggleButton" x:Key="{x:Type mui:ModernToggleButton}">
@@ -286,7 +292,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="mui:ModernButton">
           <DockPanel Background="Transparent">
-            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Theme="{StaticResource Label}"/>
+            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Classes="Label"/>
             <mui:Cell Margin="{TemplateBinding Padding}" Width="{TemplateBinding EllipseDiameter}" Height="{TemplateBinding EllipseDiameter}">
               <Path x:Name="IconPath" Data="{TemplateBinding IconData}" Stretch="Uniform"/>
             </mui:Cell>
@@ -309,7 +315,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="mui:ModernToggleButton">
           <DockPanel Background="Transparent">
-            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Theme="{StaticResource Label}"/>
+            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Classes="Label"/>
             <mui:Cell Margin="{TemplateBinding Padding}" Width="{TemplateBinding EllipseDiameter}" Height="{TemplateBinding EllipseDiameter}">
               <Path x:Name="IconPath" Data="{TemplateBinding IconData}" Stretch="Uniform"/>
               <Path Data="F1 M 60,0 L0,60 L4,64 L64,4 Z" Fill="Red" Stretch="Uniform" Margin="-2" IsVisible="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -333,7 +339,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="mui:ModernToggleButton">
           <DockPanel Background="Transparent">
-            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Theme="{StaticResource Label}"/>
+            <TextBlock TextAlignment="Center" Margin="0 4 0 0" Text="{TemplateBinding Content}" DockPanel.Dock="Bottom" Classes="Label"/>
             <mui:Cell Margin="{TemplateBinding Padding}" Width="{TemplateBinding EllipseDiameter}" Height="{TemplateBinding EllipseDiameter}">
               <Path x:Name="IconPath" Data="{TemplateBinding IconData}" Stretch="Uniform"/>
               <Ellipse Stroke="Red" StrokeThickness="2" Stretch="Uniform" Margin="-4" IsVisible="{TemplateBinding IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>

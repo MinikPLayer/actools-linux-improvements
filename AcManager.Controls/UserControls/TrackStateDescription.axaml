@@ -10,7 +10,7 @@
   </UserControl.Resources>
 
   <StackPanel>
-    <TextBlock Text="Track state:" Margin="0 0 0 8" Theme="{StaticResource Heading2}"/>
+    <TextBlock Text="Track state:" Margin="0 0 0 8" Classes="Heading2"/>
 
     <DockPanel Margin="0 0 0 4">
       <Label Width="180" DockPanel.Dock="Left" Content="Grip at the start:"/>
@@ -27,6 +27,6 @@
       <TextBlock Text="{Binding GripRandomness, Converter={StaticResource PercentageConverter}, StringFormat='{}{0}%'}"/>
     </DockPanel>
 
-    <TextBlock Text="{Binding Description}" Theme="{StaticResource Small}"/>
+    <TextBlock Text="{Binding Description}" Classes="Small"/>
   </StackPanel>
 </UserControl>

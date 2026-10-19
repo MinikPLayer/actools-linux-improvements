@@ -26,7 +26,7 @@
     <DockPanel Height="100" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse, hidden'}">
         <!-- previed image -->
         <mui:Cell DockPanel.Dock="Left" Background="{DynamicResource ThumbnailBackground}" Margin="0 0 24 0" Width="100" Height="100">
-            <TextBlock Text="No preview" FontSize="23" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.4" TextAlignment="Center" Margin="0 -4 0 4" Theme="{StaticResource Heading1}"/>
+            <TextBlock Text="No preview" FontSize="23" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.4" TextAlignment="Center" Margin="0 -4 0 4" Classes="Heading1"/>
             <mui:BetterImage Filename="{Binding PreviewImage}" Crop="{Binding PreviewCrop}" CropUnits="Absolute" Stretch="UniformToFill" StretchDirection="DownOnly" Width="100" Height="100" CollapseIfMissing="True" ToolTip.Tip="{Binding DisplayName}" Classes="inline1">
                 <mui:BetterImage.Styles>
                     <Style Selector="mui|BetterImage.inline1">
@@ -68,7 +68,7 @@
 
         <StackPanel VerticalAlignment="Bottom">
             <!--name-->
-            <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Theme="{StaticResource Heading2}"/>
+            <TextBlock Text="{Binding DisplayName}" Margin="0 0 0 4" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
 
             <!--without errors-->
             <StackPanel Margin="0 0 0 4" IsVisible="{Binding HasErrors, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
