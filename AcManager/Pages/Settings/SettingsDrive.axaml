@@ -1,0 +1,354 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsDrive" x:Name="This">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <ScrollViewer mui:SaveScroll.Key="SettingsDrive">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True">
+
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Main_Drive}" Classes="SettingsPanel">
+        <DockPanel x:Name="Starter" set:Search.Keywords="starter;steam">
+          <Label>
+            <TextBlock Text="{Binding Source={x:Static g:AppStrings.Settings_Drive_Starter}, Converter={StaticResource ColonConverter}, ConverterParameter=trim, Mode=OneTime}"/>
+          </Label>
+          <ComboBox ItemsSource="{Binding Drive.StarterTypes}" SelectedItem="{Binding Drive.SelectedStarterType}" DisplayMemberBinding="{Binding DisplayName}">
+            <ComboBox.Styles>
+              <Style Selector="ComboBoxItem">
+                <Setter Property="IsEnabled" Value="{Binding IsSelectable}"/>
+                <Setter Property="ToolTip.Tip" Value="{Binding Description}"/>
+              <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                </Style>
+            </ComboBox.Styles>
+          </ComboBox>
+        </DockPanel>
+
+        <!--<c:MessageBlock Margin="0 0 0 8" set:Search.LinkedTo="{Binding ElementName=Starter}">
+          <mui:BbCodeBlock Text="{Binding Drive.SelectedStarterType.Description, Converter={StaticResource ToSentenceConverter}}" TextWrapping="Wrap" />
+        </c:MessageBlock>-->
+
+        <CheckBox IsChecked="{Binding Drive.StarterFallbackIfNotAvailable}" IsVisible="{Binding Drive.SelectedStarterType.Id, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='UI Module'}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_UiModuleFallback}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.AcServiceStopAtExit}" IsVisible="{Binding Drive.SelectedStarterType.Id, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='AC Service'}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_StopServiceOnCMExit}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.RunSteamIfNeeded}" IsVisible="{Binding Drive.SelectedStarterType.RequiresSteam, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_TryToStartSteamIfNotRunning}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.Use32BitVersion}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_32bit}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.ImmediateStart}" Margin="0 20 0 8">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_StartImmediately}"/>
+        </CheckBox>
+
+        <DockPanel ToolTip.Tip="{x:Static c:ControlsStrings.Settings_Drive_RhmKeepAlive_ToolTip}">
+          <Label Content="Skip results:"/>
+          <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Drive.SkipCategories}" SelectedItem="{Binding AlwaysNull}">
+            <mui:BetterComboBox.Template>
+              <!-- PORT: ControlTemplate with triggers outside of a style (4 triggers) --><ControlTemplate TargetType="mui:BetterComboBox">
+                <mui:Cell x:Name="MainGrid">
+                  <Popup x:Name="PART_Popup" Placement="Bottom" Margin="1" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                    <mui:Cell Margin="0" MaxHeight="{TemplateBinding MaxDropDownHeight}" MinWidth="{Binding ElementName=MainGrid, Path=ActualWidth}">
+                      <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextElement.Foreground="{DynamicResource WindowText}">
+                        <ScrollViewer x:Name="DropDownScrollViewer">
+                          <ItemsPresenter x:Name="ItemsPresenter"/>
+                        </ScrollViewer>
+                      </Border>
+                    </mui:Cell>
+                  </Popup>
+                  <ToggleButton Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Padding="0" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                  <Path x:Name="Arrow" Margin="3 1 8 0" Fill="{TemplateBinding Foreground}" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                  <mui:LimitedViewbox MinimumScale="0.84" MaximumScale="1" Margin="7 3 20 5" IsHitTestVisible="False" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding DataContext.Drive.DisplaySkipCategories, ElementName=This}" TextTrimming="CharacterEllipsis" VerticalAlignment="Bottom" Margin="0 0 0 -1" TextAlignment="Left"/>
+                  </mui:LimitedViewbox>
+                </mui:Cell>
+                </ControlTemplate>
+            </mui:BetterComboBox.Template>
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <CheckBox x:Name="PART_Content" IsChecked="{Binding Value}" Margin="0 -1 0 1" Height="18" HorizontalAlignment="Stretch">
+                  <CheckBox.Styles><Style Selector="CheckBox#PART_Content"><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, FallbackValue={x:Null}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] CheckBox#PART_Content"><Setter Property="IsVisible" Value="False"/>
+                  </Style></Style></CheckBox.Styles><CheckBox.Template>
+                    <!-- PORT: ControlTemplate with triggers outside of a style (4 triggers) --><ControlTemplate TargetType="CheckBox">
+                      <Border Background="Transparent" HorizontalAlignment="Stretch" Margin="-10 -2" Padding="10 2">
+                        <DockPanel x:Name="LayoutRoot">
+                          <Border x:Name="CheckBorder" Width="16" Height="16" Margin="0 1 4 0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" DockPanel.Dock="Left">
+                            <Path x:Name="CheckMark" Width="10" Height="10" Margin="2" Stretch="Fill" Fill="{TemplateBinding Foreground}" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z " IsVisible="False"/>
+                          </Border>
+                          <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </DockPanel>
+                      </Border>
+                      </ControlTemplate>
+                  </CheckBox.Template>
+                  <DockPanel Margin="0 1 0 -1">
+                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Top"/>
+                  </DockPanel>
+                </CheckBox>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </mui:BetterComboBox>
+        </DockPanel>
+
+        <DockPanel x:Name="RaceResultsLimit" Margin="0 20 0 8" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_KeepResultsOfTheLast_Tooltip}">
+          <mui:ValueLabel Value="{Binding Drive.RaceResultsLimit}" Content="{x:Static g:AppStrings.Settings_Drive_KeepResultsOfTheLast}" Width="{x:Static system:Double.NaN}" DockPanel.Dock="Top" Margin="0 0 0 4" Postfix="{Binding Path=Drive.RaceResultsLimit, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.Settings_Drive_SessionFormat}}">
+          </mui:ValueLabel>
+          <Slider Minimum="0" Maximum="1">
+            <Slider.Value>
+              <Binding Path="Drive.RaceResultsLimit">
+                <Binding.Converter>
+                  <mui:LogarithmicScale Minimum="100" Middle="1000" Maximum="10000"/>
+                </Binding.Converter>
+              </Binding>
+            </Slider.Value>
+          </Slider>
+        </DockPanel>
+
+        <c:MessageBlock Margin="0 0 0 8" set:Search.LinkedTo="{Binding ElementName=RaceResultsLimit}">
+          <mui:BbCodeBlock Text="{x:Static g:AppStrings.Settings_Drive_RaceResults_Hint}" TextWrapping="Wrap"/>
+        </c:MessageBlock>
+
+        <!-- Quick Drive -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_QuickDriveHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.ShowExtraComboBoxes}" ToolTip.Tip="{x:Static g:AppStrings.QuickDrive_LoadAssistsWithQuickDrivePresets_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_LoadAssistsWithQuickDrivePresets}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveTrackDayViaPractice}" set:Search.Keywords="quick;drive;trackday" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_UsePracticeForTrackDay_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_UsePracticeForTrackDay}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.ShowExtraComboBoxes}" set:Search.Keywords="quick;drive;appearance;ui" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_ShowExtraDropDownListsForSkins_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ShowExtraDropDownListsForSkins}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveExpandBounds}" set:Search.Keywords="quick;drive" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_ExpandBounds_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ExpandBounds}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveCheckTrack}" set:Search.Keywords="quick;drive" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_CheckIfTrackFitsSelectedMode_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_CheckIfTrackFitsSelectedMode}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.AlwaysRecordGhost}" set:Search.Keywords="quick;drive;hotlap" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_AlwaysRecordGhost_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_AlwaysRecordGhost}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveUseSkinNames}" set:Search.Keywords="quick;drive;ai">
+          <Label Content="{x:Static t:ToolsStrings.Drive_GridNamesFromSkins}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveAiLevelInName}" set:Search.Keywords="quick;drive" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_AiLevelInDriverName_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_AiLevelInDriverName}"/>
+        </CheckBox>
+
+        <DockPanel set:Search.Keywords="quick;drive;real;conditions" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_LocalAddress_Tooltip}" IsVisible="{Binding Drive.LocalAddress, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_LocalAddress}"/>
+          <mui:BetterTextBox Text="{Binding Drive.LocalAddress}" Placeholder="?"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Drive.AllowDecimalTrackState}" set:Search.Keywords="quick;drive" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_AllowDecimalValuesForTrackState_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_AllowDecimalValuesForTrackState}"/>
+        </CheckBox>
+
+        <DockPanel ToolTip.Tip="Used when selecting randomized combination (Alt+R)">
+          <Label Content="Filter for random tracks"/>
+          <mui:BetterTextBox Text="{Binding Drive.QuickDriveRandomizeTrackFilter}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <DockPanel ToolTip.Tip="Used when selecting randomized combination (Alt+R)">
+          <Label Content="Filter for random cars"/>
+          <mui:BetterTextBox Text="{Binding Drive.QuickDriveRandomizeCarFilter}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <TextBlock Text="Quick Drive advanced tweaks:" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveAiLimitations}" set:Search.Keywords="quick;drive;trackday" ToolTip.Tip="Very experimental feature which might be removed later">
+          <Label>
+            <DockPanel>
+              <TextBlock Text="Enable AI limitations"/>
+              <Button CommandParameter="/Pages/About/ImportantTipsPage.xaml?Key=fakeCars" Theme="{StaticResource MoreDetailsSuperscript}"/>
+            </DockPanel>
+          </Label>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveAllowCustomData}" set:Search.Keywords="quick;drive;modding" ToolTip.Tip="If found, temporary replace packed data by unpacked; for more information, go to About section and look for Custom Car Data post">
+          <Label>
+            <DockPanel>
+              <TextBlock Text="Allow to use custom car’s data"/>
+              <Button CommandParameter="/Pages/About/ImportantTipsPage.xaml?Key=customCarData" Theme="{StaticResource MoreDetailsSuperscript}"/>
+            </DockPanel>
+          </Label>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.QuickDriveAllowExtendedPhysics}" set:Search.Keywords="quick;drive;modding" ToolTip.Tip="Please use carefully, it’s very experimental; if any issues would arrive, run Steam integrity check">
+          <Label>
+            <TextBlock Text="Allow to use patch car’s data to activate extended physics"/>
+          </Label>
+        </CheckBox>
+
+      </StackPanel>
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Main_Drive}" Classes="SettingsPanel">
+
+        <!-- Player’s name -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_PlayerNameHeader}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+        <DockPanel set:Search.Keywords="driver;player;name">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_NameLabel}"/>
+          <mui:BetterTextBox Text="{Binding Drive.PlayerName}" Placeholder="?"/>
+        </DockPanel>
+
+        <DockPanel set:Search.Keywords="driver;player;name">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_NationalityLabel}"/>
+          <mui:BetterComboBox Text="{Binding Drive.PlayerNationality}" Placeholder="?" ItemsSource="{Binding KunosIdsCountries, Source={x:Static t:DataProvider.Instance}}"/>
+        </DockPanel>
+
+        <DockPanel set:Search.Keywords="driver;player;name" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_OnlineName_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_OnlineNameLabel}"/>
+          <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Drive.DifferentPlayerNameOnline}" VerticalAlignment="Center"/>
+          <mui:BetterTextBox Text="{Binding Drive.PlayerNameOnline}" Placeholder="?" IsEnabled="{Binding Drive.DifferentPlayerNameOnline}"/>
+        </DockPanel>
+
+        <!-- Kunos career -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_KunosCareerHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.KunosCareerUserAiLevel}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ChangeAiLevel}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.KunosCareerUserSkin}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ChangeCarSkin}"/>
+        </CheckBox>
+
+        <!-- Real Head Motion -->
+        <DockPanel set:Search.SubCategory="{x:Static g:AppStrings.Settings_Drive_RealHeadMotion}" Margin="0 20 0 8">
+          <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_RealHeadMotion}" Classes="Heading2"/>
+          <Button CommandParameter="http://www.assettocorsa.net/forum/index.php?threads/real-head-motion-1-0-2.4755/" Theme="{StaticResource MoreDetailsSuperscript}"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Drive.RhmIntegration}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_RHMIntegration}"/>
+        </CheckBox>
+
+        <DockPanel IsEnabled="{Binding Drive.RhmIntegration}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_RHMLocation}"/>
+          <Button Content="{x:Static mui:UiStrings.Common_Browse}" Command="{Binding Drive.SelectRhmLocationCommand}"/>
+          <mui:BetterTextBox Text="{Binding Drive.RhmLocation}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <DockPanel ToolTip.Tip="{x:Static c:ControlsStrings.Settings_Drive_RhmKeepAlive_ToolTip}">
+          <Label Content="{x:Static c:ControlsStrings.Settings_Drive_RhmKeepAlive}"/>
+          <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Drive.RhmKeepAlivePeriods}" SelectedItem="{Binding Drive.RhmKeepAlivePeriod}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+
+        <!-- Shared memory -->
+        <TextBlock Text="{x:Static c:ControlsStrings.Settings_Drive_SharedMemory}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.HideWhileRacing}" IsEnabled="{Binding Drive.WatchForSharedMemory}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_HibernateCMWhileRacing}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.ImmediateCancel}" IsEnabled="{Binding Drive.WatchForSharedMemory}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_TerminateLoadingIfEscapeIsPressed}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.ContinueOnEscape}" IsEnabled="{Binding Drive.WatchForSharedMemory}" c:FeatureIsAvailable.Feature="$disabled">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ContinueRaceIfEscapePressed}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.ShowCspSettingsWithShortcut}">
+          <Label Content="Show CSP settings with Ctrl+Alt+~ shortcut"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.MonitorFramesPerSecond}" IsEnabled="{Binding Drive.WatchForSharedMemory}">
+          <ToolTip.Tip>
+            <mui:BbCodeBlock Text="{x:Static g:AppStrings.Settings_Drive_MonitorFPS_Tooltip}"/>
+          </ToolTip.Tip>
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_MonitorFPS}"/>
+        </CheckBox>
+
+        <DockPanel ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_BeepIfRaceIsCancelled_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_BeepIfRaceIsCancelled}"/>
+          <mui:BetterComboBox ItemsSource="{Binding Drive.BeepingNoises}" SelectedItem="{Binding Drive.CrashBeepingNoise}" IsEditable="False">
+            <mui:BetterComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}" Margin="0" Padding="0"/>
+              </DataTemplate>
+            </mui:BetterComboBox.ItemTemplate>
+          </mui:BetterComboBox>
+        </DockPanel>
+
+        <!-- Game-related events -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_EventsHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.CheckAndFixControlsOrder}" set:Search.Keywords="controls;drive">
+          <Label Content="{x:Static c:ControlsStrings.Settings_Drive_FixControllersOrder}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.CopyFilterToSystemForOculus}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_OverridePpFilterOculusFix_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_OverridePpFilterOculusFix}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <ToolTip.Tip>
+            <ToolTip>
+              <StackPanel Margin="4">
+                <mui:BbCodeBlock TextWrapping="WrapWithOverflow" Text="{x:Static g:AppStrings.Settings_Drive_PreCommand_Tooltip}"/>
+              </StackPanel>
+            </ToolTip>
+          </ToolTip.Tip>
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_PreCommandLabel}"/>
+          <mui:BetterTextBox Text="{Binding Drive.PreCommand}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <DockPanel>
+          <ToolTip.Tip>
+            <ToolTip>
+              <StackPanel Margin="4">
+                <mui:BbCodeBlock TextWrapping="WrapWithOverflow" Text="{x:Static g:AppStrings.Settings_Drive_PostCommand_Tooltip}"/>
+              </StackPanel>
+            </ToolTip>
+          </ToolTip.Tip>
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_PostCommandLabel}"/>
+          <mui:BetterTextBox Text="{Binding Drive.PostCommand}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <DockPanel>
+          <ToolTip.Tip>
+            <ToolTip>
+              <StackPanel Margin="4">
+                <mui:BbCodeBlock TextWrapping="WrapWithOverflow" Text="{x:Static g:AppStrings.Settings_Drive_CMLaunch_Tooltip}"/>
+              </StackPanel>
+            </ToolTip>
+          </ToolTip.Tip>
+          <Label Content="{x:Static c:ControlsStrings.Settings_Drive_CMLaunch}"/>
+          <mui:BetterTextBox Text="{Binding Drive.CmLaunchCommand}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+        </DockPanel>
+
+        <!--<CheckBox IsChecked="{Binding Drive.AutomaticallyConvertBmpToJpg}" ToolTip="{x:Static g:AppStrings.Settings_Drive_ConvertScreenshots_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_ConvertScreenshots}" />
+        </CheckBox>-->
+
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Drive_ExtendedWeatherHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <CheckBox IsChecked="{Binding Drive.WeatherSpecificClouds}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_CustomClouds_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_CustomClouds}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.WeatherSpecificPpFilter}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_WeatherPpFilter_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_WeatherPpFilter}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Drive.WeatherSpecificTyreSmoke}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Drive_WeatherParticles_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Drive_WeatherParticles}"/>
+        </CheckBox>
+      </StackPanel>
+
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+</UserControl>

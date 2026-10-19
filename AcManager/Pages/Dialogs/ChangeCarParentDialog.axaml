@@ -1,0 +1,30 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.ChangeCarParentDialog" Title="{x:Static g:AppStrings.CarParent_Title}">
+    <mui:ModernDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </mui:ModernDialog.Resources>
+    <StackPanel>
+        <StackPanel Margin="10" Orientation="Horizontal">
+            <TextBlock Width="120" Text="{x:Static c:ControlsStrings.Common_FilterLabel}"/>
+            <TextBox MinWidth="200" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" a:FocusAdvancement.AdvancesByEnterKey="True" Classes="TextBoxAsTextBlock"/>
+        </StackPanel>
+        <ListBox ItemsSource="{Binding CarsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" MaxHeight="400" Width="400">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type t:CarObject}">
+                    <DockPanel HorizontalAlignment="Stretch" x:Name="__Dt0">
+                        <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Enabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S2" Value="{Binding NeedsMargin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding HasErrors, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding Changed, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                        </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of Padding (not in Avalonia) -->
+                        </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of FontWeight (not in Avalonia) -->
+                            </Style><Style Selector="^[(pa|T.S3)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of FontStyle (not in Avalonia) -->
+                        </Style></Style></DockPanel.Styles><Path Data="{StaticResource AlertIconData}" Width="16" Height="16" DockPanel.Dock="Right" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon"/>
+                        <TextBlock Text="{Binding DisplayName}" Margin="10 2 2 2" FontSize="{DynamicResource SmallFontSize}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch" x:Name="DisplayNameText" ToolTip.Tip="{Binding Location}"/>
+                    </DockPanel>
+                    </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </StackPanel>
+</mui:ModernDialog>

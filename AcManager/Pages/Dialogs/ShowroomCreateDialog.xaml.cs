@@ -18,7 +18,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class ShowroomCreateDialog {
+    public partial class ShowroomCreateDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public class ViewModel : NotifyPropertyChanged {
             public ViewModel() {
                 ResultId = ResultName = string.Empty;

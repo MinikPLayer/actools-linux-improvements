@@ -1,0 +1,28 @@
+﻿<sl:SelectionTagsList xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sl="clr-namespace:AcManager.Pages.SelectionLists" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:TypeArguments="t:CarObject" x:Class="AcManager.Pages.SelectionLists.CarTags" Theme="{StaticResource {x:Type ListBox}}">
+  <ListBox.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </ListBox.Resources>
+  <ListBox.ItemsPanel>
+    <ItemsPanelTemplate>
+      <mui:StretchyWrapPanel SizeChanged="OnPanelSizeChanged" StretchToFill="True" StretchProportionally="True"/>
+    </ItemsPanelTemplate>
+  </ListBox.ItemsPanel>
+  <ListBox.ItemTemplate>
+    <DataTemplate DataType="{x:Type sl:SelectTag}">
+      <mui:Cell Background="Transparent" HorizontalAlignment="Center" PointerPressed="OnItemMouseDown" x:Name="__Dt0">
+        <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ TextBlock#Text"><Setter Property="FontSize" Value="14"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Accented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+        </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#Text"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+          <Setter Property="FontSize" Value="16"/>
+        </Style></Style></mui:Cell.Styles><TextBlock x:Name="Text" HorizontalAlignment="Center" Text="{Binding DisplayName}" Margin="8 4" VerticalAlignment="Bottom"/>
+        <TextBlock FontSize="16" HorizontalAlignment="Center" Text="{Binding DisplayName}" Margin="8 4" VerticalAlignment="Bottom" FontWeight="Bold" IsVisible="False"/>
+        <TextBlock FontSize="10" HorizontalAlignment="Right" Text="{Binding ItemsCount}" Margin="2" VerticalAlignment="Top" Classes="Label"/>
+        <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="0" IsHitTestVisible="False"/>
+      </mui:Cell>
+      </DataTemplate>
+  </ListBox.ItemTemplate>
+</sl:SelectionTagsList>

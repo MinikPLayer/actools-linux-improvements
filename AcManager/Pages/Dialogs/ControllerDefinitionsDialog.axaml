@@ -1,0 +1,200 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.ControllerDefinitionsDialog" Title="{Binding Device.DisplayName}" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MinWidth="200" SizeToContent="WidthAndHeight" ContentMargin="0 0 0 -42" CanResize="False">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="RecommendedNameTemplate" DataType="{x:Type di:ControllerDefinitionsDialog+RecommendedName}">
+        <TextBlock>
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{}{0} ({1})">
+              <Binding Path="ShortName"/>
+              <Binding Path="FullName"/>
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+      </DataTemplate>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.ButtonsRowContent>
+    <CheckBox VerticalAlignment="Center" IsChecked="{mui:Stored 'ControllerDefinitionsDialog.ShareNames=False'}" Background="Transparent" ToolTip.Tip="Enable this option to help other CM users to get proper definitions">
+      <Label Content="Upload labels to improve CM" Margin="0 0 8 0"/>
+    </CheckBox>
+  </mui:ModernDialog.ButtonsRowContent>
+
+  <DockPanel>
+
+    <DockPanel Background="Transparent" Dock="Top" Margin="0 0 0 20" ToolTip.Tip="It’s better to keep it short. For example, “Logitech G29” instead of “Logitech G29 Driving Force Racing Wheel USB”">
+      <Label Content="Name:" Width="80" VerticalAlignment="Center"/>
+      <mui:BetterTextBox Text="{Binding DeviceName}" Placeholder="{Binding DefaultDeviceName}"/>
+    </DockPanel>
+
+    <mui:SpacingUniformGrid HorizontalSpacing="20" Rows="1" Height="480" HorizontalStackMode="True">
+      <DockPanel Width="440">
+        <DockPanel DockPanel.Dock="Bottom">
+          <ItemsControl ItemsSource="{x:Static di:ControllerDefinitionsDialog.SpecialSymbols}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Button Content="{Binding Symbol}" Padding="5 1 4 2" Margin="0 0 4 0" PointerPressed="OnCharacterButtonClick" ToolTip.Tip="{Binding Hint}"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+          <Button Content="Find more" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}" CommandParameter="https://unicode-table.com/en/" HorizontalAlignment="Left"/>
+        </DockPanel>
+        <TextBlock Text="Extra symbols:" Margin="0 20 0 8" DockPanel.Dock="Bottom" ToolTip.Tip="Works as virtual keyboard, or you can click any button to copy a symbol" Classes="Heading2"/>
+
+        <TextBlock Text="Axis:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Heading2"/>
+        <DataGrid ItemsSource="{Binding Axis}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Padding="8 0 0 0" Margin="-8 0 0 20" DockPanel.Dock="Top" CanUserSortColumns="False" Theme="{StaticResource DataGrid.Lite}">
+          <!-- PORT: removed CellStyle (not in Avalonia) --><DataGrid.Columns>
+            <DataGridTemplateColumn Width="180" Header="Preview" SortMemberPath="Input.DefaultName">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputAxleItem}">
+                  <Grid VerticalAlignment="Center" Background="Transparent" Margin="4 0 0 0" ToolTip.Tip="{Binding Input.DefaultName}">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="40"/>
+                      <ColumnDefinition Width="124"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="{Binding ShortName}" Grid.Column="0" Margin="0 5 4 0" Classes="Small"/>
+                    <mui:Cell Grid.Column="1" Height="8" Margin="0 5 0 0">
+                      <Rectangle Fill="{DynamicResource ButtonBackground}" Stroke="{DynamicResource ButtonBorder}" StrokeThickness="1"/>
+                      <Rectangle Fill="{DynamicResource Accent}" Height="4" Width="8" Margin="2" HorizontalAlignment="Left">
+                        <Rectangle.RenderTransform>
+                          <TranslateTransform X="{Binding Input.Value, Converter={StaticResource MultiplyConverter}, ConverterParameter=112}" Y="0"/>
+                        </Rectangle.RenderTransform>
+                      </Rectangle>
+                    </mui:Cell>
+                  </Grid>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Width="60" SortMemberPath="IsVisible" Header="Visible">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputAxleItem}">
+                  <CheckBox IsChecked="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged}" Margin="0 2 0 0"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Width="80" SortMemberPath="ShortName" Header="Short">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputAxleItem}">
+                  <mui:BetterComboBox Text="{Binding ShortName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultShortName}" Width="60" Margin="0 3 0 0" IsEnabled="{Binding IsVisible}" MaxLength="6" ItemsSource="{x:Static di:ControllerDefinitionsDialog.RecommendedAxisNames}" ItemTemplate="{StaticResource RecommendedNameTemplate}" Theme="{StaticResource BetterComboBox.Borderless.White}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            <DataGridTemplateColumn Width="3*" SortMemberPath="FullName" Header="{x:Static c:ControlsStrings.TableHeader_Name}">
+              <DataGridTemplateColumn.CellTemplate>
+                <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputAxleItem}">
+                  <mui:BetterTextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultFullName}" Width="120" Margin="0 3 0 0" IsEnabled="{Binding IsVisible}" MaxLength="32" Theme="{StaticResource Borderless.White}"/>
+                </DataTemplate>
+              </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+          </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Text="POVs:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Heading2"/>
+        <mui:Switch Value="{Binding Povs.Count}" Margin="0 0 0 20" DockPanel.Dock="Top">
+          <mui:PlaceholderTextBlock mui:Switch.When="0" Placeholder="No POV inputs detected"/>
+          <DataGrid ItemsSource="{Binding Povs}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Padding="8 0 0 0" Margin="-8 0 0 0" CanUserSortColumns="False" Theme="{StaticResource DataGrid.Lite}">
+            <!-- PORT: removed CellStyle (not in Avalonia) --><DataGrid.Columns>
+              <DataGridTemplateColumn Width="180" Header="Input">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputPovItem}">
+                    <mui:Cell Height="24" Margin="4 0 4 0" Background="Transparent" x:Name="__Dt0">
+                      <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackground}"/><Setter Property="Stroke" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^ TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding InputLeft.Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding InputUp.Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding InputRight.Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding InputDown.Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                        <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                        </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                        <Setter Property="Text" Value="←"/>
+                      </Style><Style Selector="^[(pa|T.S2)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                        <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                        </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                        <Setter Property="Text" Value="↑"/>
+                      </Style><Style Selector="^[(pa|T.S3)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                        <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                        </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                        <Setter Property="Text" Value="→"/>
+                      </Style><Style Selector="^[(pa|T.S4)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                        <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                        <Setter Property="Text" Value="↓"/>
+                      </Style></Style></mui:Cell.Styles><Ellipse x:Name="Bg" Width="24" Height="24" StrokeThickness="1"/>
+                      <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Width="17" Height="17" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2 1 2 3">
+                        <TextBlock x:Name="Fg" FontWeight="Normal" Classes="Heading2"/>
+                      </Viewbox>
+                    </mui:Cell>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="80" SortMemberPath="ShortName" Header="Short">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputPovItem}">
+                    <mui:BetterComboBox Text="{Binding ShortName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultShortName}" Width="60" Margin="0 4 0 0" IsEnabled="{Binding IsVisible}" MaxLength="2" ItemsSource="{x:Static di:ControllerDefinitionsDialog.RecommendedPovNames}" ItemTemplate="{StaticResource RecommendedNameTemplate}" Theme="{StaticResource BetterComboBox.Borderless.White}"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="3*" SortMemberPath="FullName" Header="{x:Static c:ControlsStrings.TableHeader_Name}">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputPovItem}">
+                    <mui:BetterTextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultFullName}" Width="120" MaxLength="32" MaxLines="1" Margin="0 4 0 0" IsEnabled="{Binding IsVisible}" Theme="{StaticResource Borderless.White}"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+        </mui:Switch>
+      </DockPanel>
+
+      <DockPanel Width="340">
+        <TextBlock Text="Buttons:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Heading2"/>
+        <mui:Switch Value="{Binding Buttons.Count}" Margin="0 0 0 42" DockPanel.Dock="Top">
+          <mui:PlaceholderTextBlock mui:Switch.When="0" Placeholder="No buttons detected"/>
+
+          <DataGrid ItemsSource="{Binding Buttons}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Padding="8 0 0 0" Margin="-8 0 0 0" CanUserSortColumns="False" Theme="{StaticResource DataGrid.Lite}">
+            <!-- PORT: removed CellStyle (not in Avalonia) --><DataGrid.Columns>
+              <DataGridTemplateColumn Width="80" Header="Preview" SortMemberPath="Input.DefaultName">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputButtonItem}">
+                    <mui:Cell Height="24" Margin="4 0 4 0" Background="Transparent" ToolTip.Tip="{Binding Input.DefaultName}" x:Name="__Dt5">
+                      <mui:Cell.Styles><Style Selector="mui|Cell#__Dt5"><Style Selector="^ Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackground}"/><Setter Property="Stroke" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^ TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding Input.Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S6)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                        <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                        </Style><Style Selector="^[(pa|T.S6)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                      </Style></Style></mui:Cell.Styles><Ellipse x:Name="Bg" Width="24" Height="24" StrokeThickness="1"/>
+                      <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Width="17" Height="17" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2 1 2 3">
+                        <TextBlock x:Name="Fg" Text="{Binding ShortName}" FontWeight="Normal" Classes="Heading2"/>
+                      </Viewbox>
+                    </mui:Cell>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="60" SortMemberPath="IsVisible" Header="Visible">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputButtonItem}">
+                    <CheckBox IsChecked="{Binding IsVisible, UpdateSourceTrigger=PropertyChanged}" Margin="0 3 0 0"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="80" SortMemberPath="ShortName" Header="Short">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputButtonItem}">
+                    <mui:BetterComboBox Text="{Binding ShortName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultShortName}" Width="60" Margin="0 4 0 0" IsEnabled="{Binding IsVisible}" MaxLength="3" ItemsSource="{x:Static di:ControllerDefinitionsDialog.RecommendedButtonsNames}" ItemTemplate="{StaticResource RecommendedNameTemplate}" Theme="{StaticResource BetterComboBox.Borderless.White}"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+              <DataGridTemplateColumn Width="3*" SortMemberPath="FullName" Header="{x:Static c:ControlsStrings.TableHeader_Name}">
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="{x:Type di:ControllerDefinitionsDialog+InputButtonItem}">
+                    <mui:BetterTextBox Text="{Binding FullName, UpdateSourceTrigger=PropertyChanged}" Placeholder="{Binding DefaultFullName}" Width="120" MaxLength="32" MaxLines="1" IsEnabled="{Binding IsVisible}" Margin="0 4 0 0" Theme="{StaticResource Borderless.White}"/>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+            </DataGrid.Columns>
+          </DataGrid>
+
+        </mui:Switch>
+      </DockPanel>
+    </mui:SpacingUniformGrid>
+
+  </DockPanel>
+</mui:ModernDialog>

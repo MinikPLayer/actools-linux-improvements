@@ -1,0 +1,49 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:AcManager.Pages.Dialogs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.DiscordJoinRequestDialog" Title="Join Request" WindowStartupLocation="Manual" BlurBackground="True" PreventActivation="True" Topmost="True" ShowTopBlob="False" ShowTitle="False" Padding="20" BorderThickness="0" SizeToContent="Manual" MinWidth="20" MaxWidth="600" Width="600" MinHeight="20" Height="131" MaxHeight="9000" ButtonsMargin="0" Loaded="OnLoaded" ShowInTaskbar="False" ShowActivated="False" CanResize="False">
+  <mui:ModernDialog.Background>
+    <LinearGradientBrush StartPoint="0 0" EndPoint="0 1" SpreadMethod="Pad">
+      <GradientStop Color="#99000000" Offset="0"/>
+      <GradientStop Color="#77000000" Offset="1"/>
+    </LinearGradientBrush>
+  </mui:ModernDialog.Background>
+
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <PathGeometry x:Key="JoystickPovLeftIconData">M0,85v-40h35l20,20l-20,20ZM45,0h40v35l-20,20l-20,-20ZM50,5v28l15,15.3l15,-15.3v-28ZM45,130h40v-35l-20,-20l-20,20ZM50,125v-28l15,-15.3l15,15.3v28ZM130,45v40h-35l-20,-20l20,-20ZM125,50h-28l-15.3,15l15.3,15h28Z</PathGeometry>
+      <PathGeometry x:Key="JoystickPovUpIconData">M0,85v-40h35l20,20l-20,20ZM5,80h28l15.3,-15l-15.3,-15h-28ZM45,0h40v35l-20,20l-20,-20ZM45,130h40v-35l-20,-20l-20,20ZM50,125v-28l15,-15.3l15,15.3v28ZM130,45v40h-35l-20,-20l20,-20ZM125,50h-28l-15.3,15l15.3,15h28Z</PathGeometry>
+      <PathGeometry x:Key="JoystickPovRightIconData">M0,85v-40h35l20,20l-20,20ZM5,80h28l15.3,-15l-15.3,-15h-28ZM45,0h40v35l-20,20l-20,-20ZM50,5v28l15,15.3l15,-15.3v-28ZM45,130h40v-35l-20,-20l-20,20ZM50,125v-28l15,-15.3l15,15.3v28ZM130,45v40h-35l-20,-20l20,-20Z</PathGeometry>
+      <PathGeometry x:Key="JoystickPovDownIconData">M0,85v-40h35l20,20l-20,20ZM5,80h28l15.3,-15l-15.3,-15h-28ZM45,0h40v35l-20,20l-20,-20ZM50,5v28l15,15.3l15,-15.3v-28ZM45,130h40v-35l-20,-20l-20,20ZM130,45v40h-35l-20,-20l20,-20ZM125,50h-28l-15.3,15l15.3,15h28Z</PathGeometry>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <Border>
+    <DockPanel VerticalAlignment="Center" Height="91">
+      <mui:BetterImage x:Name="Image" Width="91" Height="91" Margin="0 0 20 0" Background="{DynamicResource ThumbnailBackground}"/>
+      <mui:BbCodeBlock x:Name="TitleBlock" Text="User X wants to join. Allow?" DockPanel.Dock="Top" Margin="0 0 0 20" Classes="Title"/>
+      <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" Height="40">
+        <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" BorderThickness="0" Command="{Binding YesCommand}">
+          <mui:Cell>
+            <ProgressBar x:Name="YesBar" Minimum="0" Maximum="1" Background="Transparent" Foreground="{DynamicResource ButtonBackgroundHover}"/>
+            <DockPanel x:Name="YesText" HorizontalAlignment="Center" Margin="16 1 16 2">
+              <Path x:Name="YesIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
+              <TextBlock Text="Yes" Margin="0 -1 0 1" VerticalAlignment="Center"/>
+            </DockPanel>
+          </mui:Cell>
+        </Button>
+        <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="0" BorderThickness="0" Command="{Binding NoCommand}">
+          <mui:Cell>
+            <ProgressBar x:Name="NoBar" Minimum="0" Maximum="1" Background="Transparent" Foreground="{DynamicResource ButtonBackgroundHover}"/>
+            <DockPanel x:Name="NoText" HorizontalAlignment="Center" Margin="16 1 16 2">
+              <Path x:Name="NoIcon" Width="12" Height="12" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 12 0" VerticalAlignment="Center" IsVisible="False"/>
+              <TextBlock Text="No" Margin="0 -1 0 1" VerticalAlignment="Center"/>
+            </DockPanel>
+          </mui:Cell>
+        </Button>
+      </mui:SpacingUniformGrid>
+    </DockPanel>
+  </Border>
+</mui:ModernDialog>

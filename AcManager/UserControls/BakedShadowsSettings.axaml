@@ -1,0 +1,65 @@
+﻿<DockPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:cs="clr-namespace:AcManager.CustomShowroom" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.UserControls.BakedShadowsSettings">
+  <DockPanel DockPanel.Dock="Bottom" Margin="0 8 0 0">
+    <Button Command="{Binding ShareCommand}" Content="{x:Static g:AppStrings.Common_Share}" DockPanel.Dock="Right" ToolTip.Tip="{x:Static g:AppStrings.Common_Share_SettingsTooltip}"/>
+    <c:UserPresetsControl x:Name="UserPresetsControl" UserPresetable="{Binding}" MinWidth="300" Margin="0 0 4 0"/>
+  </DockPanel>
+  <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20">
+    <mui:SpacingStackPanel Spacing="4">
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding From}" Postfix="°" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="From"/>
+        <Slider Minimum="-89.9999" Maximum="89.9999" Value="{Binding From, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="36" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding To}" Postfix="°" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="To"/>
+        <Slider Minimum="-89.9999" Maximum="89.9999" Value="{Binding To, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="36" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Brightness}" Postfix="%" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="{x:Static c:ControlsStrings.CustomShowroom_AmbientShadows_Brightness}"/>
+        <Slider Minimum="50" Maximum="350" Value="{Binding Brightness, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.2}" TickFrequency="60" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Gamma}" DockPanel.Dock="Top" Content="Gamma" Postfix="%"/>
+        <Slider Minimum="0" Maximum="500" Value="{Binding Gamma, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="50" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Ambient}" DockPanel.Dock="Top" Content="Ambient" Postfix="%"/>
+        <Slider Minimum="0" Maximum="100" Value="{Binding Ambient, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="10" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="For shadows casted by surfaces facing away from a spotlight">
+        <mui:ValueLabel Value="{Binding ShadowBiasCullFront}" DockPanel.Dock="Top" Content="Bias (first)" Postfix="%"/>
+        <Slider Minimum="-100" Maximum="100" Value="{Binding ShadowBiasCullFront, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="20" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="For shadows casted by surfaces facing a spotlight">
+        <mui:ValueLabel Value="{Binding ShadowBiasCullBack}" DockPanel.Dock="Top" Content="Bias (second)" Postfix="%"/>
+        <Slider Minimum="0" Maximum="200" Value="{Binding ShadowBiasCullBack, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" TickFrequency="20" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+    </mui:SpacingStackPanel>
+    <mui:SpacingStackPanel Spacing="4">
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Iterations}" DockPanel.Dock="Top" Content="{x:Static c:ControlsStrings.CustomShowroom_AmbientShadows_Iterations}"/>
+        <Slider Minimum="100" Maximum="10000" Value="{Binding Iterations}" TickFrequency="1980" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="Set it to higher value to avoid artefacts on UV mapping borders while viewed from far">
+        <mui:ValueLabel Value="{Binding Padding}" DockPanel.Dock="Top" Content="Padding"/>
+        <Slider Minimum="0" Maximum="10" Value="{Binding Padding}" TickFrequency="2" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="Be careful with pixel density if you need a high-resolution (≥4K) AO map">
+        <mui:ValueLabel Value="{Binding PixelDensity}" DockPanel.Dock="Top" Content="Pixel density"/>
+        <Slider Minimum="1" Maximum="8" Value="{Binding PixelDensity, Converter={StaticResource SliderRoundConverter}, ConverterParameter=1}" TickFrequency="1" TickPlacement="None" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="Higher values won’t change too much since there are a lot of shadows being casted">
+        <Label Content="Shadow maps’ resolution:" DockPanel.Dock="Top" Margin="0 0 0 2"/>
+        <mui:BetterComboBox IsEditable="False" SelectedItem="{Binding ShadowMapSizeSetting}" ItemsSource="{x:Static cs:DarkRendererSettings.ShadowResolutions}" Margin="0 0 0 4" DisplayMemberBinding="{Binding DisplayName}"/>
+      </DockPanel>
+      <CheckBox IsChecked="{Binding UseFxaa}">
+        <Label Content="FXAA"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding FullyTransparent}">
+        <Label Content="Fully transparent"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding UseDxt5}" ToolTip.Tip="If disabled, CM would save AO in Luminance+Alpha 8.8 format, which is two times heavier">
+        <Label Content="Use DXT5 compression for DDS"/>
+      </CheckBox>
+    </mui:SpacingStackPanel>
+  </mui:SpacingUniformGrid>
+</DockPanel>

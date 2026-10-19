@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -32,7 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FANNCSharp.Double, Culture=neutral, processorArchitecture=$(ActualPlatform)">
-      <HintPath>..\Libraries\FANN-0.2.0.0-$(ActualPlatform)\FANNCSharp.Double.dll</HintPath>
+      <!-- Only x86 build of FANN is available, the library is loaded at runtime anyway (see FannResolverService); here it is needed for compilation only. -->
+      <HintPath>..\Libraries\FANN-0.2.0.0-x86\FANNCSharp.Double.dll</HintPath>
       <Private>False</Private>
       <EmbedInteropTypes>false</EmbedInteropTypes>
     </Reference>

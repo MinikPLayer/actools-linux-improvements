@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetSessions">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="ServerPresetSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer Padding="0 0 8 0">
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Margin="0 0 0 20" Classes="SettingsPanel">
+        <CheckBox IsChecked="{Binding SelectedObject.PickupMode}" IsEnabled="{Binding SelectedObject.IsPickupModeAvailable}">
+          <Label Content="Pickup mode"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding SelectedObject.PickupModeLockedEntryList}" IsEnabled="{Binding SelectedObject.IsPickupModeAvailable}">
+          <Label Content="Locked entry list in pickup mode" ToolTip.Tip="Flag it if you want to limit the server to the entrylist GUID players and ignore password"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding SelectedObject.LoopMode}">
+          <Label Content="Loop mode"/>
+        </CheckBox>
+      </StackPanel>
+
+      <mui:SpacingUniformGrid x:Name="ColumnsGrid" Columns="2" HorizontalSpacing="20" VerticalSpacing="20" VerticalStackMode="True">
+        <ItemsControl ItemsSource="{Binding SelectedObject.SimpleSessions}" ItemTemplate="{StaticResource SessionTemplate}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <mui:SpacingStackPanel Spacing="20"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <ContentPresenter ContentTemplate="{StaticResource SessionTemplate}" Content="{Binding SelectedObject.RaceSession}"/>
+      </mui:SpacingUniformGrid>
+    </DockPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,228 @@
+﻿<mui:Cell xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:uc="clr-namespace:AcManager.UserControls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.UserControls.RaceGridEditorColumn" x:Name="This" mui:InputBindingBehavior.PropagateToWindow="True" Unloaded="OnUnload">
+  <mui:Cell.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ControlTheme x:Key="ListBoxItem" TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+        <EventSetter Event="PreviewMouseDoubleClick" Handler="OnItemDoubleClick"/>
+      </ControlTheme>
+    </ResourceDictionary>
+  </mui:Cell.Resources>
+
+  <!--both at the same time-->
+  <!--<Grid Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="80" />
+      <RowDefinition Height="1*" />
+    </Grid.RowDefinitions>
+    <mui:ModernProgressRing Grid.Row="1" IsActive="True" Width="80" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <StackPanel Grid.Row="2" DataContext="{x:Static t:CarsManager.Instance}" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="8"
+        Visibility="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+      <ProgressBar Maximum="{Binding WrappersList.Count}" Value="{Binding LoadedCount}" Margin="0 0 0 8" />
+      <TextBlock>
+        <TextBlock.Text>
+          <MultiBinding StringFormat="{}Loaded {1} out of {0}">
+            <Binding Path="WrappersList.Count" />
+            <Binding Path="LoadedCount" />
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+    </StackPanel>
+  </Grid>-->
+
+  <!--either ring or bar-->
+  <mui:Cell IsVisible="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <mui:ModernProgressRing Width="80" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="{Binding IsLoaded, Converter={StaticResource InvertBooleanConverter}, Source={x:Static t:CarsManager.Instance}}" IsVisible="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static t:CarsManager.Instance}}"/>
+    <StackPanel DataContext="{x:Static t:CarsManager.Instance}" VerticalAlignment="Center" IsVisible="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+      <ProgressBar Maximum="{Binding WrappersList.Count}" Value="{Binding LoadedCount}" Margin="8 0 8 8" Height="4"/>
+      <TextBlock TextAlignment="Center" Classes="Small">
+        <TextBlock.Text>
+          <MultiBinding StringFormat="{x:Static g:AppStrings.RaceGrid_LoadingProgress}">
+            <Binding Path="WrappersList.Count"/>
+            <Binding Path="LoadedCount"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+    </StackPanel>
+  </mui:Cell>
+
+  <DockPanel IsVisible="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+    <Grid DockPanel.Dock="Top" VerticalAlignment="Bottom" Margin="0 0 0 8">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+
+      <DockPanel>
+        <mui:ContextMenuButton DockPanel.Dock="Right">
+          <c:ModernPopup Padding="8">
+            <StackPanel Margin="0" Classes="SettingsPanel">
+              <DockPanel IsEnabled="{Binding Mode.CandidatesMode}">
+                <Label Content="{x:Static t:ToolsStrings.Drive_GridArrangeWay}" ToolTip.Tip="{x:Static t:ToolsStrings.Drive_GridArrangeWay_Tooltip}"/>
+                <mui:LabeledToggleButton LabelChecked="{x:Static t:ToolsStrings.Drive_GridArrangeWay_Shuffle}" LabelUnchecked="{x:Static t:ToolsStrings.Drive_GridArrangeWay_Random}" IsChecked="{Binding ShuffleCandidates}"/>
+              </DockPanel>
+
+              <DockPanel IsEnabled="{Binding Mode.CandidatesMode}" ToolTip.Tip="{x:Static g:AppStrings.Drive_GridCarVarietyLimit_Tooltip}">
+                <mui:ValueLabel Value="{Binding DisplayVarietyLimitation}" Content="{x:Static g:AppStrings.Drive_GridCarVarietyLimit}" mui:BetterTextBox.Mode="IntegerOrZeroLabel"/>
+                <Slider Minimum="0" Maximum="25" Value="{Binding VarietyLimitation}" TickFrequency="5" TickPlacement="BottomRight"/>
+              </DockPanel>
+
+              <CheckBox IsChecked="{Binding SequentialSkins}" ToolTip.Tip="{x:Static g:AppStrings.Drive_PickSkinsSequentially_Tooltip}">
+                <Label Content="{x:Static g:AppStrings.Drive_PickSkinsSequentially}"/>
+              </CheckBox>
+
+              <CheckBox IsChecked="{Binding AvoidCarsWithoutNumbers}" IsEnabled="{Binding SequentialSkins}" ToolTip.Tip="{x:Static g:AppStrings.Drive_AvoidCarsWithoutSkinNumbers_Tooltip}">
+                <Label Content="{x:Static g:AppStrings.Drive_AvoidCarsWithoutSkinNumbers}"/>
+              </CheckBox>
+
+              <TextBlock Text="{x:Static t:ToolsStrings.Common_GlobalHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+              <CheckBox IsChecked="{Binding QuickDriveUseSkinNames, Source={x:Static t:SettingsHolder.Drive}}" Margin="0">
+                <Label Content="{x:Static t:ToolsStrings.Drive_GridNamesFromSkins}"/>
+              </CheckBox>
+            </StackPanel>
+          </c:ModernPopup>
+        </mui:ContextMenuButton>
+        <TextBlock Text="{Binding Mode.CandidatesMode, Converter={x:Static uc:RaceGridEditorColumn.ModeToLabelConverter}}" Classes="Label Label.Padding"/>
+      </DockPanel>
+
+      <mui:ModernToggleButton x:Name="AddCarButton" Grid.Column="1" IconData="{StaticResource AddIconData}" HorizontalAlignment="Right" Margin="0 0 4 0" IsHitTestVisible="{Binding ElementName=SelectCarPopup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" ToolTip.Tip="{x:Static t:ToolsStrings.Drive_GridAdd_Tooltip}" Classes="NonTransparent"/>
+      <mui:ModernToggleButton x:Name="DetailsButton" Grid.Column="2" IconData="{StaticResource ListGearIconData}" HorizontalAlignment="Right" Margin="0 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.RaceGrid_DetailedSettings}" PointerPressed="OnDetailsButtonClick" Classes="NonTransparent"/>
+      <!--IsHitTestVisible="{Binding ElementName=DetailsPopup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}"-->
+
+      <c:ModernPopup Grid.Column="0" Grid.ColumnSpan="2" x:Name="SelectCarPopup" Placement="Custom" Padding="8" IsOpen="{Binding IsChecked, ElementName=AddCarButton, Mode=TwoWay}" StaysOpen="False" HorizontalAlignment="Right" Opened="OnSelectCarPopupOpened" mui:PopupHelper.Register="True">
+        <Grid Width="320" DataContext="{x:Reference This}">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="480"/>
+            <RowDefinition Height="Auto"/>
+          </Grid.RowDefinitions>
+
+          <DockPanel Grid.Row="0" Height="90" LastChildFill="False" Margin="0 0 0 8" mui:Draggable.Data="{Binding SelectedCar}" c:ToolTips.Car="{Binding SelectedCar}" Background="Transparent">
+            <mui:BetterImage Filename="{Binding SelectedCar.SelectedSkin.PreviewImage}" DockPanel.Dock="Left" Margin="0 0 8 0" Width="160" IsVisible="{Binding SelectedCar, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+              <ToolTip.Tip>
+                <c:CarBlock Car="{Binding SelectedCar}" ShowSkinsAndPreview="False" Width="400" MaxHeight="320"/>
+              </ToolTip.Tip>
+            </mui:BetterImage>
+            <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding SelectedCar.DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 4" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+            <TextBlock DockPanel.Dock="Top" Margin="0 0 0 4" Text="{Binding SelectedCar.CarClass, StringFormat={x:Static g:AppStrings.RaceGrid_ClassFormat}}" Classes="Small"/>
+            <TextBlock Text="{Binding SelectedCar.SpecsInfoDisplay}" DockPanel.Dock="Top" Margin="0 0 0 4" TextWrapping="Wrap" Classes="Small"/>
+          </DockPanel>
+
+          <uc:SelectCar Grid.Row="1" SelectedCar="{Binding SelectedCar}" ItemChosen="SelectCar_OnItemChosen"/>
+          <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 8 0 0" HorizontalAlignment="Right">
+            <Button Command="{Binding AddOpponentCommand}" Content="{x:Static mui:UiStrings.Common_Add}"/>
+            <Button Command="{Binding ClosePopupsCommand}" Content="{x:Static mui:UiStrings.Close}" Margin="4 0 0 0"/>
+          </StackPanel>
+        </Grid>
+      </c:ModernPopup>
+
+      <!--<c:ModernPopup Grid.Column="0" Grid.ColumnSpan="2" x:Name="DetailsPopup" Placement="Custom" Padding="8"
+          IsOpen="{Binding IsChecked, ElementName=DetailsButton, Mode=TwoWay}" StaysOpen="False" HorizontalAlignment="Right"
+          Opened="SelectCarPopup_OnOpened" mui:PopupHelper.Register="True">
+        <c:RaceGridEditorTable DataContext="{x:Reference This}" Model="{Binding Model, Source={x:Reference This}}" />
+      </c:ModernPopup>-->
+    </Grid>
+
+    <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8" IsVisible="{Binding Mode.Filterable, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Margin="0 0 8 0" DockPanel.Dock="Left"/>
+      <mui:HistoricalTextBox Placeholder="*" Text="{Binding FilterValue, UpdateSourceTrigger=PropertyChanged}" SaveKey="RaceGridEditorColumn:FiltersHistory" Theme="{StaticResource BetterComboBox.Borderless}">
+        <ToolTip.Tip>
+          <mui:BbCodeBlock Text="{Binding Value, Source={x:Static c:FilterHints.Cars}}" Classes="Small"/>
+        </ToolTip.Tip>
+      </mui:HistoricalTextBox>
+    </DockPanel>
+
+    <TextBlock Foreground="{DynamicResource Error}" Margin="0 4 0 0" FontWeight="Bold" IsHitTestVisible="False" TextWrapping="Wrap" Text="{Binding ErrorMessage, TargetNullValue={x:Static mui:UiStrings.RaceGrid_CandidatesNotFound}}" IsVisible="{Binding FilteredView.Count, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=0}" Classes="Small"/>
+
+    <ListBox x:Name="ListBox" ItemsSource="{Binding FilteredView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True" mui:Draggable.Enabled="True" SelectionMode="Multiple" DragDrop.Drop="OnItemsControlDrop" ItemContainerTheme="{StaticResource ListBoxItem}" Classes="inline1">
+      <ListBox.ContextMenu>
+        <ContextMenu DataContext="{x:Reference This}">
+          <MenuItem Header="{x:Static mui:UiStrings.RaceGrid_SavePresetHeader}" Command="{Binding SavePresetCommand}"/>
+          <MenuItem Header="{x:Static mui:UiStrings.RaceGrid_ShareHeader}" Command="{Binding SavePresetCommand}"/>
+        </ContextMenu>
+      </ListBox.ContextMenu>
+      <ListBox.Styles>
+        <Style Selector="ListBox.inline1">
+          <Setter Property="ItemTemplate">
+            <Setter.Value>
+              <DataTemplate DataType="{x:Type c:RaceGridEntry}">
+                <DockPanel mui:ContextMenuAdvancement.PropagateToChildren="True" c:ToolTips.Car="{Binding Car}" x:Name="__Dt0">
+                  <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsDeleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding CandidatePriority, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=1}"/><Setter Property="pa:T.S3" Value="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding DataContext.Mode.Id, ElementName=This, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=custom}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|BbCodeBlock#NameTextBlock"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                  </Style><Style Selector="^[(pa|T.S2)=True] mui|BetterTextBox#PriorityTextBox"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S3)=True] mui|BetterTextBox#PriorityTextBox"><Setter Property="IsVisible" Value="True"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] mui|BetterTextBox#PriorityTextBox"><Setter Property="IsVisible" Value="False"/>
+                  </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
+                  <DockPanel.ContextMenu>
+                    <mui:InheritingContextMenu DataContext="{x:Reference This}">
+                      <MenuItem Header="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding DeleteSelectedCommand}"/>
+                    </mui:InheritingContextMenu>
+                  </DockPanel.ContextMenu>
+                  <Button Command="{Binding DeleteCommand}" Theme="{StaticResource DeleteButton}"/>
+                  <!--<Button DockPanel.Dock="Right" Width="13" Height="13" Margin="4 0 4 0" VerticalAlignment="Center" RenderOptions.EdgeMode="Aliased"
+                      Padding="2" Command="{Binding DeleteCommand}">
+                    <Button.Style>
+                      <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderBrush" Value="Transparent" />
+                      </Style>
+                    </Button.Style>
+                    <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8"
+                        Stroke="{Binding Foreground, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Button}}" VerticalAlignment="Center"
+                        HorizontalAlignment="Center" StrokeThickness="1" />
+                  </Button>-->
+                  <mui:BetterTextBox x:Name="PriorityTextBox" DockPanel.Dock="Right" Margin="4 0 0 0" Text="{Binding CandidatePriority}" VerticalAlignment="Center" Width="20" Mode="Positive" ToolTip.Tip="{x:Static g:AppStrings.RaceGrid_CandidatePriority}" Theme="{StaticResource Borderless.White.Small}"/>
+                  <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  <mui:BbCodeBlock Mode="WithoutBbCodes" x:Name="NameTextBlock" Text="{Binding DisplayName}"/>
+                </DockPanel>
+                </DataTemplate>
+            </Setter.Value>
+          </Setter>
+          <Style Selector="^"><Setter Property="pa:T.S5" Value="{Binding Mode.CandidatesMode, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S5)=True]"><Setter Property="ItemTemplate">
+                <Setter.Value>
+                  <DataTemplate DataType="{x:Type c:RaceGridEntry}">
+                    <DockPanel x:Name="Panel" mui:ContextMenuAdvancement.PropagateToChildren="True" Background="Transparent" c:ToolTips.Car="{Binding Car}">
+                      <DockPanel.Styles><Style Selector="DockPanel#Panel"><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding ExceedsLimit, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S7" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="ToolTip.Tip" Value="{x:Static g:AppStrings.RaceGrid_OverTheLimit}"/>
+                        </Style><Style Selector="^[(pa|T.S6)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
+                      </Style><Style Selector="^[(pa|T.S7)=True] mui|BbCodeBlock#EntryName"><Setter Property="Opacity" Value="0.5"/>
+                      </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
+                      <DockPanel.ContextMenu>
+                        <mui:InheritingContextMenu DataContext="{x:Reference This}">
+                          <MenuItem Header="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneSelectedCommand}"/>
+                          <MenuItem Header="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding DeleteSelectedCommand}"/>
+                        </mui:InheritingContextMenu>
+                      </DockPanel.ContextMenu>
+                      <Button DockPanel.Dock="Right" Width="13" Height="13" Margin="4 0 4 0" VerticalAlignment="Center" Padding="2" Command="{Binding DeleteCommand}" ToolTip.Tip="{x:Null}" Classes="inline2">
+                        <Button.Styles>
+                          <Style Selector="Button.inline2">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                          </Style>
+                        </Button.Styles>
+                        <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                      </Button>
+                      <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform" x:Name="ErrorIcon" Margin="2 2 4 0" VerticalAlignment="Center"/>
+                      <Path Width="8" Height="8" Data="{StaticResource LockIconData}" DockPanel.Dock="Left" Margin="0 1 4 0" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" ToolTip.Tip="{x:Static g:AppStrings.RaceGridEditor_AILimitationsAreActive_Tooltip}" IsVisible="{Binding AiLimitationDetails.IsActive, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                      <mui:BbCodeBlock Mode="WithoutBbCodes" x:Name="EntryName" Text="{Binding DisplayName}"/>
+                    </DockPanel>
+                    </DataTemplate>
+                </Setter.Value>
+              </Setter>
+            </Style></Style>
+      </ListBox.Styles>
+    </ListBox>
+  </DockPanel>
+</mui:Cell>

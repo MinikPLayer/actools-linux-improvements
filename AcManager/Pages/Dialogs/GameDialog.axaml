@@ -1,0 +1,322 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.GameDialog" Width="800" Height="360" MinWidth="800" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MinHeight="360" SizeToContent="Manual" Title="{Binding Title}" LocationAndSizeKey="GameDialog_LS" Closed="OnClosed" x:Name="This" CanResize="True">
+  <mui:ModernDialog.Styles><Style Selector="DataGridColumnHeader.DataGridColumnHeader.Small">
+        <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+      </Style>
+
+      <Style Selector="DataGridColumnHeader.DataGridColumnHeader.RightAlignment.Small">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+  <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+      </Style>
+
+      <Style Selector="DataGridColumnHeader.DataGridColumnHeader.RightAlignment.FarRight">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+  <Setter Property="Padding" Value="8 4 44 4"/>
+      </Style>
+
+      </mui:ModernDialog.Styles><mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <!--<Style x:Key="DeltaCellStyle" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCell.Transparent.Number}">
+        <Setter Property="TextBlock.Foreground" Value="{DynamicResource Error}" />
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content.Text}" Value="-">
+            <Setter Property="TextBlock.Foreground" Value="{DynamicResource WindowText}" />
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>-->
+
+      <ControlTheme x:Key="DataGridCell.Transparent.Aligned" TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell.Transparent}">
+        <Setter Property="Padding" Value="8 1"/>
+      </ControlTheme>
+
+      <ControlTheme x:Key="DataGridCell.Transparent.RightAlignment.Aligned" TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell.Transparent}">
+        <Setter Property="HorizontalContentAlignment" Value="Right"/>
+  <Setter Property="Padding" Value="6 1"/>
+      </ControlTheme>
+
+      <DataTemplate x:Key="TotalTimeDeltaTemplate" DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
+        <TextBlock x:Name="TextBlock" Margin="8 4 8 4"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource TimePositiveDelta}"/><Setter Property="Text" Value="{Binding TotalTimeDelta}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-}"/><Setter Property="pa:T.S2" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Empty}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="IsVisible" Value="False"/>
+          </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+          </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+            <Setter Property="Text" Value="00:00.000"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+
+      <DataTemplate x:Key="TotalTimeDeltaTemplate.FarRight" DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
+        <TextBlock x:Name="TextBlock" Margin="8 4 39 4"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource TimePositiveDelta}"/><Setter Property="Text" Value="{Binding TotalTimeDelta}"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S4" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-}"/><Setter Property="pa:T.S5" Value="{Binding TotalTimeDelta, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Empty}"/></Style><Style Selector="^[(pa|T.S3)=True] TextBlock#TextBlock"><Setter Property="IsVisible" Value="False"/>
+          </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+          </Style><Style Selector="^[(pa|T.S5)=True] TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+            <Setter Property="Text" Value="00:00.000"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <mui:Switch Value="{Binding CurrentState}">
+    <!-- Waiting -->
+    <StackPanel mui:Switch.When="{x:Static di:GameDialog+ViewModel+State.Waiting}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <mui:ModernProgressRing Margin="8" IsActive="True" Width="80" Height="80" x:Name="ProgressRing" Effect="{DynamicResource GameLoadingAnimationEffect}"/>
+      <TextBlock Text="{Binding WaitingStatus}" TextAlignment="Center"/>
+      <Border Height="40" Width="400" Margin="0 20 0 0">
+        <DockPanel VerticalAlignment="Top" IsVisible="{Binding WaitingProgress.IsReady, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='inverse hidden'}">
+          <Button Content="{x:Static g:AppStrings.Drive_SkipSession}" Command="{Binding SubCancelCommand}" DockPanel.Dock="Right" Margin="8 0 0 0" IsVisible="{Binding SubCancellationCallback, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}"/>
+          <TextBlock Text="{Binding WaitingProgress.Message}" TextAlignment="Left" DockPanel.Dock="Top" TextTrimming="WordEllipsis" Classes="Small"/>
+          <ProgressBar Height="4" Value="{Binding WaitingProgress.Progress, Mode=OneWay}" IsIndeterminate="{Binding WaitingProgress.IsIndeterminate}" Margin="0 4 0 0" VerticalAlignment="Bottom" Maximum="1" Minimum="0"/>
+        </DockPanel>
+      </Border>
+    </StackPanel>
+
+    <!-- Cancelled (AC might crashed) -->
+    <mui:ReferenceSwitch mui:Switch.When="{x:Static di:GameDialog+ViewModel+State.Cancelled}" VerticalAlignment="Center" HorizontalAlignment="Center" Value="{Binding ErrorMessage}">
+      <mui:ReferenceSwitch.Null>
+        <TextBlock Text="{x:Static g:AppStrings.RaceResult_CancelledHeader}" Classes="Heading1"/>
+      </mui:ReferenceSwitch.Null>
+      <mui:ReferenceSwitch.NonNull>
+        <StackPanel>
+          <DockPanel Margin="0 0 0 4">
+            <Path Data="{StaticResource AlertIconData}" Width="24" Height="24" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left" Margin="4"/>
+            <TextBlock Text="{x:Static g:AppStrings.Dialogs_GameDialog_GameCrashed}" Classes="Heading1"/>
+          </DockPanel>
+          <mui:SelectableBbCodeBlock Text="{Binding ErrorMessage, Mode=OneWay}" MaxWidth="480"/>
+        </StackPanel>
+      </mui:ReferenceSwitch.NonNull>
+    </mui:ReferenceSwitch>
+
+    <!-- Error -->
+    <StackPanel mui:Switch.When="{x:Static di:GameDialog+ViewModel+State.Error}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <DockPanel Margin="0 0 0 4">
+        <Path Data="{StaticResource AlertIconData}" Width="24" Height="24" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Left" Margin="4"/>
+        <TextBlock Text="{x:Static g:AppStrings.RaceResult_ErrorHeader}" Classes="Heading1"/>
+      </DockPanel>
+      <mui:BetterTextBox IsReadOnly="True" Text="{Binding ErrorMessage, Mode=OneWay}" Margin="0 0 0 12" Theme="{StaticResource Borderless}"/>
+      <mui:BetterTextBox IsReadOnly="True" Text="{Binding ErrorDescription, Mode=OneWay}" FontStyle="Italic" Theme="{StaticResource Borderless}"/>
+    </StackPanel>
+
+    <!-- Benchmark -->
+    <StackPanel mui:Switch.When="{x:Static di:GameDialog+ViewModel+State.BenchmarkResult}" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <DockPanel Margin="0 0 0 4">
+        <mui:BooleanSwitch Value="{Binding BenchmarkPassed}" Width="24" Height="24" DockPanel.Dock="Left" Margin="4">
+          <mui:BooleanSwitch.True>
+            <Path Data="{StaticResource CheckIconData}" Fill="{DynamicResource Go}" Stretch="Uniform"/>
+          </mui:BooleanSwitch.True>
+          <mui:BooleanSwitch.False>
+            <Path Data="{StaticResource AlertIconData}" Fill="{DynamicResource Error}" Stretch="Uniform"/>
+          </mui:BooleanSwitch.False>
+        </mui:BooleanSwitch>
+        <TextBlock Text="{x:Static g:AppStrings.Dialogs_GameDialog_Benchmark}" Classes="Heading1"/>
+      </DockPanel>
+      <mui:SelectableBbCodeBlock Text="{Binding BenchmarkResults}" Width="240"/>
+    </StackPanel>
+
+    <!-- Finished -->
+    <ContentControl mui:Switch.When="{x:Static di:GameDialog+ViewModel+State.Finished}" Content="{Binding FinishedData}" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.GameDialogTableSize}}" mui:FancyHintsService.OffsetX="22" mui:FancyHintsService.OffsetY="64" mui:FancyHintsService.HorizontalAlignment="Right" mui:FancyHintsService.VerticalAlignment="Bottom" mui:FancyHintsService.HorizontalContentAlignment="Right" mui:FancyHintsService.VerticalContentAlignment="Bottom">
+      <ContentControl.DataTemplates><DataTemplate DataType="{x:Type di:GameDialog+CustomModeFinishedData}">
+          <Viewbox Stretch="Uniform" MaxHeight="320" MaxWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+              <DockPanel Margin="0 0 0 8">
+                <Border Width="80">
+                  <Ellipse HorizontalAlignment="Right" Margin="0 0 16 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
+                </Border>
+
+                <TextBlock Text="{Binding ModeName}" FontSize="28" DockPanel.Dock="Top" Classes="Heading1"/>
+                <mui:BbCodeBlock Mode="Extended" Text="{Binding Message}" VerticalAlignment="Bottom" Margin="0 12 0 6"/>
+              </DockPanel>
+            </StackPanel>
+          </Viewbox>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type di:GameDialog+DriftFinishedData}">
+          <Viewbox Stretch="Uniform" MaxHeight="320" MaxWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 8">
+                <Border Width="80">
+                  <Ellipse HorizontalAlignment="Right" Margin="0 0 16 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
+                </Border>
+
+                <TextBlock Text="{Binding Points}" FontSize="40" Classes="Heading1"/>
+                <TextBlock VerticalAlignment="Bottom" Margin="0 0 0 6" Text="{Binding Points, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.Common_PointsPostfix}}" Classes="Label"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_MaxLevel}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding MaxLevel}" Classes="Heading1"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_BestCombo}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding MaxCombo, StringFormat='{}{0}×'}" Classes="Heading1"/>
+              </StackPanel>
+            </StackPanel>
+          </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type di:GameDialog+TimeAttackFinishedData}">
+          <Viewbox Stretch="Uniform" MaxHeight="320" MaxWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 8">
+                <Border Width="80">
+                  <Ellipse HorizontalAlignment="Right" Margin="0 0 16 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
+                </Border>
+
+                <TextBlock Text="{Binding Points}" FontSize="40" Classes="Heading1"/>
+                <TextBlock Text="{Binding Points, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.Common_PointsPostfix}}" VerticalAlignment="Bottom" Margin="0 0 0 6" Classes="Label"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_Laps}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding Laps}" Classes="Heading1"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_BestLap}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding BestLapTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue='N/A'}" Classes="Heading1"/>
+              </StackPanel>
+            </StackPanel>
+          </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type di:GameDialog+HotlapFinishedData}">
+          <Viewbox Stretch="Uniform" MaxHeight="320" MaxWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 8">
+                <Border Width="80">
+                  <Ellipse HorizontalAlignment="Right" Margin="0 0 16 0" Fill="{Binding TakenPlace, Converter={StaticResource PlaceToColorConverter}}" Classes="PlaceMark"/>
+                </Border>
+                <TextBlock Text="{Binding BestLapTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue={x:Static t:ToolsStrings.Common_NA}}" FontSize="40" Classes="Heading1"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_Laps}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding Laps}" Classes="Heading1"/>
+              </StackPanel>
+              <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{x:Static g:AppStrings.RaceResult_Threoretical}" VerticalAlignment="Bottom" Margin="0 0 0 6" Width="80" Classes="Label"/>
+                <TextBlock Text="{Binding TheoreticallLapTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue={x:Static t:ToolsStrings.Common_NA}}" Classes="Heading1"/>
+              </StackPanel>
+            </StackPanel>
+          </Viewbox>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type di:GameDialog+DragFinishedData}">
+          <DockPanel>
+            <TextBlock DockPanel.Dock="Top" FontSize="24" Padding="20 0 20 20" TextAlignment="Center" Classes="Heading1">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} out of {1}, best reaction time: {2:F0} ms">
+                  <Binding Path="Wins" Mode="OneWay" Converter="{StaticResource PluralizingConverter}" ConverterParameter="{}{0} win"/>
+                  <Binding Path="Runs" Mode="OneWay" Converter="{StaticResource PluralizingConverter}" ConverterParameter="{}{0} run"/>
+                  <Binding Path="BestReactionTime.TotalMilliseconds" Mode="OneWay"/>
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+            <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource SessionTemplate}"/>
+          </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type di:GameDialog+SessionFinishedData}">
+          <ContentPresenter Content="{Binding}" ContentTemplate="{StaticResource SessionTemplate}"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type di:GameDialog+SessionsFinishedData}">
+          <mui:Cell>
+            <ContentControl ContentTemplate="{StaticResource SessionTemplate}" Content="{Binding SelectedSession}"/>
+            <ListBox ItemsSource="{Binding Sessions}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemsPanel="{StaticResource ModernTabLinkItemPanelTemplate}" ItemTemplate="{StaticResource ModernTabLinkItemPanelDataTemplate}" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 -40" SelectedItem="{Binding SelectedSession, Mode=TwoWay}" ItemContainerTheme="{StaticResource ModernTabLinkItem}"/>
+          </mui:Cell>
+        </DataTemplate>
+      </ContentControl.DataTemplates><ContentControl.Resources>
+        <!-- Custom -->
+        <!-- Drift -->
+        <!-- Time attack -->
+        <!-- Hotlap -->
+        <!-- Racing session -->
+        <DataTemplate x:Key="SessionTemplate" DataType="{x:Type di:GameDialog+SessionFinishedData}">
+          <DockPanel PointerWheelChanged="OnScrollMouseWheel">
+            <ItemsControl ItemsSource="{Binding RemarkableNotes}" DockPanel.Dock="Top" Margin="0 -4 0 16">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <DockPanel>
+                    <mui:BbCodeBlock Text="{Binding Message}" VerticalAlignment="Center"/>
+                    <ContentControl ContentTemplate="{StaticResource DataGridCell.DriverName}" Content="{Binding Player}" VerticalAlignment="Center" TextElement.FontWeight="Bold"/>
+                    <TextBlock Text=" in " VerticalAlignment="Center"/>
+                    <ContentControl ContentTemplate="{StaticResource DataGridCell.Car}" Content="{Binding Player}" VerticalAlignment="Center"/>
+                  </DockPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <DataGrid ItemsSource="{Binding PlayerEntries}" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" Loaded="OnPlayersTableLoaded" Margin="-24 0 -23 0" PointerPressed="OnDataGridMouseDown" Theme="{StaticResource DataGrid.Lite}">
+              <!-- PORT: removed CellStyle (not in Avalonia) --><DataGrid.Columns>
+                <DataGridTemplateColumn Width="64" Header="" SortMemberPath="TakenPlace">
+                  <!-- PORT: removed HeaderStyle (not in Avalonia) --><!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
+                      <TextBlock x:Name="TextBlock" Text="{Binding TakenPlace}" Margin="24 0 0 0"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding TakenPlace, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=DefinitelyNonPrizePlace}"/></Style><Style Selector="^[(pa|T.S6)=True] TextBlock#TextBlock"><Setter Property="IsVisible" Value="False"/>
+                        </Style></Style></TextBlock.Styles></TextBlock>
+                      </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="1.5*" Header="{x:Static c:ControlsStrings.TableHeader_Name}" SortMemberPath="Name" CellTemplate="{StaticResource DataGridCell.DriverName}"><!-- PORT: removed CellStyle (not in Avalonia) --></DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="1*" Header="{x:Static c:ControlsStrings.TableHeader_Car}" SortMemberPath="Car.DisplayName" CellTemplate="{StaticResource DataGridCell.Car}"><!-- PORT: removed CellStyle (not in Avalonia) --></DataGridTemplateColumn>
+
+                <DataGridTextColumn Width="100" Header="{x:Static g:AppStrings.Dialogs_GameDialog_TotalTime}" SortMemberPath="TotalTime" Binding="{Binding TotalTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue={x:Static t:ToolsStrings.Common_NA}}"><!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --></DataGridTextColumn>
+                <DataGridTemplateColumn Width="100" Header="{x:Static g:AppStrings.Dialogs_GameDialog_TotalDelta}" SortMemberPath="TotalTimeDelta" CellTemplate="{StaticResource TotalTimeDeltaTemplate.FarRight}"><!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --></DataGridTemplateColumn>
+
+                <DataGridTextColumn Width="100" Header="{x:Static c:ControlsStrings.TableHeader_BestLap}" SortMemberPath="BestLapTime" Binding="{Binding BestLapTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue={x:Static t:ToolsStrings.Common_NA}}" IsVisible="False"><!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --></DataGridTextColumn>
+                <DataGridTemplateColumn Width="140" Header="{x:Static g:AppStrings.Dialogs_GameDialog_BestDelta}" SortMemberPath="DeltaToSessionBest" IsVisible="False">
+                  <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
+                    <Style Selector="DataGridColumnHeader">
+                      <Setter Property="HorizontalContentAlignment" Value="Right"/>
+  <Setter Property="Padding" Value="8 4 44 4"/>
+                    </Style>
+                  </DataGridTemplateColumn.HeaderStyle>
+                  <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
+                      <TextBlock x:Name="TextBlock" Margin="8 4 39 4"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource TimePositiveDelta}"/><Setter Property="Text" Value="{Binding DeltaToSessionBest, Converter={StaticResource MillisecondsTimeSpanConverter}, StringFormat='{}+{0}'}"/></Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding DeltaToSessionBest, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S8" Value="{Binding DeltaToSessionBest, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Zero}"/></Style><Style Selector="^[(pa|T.S7)=True] TextBlock#TextBlock"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[(pa|T.S8)=True] TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+                          <Setter Property="Text" Value="00:00.000"/>
+                        </Style></Style></TextBlock.Styles></TextBlock>
+                      </DataTemplate>
+                  </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+              </DataGrid.Columns>
+
+              <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
+                  <!-- <ItemsControl ItemsSource="{Binding Laps}" /> -->
+                  <DataGrid ItemsSource="{Binding LapsDataTable.DefaultView}" AutoGenerateColumns="True" IsReadOnly="True" CanUserSortColumns="False" Margin="60 0 40 0" Loaded="OnLapsTableLoaded" AutoGeneratingColumn="OnAutoGeneratingColumn" IsVisible="{Binding LapsDataTable.DefaultView.Count, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=≠0}" Theme="{StaticResource DataGrid.Lite}"/>
+                </DataTemplate>
+              </DataGrid.RowDetailsTemplate>
+
+              <!-- -->
+            </DataGrid>
+          </DockPanel>
+        </DataTemplate>
+
+        <!-- Drag session -->
+        <ControlTheme x:Key="ModernTabLinkItem" TargetType="ListBoxItem">
+          <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+          <Setter Property="FontSize" Value="15"/>
+          <Setter Property="FontWeight" Value="Bold"/>
+          <Setter Property="Foreground" Value="{DynamicResource MenuText}"/>
+          <Setter Property="Margin" Value="12 0 0 0"/>
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="ListBoxItem">
+                <ContentPresenter x:Name="Presenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource MenuTextHover}"/>
+                  </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource MenuTextSelected}"/>
+                  </Style></ControlTheme>
+
+        <ItemsPanelTemplate x:Key="ModernTabLinkItemPanelTemplate">
+          <StackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="ModernTabLinkItemPanelDataTemplate">
+          <TextBlock Text="{Binding Title, Converter={StaticResource ToUpperConverter}}"/>
+        </DataTemplate>
+
+        <!-- Racing sessions -->
+        </ContentControl.Resources>
+    </ContentControl>
+  </mui:Switch>
+</mui:ModernDialog>

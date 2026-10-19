@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class VersionInfoEditor {
+    public partial class VersionInfoEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         [NotNull]
         public AcJsonObjectNew AcObj { get; }
 

@@ -1,0 +1,759 @@
+﻿<mui:ModernWindow xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:w="clr-namespace:AcManager.Pages.Windows" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:system="using:System" xmlns:dialogs="clr-namespace:AcManager.Pages.Dialogs" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Windows.MainWindow" Title="{x:Static g:AppStrings.Main_Title}" IsTitleVisible="False" MinWidth="800" MinHeight="640" Width="960" Height="800" DefaultContentSource="/Pages/Drive/QuickDrive.xaml" Loaded="OnLoaded" Unloaded="OnUnloaded" Closing="OnClosing" Closed="OnClosed" KeyDown="OnKeyDown" FrameNavigating="OnFrameNavigating" mui:ModernMenu.Initialize="OnMainMenuInitialize" mui:ModernMenu.SelectedChange="OnMainMenuSelectedChange" SaveKey="MainWindow" LocationAndSizeKey="MainWindow_LS" x:Name="Window" ShowErrorsButton="False" BackButtonVisibility="{Binding ShowMainWindowBackButton, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}" DragDrop.AllowDrop="True" DragDrop.Drop="OnDrop" DragDrop.DragEnter="OnDragEnter" PointerReleased="OnPreviewMouseRightButtonUp" PointerPressed="OnPreviewMouseRightButtonDown">
+  <mui:ModernWindow.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/FancyBackgroundBrush.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernWindow.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <Border x:Key="SteamOverlayFix" Background="#FF00FF00" IsHitTestVisible="False" Classes="inline1">
+        <Border.Styles>
+          <Style Selector="Border.inline1">
+            <!-- PORT: EventTrigger not converted --></Style>
+        </Border.Styles>
+      </Border>
+
+      <system:Boolean x:Key="SystemButtonActive">True</system:Boolean>
+
+      <ControlTheme x:Key="SystemButtonGo" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+        <Setter Property="Width" Value="45"/>
+    <Setter Property="Height" Value="29"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="BorderBrush">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[Tag={StaticResource SystemButtonActive}]"><Setter Property="TextElement.Foreground" Value="{DynamicResource GoButtonText}"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                  <mui:Cell>
+                    <ContentPresenter x:Name="Presenter" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    <mui:Cell x:Name="Chrome" Background="{DynamicResource GoButtonBackgroundPressed}" Opacity="{Binding Background.Opacity, RelativeSource={RelativeSource TemplatedParent}}">
+                      <Border Opacity="{Binding BorderBrush.Opacity, RelativeSource={RelativeSource TemplatedParent}}" Background="Black">
+                        <Border Background="{DynamicResource GoButtonBackgroundPressed}" Opacity="0.7"/>
+                      </Border>
+                      <Border Background="{DynamicResource GoButtonTextPressed}" Width="{Binding ActualWidth, ElementName=Presenter}" Height="{Binding ActualHeight, ElementName=Presenter}">
+                        <Border.OpacityMask>
+                          <VisualBrush Visual="{Binding ElementName=Presenter}" Stretch="None"/>
+                        </Border.OpacityMask>
+                      </Border>
+                    </mui:Cell>
+                  </mui:Cell>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+      <ControlTheme x:Key="SystemButtonGo.ResizeTweaked" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+        <Setter Property="Width" Value="45"/>
+    <Setter Property="Height" Value="29"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="BorderBrush">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[Tag={StaticResource SystemButtonActive}]"><Setter Property="TextElement.Foreground" Value="{DynamicResource GoButtonText}"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                  <mui:Cell IsHitTestVisible="False" Opacity="0.2">
+                    <ContentPresenter x:Name="Presenter" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    <mui:Cell x:Name="Chrome" Background="{DynamicResource GoButtonBackgroundPressed}" Opacity="{Binding Background.Opacity, RelativeSource={RelativeSource TemplatedParent}}">
+                      <Border Opacity="{Binding BorderBrush.Opacity, RelativeSource={RelativeSource TemplatedParent}}" Background="Black">
+                        <Border Background="{DynamicResource GoButtonBackgroundPressed}" Opacity="0.7"/>
+                      </Border>
+                      <Border Background="{DynamicResource GoButtonTextPressed}" Width="{Binding ActualWidth, ElementName=Presenter}" Height="{Binding ActualHeight, ElementName=Presenter}">
+                        <Border.OpacityMask>
+                          <VisualBrush Visual="{Binding ElementName=Presenter}" Stretch="None"/>
+                        </Border.OpacityMask>
+                      </Border>
+                    </mui:Cell>
+                  </mui:Cell>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          </Style><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+      <DataTemplate x:Key="MenuButtonContent">
+        <mui:Cell x:Name="__Dt0">
+          <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ mui|Cell#UpdateContentMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding ToUpdate.Count, Source={x:Static c:CupViewModel.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding IsUpdateReady, Source={x:Static t:AppUpdater.Instance}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|Cell#UpdateContentMark"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] Canvas#MainCanvas"><Setter Property="Clip" Value="{StaticResource MarkClipIcon}"/>
+          </Style><Style Selector="^[(pa|T.S2)=True] mui|Cell#UpdateContentMark"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[(pa|T.S2)=True] Canvas#MainCanvas"><Setter Property="Clip" Value="{StaticResource MarkClipIcon}"/>
+            </Style><!-- PORT: storyboard actions of trigger [(mui|StoryboardHelper.ContinuousFired)=True] not converted --><!-- PORT: storyboard actions of trigger [(mui|StoryboardHelper.ContinuousFiringActive)=True] not converted --></Style></mui:Cell.Styles><mui:Cell.Resources>
+          <PathGeometry x:Key="MarkClip">F1 M 0,0L 5.10002,0C 5.03443,0.323109 5,0.657536 5,1C 5,3.41896 6.71776,5.43672 9,5.89999L 9,9L 0,9L 0,0 Z</PathGeometry>
+          <PathGeometry x:Key="MarkClipIcon">F1 M0,0 L5.1,0 L5.1,4 L9,4 L9,9 L0,9 L0,0 Z</PathGeometry>
+          <!-- PORT: removed Storyboard -->
+          <!-- PORT: removed Storyboard -->
+          <!-- PORT: removed Storyboard -->
+        </mui:Cell.Resources>
+        <Canvas x:Name="MainCanvas" Width="9" Height="9" ClipToBounds="True" mui:StoryboardHelper.ContinuousFiring="{Binding}" mui:StoryboardHelper.ContinuousFiringInterval="0:0:1">
+            <Canvas Width="9" Height="9">
+              <Canvas.RenderTransform>
+                <TranslateTransform Y="-8"/>
+              </Canvas.RenderTransform>
+              <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="4.51,0" EndPoint="4.51,8.5" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type mui:DpiAwareWindow}}}"/>
+              <Path Data="M-0.01,3.99 L4.51,7.49 M4.49,7.49 L9.01,3.99" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type mui:DpiAwareWindow}}}"/>
+            </Canvas>
+            <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-1,0.75" EndPoint="10,0.75" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type mui:DpiAwareWindow}}}">
+              <Line.RenderTransform>
+                <TranslateTransform/>
+              </Line.RenderTransform>
+            </Line>
+            <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-1,4.75" EndPoint="10,4.75" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type mui:DpiAwareWindow}}}">
+              <Line.RenderTransform>
+                <TranslateTransform/>
+              </Line.RenderTransform>
+            </Line>
+            <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-1,8.75" EndPoint="10,8.75" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type mui:DpiAwareWindow}}}"/>
+          </Canvas>
+          <Ellipse x:Name="UpdateMark" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -2 -4 0" Width="6" Height="6" Fill="{DynamicResource Accent}" IsVisible="False"/>
+          <mui:Cell x:Name="UpdateContentMark" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 -4 -4 0" Width="6" Height="6">
+            <Ellipse x:Name="UpdateMarkGlow" Width="14" Height="14" Stretch="Uniform" Margin="-4">
+              <Ellipse.Effect>
+                <BlurEffect Radius="4"><!-- PORT: removed KernelType (not in Avalonia) --><!-- PORT: removed RenderingBias (not in Avalonia) --></BlurEffect>
+              </Ellipse.Effect>
+              <Ellipse.Fill>
+                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                  <RadialGradientBrush.GradientStops>
+                    <GradientStop Color="{DynamicResource GoColor}" Offset="0"/>
+                    <GradientStop Color="Transparent" Offset="1"/>
+                  </RadialGradientBrush.GradientStops>
+                </RadialGradientBrush>
+              </Ellipse.Fill>
+              <!-- PORT: removed Ellipse.Triggers -->
+            </Ellipse>
+            <Path Width="6" Height="6" Fill="{DynamicResource Go}" Data="{StaticResource UpdateIconData}" Stretch="Uniform"/>
+          </mui:Cell>
+        </mui:Cell>
+        </DataTemplate>
+
+      <DockPanel x:Key="DownloadsMenuSection">
+        <Separator DockPanel.Dock="Top" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+        <TextBlock DockPanel.Dock="Top" Text="{x:Static g:AppStrings.MainWindow_Downloads}" Margin="8 8 8 8" Classes="Label"/>
+        <mui:SpacingUniformGrid Rows="1" HorizontalAlignment="Right" DockPanel.Dock="Bottom" DataContext="{x:Static t:ContentInstallationManager.Instance}" Margin="8 0 4 0">
+          <Button Command="{Binding InstallAllCommand}" Margin="0 8 4 8" IsVisible="{Binding HasMoreThanOneWaiting, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel>
+              <Path Width="12" Height="12" DockPanel.Dock="Left" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Data="{StaticResource AddMultipleIconData}"/>
+              <TextBlock Text="{x:Static g:AppStrings.MainWindow_Downloads_InstallAll}"/>
+            </DockPanel>
+          </Button>
+          <Button Command="{Binding RemoveCompletedCommand}" Margin="0 8 4 8" IsVisible="{Binding RemoveCompletedCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel>
+              <Path Width="12" Height="12" DockPanel.Dock="Left" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Data="{StaticResource CleanUpIconData}"/>
+              <TextBlock Text="{x:Static g:AppStrings.MainWindow_Downloads_RemoveCompleted}"/>
+            </DockPanel>
+          </Button>
+        </mui:SpacingUniformGrid>
+        <Border Tag="DownloadsParent" MaxHeight="400"/>
+      </DockPanel>
+
+      <DockPanel x:Key="CupNotificationBlock" DataContext="{x:Static c:CupViewModel.Instance}" IsVisible="{Binding ToUpdate.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+        <Separator DockPanel.Dock="Top" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+        <TextBlock DockPanel.Dock="Top" Margin="8 8 8 0" Text="{Binding Path=ToUpdate.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static g:AppStrings.MainWindow_FoundNModUpdates}}" Classes="Label"/>
+        <ItemsControl MaxHeight="320" ItemsSource="{Binding ToUpdate}" DockPanel.Dock="Top" Margin="12 6 12 6" Theme="{StaticResource VirtualizingItemsControl}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <DockPanel Margin="0 2">
+                <Button DockPanel.Dock="Right" Margin="4 0 0 0" Padding="4 0" c:CupUi.InformationMode="True" c:CupUi.Object="{Binding}" IsVisible="False">
+                  <Path Data="{StaticResource UpdateIconData}" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="{DynamicResource GoButtonText}" StrokeThickness="0" Stretch="Uniform"/>
+                </Button>
+                <ContentControl Content="{Binding}" Margin="0 2 0 2">
+                  <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:CarObject}">
+                      <DockPanel mui:Draggable.Enabled="True" Background="Transparent" c:ToolTips.GenericObject="{Binding}" c:ContextMenus.GenericObject="{Binding}" x:Name="__Dt3">
+                        <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^ Path#PART_FavouriteIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding IsFavourite, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S5" Value="{Binding ShowNotesIcon, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S6" Value="{Binding Rating, TargetNullValue=0, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/><Setter Property="pa:T.S7" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] Path#PART_FavouriteIcon"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^[(pa|T.S5)=True] Path#PART_NotesIcon"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[(pa|T.S6)=True] c|RatingBar#PART_RatingIcon"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[(pa|T.S7)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
+                        </Style></Style></DockPanel.Styles><c:CarIcon Car="{Binding}" Width="14" Height="14" Margin="0 0 6 0"/>
+                        <c:OriginIcon Author="{Binding Author}" DockPanel.Dock="Right" x:Name="PART_OriginIcon"/>
+                        <Ellipse Width="4" Height="4" VerticalAlignment="Center" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="0 0 4 0" IsHitTestVisible="False" x:Name="PART_NewIcon" DockPanel.Dock="Right"/>
+                        <Path Data="{StaticResource BookmarkIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource FavouriteBrush}" Stretch="Uniform" x:Name="PART_FavouriteIcon" VerticalAlignment="Center" Margin="0 0 4 0"/>
+                        <Path Data="{StaticResource NotesIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource WindowText}" Stretch="Uniform" x:Name="PART_NotesIcon" VerticalAlignment="Center" Margin="0 0 4 0"/>
+                        <c:RatingBar DockPanel.Dock="Right" Rating="{Binding Rating}" x:Name="PART_RatingIcon" VerticalAlignment="Center" Margin="0 0 4 0" Theme="{StaticResource CompactRatingBar.ReadOnly}"/>
+                        <mui:BbCodeBlock TextWrapping="NoWrap" Text="{Binding DisplayName}" Mode="WithoutBbCodes" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch"/>
+                      </DockPanel>
+                      </DataTemplate>
+                  </ContentControl.DataTemplates></ContentControl>
+              </DockPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!--<mui:BbCodeBlock Text="{Binding CupUpdateSummary}" DockPanel.Dock="Top" Margin="8 0 8 8" Style="{StaticResource Small}" />-->
+        <mui:SpacingUniformGrid Rows="1" HorizontalAlignment="Right" Margin="8 0 8 4" HorizontalSpacing="8">
+          <Button IsVisible="False">
+            <DockPanel>
+              <Path Width="12" Height="12" DockPanel.Dock="Left" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Data="{StaticResource ListCheckIconData}"/>
+              <TextBlock Text="{x:Static g:AppStrings.MainWindow_ContentUpdate_ViewDetails}"/>
+            </DockPanel>
+          </Button>
+          <Button Command="{Binding InstallAllCommand}">
+            <DockPanel>
+              <Path Width="12" Height="12" DockPanel.Dock="Left" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Data="{StaticResource DownloadIconData}"/>
+              <TextBlock Text="{x:Static g:AppStrings.MainWindow_Downloads_InstallAll}"/>
+            </DockPanel>
+          </Button>
+        </mui:SpacingUniformGrid>
+      </DockPanel>
+
+      <mui:Cell x:Key="RunningInstances" Height="28" Width="80" Margin="0 0 20 0" VerticalAlignment="Top">
+        <ToggleButton Padding="0" Height="28" Width="80" BorderThickness="0" Click="OnRunningInstancesButtonClick">
+          <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Path Width="8" Height="8" DockPanel.Dock="Left" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Data="{StaticResource PlayIconData}"/>
+            <TextBlock Text="Races" FontSize="{StaticResource SmallFontSize}"/>
+          </DockPanel>
+        </ToggleButton>
+      </mui:Cell>
+
+      <ListBox x:Key="RunningInstancesPopupContent" ItemsSource="{Binding Source={x:Static dialogs:GameDialog.HiddenInstances}}" SelectionChanged="OnRunningInstancesItemClick">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <StackPanel Width="200" Margin="8 4 8 4">
+              <TextBlock Text="{Binding DisplayState}"/>
+              <TextBlock Text="{Binding DisplayDetails}" FontSize="{StaticResource SmallFontSize}"/>
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+    </ResourceDictionary>
+  </mui:ModernWindow.Resources>
+
+  <mui:ModernWindow.TitleButtons>
+
+    <mui:Cell Width="45">
+      <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+      <Border mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.ContentUpdatesArrived}}" mui:FancyHintsService.OffsetX="22" mui:FancyHintsService.OffsetY="-14" mui:FancyHintsService.HorizontalAlignment="Left" mui:FancyHintsService.VerticalAlignment="Bottom" mui:FancyHintsService.HorizontalContentAlignment="Right" mui:FancyHintsService.VerticalContentAlignment="Top">
+        <ToggleButton x:Name="DownloadsButton" Width="45" Tag="{Binding HasUnfinishedItems, Source={x:Static t:ContentInstallationManager.Instance}}" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DownloadsList}}" mui:FancyHintsService.OffsetX="22" mui:FancyHintsService.OffsetY="-14" mui:FancyHintsService.HorizontalAlignment="Left" mui:FancyHintsService.VerticalAlignment="Bottom" mui:FancyHintsService.HorizontalContentAlignment="Right" mui:FancyHintsService.VerticalContentAlignment="Top" IsHitTestVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type Panel}}, Path=Children[1].IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" DragDrop.Drop="OnContentTitleLinkDrop" DragDrop.AllowDrop="True" PointerReleased="OnDownloadsButtonClick" Theme="{StaticResource SystemButtonGo}">
+          <ToolTip.Tip>
+            <mui:Switch Value="{Binding UnfinishedItemsCount, Source={x:Static t:ContentInstallationManager.Instance}}" MaxWidth="480">
+              <TextBlock mui:Switch.When="0" Text="{x:Static g:AppStrings.MainWindow_Downloads_Tooltip}" TextWrapping="Wrap"/>
+              <TextBlock TextWrapping="Wrap">
+                <TextBlock.Text>
+                  <Binding Path="UnfinishedItemsCount" Source="{x:Static t:ContentInstallationManager.Instance}" StringFormat="{x:Static g:AppStrings.MainWindow_Downloads_TooltipFormat}"/>
+                </TextBlock.Text>
+              </TextBlock>
+            </mui:Switch>
+          </ToolTip.Tip>
+          <ToggleButton.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{x:Static g:AppStrings.MainWindow_Downloads_InstallAll}" Command="{Binding InstallAllCommand, Source={x:Static t:ContentInstallationManager.Instance}}">
+                <MenuItem.Icon>
+                  <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource AddMultipleIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <Separator/>
+              <MenuItem Header="{x:Static g:AppStrings.MainWindow_Downloads_RemoveCompleted}" Command="{Binding RemoveCompletedCommand, Source={x:Static t:ContentInstallationManager.Instance}}">
+                <MenuItem.Icon>
+                  <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource CleanUpIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                </MenuItem.Icon>
+              </MenuItem>
+              <MenuItem Header="{x:Static g:AppStrings.MainWindow_Downloads_RemoveAll}" Command="{Binding RemoveAllCommand, Source={x:Static t:ContentInstallationManager.Instance}}">
+                <MenuItem.Icon>
+                  <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                </MenuItem.Icon>
+              </MenuItem>
+            </ContextMenu>
+          </ToggleButton.ContextMenu>
+          <ContentControl ContentTemplate="{StaticResource MenuButtonContent}" Content="{Binding HasLoadingItems, Source={x:Static t:ContentInstallationManager.Instance}}"/>
+        </ToggleButton>
+      </Border>
+      <c:ModernPopup x:Name="DownloadsPopup" PlacementTarget="{Binding ElementName=DownloadsButton}" Placement="Bottom" IsOpen="{Binding IsChecked, ElementName=DownloadsButton, Mode=TwoWay}" Padding="0" Opened="OnDownloadsPopupOpened">
+        <StackPanel Width="420">
+
+          <StackPanel IsVisible="{Binding AppUpdater.ReadyToUpdateVersion, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+            <MenuItem Command="{Binding AppUpdater.FinishUpdateCommand}">
+              <MenuItem.Resources>
+                <!-- ReSharper disable once Xaml.RedundantResource -->
+                <SolidColorBrush x:Key="ItemText" Color="{DynamicResource AccentColor}"/>
+              </MenuItem.Resources>
+              <MenuItem.Icon>
+                <Path Width="12" Height="12" Margin="4 2 -2 -2" Stretch="Uniform" Data="{StaticResource UpdateIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+              </MenuItem.Icon>
+              <MenuItem.Header>
+                <mui:BbCodeBlock Text="{Binding AppUpdater.ReadyToUpdateVersion, StringFormat={x:Static mui:UiStrings.UpdateAvailable}}"/>
+              </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_ViewChangelog}" Command="{Binding ViewChangelogCommand}"/>
+            <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_SkipUpdate}" Command="{Binding AppUpdater.IgnoreUpdateCommand}"/>
+            <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_DisableAutoUpdates}" Command="{Binding AppUpdater.DisableAutoUpdatesCommand}"/>
+            <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          </StackPanel>
+
+          <MenuItem Header="{x:Static g:AppStrings.MainWindow_AddDownload_MenuItem}" Click="OnDownloadSomethingItemClick">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.MainWindow_InstallFromAFile_MenuItem}" Click="OnInstallFromAFileItemClick">
+            <MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource OpenFolderIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <MenuItem Header="{x:Static g:AppStrings.Main_Drive}" Click="OnNavigateItemClick" CommandParameter="/Pages/Drive/QuickDrive.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource CarsIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_LapTimes}" Click="OnNavigateItemClick" CommandParameter="/Pages/Miscellaneous/LapTimes_Recent.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource TimerIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_Results}" Click="OnNavigateItemClick" CommandParameter="/Pages/Miscellaneous/PlayerStats.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource ListCheckIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_Media}" Click="OnNavigateItemClick" CommandParameter="/Pages/Lists/ReplaysListPage.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource VideoIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <!--<MenuItem Header="{x:Static g:AppStrings.Main_Workshop}" Click="OnNavigateItemClick" CommandParameter="/Pages/Workshop/WorkshopCars.xaml">
+            <MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource CloudIconData}" HorizontalAlignment="Center"
+                  VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" />
+            </MenuItem.Icon>
+          </MenuItem>-->
+          <MenuItem Header="{x:Static g:AppStrings.Main_Content}" Click="OnNavigateItemClick" CommandParameter="/Pages/Lists/CarsListPage.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource ToolsIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_Server}" Click="OnNavigateItemClick" CommandParameter="/Pages/Lists/ServerPresetsListPage.xaml" mui:LimitedService.Limited="True">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource ServerIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <MenuItem Header="{x:Static g:AppStrings.Main_Downloads}" Click="OnNavigateItemClick" CommandParameter="/Pages/Miscellaneous/DownloadsList.xaml" IsVisible="{Binding DownloadsInSeparatePage, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <Separator IsVisible="{Binding DownloadsInSeparatePage, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <MenuItem Header="{x:Static g:AppStrings.Main_CMSettings}" Click="OnNavigateItemClick" CommandParameter="/Pages/Settings/SettingsPage.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource GearIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_ACSettings}" Click="OnNavigateItemClick" CommandParameter="/Pages/AcSettings/AcSettingsPage.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource AcIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_CSPSettings}" Click="OnNavigateItemClick" CommandParameter="/Pages/Settings/SettingsShadersPatch.xaml">
+            <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource BookmarkIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static g:AppStrings.Main_AboutContentManager}" Click="OnNavigateAboutItemClick">
+            <MenuItem.Icon>
+              <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource CmIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+              <!--<Image Source="/Assets/Icons/Icon.ico" Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" HorizontalAlignment="Center"
+                  VerticalAlignment="Center" />-->
+            </MenuItem.Icon>
+          </MenuItem>
+          <StackPanel IsVisible="{Binding HasUnseen, Source={x:Static mui:NonfatalError.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+            <MenuItem Command="{Binding ViewErrorsCommand, Source={x:Static mui:NonfatalError.Instance}}">
+              <MenuItem.Header>
+                <Binding Path="Errors.Count" Source="{x:Static mui:NonfatalError.Instance}" Converter="{StaticResource PluralizingConverter}" ConverterParameter="{x:Static g:AppStrings.MainWindow_Errors_Format}"/>
+              </MenuItem.Header>
+              <MenuItem.Icon>
+                <Path Width="12" Height="12" Margin="4 2 -2 -2" Stretch="Uniform" Data="{StaticResource ErrorIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+              </MenuItem.Icon>
+            </MenuItem>
+          </StackPanel>
+
+          <Border Loaded="OnDownloadListParentLoaded" Tag="DownloadsListParent"/>
+          <Border Loaded="OnCupNotificationPanelLoaded" Tag="CupNotificationPanel"/>
+        </StackPanel>
+      </c:ModernPopup>
+    </mui:Cell>
+
+  </mui:ModernWindow.TitleButtons>
+
+  <mui:ModernWindow.MenuLinkGroups>
+    <!-- ReSharper disable Xaml.PathError -->
+
+    <!-- Drive -->
+    <mui:LinkGroup GroupKey="drive" DisplayName="{x:Static g:AppStrings.Main_Single}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_QuickDrive}" Source="/Pages/Drive/QuickDrive.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Career}" Source="/Pages/Drive/KunosCareer.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_Championships}" Source="/Pages/Drive/UserChampionships.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+    <mui:LinkGroupFilterable GroupKey="drive" DisplayName="{x:Static g:AppStrings.Main_Challenges}" Source="/Pages/Drive/SpecialEvents.xaml" FilterHint="{x:Static c:FilterHints.SpecialEvents}">
+      <mui:LinkGroupFilterable.FixedLinks>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_Hotlaps}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=type:hotlap&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_Races}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=type:*race&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_Drifts}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=type:drift&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_Drags}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=type:drag&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_TimeAttacks}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=type:time attack&amp;Special=1"/>
+        <mui:Link DisplayName="Rarest to be won" Source="/Pages/Drive/SpecialEvents.xaml?Filter=rare+&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_NotPassedYet}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=passed-&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Challenges_SomethingToImprove}" Source="/Pages/Drive/SpecialEvents.xaml?Filter=improvable+&amp;Special=1"/>
+      </mui:LinkGroupFilterable.FixedLinks>
+    </mui:LinkGroupFilterable>
+    <!--<mui:LinkGroupFilterable GroupKey="drive" DisplayName="csp" Source="/Pages/Drive/CspNewModes.xaml" />-->
+    <mui:LinkGroup x:Name="LiveGroup" GroupKey="drive" DisplayName="{x:Static g:AppStrings.Main_Live}">
+      <mui:LinkGroup.Links>
+        <mui:Link x:Name="GridFinderLink" DisplayName="Grid Finder" Source="/Pages/Drive/GridFinder.xaml"/>
+        <!--<mui:Link x:Name="RaceULink" DisplayName="RaceU" Source="/Pages/Drive/RaceU.xaml" />-->
+        <mui:Link x:Name="RsrLink" DisplayName="{x:Static g:AppStrings.Main_Rsr}" Source="/Pages/Drive/Rsr.xaml"/>
+        <mui:Link x:Name="Srs2Link" DisplayName="{x:Static g:AppStrings.Main_Srs}" Source="/Pages/Drive/Srs2.xaml"/>
+        <mui:Link x:Name="WorldSimSeriesLink" DisplayName="World Sim Series" Source="/Pages/Drive/WorldSimSeries.xaml"/>
+        <mui:Link DisplayName="Configure" Source="/Pages/Settings/SettingsLive.xaml?Separate=True">
+          <mui:Link.Icon>
+            <Path Width="8" Height="8" Stretch="Uniform" Data="{StaticResource GearIconData}" Fill="{DynamicResource WindowText}"/>
+          </mui:Link.Icon>
+        </mui:Link>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+    <!--<mui:LinkGroup x:Name="RaceUGroup" GroupKey="drive" DisplayName="RaceU" IsShown="False">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="Main" Source="/Pages/Drive/RaceU.xaml" />
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>-->
+    <mui:LinkGroupFilterable x:Name="OnlineGroup" GroupKey="drive" DisplayName="{x:Static g:AppStrings.Main_Online}" AddAllLink="False" Source="/Pages/Drive/Online.xaml" FilterHint="{x:Static c:FilterHints.ServerEntries}">
+      <mui:LinkGroupFilterable.FixedLinks>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Online_KunosLobbySection}" Source="/Pages/Drive/Online.xaml?Filter=@kunos&amp;Special=1"/>
+      </mui:LinkGroupFilterable.FixedLinks>
+    </mui:LinkGroupFilterable>
+
+    <!-- Lap times -->
+    <mui:LinkGroupFilterable GroupKey="lapTimes" DisplayName="{x:Static g:AppStrings.Main_RecentLapTimes}" Source="/Pages/Miscellaneous/LapTimes_Recent.xaml" FilterHint="{x:Static c:FilterHints.LapTimes}"/>
+    <mui:LinkGroupFilterable GroupKey="lapTimes" DisplayName="{x:Static g:AppStrings.Main_LapTimes_Table}" Source="/Pages/Miscellaneous/LapTimes_Table.xaml" FilterHint="{x:Static c:FilterHints.LapTimes}"/>
+    <!--<mui:LinkGroupFilterable x:Name="LapTimesGrid" GroupKey="lapTimes" DisplayName="{x:Static g:AppStrings.Main_LapTimesGrid}"
+        Source="/Pages/Miscellaneous/WorkInProgress.xaml?lapTimesGrid" FilterHint="{x:Static c:FilterHints.LapTimes}" />-->
+    <mui:LinkGroupFilterable GroupKey="lapTimes" DisplayName="{x:Static g:AppStrings.Main_LapTimes_Sources}" Source="/Pages/Miscellaneous/LapTimes_Sources.xaml" FilterHint="{x:Static c:FilterHints.LapTimes}"/>
+
+    <!-- Stats -->
+    <mui:LinkGroupFilterable GroupKey="stats" DisplayName="{x:Static g:AppStrings.Main_Results}" Source="/Pages/Miscellaneous/RaceResults.xaml"/>
+    <mui:LinkGroupFilterable GroupKey="stats" DisplayName="{x:Static g:AppStrings.Main_Stats}" Source="/Pages/Miscellaneous/PlayerStats.xaml">
+      <mui:LinkGroupFilterable.FixedLinks>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Stats_KunosCars}" Source="/Pages/Miscellaneous/PlayerStats.xaml?Filter=car(k+)&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Stats_KunosCarsAndTracks}" Source="/Pages/Miscellaneous/PlayerStats.xaml?Filter=car(k+)%26track(k+)&amp;Special=1"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Stats_ModsOnly}" Source="/Pages/Miscellaneous/PlayerStats.xaml?Filter=car(k-)%26track(k-)&amp;Special=1"/>
+      </mui:LinkGroupFilterable.FixedLinks>
+    </mui:LinkGroupFilterable>
+    <mui:LinkGroupFilterable GroupKey="stats" DisplayName="{x:Static g:AppStrings.Main_Stats_MostUsed}" Source="/Pages/Miscellaneous/MostUsed.xaml"/>
+    <mui:LinkGroupFilterable GroupKey="stats" DisplayName="Top Speed" Source="/Pages/Miscellaneous/MostSpeed.xaml"/>
+
+    <!-- Media -->
+    <mui:LinkGroupFilterable GroupKey="media" DisplayName="{x:Static g:AppStrings.Main_Screenshots}" Source="/Pages/Lists/ScreenshotsListPage.xaml" FilterHint="{x:Static c:FilterHints.Replays}"/>
+    <mui:LinkGroupFilterable GroupKey="media" DisplayName="{x:Static g:AppStrings.Main_Replays}" Source="/Pages/Lists/ReplaysListPage.xaml" FilterHint="{x:Static c:FilterHints.Files}"/>
+
+    <!-- Workshop -->
+    <!--<mui:LinkGroupFilterable GroupKey="workshop" DisplayName="{x:Static g:AppStrings.Main_Cars}" Source="/Pages/Workshop/WorkshopContentMain.xaml?Content=cars"
+        FilterHint="{x:Static c:FilterHints.Cars}" AddAllLink="False">
+      <mui:LinkGroupFilterable.FixedLinks>
+        <mui:Link DisplayName="Brands" Source="/Pages/Workshop/WorkshopCarBrandsHorizonal.xaml?Content=cars&amp;Category=car-brands&amp;SearchBy=carBrand" />
+        <mui:Link DisplayName="Countries" Source="/Pages/Workshop/WorkshopCarBrandsHorizonal.xaml?Content=cars&amp;Category=car-countries&amp;SearchBy=country" />
+        <mui:Link DisplayName="Tags" Source="/Pages/Workshop/WorkshopContentTags.xaml?Content=cars&amp;Category=car-tags" />
+        <mui:Link DisplayName="Latest" Source="/Pages/Workshop/WorkshopContentMain.xaml?Content=cars" />
+        ~1~<mui:Link DisplayName="My" Source="/Pages/Miscellaneous/CarsMy" />@1@
+      </mui:LinkGroupFilterable.FixedLinks>
+    </mui:LinkGroupFilterable>
+    <mui:LinkGroupFilterable GroupKey="workshop" DisplayName="Car skins" Source="/Pages/Workshop/WorkshopCarSkins.xaml"
+        FilterHint="{x:Static c:FilterHints.CarSkins}" />
+    <mui:LinkGroupFilterable GroupKey="workshop" DisplayName="{x:Static g:AppStrings.Main_Tracks}" Source="/Pages/Workshop/WorkshopTracks.xaml"
+        FilterHint="{x:Static c:FilterHints.Tracks}" />
+    <mui:LinkGroupFilterable GroupKey="workshop" DisplayName="Track skins" Source="/Pages/Workshop/WorkshopTrackSkins.xaml"
+        FilterHint="{x:Static c:FilterHints.TrackSkins}" />
+    <mui:LinkGroup GroupKey="workshop" DisplayName="{x:Static g:AppStrings.Main_Miscellaneous}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Apps}" Source="/Pages/Workshop/WorkshopPythonApps.xaml" />
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_DriverModels}" Source="/Pages/Workshop/WorkshopDriverModels.xaml" />
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Fonts}" Source="/Pages/Workshop/WorkshopFonts.xaml" />
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_PpFilters}" Source="/Pages/Workshop/WorkshopPpFilters.xaml" />
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Showrooms}" Source="/Pages/Workshop/WorkshopShowrooms.xaml" />
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Weather}" Source="/Pages/Workshop/WorkshopWeather.xaml" />
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+    <mui:LinkGroup GroupKey="workshop" DisplayName="Community" />-->
+
+    <!-- Content -->
+    <mui:LinkGroupFilterable GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_Cars}" Source="/Pages/Lists/CarsListPage.xaml" FilterHint="{x:Static c:FilterHints.Cars}"/>
+    <mui:LinkGroupFilterable GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_Tracks}" Source="/Pages/Lists/TracksListPage.xaml" FilterHint="{x:Static c:FilterHints.Tracks}"/>
+    <mui:LinkGroup GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_Miscellaneous}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Apps}" Source="/Pages/Lists/PythonAppsListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_LuaApps}" Source="/Pages/Lists/LuaAppsListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_DriverModels}" Source="/Pages/Lists/DriverModelsListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Fonts}" Source="/Pages/Lists/FontsListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_PpFilters}" Source="/Pages/Lists/PpFiltersListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Showrooms}" Source="/Pages/Lists/ShowroomsListPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_UserChampionships}" Source="/Pages/Lists/UserChampionshipsListPage.xaml" IsEnabled="False"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_Weather}" Source="/Pages/Lists/WeatherListPage.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+    <!--<mui:LinkGroupFilterable GroupKey="content" DisplayName="Shaders Patch" Source="/Pages/ShadersPatch/ShadersMainPage.xaml" />-->
+    <mui:LinkGroupFilterable GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_Mods}" Source="/Pages/Lists/GenericModsListPage.xaml"/>
+    <mui:LinkGroup GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_Tools}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="Collector tools" Source="/Pages/Lists/ToolsListPage.xaml"/>
+        <mui:Link DisplayName="Creator tools" Source="/Pages/Lists/ToolsCreatorListPage.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+    <!--<mui:LinkGroup x:Name="WorkshopLinkGroup" GroupKey="content" DisplayName="Workshop">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="Creator Zone" Source="/Pages/Workshop/WorkshopManage.xaml" />
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>-->
+    <mui:LinkGroup x:Name="BrowserLinkGroup" GroupKey="content" DisplayName="{x:Static g:AppStrings.Main_GetNewMods}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_GetNewMods_ManageSources}" Source="/Pages/Miscellaneous/ModsWebBrowser.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+
+    <!-- Downloads -->
+    <mui:LinkGroup GroupKey="downloads" DisplayName="{x:Static g:AppStrings.Main_Downloads}">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_DownloadsAndInstallations}" Source="/Pages/Miscellaneous/DownloadsList.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+
+    <!-- Server Source="/Pages/Lists/ServerPresetsListPage.xaml" -->
+    <mui:LinkGroupFilterable GroupKey="server" DisplayName="{x:Static g:AppStrings.Main_ServerPresets}" Source="/Pages/Lists/ServerPresetsListPage.xaml" FilterHint="{x:Static c:FilterHints.ServerPresets}"/>
+    <mui:LinkGroupFilterable GroupKey="server" DisplayName="Banned drivers" Source="/Pages/Lists/ServerBannedListPage.xaml"/>
+
+    <!-- Settings -->
+    <mui:LinkGroupFilterable GroupKey="settings" DisplayName="{x:Static g:AppStrings.Main_Settings}" AddAllLink="False" Source="/Pages/Settings/Search.xaml">
+      <mui:LinkGroupFilterable.FixedLinks>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_ContentManager}" Source="/Pages/Settings/SettingsPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_AssettoCorsa}" Source="/Pages/AcSettings/AcSettingsPage.xaml"/>
+        <mui:Link DisplayName="Custom Shaders Patch" Source="/Pages/Settings/SettingsShadersPatch.xaml"/>
+      </mui:LinkGroupFilterable.FixedLinks>
+    </mui:LinkGroupFilterable>
+
+    <!-- About -->
+    <mui:LinkGroup DisplayName="{x:Static g:AppStrings.Main_About}" GroupKey="about">
+      <mui:LinkGroup.Links>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_About}" Source="/Pages/About/AboutPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_ReleaseNotes}" Source="/Pages/About/ReleaseNotesPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_ImportantTips}" Source="/Pages/About/ImportantTipsPage.xaml"/>
+        <mui:Link DisplayName="{x:Static g:AppStrings.Main_EverythingAboutFiltering}" Source="/Pages/About/FiltersPage.xaml"/>
+      </mui:LinkGroup.Links>
+    </mui:LinkGroup>
+
+    <!-- ReSharper restore Xaml.PathError -->
+  </mui:ModernWindow.MenuLinkGroups>
+
+  <mui:ModernWindow.TitleLinks>
+    <mui:TitleLink GroupKey="drive" Source="/Pages/Drive/QuickDrive.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Drive}, Converter={StaticResource ToUpperConverter}}" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DragForContentSection}}" mui:FancyHintsService.HorizontalContentAlignment="Center" Background="Transparent" Margin="0 -4" Padding="0 4" DragDrop.Drop="OnDriveTitleLinkDrop" DragDrop.AllowDrop="True">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_QuickDrive}" CommandParameter="/Pages/Drive/QuickDrive.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Career}" CommandParameter="/Pages/Drive/KunosCareer.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Challenges_Championships}" CommandParameter="/Pages/Drive/UserChampionships.xaml" mui:LimitedService.Limited="True" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Challenges}" CommandParameter="/Pages/Drive/SpecialEvents.xaml" mui:LimitedService.Limited="True" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Rsr}" CommandParameter="/Pages/Drive/Rsr.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Srs}" CommandParameter="/Pages/Drive/Srs2.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Online}" CommandParameter="/Pages/Drive/Online.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink GroupKey="lapTimes" Source="/Pages/Miscellaneous/LapTimes_Recent.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_LapTimes}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_RecentLapTimes}" CommandParameter="/Pages/Miscellaneous/LapTimes_Recent.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_LapTimes_Table}" CommandParameter="/Pages/Miscellaneous/LapTimes_Table.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_LapTimes_Sources}" CommandParameter="/Pages/Miscellaneous/LapTimes_Sources.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink GroupKey="stats" Source="/Pages/Miscellaneous/PlayerStats.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Results}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Results}" CommandParameter="/Pages/Miscellaneous/RaceResults.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Stats}" CommandParameter="/Pages/Miscellaneous/PlayerStats.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Stats_MostUsed}" CommandParameter="/Pages/Miscellaneous/MostUsed.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink GroupKey="media" Source="/Pages/Lists/ReplaysListPage.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Media}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Screenshots}" CommandParameter="/Pages/Lists/ScreenshotsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Replays}" CommandParameter="/Pages/Lists/ReplaysListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <!-- ReSharper disable once Xaml.PathError -->
+    <!--<mui:TitleLink GroupKey="workshop" Source="/Pages/Workshop/WorkshopContentCategories.xaml?Content=cars&amp;Category=car-brands&amp;SearchBy=carBrand">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Workshop}, Converter={StaticResource ToUpperConverter}}">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Cars}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopCars.xaml" />
+            <MenuItem Header="Car skins" Command="mui:LinkCommands.NavigateLinkMainWindow" CommandParameter="/Pages/Workshop/WorkshopCarSkins.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Tracks}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopTracks.xaml" />
+            <MenuItem Header="Track skins" Command="mui:LinkCommands.NavigateLinkMainWindow" CommandParameter="/Pages/Workshop/WorkshopTrackSkins.xaml" />
+            <Separator />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Apps}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopPythonApps.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_DriverModels}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopDriverModels.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Fonts}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopFonts.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_PpFilters}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopPpFilters.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Showrooms}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopShowrooms.xaml" />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Weather}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopWeather.xaml" />
+            <Separator />
+            <MenuItem Header="{x:Static g:AppStrings.Main_Mods}" Command="mui:LinkCommands.NavigateLinkMainWindow"
+                CommandParameter="/Pages/Workshop/WorkshopGenericMods.xaml" mui:LimitedService.Limited="True" />
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>-->
+    <mui:TitleLink GroupKey="content" Source="/Pages/Lists/CarsListPage.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Content}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4" DragDrop.Drop="OnContentTitleLinkDrop" DragDrop.AllowDrop="True">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Cars}" CommandParameter="/Pages/Lists/CarsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Tracks}" CommandParameter="/Pages/Lists/TracksListPage.xaml" mui:LimitedService.Limited="True" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Apps}" CommandParameter="/Pages/Lists/PythonAppsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_DriverModels}" CommandParameter="/Pages/Lists/DriverModelsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Fonts}" CommandParameter="/Pages/Lists/FontsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_PpFilters}" CommandParameter="/Pages/Lists/PpFiltersListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Showrooms}" CommandParameter="/Pages/Lists/ShowroomsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_UserChampionships}" CommandParameter="/Pages/Lists/UserChampionshipsListPage.xaml" mui:LimitedService.Limited="True" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Weather}" CommandParameter="/Pages/Lists/WeatherListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Mods}" CommandParameter="/Pages/Lists/GenericModsListPage.xaml" mui:LimitedService.Limited="True" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_Tools}" CommandParameter="/Pages/Lists/ToolsListPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <Separator/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_GetNewMods}" CommandParameter="/Pages/Miscellaneous/ModsWebBrowser.xaml" Icon="{StaticResource DownloadIconData}" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink DisplayName="{x:Static g:AppStrings.Main_Downloads}" GroupKey="downloads" Source="/Pages/Miscellaneous/DownloadsList.xaml"/>
+    <mui:TitleLink DisplayName="{x:Static g:AppStrings.Main_Server}" GroupKey="server" IsEnabled="False" Source="/Pages/Lists/ServerPresetsListPage.xaml"/>
+    <mui:TitleLink GroupKey="settings" Source="/Pages/Settings/SettingsPage.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_Settings}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_ContentManager}" CommandParameter="/Pages/Settings/SettingsPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_AssettoCorsa}" CommandParameter="/Pages/AcSettings/AcSettingsPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="Custom Shaders Patch" CommandParameter="/Pages/Settings/SettingsShadersPatch.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink GroupKey="about" Source="/Pages/About/AboutPage.xaml">
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_About}, Converter={StaticResource ToUpperConverter}}" Background="Transparent" Margin="0 -4" Padding="0 4">
+        <TextBlock.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Main_About}" CommandParameter="/Pages/About/AboutPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_ReleaseNotes}" CommandParameter="/Pages/About/ReleaseNotesPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_ImportantTips}" CommandParameter="/Pages/About/ImportantTipsPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Main_EverythingAboutFiltering}" CommandParameter="/Pages/About/FiltersPage.xaml" Command="{x:Static mui:LinkCommands.NavigateLinkMainWindow}"/>
+          </ContextMenu>
+        </TextBlock.ContextMenu>
+      </TextBlock>
+    </mui:TitleLink>
+    <mui:TitleLink x:Name="OriginalLauncher" Content="{x:Static g:AppStrings.Main_OriginalLauncherLink}" Source="{x:Static w:MainWindow.OriginalLauncherUrl}"/>
+    <mui:TitleLink Content="{x:Static w:MainWindow.EnterKeyLabel}" Source="{x:Static w:MainWindow.EnterKeyUrl}" IsAccented="{x:Static w:MainWindow.EnterKeyAccent}"/>
+    <mui:TitleLink GroupKey="settings/video" Source="/Pages/AcSettings/AcSettingsVideo.xaml">
+      <mui:ReferenceSwitch Value="{Binding LastSessionPerformanceData, Source={x:Static t:AcSettingsHolder.Video}}">
+        <mui:ReferenceSwitch.Null>
+          <TextBlock Text="{x:Static g:AppStrings.Main_FPS_Unknown}" ToolTip.Tip="{x:Static g:AppStrings.Main_FPS_Tooltip}"/>
+        </mui:ReferenceSwitch.Null>
+        <mui:ReferenceSwitch.NonNull>
+          <DockPanel Margin="0" DataContext="{Binding Source={x:Static t:AcSettingsHolder.Video}}">
+            <ToolTip.Tip>
+              <DockPanel Margin="0 0 12 0">
+                <TextBlock Text="{x:Static g:AppStrings.Main_FPS_Title}" DockPanel.Dock="Top" Margin="4 0 0 4" Classes="Small"/>
+                <c:PropertiesGrid Columns="1" Margin="-2 0 0 0">
+                  <TextBlock c:PropertiesGrid.Label="{x:Static g:AppStrings.Main_FPS_Average}">
+                    <TextBlock.Text>
+                      <Binding Path="LastSessionPerformanceData.AverageFps" StringFormat="{x:Static g:AppStrings.Main_FPS_ValueFormat}"/>
+                    </TextBlock.Text>
+                  </TextBlock>
+                  <TextBlock c:PropertiesGrid.Label="{x:Static g:AppStrings.Main_FPS_Minimum}">
+                    <TextBlock.Text>
+                      <Binding Path="LastSessionPerformanceData.MinimumFps" StringFormat="{x:Static g:AppStrings.Main_FPS_ValueFormat}" TargetNullValue="?"/>
+                    </TextBlock.Text>
+                  </TextBlock>
+                  <TextBlock c:PropertiesGrid.Label="{x:Static g:AppStrings.Main_FPS_Taken}">
+                    <TextBlock.Text>
+                      <Binding Path="LastSessionPerformanceData.SamplesTaken" Converter="{StaticResource PluralizingConverter}" ConverterParameter="{x:Static g:AppStrings.Main_FPS_TakenFormat}"/>
+                    </TextBlock.Text>
+                  </TextBlock>
+                </c:PropertiesGrid>
+              </DockPanel>
+            </ToolTip.Tip>
+            <TextBlock>
+              <TextBlock.Text>
+                <Binding Path="LastSessionPerformanceData.AverageFps" StringFormat="{x:Static g:AppStrings.Main_FPS_ValueShortFormat}"/>
+              </TextBlock.Text>
+            </TextBlock>
+          </DockPanel>
+        </mui:ReferenceSwitch.NonNull>
+      </mui:ReferenceSwitch>
+    </mui:TitleLink>
+  </mui:ModernWindow.TitleLinks>
+
+  <mui:Cell x:Name="OverlayContentCell" ClipToBounds="True">
+    <Border x:Name="Popup" HorizontalAlignment="Left" Width="330" Classes="inline2">
+      <Border.Styles>
+        <Style Selector="Border.inline2">
+          <Setter Property="Focusable" Value="True"/>
+          <Setter Property="RenderTransform">
+            <Setter.Value>
+              <TranslateTransform X="-340"/>
+            </Setter.Value>
+          </Setter>
+          <!-- PORT: EventTrigger not converted --><!-- PORT: EventTrigger not converted --></Style>
+      </Border.Styles>
+    </Border>
+    <Popup Placement="Absolute" HorizontalOffset="{Binding ActualRight, ElementName=Window, Converter={StaticResource SumConverter}, ConverterParameter=-140}" VerticalOffset="{Binding ActualBottom, ElementName=Window, Converter={StaticResource SumConverter}, ConverterParameter=-100}" Height="80" Width="120" x:Name="QuickSwitchesNotification">
+      <!-- PORT: removed StaysOpen (not in Avalonia) --><Border Background="{DynamicResource WindowBackground}" Padding="12" CornerRadius="0" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+        <DockPanel>
+          <TextBlock x:Name="QuickSwitchesNotificationText" DockPanel.Dock="Bottom" Margin="0 4 0 0" HorizontalAlignment="Center" Classes="Label"/>
+          <Path x:Name="QuickSwitchesNotificationIcon" Width="24" Height="24" Fill="{Binding Foreground, ElementName=QuickSwitchesNotificationText}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </DockPanel>
+      </Border>
+    </Popup>
+  </mui:Cell>
+</mui:ModernWindow>

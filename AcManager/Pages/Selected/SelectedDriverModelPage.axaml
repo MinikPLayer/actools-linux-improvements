@@ -1,0 +1,36 @@
+﻿<selected:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:selected="clr-namespace:AcManager.Pages.Selected" xmlns:g="clr-namespace:AcManager" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedDriverModelPage" mui:InputBindingBehavior.PropagateToWindow="True">
+  <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_DriverModelTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <mui:ButtonWithComboBox Content="CM Showroom" ButtonToolTip="View driver model in custom CM showroom (Alt+H)" Command="{Binding OpenInCustomShowroomCommand}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_RescanUsings}" Command="{Binding UsingsRescanCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_RescanUsings_Tooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_JsonTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_DriverModelTooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_DisableUnused}" Command="{Binding DisableUnusedCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_DisableUnused_Tooltip}"/>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <StackPanel>
+      <DockPanel Margin="8 8 8 0" IsVisible="{Binding Path=SelectedObject.Author, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_AuthorLabel}" Margin="0 0 0 0" Width="80" DockPanel.Dock="Left" Classes="Label"/>
+        <mui:BetterTextBox Placeholder="?" Text="{Binding SelectedObject.Author, Mode=OneWay}" IsReadOnly="True" Theme="{StaticResource Borderless}"/>
+      </DockPanel>
+
+      <StackPanel Margin="8 8 8 0">
+        <TextBlock Text="{x:Static g:AppStrings.AcObject_FontUsedInLabel}" Margin="0 0 0 0" Classes="Label"/>
+        <mui:PlaceholderTextBlock Placeholder="?" Margin="0 4 0 0" TextWrapping="Wrap" Text="{Binding SelectedObject.UsingsCarsIds, Converter={x:Static selected:SelectedFontPage.UsingsConverter}}"/>
+        <TextBlock TextAlignment="Right" Margin="0 4 0 0" Text="{Binding Manager.LastUsingsRescan, StringFormat={x:Static g:AppStrings.AcObject_FontLastScannedFormat}, TargetNullValue={x:Static g:AppStrings.AcObject_FontLastScannedNever}}" Classes="Small"/>
+        <Button Margin="0 4 0 0" Command="{Binding UsingsRescanCommand}" Content="{x:Static g:AppStrings.AcObject_UsingsRescan}"/>
+      </StackPanel>
+    </StackPanel>
+  </c:AcObjectBase>
+</selected:SelectedAcObjectPage>

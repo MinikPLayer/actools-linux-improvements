@@ -6,7 +6,7 @@ using AcManager.Tools.Managers;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class TrackCountries {
+    public partial class TrackCountries : global::AcManager.Pages.SelectionLists.SelectionList {
         public TrackCountries() : base(TracksManager.Instance, true) {
             InitializeComponent();
         }

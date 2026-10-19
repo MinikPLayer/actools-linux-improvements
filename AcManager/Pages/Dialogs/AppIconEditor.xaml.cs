@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class AppIconEditor {
+    public partial class AppIconEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         private AppIconEditor([NotNull] IEnumerable<PythonAppWindow> windows) {
@@ -430,17 +430,17 @@ namespace AcManager.Pages.Dialogs {
                 switch (thumb.Tag as string) {
                     case "LabelThumb":
                         thumb.DragDelta += OnLabelThumbDragDelta;
-                        thumb.MouseWheel += OnLabelThumbMouseWheel;
+                        thumb.AddMouseWheel(OnLabelThumbMouseWheel);
                         break;
                     case "IconThumb":
                         thumb.DragDelta += OnIconThumbDragDelta;
-                        thumb.MouseWheel += OnIconThumbMouseWheel;
+                        thumb.AddMouseWheel(OnIconThumbMouseWheel);
                         break;
                 }
             }
 
             foreach (var canvas in this.FindVisualChildren<DockPanel>().Where(x => x.Tag as string == "Item")) {
-                canvas.Drop += OnDrop;
+                canvas.AddDrop(OnDrop);
             }
         }
 

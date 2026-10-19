@@ -1,0 +1,134 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:dr="clr-namespace:AcManager.Pages.Drive" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Drive.KunosCareer" Loaded="OnLoaded" Unloaded="OnUnloaded" x:Name="ThisControl">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="ItemTemplate" DataType="{x:Type t:AcItemWrapper}">
+        <ContentControl DataContext="{Binding Value}" Content="{Binding}">
+          <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:AcPlaceholderNew}">
+              <Grid Width="{StaticResource TileSize}" Height="{StaticResource TileSize}" Background="#555555">
+                <!-- TODO: diagonal lines? -->
+                <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{StaticResource DarkenPanel}" Text="{Binding DisplayName}" Foreground="White"/>
+              </Grid>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type t:KunosCareerObject}">
+              <Grid Width="{StaticResource TileSize}" Height="{StaticResource TileSize}" Background="{DynamicResource ThumbnailBackground}" ClipToBounds="True" x:Name="__Dt0">
+                <Grid.Styles><Style Selector="Grid#__Dt0"><Style Selector="^ TextBlock#ProgressTextBlock"><!-- PORT: removed setter of Foreground (not in Avalonia) --></Style><Style Selector="^ Path#CheckIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Border#FullyFinished"><Setter Property="IsVisible" Value="False"/><!-- PORT: removed setter of BorderBrush (not in Avalonia) --></Style><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Path#LockIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding IsCompleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding HasErrors, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding IsAvailable, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><!-- PORT: storyboard actions of trigger [(pa|T.S1)=True] not converted --><Style Selector="^[(pa|T.S2)=True] TextBlock#ProgressTextBlock"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                </Style><!-- PORT: DataTrigger with element binding not converted --><!-- PORT: DataTrigger with element binding not converted --><Style Selector="^[(pa|T.S3)=True] mui|BetterImage#Image"><Setter Property="Effect">
+                    <Setter.Value>
+                      <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
+                    </Setter.Value>
+                  </Setter>
+
+                  </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#ProgressTextBlock"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S3)=True] Path#CheckIcon"><Setter Property="IsVisible" Value="False"/>
+
+                  </Style><Style Selector="^[(pa|T.S3)=True] Border#FullyFinished"><Setter Property="IsVisible" Value="True"/>
+                  <!-- PORT: removed setter of BorderBrush (not in Avalonia) -->
+                  </Style><Style Selector="^[(pa|T.S3)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
+                </Style><Style Selector="^[(pa|T.S4)=True] mui|BetterImage#Image"><Setter Property="Effect">
+                    <Setter.Value>
+                      <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
+                    </Setter.Value>
+                  </Setter>
+                  </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#ProgressTextBlock"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Path#CheckIcon"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Path#LockIcon"><Setter Property="IsVisible" Value="True"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Border#FullyFinished"><Setter Property="IsVisible" Value="False"/>
+                </Style></Style></Grid.Styles><mui:BetterImage Filename="{Binding PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" x:Name="Image" ClearOnChange="True" ToolTip.Tip="{Binding DisplayName}"/>
+
+                <TextBlock x:Name="TopPanel" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource DarkenPanel}" Text="{Binding DisplayName}" Foreground="White" FontSize="{DynamicResource SmallFontSize}" TextAlignment="Right">
+                  <TextBlock.RenderTransform>
+                    <TranslateTransform/>
+                  </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <Grid x:Name="BottomPanel" VerticalAlignment="Bottom" Background="{StaticResource DarkenPanel}">
+                  <Grid.RenderTransform>
+                    <TranslateTransform/>
+                  </Grid.RenderTransform>
+                  <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="4" Text="{Binding Code}" x:Name="CodeTextBlock" FontWeight="Bold"/>
+                  <TextBlock HorizontalAlignment="Right" Margin="4" x:Name="ProgressTextBlock">
+                    <TextBlock.Text>
+                      <MultiBinding StringFormat="{}{0}/{1}">
+                        <Binding Path="CompletedEvents"/>
+                        <Binding Path="EventsWrappers.Count"/>
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
+
+                  <Grid Margin="4 2" Height="{Binding ActualHeight, ElementName=CodeTextBlock, Converter={StaticResource SumConverter}, ConverterParameter=-4}">
+                    <Path Data="{Binding Type, Converter={StaticResource KunosCareerTypeToIconConverter}}" Fill="White" MaxWidth="16" Stretch="Uniform" HorizontalAlignment="Left" ToolTip.Tip="{Binding Type, Converter={StaticResource EnumToDescriptionConverter}}"/>
+                    <Path Data="{StaticResource LockIconData}" Fill="White" MaxWidth="32" Stretch="Uniform" HorizontalAlignment="Right" x:Name="LockIcon" ToolTip.Tip="{x:Static g:AppStrings.KunosCareer_RequiredSeriesAreNotDoneYet}"/>
+                    <Path Data="{StaticResource CheckIconData}" Fill="{StaticResource Completed}" MaxWidth="32" Stretch="Uniform" HorizontalAlignment="Right" x:Name="CheckIcon" ToolTip.Tip="{x:Static g:AppStrings.KunosCareer_FullyCompleted}"/>
+                  </Grid>
+                </Grid>
+
+                <Border BorderThickness="1" x:Name="FullyFinished"/>
+                <Path Data="{StaticResource AlertIconData}" MaxHeight="50" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Error}" x:Name="ErrorIcon"/>
+              </Grid>
+              </DataTemplate>
+          </ContentControl.DataTemplates><ContentControl.Resources>
+            <!--placeholder-->
+            <!--KunosCareerObject-->
+            </ContentControl.Resources>
+        </ContentControl>
+      </DataTemplate>
+
+      <mui:BindingProxy x:Key="DataContextProxy" Data="{Binding}"/>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid Classes="ContentRootWithPadding">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid x:Name="MainListWrapper" Grid.ColumnSpan="2" Margin="-8 0 -8 0">
+      <ListBox ItemsSource="{Binding MainList}" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ItemTemplate}" x:Name="ListBox" ScrollViewer.ScrollChanged="OnListBoxScrollChanged">
+        <!-- PORT: removed PreviewMouseDoubleClick (not in Avalonia) --><i:Interaction.Behaviors>
+          <mui:HorizontalScrollBehavior/>
+        </i:Interaction.Behaviors>
+        <ListBox.ItemContainerTheme>
+          <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Padding" Value="8"/>
+
+            <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+              </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+              </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+              </Style></ControlTheme>
+        </ListBox.ItemContainerTheme>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:VirtualizingTilePanel Orientation="Vertical" VerticalContentAlignment="Center" ItemWidth="176" ItemHeight="176" MaxHeight="{Binding ActualHeight, ElementName=MainListWrapper}"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+      </ListBox>
+    </Grid>
+
+    <StackPanel Margin="0 24 24 0" Grid.Row="1" Grid.Column="0">
+      <TextBlock Text="{Binding Manager.DisplayProgress, StringFormat={x:Static g:AppStrings.KunosCareer_ProgressFormat}}" Margin="0 0 0 8" Classes="Heading2"/>
+      <ProgressBar Maximum="1" Value="{Binding Manager.Progress}" Height="4"/>
+    </StackPanel>
+
+    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+    <c:KunosCareerBlock Margin="0 8 0 0" Grid.Row="1" Grid.Column="1" DataContext="{Binding MainList.CurrentItem.Value}">
+      <c:KunosCareerBlock.ButtonPlaceholder>
+        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+        <Button IsEnabled="{Binding IsAvailable}" Command="{Binding Data.SelectSeriesCommand, Source={StaticResource DataContextProxy}}" Content="{Binding DisplayGo}" Margin="0 4 0 0" Theme="{StaticResource Go.Button}"/>
+      </c:KunosCareerBlock.ButtonPlaceholder>
+    </c:KunosCareerBlock>
+  </Grid>
+</UserControl>

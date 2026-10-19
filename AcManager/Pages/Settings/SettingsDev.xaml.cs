@@ -19,7 +19,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsDev {
+    public partial class SettingsDev : global::Avalonia.Controls.UserControl {
         private ViewModel Model => (ViewModel)DataContext;
 
         public SettingsDev() {

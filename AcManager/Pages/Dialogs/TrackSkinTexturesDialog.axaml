@@ -1,0 +1,50 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.TrackSkinTexturesDialog" Title="Track Textures" MinWidth="200" MinHeight="200" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" SizeToContent="Manual" Width="980" Height="800" LocationAndSizeKey=".trackTextures" ButtonsRowContentAlignment="Left" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.ButtonsRowContent>
+    <TextBlock Text="{Binding DisplaySummary}" VerticalAlignment="Center" Classes="Small"/>
+  </mui:ModernDialog.ButtonsRowContent>
+  <ListBox ItemsSource="{Binding Images}" SelectionChanged="OnSelectionChanged" mui:ListBoxHelper.ProperMultiSelectionMode="True" Theme="{StaticResource VirtualizingListBox}">
+    <ListBox.ItemContainerTheme>
+      <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+        <Setter Property="IsEnabled" Value="{Binding IsOverwritten, Converter={StaticResource InvertBooleanConverter}}"/>
+      </ControlTheme>
+    </ListBox.ItemContainerTheme>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <mui:Cell Background="Transparent" x:Name="PART_Cell">
+          <mui:Cell.Styles><Style Selector="mui|Cell#PART_Cell"><!-- PORT: storyboard actions of trigger :pointerover not converted --></Style></mui:Cell.Styles><mui:Cell.Resources>
+          <!-- PORT: removed Storyboard -->
+          <!-- PORT: removed Storyboard -->
+        </mui:Cell.Resources>
+        <mui:BetterImage Source="{Binding Image}" Width="128" Height="128"/>
+          <Border Background="{DynamicResource DarkStripeBackground}" TextElement.Foreground="{DynamicResource DarkStripeText}" IsVisible="{Binding IsOverwritten, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+              <Path Data="{StaticResource CheckIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Go}" Stretch="Uniform" Margin="0 0 8 0" VerticalAlignment="Center"/>
+              <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                <TextBlock.Text>Already overridden</TextBlock.Text>
+              </TextBlock>
+            </DockPanel>
+          </Border>
+          <Border Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}">
+            <DockPanel>
+              <CheckBox IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" IsVisible="{Binding IsOverwritten, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+              <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource DarkStripeText}" Margin="4 0 0 0" FontSize="{DynamicResource SmallFontSize}" VerticalAlignment="Center"/>
+            </DockPanel>
+          </Border>
+          <mui:ModernButton x:Name="PART_ZoomIcon" IconWidth="10" IconHeight="10" EllipseDiameter="20" IconData="{StaticResource MagnifyIconData}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="4" Opacity="0" IsHitTestVisible="False" Command="{Binding ZoomCommand}"/>
+        </mui:Cell>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <mui:VirtualizingTilePanel ItemWidth="132" ItemHeight="132"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+  </ListBox>
+</mui:ModernDialog>

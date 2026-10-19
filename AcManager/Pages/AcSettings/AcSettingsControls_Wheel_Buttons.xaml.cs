@@ -5,7 +5,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Wheel_Buttons {
+    public partial class AcSettingsControls_Wheel_Buttons : global::Avalonia.Controls.UserControl {
         public AcSettingsControls_Wheel_Buttons() {
             InitializeComponent();
 

@@ -23,10 +23,6 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Serialization;
 using JetBrains.Annotations;
-using Brush = System.Windows.Media.Brush;
-using Color = System.Windows.Media.Color;
-using Image = System.Drawing.Image;
-using Size = System.Windows.Size;
 
 namespace AcManager.Tools {
     public class LiveryResource : SettingEntry {

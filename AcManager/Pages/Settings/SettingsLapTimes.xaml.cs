@@ -3,7 +3,7 @@ using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsLapTimes {
+    public partial class SettingsLapTimes : global::Avalonia.Controls.UserControl {
         public SettingsLapTimes() {
             InitializeComponent();
             DataContext = new ViewModel();

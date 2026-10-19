@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedPpFilterPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedPpFilterPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel<PpFilterObject> {
             public ViewModel([NotNull] PpFilterObject acObject) : base(acObject) { }
 

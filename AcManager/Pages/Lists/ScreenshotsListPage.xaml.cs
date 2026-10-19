@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -72,7 +72,7 @@ namespace AcManager.Pages.Lists {
         }));
     }
 
-    public partial class ScreenshotsListPage : ILoadableContent, IParametrizedUriContent {
+    public partial class ScreenshotsListPage : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private static readonly Regex ImageFilter = new Regex(@"\.(jpe?g|gif|bmp|png)$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private static IEnumerable<Screenshot> GetFiles(string directory, IFilter<FileInfo> filter) {
@@ -157,7 +157,7 @@ namespace AcManager.Pages.Lists {
             }
         }
 
-        private void OnItemClick(object sender, MouseButtonEventArgs e) {
+        private void OnItemClick(object sender, PointerReleasedEventArgs e) {
             if (Keyboard.Modifiers == ModifierKeys.None && !e.Handled && (sender as FrameworkElement)?.DataContext is Screenshot screenshot) {
                 e.Handled = true;
 
@@ -179,14 +179,14 @@ namespace AcManager.Pages.Lists {
                     .IsOpen = true;
         }
 
-        private void OnContextMenu(object sender, MouseButtonEventArgs e) {
+        private void OnContextMenu(object sender, PointerReleasedEventArgs e) {
             if (!e.Handled && ((FrameworkElement)sender).DataContext is Screenshot image) {
                 e.Handled = true;
                 ShowContextMenu(image);
             }
         }
 
-        private void OnRightButtonDown(object sender, MouseButtonEventArgs e) {
+        private void OnRightButtonDown(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
         }
     }

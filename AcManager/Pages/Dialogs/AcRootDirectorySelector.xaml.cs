@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Internal;
 using AcManager.Tools.Helpers;
@@ -25,7 +25,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class AcRootDirectorySelector {
+    public partial class AcRootDirectorySelector : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public static bool OptionUseCustomSteamIdApproach = false;
 
         private const string WizardVersion = "2";

@@ -6,7 +6,7 @@ using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsReplays {
+    public partial class SettingsReplays : global::Avalonia.Controls.UserControl {
         public SettingsReplays() {
             InitializeComponent();
             DataContext = new ViewModel();

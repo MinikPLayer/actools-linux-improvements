@@ -1,9 +1,9 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 using System.Windows.Input;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetDetails {
+    public partial class ServerPresetDetails : global::Avalonia.Controls.UserControl {
         public ServerPresetDetails() {
             InitializeComponent();
             this.AddWidthCondition(800).Add(x => {
@@ -15,7 +15,7 @@ namespace AcManager.Pages.ServerPreset {
             });
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             if (ScrollViewer.VerticalScrollBarVisibility != ScrollBarVisibility.Disabled) {
                 ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
                 e.Handled = true;

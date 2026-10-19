@@ -5,7 +5,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Controller_Main {
+    public partial class AcSettingsControls_Controller_Main : global::Avalonia.Controls.UserControl {
         public AcSettingsControls_Controller_Main() {
             InitializeComponent();
 

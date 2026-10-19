@@ -1,0 +1,18 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:mi="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Miscellaneous.LapTimes_Grid">
+  <mui:Cell Classes="ContentRootWithPadding">
+    <DataGrid Grid.Row="0" ItemsSource="{Binding List}" mui:Draggable.Enabled="True" Theme="{StaticResource DataGrid.Lite}">
+      <!-- PORT: removed MinRowHeight (not in Avalonia) --><!--<DataGrid.Columns>
+          <DataGridTemplateColumn Width="*" Header="{x:Static g:AppStrings.TableHeader_Car}" SortMemberPath="Car"
+              CellTemplate="{StaticResource Detailed.CarDataTemplate}" />
+          <DataGridTemplateColumn Width="120" Header="{x:Static g:AppStrings.TableHeader_CarSkin}" SortMemberPath="CarSkin"
+              CellTemplate="{StaticResource Detailed.SkinDataTemplate}" />
+          <DataGridTemplateColumn Width="100" Header="{x:Static g:AppStrings.TableHeader_Name}" SortMemberPath="Name"
+              CellTemplate="{StaticResource Detailed.NameDataTemplate}" />
+          <DataGridTemplateColumn Width="120" Header="{x:Static g:AppStrings.TableHeader_Nationality}" SortMemberPath="Nationality"
+              CellTemplate="{StaticResource Detailed.NationalityDataTemplate}" />
+          <DataGridTemplateColumn Width="60" Header="{x:Static g:AppStrings.TableHeader_Ai}" SortMemberPath="AiLevel"
+              CellTemplate="{StaticResource Detailed.AiDataTemplate}" />
+        </DataGrid.Columns>-->
+    </DataGrid>
+  </mui:Cell>
+</UserControl>

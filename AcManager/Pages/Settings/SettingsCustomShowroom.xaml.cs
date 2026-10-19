@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsCustomShowroom : ILoadableContent {
+    public partial class SettingsCustomShowroom : global::Avalonia.Controls.UserControl, ILoadableContent {
         public class ViewModel : NotifyPropertyChanged {
             public class NoneShowroomInner {
                 public override string ToString() => Tools.ToolsStrings.Common_None;

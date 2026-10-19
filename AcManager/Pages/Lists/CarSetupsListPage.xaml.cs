@@ -28,7 +28,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class CarSetupsListPage : IParametrizedUriContent, ILoadableContent {
+    public partial class CarSetupsListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent, ILoadableContent {
         public void OnUri(Uri uri) {
             _carId = uri.GetQueryParam("CarId");
             _filter = uri.GetQueryParam("Filter");

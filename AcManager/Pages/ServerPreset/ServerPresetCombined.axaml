@@ -1,0 +1,16 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetCombined">
+  <ScrollViewer mui:SaveScroll.Key="ServerPresetCombined" x:Name="ScrollViewer">
+    <StackPanel>
+      <local:ServerPresetBasic/>
+
+      <TextBlock Text="Assists and rules" Margin="20 12 0 8" Classes="Heading1"/>
+      <local:ServerPresetAssists/>
+
+      <TextBlock Text="Sessions" Margin="20 12 0 8" Classes="Heading1"/>
+      <local:ServerPresetSessions/>
+
+      <TextBlock Text="Conditions" Margin="20 32 0 8" Classes="Heading1"/>
+      <local:ServerPresetConditions/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -9,7 +9,7 @@ using ICSharpCode.AvalonEdit.Document;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetRunningLog {
+    public partial class ServerPresetRunningLog : global::Avalonia.Controls.UserControl {
         public ServerPresetRunningLog() {
             InitializeComponent();
             if (TryFindResource(@"TextEditorSyntaxLog") is string data) {

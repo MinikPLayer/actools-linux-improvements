@@ -1,0 +1,45 @@
+﻿<c:AcListPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:li="clr-namespace:AcManager.Pages.Lists" xmlns:c="http://acstuff.club/app/controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Lists.CarSetupsListPage" Loaded="OnLoaded" Unloaded="OnUnloaded" Margin="{StaticResource ContentMargin}" ItemsSource="{Binding MainList}" SaveScrollKey="{Binding SelectedCar.Id, StringFormat='{}CarSetupsListPage.Scroll:{0}'}" IsGroupingEnabled="True">
+  <c:AcListPage.Resources>
+    <!--<mui:SharedResourceDictionary x:Key="BatchResourceDictionary" Source="/AcManager.Controls;component/Themes/AcListPage.BatchResourceDictionary.xaml" />-->
+
+    <DataTemplate x:Key="Batch.InstallRemoteSetup" DataType="{x:Type li:CarSetupsListPage+BatchAction_InstallRemoteSetup}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <!--<DockPanel VerticalAlignment="Top">
+          <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Style="{StaticResource Label}" />
+          <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4" />
+        </DockPanel>-->
+        <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding AsGeneric}">
+            <Label Content="As generic setup"/>
+          </CheckBox>
+          <!--<CheckBox Style="{StaticResource CheckBox}" IsChecked="{Binding SortTags}">
+            <Label Content="Sort tags" />
+          </CheckBox>-->
+        </mui:SpacingUniformGrid>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.SetSetupTrack" DataType="{x:Type li:CarSetupsListPage+BatchAction_SetSetupTrack}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <DockPanel>
+          <TextBlock Text="{x:Static g:AppStrings.AcObject_TrackLabel}" Width="80" DockPanel.Dock="Left" Classes="Label"/>
+          <Button Command="{Binding ChangeTrackCommand}" Content="{x:Static c:ControlsStrings.Common_Change}" DockPanel.Dock="Right" Margin="8 0 0 0"/>
+          <mui:ReferenceSwitch Value="{Binding Track}">
+            <mui:ReferenceSwitch.Null>
+              <mui:BetterTextBox IsReadOnly="True" Text="{x:Static c:ControlsStrings.Common_Generic}" Theme="{StaticResource Borderless}"/>
+            </mui:ReferenceSwitch.Null>
+            <mui:ReferenceSwitch.NonNull>
+              <mui:BetterTextBox IsReadOnly="True" Text="{Binding Track.MainTrackObject.Name, Mode=OneWay}" Theme="{StaticResource Borderless}"/>
+            </mui:ReferenceSwitch.NonNull>
+          </mui:ReferenceSwitch>
+        </DockPanel>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+  </c:AcListPage.Resources>
+</c:AcListPage>

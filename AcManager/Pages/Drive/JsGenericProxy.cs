@@ -15,12 +15,11 @@ using AcManager.Tools.SemiGui;
 using AcTools;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using CefSharp;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Drive {
-    [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
     public class JsGenericProxy : JsProxyBase {
         public JsGenericProxy(JsBridgeBase bridge) : base(bridge) { }
 

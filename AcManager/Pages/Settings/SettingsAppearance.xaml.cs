@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using System.Windows.Media;
 using AcManager.Controls.Helpers;
@@ -18,12 +18,11 @@ using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
-using Application = System.Windows.Application;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Path = System.IO.Path;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsAppearance {
+    public partial class SettingsAppearance : global::Avalonia.Controls.UserControl {
         public SettingsAppearance() {
             InitializeComponent();
             DataContext = new ViewModel();
@@ -32,7 +31,7 @@ namespace AcManager.Pages.Settings {
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
-            ScaleSlider.PreviewMouseLeftButtonUp += (s, a) => ApplyScale();
+            ScaleSlider.AddPreviewMouseLeftButtonUp((s, a) => ApplyScale());
             /*var thumb = ScaleSlider.FindVisualChild<Thumb>();
             if (thumb != null) {
                 thumb.DragDelta += (s, a) => ApplyScale();

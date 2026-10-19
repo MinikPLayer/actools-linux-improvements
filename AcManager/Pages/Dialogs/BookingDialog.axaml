@@ -1,0 +1,63 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:loc="clr-namespace:AcManager.Pages.Dialogs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.BookingDialog" Title="{Binding ServerEntry.DisplayName}" MaxWidth="320" Padding="0" LocationAndSizeKey=".BookingDialog.LS" WindowStartupLocation="Manual">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <mui:ModernDialog.BackgroundContent>
+    <Rectangle>
+      <Rectangle.Fill>
+        <VisualBrush>
+          <VisualBrush.Visual>
+            <Grid Opacity="0.15" Width="355" ClipToBounds="True">
+              <Grid.Effect>
+                <BlurEffect Radius="20"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
+              </Grid.Effect>
+              <mui:BetterImage Filename="{Binding Track.PreviewImage}" Stretch="UniformToFill" Margin="-20" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+            </Grid>
+          </VisualBrush.Visual>
+        </VisualBrush>
+      </Rectangle.Fill>
+    </Rectangle>
+  </mui:ModernDialog.BackgroundContent>
+  <StackPanel>
+    <Grid c:ImageViewerService.Image="{Binding Skin.PreviewImage}" Margin="0 0 0 20">
+      <ToolTip.Tip>
+        <StackPanel Margin="4 8">
+          <TextBlock Text="{Binding Car.DisplayName}" Margin="0 0 0 4" Classes="Heading2"/>
+          <c:CarBlock Car="{Binding Car}" ShowSkinsAndPreview="False" SelectSkin="False" Width="512" MaxHeight="320"/>
+        </StackPanel>
+      </ToolTip.Tip>
+      <mui:BetterImage Filename="{Binding Skin.PreviewImage}" MaxWidth="320" Margin="0 20 0 0" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+      <TextBlock Padding="4" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding Car.Name}" Foreground="{DynamicResource DarkStripeText}" IsHitTestVisible="False"/>
+    </Grid>
+
+    <!--skins list-->
+    <!--<Border Margin="-2 6 -2 20" IsEnabled="{Binding Ready, Converter={StaticResource InvertBooleanConverter}}">
+            <ListBox ItemsSource="{Binding Car.SkinsActualList}"
+                    ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="True" IsSynchronizedWithCurrentItem="False"
+                    SelectedItem="{Binding Skin}" MaxHeight="36" ItemTemplate="{StaticResource CarSkinItemTemplate}"
+                    VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.ScrollUnit="Pixel">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel Orientation="Horizontal" VirtualizationMode="Recycling" IsVirtualizing="True" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Border>-->
+
+    <StackPanel Margin="20 0">
+      <StackPanel Margin="0 0 0 20" IsVisible="{Binding ServerEntry.BookingErrorMessage, Converter={StaticResource NullToVisibilityConverter}}">
+        <TextBlock Text="{x:Static g:AppStrings.Online_LeftLabel}" Classes="Label"/>
+        <TextBlock Text="{Binding ServerEntry.BookingTimeLeft, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" FontSize="24" Margin="20 8 0 0" Classes="Heading1"/>
+      </StackPanel>
+      <StackPanel Margin="0 0 0 20" IsVisible="{Binding ServerEntry.BookingErrorMessage, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <TextBlock Text="{x:Static g:AppStrings.RaceResult_ErrorHeader}" Classes="Label"/>
+        <TextBlock Text="{Binding ServerEntry.BookingErrorMessage}" FontSize="24" Margin="20 8 0 0" Classes="Heading1"/>
+      </StackPanel>
+    </StackPanel>
+  </StackPanel>
+</mui:ModernDialog>

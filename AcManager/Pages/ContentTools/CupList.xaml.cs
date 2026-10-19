@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class CupList {
+    public partial class CupList : global::AcManager.Pages.ContentTools.ContentTool {
         protected override async Task<bool> LoadAsyncOverride(IProgress<AsyncProgressEntry> progress, CancellationToken cancellation) {
             if (CupClient.Instance == null) return false;
 

@@ -34,7 +34,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.Drive {
-    public partial class Srs2 : ILoadableContent {
+    public partial class Srs2 : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch, ILoadableContent {
         private static PluginsRequirement _requirement;
         public static PluginsRequirement Requirement => _requirement ?? (_requirement = new PluginsRequirement(KnownPlugins.CefSharp));
 
@@ -256,7 +256,7 @@ namespace AcManager.Pages.Drive {
             return _srsFix;
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class SrsFixAcCompatibleApiBridge : AcCompatibleApiBridge {
             public SrsFixAcCompatibleApiBridge() {
                 _srsFix = null;
@@ -295,7 +295,7 @@ window.external.SetDriverNames(JSON.stringify([].map.call(document.querySelector
                 return new SrsApiProxy(this);
             }
 
-            [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
             public class SrsApiProxy : AcCompableApiProxy {
                 private readonly SrsFixAcCompatibleApiBridge _bridge;
 

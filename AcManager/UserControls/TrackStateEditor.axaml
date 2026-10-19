@@ -1,0 +1,42 @@
+﻿<DockPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.UserControls.TrackStateEditor" x:Name="This" Width="480">
+  <DockPanel.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </DockPanel.Resources>
+
+  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="0 8 0 0">
+    <c:UserPresetsControl UserPresetable="{Binding}" Margin="0 0 4 0" ShowSaveButton="{Binding WeatherDefined, Converter={StaticResource InvertBooleanConverter}}"/>
+    <Button Command="{Binding ShareCommand, ElementName=This}" Content="{x:Static g:AppStrings.Common_Share}" ToolTip.Tip="{x:Static g:AppStrings.Common_Share_SettingsTooltip}" IsVisible="{Binding WeatherDefined, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </StackPanel>
+
+  <mui:SpacingStackPanel Spacing="4" DockPanel.Dock="Bottom" Margin="0 8 0 0">
+    <TextBlock Text="{x:Static g:AppStrings.TrackStateEditor_Description}" Classes="Label Label.Padding"/>
+    <mui:BetterTextBox Margin="4 0" Text="{Binding Description}" Height="80" AcceptsReturn="True" TextWrapping="Wrap" Placeholder="?" Theme="{StaticResource Borderless}"/>
+  </mui:SpacingStackPanel>
+
+  <mui:SpacingUniformGrid Columns="2" HorizontalSpacing="8" VerticalSpacing="8" IsVisible="{Binding WeatherDefined, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+    <StackPanel>
+      <mui:ValueLabel Content="{x:Static g:AppStrings.TrackStateEditor_InitialGrip}" Value="{Binding GripStart, Converter={StaticResource PercentageConverter}}" Postfix="%" ToolTip.Tip="{x:Static g:AppStrings.TrackStateEditor_InitialGrip_Tooltip}"/>
+      <Slider Minimum="85" Maximum="100" Value="{Binding GripStart, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}" TickFrequency="3" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </StackPanel>
+
+    <StackPanel>
+      <mui:ValueLabel Content="{x:Static g:AppStrings.TrackStateEditor_GripTransfer}" Value="{Binding GripTransfer, Converter={StaticResource PercentageConverter}}" Postfix="%" ToolTip.Tip="{x:Static g:AppStrings.TrackStateEditor_GripTransfer_Tooltip}"/>
+      <Slider Minimum="0" Maximum="100" Value="{Binding GripTransfer, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </StackPanel>
+
+    <StackPanel>
+      <mui:ValueLabel Content="{x:Static g:AppStrings.TrackStateEditor_GripRandomization}" Value="{Binding GripRandomness, Converter={StaticResource PercentageConverter}}" Postfix="%"/>
+      <Slider Minimum="0" Maximum="100" Value="{Binding GripRandomness, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}" TickFrequency="10" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </StackPanel>
+
+    <StackPanel>
+      <mui:ValueLabel Content="{x:Static g:AppStrings.TrackStateEditor_LapGain}" Value="{Binding LapGain}" Postfix="{Binding LapGain, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.Common_LapsPostfix}}"/>
+      <Slider Minimum="0" Maximum="700" Value="{Binding LapGain}" TickFrequency="70" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </StackPanel>
+  </mui:SpacingUniformGrid>
+</DockPanel>

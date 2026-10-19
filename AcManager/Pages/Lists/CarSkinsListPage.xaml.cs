@@ -31,7 +31,7 @@ using StringBasedFilter;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Lists {
-    public partial class CarSkinsListPage : IParametrizedUriContent, ILoadableContent {
+    public partial class CarSkinsListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent, ILoadableContent {
         public void OnUri(Uri uri) {
             _carId = uri.GetQueryParam("CarId");
             _filter = uri.GetQueryParam("Filter");

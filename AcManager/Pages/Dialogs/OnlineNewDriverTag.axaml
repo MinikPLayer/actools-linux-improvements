@@ -1,0 +1,8 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.OnlineNewDriverTag" Title="Add new tag" Closing="OnClosing">
+    <mui:SpacingStackPanel VerticalAlignment="Center" Spacing="4">
+        <TextBlock Text="Name for a new tag:" TextWrapping="Wrap"/>
+        <mui:BetterTextBox Text="{Binding TagName}" Placeholder="?"/>
+        <TextBlock Text="Tag color:" Margin="0 4 0 0" TextWrapping="Wrap"/>
+        <mui:ColorPicker Color="{Binding TagColor}"/>
+    </mui:SpacingStackPanel>
+</mui:ModernDialog>

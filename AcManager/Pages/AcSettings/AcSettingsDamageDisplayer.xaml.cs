@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsDamageDisplayer {
+    public partial class AcSettingsDamageDisplayer : global::Avalonia.Controls.UserControl {
         private static readonly string[] Images = {
             @"engine", @"flatspot_fl", @"flatspot_fr", @"flatspot_rl", @"flatspot_rr", @"front", @"gearbox", @"left",
             @"rear", @"right", @"sus_fl", @"sus_fr", @"sus_rl", @"sus_rr", @"tyre_fl", @"tyre_fr", @"tyre_rl", @"tyre_rr"

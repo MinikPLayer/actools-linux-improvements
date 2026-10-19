@@ -21,7 +21,7 @@ using Microsoft.Win32;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopEditProfile {
+    public partial class WorkshopEditProfile : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public WorkshopEditProfile([NotNull] WorkshopClient workshopClient, [NotNull] UserInfo user) {

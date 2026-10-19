@@ -5,7 +5,7 @@ using AcManager.Tools.Profile;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class MostUsed {
+    public partial class MostUsed : global::AcManager.Pages.Miscellaneous.MostSomethingBase {
         protected override void Initialize(ViewModel viewModel) {
             DataContext = viewModel;
             InitializeComponent();

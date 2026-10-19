@@ -1,0 +1,120 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsLocale" Loaded="OnLoaded" Unloaded="OnUnloaded">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer mui:SaveScroll.Key="SettingsLocale">
+    <StackPanel set:Search.Category="{x:Static g:AppStrings.Main_Language}" Classes="SettingsPanel">
+      <TextBlock Classes="Heading2 SettingsPanel.Heading2.First">
+        <TextBlock.Text>Regional Settings:</TextBlock.Text>
+      </TextBlock>
+
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.Settings_Locale_TemperatureUnits}"/>
+        <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Common.TemperatureUnitModes}" SelectedItem="{Binding Common.TemperatureUnitMode}">
+          <mui:BetterComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+            </DataTemplate>
+          </mui:BetterComboBox.ItemTemplate>
+        </mui:BetterComboBox>
+      </DockPanel>
+
+      <CheckBox IsChecked="{Binding Common.UseImperialUnits}">
+        <Label Content="{x:Static g:AppStrings.Settings_Locale_UseImperialUnits}"/>
+      </CheckBox>
+
+      <CheckBox IsChecked="{Binding Common.Use12HrTimeFormat}">
+        <Label Content="{x:Static g:AppStrings.Settings_Locale_Use12HourClock}"/>
+      </CheckBox>
+
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_ContentManager}, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.Settings_Locale_LanguageLabel}"/>
+        <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Locales}" SelectedItem="{Binding CurrentLocale}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel ToolTip.Tip="{Binding DisplayHint}">
+                <TextBlock Text="{Binding DisplayName}"/>
+                <TextBlock Text="{Binding DisplayHint}" Classes="Small"/>
+              </StackPanel>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </mui:BetterComboBox>
+      </DockPanel>
+
+      <StackPanel IsVisible="{Binding CurrentLocale.Id, Converter={StaticResource NullToVisibilityConverter}}">
+        <DockPanel>
+          <Label>
+            <DockPanel>
+              <TextBlock Text="{Binding Source={x:Static g:AppStrings.Settings_Locale_LocaleId}, Converter={StaticResource ColonConverter}, ConverterParameter=trim}"/>
+              <Button CommandParameter="https://msdn.microsoft.com/en-us/library/ms533052(v=vs.85).aspx" Theme="{StaticResource MoreDetailsSuperscript}"/>
+            </DockPanel>
+          </Label>
+          <mui:BetterTextBox Text="{Binding Locale.LocaleName}" Placeholder="?"/>
+        </DockPanel>
+      </StackPanel>
+
+      <mui:BbCodeBlock Text="{x:Static g:AppStrings.Settings_Locale_ForceLocaleWarning}" IsVisible="{Binding ForceLocalesFlag, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="BbCodeBlock.Small SettingsPanel.Warning.BbCodeBlock"/>
+
+      <StackPanel IsVisible="{Binding CurrentLocale.CanBeUpdated, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <!-- Versions -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_General_AutoUpdatesHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_CheckForUpdatesLabel}"/>
+          <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Common.Periods}" SelectedItem="{Binding Locale.UpdatePeriod}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+
+        <!-- App version -->
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_Locale_VersionLabel}"/>
+          <Button Command="{Binding LocaleUpdater.CheckAndUpdateIfNeededCommand}" Content="{x:Static g:AppStrings.Settings_General_CheckForUpdates}"/>
+          <mui:BetterTextBox Text="{Binding LocaleUpdater.InstalledVersion, Mode=OneWay}" Placeholder="?" IsReadOnly="True" Theme="{StaticResource Borderless}"/>
+        </DockPanel>
+        <TextBlock Text="{Binding LocaleUpdater.LatestError}" IsVisible="{Binding LocaleUpdater.LatestError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small SettingsPanel.Warning"/>
+
+        <CheckBox IsChecked="{Binding Locale.UpdateOnStart}" IsEnabled="{Binding CurrentLocale.IsSupported, Converter={StaticResource InvertBooleanConverter}}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Locale_UpdateBeforeStartUp_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Locale_UpdateBeforeStartUp}"/>
+        </CheckBox>
+      </StackPanel>
+
+      <TextBlock Text="{Binding Source={x:Static g:AppStrings.Main_AssettoCorsa}, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+      <DockPanel DataContext="{Binding Source={x:Static t:AcSettingsHolder.Launcher}}">
+        <Label Content="{x:Static g:AppStrings.Settings_Locale_LanguageLabel}"/>
+        <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding LanguageEntries}" SelectedItem="{Binding LanguageEntry}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding DisplayName}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </mui:BetterComboBox>
+      </DockPanel>
+
+      <TextBlock Text="{x:Static g:AppStrings.Settings_Locale_CustomTranslationsHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <Button Command="{Binding MoreInformationCommand}" Content="{x:Static g:AppStrings.Settings_Locale_HowToTranslate}" Margin="0 0 0 8"/>
+
+      <DockPanel MinHeight="29">
+        <Button Command="{Binding SubmitUnpackedCommand}" Content="{x:Static t:ToolsStrings.Common_Submit}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Locale_Submit_Tooltip}" IsVisible="{Binding Locale.ResxLocalesMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Button Command="{Binding PrepareUnpackedCommand}" Content="{x:Static g:AppStrings.Settings_Locale_Prepare}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Locale_Prepare_Tooltip}" IsVisible="{Binding Locale.ResxLocalesMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <mui:ContextMenuButton DockPanel.Dock="Right">
+          <ContextMenu>
+            <MenuItem IsChecked="{Binding Locale.ResxLocalesMode}" Header="{x:Static g:AppStrings.Settings_Locale_ResxMode}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+          </ContextMenu>
+        </mui:ContextMenuButton>
+        <CheckBox IsChecked="{Binding Locale.LoadUnpacked}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Locale_LoadCustom_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Locale_LoadCustom}"/>
+        </CheckBox>
+      </DockPanel>
+
+      <TextBlock Text="{x:Static g:AppStrings.Settings_Locale_RestartMessage}" Classes="Small SettingsPanel.Small"/>
+      <Button Content="{x:Static g:AppStrings.Settings_Locale_RestartApp}" Command="{Binding RestartCommand}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Locale_RestartApp_Tooltip}"/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

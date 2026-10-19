@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class WeatherListPage : IParametrizedUriContent {
+    public partial class WeatherListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent {
         public void OnUri(Uri uri) {
             var filter = uri.GetQueryParam("Filter");
             DataContext = new ViewModel(string.IsNullOrEmpty(filter) ? null : Filter.Create(WeatherObjectTester.Instance, filter));

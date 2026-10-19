@@ -1,0 +1,287 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:l="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Miscellaneous.ModsWebBrowser" mui:InputBindingBehavior.PropagateToWindow="True">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Plugins.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ContentControl Content="{Binding}">
+    <ContentControl.DataTemplates><DataTemplate DataType="{x:Type l:ModsWebBrowser+ViewModel}">
+        <DockPanel Margin="0 4 0 0">
+          <mui:BooleanSwitch Value="{Binding IsReady, Converter={StaticResource InvertBooleanConverter}, Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}" DockPanel.Dock="Top" CollapseOnFalse="True" Margin="0 0 0 20">
+            <mui:Switch Value="{Binding ListView.Count}" DataContext="{Binding Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}" Margin="20 0 20 0">
+              <DockPanel mui:Switch.When="0">
+                <Path Data="{StaticResource AlertIconData}" Fill="{DynamicResource Error}" Stretch="Uniform" Width="16" Height="16" Margin="0 0 8 0"/>
+                <TextBlock Text="CefSharp plugin is required for downloads to work." TextWrapping="Wrap"/>
+              </DockPanel>
+              <mui:SpacingStackPanel Spacing="4">
+                <DockPanel mui:Switch.When="0">
+                  <Path Data="{StaticResource AlertIconData}" Fill="{DynamicResource Error}" Stretch="Uniform" Width="16" Height="16" Margin="0 0 8 0"/>
+                  <TextBlock Text="Plugin is required for downloads to work (don’t forget to restart CM after installing it if you’re already here):" TextWrapping="Wrap"/>
+                </DockPanel>
+                <ItemsControl ItemsSource="{Binding ListView}" ItemTemplate="{StaticResource PluginItemTemplate.NoOptions}" Margin="0 8 0 -12"/>
+              </mui:SpacingStackPanel>
+            </mui:Switch>
+          </mui:BooleanSwitch>
+
+          <c:WebBlock IsAddressBarVisible="True" NewWindowsBehavior="MultiTab" UserAgent="{Binding Source.UserAgent}" StartPage="{Binding Source.Url}" Loaded="OnWebBlockLoaded" CurrentTabChanged="OnCurrentTabChanged" PageLoading="OnPageLoading" PageLoaded="OnPageLoaded" SaveKey="{Binding Source.Id, StringFormat='{}ModsWebBrowser.Location:{0}'}" KeepAliveKey="{Binding Source.Id, StringFormat='{}ModsWebBrowser:{0}'}" AddressBarExtraTemplate="{StaticResource AddressBarExtraTemplate}"/>
+        </DockPanel>
+      </DataTemplate>
+
+      <DataTemplate DataType="{x:Type l:ModsWebBrowser+ListViewModel}">
+        <mui:Switch Value="{Binding WebSources.Count}" Margin="{StaticResource ContentMargin}">
+          <!--<DockPanel mui:Switch.When="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="No sources found" Style="{StaticResource Heading1}" DockPanel.Dock="Top" />
+            <Button Margin="0 8 0 0" Command="{Binding AddNewSourceCommand}">
+              <DockPanel IsHitTestVisible="False">
+                <Path Data="{StaticResource AddIconData}" Width="10" Height="10"
+                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}" Stretch="Uniform" DockPanel.Dock="Left"
+                    Margin="0 0 4 0" VerticalAlignment="Center" SnapsToDevicePixels="True" />
+                <TextBlock Text="Add new source" />
+              </DockPanel>
+            </Button>
+          </DockPanel>-->
+
+          <mui:Cell mui:Switch.When="0">
+
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 20" MaxWidth="480">
+              <TextBlock Text="Welcome to CM online browser!" DockPanel.Dock="Top" Margin="0 0 0 20" Classes="Heading1"/>
+
+              <mui:BooleanSwitch Value="{Binding IsReady, Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}" DockPanel.Dock="Top">
+                <mui:BooleanSwitch.True>
+                  <mui:SpacingStackPanel Spacing="4">
+                    <mui:BbCodeBlock Text="Here, you can download and install mods directly. You already have CefSharp plugin installed, now you need to add some websites."/>
+
+                    <mui:BbCodeBlock Margin="0 16 0 0" Text="Quick start" Classes="Heading2"/>
+                    <mui:BbCodeBlock Text="CM can set you the list of some websites to start with, just select what websites would you prefer to see:"/>
+                    <CheckBox IsChecked="{Binding AddRecommendedDrifting.Value}">
+                      <Label>Allow websites with nothing but drifting</Label>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding AddRecommendedPorts.Value}">
+                      <Label>Allow websites with content ported from other games such as Forza</Label>
+                    </CheckBox>
+                    <!--<CheckBox IsChecked="{Binding AddRecommendedPaid.Value}">
+                    <Label>Allow websites with paid only content</Label>
+                  </CheckBox>-->
+
+                    <Button Margin="0 8 0 0" Command="{Binding AddRecommendedSourcesCommand}">
+                      <DockPanel IsHitTestVisible="False">
+                        <Path Data="{StaticResource AddMultipleIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                        <TextBlock Text="Quick start"/>
+                      </DockPanel>
+                    </Button>
+
+                    <mui:BbCodeBlock Margin="0 16 0 0" Text="Add a website by its address" Classes="Heading2"/>
+                    <mui:BbCodeBlock Text="Or, just add website addresses manually:"/>
+                    <Button Margin="0 8 0 0" Command="{Binding AddNewSourceCommand}">
+                      <DockPanel IsHitTestVisible="False">
+                        <Path Data="{StaticResource AddIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                        <TextBlock Text="Add new website"/>
+                      </DockPanel>
+                    </Button>
+                    <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/f/d/24-content-manager-rules-for-clicking-download-buttons-automatically" Command="{x:Static mui:LinkCommands.NavigateLink}">
+                      <DockPanel IsHitTestVisible="False">
+                        <Path Data="{StaticResource WebIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                        <TextBlock Text="Browse list of known websites"/>
+                      </DockPanel>
+                    </Button>
+
+                  </mui:SpacingStackPanel>
+                </mui:BooleanSwitch.True>
+                <mui:BooleanSwitch.False>
+                  <mui:Switch Value="{Binding ListView.Count}" DataContext="{Binding Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}">
+                    <DockPanel mui:Switch.When="0">
+                      <mui:BbCodeBlock Text="Here, you can download and install mods directly. For the whole thing to work, you need to have CefSharp plugin installed, you can install it in Settings/Plugins."/>
+                    </DockPanel>
+                    <mui:SpacingStackPanel Spacing="4">
+                      <mui:BbCodeBlock Text="Here, you can download and install mods directly. For the whole thing to work, you need to have CefSharp plugin installed:"/>
+                      <ItemsControl ItemsSource="{Binding ListView}" ItemTemplate="{StaticResource PluginItemTemplate.NoOptions}" Margin="0 8 0 -12"/>
+                    </mui:SpacingStackPanel>
+                  </mui:Switch>
+                </mui:BooleanSwitch.False>
+              </mui:BooleanSwitch>
+
+            </DockPanel>
+
+            <mui:BbCodeBlock VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20" Text="If you would want to see your website on the list of quickly added, please [url=&quot;https://acstuff.club/app/#contacts&quot;]contact me[/url]." Classes="BbCodeBlock.Small"/>
+          </mui:Cell>
+
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition MinWidth="50" MaxWidth="400"/>
+              <ColumnDefinition Width="9"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Link list -->
+            <Grid ZIndex="10">
+              <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="33"/>
+              </Grid.RowDefinitions>
+
+              <ListBox x:Name="SourcesList" ItemsSource="{Binding WebSourcesView}" SelectedItem="{Binding SelectedSource}" Theme="{StaticResource VirtualizingListBox}">
+                <ListBox.ItemContainerTheme>
+                  <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+                    <Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                          <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                          </Border>
+                          </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                            </Style><Style Selector="^:selected /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                            </Style></ControlTheme>
+                </ListBox.ItemContainerTheme>
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="{x:Type l:ModsWebBrowser+WebSource}">
+                    <DockPanel IsEnabled="{Binding IsEnabled}" Background="Transparent" mui:Draggable.Data="{Binding}" Margin="10 2 2 2" x:Name="__Dt2">
+                      <DockPanel.Styles><Style Selector="DockPanel#__Dt2"><Style Selector="^ Path#PART_FavouriteIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsFavourite, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding IsEnabled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S3)=True] Path#PART_FavouriteIcon"><Setter Property="IsVisible" Value="True"/>
+                      </Style><Style Selector="^[(pa|T.S4)=True] Path#PART_FavouriteIcon"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#PART_Url"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                        </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#PART_Name"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                      </Style></Style></DockPanel.Styles><Path Data="{StaticResource BookmarkIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource FavouriteBrush}" Stretch="Uniform" x:Name="PART_FavouriteIcon" VerticalAlignment="Center" Margin="2 0 4 0"/>
+                      <mui:BetterImage Width="14" Height="14" CollapseIfNull="True" CollapseIfMissing="True" Filename="{Binding Favicon, FallbackValue={x:Null}}" Margin="0 0 4 0" ClearOnChange="True"/>
+                      <TextBlock x:Name="PART_Url" Text="{Binding Url}" TextTrimming="CharacterEllipsis" DockPanel.Dock="Bottom" Margin="0 2 0 0" Classes="Small"/>
+                      <TextBlock x:Name="PART_Name" Text="{Binding Name}" TextTrimming="CharacterEllipsis" Classes="Small"/>
+                    </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+
+              <DockPanel Grid.Row="1">
+                <mui:ModernToggleButton x:Name="SettingsButton" DockPanel.Dock="Right" IconData="{StaticResource GearIconData}" IsHitTestVisible="{Binding ElementName=SettingsPopup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}" Margin="4 0 0 0" ToolTip.Tip="Settings" Classes="NonTransparent"/>
+                <c:ModernPopup x:Name="SettingsPopup" PlacementTarget="{Binding ElementName=SettingsButton}" Placement="Top" IsOpen="{Binding IsChecked, ElementName=SettingsButton, Mode=TwoWay}" Padding="16 12 16 16">
+                  <mui:SpacingStackPanel Spacing="8">
+                    <CheckBox IsChecked="{Binding CaptureViaFileStorageLoaders, Source={x:Static t:SettingsHolder.WebBlocks}}" Margin="0 0 0 12">
+                      <Label Content="For supported file storages, capture downloads and redirect" ToolTip.Tip="List of supported storages includes Google Drive, Dropbox, OneDrive, Mega, Yandex.Disk, MediaFire, AdFly."/>
+                    </CheckBox>
+                    <TextBlock Text="Load rules suggested by community automatically:" Classes="Heading2"/>
+                    <CheckBox IsChecked="{Binding ModsAutoLoadRuleForNew, Source={x:Static t:SettingsHolder.WebBlocks}}">
+                      <Label Content="For newly added websites" ToolTip.Tip="When you’re adding a new website, CM will set an auto-download rule automatically if somebody already shared it"/>
+                    </CheckBox>
+                    <CheckBox IsEnabled="{Binding ModsAutoLoadRuleForNew, Source={x:Static t:SettingsHolder.WebBlocks}}" IsChecked="{Binding ModsAutoLoadExtraForNew, Source={x:Static t:SettingsHolder.WebBlocks}}" Margin="20 0 0 0">
+                      <Label Content="Load extra parameters as well" ToolTip.Tip="Use suggested website name and icon as well"/>
+                    </CheckBox>
+                    <CheckBox IsChecked="{Binding ModsAutoLoadRuleForUnknown, Source={x:Static t:SettingsHolder.WebBlocks}}">
+                      <Label Content="For loading, if website is unknown" ToolTip.Tip="When downloading a file from an unknown website, CM will check shared rules to see if there is anything helpful to use temporarily"/>
+                    </CheckBox>
+                  </mui:SpacingStackPanel>
+                </c:ModernPopup>
+                <mui:ModernButton Command="{Binding AddNewSourceCommand}" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="Add a new one (Ctrl+Shift+N)" Classes="NonTransparent"/>
+                <mui:ModernButton Click="OnScrollToSelectedButtonClick" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static c:ControlsStrings.Common_ScrollToSelected}" Classes="NonTransparent"/>
+                <TextBlock Text="{Binding WebSources.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} site'}" Margin="{StaticResource StatusMargin}" Foreground="{DynamicResource WindowTextReadOnly}"/>
+              </DockPanel>
+            </Grid>
+
+            <!-- Separator -->
+            <mui:ModernTabSplitter Grid.Column="1" SaveKey="__ModsWebBrowser.Splitter"/>
+
+            <!-- Content -->
+            <ScrollViewer Grid.Column="2" HorizontalScrollBarVisibility="Disabled" DataContext="{Binding SelectedSource}">
+              <StackPanel Margin="20 0 20 40" Classes="SettingsPanel">
+                <DockPanel>
+                  <c:FavouriteButton DockPanel.Dock="Right" Margin="4 0 0 0" IsChecked="{Binding IsFavourite, Mode=TwoWay}"/>
+                  <CheckBox IsChecked="{Binding IsEnabled}" Margin="0 0 0 8">
+                    <mui:BetterTextBox Text="{Binding Name}" Theme="{StaticResource Borderless.Heading2}"/>
+                  </CheckBox>
+                </DockPanel>
+                <DockPanel>
+                  <Label Content="URL (domain):"/>
+                  <mui:BetterTextBox Text="{Binding Url}"/>
+                </DockPanel>
+                <DockPanel>
+                  <Label Content="Icon:"/>
+                  <mui:BetterTextBox Text="{Binding Favicon}"/>
+                </DockPanel>
+                <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="8">
+                  <Button Content="Refresh name &amp; icon" Command="{Binding UpdateDisplayNameCommand}"/>
+                  <Button Content="Set icon from Google" Command="{Binding SetGoogleFaviconCommand}"/>
+                  <Button Command="{Binding DeleteCommand}" Foreground="{DynamicResource Error}">
+                    <DockPanel Margin="0">
+                      <Path Width="8" Height="8" VerticalAlignment="Center" Margin="0 0 0 -2" DockPanel.Dock="Left" Stretch="Uniform" Data="{StaticResource TrashBinIconData}" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+                      <TextBlock Text="Delete site" VerticalAlignment="Center" Margin="4 0 0 0"/>
+                    </DockPanel>
+                  </Button>
+                </mui:SpacingUniformGrid>
+
+                <TextBlock Text="Downloads:" Classes="Heading2 SettingsPanel.Heading2"/>
+                <mui:BooleanSwitch Value="{Binding IsReady, Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}">
+                  <mui:BooleanSwitch.True>
+                    <StackPanel Margin="0" Classes="SettingsPanel">
+                      <CheckBox IsChecked="{Binding CaptureDownloads}">
+                        <Label Content="Download files from website using browser"/>
+                      </CheckBox>
+                      <CheckBox IsChecked="{Binding CaptureRedirects}">
+                        <Label Content="Download files instead of opening new tabs in any section"/>
+                      </CheckBox>
+                      <DockPanel IsEnabled="{Binding CaptureDownloads}">
+                        <Label>
+                          <DockPanel>
+                            <TextBlock Text="Rule to start download:"/>
+                            <Button CommandParameter="/Pages/About/ImportantTipsPage.xaml?Key=autoClickdownloadButtons" Theme="{StaticResource MoreDetailsSuperscript}"/>
+                          </DockPanel>
+                        </Label>
+                        <mui:BetterComboBox Text="{Binding AutoDownloadRule, UpdateSourceTrigger=PropertyChanged}" Placeholder="None" ItemsSource="{Binding RuleSuggestions.Value}" TextWrapping="Wrap" AcceptsReturn="True" Height="80" FontSize="{DynamicResource SmallFontSize}"/>
+                      </DockPanel>
+                      <DockPanel IsEnabled="{Binding CaptureDownloads}" IsVisible="{Binding RedirectsToNames.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+                        <Label Content="Redirects to:"/>
+                        <mui:TagsList ItemsSource="{Binding RedirectsToNames}" IsReadOnly="True"/>
+                      </DockPanel>
+                      <c:MessageBlock Margin="0 0 0 8" IsEnabled="{Binding CaptureDownloads}">
+                        <mui:BbCodeBlock LinkNavigator="{Binding}" Text="To set that rule easily, just start a download (for example, by pasting link to a file into CM via Ctrl+V) and go from there. Or, you can find some ready-to-use rules [url=&quot;https://acstuff.club/f/d/24-content-manager-rules-for-clicking-download-buttons-automatically&quot;]here[/url]. Also, click [url=&quot;cmd://shareSettings?format=link&quot;]here[/url] if you want to share your settings as a link, or [url=&quot;cmd://shareSettings?format=markdown&quot;]here[/url] if you want to share them in that thread and help other users."/>
+                      </c:MessageBlock>
+                    </StackPanel>
+                  </mui:BooleanSwitch.True>
+                  <mui:BooleanSwitch.False>
+                    <mui:Switch Value="{Binding ListView.Count}" DataContext="{Binding Source={x:Static l:ModsWebBrowser+ListViewModel.Requirement}}" Margin="20 0 0 0">
+                      <DockPanel mui:Switch.When="0">
+                        <Path Data="{StaticResource AlertIconData}" Fill="{DynamicResource Error}" Stretch="Uniform" Width="16" Height="16" Margin="0 0 8 0"/>
+                        <TextBlock Text="CefSharp plugin is required for downloads to work." TextWrapping="Wrap"/>
+                      </DockPanel>
+                      <mui:SpacingStackPanel Spacing="4">
+                        <DockPanel mui:Switch.When="0">
+                          <Path Data="{StaticResource AlertIconData}" Fill="{DynamicResource Error}" Stretch="Uniform" Width="16" Height="16" Margin="0 0 8 0"/>
+                          <TextBlock Text="Plugin is required for downloads to work:" TextWrapping="Wrap"/>
+                        </DockPanel>
+                        <ItemsControl ItemsSource="{Binding ListView}" ItemTemplate="{StaticResource PluginItemTemplate.NoOptions}" Margin="0 8 0 -12"/>
+                      </mui:SpacingStackPanel>
+                    </mui:Switch>
+                  </mui:BooleanSwitch.False>
+                </mui:BooleanSwitch>
+              </StackPanel>
+            </ScrollViewer>
+          </Grid>
+        </mui:Switch>
+      </DataTemplate>
+    </ContentControl.DataTemplates><ContentControl.Resources>
+
+      <DataTemplate x:Key="AddressBarExtraTemplate" DataType="{x:Type l:ModsWebBrowser+ViewModel}">
+        <mui:SpacingUniformGrid x:Name="Panel" Rows="1" HorizontalSpacing="2" Margin="0 0 8 0" VerticalAlignment="Center" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType={x:Type c:WebBlock}}}">
+          <mui:SpacingUniformGrid.Styles><Style Selector="mui|SpacingUniformGrid#Panel"><Style Selector="^ Border#InstallPiece"><Setter Property="Background" Value="{DynamicResource Accent}"/></Style><Style Selector="^ Border#SharePiece"><Setter Property="Background" Value="{DynamicResource Accent}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding DataContext.InstallCommand.IsAbleToExecute, ElementName=Panel, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/><Setter Property="pa:T.S1" Value="{Binding DataContext.ShareLinkCommand.IsAbleToExecute, ElementName=Panel, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True] Border#InstallPiece"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+          </Style><Style Selector="^[(pa|T.S1)=True] Border#SharePiece"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+          </Style></Style></mui:SpacingUniformGrid.Styles><mui:SpacingUniformGrid.Resources>
+            <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+          </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingUniformGrid.Resources>
+          <Border x:Name="InstallPiece">
+            <Button Command="{Binding InstallCommand}" Content="Install" FontSize="{DynamicResource SmallFontSize}" Padding="8 1 8 2"/>
+          </Border>
+          <Border x:Name="SharePiece">
+            <Button Command="{Binding ShareLinkCommand}" Content="Share a link" FontSize="{DynamicResource SmallFontSize}" Padding="8 1 8 2" ToolTip.Tip="Copy a link to this webpage for CM to install"/>
+          </Border>
+        </mui:SpacingUniformGrid>
+        </DataTemplate>
+
+      </ContentControl.Resources>
+  </ContentControl>
+
+</UserControl>

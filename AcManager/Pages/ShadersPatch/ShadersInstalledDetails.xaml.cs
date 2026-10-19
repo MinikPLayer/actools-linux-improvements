@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace AcManager.Pages.ShadersPatch {
             }
         }
 
-        private void OnImageMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnImageMouseUp(object sender, PointerReleasedEventArgs e) {
             if (_imageData == null) return;
             new ImageViewer(BetterImage.LoadBitmapSourceFromBytes(_imageData), x => _imageMessage) {
                 MaxAreaWidth = 1920,
@@ -69,7 +69,7 @@ namespace AcManager.Pages.ShadersPatch {
             }
         }
 
-        private void OnItemRightMouseButtonDown(object sender, MouseButtonEventArgs e) {
+        private void OnItemRightMouseButtonDown(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
             if (sender is FrameworkElement fe && fe.ContextMenu != null) {
                 fe.ContextMenu.DataContext = fe.DataContext;

@@ -7,7 +7,7 @@ using AcManager.Tools.Objects;
 using AcTools.Utils;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class CarRatings {
+    public partial class CarRatings : global::AcManager.Pages.SelectionLists.SelectionList {
         public CarRatings() : base(CarsManager.Instance, true) {
             InitializeComponent();
         }

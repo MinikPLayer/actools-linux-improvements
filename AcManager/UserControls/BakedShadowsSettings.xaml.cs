@@ -3,7 +3,7 @@ using AcManager.CustomShowroom;
 using FirstFloor.ModernUI.Commands;
 
 namespace AcManager.UserControls {
-    public partial class BakedShadowsSettings {
+    public partial class BakedShadowsSettings : global::Avalonia.Controls.DockPanel {
         public BakedShadowsSettings() {
             InitializeComponent();
 

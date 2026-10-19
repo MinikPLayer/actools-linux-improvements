@@ -1,0 +1,55 @@
+﻿<sel:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:g="clr-namespace:AcManager" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sel="clr-namespace:AcManager.Pages.Selected" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedLuaAppPage" mui:InputBindingBehavior.PropagateToWindow="True" x:Name="This">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="True" Icon="{Binding SelectedObject.AppIcon}">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_AppTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_IniTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_AppTooltip}"/>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <StackPanel x:Name="Wrapper" IsVisible="{Binding SelectedObject.HasData, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="SettingsPanel">
+      <c:PropertiesGrid Columns="2" Margin="0 8 0 8">
+        <mui:BetterTextBox c:PropertiesGrid.Label="ID:" Text="{Binding SelectedObject.Id, Mode=OneWay}" IsReadOnly="True" Theme="{StaticResource Borderless}"/>
+
+        <DockPanel Margin="0" mui:ContextMenuAdvancement.PropagateToChildren="True" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}">
+          <c:PropertiesGrid.Label>
+            <MultiBinding Converter="{x:Static sel:SelectedAcObjectViewModel.VersionInfoLabelConverter}">
+              <Binding Path="SelectedObject"/>
+              <Binding Path="SelectedObject.VersionInfoDisplay"/>
+            </MultiBinding>
+          </c:PropertiesGrid.Label>
+          <DockPanel.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{x:Static g:AppStrings.Filter_ByAuthor}" Command="{Binding Path=FilterCommand}" CommandParameter="author"/>
+              <MenuItem Header="Filter by origin" Command="{Binding Path=FilterCommand}" CommandParameter="origin"/>
+            </ContextMenu>
+          </DockPanel.ContextMenu>
+          <Button DockPanel.Dock="Right" Margin="4 0 0 0" Padding="4 0" c:CupUi.Object="{Binding SelectedObject}" IsVisible="False">
+            <Path Data="{StaticResource UpdateIconData}" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="{DynamicResource GoButtonText}" StrokeThickness="0" Stretch="Uniform"/>
+          </Button>
+          <mui:BbCodeBlock Text="{Binding SelectedObject.VersionInfoDisplay}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" PointerReleased="OnVersionInfoBlockClick"/>
+          <Border Background="Transparent" PointerReleased="OnVersionInfoBlockClick"/>
+        </DockPanel>
+      </c:PropertiesGrid>
+
+      <TextBlock Text="Description:" Margin="0 8 0 4" Classes="Label Label.Padding"/>
+      <mui:BetterTextBox Text="{Binding SelectedObject.Description}" AcceptsReturn="True" TextWrapping="Wrap" Height="60" Placeholder="None" Theme="{StaticResource Borderless}"/>
+    </StackPanel>
+  </c:AcObjectBase>
+</sel:SelectedAcObjectPage>

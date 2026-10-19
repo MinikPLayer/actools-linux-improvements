@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.About {
-    public partial class FiltersPage {
+    public partial class FiltersPage : global::Avalonia.Controls.UserControl {
         public FiltersPage() {
             DataContext = new ViewModel();
             InitializeComponent();

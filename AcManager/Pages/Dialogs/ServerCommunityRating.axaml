@@ -1,0 +1,111 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.Dialogs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.ServerCommunityRating" Title="{Binding Entry.DisplayName, StringFormat='Community rating: {0}'}" LocationAndSizeKey="ServerCommunityRating_LS" MinWidth="200" MinHeight="200" MaxWidth="99999" MaxHeight="99999" SizeToContent="Manual" Width="400" Height="600" CanResize="True">
+  <mui:ModernDialog.Styles><Style Selector="c|FavouriteButton.LikeButton">
+        <Setter Property="Data" Value="{StaticResource LikeIconData}"/>
+      </Style>
+    </mui:ModernDialog.Styles><mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/FullscreenDialog.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Themes/FavouriteButton.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top">
+      <TextBlock Text="{Binding Entry.DisplayVotes, StringFormat='{}Rating: {0}'}" ToolTip.Tip="All servers get 50% by default. Votes shift them closer to 100% or to 0%." Classes="Heading1"/>
+      <ProgressBar Value="{Binding Entry.VotesRating, Mode=OneWay}" Minimum="0" Maximum="1" Height="4" Margin="0 4 0 0"/>
+      <mui:SpacingUniformGrid Rows="1" Columns="3" HorizontalSpacing="4" Margin="0 4 0 0">
+        <mui:AsyncButton Command="{Binding RateCommand}" CommandParameter="1" ToolTip.Tip="I recommend this server" Classes="inline1">
+          <mui:AsyncButton.Styles>
+            <Style Selector="mui|AsyncButton.inline1">
+              <Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Entry.OwnVote, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=1}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                </Style></Style>
+          </mui:AsyncButton.Styles>
+          <mui:AsyncButton.Content>
+            <DockPanel>
+              <Path Data="M 2,10 L 6,10 L 8,4 L 10,4 L 9,10 L 18,10 L 18,13 L 15,20 L 6,20 L 6,10 Z M 2,20 L 5,20 L 5,10 L 2,10 Z" Width="14" Height="14" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 4 0"/>
+              <TextBlock Text="{Binding Entry.VotesUp}"/>
+            </DockPanel>
+          </mui:AsyncButton.Content>
+        </mui:AsyncButton>
+        <mui:AsyncButton Command="{Binding RateCommand}" CommandParameter="-1" Tag="{Binding Entry.OwnVote, Converter={StaticResource LessToBooleanConverter}, ConverterParameter=0}" ToolTip.Tip="I don’t recommend this server" Classes="inline2">
+          <mui:AsyncButton.Styles>
+            <Style Selector="mui|AsyncButton.inline2">
+              <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Entry.OwnVote, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-1}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+                </Style></Style>
+          </mui:AsyncButton.Styles>
+          <mui:AsyncButton.Content>
+            <DockPanel>
+              <Path Data="M 2,12 L 6,12 L 8,18 L 10,18 L 9,12 L 18,12 L 18,9 L 15,2 L 6,2 L 6,12 Z M 2,2 L 5,2 L 5,12 L 2,12 Z" Width="14" Height="14" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 4 0"/>
+              <TextBlock Text="{Binding Entry.VotesDown}"/>
+            </DockPanel>
+          </mui:AsyncButton.Content>
+        </mui:AsyncButton>
+        <mui:AsyncButton Command="{Binding RateCommand}" CommandParameter="0" ToolTip.Tip="I want to erase my vote">
+          <mui:AsyncButton.Content>
+            <DockPanel>
+              <Path Data="{StaticResource CloseIconData}" Width="14" Height="14" Stretch="Uniform" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Margin="0 0 4 0"/>
+              <TextBlock Text="Clear"/>
+            </DockPanel>
+          </mui:AsyncButton.Content>
+        </mui:AsyncButton>
+      </mui:SpacingUniformGrid>
+      <TextBlock Text="Comments:" Margin="0 12 0 0" Classes="Heading2"/>
+    </StackPanel>
+    <mui:FallbackSwitch>
+      <mui:ModernProgressRing mui:FallbackSwitch.Value="{Binding Loading}" Width="80" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="True"/>
+      <mui:PlaceholderTextBlock mui:FallbackSwitch.Value="{Binding Comments.Count}" mui:FallbackSwitch.When="0" Placeholder="No comments yet."/>
+      <ItemsControl ItemsSource="{Binding Comments}" mui:FancyScroll.Outside="True" Theme="{StaticResource VirtualizingItemsControl}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <DockPanel Margin="0 8 0 0" x:Name="PART_Panel">
+              <DockPanel.Styles><Style Selector="DockPanel#PART_Panel"><Style Selector="^ TextBlock#PART_You"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Rectangle#PART_Mark"><!-- PORT: removed setter of Fill (not in Avalonia) --><Setter Property="ToolTip.Tip" Value="Positive review"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsOwn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding Vote, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=-1}"/></Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_You"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[(pa|T.S3)=True] Rectangle#PART_Mark"><!-- PORT: removed setter of Fill (not in Avalonia) -->
+                <Setter Property="ToolTip.Tip" Value="Negative review"/>
+              </Style></Style></DockPanel.Styles><Rectangle x:Name="PART_Mark" Width="4" Margin="0 0 8 0"/>
+              <mui:BetterImage Filename="{Binding Avatar}" Height="28" Width="28" DockPanel.Dock="Left" Margin="0 4 12 0" AsyncDecode="True" VerticalAlignment="Top"/>
+              <DockPanel Dock="Top" Margin="0 0 0 4">
+                <mui:PlaceholderTextBlock Text="{Binding Username}" Placeholder="Anonymous" FontWeight="Bold"/>
+                <TextBlock x:Name="PART_You" Text=" (you)" FontWeight="Bold" Foreground="{DynamicResource Accent}"/>
+                <TextBlock Text="{Binding Date}" Margin="8 0 0 0" Foreground="{DynamicResource WindowTextReadOnly}" FontSize="{DynamicResource SmallFontSize}" VerticalAlignment="Bottom"/>
+              </DockPanel>
+              <TextBlock Text="{Binding DisplayStats}" FontWeight="Bold" DockPanel.Dock="Top" Margin="0 0 0 4" IsVisible="{Binding Stats, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+              <mui:BbCodeBlock Text="{Binding Comment}" Mode="SafeBbCodes" Margin="0 0 0 4" DockPanel.Dock="Top"/>
+              <mui:BooleanSwitch Value="{Binding IsOwn}" VerticalAlignment="Center" Margin="0 0 4 0">
+                <mui:BooleanSwitch.False>
+                  <Button Width="80" Height="18" Padding="0" Command="{Binding ReportCommand}">
+                    <DockPanel>
+                      <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
+                      <TextBlock Text="Report" FontSize="{DynamicResource SmallFontSize}" Margin="4 0 0 0" ToolTip.Tip="Reported comments will be hidden"/>
+                    </DockPanel>
+                  </Button>
+                </mui:BooleanSwitch.False>
+                <mui:BooleanSwitch.True>
+                  <Button Width="80" Height="18" Padding="0" Command="{Binding EditCommand}">
+                    <DockPanel>
+                      <Path Data="{StaticResource EditIconData}" Width="12" Height="12" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform"/>
+                      <TextBlock Text="Edit" FontSize="{DynamicResource SmallFontSize}" Margin="4 0 0 0" ToolTip.Tip="Change or erase comment"/>
+                    </DockPanel>
+                  </Button>
+                </mui:BooleanSwitch.True>
+                </mui:BooleanSwitch>
+              <DockPanel Width="80" Height="18" HorizontalAlignment="Left">
+                <mui:BooleanSwitch Value="{Binding IsOwn}" VerticalAlignment="Center">
+                  <mui:BooleanSwitch.False>
+                    <c:FavouriteButton Command="{Binding ToggleLikeCommand}" IsChecked="{Binding Liked, Mode=OneWay}" Width="12" Height="12" HorizontalAlignment="Left" Classes="LikeButton"/>
+                  </mui:BooleanSwitch.False>
+                  <mui:BooleanSwitch.True>
+                    <Path Data="{StaticResource LikeIconData}" Width="12" Height="12" Fill="{DynamicResource ButtonBackground}" Stretch="Uniform" HorizontalAlignment="Left" IsVisible="{Binding Likes, Converter={StaticResource MoreToVisibilityConverter}}"/>
+                  </mui:BooleanSwitch.True>
+                </mui:BooleanSwitch>
+                <TextBlock Text="{Binding Likes}" FontSize="{DynamicResource SmallFontSize}" FontWeight="Bold" Margin="4 0 0 0" VerticalAlignment="Center" IsVisible="{Binding Likes, Converter={StaticResource MoreToVisibilityConverter}}"/>
+              </DockPanel>
+            </DockPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </mui:FallbackSwitch>
+  </DockPanel>
+</mui:ModernDialog>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.About {
-    public partial class AboutPage {
+    public partial class AboutPage : global::Avalonia.Controls.UserControl {
         private int _clicks;
 
         public AboutPage() {
@@ -26,7 +26,7 @@ namespace AcManager.Pages.About {
             ThankYouText.Visibility = InternalUtils.IsAllRight ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void OnVersionClick(object sender, MouseButtonEventArgs e) {
+        private void OnVersionClick(object sender, PointerPressedEventArgs e) {
             if (!SettingsHolder.Common.DeveloperMode && ++_clicks == 4 &&
                     ModernDialog.ShowMessage(AppStrings.About_DeveloperMode, AppStrings.About_DeveloperMode_Title, MessageBoxButton.YesNo) ==
                             MessageBoxResult.Yes) {

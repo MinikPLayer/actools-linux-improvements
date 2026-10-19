@@ -11,11 +11,11 @@ namespace AcManager.Pages.ShadersPatch {
 
         private bool _isDoubleClick;
 
-        private void OnGridDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnGridDoubleClick(object sender, PointerPressedEventArgs e) {
             _isDoubleClick = e.ClickCount == 2;
         }
 
-        private void OnGridMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnGridMouseUp(object sender, PointerReleasedEventArgs e) {
             if (_isDoubleClick && Grid.SelectedItem is PatchBackgroundDataEntry entry) {
                 e.Handled = true;
                 new ImageViewer(entry.GetApiUrl()) {

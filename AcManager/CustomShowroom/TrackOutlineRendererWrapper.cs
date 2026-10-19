@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Objects;
 using AcTools;
@@ -45,7 +45,7 @@ namespace AcManager.CustomShowroom {
             }
         }
 
-        protected override void OnMouseWheel(float value) {
+        protected override void OnPointerWheelChanged(PointerWheelEventArgs value) {
             Renderer.Scale *= 1f + value / 10f;
         }
 

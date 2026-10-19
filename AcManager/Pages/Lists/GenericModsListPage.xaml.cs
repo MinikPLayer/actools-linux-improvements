@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class GenericModsListPage : ILoadableContent, IParametrizedUriContent {
+    public partial class GenericModsListPage : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private IFilter<string> _filter;
 
         public void OnUri(Uri uri) {
@@ -303,7 +303,7 @@ namespace AcManager.Pages.Lists {
             #endregion
         }
 
-        private void OnItemClick(object sender, MouseButtonEventArgs e) {
+        private void OnItemClick(object sender, PointerPressedEventArgs e) {
             if (e.ClickCount != 2) return;
             if (!((sender as FrameworkElement)?.DataContext is GenericMod item)) return;
 

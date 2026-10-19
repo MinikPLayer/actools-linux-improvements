@@ -1,0 +1,12 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.About.PieceOfInformationBlock">
+  <ScrollViewer x:Name="Root" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+    <StackPanel MinWidth="200" DataContext="{Binding Piece}" Margin="0 0 20 80">
+      <DockPanel Margin="0 0 0 8">
+        <Ellipse DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4" Fill="{DynamicResource Go}" Width="8" Height="8" ToolTip.Tip="{x:Static g:AppStrings.About_NewTooltip}" IsVisible="{Binding IsNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <TextBlock Text="{Binding DisplayName}" Classes="Heading1"/>
+      </DockPanel>
+      <TextBlock Margin="0 0 0 16" Text="{Binding Version, StringFormat={x:Static g:AppStrings.About_VersionFormat}}" IsVisible="{Binding Version, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+      <mui:SelectableBbCodeBlock Text="{Binding Content}" LineHeight="20"/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

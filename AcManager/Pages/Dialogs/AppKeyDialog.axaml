@@ -1,0 +1,17 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.AppKeyDialog" Title="{x:Static g:AppStrings.AppKey_Title}">
+  <mui:ModernDialog.ButtonsRowContent>
+    <StackPanel Orientation="Horizontal">
+      <Button Command="{Binding TryAgainCommand}" Content="{x:Static c:ControlsStrings.Common_TryAgain}" IsVisible="{Binding InternetConnectionRequired, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      <Button Command="{Binding OfflineModeCommand}" Margin="4 0 0 0" Content="{x:Static c:ControlsStrings.Common_OfflineMode}" IsVisible="{Binding OfflineModeAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </StackPanel>
+  </mui:ModernDialog.ButtonsRowContent>
+  <StackPanel>
+    <TextBlock Text="{x:Static g:AppStrings.AppKey_Prompt}" Background="Transparent" PointerReleased="UIElement_OnPreviewMouseLeftButtonUp" Classes="Heading2"/>
+    <TextBox Width="480" a:WatermarkService.Watermark="?" a:FocusAdvancement.AdvancesByEnterKey="True" Margin="0 8 0 0" x:Name="TextBox" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip.Tip="{x:Static g:AppStrings.AppKey_Tooltip}"/>
+    <ProgressBar IsIndeterminate="True" Margin="0 8 0 0" IsVisible="{Binding CheckingInProgress, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=hidden}"/>
+    <DockPanel Margin="0 8 0 0" IsVisible="{Binding KeyRevoked, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <TextBlock Text="{x:Static g:AppStrings.AppKey_KeyWasRevoked}" Foreground="{DynamicResource Error}"/>
+      <Button Command="{Binding RevokedKeyMessageCommand}" Theme="{StaticResource MoreDetailsSuperscript}"/>
+    </DockPanel>
+  </StackPanel>
+</mui:ModernDialog>

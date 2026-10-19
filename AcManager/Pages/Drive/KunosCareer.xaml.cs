@@ -28,7 +28,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Drive {
-    public partial class KunosCareer : ILoadableContent {
+    public partial class KunosCareer : global::Avalonia.Controls.UserControl, ILoadableContent {
         public Task LoadAsync(CancellationToken cancellationToken) {
             return KunosCareerManager.Instance.EnsureLoadedAsync();
         }

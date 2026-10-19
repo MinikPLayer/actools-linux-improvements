@@ -10,12 +10,12 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Navigation;
 
 namespace AcManager.UserControls {
-    public partial class SelectCar : IChoosingItemControl<CarObject> {
+    public partial class SelectCar : global::FirstFloor.ModernUI.Windows.Controls.ModernTab, IChoosingItemControl<CarObject> {
         public SelectCar() {
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty SelectedCarProperty = DependencyProperty.Register(nameof(SelectedCar), typeof(CarObject),
+        public static readonly StyledProperty<CarObject> SelectedCarProperty = DP.Register<CarObject>(nameof(SelectedCar),
                 typeof(SelectCar), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedCarChanged));
 
         public CarObject SelectedCar {

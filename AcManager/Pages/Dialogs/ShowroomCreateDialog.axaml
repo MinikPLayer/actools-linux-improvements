@@ -1,0 +1,40 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.ShowroomCreateDialog" Title="{x:Static g:AppStrings.CreateShowroom_Title}">
+    <StackPanel>
+        <Grid Margin="0 10 10 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="160"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{x:Static g:AppStrings.AcObject_IdLabel}" Grid.Column="0" Grid.Row="0" Classes="Label Label.Padding"/>
+            <TextBox Grid.Column="1" Grid.Row="0" a:FocusAdvancement.AdvancesByEnterKey="True" a:WatermarkService.Watermark="?" Text="{Binding ResultId}" Classes="TextBoxAsTextBlock"/>
+
+            <TextBlock Text="{x:Static g:AppStrings.CreateShowroom_NameLabel}" Grid.Column="2" Grid.Row="0" Classes="Label Label.Padding"/>
+            <TextBox Grid.Column="3" Grid.Row="0" a:FocusAdvancement.AdvancesByEnterKey="True" a:WatermarkService.Watermark="?" Text="{Binding ResultName}" Classes="TextBoxAsTextBlock"/>
+
+            <TextBlock Text="{x:Static g:AppStrings.CreateShowroom_PanoramaLabel}" Grid.Column="0" Grid.Row="1" Classes="Label Label.Padding"/>
+            <DockPanel Grid.Column="1" Grid.Row="1">
+                <ToolTip.Tip>
+                    <StackPanel>
+                        <TextBlock Text="{x:Static g:AppStrings.CreateShowroom_Panorama_Example}" Margin="4"/>
+                        <Image Source="/Assets/Img/ShowroomPanoramaExample.jpg" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+                        <mui:BbCodeBlock Text="{x:Static g:AppStrings.CreateShowroom_Panorama_Commentary}" Margin="4 12 4 4" Classes="BbCodeBlock.Small"/>
+                    </StackPanel>
+                </ToolTip.Tip>
+
+                <Button DockPanel.Dock="Right" Command="{Binding SelectPanoramaFileCommand}" HorizontalAlignment="Right" Margin="4 0 4 0" Padding="4 0 4 0" Content="…"/>
+                <TextBox Text="{Binding PanoramaFilename}" a:WatermarkService.Watermark="?" Classes="TextBoxAsTextBlock"/>
+            </DockPanel>
+
+            <CheckBox IsChecked="{Binding InShadow}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="8 0 0 0">
+                <Label Content="{x:Static g:AppStrings.CreateShowroom_InShadow}"/>
+            </CheckBox>
+        </Grid>
+    </StackPanel>
+</mui:ModernDialog>

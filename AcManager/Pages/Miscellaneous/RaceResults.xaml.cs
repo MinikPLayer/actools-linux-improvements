@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -36,7 +36,7 @@ using Newtonsoft.Json.Linq;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class RaceResults : IParametrizedUriContent, ILoadableContent {
+    public partial class RaceResults : global::Avalonia.Controls.DockPanel, IParametrizedUriContent, ILoadableContent {
         private IFilter<RaceResultsObject> _filter;
         private List<RaceResultsObject> _entries;
 
@@ -542,7 +542,7 @@ namespace AcManager.Pages.Miscellaneous {
             }
         }
 
-        private void OnItemDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnItemDoubleClick(object sender, PointerPressedEventArgs e) {
             if (e.ClickCount != 2) return;
             e.Handled = true;
             (((FrameworkElement)sender).DataContext as RaceResultsObject)?.ShowDetailsCommand.Execute();

@@ -1,0 +1,14 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.BrandBadgeEditor" Title="{x:Static g:AppStrings.BrandBadge_Title}" Width="720" Height="800" LocationAndSizeKey="BrandBadgeEditor_LS_" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" SizeToContent="Manual" DragDrop.AllowDrop="True" DragDrop.Drop="BrandBadgeEditor_OnDrop" CanResize="True">
+  <ListBox SelectedItem="{Binding Selected, Mode=TwoWay}" ItemsSource="{Binding Icons}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <mui:VirtualizingTilePanel HorizontalAlignment="Left" ItemWidth="68" ItemHeight="68"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <mui:BetterImage Filename="{Binding Filename}" Width="64" Height="64" ClearOnChange="True" ToolTip.Tip="{Binding Name}" PointerPressed="BrandBadge_OnMouseDown"/>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</mui:ModernDialog>

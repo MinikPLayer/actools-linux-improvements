@@ -81,7 +81,6 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Serialization;
-using FirstFloor.ModernUI.Win32;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Attached;
 using FirstFloor.ModernUI.Windows.Controls;
@@ -89,8 +88,6 @@ using FirstFloor.ModernUI.Windows.Media;
 using FirstFloor.ModernUI.Windows.Navigation;
 using Newtonsoft.Json;
 using StringBasedFilter;
-using ComboBox = System.Windows.Controls.ComboBox;
-using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
 #if INCLUDE_WORKSHOP
 using AcManager.Workshop;
@@ -98,7 +95,7 @@ using AcManager.Pages.Workshop;
 #endif
 
 namespace AcManager {
-    public partial class App : IDisposable {
+    public partial class App : global::Avalonia.Application, IDisposable {
         private const string WebBrowserEmulationModeDisabledKey = "___webBrowserEmulationModeDisabled";
 
         private static void CreateAndRun_InitializeBase() {
@@ -150,14 +147,14 @@ namespace AcManager {
             }
 
             if (AppArguments.GetDouble(AppFlag.DesiredFrameRate) is double v && v > 0d) {
-                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(v));
+                DP.OverrideMetadata(Timeline.DesiredFrameRateProperty, typeof(Timeline), new FrameworkPropertyMetadata(v));
                 if (softwareRenderingModeIsEnabled) {
                     RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
                     ModernFrame.OptionDisableTransitionAnimation = true;
                 }
             } else if (softwareRenderingModeIsEnabled) {
                 RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-                Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(30));
+                DP.OverrideMetadata(Timeline.DesiredFrameRateProperty, typeof(Timeline), new FrameworkPropertyMetadata(30));
             }
 
             var app = new App();
@@ -878,11 +875,11 @@ namespace AcManager {
 
         private static void PrepareUi() {
             try {
-                ToolTipService.ShowOnDisabledProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(true));
-                ToolTipService.InitialShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(500));
-                ToolTipService.BetweenShowDelayProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(0));
-                ToolTipService.ShowDurationProperty.OverrideMetadata(typeof(DependencyObject), new FrameworkPropertyMetadata(60000));
-                ItemsControl.IsTextSearchCaseSensitiveProperty.OverrideMetadata(typeof(ComboBox), new FrameworkPropertyMetadata(true));
+                DP.OverrideMetadata(ToolTipService.ShowOnDisabledProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(true));
+                DP.OverrideMetadata(ToolTipService.InitialShowDelayProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(500));
+                DP.OverrideMetadata(ToolTipService.BetweenShowDelayProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(0));
+                DP.OverrideMetadata(ToolTipService.ShowDurationProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(60000));
+                DP.OverrideMetadata(ItemsControl.IsTextSearchCaseSensitiveProperty, typeof(ComboBox), new FrameworkPropertyMetadata(true));
 
                 if (AppAppearanceManager.Instance.DisallowTransparency || WineHelper.IsOnWine) {
                     DisableTransparencyHelper.Disable();

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using AcManager.Tools.Helpers.Api.Kunos;
@@ -7,7 +7,7 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class OnlineAddManuallyDialog {
+    public partial class OnlineAddManuallyDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private readonly string _key;
 
         private ViewModel Model => (ViewModel)DataContext;
@@ -24,7 +24,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnClosing(object sender, CancelEventArgs e) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs e) {
             if (!IsResultOk) return;
 
             foreach (var result in List.SelectedItems.OfType<ServerInformationComplete>()) {

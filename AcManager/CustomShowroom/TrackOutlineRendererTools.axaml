@@ -1,0 +1,96 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:customShowroom="clr-namespace:AcManager.CustomShowroom" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.CustomShowroom.TrackOutlineRendererTools" LocationAndSizeKey="TrackOutlineRenderer.LS" Topmost="True" Width="250" SizeToContent="Height" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Title="Track’s Outline">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <StackPanel Margin="-4 -8 -4 -20">
+    <StackPanel.Styles><Style Selector="DockPanel.DockPanel">
+          <Setter Property="Margin" Value="0 4 0 0"/>
+
+          <Style Selector="^ Label">
+                <Setter Property="Width" Value="80"/>
+                <Setter Property="DockPanel.Dock" Value="Left"/>
+              </Style>
+              <Style Selector="^ StackPanel">
+                <Setter Property="Margin" Value="0 0 0 4"/>
+                <Setter Property="DockPanel.Dock" Value="Top"/>
+              </Style>
+            </Style>
+
+        <Style Selector="DockPanel"/>
+      </StackPanel.Styles><!--<CheckBox Margin="0 4 0 0" IsChecked="{Binding Renderer.UseFxaa}">
+            <Label Content="FXAA" />
+        </CheckBox>-->
+
+    <CheckBox Margin="0 4 0 0" IsChecked="{Binding Renderer.UseAiLanes}" IsEnabled="{Binding Renderer.IsAiLanesModeAvailable}">
+      <Label Content="Use AI lane"/>
+    </CheckBox>
+
+    <TextBlock Foreground="{DynamicResource Error}" Text="AI lane is missing" Margin="0 4 0 0" IsVisible="{Binding Renderer.IsAiLanesModeAvailable, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+
+    <DockPanel Margin="0 20 0 0">
+      <mui:ValueLabel Value="{Binding Renderer.Rotation, Converter={StaticResource MultiplyConverter}, ConverterParameter=57.2958, StringFormat='\{0:F1\}'}" Postfix="°" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Rotation"/>
+      <Slider Minimum="0" Maximum="359.9999" Value="{Binding Renderer.Rotation, Converter={StaticResource MultiplyConverter}, ConverterParameter=57.2958}" TickFrequency="45" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </DockPanel>
+
+    <DockPanel>
+      <mui:ValueLabel Value="{Binding Renderer.Scale, Converter={StaticResource PercentageConverter}, StringFormat='\{0:F1\}'}" Postfix="%" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Scale"/>
+      <Slider Minimum="20" Maximum="270" Value="{Binding Renderer.Scale, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" TickFrequency="50" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </DockPanel>
+
+    <DockPanel>
+      <mui:ValueLabel Value="{Binding Renderer.ExtraWidth, StringFormat='\{0:F1\}'}" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Extra width"/>
+      <Slider Minimum="0" Maximum="5" Value="{Binding Renderer.ExtraWidth}" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+    </DockPanel>
+
+    <StackPanel IsVisible="{Binding Layouts, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+      <Label Content="Dimmed layouts:" Margin="0 8 0 0"/>
+      <ListBox x:Name="LayoutsListBox" ItemsSource="{Binding Layouts}" SelectionMode="Multiple" MaxHeight="120" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0 4 0 0" ItemContainerTheme="{StaticResource CheckBoxListBoxItem}">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding LayoutName}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </StackPanel>
+
+    <StackPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
+      <StackPanel.ContextMenu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static c:ControlsStrings.CustomShowroom_AmbientShadowsSize_Reset}" Command="{Binding ResetStyleCommand}"/>
+        </ContextMenu>
+      </StackPanel.ContextMenu>
+
+      <TextBlock Text="Style:" Margin="0 12 0 0" Classes="Heading2"/>
+
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Renderer.ShadowDistance, StringFormat='\{0:F1\}'}" Postfix=" px" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Shadow distance"/>
+        <Slider Minimum="0" Maximum="5" Value="{Binding Renderer.ShadowDistance}" TickFrequency="1" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding Renderer.ShadowOpacity, Converter={StaticResource PercentageConverter}, StringFormat='\{0:F1\}'}" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Shadow opacity" Postfix="%"/>
+        <Slider Minimum="0" Maximum="100" Value="{Binding Renderer.ShadowOpacity, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" TickFrequency="20" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+
+      <DockPanel IsVisible="{Binding Layouts, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <mui:ValueLabel Value="{Binding Renderer.DimmedOpacity, Converter={StaticResource PercentageConverter}, StringFormat='\{0:F1\}'}" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Dimmed opacity" Postfix="%"/>
+        <Slider Minimum="0" Maximum="100" Value="{Binding Renderer.DimmedOpacity, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" TickFrequency="20" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+
+      <DockPanel IsVisible="{Binding Layouts, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <mui:ValueLabel Value="{Binding Renderer.DimmedWidthMultipler, Converter={StaticResource PercentageConverter}, StringFormat='\{0:F1\}'}" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Dimmed width" Postfix="%"/>
+        <Slider Minimum="0" Maximum="100" Value="{Binding Renderer.DimmedWidthMultipler, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" TickFrequency="20" TickPlacement="BottomRight" IsSnapToTickEnabled="False"/>
+      </DockPanel>
+    </StackPanel>
+
+    <Button Margin="0 8 0 0" Content="Save outline" Command="{Binding SaveCommand}" ToolTip.Tip="Save new outline.png (original file will be moved to the Recycle Bin)"/>
+  </StackPanel>
+</mui:ModernDialog>

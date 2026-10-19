@@ -1,0 +1,94 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:w="clr-namespace:AcManager.Pages.Workshop" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Workshop.WorkshopCarBrandsNarrrowColumns" SizeChanged="OnSizeChanged">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/WorkshopResources.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+
+  <mui:Cell Margin="0 20">
+
+    <Border x:Name="ColumnFirst" Padding="8 0">
+      <Border.RenderTransform>
+        <TranslateTransform/>
+      </Border.RenderTransform>
+      <ListBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" HorizontalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:VirtualizingTilePanel HorizontalAlignment="Center" ItemWidth="106" ItemHeight="106"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <mui:Cell Width="102" Height="102" Background="Transparent" x:Name="__Dt0">
+              <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding HasNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+              </Style></Style></mui:Cell.Styles><mui:BetterImage Filename="{Binding Icon}" Margin="8 8 8 24" Width="68" Height="68" HorizontalAlignment="Center" ClearOnChange="True"/>
+              <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" Margin="4" Padding="0" FontSize="14" VerticalAlignment="Bottom" Classes="Label Label.Padding"/>
+              <TextBlock x:Name="CountText" FontSize="12" HorizontalAlignment="Right" Text="{Binding Uses}" Margin="4" VerticalAlignment="Top" Classes="Label"/>
+              <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="2" IsHitTestVisible="False"/>
+            </mui:Cell>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Border>
+
+    <Border x:Name="ColumnSecond" Padding="8 0">
+      <Border.RenderTransform>
+        <TranslateTransform/>
+      </Border.RenderTransform>
+      <ListBox ItemsSource="{Binding ObjectList}" SelectedItem="{Binding SelectedObject}" ItemTemplate="{StaticResource WorkshopResources.ContentItem.Tile}" HorizontalAlignment="Center" IsVisible="{Binding ObjectList, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:VirtualizingTilePanel HorizontalAlignment="Center" ItemWidth="160" ItemHeight="90"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+      </ListBox>
+    </Border>
+
+    <Border x:Name="ColumnThird" Padding="8 0">
+      <Border.RenderTransform>
+        <TranslateTransform/>
+      </Border.RenderTransform>
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Center" IsVisible="{Binding SelectedObject, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+        <StackPanel>
+          <DockPanel>
+            <Border DockPanel.Dock="Left" Width="24" Height="24" Margin="0 0 4 0">
+              <mui:BetterImage Filename="{Binding SelectedObject.BrandBadge}"/>
+            </Border>
+            <!--<c:FavouriteButton IsChecked="{Binding AcObject.IsFavourite, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Right"
+              Margin="8 0 0 0" />-->
+            <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding SelectedObject.DisplayName}" Placeholder="{x:Static c:ControlsStrings.TableHeader_Name}" Classes="Heading2"/>
+          </DockPanel>
+
+          <mui:BetterImage Filename="{Binding SelectedObject.PreviewImage}"/>
+
+          <Border Margin="4" Height="36" VerticalAlignment="Top">
+            <ListBox ItemsSource="{Binding SelectedObject.Skins}" ScrollViewer.VerticalScrollBarVisibility="Disabled" mui:FancyScroll.InvertLocation="True" ItemsPanel="{StaticResource CompactSkinsPanel}">
+              <i:Interaction.Behaviors>
+                <mui:HorizontalScrollBehavior x:Name="HorizontalScrollBehavior"/>
+              </i:Interaction.Behaviors>
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <mui:BetterImage Filename="{Binding LiveryImage}" Width="32" Height="32" ClearOnChange="True" ToolTip.Tip="{Binding DisplayName}"/>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </Border>
+
+          <!-- Tags -->
+          <mui:TagsList ItemsSource="{Binding SelectedObject.Tags}" IsReadOnly="True" Margin="0 0 0 12"/>
+
+          <mui:AsyncButton>
+            <mui:AsyncButton.Content>
+              <DockPanel>
+                <Path Width="20" Height="20" Margin="0 0 8 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
+                <TextBlock Text="Install" DockPanel.Dock="Top" Classes="Heading2"/>
+                <TextBlock Text="{Binding SelectedObject.SizeToInstall, Converter={StaticResource FileSizeConverter}}" Classes="Small"/>
+              </DockPanel>
+            </mui:AsyncButton.Content>
+          </mui:AsyncButton>
+
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
+
+  </mui:Cell>
+
+</UserControl>

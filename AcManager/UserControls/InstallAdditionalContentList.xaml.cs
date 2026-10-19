@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.UserControls {
-    public partial class InstallAdditionalContentList {
+    public partial class InstallAdditionalContentList : global::Avalonia.Controls.UserControl {
         public ListCollectionView DownloadListView { get; }
 
         public InstallAdditionalContentList() {
@@ -52,7 +52,7 @@ namespace AcManager.UserControls {
             }
         }
 
-        private void OnItemMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnItemMouseUp(object sender, PointerReleasedEventArgs e) {
             if (((FrameworkElement)sender).DataContext is ContentInstallationEntry item && !ReferenceEquals(ItemsListBox.SelectedItem, item)) {
                 var control = ItemsListBox.GetItemVisual(item);
                 if (control != null) {
@@ -64,9 +64,9 @@ namespace AcManager.UserControls {
             }
         }
 
-        private void OnItemMouseDown(object sender, MouseButtonEventArgs e) { }
+        private void OnItemMouseDown(object sender, PointerPressedEventArgs e) { }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = ((FrameworkElement)sender).FindVisualChild<ScrollViewer>();
             if (scrollViewer == null) return;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);

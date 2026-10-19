@@ -1,0 +1,16 @@
+﻿<c:AcListPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:li="clr-namespace:AcManager.Pages.Lists" xmlns:c="http://acstuff.club/app/controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Lists.LuaAppsListPage" Loaded="OnLoaded" Unloaded="OnUnloaded" Margin="{StaticResource ContentMargin}" ItemsSource="{Binding MainList}" SaveScrollKey="LuaAppsListPage.Scroll">
+  <c:AcListPage.Resources>
+    <DataTemplate x:Key="Batch.PackLuaApps" DataType="{x:Type li:LuaAppsListPage+BatchAction_PackApps}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <mui:SpacingUniformGrid Columns="2" VerticalSpacing="4" HorizontalSpacing="20" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding PackSeparately}">
+            <Label Content="Pack separately"/>
+          </CheckBox>
+        </mui:SpacingUniformGrid>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+  </c:AcListPage.Resources>
+</c:AcListPage>

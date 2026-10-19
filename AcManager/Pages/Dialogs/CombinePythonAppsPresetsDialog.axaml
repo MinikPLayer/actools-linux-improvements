@@ -1,0 +1,34 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:dialogs="clr-namespace:AcManager.Pages.Dialogs" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.CombinePythonAppsPresetsDialog" Title="Combine app presets" x:Name="This" Width="800" SizeToContent="Manual" MinHeight="320" Height="640" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" LocationAndSizeKey="CombinePythonAppsPresetsDialog1" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <DataTemplate x:Key="SelectedContentTemplate">
+      <TextBlock x:Name="TextBlock"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Text" Value="Empty"/>
+          <Setter Property="FontStyle" Value="Italic"/>
+        </Style></Style></TextBlock.Styles></TextBlock>
+      </DataTemplate>
+  </mui:ModernDialog.Resources>
+  <ScrollViewer>
+    <ItemsControl ItemsSource="{Binding Entries}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <mui:SpacingStackPanel Spacing="12"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <DockPanel>
+            <RadioButton IsChecked="{Binding IsSelected}" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Top" ToolTip.Tip="Pick a desktop enabled by default"/>
+            <TextBlock Width="100" DockPanel.Dock="Left" Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" VerticalAlignment="Top" Margin="0 2 0 0" Classes="Label"/>
+            <ListBox ItemsSource="{Binding Desktops}" SelectedItem="{Binding PresetDesktopToUse}" DockPanel.Dock="Bottom" Margin="0 4 0 0" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemContainerTheme="{StaticResource RadioBoxListItem}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <mui:PlaceholderTextBlock Text="{Binding DisplayName}" Placeholder="Empty"/>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.AppPresets, ElementName=This}" SelectedItem="{Binding Preset}" SelectedContent="{StaticResource SelectedContentTemplate}" FixedMode="False"/>
+          </DockPanel>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </ScrollViewer>
+</mui:ModernDialog>

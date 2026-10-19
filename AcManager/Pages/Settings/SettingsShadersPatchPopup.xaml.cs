@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -23,12 +23,9 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
-using Button = System.Windows.Controls.Button;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using ListBox = System.Windows.Controls.ListBox;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsShadersPatchPopup : ILocalKeyBindings, IContentLoader {
+    public partial class SettingsShadersPatchPopup : global::Avalonia.Controls.UserControl, ILocalKeyBindings, IContentLoader {
         public SettingsShadersPatchPopup() {
             KeyBindingsController = new LocalKeyBindingsController(this);
             InitializeComponent();

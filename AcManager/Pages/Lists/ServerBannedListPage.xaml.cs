@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class ServerBannedListPage : IParametrizedUriContent {
+    public partial class ServerBannedListPage : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         public void OnUri(Uri uri) {
             var filter = uri.GetQueryParam("Filter");
             DataContext = new ViewModel(string.IsNullOrEmpty(filter) ? null : Filter.Create(StringTester.Instance, filter));

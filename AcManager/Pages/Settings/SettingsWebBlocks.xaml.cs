@@ -2,7 +2,7 @@
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsWebBlocks {
+    public partial class SettingsWebBlocks : global::Avalonia.Controls.UserControl {
         public SettingsWebBlocks() {
             InitializeComponent();
             DataContext = new ViewModel();

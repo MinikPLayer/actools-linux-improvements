@@ -24,7 +24,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Navigation;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsShadersPatch : ILocalKeyBindings {
+    public partial class SettingsShadersPatch : global::Avalonia.Controls.UserControl, ILocalKeyBindings {
         public static SettingsShadersPatch Instance { get; private set; }
 
         public static bool IsCustomShadersPatchInstalled() {

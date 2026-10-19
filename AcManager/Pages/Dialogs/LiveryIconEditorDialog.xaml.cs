@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -7,7 +7,7 @@ using AcManager.Tools.Objects;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class LiveryIconEditorDialog {
+    public partial class LiveryIconEditorDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public LiveryIconEditorDialog(CarSkinObject skin) {
             InitializeComponent();
             DataContext = new LiveryIconEditor(skin, false, false, null, Result);
@@ -28,7 +28,7 @@ namespace AcManager.Pages.Dialogs {
             return IsResultOk;
         }
 
-        private void OnClosing(object sender, CancelEventArgs args) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs args) {
             if (IsResultOk) {
                 if (Model.Skin != null && Model.Value != @"0" && Model.Value != Model.Skin.SkinNumber &&
                         ShowMessage(string.Format(AppStrings.LiveryIcon_ChangeNumber_Message, Model.Value), AppStrings.LiveryIcon_ChangeNumber_Title,

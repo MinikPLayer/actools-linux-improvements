@@ -1,0 +1,61 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:graphs="clr-namespace:AcManager.Controls.Graphs;assembly=AcManager.Controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.CarSpecsEditor" Title="{Binding Car.DisplayName, StringFormat={x:Static g:AppStrings.CarSpecs_Title}}">
+  <Panel>
+    <StackPanel>
+      <Grid Margin="0 8 8 8">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="80"/>
+          <ColumnDefinition Width="160"/>
+          <ColumnDefinition Width="80"/>
+          <ColumnDefinition Width="160"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_PowerLabel}" Grid.Column="0" Grid.Row="0" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_Power_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_TorqueLabel}" Grid.Column="0" Grid.Row="1" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_Torque_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_WeightLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_Weight_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_MaxSpeedLabel}" Grid.Column="2" Grid.Row="0" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_MaxSpeed_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_AccelerationLabel}" Grid.Column="2" Grid.Row="1" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_Acceleration_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+        <TextBlock Text="{x:Static g:AppStrings.CarSpecs_PwRatioLabel}" Grid.Column="2" Grid.Row="2" Classes="Label Label.Padding">
+          <ToolTip.Tip>
+            <ToolTip Content="{x:Static g:AppStrings.CarSpecs_PwRatio_FormatTooltip}"/>
+          </ToolTip.Tip>
+        </TextBlock>
+
+        <mui:BetterTextBox x:Name="PowerInput" Text="{Binding Car.SpecsBhp, Mode=OneWay}" Grid.Column="1" Grid.Row="0" TextChanged="Pw_OnTextChanged" Mode="Integer" Placeholder="{x:Static g:AppStrings.CarSpecs_Power_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_Power_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+        <mui:BetterTextBox Text="{Binding Car.SpecsTorque}" x:Name="TorqueInput" Grid.Column="1" Grid.Row="1" Mode="Integer" Placeholder="{x:Static g:AppStrings.CarSpecs_Torque_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_Torque_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+        <mui:BetterTextBox Text="{Binding Car.SpecsWeight, Mode=OneWay}" x:Name="WeightInput" Grid.Column="1" Grid.Row="2" TextChanged="Pw_OnTextChanged" Mode="Integer" Placeholder="{x:Static g:AppStrings.CarSpecs_Weight_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_Weight_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+
+        <mui:BetterTextBox Text="{Binding Car.SpecsTopSpeed, Mode=OneWay}" x:Name="TopSpeedInput" Grid.Column="3" Grid.Row="0" Mode="Integer" Placeholder="{x:Static g:AppStrings.CarSpecs_MaxSpeed_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_MaxSpeed_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+        <mui:BetterTextBox x:Name="AccelerationInput" Text="{Binding Car.SpecsAcceleration}" Grid.Column="3" Grid.Row="1" Mode="Number" Placeholder="{x:Static g:AppStrings.CarSpecs_Acceleration_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_Acceleration_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+        <mui:BetterTextBox Text="{Binding Car.SpecsPwRatio, Mode=OneWay}" x:Name="PwRatioInput" Grid.Column="3" Grid.Row="2" Mode="Number" Placeholder="{x:Static g:AppStrings.CarSpecs_PwRatio_FormatTooltip}" ToolTip.Tip="{x:Static g:AppStrings.CarSpecs_PwRatio_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+      </Grid>
+      <CheckBox IsChecked="{Binding AutomaticallyRecalculate}" Margin="0 0 0 8">
+        <Label Content="{x:Static g:AppStrings.CarSpecs_AutomaticallyRecalculatePwRatio}"/>
+      </CheckBox>
+      <graphs:CarGraphViewer SourceTorque="{Binding TorqueGraph}" SourcePower="{Binding PowerGraph}" Height="200" HorizontalAlignment="Stretch"/>
+    </StackPanel>
+  </Panel>
+</mui:ModernDialog>

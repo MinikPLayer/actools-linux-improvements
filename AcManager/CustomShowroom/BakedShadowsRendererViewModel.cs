@@ -27,7 +27,6 @@ using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
-using Size = System.Windows.Size;
 
 namespace AcManager.CustomShowroom {
     public class BakedShadowsRendererViewModel : NotifyPropertyChanged, IUserPresetable {

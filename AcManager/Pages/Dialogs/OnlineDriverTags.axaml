@@ -1,0 +1,48 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:ae="http://icsharpcode.net/sharpdevelop/avalonedit" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.OnlineDriverTags" Title="Driver tags" SizeToContent="Manual" Width="800" Height="400" MinWidth="600" MinHeight="320" LocationAndSizeKey=".OnlineListManager" Closed="OnClosed" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/OnlineSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.ButtonsRowContent>
+    <mui:SpacingUniformGrid VerticalSpacing="4" Columns="1">
+      <Button Content="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_NewTag}" Command="{Binding NewTagCommand}"/>
+      <Button Content="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_RestoreDeleted}" Command="{Binding RestoreDeletedCommand}" IsVisible="{Binding RestoreDeletedCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </mui:SpacingUniformGrid>
+  </mui:ModernDialog.ButtonsRowContent>
+
+  <ItemsControl ItemsSource="{Binding Entries}">
+    <ItemsControl.Template>
+      <ControlTemplate>
+        <ScrollViewer x:Name="PART_ScrollViewer" Padding="0" Focusable="False" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+          <ItemsPresenter/>
+        </ScrollViewer>
+      </ControlTemplate>
+    </ItemsControl.Template>
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <mui:SpacingStackPanel Spacing="8" Orientation="Horizontal"/>
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+    <ItemsControl.ItemTemplate>
+      <DataTemplate>
+        <DockPanel Margin="0 0 0 8" Width="240">
+          <c:PropertiesGrid Columns="1" DockPanel.Dock="Top" VerticalSpacing="8">
+            <mui:BetterTextBox x:Name="TextBox" c:PropertiesGrid.Label="Name:" Text="{Binding Tag.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Placeholder="?" ToolTip.Tip="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_NameOfTheTag_Tooltip}"/>
+            <mui:ColorPicker c:PropertiesGrid.Label="Color:" Color="{Binding Tag.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+          </c:PropertiesGrid>
+          <Button DockPanel.Dock="Bottom" Content="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_DeleteTag}" Command="{Binding DeleteCommand}" Margin="0 8 0 0" IsVisible="{Binding IsBuiltIn, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+          <mui:Cell DockPanel.Dock="Top" Margin="0 8 0 0" Height="{Binding ActualHeight, ElementName=TextBox}">
+            <TextBlock Text="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_Names}" Classes="Label Label.Padding"/>
+          </mui:Cell>
+          <ae:TextEditor Margin="0 8 0 0" c:AvalonExtension.Text="{Binding Data}" ToolTip.Tip="{x:Static g:AppStrings.Dialogs_OnlineDriverTags_Names_Tooltip}"/>
+        </DockPanel>
+      </DataTemplate>
+    </ItemsControl.ItemTemplate>
+  </ItemsControl>
+</mui:ModernDialog>

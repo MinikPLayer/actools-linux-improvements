@@ -1,0 +1,15 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ShadersPatch.ShadersDataTracksVao">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="ShadersDataLists.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <ContentControl DataContext="{Binding Source={x:Static t:PatchTracksVaoDataUpdater.Instance}}" Theme="{StaticResource Section}">
+    <DataGrid ItemsSource="{Binding View}" IsReadOnly="True" Theme="{StaticResource DataGrid.Lite}">
+      <!-- PORT: removed RowStyle (not in Avalonia) --><DataGrid.Columns>
+        <DataGridTemplateColumn Width="3*" Header="For" SortMemberPath="DisplayName" CellTemplate="{StaticResource TrackColumnTemplate}"><!-- PORT: removed SortDirection (not in Avalonia) --></DataGridTemplateColumn>
+        <DataGridTemplateColumn Width="80" Header="Size" SortMemberPath="Size" CellTemplate="{StaticResource SizeColumnTemplate}"/>
+        <DataGridTemplateColumn MinWidth="160" Width="2*" Header="Author" SortMemberPath="Author" CellTemplate="{StaticResource AuthorColumnTemplate}"/>
+        <DataGridTemplateColumn Width="60" SortMemberPath="IsInstalled" CellTemplate="{StaticResource InstalledColumnTemplate}" Header="{StaticResource HeaderInstallContent}"/>
+      </DataGrid.Columns>
+    </DataGrid>
+  </ContentControl>
+</UserControl>

@@ -1,0 +1,62 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:tools="clr-namespace:AcManager.Tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.LiveryIconEditorDialog" Title="{x:Static g:AppStrings.LiveryIcon_Title}" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Closing="OnClosing" LocationAndSizeKey="__LiveryIconEditor.LS">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:ModernDialog.Resources>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <mui:BetterImage Filename="{Binding Skin.PreviewImage}" Width="640" VerticalAlignment="Top" c:ImageViewerService.Image="{Binding Skin.PreviewImage}" c:ImageViewerService.MaxWidth="1022" c:ImageViewerService.MaxHeight="575"/>
+    <StackPanel Grid.Column="1" Margin="20 0 0 0" Width="320" Classes="SettingsCompactPanel">
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_ResultLabel}"/>
+        <mui:BooleanSwitch x:Name="ResultLoading" Width="64" Height="64">
+          <mui:BooleanSwitch.False>
+            <ContentPresenter x:Name="Result" Width="64" Height="64"/>
+          </mui:BooleanSwitch.False>
+          <mui:BooleanSwitch.True>
+            <Viewbox Width="36" Height="36" VerticalAlignment="Center" HorizontalAlignment="Center">
+              <mui:ModernProgressRing Width="80" Height="80" IsActive="True"/>
+            </Viewbox>
+          </mui:BooleanSwitch.True>
+        </mui:BooleanSwitch>
+      </DockPanel>
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_StyleLabel}"/>
+        <ComboBox ItemsSource="{Binding Styles}" SelectedItem="{Binding SelectedStyle, Mode=TwoWay}" DisplayMemberBinding="{Binding DisplayName}"/>
+      </DockPanel>
+      <DockPanel IsVisible="{Binding CustomShape, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_ShapeLabel}"/>
+        <ComboBox ItemsSource="{Binding Shapes}" SelectedItem="{Binding SelectedShape, Mode=TwoWay}" DisplayMemberBinding="{Binding DisplayName}"/>
+      </DockPanel>
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_ColorLabel}"/>
+        <mui:ColorPicker Color="{Binding ColorValue}"/>
+      </DockPanel>
+      <DockPanel IsVisible="{Binding HasSecondaryColor, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_SecondaryColorLabel}"/>
+        <mui:ColorPicker Color="{Binding SecondaryColorValue}"/>
+      </DockPanel>
+      <DockPanel IsVisible="{Binding HasTertiaryColor, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_TertiaryColorLabel}"/>
+        <mui:ColorPicker Color="{Binding TertiaryColorValue}"/>
+      </DockPanel>
+      <TextBlock Text="{x:Static g:AppStrings.LiveryIcon_NumberHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <DockPanel>
+        <Label Content="{x:Static g:AppStrings.LiveryIcon_StyleLabel}"/>
+        <ComboBox ItemsSource="{Binding Numbers}" SelectedItem="{Binding SelectedNumbers, Mode=TwoWay}" DisplayMemberBinding="{Binding DisplayName}"/>
+      </DockPanel>
+      <StackPanel IsVisible="{Binding SelectedNumbers.Id, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='≠'}">
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding Value}" Content="{x:Static g:AppStrings.LiveryIcon_NumberValue}"/>
+          <Slider Minimum="0" Maximum="100" Value="{Binding NumberValue}" TickFrequency="10" TickPlacement="BottomRight"/>
+        </DockPanel>
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.LiveryIcon_TextColorLabel}"/>
+          <mui:ColorPicker Color="{Binding TextColorValue}"/>
+        </DockPanel>
+      </StackPanel>
+    </StackPanel>
+  </Grid>
+</mui:ModernDialog>

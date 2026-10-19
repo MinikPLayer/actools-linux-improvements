@@ -22,7 +22,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Settings {
-    public partial class PythonAppsSettings : ILoadableContent, ILocalKeyBindings, IContentLoader {
+    public partial class PythonAppsSettings : global::Avalonia.Controls.UserControl, ILoadableContent, ILocalKeyBindings, IContentLoader {
         public PythonAppsSettings() {
             KeyBindingsController = new LocalKeyBindingsController(this);
             InputBindings.Add(new InputBinding(new DelegateCommand(() => {

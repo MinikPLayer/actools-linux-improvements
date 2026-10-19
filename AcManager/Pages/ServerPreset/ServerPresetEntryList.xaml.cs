@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -22,7 +22,7 @@ using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetEntryList : INotifyPropertyChanged {
+    public partial class ServerPresetEntryList : global::Avalonia.Controls.UserControl, INotifyPropertyChanged {
         public ServerPresetEntryList() {
             InitializeComponent();
             this.AddWidthCondition(720)
@@ -73,7 +73,7 @@ namespace AcManager.Pages.ServerPreset {
             e.Effects = DragDropEffects.Move;
         }
 
-        private void OnOpponentCellClick(object sender, MouseButtonEventArgs e) {
+        private void OnOpponentCellClick(object sender, PointerPressedEventArgs e) {
             if (e.ClickCount == 2) {
                 var entry = (sender as FrameworkElement)?.DataContext as RaceGridEntry;
                 if (entry?.SpecialEntry != false) return;
@@ -114,7 +114,7 @@ namespace AcManager.Pages.ServerPreset {
             }
         }
 
-        private void OnCarClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarClick(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton != MouseButton.Left || e.ClickCount != 2) return;
 
             if (((FrameworkElement)sender).DataContext is ServerPresetDriverEntry entry) {

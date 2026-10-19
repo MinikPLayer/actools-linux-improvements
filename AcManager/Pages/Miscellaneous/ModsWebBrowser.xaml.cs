@@ -46,7 +46,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class ModsWebBrowser : IParametrizedUriContent {
+    public partial class ModsWebBrowser : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         public static ListViewModel Instance { get; private set; }
 
         public static void Initialize() {
@@ -909,7 +909,7 @@ try { $CODE } catch (e){ console.warn(e) }".Replace(@"$CODE", code);
         private static readonly string StopKey = @"s" + StringExtension.RandomString(20);
         private static readonly string PauseKey = @"p" + StringExtension.RandomString(20);
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class JsProxy : JsProxyCSharp {
             private JsBridge _bridge;
 
@@ -1553,7 +1553,7 @@ window.$KEY = outline.stop.bind(outline);
             SentToInstall.AddRange(urls.Where(x => GetSource(x, out _) == null));
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class CheckingJsProxy : JsProxyCSharp {
             private CheckingJsBridge _bridge;
 

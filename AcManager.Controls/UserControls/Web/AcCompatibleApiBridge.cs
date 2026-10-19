@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
-using AcManager.Controls.UserControls.Cef;
 using AcManager.Tools.GameProperties;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Managers;
@@ -115,10 +114,12 @@ namespace AcManager.Controls.UserControls.Web {
     }
 
     public class AcCompatibleApiBridge : JsBridgeBase {
+        public const string AcSchemeName = "ac";
+
         public readonly IniFile RaceConfig = Game.DefaultRaceConfig;
 
         public override string AcApiRequest(string url) {
-            url = url.SubstringExt(AcApiHandlerFactory.AcSchemeName.Length + 3);
+            url = url.SubstringExt(AcSchemeName.Length + 3);
             Logging.Debug(url);
 
             var index = url.IndexOf('?');

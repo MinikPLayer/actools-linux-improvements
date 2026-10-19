@@ -6,7 +6,7 @@ using AcManager.Tools.Managers;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class CarCountries {
+    public partial class CarCountries : global::AcManager.Pages.SelectionLists.SelectionList {
         public CarCountries() : base(CarsManager.Instance, true) {
             InitializeComponent();
         }

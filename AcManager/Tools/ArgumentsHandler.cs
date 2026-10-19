@@ -51,11 +51,11 @@ namespace AcManager.Tools {
 
         #region Events handling
         public static void HandlePasteEvent(Window window) {
-            window.PreviewKeyDown += (sender, args) => {
+            window.AddPreviewKeyDown((sender, args) => {
                 if (args.Key == Key.V && Keyboard.Modifiers == ModifierKeys.Control && OnPaste()) {
                     args.Handled = true;
                 }
-            };
+            });
         }
 
         private static bool OnPaste() {

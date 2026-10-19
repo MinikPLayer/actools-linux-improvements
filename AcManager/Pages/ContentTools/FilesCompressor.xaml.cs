@@ -24,14 +24,13 @@ using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
-using FirstFloor.ModernUI.Win32;
 using FirstFloor.ModernUI.Windows.Converters;
 using OxyPlot;
 using OxyPlot.Series;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class FilesCompressor {
+    public partial class FilesCompressor : global::AcManager.Pages.ContentTools.ContentTool {
         public static long OptionCompressThreshold = 50000;
 
         public static string GetContentDirectory() {

@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedFontPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedFontPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel<FontObject> {
             public ViewModel([NotNull] FontObject acObject) : base(acObject) { }
 

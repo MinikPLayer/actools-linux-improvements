@@ -10,7 +10,7 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Drift : IQuickDriveModeControl, ITabCanBePinned {
+    public partial class QuickDrive_Drift : global::Avalonia.Controls.UserControl, IQuickDriveModeControl, ITabCanBePinned {
         public class ViewModel : QuickDriveSingleModeViewModel {
             public Game.StartType[] StartTypes => Game.StartType.Values;
 

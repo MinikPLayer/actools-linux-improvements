@@ -3,7 +3,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.UserControls {
-    public partial class ModsWebFinder {
+    public partial class ModsWebFinder : global::Avalonia.Controls.UserControl {
         public ViewModel Model => (ViewModel)DataContext;
 
         public ModsWebFinder(ModsWebBrowser.WebSource source) {

@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsPython_detailed : ILoadableContent {
+    public partial class AcSettingsPython_detailed : global::Avalonia.Controls.UserControl, ILoadableContent {
         public class ViewModel : NotifyPropertyChanged {
             internal ViewModel() { }
 

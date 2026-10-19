@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.IO;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Managers;
 using AcTools.Utils;
@@ -11,7 +11,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsGenericMods {
+    public partial class SettingsGenericMods : global::Avalonia.Controls.UserControl {
         public SettingsGenericMods() {
             InitializeComponent();
             DataContext = new ViewModel();

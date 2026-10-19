@@ -19,7 +19,6 @@ using AcManager.Tools.Objects;
 using AcManager.Tools.SemiGui;
 using AcTools.Processes;
 using AcTools.Utils.Helpers;
-using CefSharp;
 using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
@@ -27,7 +26,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Drive {
-    public partial class WorldSimSeries : ILoadableContent {
+    public partial class WorldSimSeries : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch, ILoadableContent {
         private static readonly Uri WorldSimSeriesUri = new Uri("/Pages/Drive/WorldSimSeries.xaml", UriKind.Relative);
         private static string _loginToken;
 
@@ -69,7 +68,7 @@ namespace AcManager.Pages.Drive {
 
         public class ViewModel : NotifyPropertyChanged { }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class WorldSimSeriesApiProxy : JsGenericProxy {
             public WorldSimSeriesApiProxy(JsBridgeBase bridge) : base(bridge) { }
 

@@ -1,0 +1,126 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:extras="clr-namespace:AcManager.Tools.AcPlugins.Extras;assembly=AcManager.Tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetRunningStatus">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/OnlineSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="DriverToolTipContent" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <mui:SpacingStackPanel Spacing="4" x:Name="__Dt0">
+          <mui:SpacingStackPanel.Styles><Style Selector="mui|SpacingStackPanel#__Dt0"><Style Selector="^ TextBlock#PART_DriverMissing"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Driver, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S2" Value="{Binding CurrentLapSpoiled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding Collisions, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_DriverGuid"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_DriverName"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_CarName"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_DriverMissing"><Setter Property="IsVisible" Value="True"/>
+          </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_CurrentLap"><Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
+          </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#PART_Collisions"><Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
+          </Style></Style></mui:SpacingStackPanel.Styles><TextBlock x:Name="PART_DriverMissing" Text="Slot is empty"/>
+          <TextBlock x:Name="PART_DriverGuid" Text="{Binding Driver.Guid, StringFormat='{}ID: {0}'}"/>
+          <TextBlock x:Name="PART_DriverName" Text="{Binding Driver.DriverName, StringFormat='{}Driver: {0}'}"/>
+          <TextBlock x:Name="PART_CarName" Text="{Binding Driver.CarName, StringFormat='{}Car: {0}'}"/>
+          <TextBlock Text="{Binding DisplayBestLapTime, StringFormat='{}Best lap time: {0}'}"/>
+          <TextBlock Text="{Binding DisplayLastLapTime, StringFormat='{}Last lap time: {0}'}"/>
+          <TextBlock x:Name="PART_CurrentLap" Text="{Binding DisplayCurrentLapTimeAndProgress, StringFormat='{}Current lap: {0}'}"/>
+          <TextBlock x:Name="PART_Collisions" Text="{Binding Collisions, StringFormat='{}Collisions: {0}'}"/>
+        </mui:SpacingStackPanel>
+        </DataTemplate>
+
+      <ToolTip x:Key="DriverToolTip" ContentTemplate="{StaticResource DriverToolTipContent}" Content="{Binding}"/>
+      <ContextMenu x:Key="DriverContextMenu">
+        <MenuItem Header="Send a message directly" Command="{Binding SendMessageCommand}"/>
+        <MenuItem Header="Mention in chat" Command="{Binding MentionCommand}"/>
+        <MenuItem Header="Copy GUID" Command="{Binding CopyGuidCommand}"/>
+        <Separator/>
+        <MenuItem Header="Kick driver" Command="{Binding KickCommand}"/>
+        <MenuItem Header="Ban driver" Command="{Binding BanCommand}"/>
+      </ContextMenu>
+
+      <DataTemplate x:Key="DataGridCell.Name" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock Text="{Binding Driver.DriverName}" ContextMenu="{StaticResource DriverContextMenu}" ToolTip.Tip="{StaticResource DriverToolTip}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.CarName" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <DockPanel Background="Transparent" c:ToolTips.Car="{Binding Driver.Car}" c:ContextMenus.Car="{Binding Driver.Car}" mui:Draggable.Data="{Binding Driver.Car}">
+          <mui:BetterImage Margin="0 0 4 0" ClearOnChange="True" Filename="{Binding Driver.CarSkin.LiveryImage, FallbackValue={x:Null}}" Width="18" Height="18" CollapseIfMissing="True" CollapseIfNull="True"/>
+          <TextBlock Text="{Binding Driver.CarName}"/>
+        </DockPanel>
+      </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.Collisions" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock x:Name="PART_Collisions" Text="{Binding Collisions}"><TextBlock.Styles><Style Selector="TextBlock#PART_Collisions"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding Collisions, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] TextBlock#PART_Collisions"><Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.Laps" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock Text="{Binding TotalLaps}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.BestLapTime" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock Text="{Binding DisplayBestLapTime}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.LastLapTime" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock Text="{Binding DisplayLastLapTime}"/>
+      </DataTemplate>
+      <DataTemplate x:Key="DataGridCell.CurrentLap" DataType="{x:Type extras:AcDriverLeaderboardDetails}">
+        <TextBlock x:Name="PART_Text" Text="{Binding DisplayCurrentLapTimeAndProgress}"><TextBlock.Styles><Style Selector="TextBlock#PART_Text"><Style Selector="^"><Setter Property="pa:T.S5" Value="{Binding CurrentLapSpoiled, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S5)=True] TextBlock#PART_Text"><Setter Property="Foreground" Value="{DynamicResource ErrorColor}"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <DockPanel Margin="0 0 0 20">
+    <DockPanel Dock="Bottom" Margin="0 20 0 0">
+
+      <DockPanel Width="360" Height="280">
+        <TextBlock Text="Map:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Label Label.Padding"/>
+        <mui:Cell>
+          <mui:BetterImage x:Name="TrackMap" Filename="{Binding Track.MapImage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          <mui:Cell x:Name="TrackMapItems" Width="{Binding ActualWidth, ElementName=TrackMap}" Height="{Binding ActualHeight, ElementName=TrackMap}" HorizontalAlignment="Center" VerticalAlignment="Center" SizeChanged="OnTrackMapSizeChanged" Background="Transparent"/>
+        </mui:Cell>
+      </DockPanel>
+
+      <DockPanel DataContext="{Binding CmPlugin}" Margin="20 0 0 0" IsEnabled="{Binding Converter={StaticResource NullToBooleanConverter}, ConverterParameter=inverse}">
+        <TextBlock Text="Chat:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Label Label.Padding"/>
+        <DockPanel DockPanel.Dock="Bottom" Margin="0 4 0 0">
+          <mui:AsyncButton Command="{Binding Chat.SendChatCommand}" Content="Send" DockPanel.Dock="Right" Margin="4 0 0 0"/>
+          <mui:BetterTextBox Text="{Binding Chat.ChatText, UpdateSourceTrigger=PropertyChanged}" Placeholder="Write chat message…" TextWrapping="NoWrap" AcceptsReturn="True" FontSize="{DynamicResource SmallFontSize}" KeyDown="OnChatTextKeyDown" KeyUp="OnChatTextKeyUp" ToolTip.Tip="Use “#CAR_ID message” or “#DRIVER_NAME message” to send a message to a single driver instead of broadcasting for all"/>
+        </DockPanel>
+        <ItemsControl ItemsSource="{Binding Chat.ChatMessages}" Theme="{StaticResource VirtualizingItemsControl}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <DockPanel Margin="0 0 0 4" x:Name="__Dt6">
+                <DockPanel.Styles><Style Selector="DockPanel#__Dt6"><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding IsSystemCommand, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/><Setter Property="pa:T.S8" Value="{Binding IsDirectAddress, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^[(pa|T.S7)=True] mui|SelectableBbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                </Style><Style Selector="^[(pa|T.S8)=True] mui|SelectableBbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+                </Style></Style></DockPanel.Styles><mui:ReferenceSwitch Value="{Binding Author}" Width="80" Margin="0 2 6 0" VerticalAlignment="Top" DockPanel.Dock="Left">
+                  <mui:ReferenceSwitch.NonNull>
+                    <TextBlock DataContext="{Binding Author}" Text="{Binding Driver.DriverName, FallbackValue='?'}" FontWeight="Bold" ContextMenu="{StaticResource DriverContextMenu}" ToolTip.Tip="{StaticResource DriverToolTip}" Classes="Small"/>
+                  </mui:ReferenceSwitch.NonNull>
+                  <mui:ReferenceSwitch.Null>
+                    <TextBlock Text="Server" FontWeight="Bold" Foreground="{DynamicResource WindowTextReadOnly}" Classes="Small"/>
+                  </mui:ReferenceSwitch.Null>
+                </mui:ReferenceSwitch>
+                <mui:SelectableBbCodeBlock x:Name="PART_Message" Mode="WithoutBbCodes" Text="{Binding Message}"/>
+              </DockPanel>
+              </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </DockPanel>
+    </DockPanel>
+
+    <TextBlock Text="Leaderboard:" Margin="0 0 0 8" DockPanel.Dock="Top" Classes="Label Label.Padding"/>
+    <mui:Switch Value="{Binding Leaderboard.ConnectedOnly.Count}">
+      <TextBlock mui:Switch.When="0" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Server is empty" Foreground="{DynamicResource WindowTextReadOnly}" Classes="Title"/>
+      <DataGrid ItemsSource="{Binding Leaderboard.ConnectedOnly}" Theme="{StaticResource DataGrid.Lite}">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="1*" Header="Name" SortMemberPath="Driver.DriverName" CellTemplate="{StaticResource DataGridCell.Name}"/>
+          <DataGridTemplateColumn Width="1*" Header="Car" SortMemberPath="Driver.CarName" CellTemplate="{StaticResource DataGridCell.CarName}"/>
+          <DataGridTemplateColumn Width="80" Header="Collisions" SortMemberPath="Collisions" CellTemplate="{StaticResource DataGridCell.Collisions}"/>
+          <DataGridTemplateColumn Width="60" Header="Laps" SortMemberPath="TotalLaps" CellTemplate="{StaticResource DataGridCell.Laps}"/>
+          <DataGridTemplateColumn Width="100" Header="Best lap" SortMemberPath="BestLapTime" CellTemplate="{StaticResource DataGridCell.BestLapTime}"/>
+          <DataGridTemplateColumn Width="100" Header="Last lap" SortMemberPath="LastLapTime" CellTemplate="{StaticResource DataGridCell.LastLapTime}"/>
+          <DataGridTemplateColumn Width="140" Header="Current lap" SortMemberPath="CurrentLapTime" CellTemplate="{StaticResource DataGridCell.CurrentLap}"/>
+        </DataGrid.Columns>
+      </DataGrid>
+    </mui:Switch>
+
+  </DockPanel>
+
+</UserControl>

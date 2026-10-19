@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class PlayerStats : ILoadableContent, IParametrizedUriContent {
+    public partial class PlayerStats : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private string _filter;
 
         [CanBeNull]

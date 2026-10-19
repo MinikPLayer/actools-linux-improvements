@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class LapTimes_Sources : IParametrizedUriContent {
+    public partial class LapTimes_Sources : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         private ViewModel Model => (ViewModel)DataContext;
 
         public LapTimes_Sources() {

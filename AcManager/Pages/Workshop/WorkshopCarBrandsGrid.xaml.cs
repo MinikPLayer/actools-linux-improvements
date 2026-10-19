@@ -12,7 +12,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopCarBrandsGrid : IParametrizedUriContent, ILoadableContent {
+    public partial class WorkshopCarBrandsGrid : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         private string _contentType;
         private string _categoryType;
         private string _searchKeyword;

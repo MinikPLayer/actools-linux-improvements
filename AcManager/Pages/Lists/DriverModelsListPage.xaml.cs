@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class DriverModelsListPage : IParametrizedUriContent {
+    public partial class DriverModelsListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent {
         public void OnUri(Uri uri) {
             var filter = uri.GetQueryParam("Filter");
 

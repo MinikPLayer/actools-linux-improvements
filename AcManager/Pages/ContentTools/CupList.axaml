@@ -1,0 +1,234 @@
+﻿<tools:ContentTool xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:tools="clr-namespace:AcManager.Pages.ContentTools" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ContentTools.CupList">
+  <tools:ContentTool.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </tools:ContentTool.Resources>
+
+  <mui:SpacingStackPanel mui:Switch.When="{x:Static tools:Stage.Loading}" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+    <ProgressBar IsIndeterminate="{Binding ProgressValue.IsIndeterminate}" Maximum="1" Value="{Binding ProgressValue.Progress, Mode=OneWay}" Height="4"/>
+    <TextBlock Text="{Binding ProgressValue.Message}"/>
+  </mui:SpacingStackPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Empty}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.Online_NothingToDisplay}" Classes="Heading1"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Error}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.ContentTools_BatchPreviewsUpdater_SomeErrorHappened}" DockPanel.Dock="Top" Classes="Heading1"/>
+    <TextBlock Text="{Binding Error}" Margin="0 20 0 0"/>
+  </DockPanel>
+
+  <Grid mui:Switch.When="{x:Static tools:Stage.Ready}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200"/>
+      <ColumnDefinition Width="9"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <ListBox ItemsSource="{Binding ItemsToUpdate}" SelectedItem="{Binding SelectedItem}" Theme="{StaticResource VirtualizingListBox}">
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="{x:Type t:ICupSupportedObject}">
+          <DockPanel Margin="8 4">
+            <TextBlock Text="{Binding CupUpdateInformation.Version}" VerticalAlignment="Center" DockPanel.Dock="Right" Classes="Small"/>
+            <TextBlock Text="{Binding}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0 0 4 0"/>
+
+            <!--<TextBlock Text="{Binding LeftUnsolved}" Style="{StaticResource Small}" VerticalAlignment="Center" DockPanel.Dock="Right" />
+            <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform"
+                Margin="2 2 4 0" VerticalAlignment="Center"
+                Visibility="{Binding Car.Author, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static t:AcCommonObject.AuthorKunos}}" />
+            <TextBlock Text="{Binding Car.DisplayName}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0 0 4 0" />-->
+          </DockPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <mui:ModernTabSplitter Grid.Column="1" SaveKey="MigrationHelper"/>
+
+    <ScrollViewer Grid.Column="2" DataContext="{Binding SelectedItem}" Margin="20 0 20 0" mui:FancyScroll.Outside="True">
+      <mui:SpacingStackPanel Spacing="20">
+        <ContentControl Content="{Binding}">
+          <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:AcPlaceholderNew}">
+              <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Classes="Heading2"/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type t:CarObject}">
+              <DockPanel>
+                <mui:BetterImage Width="24" Height="24" DockPanel.Dock="Left" Margin="0 0 8 0" Filename="{Binding BrandBadge}"/>
+                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Classes="Heading2"/>
+              </DockPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type t:TrackObject}">
+              <DockPanel>
+                <mui:BetterImage Width="24" Height="24" DockPanel.Dock="Left" Margin="0 0 8 0" Filename="{Binding OutlineImage}" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Classes="Heading2"/>
+              </DockPanel>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type t:PythonAppObject}">
+              <DockPanel>
+                <mui:BetterImage Width="24" Height="24" DockPanel.Dock="Left" Margin="0 0 8 0" Filename="{Binding AppIcon.Value}"/>
+                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center" Classes="Heading2"/>
+              </DockPanel>
+            </DataTemplate>
+          </ContentControl.DataTemplates><ContentControl.Resources>
+            <!-- Placeholder -->
+            <!-- Car -->
+            <!-- Track -->
+            <!-- App -->
+            </ContentControl.Resources>
+        </ContentControl>
+
+
+        <StackPanel Margin="20 8">
+          <c:PropertiesGrid Columns="1" HorizontalSpacing="4" VerticalSpacing="4" Margin="0 8 0 0" LabelPadding="0 1 0 0" LabelWidth="160">
+            <mui:BooleanSwitch c:PropertiesGrid.Label="Install in one click:" Value="{Binding CupUpdateInformation.IsToUpdateManually}">
+              <mui:BooleanSwitch.True>
+                <TextBlock Foreground="{DynamicResource Error}" Text="{x:Static mui:UiStrings.No}" FontWeight="Bold"/>
+              </mui:BooleanSwitch.True>
+              <mui:BooleanSwitch.False>
+                <TextBlock Foreground="{DynamicResource Go}" Text="{x:Static mui:UiStrings.Yes}" FontWeight="Bold"/>
+              </mui:BooleanSwitch.False>
+            </mui:BooleanSwitch>
+            <mui:PlaceholderTextBlock c:PropertiesGrid.Label="New version:" Text="{Binding CupUpdateInformation.Version}" Placeholder="Not set"/>
+            <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Installed version:" Text="{Binding Version}" Placeholder="Not set"/>
+          </c:PropertiesGrid>
+          <DockPanel Margin="0 4 0 0">
+            <Label Content="Recent changes:" Margin="0 1 0 0" Width="160" VerticalAlignment="Top"/>
+            <mui:PlaceholderTextBlock Text="{Binding CupUpdateInformation.Changelog}" Placeholder="Not set" MaxHeight="60"/>
+          </DockPanel>
+        </StackPanel>
+
+        <!--<DockPanel
+            Visibility="{Binding Car.Author, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static t:AcCommonObject.AuthorKunos}}">
+          <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform"
+              Margin="2 2 4 0" VerticalAlignment="Center" />
+          <TextBlock Foreground="{DynamicResource Error}" TextWrapping="Wrap" Style="{StaticResource Small}">
+            <TextBlock.Text>This is a car from Kunos, please, be very careful. In fact, I wouldn’t recommend to use this tool on it at all.</TextBlock.Text>
+          </TextBlock>
+        </DockPanel>
+
+        <mui:BooleanSwitch Value="{Binding RatingMode}">
+          <mui:SpacingStackPanel Spacing="4" MinHeight="120">
+            <TextBlock Text="More details:" Style="{StaticResource Label.Padding}" />
+            <mui:ReferenceSwitch Value="{Binding Ratings}">
+              <mui:ReferenceSwitch.Null>
+                <ProgressBar IsIndeterminate="True" />
+              </mui:ReferenceSwitch.Null>
+            </mui:ReferenceSwitch>
+            <mui:BooleanSwitch Value="{Binding RatingLoading}">
+              <mui:BooleanSwitch.False>
+                <ItemsControl ItemsSource="{Binding Ratings}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <DockPanel Height="32" Margin="0 0 8 4">
+                        <TextBlock Style="{StaticResource Label}" Foreground="Black" DockPanel.Dock="Left" Padding="0 8 0 9"
+                            Text="{Binding Rate, Converter={x:Static tools:CarAnalyzer.RatingToTextConverter}}"
+                            Background="{Binding Rate, Converter={x:Static tools:CarAnalyzer.RatingToColorConverter}}" Margin="0 0 8 0" Width="32"
+                            TextAlignment="Center">
+                          <TextBlock.ToolTip>
+                            <ToolTip Content="{Binding Rate}" ContentStringFormat="{}{0:F1}/5.0"
+                                Visibility="{Binding Rate, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" />
+                          </TextBlock.ToolTip>
+                        </TextBlock>
+                        <Button DockPanel.Dock="Right" Content="More…" Command="{Binding ShowInformationCommand}" Margin="8 0 0 0"
+                            Visibility="{Binding ShowInformationCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="{Binding Message}" DockPanel.Dock="Top" Margin="0 -1 0 0" />
+                        <TextBlock Text="{Binding Details}" Style="{StaticResource Small}" Margin="0 1 0 0" />
+                      </DockPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </mui:BooleanSwitch.False>
+            </mui:BooleanSwitch>
+          </mui:SpacingStackPanel>
+        </mui:BooleanSwitch>
+
+        <TextBlock Text="{Binding LeftUnsolved, StringFormat='{}{0} unsolved issues:'}" Style="{StaticResource Label.Padding}" />
+
+        <mui:Switch Value="{Binding Aspects.Count}">
+          <TextBlock mui:Switch.When="0" Opacity="0.5" Text="No issues found" />
+          <ItemsControl ItemsSource="{Binding Aspects}" IsEnabled="{Binding ReloadCommand.IsAbleToExecute}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="{x:Type t:ContentRepairSuggestion}">
+                <mui:Cell Margin="0 0 0 20">
+                  <DockPanel IsEnabled="{Binding IsSolved, Converter={StaticResource InvertBooleanConverter}}">
+                    ~1~<Separator DockPanel.Dock="Bottom" Margin="0 0 0 -10" Background="{DynamicResource SeparatorBackground}" />@1@
+                    <StackPanel DockPanel.Dock="Right" Margin="8 0 5 0" Width="100">
+                      <ItemsControl ItemsSource="{Binding Fixes}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <Button Content="{Binding FixCaption, TargetNullValue='Fix It'}" Click="OnFixButtonClick" Margin="0 0 0 4" />
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                      <Button Content="Hide" Command="{Binding HideCommand}" />
+                    </StackPanel>
+                    <DockPanel Dock="Top" Margin="0 0 0 4">
+                      <Path x:Name="PART_AlertIcon" Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left"
+                          Fill="{DynamicResource Error}" Stretch="Uniform" Margin="0 0 4 0" VerticalAlignment="Center" Visibility="Collapsed" />
+                      <mui:BbCodeBlock DockPanel.Dock="Right" x:Name="PART_Category" BbCode="{Binding Category}" Style="{StaticResource Small}"
+                          Margin="8 2 8 0" />
+                      <mui:BbCodeBlock DockPanel.Dock="Top" BbCode="{Binding DisplayName}" FontWeight="Bold" />
+                    </DockPanel>
+                    <mui:BbCodeBlock BbCode="{Binding Description}" Style="{StaticResource Small}" />
+                  </DockPanel>
+                  <Border Background="{DynamicResource DarkStripeBackground}" TextBlock.Foreground="{DynamicResource DarkStripeText}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center"
+                      Visibility="{Binding IsSolved, Converter={StaticResource BooleanToVisibilityConverter}}" Padding="20" MaxWidth="320">
+                    <DockPanel>
+                      <Path Data="{StaticResource CheckIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Go}" Stretch="Uniform"
+                          Margin="0 0 8 0" VerticalAlignment="Center" />
+                      <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                        <TextBlock.Text>Solved.</TextBlock.Text>
+                      </TextBlock>
+                    </DockPanel>
+                  </Border>
+                </mui:Cell>
+                <DataTemplate.Triggers>
+                  <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                      <Condition Binding="{Binding IsCritical}" Value="True" />
+                      <Condition Binding="{Binding IsSolved}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter TargetName="PART_Category" Property="Foreground" Value="{DynamicResource Error}" />
+                    <Setter TargetName="PART_AlertIcon" Property="Visibility" Value="Visible" />
+                  </MultiDataTrigger>
+                </DataTemplate.Triggers>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </mui:Switch>-->
+
+        <!--<WrapPanel Orientation="Horizontal">
+          <WrapPanel.Resources>
+            <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+              <Setter Property="Padding" Value="8 3 8 5" />
+              <Setter Property="Margin" Value="0 0 4 4" />
+            </Style>
+          </WrapPanel.Resources>
+
+          <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding ReloadCommand}" />
+          <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding Car.ViewInExplorerCommand}" />
+          <Button Content="{x:Static g:AppStrings.Toolbar_CustomShowroom}" Command="{Binding OpenInCustomShowroomCommand}" />
+
+          <mui:SpacingStackPanel Orientation="Horizontal" Spacing="-4">
+            <Button Content="{x:Static g:AppStrings.Toolbar_Showroom}" Command="{Binding OpenInShowroomCommand}" />
+            <Button Content="…" Command="{Binding OpenInShowroomOptionsCommand}" />
+          </mui:SpacingStackPanel>
+
+          <mui:SpacingStackPanel Orientation="Horizontal" Spacing="-4">
+            <Button Content="{x:Static g:AppStrings.Toolbar_Drive}" Command="{Binding DriveCommand}" />
+            <Button Content="…" Command="{Binding DriveOptionsCommand}" />
+          </mui:SpacingStackPanel>
+
+          <Button Content="{x:Static g:AppStrings.Toolbar_ReplaceSound}" Command="{Binding ReplaceSoundCommand}"
+              ToolTip="{x:Static g:AppStrings.Toolbar_ReplaceSound_Tooltip}" />
+        </WrapPanel>-->
+      </mui:SpacingStackPanel>
+    </ScrollViewer>
+  </Grid>
+</tools:ContentTool>

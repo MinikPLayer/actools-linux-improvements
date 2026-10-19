@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -36,7 +36,7 @@ using StringBasedFilter;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedReplayPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedReplayPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         /// <summary>
         /// Gets description for ReadMe.txt inside shared archive.
         /// </summary>
@@ -476,11 +476,11 @@ namespace AcManager.Pages.Selected {
             InputBindings.AddRange(_model.QuickDriveButton.GetInputBindingCommands());
         }
 
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.QuickDriveButton.Initialize();
         }
 
-        private void OnCarPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarPreviewClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             e.Handled = true;
             new ImageViewer<CarSkinObject>(

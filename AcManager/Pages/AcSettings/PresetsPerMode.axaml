@@ -1,0 +1,154 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:as="clr-namespace:AcManager.Pages.AcSettings" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:g="clr-namespace:AcManager" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.PresetsPerMode" x:Name="This">
+  <UserControl.Styles><Style Selector="CheckBox.CheckBox">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Setter Property="Margin" Value="0 0 16 0"/>
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="DockPanel.Dock" Value="Left"/>
+      </Style>
+
+      <Style Selector="CheckBox.CheckBox.Separate">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Setter Property="Margin" Value="0 0 16 0"/>
+      </Style>
+
+      </UserControl.Styles><UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="SelectedDataTemplate">
+        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+        <TextBlock x:Name="TextBlock" TextTrimming="CharacterEllipsis"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding DataContext.Name, RelativeSource={RelativeSource AncestorType={x:Type mui:HierarchicalComboBox}}}"/></Style><Style Selector="^:disabled TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+          </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding DataContext.Name, RelativeSource={RelativeSource AncestorType={x:Type mui:HierarchicalComboBox}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Text" Value="Default"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+
+      <DataTemplate x:Key="EntryDataTemplate" DataType="{x:Type as:PresetsPerMode+PresetPerModeUi}">
+        <StackPanel Width="220" Margin="8" Background="Transparent" TextElement.FontWeight="Normal" Classes="SettingsCompactPanel">
+          <DockPanel>
+            <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_Condition}" Width="80"/>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.Modes, ElementName=This}" SelectedItem="{Binding Mode}" FixedMode="False">
+              <mui:HierarchicalComboBox.SelectedContent>
+                <DataTemplate>
+                  <TextBlock x:Name="TextBlock" TextTrimming="CharacterEllipsis"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding DataContext.Mode.DisplayName, RelativeSource={RelativeSource AncestorType={x:Type mui:HierarchicalComboBox}}}"/></Style><Style Selector="^:disabled TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+                    </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding DataContext.Mode, RelativeSource={RelativeSource AncestorType={x:Type mui:HierarchicalComboBox}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Text" Value="{x:Static t:ToolsStrings.Common_None}"/>
+                      <Setter Property="Opacity" Value="0.5"/>
+                    </Style></Style></TextBlock.Styles></TextBlock>
+                  </DataTemplate>
+              </mui:HierarchicalComboBox.SelectedContent>
+            </mui:HierarchicalComboBox>
+          </DockPanel>
+
+          <DockPanel Margin="0 0 0 8" IsVisible="{Binding ScriptParamVisibility, Converter={x:Static pc:VisibilityConverters.ToBool}}" ToolTip.Tip="{Binding ScriptParamName}">
+            <mui:BetterTextBox Text="{Binding ScriptParam}" Placeholder="{Binding ScriptParamShortName}"/>
+          </DockPanel>
+
+          <CheckBox IsChecked="{Binding Enabled}" Classes="SettingsCheckBox CheckBox.Separate">
+            <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_Enabled}"/>
+          </CheckBox>
+
+          <DockPanel DataContext="{Binding Apps}" Margin="0 20 0 8">
+            <CheckBox IsChecked="{Binding IsEnabled}" Classes="SettingsCheckBox CheckBox">
+              <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_Apps}"/>
+            </CheckBox>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.AppPresets, ElementName=This}" SelectedItem="{Binding Value}" FixedMode="False" SelectedContent="{StaticResource SelectedDataTemplate}" IsEnabled="{Binding IsEnabled}"/>
+          </DockPanel>
+
+          <DockPanel DataContext="{Binding Audio}">
+            <CheckBox IsChecked="{Binding IsEnabled}" Classes="SettingsCheckBox CheckBox">
+              <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_Audio}"/>
+            </CheckBox>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.AudioPresets, ElementName=This}" SelectedItem="{Binding Value}" FixedMode="False" SelectedContent="{StaticResource SelectedDataTemplate}" IsEnabled="{Binding IsEnabled}"/>
+          </DockPanel>
+
+          <DockPanel DataContext="{Binding Video}">
+            <CheckBox IsChecked="{Binding IsEnabled}" Classes="SettingsCheckBox CheckBox">
+              <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_Video}"/>
+            </CheckBox>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.VideoPresets, ElementName=This}" SelectedItem="{Binding Value}" FixedMode="False" SelectedContent="{StaticResource SelectedDataTemplate}" IsEnabled="{Binding IsEnabled}"/>
+          </DockPanel>
+
+          <DockPanel DataContext="{Binding Controls}">
+            <CheckBox IsChecked="{Binding IsEnabled}" Classes="SettingsCheckBox CheckBox">
+              <Label Content="{x:Static g:AppStrings.Settings_CustomShowroom_Controls}"/>
+            </CheckBox>
+            <Border IsEnabled="{Binding IsEnabled}">
+              <mui:HierarchicalComboBox ItemsSource="{Binding Presets, Source={x:Static c:ControlsPresets.Instance}}" SelectedItem="{Binding Value}" IsEnabled="{Binding PresetsReady, Source={x:Static c:ControlsPresets.Instance}}" FixedMode="False" PreviewProvider="{Binding Source={x:Static c:ControlsPresets.Instance}}" SelectedContent="{StaticResource SelectedDataTemplate}"/>
+            </Border>
+          </DockPanel>
+
+          <DockPanel DataContext="{Binding CustomShadersPatch}">
+            <CheckBox IsChecked="{Binding IsEnabled}" Classes="SettingsCheckBox CheckBox">
+              <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_CSP}" ToolTip.Tip="{x:Static g:AppStrings.AcSettings_PresetsPerMode_CSP_Tooltip}"/>
+            </CheckBox>
+            <mui:HierarchicalComboBox ItemsSource="{Binding DataContext.PatchPresets, ElementName=This}" SelectedItem="{Binding Value}" FixedMode="False" SelectedContent="{StaticResource SelectedDataTemplate}" IsEnabled="{Binding IsEnabled}"/>
+          </DockPanel>
+
+          <CheckBox IsChecked="{Binding RearViewMirror}" IsThreeState="True" Classes="SettingsCheckBox CheckBox.Separate">
+            <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_RearViewMirror}"/>
+          </CheckBox>
+
+          <TextBlock Text="{Binding ConditionId, StringFormat='ID: {0}'}" Margin="0 20 0 0" TextTrimming="CharacterEllipsis" Classes="Small"/>
+          <TextBlock Text="{Binding ConditionFn, StringFormat='Func.: {0}'}" Margin="0 0 0 8" TextTrimming="CharacterEllipsis" Classes="Small"/>
+
+          <Button Margin="0 20 0 0" Command="{Binding DeleteCommand}" Content="{x:Static g:AppStrings.Settings_Sharing_Remove}"/>
+        </StackPanel>
+      </DataTemplate>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <DockPanel Classes="ContentRootWithPadding">
+    <c:MessageBlock Margin="0 0 0 20" DockPanel.Dock="Top">
+      <mui:BbCodeBlock>
+        <mui:BbCodeBlock.Text>You want CM to select specific video/controls/apps presets depending on which mode you use? This is the place! All changes will be reverted automatically on the end of the race.[br][br]If you want, you can specify your own mode with Lua by modifying some Data files.</mui:BbCodeBlock.Text>
+      </mui:BbCodeBlock>
+    </c:MessageBlock>
+
+    <CheckBox IsChecked="{Binding PresetsPerModeAutoUpdate, Source={x:Static t:SettingsHolder.Drive}}" Margin="0 0 0 20" DockPanel.Dock="Top">
+      <ToolTip.Tip>If custom preset (such as Apps preset) is applied, but during the race, settings were changed, update it.</ToolTip.Tip>
+      <Label Content="{x:Static g:AppStrings.AcSettings_PresetsPerMode_UpdatePresetsDuringTheRace}"/>
+    </CheckBox>
+
+    <ListBox mui:Draggable.Enabled="True" mui:Draggable.Destination="{x:Static t:PresetPerMode.DraggableFormat}" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="400" VerticalAlignment="Top" mui:FancyScroll.Outside="True">
+      <ListBox.ItemTemplate>
+        <c:FlexibleDataTemplateSelector DataTemplate="{StaticResource EntryDataTemplate}"/>
+      </ListBox.ItemTemplate>
+      <i:Interaction.Behaviors>
+        <mui:HorizontalScrollBehavior/>
+      </i:Interaction.Behaviors>
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel Orientation="Horizontal"/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.Resources>
+        <!-- PORT: removed CollectionViewSource -->
+      </ItemsControl.Resources>
+      <ItemsControl.Items>
+        <!-- PORT: removed CollectionContainer -->
+          <Border Height="120">
+            <Border.Resources>
+              <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
+            </Border.Resources>
+            <Button BorderThickness="0" Click="OnAddNewRoundButtonClick">
+              <mui:SpacingStackPanel Spacing="8">
+                <Path Data="{StaticResource AddIconData}" Stretch="Fill" Width="12" Height="12" HorizontalAlignment="Center" Margin="0 1 0 -1" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                <TextBlock Text="{x:Static g:AppStrings.AcSettings_PresetsPerMode_CreateNew}" VerticalAlignment="Center" Classes="Heading2"/>
+              </mui:SpacingStackPanel>
+            </Button>
+          </Border>
+        </ItemsControl.Items>
+      <ListBox.ItemContainerTheme>
+        <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource RibbonListBoxItem.Top}">
+          <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Controls, FallbackValue={x:Null}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Background" Value="Transparent"/>
+            </Style></ControlTheme>
+      </ListBox.ItemContainerTheme>
+    </ListBox>
+  </DockPanel>
+</UserControl>

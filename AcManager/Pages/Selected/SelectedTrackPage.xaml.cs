@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -36,7 +36,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedTrackPage : ILoadableContent, IParametrizedUriContent {
+    public partial class SelectedTrackPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent {
         public class ViewModel : SelectedAcObjectViewModel<TrackObject> {
             public ViewModel([NotNull] TrackObject acObject) : base(acObject) {
                 SelectedTrackConfiguration = acObject.SelectedLayout;
@@ -446,7 +446,7 @@ namespace AcManager.Pages.Selected {
             public ICommand CloneCommand => _parent.CloneCommand;
         }
 
-        protected override void OnVersionInfoBlockClick(object sender, MouseButtonEventArgs e) {
+        protected override void OnVersionInfoBlockClick(object sender, PointerReleasedEventArgs e) {
             /*if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new VersionInfoEditor(_model.SelectedTrackConfiguration).ShowDialog();
@@ -475,7 +475,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnGeoTagsClick(object sender, MouseButtonEventArgs e) {
+        private void OnGeoTagsClick(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new TrackGeoTagsDialog(_model.SelectedTrackConfiguration).ShowDialog();
@@ -521,11 +521,11 @@ namespace AcManager.Pages.Selected {
 
         private ViewModel _model;
 
-        private void ToolbarButtonQuickDrive_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {
+        private void ToolbarButtonQuickDrive_OnPreviewMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeQuickDrivePresets();
         }
 
-        private void OnOutlineRightClick(object sender, MouseButtonEventArgs e) {
+        private void OnOutlineRightClick(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
 
             var context = ((FrameworkElement)sender).DataContext;

@@ -1,0 +1,151 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:dr="clr-namespace:AcManager.Pages.Drive" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:sys="using:System" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Drive.UserChampionships" Loaded="OnLoaded" Unloaded="OnUnloaded" x:Name="ThisControl">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <sys:Double x:Key="TileSize">202</sys:Double>
+      <Thickness x:Key="ItemPadding">8</Thickness>
+      <Thickness x:Key="ItemPaddingFix">-8 0 -8 0</Thickness>
+      <sys:Double x:Key="ItemSize">218</sys:Double>
+
+      <DataTemplate x:Key="ItemTemplate" DataType="{x:Type t:AcItemWrapper}">
+        <ContentControl DataContext="{Binding Value}" Content="{Binding}">
+          <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:AcPlaceholderNew}">
+              <mui:Cell Width="{StaticResource TileSize}" Height="{StaticResource TileSize}" Background="#555555">
+                <!-- TODO: diagonal lines? -->
+                <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{StaticResource DarkenPanel}" Text="{Binding DisplayName}" Foreground="White"/>
+              </mui:Cell>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type t:UserChampionshipObject}">
+              <mui:Cell Width="{StaticResource TileSize}" Height="{StaticResource TileSize}" Background="{DynamicResource ThumbnailBackground}" ClipToBounds="True" x:Name="__Dt0">
+                <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ TextBlock#ProgressTextBlock"><Setter Property="Foreground" Value="White"/></Style><Style Selector="^ Path#CheckIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Border#FullyFinished"><Setter Property="IsVisible" Value="False"/><Setter Property="BorderBrush" Value="{StaticResource Completed}"/></Style><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Path#LockIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding IsCompleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding HasErrors, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding IsAvailable, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><!-- PORT: storyboard actions of trigger [(pa|T.S1)=True] not converted --><Style Selector="^[(pa|T.S2)=True] TextBlock#ProgressTextBlock"><Setter Property="Foreground" Value="{StaticResource Completed}"/>
+                </Style><!-- PORT: DataTrigger with element binding not converted --><!-- PORT: DataTrigger with element binding not converted --><Style Selector="^[(pa|T.S3)=True] mui|BetterImage#Image"><Setter Property="Effect">
+                    <Setter.Value>
+                      <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
+                    </Setter.Value>
+                  </Setter>
+
+                  </Style><Style Selector="^[(pa|T.S3)=True] TextBlock#ProgressTextBlock"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S3)=True] Path#CheckIcon"><Setter Property="IsVisible" Value="False"/>
+
+                  </Style><Style Selector="^[(pa|T.S3)=True] Border#FullyFinished"><Setter Property="IsVisible" Value="True"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource Error}"/>
+                  </Style><Style Selector="^[(pa|T.S3)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
+                </Style><Style Selector="^[(pa|T.S4)=True] mui|BetterImage#Image"><Setter Property="Effect">
+                    <Setter.Value>
+                      <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
+                    </Setter.Value>
+                  </Setter>
+                  </Style><Style Selector="^[(pa|T.S4)=True] TextBlock#ProgressTextBlock"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Path#CheckIcon"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Path#LockIcon"><Setter Property="IsVisible" Value="True"/>
+                  </Style><Style Selector="^[(pa|T.S4)=True] Border#FullyFinished"><Setter Property="IsVisible" Value="False"/>
+                </Style></Style></mui:Cell.Styles><TextBlock Text="{x:Static g:AppStrings.UserChampionships_NoPreview}" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.4" ToolTip.Tip="{Binding DisplayName}" Classes="Heading1"/>
+                <mui:BetterImage Filename="{Binding PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" x:Name="Image" ClearOnChange="True" Crop="{Binding PreviewCrop}" CropUnits="Absolute" CollapseIfMissing="True" IsHitTestVisible="False"/>
+
+                <TextBlock x:Name="TopPanel" Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource DarkenPanel}" Text="{Binding DisplayName}" Foreground="White" FontSize="{DynamicResource SmallFontSize}" TextAlignment="Right">
+                  <TextBlock.RenderTransform>
+                    <TranslateTransform/>
+                  </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <mui:Cell x:Name="BottomPanel" VerticalAlignment="Bottom" Background="{StaticResource DarkenPanel}">
+                  <mui:Cell.RenderTransform>
+                    <TranslateTransform/>
+                  </mui:Cell.RenderTransform>
+
+                  <TextBlock Foreground="White" HorizontalAlignment="Center" Margin="4" Text="{Binding DisplayCode}" x:Name="CodeTextBlock" FontWeight="Bold"/>
+                  <TextBlock HorizontalAlignment="Right" Margin="4" x:Name="ProgressTextBlock">
+                    <TextBlock.Text>
+                      <MultiBinding StringFormat="{}{0}/{1}">
+                        <Binding Path="CompletedEvents"/>
+                        <Binding Path="ExtendedRounds.Count"/>
+                      </MultiBinding>
+                    </TextBlock.Text>
+                  </TextBlock>
+
+                  <mui:Cell Margin="4 2" Height="{Binding ActualHeight, ElementName=CodeTextBlock, Converter={StaticResource SumConverter}, ConverterParameter=-4}">
+                    <Path Data="{StaticResource LeaderboardIconData}" Fill="White" MaxWidth="16" Stretch="Uniform" HorizontalAlignment="Left"/>
+                    <Path Data="{StaticResource LockIconData}" Fill="White" MaxWidth="32" Stretch="Uniform" HorizontalAlignment="Right" x:Name="LockIcon" ToolTip.Tip="{x:Static g:AppStrings.KunosCareer_RequiredSeriesAreNotDoneYet}"/>
+                    <Path Data="{StaticResource CheckIconData}" Fill="{StaticResource Completed}" MaxWidth="32" Stretch="Uniform" HorizontalAlignment="Right" x:Name="CheckIcon" ToolTip.Tip="{x:Static g:AppStrings.KunosCareer_FullyCompleted}"/>
+                  </mui:Cell>
+                </mui:Cell>
+
+                <Border BorderThickness="1" x:Name="FullyFinished"/>
+                <Path Data="{StaticResource AlertIconData}" MaxHeight="50" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{DynamicResource Error}" x:Name="ErrorIcon"/>
+              </mui:Cell>
+              </DataTemplate>
+          </ContentControl.DataTemplates><ContentControl.Resources>
+            <!--placeholder-->
+            <!--KunosCareerObject-->
+            </ContentControl.Resources>
+        </ContentControl>
+      </DataTemplate>
+
+      <mui:BindingProxy x:Key="DataContextProxy" Data="{Binding}"/>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid Classes="ContentRootWithPadding">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid x:Name="MainListWrapper" Grid.Row="0" Grid.ColumnSpan="2" Margin="{StaticResource ItemPaddingFix}">
+      <ListBox ItemsSource="{Binding MainList}" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ItemTemplate}" x:Name="ListBox" ScrollViewer.ScrollChanged="OnListBoxScrollChanged">
+        <!-- PORT: removed PreviewMouseDoubleClick (not in Avalonia) --><i:Interaction.Behaviors>
+          <mui:HorizontalScrollBehavior/>
+        </i:Interaction.Behaviors>
+        <ListBox.ItemContainerTheme>
+          <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="Padding" Value="{StaticResource ItemPadding}"/>
+
+            <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+              </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+              </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+              </Style></ControlTheme>
+        </ListBox.ItemContainerTheme>
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:VirtualizingTilePanel Orientation="Vertical" VerticalContentAlignment="Center" ItemWidth="{StaticResource ItemSize}" ItemHeight="{StaticResource ItemSize}" MaxHeight="{Binding ActualHeight, ElementName=MainListWrapper}"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+      </ListBox>
+    </Grid>
+
+    <!--<StackPanel Margin="0 24 24 0" Grid.Row="1" Grid.Column="0">
+      <TextBlock Style="{StaticResource Heading2}"
+          Text="{Binding Manager.DisplayProgress, StringFormat={x:Static g:AppStrings.KunosCareer_ProgressFormat}}" Margin="0 0 0 8" />
+      <ProgressBar Maximum="1" Value="{Binding Manager.Progress}" Height="4" />
+    </StackPanel>-->
+
+    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+    <c:UserChampionshipBlock Margin="0 8 0 0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" DataContext="{Binding MainList.CurrentItem.Value}">
+      <c:UserChampionshipBlock.ButtonPlaceholder>
+        <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+        <Button IsEnabled="{Binding IsAvailable}" Command="{Binding Data.SelectSeriesCommand, Source={StaticResource DataContextProxy}}" Content="{Binding DisplayGo}" Margin="0 4 0 0" Theme="{StaticResource Go.Button}"/>
+      </c:UserChampionshipBlock.ButtonPlaceholder>
+    </c:UserChampionshipBlock>
+
+    <Border Background="{DynamicResource DarkStripeBackground}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" MaxWidth="320" TextElement.Foreground="{DynamicResource DarkStripeText}" IsVisible="{Binding MainList.Count, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=0}">
+      <DockPanel>
+        <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="0 0 8 0" VerticalAlignment="Center"/>
+        <mui:BbCodeBlock VerticalAlignment="Center" TextWrapping="Wrap">
+          <mui:BbCodeBlock.Text>It appears that you don’t have any championships installed. Please, go to [url="/Pages/Lists/UserChampionshipsListPage.xaml"]Content/Miscellaneuos/User Championships[/url] if you want to create one.</mui:BbCodeBlock.Text>
+        </mui:BbCodeBlock>
+      </DockPanel>
+    </Border>
+  </Grid>
+</UserControl>

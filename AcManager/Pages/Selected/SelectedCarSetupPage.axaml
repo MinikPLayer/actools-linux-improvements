@@ -1,0 +1,122 @@
+﻿<sel:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:sel="clr-namespace:AcManager.Pages.Selected" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedCarSetupPage" mui:InputBindingBehavior.PropagateToWindow="True" x:Name="This">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="EntryDataTemplate" DataType="{x:Type t:CarSetupEntry}">
+        <Border Background="Transparent" ToolTip.Tip="{Binding HelpInformation}">
+          <Border.ContextMenu>
+            <ContextMenu>
+              <MenuItem StaysOpenOnClick="True">
+                <MenuItem.Header>
+                  <mui:BooleanSwitch Value="{Binding HasDefaultValue}">
+                    <mui:BooleanSwitch.True>
+                      <TextBlock>
+                        <Run Text="{x:Static g:AppStrings.Selected_CarSetupPage_DefaultValue}"/>
+                        <Run Text="{Binding DefaultValue, Mode=OneWay}"/><Run Text="{Binding UnitsPostfix, Mode=OneWay}"/>
+                      </TextBlock>
+                    </mui:BooleanSwitch.True>
+                    <mui:BooleanSwitch.False>
+                      <TextBlock>
+                        <Run Text="{x:Static g:AppStrings.Selected_CarSetupPage_DefaultValue}"/>
+                        <Run Text="{x:Static g:AppStrings.Selected_CarSetupPage_Unknown}"/>
+                      </TextBlock>
+                    </mui:BooleanSwitch.False>
+                  </mui:BooleanSwitch>
+                </MenuItem.Header>
+              </MenuItem>
+              <MenuItem IsEnabled="{Binding HasDefaultValue}" Command="{Binding ResetCommand}" Header="{x:Static c:ControlsStrings.Common_Reset}"/>
+            </ContextMenu>
+          </Border.ContextMenu>
+          <mui:ReferenceSwitch Value="{Binding Values}">
+            <mui:ReferenceSwitch.NonNull>
+              <DockPanel>
+                <TextBlock DockPanel.Dock="Bottom" Margin="0 4 0 0" IsVisible="{Binding RatioMaxSpeed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
+                  <Run Text="Maximum speed: "/>
+                  <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
+                </TextBlock>
+                <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="160" DockPanel.Dock="Left" VerticalAlignment="Top" Classes="Label"/>
+                <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" VerticalAlignment="Top" DisplayMemberBinding="{Binding Key}"/>
+              </DockPanel>
+            </mui:ReferenceSwitch.NonNull>
+            <mui:ReferenceSwitch.Null>
+              <DockPanel>
+                <mui:ValueLabel Value="{Binding Value}" Postfix="{Binding UnitsPostfix}" Content="{Binding DisplayName}" Margin="0 0 0 4" Width="160" DockPanel.Dock="Left"/>
+                <Slider Minimum="{Binding Minimum}" Maximum="{Binding Maximum}" Value="{Binding Value}" TickFrequency="{Binding VisualStep}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" SmallChange="{Binding Step}" LargeChange="{Binding Step}"><!-- PORT: removed IsMoveToPointEnabled (not in Avalonia) --></Slider>
+              </DockPanel>
+            </mui:ReferenceSwitch.Null>
+          </mui:ReferenceSwitch>
+        </Border>
+      </DataTemplate>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="True" Icon="{Binding Car.BrandBadge}" Scrollable="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_SetupTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneCommand}" ToolTip.Tip="Clone setup (Ctrl+Shift+D)"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Common_Share}" Command="{Binding ShareCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Share_SetupTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Common_Test}" Command="{Binding TestCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Test_SetupTooltip}" Theme="{StaticResource Go.ToolBarButton}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_IniTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_SetupTooltip}"/>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Classes="SettingsPanel">
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_TrackLabel}"/>
+          <Button Command="{Binding ClearTrackCommand}" Content="{x:Static c:ControlsStrings.Common_Clear}"/>
+          <Button Command="{Binding ChangeTrackCommand}" Content="{x:Static c:ControlsStrings.Common_Change}"/>
+
+          <Grid>
+            <mui:BetterTextBox IsReadOnly="True" Text="{Binding SelectedObject.Track.MainTrackObject.Name, Mode=OneWay}" IsVisible="{Binding SelectedObject.Track, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Borderless}"/>
+            <mui:BetterTextBox IsReadOnly="True" Text="{Binding SelectedObject.TrackId, Mode=OneWay}" Placeholder="{x:Static c:ControlsStrings.Common_Generic}" IsVisible="{Binding SelectedObject.Track, Converter={StaticResource NullToVisibilityConverter}}" Theme="{StaticResource Borderless}"/>
+          </Grid>
+        </DockPanel>
+
+        <DockPanel>
+          <Label Content="{x:Static c:ControlsStrings.Common_Rating}"/>
+          <c:RatingBar Rating="{Binding SelectedObject.Rating}" HorizontalAlignment="Left"/>
+        </DockPanel>
+      </StackPanel>
+
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding SetupValues.Tabs}" Margin="10 0 0 0">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Classes="SettingsPanel">
+                <TextBlock Text="{Binding DisplayName}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+                <Border Margin="20 0 0 12" IsVisible="{Binding Key, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter=TYRES}">
+                  <ComboBox ItemsSource="{Binding SetupValues.Tyres}" SelectedItem="{Binding SetupValues.SelectedTyres}" DataContext="{Binding DataContext, ElementName=This}" DisplayMemberBinding="{Binding DisplayName}"/>
+                </Border>
+
+                <ItemsControl ItemsSource="{Binding Entries}" Margin="20 0 0 0" ItemTemplate="{StaticResource EntryDataTemplate}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <mui:SpacingUniformGrid HorizontalSpacing="12" VerticalSpacing="12" Columns="2"/>
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </StackPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <mui:SpacingStackPanel Spacing="12"/>
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </ScrollViewer>
+    </DockPanel>
+  </c:AcObjectBase>
+</sel:SelectedAcObjectPage>

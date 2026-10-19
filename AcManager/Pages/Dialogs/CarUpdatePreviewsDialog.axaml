@@ -1,0 +1,184 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.CarUpdatePreviewsDialog" Title="{x:Static g:AppStrings.CarPreviews_Title}" MinWidth="320" MinHeight="120" Width="740" Height="400" MaxWidth="1920" MaxHeight="1080" Closing="OnClosing" SizeToContent="Manual" Loaded="OnLoaded" CanResize="False">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <mui:Switch Value="{Binding CurrentPhase}">
+    <DockPanel mui:Switch.When="{x:Static di:CarUpdatePreviewsDialog+Phase.Options}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+      <!--first two rows-->
+      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--first column, showroom & filter-->
+        <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="0">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static c:ControlsStrings.Showroom_ShowroomLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterComboBox IsEditable="False" Margin="4 0 4 0" SelectedItem="{Binding SelectedShowroom}" ItemsSource="{Binding Showrooms}">
+            <ComboBox.Styles>
+              <Style Selector="ComboBoxItem">
+                <Setter Property="ToolTip.Tip" Value="{StaticResource ShowroomPreviewToolTip}"/>
+              </Style>
+            </ComboBox.Styles>
+          </mui:BetterComboBox>
+        </StackPanel>
+
+        <StackPanel Margin="0 0 8 8" Grid.Row="1" Grid.Column="0">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterComboBox IsReadOnly="True" Margin="4 0 4 0" SelectedItem="{Binding SelectedFilter}" ItemsSource="{Binding Filters}"/>
+        </StackPanel>
+
+        <!--second column, camera position-->
+        <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="1">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.CarPreviews_CameraPositionLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterTextBox Margin="4 0 4 0" Text="{Binding CameraPosition}"/>
+        </StackPanel>
+
+        <StackPanel Margin="0 0 8 8" Grid.Row="1" Grid.Column="1">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.CarPreviews_LookAtLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterTextBox Margin="4 0 4 0" Text="{Binding CameraLookAt}"/>
+        </StackPanel>
+      </Grid>
+
+      <Grid HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition/>
+          <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+
+          <CheckBox Grid.Row="0" IsChecked="{Binding DisableWatermark}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_HideWatermark_Tooltip}">
+            <Label Content="{x:Static c:ControlsStrings.Showroom_HideWatermark}"/>
+          </CheckBox>
+
+          <CheckBox Grid.Row="1" IsChecked="{Binding DisableSweetFx}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_DisableSweetFx_Tooltip}">
+            <Label Content="{x:Static c:ControlsStrings.Showroom_DisableSweetFx}"/>
+          </CheckBox>
+
+          <CheckBox Grid.Row="2" IsChecked="{Binding ResizePreviews}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_ResizePreviews_Tooltip}">
+            <Label Content="{x:Static g:AppStrings.CarPreviews_ResizePreviews}"/>
+          </CheckBox>
+        </Grid>
+
+        <Grid Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+
+          <CheckBox Grid.Row="0" IsChecked="{Binding MaximizeVideoSettings}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_AllEffects_Tooltip}">
+            <Label Content="{x:Static g:AppStrings.CarPreviews_AllEffects}"/>
+          </CheckBox>
+
+          <CheckBox Grid.Row="1" IsChecked="{Binding EnableFxaa}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_Fxaa_Tooltip}">
+            <Label Content="{x:Static g:AppStrings.CarPreviews_Fxaa}"/>
+          </CheckBox>
+
+          <CheckBox Grid.Row="2" IsChecked="{Binding UseSpecialResolution}" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.CarPreviews_ShotIn4k_Tooltip}">
+            <Label Content="{x:Static g:AppStrings.CarPreviews_ShotIn4k}"/>
+          </CheckBox>
+        </Grid>
+
+        <StackPanel Margin="0 0 8 8" Grid.Row="0" Grid.Column="2">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static c:ControlsStrings.Showroom_FovLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterTextBox Margin="5 0 5 0" Text="{Binding CameraFov}" Mode="Number" Placeholder="?"/>
+        </StackPanel>
+
+        <StackPanel Margin="0 0 8 8" Grid.Row="1" Grid.Column="2">
+          <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.CarPreviews_ExposureLabel}" Classes="Label Label.Padding"/>
+          <mui:BetterTextBox Margin="4 0 4 0" Text="{Binding CameraExposure}" Mode="Number" Placeholder="?"/>
+        </StackPanel>
+      </Grid>
+    </DockPanel>
+
+    <mui:SpacingStackPanel mui:Switch.When="{x:Static di:CarUpdatePreviewsDialog+Phase.Waiting}" Orientation="Vertical" VerticalAlignment="Center" Spacing="20" Margin="20 0">
+      <mui:SpacingStackPanel Spacing="8" IsVisible="{Binding ApplyImmediately, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <ProgressBar Maximum="1" Value="{Binding SeriesProgress.Progress, Mode=OneWay}" IsIndeterminate="{Binding SeriesProgress.IsIndeterminate}" Height="4"/>
+        <TextBlock Text="{Binding SeriesProgress.Message}" HorizontalAlignment="Center"/>
+      </mui:SpacingStackPanel>
+      <mui:SpacingStackPanel Spacing="8">
+        <ProgressBar Maximum="1" Value="{Binding Progress.Progress, Mode=OneWay}" IsIndeterminate="{Binding Progress.IsIndeterminate}" Height="4"/>
+        <TextBlock Text="{Binding Progress.Message}" HorizontalAlignment="Center"/>
+      </mui:SpacingStackPanel>
+    </mui:SpacingStackPanel>
+
+    <StackPanel mui:Switch.When="{x:Static di:CarUpdatePreviewsDialog+Phase.Error}" Orientation="Vertical" VerticalAlignment="Center">
+      <TextBlock Text="{x:Static c:ControlsStrings.Common_Error}" Classes="Heading1"/>
+      <mui:BbCodeBlock Text="{Binding ErrorMessage}" Margin="20"/>
+    </StackPanel>
+
+    <StackPanel mui:Switch.When="{x:Static di:CarUpdatePreviewsDialog+Phase.Result}" Orientation="Vertical" VerticalAlignment="Center">
+      <ListBox ItemsSource="{Binding ResultPreviewComparisonsView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="4" MaxHeight="76">
+        <ListBox.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:VirtualizingTilePanel Orientation="Horizontal" HorizontalAlignment="Left" ItemWidth="36" ItemHeight="36"/>
+          </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="{x:Type t:CarSkinObject}">
+            <mui:BetterImage Filename="{Binding LiveryImage}" Width="32" Height="32" ClearOnChange="True" ToolTip.Tip="{Binding DisplayName}"/>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <Grid DataContext="{Binding ResultPreviewComparisonsView.CurrentItem}">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition Width="9"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <mui:BetterImage Filename="{Binding OriginalImage}" MaxWidth="1022" PointerPressed="OriginalPreview_OnMouseDown"/>
+        <mui:BetterImage Source="{Binding UpdatedImage}" MaxWidth="1022" Grid.Column="2" PointerPressed="UpdatedPreview_OnMouseDown"/>
+      </Grid>
+
+      <TextBlock Margin="0 8 0 0" Text="{Binding DisplayTakenTime, StringFormat={x:Static g:AppStrings.CarPreviews_TakenTime}}" Classes="Small"/>
+    </StackPanel>
+
+    <StackPanel mui:Switch.When="{x:Static di:CarUpdatePreviewsDialog+Phase.ResultSummary}" Orientation="Vertical" VerticalAlignment="Center">
+      <TextBlock Text="{x:Static g:AppStrings.Dialogs_CarUpdatePreviewsDialog_Done}" Classes="Heading1"/>
+
+      <mui:SpacingStackPanel Margin="0 20 0 0" Spacing="8" IsVisible="{Binding Errors.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+        <TextBlock Text="{Binding Errors.Count, StringFormat='Encountered errors: {0}'}"/>
+        <ItemsControl ItemsSource="{Binding Errors}" MaxHeight="240" Theme="{StaticResource VirtualizingItemsControl}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <DockPanel Margin="4" Height="80">
+                <Button DataContext="{Binding WhatsGoingOn.Solution}" DockPanel.Dock="Right" Margin="4 0 0 0" Content="{Binding DisplayName}" Command="{Binding}" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+                <TextBlock Text="{Binding ToUpdate.Car.DisplayName}" DockPanel.Dock="Top" Classes="Heading2"/>
+                <TextBlock Text="{Binding Message}" DockPanel.Dock="Top" Margin="0 4 0 0"/>
+                <TextBlock Text="{Binding WhatsGoingOn.Type, Converter={StaticResource EnumToDescriptionConverter}}" Margin="0 4 0 0" IsVisible="{Binding WhatsGoingOn, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+              </DockPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </mui:SpacingStackPanel>
+    </StackPanel>
+  </mui:Switch>
+
+  <mui:ModernDialog.ButtonsRowContent>
+    <c:UserPresetsControl x:Name="UserPresetsControl" UserPresetable="{Binding}" IsVisible="{Binding CurrentPhase, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static di:CarUpdatePreviewsDialog+Phase.Options}}"/>
+  </mui:ModernDialog.ButtonsRowContent>
+</mui:ModernDialog>

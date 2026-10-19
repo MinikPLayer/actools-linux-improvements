@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class UpgradeIconEditor_Library : IFinishableControl, IInvokingNotifyPropertyChanged {
+    public partial class UpgradeIconEditor_Library : global::Avalonia.Controls.UserControl, IFinishableControl, IInvokingNotifyPropertyChanged {
         private readonly string _key;
 
         public CarObject Car { get; }

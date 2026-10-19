@@ -1,0 +1,21 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.About.Credits" Classes="inline1">
+  <UserControl.Styles>
+    <Style Selector="UserControl.inline1">
+      <Style Selector="^ TreeViewItem">
+          <Setter Property="Focusable" Value="False"/>
+        </Style>
+        <Style Selector="^ mui|BbCodeBlock">
+          <Setter Property="Width" Value="600"/>
+          <Setter Property="TextWrapping" Value="Wrap"/>
+          <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+        <Style Selector="^ mui|SelectableBbCodeBlock">
+          <Setter Property="Width" Value="600"/>
+          <Setter Property="HorizontalAlignment" Value="Left"/>
+        </Style>
+      </Style>
+  </UserControl.Styles>
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <TreeView x:Name="TreeView" Margin="20" PointerWheelChanged="OnTreeViewMouseWheel"/>
+  </ScrollViewer>
+</UserControl>

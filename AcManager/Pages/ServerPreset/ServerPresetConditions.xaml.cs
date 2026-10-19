@@ -2,7 +2,7 @@
 using AcManager.Tools.Objects;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetConditions {
+    public partial class ServerPresetConditions : global::Avalonia.Controls.UserControl {
         public ServerPresetConditions() {
             InitializeComponent();
         }

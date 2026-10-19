@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
@@ -31,7 +31,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Drive {
-    public partial class Rsr {
+    public partial class Rsr : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch {
         public static AssistsViewModel Assists { get; } = new AssistsViewModel("rsrassistsn");
 
         private ViewModel Model => (ViewModel)DataContext;
@@ -47,7 +47,7 @@ namespace AcManager.Pages.Drive {
             WebBrowser.StyleProvider = new StyleProvider();
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class JsProxy : JsProxyCSharp {
             private JsBridge _bridge;
 
@@ -338,13 +338,13 @@ window.addEventListener('load', function(){
             }
         }
 
-        private void OnAssistsClick(object sender, MouseButtonEventArgs e) {
+        private void OnAssistsClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             e.Handled = true;
             new AssistsDialog(Assists).ShowDialog();
         }
 
-        private void OnSkinLiveryClick(object sender, MouseButtonEventArgs e) {
+        private void OnSkinLiveryClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             e.Handled = true;
 

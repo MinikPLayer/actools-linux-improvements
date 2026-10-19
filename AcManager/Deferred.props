@@ -4,5 +4,10 @@
     Move files out of this list as they get ported.
   -->
   <ItemGroup>
+    <!-- 3D showrooms are built on AcTools.Render.Wrapper (WinForms + Direct3D forms, Windows-only; AcToolsRenderForms is not enabled) -->
+    <Compile Remove="CustomShowroom\AttachedHelper.cs;CustomShowroom\CustomShowroomWrapper.cs;CustomShowroom\LiteShowroomFormWrapperWith*.cs;CustomShowroom\CmPreviewsFormWrapper.cs;CustomShowroom\TrackMapRendererWrapper.cs;CustomShowroom\TrackOutlineRendererWrapper.cs" />
+    <Compile Remove="CustomShowroom\LiteShowroomTools*.cs;CustomShowroom\TrackMapRendererTools*.cs;CustomShowroom\TrackOutlineRendererTools*.cs" />
+    <AvaloniaXaml Remove="CustomShowroom\LiteShowroom*.axaml;CustomShowroom\TrackMapRendererTools.axaml;CustomShowroom\TrackOutlineRendererTools.axaml" />
+    <!-- CefSharp / WebBrowser-based pages -->
   </ItemGroup>
 </Project>

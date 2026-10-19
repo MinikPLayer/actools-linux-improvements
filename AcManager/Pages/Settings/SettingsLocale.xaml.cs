@@ -25,7 +25,7 @@ using FirstFloor.ModernUI.Windows;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsLocale {
+    public partial class SettingsLocale : global::Avalonia.Controls.UserControl {
         public ViewModel Model => (ViewModel)DataContext;
 
         public SettingsLocale() {

@@ -1,0 +1,111 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.SelectTrackDialog" Title="{Binding SelectedTrackConfiguration.Name}" SizeToContent="Manual" Width="960" MaxWidth="99999" MaxHeight="99999" MinWidth="745" MinHeight="580" Height="600" ShowTitle="False" LocationAndSizeKey="SelectTrackDialog_LS" WindowStartupLocation="Manual" ShowTopBlob="False" Padding="24" ButtonsMargin="0" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <mui:BindingProxy x:Key="DataContextProxy" Data="{Binding}"/>
+      <DataTemplate x:Key="LayoutItemTemplate" DataType="t:TrackObjectBase">
+        <!-- using Name instead of DisplayName, because Display Name of main track layout contains number of layouts -->
+        <mui:BetterImage x:Name="Image" Filename="{Binding OutlineImage}" Width="80" Height="60" ClearOnChange="True" ToolTip.Tip="{Binding Name}"><mui:BetterImage.Styles><Style Selector="mui|BetterImage#Image"><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True] mui|BetterImage#Image"><Setter Property="Background" Value="{DynamicResource TrackOutlineAloneBackground}"/>
+            <Setter Property="Effect" Value="{DynamicResource TrackOutlineAloneEffect}"/>
+          </Style></Style></mui:BetterImage.Styles></mui:BetterImage>
+        </DataTemplate>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.BackgroundContent>
+    <Rectangle>
+      <Rectangle.Fill>
+        <VisualBrush>
+          <VisualBrush.Visual>
+            <Grid Opacity="0.15" Width="355" ClipToBounds="True">
+              <Grid.Effect>
+                <BlurEffect Radius="20"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
+              </Grid.Effect>
+              <mui:BetterImage x:Name="BackgroundImage0" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+              <mui:BetterImage x:Name="BackgroundImage1" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" Opacity="0" RenderOptions.BitmapInterpolationMode="LowQuality">
+                <!-- PORT: removed VisualStateManager.VisualStateGroups -->
+              </mui:BetterImage>
+            </Grid>
+          </VisualBrush.Visual>
+        </VisualBrush>
+      </Rectangle.Fill>
+    </Rectangle>
+  </mui:ModernDialog.BackgroundContent>
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition MinWidth="360"/>
+      <ColumnDefinition Width="29"/>
+      <ColumnDefinition Width="320" MinWidth="180"/>
+    </Grid.ColumnDefinitions>
+
+    <DockPanel>
+      <DockPanel Dock="Top" Margin="0 0 0 20">
+        <c:FavouriteButton DockPanel.Dock="Right" VerticalAlignment="Center" IsChecked="{Binding SelectedTrack.IsFavourite}" Margin="0 0 8 0"/>
+        <mui:BetterImage Margin="4 4 8 0" Width="28" Height="28" StretchDirection="DownOnly" Filename="{Binding SelectedTrackConfiguration.OutlineImage}" CropTransparentAreas="True"/>
+        <mui:BbCodeBlock Mode="WithoutBbCodes" Text="{Binding SelectedTrackConfiguration.Name}" FontFamily="{StaticResource DefaultFont}" FontWeight="Light" FontSize="24" TextTrimming="CharacterEllipsis"/>
+      </DockPanel>
+
+      <c:TrackBlock Track="{Binding SelectedTrackConfiguration}">
+        <ListBox DataContext="{Binding Data, Source={StaticResource DataContextProxy}}" ItemsSource="{Binding SelectedTrack.MultiLayouts}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectedItem="{Binding SelectedTrackConfiguration}" ItemTemplate="{StaticResource LayoutItemTemplate}" Margin="0 210 0 0" IsVisible="{Binding SelectedTrack.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+        </ListBox>
+      </c:TrackBlock>
+    </DockPanel>
+
+    <!-- Separator -->
+    <mui:ModernTabSplitter Grid.Column="1" SaveKey="TrackSelectionDialog" InitialWidth="320" AdjustRightColumn="True" Foreground="Transparent" ZIndex="-1"/>
+    <Border Grid.Column="1" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.TrackDialogThumbinalMode}, Mode=OneTime}" VerticalAlignment="Center"/>
+
+    <DockPanel Grid.Column="2">
+      <DockPanel DockPanel.Dock="Bottom" Margin="0 20 0 0">
+        <ContentPresenter DockPanel.Dock="Right" Content="{Binding CancelButton, RelativeSource={RelativeSource AncestorType={x:Type mui:ModernDialog}}}"/>
+        <ContentPresenter DockPanel.Dock="Right" Content="{Binding OkButton, RelativeSource={RelativeSource AncestorType={x:Type mui:ModernDialog}}}"/>
+        <mui:ModernButton Click="OnScrollToSelectedButtonClick" HorizontalAlignment="Left" IconData="{StaticResource CollapsedIconData}" ToolTip.Tip="{x:Static c:ControlsStrings.Common_ScrollToSelected}" Classes="NonTransparent"/>
+        <DockPanel DataContext="{x:Static t:TracksManager.Instance}" VerticalAlignment="Center" HorizontalAlignment="Left" MaxWidth="220" Margin="20 0 0 0" IsVisible="False" Classes="inline1">
+          <DockPanel.RenderTransform>
+            <TranslateTransform Y="60"/>
+          </DockPanel.RenderTransform>
+          <DockPanel.Styles>
+            <Style Selector="DockPanel.inline1">
+              <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsLoaded, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><!-- PORT: storyboard actions of trigger [(pa|T.S1)=True] not converted --></Style>
+          </DockPanel.Styles>
+          <ProgressBar Maximum="{Binding WrappersList.Count}" Value="{Binding LoadedCount}" Height="4" DockPanel.Dock="Bottom" Margin="0 4 0 0" FontSize="{StaticResource SmallFontSize}"/>
+          <TextBlock TextAlignment="Center" Classes="Small">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{x:Static g:AppStrings.RaceGrid_LoadingProgress}">
+                <Binding Path="WrappersList.Count"/>
+                <Binding Path="LoadedCount"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DockPanel>
+      </DockPanel>
+
+      <Panel>
+        <mui:ModernTab Layout="TabWithTitle" x:Name="Tabs" FrameNavigated="OnTabsNavigated" mui:ModernFrame.TopSource="/Pages/SelectionLists/TrackCountries.xaml" mui:ModernFrame.KeepContentAlive="True" SaveKey=".selectTrack" SavePolicy="Flexible" LinksHorizontalAlignment="Stretch" mui:FancyScroll.Outside="True">
+          <mui:ModernTab.LinksListBoxTemplate>
+            <ControlTemplate>
+              <ItemsPresenter HorizontalAlignment="Left"/>
+            </ControlTemplate>
+          </mui:ModernTab.LinksListBoxTemplate>
+          <mui:ModernTab.Links>
+            <mui:Link DisplayName="{x:Static g:AppStrings.Select_Countries}" Source="/Pages/SelectionLists/TrackCountries.xaml"/>
+            <mui:Link DisplayName="{x:Static g:AppStrings.Select_Categories}" Source="/Pages/SelectionLists/TrackCategories.xaml"/>
+            <mui:Link DisplayName="DLCs" Source="/Pages/SelectionLists/TrackDlcs.xaml"/>
+            <mui:Link DisplayName="Tags" Source="/Pages/SelectionLists/TrackTags.xaml"/>
+            <mui:Link DisplayName="Ratings &amp; Favourites" Source="/Pages/SelectionLists/TrackRatings.xaml"/>
+            <!-- ReSharper disable once Xaml.PathError -->
+            <mui:Link DisplayName="{x:Static g:AppStrings.Select_All}" Source="/Pages/Miscellaneous/AcObjectSelectList.xaml?Type=track&amp;Filter=enabled+"/>
+          </mui:ModernTab.Links>
+        </mui:ModernTab>
+      </Panel>
+    </DockPanel>
+  </Grid>
+</mui:ModernDialog>

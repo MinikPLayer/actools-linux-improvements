@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class OnlineNewDriverTag {
+    public partial class OnlineNewDriverTag : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public OnlineNewDriverTag(ServerEntry.CurrentDriver driver = null) {
@@ -65,7 +65,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnClosing(object sender, CancelEventArgs e) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs e) {
             if (!IsResultOk) return;
 
             var tagId = ServerEntry.DriverTag.CreateTag(Model.TagName, Model.TagColor).Id;

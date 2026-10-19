@@ -9,7 +9,7 @@ using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetBasic {
+    public partial class ServerPresetBasic : global::Avalonia.Controls.UserControl {
         public ServerPresetBasic() {
             InitializeComponent();
             CspVersionAutoFill.IsEnabled = PatchHelper.IsFeatureSupported(PatchHelper.FeatureTestOnline);

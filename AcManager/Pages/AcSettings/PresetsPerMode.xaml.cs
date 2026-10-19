@@ -19,7 +19,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class PresetsPerMode {
+    public partial class PresetsPerMode : global::Avalonia.Controls.UserControl {
         private ViewModel Model => (ViewModel)DataContext;
 
         public PresetsPerMode() {

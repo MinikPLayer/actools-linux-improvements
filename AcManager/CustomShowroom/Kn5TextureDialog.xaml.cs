@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -25,7 +25,7 @@ using JetBrains.Annotations;
 using Microsoft.Win32;
 
 namespace AcManager.CustomShowroom {
-    public partial class Kn5TextureDialog {
+    public partial class Kn5TextureDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public Kn5TextureDialog([CanBeNull] BaseRenderer renderer, [CanBeNull] CarObject car, [CanBeNull] CarSkinObject activeSkin, [NotNull] IKn5 kn5,
@@ -474,7 +474,7 @@ namespace AcManager.CustomShowroom {
             _loaded = false;
         }
 
-        private void OnPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewClick(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
             new ImageViewer(Model.PreviewImage).ShowDialog();
         }

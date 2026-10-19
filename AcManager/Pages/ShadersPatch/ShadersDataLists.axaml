@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="http://acstuff.club/app/tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:sys="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+    <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <sys:Int32 x:Key="NumberOne">1</sys:Int32>
+
+  <DataTemplate x:Key="InstalledColumnTemplate" DataType="{x:Type t:PatchDataEntry}">
+    <TextBlock x:Name="PART_Text" Margin="0 4 0 -4" Classes="Small"><TextBlock.Styles><Style Selector="TextBlock#PART_Text"><Style Selector="^ TextBlock#PART_Text"><Setter Property="Text" Value="No"/><Setter Property="Foreground" Value="{DynamicResource WindowTextReadOnly}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsInstalled, Mode=OneWay, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S1" Value="{Binding IsNewestInstalled, Mode=OneWay, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#PART_Text"><Setter Property="Text" Value="Older"/>
+        <Setter Property="Foreground" Value="{DynamicResource Error}"/>
+      </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Text"><Setter Property="Text" Value="Yes"/>
+        <Setter Property="Foreground" Value="{DynamicResource Go}"/>
+      </Style></Style></TextBlock.Styles></TextBlock>
+    </DataTemplate>
+
+  <DataTemplate x:Key="CarColumnTemplate" DataType="{x:Type t:PatchCarDataEntry}">
+    <DockPanel Margin="0 2 0 -2">
+      <c:CarIcon Width="12" Height="12" DockPanel.Dock="Left" Margin="0 1 4 -1" VerticalAlignment="Center" Car="{Binding Car}" ClearOnChange="True"/>
+      <mui:BbCodeBlock Text="{Binding Car.DisplayName}" Mode="WithoutBbCodes" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="TrackColumnTemplate" DataType="{x:Type t:PatchTrackDataEntry}">
+    <DockPanel Margin="0 2 0 -2">
+      <mui:BetterImage Filename="{Binding Track.OutlineImage}" Width="12" Height="12" DockPanel.Dock="Left" Margin="0 1 4 -1" VerticalAlignment="Center" ClearOnChange="True" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+      <mui:BbCodeBlock Text="{Binding DisplayName}" Mode="WithoutBbCodes" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="SizeColumnTemplate" DataType="{x:Type t:PatchTrackDataEntry}">
+    <mui:PlaceholderTextBlock x:Name="PART_Text" Text="{Binding DisplaySize, Mode=OneTime}" Placeholder="?" TextTrimming="CharacterEllipsis" Margin="0 4 0 -4" ToolTip.Tip="{Binding Author, Mode=OneTime}" Classes="Small"/>
+  </DataTemplate>
+
+  <DataGridTemplateColumn x:Key="SizeColumn" Width="80" Header="Size" SortMemberPath="Size" CellTemplate="{StaticResource SizeColumnTemplate}"/>
+
+  <DataTemplate x:Key="AuthorColumnTemplate" DataType="{x:Type t:PatchTrackDataEntry}">
+    <mui:PlaceholderTextBlock x:Name="PART_Text" Text="{Binding Author, Mode=OneTime}" Placeholder="?" TextTrimming="CharacterEllipsis" Margin="0 4 0 -4" ToolTip.Tip="{Binding Author, Mode=OneTime}" Classes="Small"/>
+  </DataTemplate>
+
+  <ControlTheme x:Key="Section" TargetType="ContentControl">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ContentControl">
+          <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+              <mui:ContextMenuButton DockPanel.Dock="Right" Margin="0 1 0 -1">
+                <ContextMenu>
+                  <MenuItem Header="{Binding UnavailableCount, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {entry} for missing content'}" Command="{Binding ShowUnavailableEntriesCommand}" IsVisible="{Binding UnavailableCount, Converter={StaticResource MoreToVisibilityConverter}}"/>
+                  <Separator IsVisible="{Binding UnavailableCount, Converter={StaticResource MoreToVisibilityConverter}}"/>
+                  <MenuItem IsChecked="{Binding InstallAutomatically.Value}" Header="Fetch automatically (recommended)" IsEnabled="{Binding DownloadMissingData.Value, Source={x:Static t:PatchUpdater.Instance}}" ToolTip.Tip="To enable or disable automatic fetching for all categories of content, check “About &amp; Updates” section"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+                  <MenuItem Command="{Binding InstallEverythingCommand}" Header="{Binding AvailableToInstall, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}Fetch {0} {entry}'}" IsVisible="{Binding AvailableToInstall, Converter={StaticResource MoreToVisibilityConverter}}"/>
+                  <MenuItem Command="{Binding ViewInExplorerCommand}" Header="View in Explorer"/>
+                </ContextMenu>
+              </mui:ContextMenuButton>
+              <TextBlock Text="{Binding Title}" DockPanel.Dock="Top" Classes="Heading2"/>
+            </DockPanel>
+            <mui:BbCodeBlock DockPanel.Dock="Top" TextWrapping="Wrap" Margin="0 8 0 0" Text="{Binding Description}" Classes="Small"/>
+            <mui:Cell Margin="0 20 0 0">
+              <mui:ModernProgressRing Width="80" Height="80" IsActive="{Binding IsLoading}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+              <DockPanel IsVisible="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}">
+                <DockPanel HorizontalAlignment="Stretch" Dock="Top" Margin="0 0 0 4">
+                  <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform"/>
+                  <TextBlock Margin="10 2 2 2" Foreground="{DynamicResource Error}" Text="{Binding Source={StaticResource NumberOne}, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.AcObject_ErrorsHeader}}" Classes="Heading2"/>
+                </DockPanel>
+                <TextBlock Text="{Binding ErrorMessage}"/>
+              </DockPanel>
+              <ContentPresenter Content="{TemplateBinding Content}" IsVisible="{Binding IsLoaded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </mui:Cell>
+          </DockPanel>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <DataTemplate x:Key="NotesDetails" DataType="{x:Type t:PatchTrackDataEntry}">
+    <mui:SelectableBbCodeBlock Text="{Binding Notes, StringFormat='{}Notes: {0}'}" Margin="21 0 21 4" IsVisible="{Binding Notes, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse, hidden'}" Theme="{StaticResource RichTextBox.Small.ReadOnly}"/>
+  </DataTemplate>
+
+  <Border x:Key="HeaderInstallContent" Background="Transparent" ToolTip.Tip="Is downloaded">
+    <Path Width="10" Height="10" Margin="0 2 0 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}" HorizontalAlignment="Center"/>
+  </Border>
+</ResourceDictionary>

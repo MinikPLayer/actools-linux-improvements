@@ -8,7 +8,6 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
-using Color = System.Windows.Media.Color;
 
 namespace AcManager.PaintShop {
     public class CarPaintPatternDecals : NotifyPropertyChanged {

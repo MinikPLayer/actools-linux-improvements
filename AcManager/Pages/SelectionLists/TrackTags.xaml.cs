@@ -4,7 +4,7 @@ using AcManager.Tools.Managers;
 using AcManager.Tools.Objects;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class TrackTags {
+    public partial class TrackTags : global::AcManager.Pages.SelectionLists.SelectionTagsList {
         public TrackTags() : base(TracksManager.Instance) {
             InitializeComponent();
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using System.Windows.Media.Effects;
 using System.Windows.Threading;
@@ -45,13 +45,9 @@ using FirstFloor.ModernUI.Windows.Converters;
 using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
-using Application = System.Windows.Application;
-using Button = System.Windows.Controls.Button;
-using DataGrid = System.Windows.Controls.DataGrid;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class GameDialog : IGameUi {
+    public partial class GameDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IGameUi {
         public class DialogHolder : NotifyPropertyChanged {
             public DialogHolder(GameDialog parent) {
                 Parent = parent;
@@ -980,7 +976,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnScrollMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnScrollMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = sender as ScrollViewer ?? (sender as FrameworkElement)?.FindVisualChild<ScrollViewer>();
             scrollViewer?.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
@@ -1010,7 +1006,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnDataGridMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDataGridMouseDown(object sender, PointerPressedEventArgs e) {
             var grid = (DataGrid)sender;
             if (grid.IsMouseOverItem(grid.SelectedItem)) {
                 grid.SelectedItem = null;

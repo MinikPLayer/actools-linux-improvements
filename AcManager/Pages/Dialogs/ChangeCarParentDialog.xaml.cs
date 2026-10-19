@@ -13,7 +13,7 @@ using AcManager.Tools.Objects;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class ChangeCarParentDialog : IComparer, INotifyPropertyChanged {
+    public partial class ChangeCarParentDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IComparer, INotifyPropertyChanged {
         public CarObject Car { get; }
 
         public ListCollectionView CarsListView { get; }

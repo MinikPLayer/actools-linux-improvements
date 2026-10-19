@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using JetBrains.Annotations;
 using AcManager.Controls;
@@ -35,14 +35,12 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Serialization;
 using Newtonsoft.Json;
-using Application = System.Windows.Application;
-using Button = System.Windows.Controls.Button;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Dialogs {
     // Sorry for all this mess, this was one of the first bits of CM I made. I didn’t really know how to work with MVC
     // properly back then.
-    public partial class CarUpdatePreviewsDialog : IInvokingNotifyPropertyChanged, IProgress<Showroom.ShootingProgress>, IUserPresetable {
+    public partial class CarUpdatePreviewsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IInvokingNotifyPropertyChanged, IProgress<Showroom.ShootingProgress>, IUserPresetable {
         #region Options
         private bool _disableSweetFx;
 
@@ -518,7 +516,7 @@ namespace AcManager.Pages.Dialogs {
             _saveable.FromSerializedString(data);
         }
 
-        private void OnClosing(object sender, CancelEventArgs args) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs args) {
             if (CurrentPhase == Phase.Waiting) {
                 _cancellationTokenSource.Cancel(false);
             } else if (CurrentPhase == Phase.Result && IsResultOk) {
@@ -858,11 +856,11 @@ namespace AcManager.Pages.Dialogs {
             }.ShowDialog();
         }
 
-        private void OriginalPreview_OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OriginalPreview_OnMouseDown(object sender, PointerPressedEventArgs e) {
             ImageViewer(false);
         }
 
-        private void UpdatedPreview_OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void UpdatedPreview_OnMouseDown(object sender, PointerPressedEventArgs e) {
             ImageViewer(true);
         }
 

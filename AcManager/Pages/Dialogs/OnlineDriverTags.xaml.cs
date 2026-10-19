@@ -11,7 +11,7 @@ using FirstFloor.ModernUI.Presentation;
 using DriverTag = AcManager.Tools.Managers.Online.ServerEntry.DriverTag;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class OnlineDriverTags {
+    public partial class OnlineDriverTags : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public OnlineDriverTags() {

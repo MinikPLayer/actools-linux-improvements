@@ -7,7 +7,7 @@ using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Controls.Helpers;
 using AcManager.Internal;
 using AcManager.Pages.Dialogs;
@@ -22,7 +22,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsOnline {
+    public partial class SettingsOnline : global::Avalonia.Controls.UserControl {
         private ViewModel Model => (ViewModel)DataContext;
 
         public SettingsOnline() {

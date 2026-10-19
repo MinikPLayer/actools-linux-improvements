@@ -24,7 +24,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class SelectTrackDialog {
+    public partial class SelectTrackDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         /*private static WeakReference<SelectTrackDialog> _instance;
         public static SelectTrackDialog Instance => _instance == null ? null : _instance.TryGetTarget(out var result) ? result : null;*/
 

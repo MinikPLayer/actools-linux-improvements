@@ -1,0 +1,108 @@
+﻿<tools:ContentTool xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:tools="clr-namespace:AcManager.Pages.ContentTools" xmlns:c="http://acstuff.club/app/controls" xmlns:oxy="http://oxyplot.org/wpf" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ContentTools.FilesCompressor">
+  <tools:ContentTool.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ContextMenu x:Key="FileContextMenu">
+        <MenuItem Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_ViewInExplorer}" Command="{Binding ViewInExplorerCommand}"/>
+      </ContextMenu>
+    </ResourceDictionary>
+  </tools:ContentTool.Resources>
+
+  <mui:Cell mui:Switch.When="{x:Static tools:Stage.Loading}" Width="400" HorizontalAlignment="Center">
+    <mui:SpacingStackPanel Spacing="8" VerticalAlignment="Center">
+      <ProgressBar IsIndeterminate="{Binding ProgressValue.IsIndeterminate}" Maximum="1" Value="{Binding ProgressValue.Progress, Mode=OneWay}" Height="4"/>
+      <TextBlock Text="{Binding ProgressValue.Message}"/>
+    </mui:SpacingStackPanel>
+    <mui:SelectableBbCodeBlock VerticalAlignment="Bottom" Text="{x:Static g:AppStrings.ContentTools_FilesCompressor_Description}" Theme="{StaticResource RichTextBox.Small.ReadOnly}"/>
+  </mui:Cell>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Empty}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.Online_NothingToDisplay}" Classes="Heading1"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Error}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.ContentTools_BatchPreviewsUpdater_SomeErrorHappened}" DockPanel.Dock="Top" Classes="Heading1"/>
+    <TextBlock Text="{Binding Error}" Margin="0 20 0 0"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Ready}">
+    <mui:SpacingStackPanel DockPanel.Dock="Bottom" Spacing="4" Orientation="Horizontal" Classes="BottomRow">
+      <Button Content="{x:Static g:AppStrings.ContentTools_FilesCompressor_Compress}" Command="{Binding CompressCommand}"/>
+      <Button Content="{x:Static g:AppStrings.ContentTools_FilesCompressor_Decompress}" Command="{Binding DecompressCommand}"/>
+    </mui:SpacingStackPanel>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="270"/>
+        <ColumnDefinition Width="9"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <DockPanel>
+        <Border DockPanel.Dock="Top" Height="100">
+          <c:PropertiesGrid Columns="1" VerticalAlignment="Top" LabelWidth="100">
+            <mui:BetterTextBox c:PropertiesGrid.Label="Uncompressed:" IsReadOnly="True" Text="{Binding DecompressedCount, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {file}', Mode=OneWay}" IsVisible="{Binding DecompressedCount, Converter={StaticResource MoreToVisibilityConverter}}" Theme="{StaticResource Borderless}"/>
+            <mui:BetterTextBox c:PropertiesGrid.Label="Compressed:" IsReadOnly="True" Text="{Binding CompressedCount, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {file}', Mode=OneWay}" IsVisible="{Binding CompressedCount, Converter={StaticResource MoreToVisibilityConverter}}" Theme="{StaticResource Borderless}"/>
+            <mui:BetterTextBox c:PropertiesGrid.Label="Size:" IsReadOnly="True" Text="{Binding TotalSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" Theme="{StaticResource Borderless}"/>
+            <mui:BetterTextBox c:PropertiesGrid.Label="On disk:" IsReadOnly="True" Text="{Binding CompressedSize, Converter={StaticResource FileSizeConverter}, Mode=OneWay}" IsVisible="{Binding CompressedCount, Converter={StaticResource MoreToVisibilityConverter}}" Theme="{StaticResource Borderless}"/>
+            <mui:BetterTextBox c:PropertiesGrid.Label="Ratio:" IsReadOnly="True" Text="{Binding TotalRatio, Converter={StaticResource PercentageConverter}, StringFormat='{}{0:F1}%', Mode=OneWay}" IsVisible="{Binding CompressedCount, Converter={StaticResource MoreToVisibilityConverter}}" Theme="{StaticResource Borderless}"/>
+          </c:PropertiesGrid>
+        </Border>
+        <ListBox ItemsSource="{Binding CompressionMode}" SelectedItem="{Binding CompressionMode.SelectedItem}" DockPanel.Dock="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" DisplayMemberBinding="{Binding DisplayName}" ItemContainerTheme="{StaticResource RadioBoxListItem}"/>
+        <Label Content="{x:Static g:AppStrings.ContentTools_FilesCompressor_CompressionAlgorithm}" DockPanel.Dock="Bottom" Margin="8 0 0 4"/>
+        <oxy:PlotView Model="{Binding PlotModel}" Height="200" Margin="0 20" Background="Transparent" Foreground="{DynamicResource WindowText}"/>
+      </DockPanel>
+
+      <DataGrid Grid.Column="2" ItemsSource="{Binding FilesToCompress}" Theme="{StaticResource DataGrid.Lite}">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Width="1*" Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_Path}" SortMemberPath="RelativePath">
+            <!-- PORT: removed SortDirection (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="{x:Type tools:FilesCompressor+FileToCompress}">
+                <Border Background="Transparent" ContextMenu="{StaticResource FileContextMenu}" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <mui:PathTrimmingTextBlock Text="{Binding RelativePath}" ToolTip.Tip="{Binding RelativePath}"/>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="80" Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_Original}" SortMemberPath="FileInfo.Length">
+            <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="{x:Type tools:FilesCompressor+FileToCompress}">
+                <Border Background="Transparent" ContextMenu="{StaticResource FileContextMenu}" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <TextBlock Text="{Binding FileInfo.Length, Converter={StaticResource FileSizeConverter}}"/>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="80" Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_Compressed}" SortMemberPath="CompressedSize">
+            <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="{x:Type tools:FilesCompressor+FileToCompress}">
+                <Border Background="Transparent" ContextMenu="{StaticResource FileContextMenu}" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <TextBlock Text="{Binding CompressedSize, Converter={StaticResource FileSizeConverter}}"/>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTemplateColumn Width="80" Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_Ratio}" SortMemberPath="{x:Static g:AppStrings.ContentTools_FilesCompressor_Ratio}">
+            <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
+              <DataTemplate DataType="{x:Type tools:FilesCompressor+FileToCompress}">
+                <Border Background="Transparent" ContextMenu="{StaticResource FileContextMenu}" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <mui:BooleanSwitch Value="{Binding IsCompressed}">
+                    <mui:BooleanSwitch.True>
+                      <TextBlock Text="{Binding Ratio, Converter={StaticResource PercentageConverter}, StringFormat='{}{0:F1}%'}"/>
+                    </mui:BooleanSwitch.True>
+                    <mui:BooleanSwitch.False>
+                      <TextBlock Text="{x:Static g:AppStrings.ContentTools_FilesCompressor_NotCompressed}"/>
+                    </mui:BooleanSwitch.False>
+                  </mui:BooleanSwitch>
+                </Border>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+  </DockPanel>
+</tools:ContentTool>

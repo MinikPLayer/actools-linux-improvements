@@ -1,0 +1,166 @@
+﻿<c:AcListPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:li="clr-namespace:AcManager.Pages.Lists" xmlns:c="http://acstuff.club/app/controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Lists.CarsListPage" Loaded="OnLoaded" Unloaded="OnUnloaded" Margin="{StaticResource ContentMargin}" ItemsSource="{Binding MainList}" SaveScrollKey="CarsListPage.Scroll">
+  <c:AcListPage.Resources>
+
+    <DataTemplate x:Key="Batch.PackCars" DataType="{x:Type li:CarsListPage+BatchAction_PackCars}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <!--<DockPanel VerticalAlignment="Top">
+          <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Style="{StaticResource Label}" />
+          <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4" />
+        </DockPanel>-->
+        <mui:SpacingUniformGrid Columns="2" HorizontalSpacing="20" VerticalSpacing="4" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding PackData}">
+            <Label Content="Encrypt data"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding IncludeTemplates}">
+            <Label Content="Include “templates” directory" ToolTip.Tip="Simply put all templates to “templates” directory"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding PackSeparately}">
+            <Label Content="Pack separately"/>
+          </CheckBox>
+        </mui:SpacingUniformGrid>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.FixBrand" DataType="{x:Type li:CarsListPage+BatchAction_FixBrand}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <mui:SpacingUniformGrid Columns="2" HorizontalSpacing="20" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding UpdateBrandBadge}">
+            <Label Content="Update brand badge"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SearchInTags}">
+            <Label Content="Search brand name in tags"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SearchInTheMiddle}">
+            <Label Content="Search brand name in the middle of cars’ names"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding UpdateName}">
+            <Label Content="Put brand name to the begin of car’s name"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding FixNamesWithoutBrands}">
+            <Label Content="Ensure brand is in the beginning of car’s name"/>
+          </CheckBox>
+          <!--<CheckBox IsChecked="{Binding SortTags}">
+            <Label Content="Sort tags" />
+          </CheckBox>-->
+        </mui:SpacingUniformGrid>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.RecalculateCurves" DataType="{x:Type li:CarsListPage+BatchAction_RecalculateCurves}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <mui:SpacingUniformGrid Columns="2" HorizontalSpacing="20" VerticalSpacing="4" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding ScaleToMaxValues}">
+            <Label Content="Scale curves to torque and BHP values"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding UpdateMaxValues}" IsEnabled="{Binding ScaleToMaxValues, Converter={StaticResource InvertBooleanConverter}}">
+            <Label Content="Update torque and BHP values"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding RebuildFromData}">
+            <Label Content="Rebuild curves from data"/>
+          </CheckBox>
+        </mui:SpacingUniformGrid>
+
+        <DockPanel IsEnabled="{Binding ScaleToMaxValues, Converter={StaticResource InvertBooleanConverter}}">
+          <mui:ValueLabel Value="{Binding TransmissionLoss, Converter={StaticResource PercentageConverter}}" Width="160" Padding="0" Content="{x:Static g:AppStrings.CarSpecs_TransmissionLoss}" Postfix="%" Margin="0 0 20 0" VerticalAlignment="Center"/>
+          <Slider Value="{Binding TransmissionLoss, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}" Minimum="0" Maximum="50" TickFrequency="5" TickPlacement="BottomRight" Width="200" HorizontalAlignment="Left"/>
+        </DockPanel>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.FixCarClass" DataType="{x:Type li:CarsListPage+BatchAction_FixCarClass}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <CheckBox IsChecked="{Binding UpdateAll}">
+          <Label Content="Update all values (keep in mind that algorithm is not very accurate)"/>
+        </CheckBox>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.PackCarData" DataType="{x:Type li:CarsListPage+BatchAction_PackCarData}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <CheckBox IsChecked="{Binding OverrideExisting.Value}">
+          <Label Content="Override existing “data.acd”" ToolTip.Tip="If “data.acd” already exists, with this option active it’ll be recycled and replaced. Without it, car will be skipped."/>
+        </CheckBox>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.AnalyzeCar" DataType="{x:Type li:CarsListPage+BatchAction_AnalyzeCar}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <CheckBox IsChecked="{Binding CheckModels.Value}">
+          <Label Content="Check models as well"/>
+        </CheckBox>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.SyncCarLogo" DataType="{x:Type li:CarsListPage+BatchAction_SyncCarLogo}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <CheckBox IsChecked="{Binding DifferentOnly}">
+          <Label Content="Only if size or last modification date is different"/>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding PreferHardlinks}">
+          <Label>
+            <DockPanel>
+              <TextBlock Text="Try to use hard links"/>
+              <Button CommandParameter="https://en.wikipedia.org/wiki/Hard_link" Theme="{StaticResource MoreDetailsSuperscript}"/>
+            </DockPanel>
+          </Label>
+        </CheckBox>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.AddTag" DataType="{x:Type t:CommonBatchActions+BatchAction_AddTag}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <DockPanel VerticalAlignment="Top">
+          <TextBlock Text="Shared tags:" Width="80" DockPanel.Dock="Left" Classes="Label"/>
+          <mui:TagsList ItemsSource="{Binding Tags}" Margin="0 -4 0 -4" SuggestionsSource="{x:Static t:SuggestionLists.CarTagsListView}"/>
+        </DockPanel>
+        <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" HorizontalAlignment="Left">
+          <CheckBox IsChecked="{Binding CleanUp}">
+            <Label Content="Clean up tags"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SortTags}">
+            <Label Content="Sort tags"/>
+          </CheckBox>
+        </mui:SpacingUniformGrid>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="Batch.SortAndCleanUpTags" DataType="{x:Type li:CarsListPage+BatchAction_SortAndCleanUpTags}">
+      <mui:SpacingStackPanel Spacing="4">
+        <mui:SpacingStackPanel.Resources>
+        <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Themes/AcListPage.BatchStyle.axaml"/>
+      </ResourceDictionary.MergedDictionaries></ResourceDictionary></mui:SpacingStackPanel.Resources>
+      <CheckBox IsChecked="{Binding SortTags}">
+          <Label Content="Sort tags"/>
+        </CheckBox>
+        <CheckBox IsChecked="{Binding CleanUpTags}">
+          <Label Content="Clean up misplaced tags"/>
+        </CheckBox>
+      </mui:SpacingStackPanel>
+    </DataTemplate>
+
+  </c:AcListPage.Resources>
+</c:AcListPage>

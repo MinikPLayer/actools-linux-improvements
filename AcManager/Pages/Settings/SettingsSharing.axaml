@@ -1,0 +1,91 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:tools="clr-namespace:AcManager.Tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsSharing">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="HistoryEntryType" DataType="{x:Type t:SharedEntry}">
+        <DockPanel>
+          <TextBlock Text="{Binding EntryType, Converter={StaticResource EnumToDescriptionConverter}}" TextTrimming="CharacterEllipsis"/>
+        </DockPanel>
+      </DataTemplate>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <ScrollViewer mui:SaveScroll.Key="SettingsSharing">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True" Margin="0">
+
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Settings_Sharing}" Margin="0 0 20 0" Classes="SettingsPanel">
+        <CheckBox IsChecked="{Binding Sharing.ShowSharedDialog}">
+          <Label Content="Show message with a link after sharing"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Sharing.CopyLinkToClipboard}">
+          <Label Content="{x:Static g:AppStrings.Settings_Sharing_CopyLinkAutomatically}"/>
+        </CheckBox>
+
+        <DockPanel IsEnabled="{Binding Sharing.ShareAnonymously, Converter={StaticResource InvertBooleanConverter}}">
+          <Label Content="{x:Static g:AppStrings.Settings_Sharing_NameLabel}"/>
+          <mui:BetterTextBox Text="{Binding Sharing.SharingName}" Placeholder="?" MaxLength="60"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Sharing.ShareAnonymously}">
+          <Label Content="{x:Static g:AppStrings.Settings_Sharing_Anonymously}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Sharing.ShareWithoutName}">
+          <Label Content="{x:Static g:AppStrings.Settings_Sharing_Unnamed}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Sharing.VerifyBeforeSharing}">
+          <Label Content="{x:Static g:AppStrings.Settings_Sharing_VerifyParams}"/>
+        </CheckBox>
+
+        <StackPanel IsVisible="{Binding DeveloperMode, Source={x:Static t:SettingsHolder.Common}, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <!-- Special options -->
+          <TextBlock Text="{x:Static g:AppStrings.Settings_Sharing_SpecialHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+          <CheckBox IsChecked="{Binding Sharing.CustomIds}">
+            <Label Content="{x:Static g:AppStrings.Settings_Sharing_CustomIds}"/>
+          </CheckBox>
+        </StackPanel>
+
+        <!-- History -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Sharing_HistoryHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+        <DockPanel>
+          <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" MaxHeight="240" PointerWheelChanged="OnScrollMouseWheel">
+            <DataGrid ItemsSource="{Binding History}" IsReadOnly="True" x:Name="HistoryDataGrid" DoubleTapped="OnHistoryDoubleClick" PointerReleased="OnHistoryContextMenu" Theme="{StaticResource DataGrid.Lite}">
+              <DataGrid.Columns>
+                <DataGridTemplateColumn Width="160" Header="{x:Static g:AppStrings.Settings_Sharing_HistoryTableType}" SortMemberPath="EntryType" CellTemplate="{StaticResource HistoryEntryType}"/>
+                <DataGridTextColumn Width="1*" Header="{x:Static g:AppStrings.Settings_Sharing_HistoryTableName}" Binding="{Binding Name, TargetNullValue='?'}"/>
+                <DataGridTextColumn Width="1*" Header="{x:Static g:AppStrings.Settings_Sharing_HistoryTableTarget}" Binding="{Binding Target, TargetNullValue='?'}"/>
+                <DataGridTextColumn MinWidth="160" Width="0.7*" Header="{x:Static g:AppStrings.Settings_Sharing_HistoryTableUrl}" Binding="{Binding Url, TargetNullValue='?'}"/>
+              </DataGrid.Columns>
+
+              <!-- <DataGrid.RowDetailsTemplate>
+                <DataTemplate DataType="{x:Type miscellaneous:SharingHelper+SharedEntry}">
+                  <DockPanel>
+                    <Button DockPanel.Dock="Right" Command="{Binding RemoveCommand}" Content="{x:Static g:AppStrings.Settings_Sharing_Remove}" />
+                    <TextBlock Text="{Binding Id, StringFormat='{}ID: {0}'}" VerticalAlignment="Center" Margin="4 0" />
+                  </DockPanel>
+                </DataTemplate>
+              </DataGrid.RowDetailsTemplate> -->
+            </DataGrid>
+          </ScrollViewer>
+        </DockPanel>
+
+      </StackPanel>
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Settings_Sharing}" Margin="0 0 20 0" Classes="SettingsPanel">
+
+        <TextBlock Text="{x:Static g:AppStrings.AcSettings_ReplaysHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+        <c:UploaderBlock DataContext="{x:Static tools:LargeFileUploaderParams.ShareReplays}"/>
+
+        <TextBlock Text="{x:Static g:AppStrings.Settings_Sharing_Content}" Classes="Heading2 SettingsPanel.Heading2"/>
+        <c:UploaderBlock DataContext="{x:Static tools:LargeFileUploaderParams.ShareContent}"/>
+
+      </StackPanel>
+
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,82 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.PythonAppsSettings">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <mui:Switch Value="{Binding Apps.Count}">
+    <DockPanel mui:Switch.When="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource ContentMarginWithPadding}">
+      <TextBlock Text="{x:Static g:AppStrings.Settings_PythonApps_NoConfigurableAppsFound}" DockPanel.Dock="Top" Classes="Heading1"/>
+      <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/f/d/19-content-manager-python-app-configs" Command="{x:Static mui:LinkCommands.NavigateLink}">
+        <DockPanel IsHitTestVisible="False">
+          <Path Data="{StaticResource QuestionMarkIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+          <TextBlock Text="{x:Static c:ControlsStrings.Common_WhatIsIt}"/>
+        </DockPanel>
+      </Button>
+    </DockPanel>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MinWidth="50" MaxWidth="400"/>
+        <ColumnDefinition Width="9"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Link list -->
+      <ListBox ItemsSource="{Binding Apps}" SelectedItem="{Binding SelectedApp}" Theme="{StaticResource VirtualizingListBox}">
+        <ListBox.ItemContainerTheme>
+          <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                  <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                  </Border>
+                  </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                    </Style><Style Selector="^:selected /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                    </Style></ControlTheme>
+        </ListBox.ItemContainerTheme>
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <DockPanel IsEnabled="{Binding Enabled}" Background="Transparent" mui:Draggable.Data="{Binding}" Margin="10 2 2 2" x:Name="__Dt0">
+              <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ Path#FavouriteIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsFavourite, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] Path#FavouriteIcon"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#AppTitle"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+              </Style></Style></DockPanel.Styles><ToolTip.Tip>
+                <ToolTip IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+                  <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" MaxWidth="400" TextWrapping="Wrap"/>
+                </ToolTip>
+              </ToolTip.Tip>
+              <c:OriginIcon Author="{Binding Author}" MaxWidth="12" MaxHeight="12" DockPanel.Dock="Right" x:Name="PART_OriginIcon"/>
+              <Path Data="{StaticResource BookmarkIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource FavouriteBrush}" Stretch="Uniform" x:Name="FavouriteIcon" VerticalAlignment="Center" Margin="2 0 4 0"/>
+              <mui:BetterImage Width="14" Height="14" CollapseIfNull="True" CollapseIfMissing="True" Filename="{Binding AppIcon.Value, FallbackValue={x:Null}}" Margin="0 0 4 0" ClearOnChange="True"/>
+              <TextBlock x:Name="AppTitle" Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" Classes="Small"/>
+            </DockPanel>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <!-- Separator -->
+      <mui:ModernTabSplitter Grid.Column="1" SaveKey="__PythonAppsSettingsPage.Splitter"/>
+
+      <!-- Content -->
+      <DockPanel Grid.Column="2" Margin="20 0 20 20">
+        <c:MessageBlock Margin="0 8 0 0" DockPanel.Dock="Bottom">
+          <mui:BbCodeBlock Text="{x:Static g:AppStrings.Settings_PythonApps_ChangedWillBeSavedAutomatically}"/>
+        </c:MessageBlock>
+        <DockPanel DockPanel.Dock="Top" Margin="0 0 0 20" IsVisible="{Binding SelectedApp, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <CheckBox IsChecked="{Binding SelectedApp.IsActive}"/>
+          <TextBlock Text="{Binding SelectedApp.DisplayName}" Classes="Heading2"/>
+        </DockPanel>
+        <mui:ModernTab x:Name="ConfigsTab" Layout="Tab"/>
+      </DockPanel>
+    </Grid>
+  </mui:Switch>
+</UserControl>

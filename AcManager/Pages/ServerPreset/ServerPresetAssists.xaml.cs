@@ -5,7 +5,7 @@ using AcManager.Tools;
 using FirstFloor.ModernUI.Serialization;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetAssists {
+    public partial class ServerPresetAssists : global::Avalonia.Controls.UserControl {
         public ServerPresetAssists() {
             InitializeComponent();
         }

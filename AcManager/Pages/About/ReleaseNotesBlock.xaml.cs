@@ -5,7 +5,7 @@ using AcManager.Tools.About;
 using AcTools.Utils.Helpers;
 
 namespace AcManager.Pages.About {
-    public partial class ReleaseNotesBlock {
+    public partial class ReleaseNotesBlock : global::Avalonia.Controls.UserControl {
         public ReleaseNotesBlock() {
             InitializeComponent();
 
@@ -16,7 +16,7 @@ namespace AcManager.Pages.About {
             }
         }
 
-        public static readonly DependencyProperty PieceProperty = DependencyProperty.Register(nameof(Piece), typeof(PieceOfInformation),
+        public static readonly StyledProperty<PieceOfInformation> PieceProperty = DP.Register<PieceOfInformation>(nameof(Piece),
                 typeof(ReleaseNotesBlock), new PropertyMetadata(OnPieceChanged));
 
         public PieceOfInformation Piece {

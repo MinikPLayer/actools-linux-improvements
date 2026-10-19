@@ -1,0 +1,99 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetAssists">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid DataContext="{Binding SelectedObject}">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Classes="SettingsPanel">
+      <TextBlock Text="Assists" Classes="Heading2 SettingsPanel.Heading2.First"/>
+      <DockPanel>
+        <Label Content="ABS:"/>
+        <ComboBox ItemsSource="{x:Static local:SelectedPage.AssistStates}" SelectedItem="{Binding Abs}"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="Traction control">
+        <Label Content="TC:"/>
+        <ComboBox ItemsSource="{x:Static local:SelectedPage.AssistStates}" SelectedItem="{Binding TractionControl}"/>
+      </DockPanel>
+      <CheckBox IsChecked="{Binding StabilityControl}" ToolTip.Tip="AI will help you control the car if enabled">
+        <Label Content="Stability control"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding AutoClutch}">
+        <Label Content="Automatic clutch"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding TyreBlankets}">
+        <Label Content="Tyre blankets"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding ForceVirtualMirror}" ToolTip.Tip="Force virtual mirror">
+        <Label Content="Virtual mirror"/>
+      </CheckBox>
+
+      <TextBlock Text="Voting and banning" Classes="Heading2 SettingsPanel.Heading2"/>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding KickVoteQuorum}" Postfix="%" Content="Kick vote quorum"/>
+        <Slider Minimum="40" Maximum="90" Value="{Binding KickVoteQuorum}" TickFrequency="5" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding SessionVoteQuorum}" Postfix="%" Content="Session vote quorum"/>
+        <Slider Minimum="40" Maximum="90" Value="{Binding SessionVoteQuorum}" TickFrequency="5" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel ToolTip.Tip="{Binding VoteDuration, Converter={StaticResource ReadableTimeSpanConverter}}">
+        <mui:ValueLabel Value="{Binding VoteDuration, Converter={StaticResource TimeSpanHhMmSsConverter}}" Content="Vote duration" mui:BetterTextBox.Mode="Time"/>
+        <Slider Minimum="10" Maximum="60" TickFrequency="5" TickPlacement="BottomRight" Value="{Binding VoteDuration, Converter={StaticResource TimeSpanSecondsConverter}, ConverterParameter=1}"/>
+      </DockPanel>
+      <CheckBox IsChecked="{Binding BlacklistMode}">
+        <Label Content="Kick players until restart"/>
+      </CheckBox>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding MaxCollisionsPerKm, Converter={x:Static local:ServerPresetAssists.SpecialOffForNegativeConverter}}" mui:BetterTextBox.Mode="IntegerOrLabel" mui:BetterTextBox.ModeLabel="Off" mui:BetterTextBox.ModeLabelValue="-1" Content="Max contacts per km"/>
+        <Slider Minimum="-1" Maximum="9" TickFrequency="1" TickPlacement="BottomRight" Value="{Binding MaxCollisionsPerKm}"/>
+      </DockPanel>
+    </StackPanel>
+
+    <StackPanel Grid.Column="1" Classes="SettingsPanel">
+      <TextBlock Text="Realism" Classes="Heading2 SettingsPanel.Heading2.First"/>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding FuelRate}" Postfix="%" Content="Fuel rate"/>
+        <Slider Minimum="0" Maximum="200" Value="{Binding FuelRate}" TickFrequency="25" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding DamageRate}" Postfix="%" Content="Damage rate"/>
+        <Slider Minimum="0" Maximum="200" Value="{Binding DamageRate}" TickFrequency="25" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding TyreWearRate}" Postfix="%" Content="Tyres wear rate"/>
+        <Slider Minimum="0" Maximum="200" Value="{Binding TyreWearRate}" TickFrequency="25" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding DisplayAllowTyresOut}" Content="Allowed tyres out" Postfix="{Binding DisplayAllowTyresOut, Converter={StaticResource PluralizingConverter}, ConverterParameter=' tyre'}"/>
+        <Slider Minimum="-1" Maximum="3" Value="{Binding AllowTyresOut}" TickFrequency="1" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <mui:ValueLabel Value="{Binding MaxBallast}" Postfix="{x:Static t:ToolsStrings.Common_KilogramsPostfix}" Content="Max ballast"/>
+        <Slider Minimum="0" Maximum="200" Value="{Binding MaxBallast}" TickFrequency="25" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <DockPanel>
+        <Label Content="Jump start:"/>
+        <ComboBox ItemsSource="{x:Static local:SelectedPage.JumpStarts}" SelectedItem="{Binding JumpStart}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+      </DockPanel>
+      <CheckBox IsChecked="{Binding RaceGasPenaltyDisabled}" ToolTip.Tip="Flag it if you want to disable race Gas Penalty. Cuts will be registered on result JSONs.">
+        <Label Content="Disable gas cut penalty"/>
+      </CheckBox>
+    </StackPanel>
+  </Grid>
+</UserControl>

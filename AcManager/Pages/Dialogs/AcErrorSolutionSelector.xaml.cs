@@ -17,7 +17,7 @@ using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class AcErrorSolutionSelector : INotifyPropertyChanged {
+    public partial class AcErrorSolutionSelector : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, INotifyPropertyChanged {
         public static IEnumerable<IAcError> GetNearestErrors(AcError error) {
             // all children are here
             // shitty solution, but whatever

@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lists="clr-namespace:AcManager.Pages.Lists" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:ac="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Lists.ServerBannedListPage">
+  <mui:Switch Value="{Binding View.Count}">
+    <DockPanel mui:Switch.When="0" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Text="{x:Static ac:ControlsStrings.ContentList_NothingToDisplay}" Classes="Heading1"/>
+    </DockPanel>
+    <ItemsControl ItemsSource="{Binding View}" Margin="80 20" Theme="{StaticResource VirtualizingItemsControl}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="{x:Type lists:ServerBannedListPage+BlacklistItem}">
+          <DockPanel Margin="0 0 0 8">
+            <Button Content="Remove entry" DockPanel.Dock="Right" Margin="20 0 0 0" Command="{Binding DeleteCommand}"/>
+            <DockPanel DockPanel.Dock="Top" Margin="0 0 0 2">
+              <TextBlock Text="GUID:" Width="60" Classes="Label"/>
+              <TextBlock>
+                <InlineUIContainer><Button Theme="{StaticResource HyperlinkButton}" Command="{Binding OpenSteamWebpageCommand}"><TextBlock Text="{Binding Guid, Mode=OneWay}"/></Button></InlineUIContainer>
+              </TextBlock>
+            </DockPanel>
+            <DockPanel Background="Transparent" ToolTip.Tip="Content Manager collects GUID-name associations with its online server plugin">
+              <TextBlock Text="Known as:" Width="60" Classes="Label"/>
+              <mui:PlaceholderTextBlock Text="{Binding KnownAs}" Placeholder="?"/>
+            </DockPanel>
+          </DockPanel>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </mui:Switch>
+</UserControl>

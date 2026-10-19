@@ -29,7 +29,7 @@ using Microsoft.Win32;
 
 namespace AcManager.Pages.Settings {
     [Localizable(false)]
-    public partial class SettingsDebug : INotifyPropertyChanged {
+    public partial class SettingsDebug : global::Avalonia.Controls.UserControl, INotifyPropertyChanged {
         private sealed class RingStyle : Displayable {
             public string Key { get; }
 

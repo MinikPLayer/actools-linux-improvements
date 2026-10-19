@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Presentation;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopUpload {
+    public partial class WorkshopUpload : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public WorkshopUpload(IEnumerable<AcJsonObjectNew> objects) {

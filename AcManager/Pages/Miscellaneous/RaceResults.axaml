@@ -1,0 +1,139 @@
+﻿<DockPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:mi="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:c="http://acstuff.club/app/controls" xmlns:app="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Miscellaneous.RaceResults" Margin="{StaticResource ContentMarginWithPadding}">
+  <DockPanel.Styles><Style Selector="MenuItem.GoMenuItem">
+      <Setter Property="Foreground" Value="{DynamicResource Go}"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+  </DockPanel.Styles><mui:Switch Value="{Binding Entries.Count}">
+    <TextBlock mui:Switch.When="0" Text="{x:Static app:AppStrings.Online_NothingToDisplay}" VerticalAlignment="Center" HorizontalAlignment="Center" Classes="Heading1"/>
+    <ItemsControl ItemsSource="{Binding Entries}" mui:FancyScroll.Outside="True" Margin="0 0 -4 0" Theme="{StaticResource VirtualizingItemsControl}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="{x:Type mi:RaceResults+RaceResultsObject}">
+          <mui:Cell Height="92">
+            <!--<Border Opacity="0.2" ClipToBounds="True" Background="{DynamicResource WindowBackground}">
+              <Border.Effect>
+                <BlurEffect Radius="20" RenderingBias="Performance" KernelType="Gaussian" />
+              </Border.Effect>
+              <mui:BetterImage Margin="-20" Stretch="UniformToFill" Filename="{Binding Track.PreviewImage}" ClearOnChange="True" />
+            </Border>-->
+            <DockPanel>
+              <mui:SpacingUniformGrid Columns="1" VerticalSpacing="2" DockPanel.Dock="Right" Margin="4 2 4 2">
+                <Button Content="{x:Static app:AppStrings.RaceResults_Details}" Command="{Binding ShowDetailsCommand}"/>
+                <Button Content="{x:Static c:ControlsStrings.Common_TryAgain}" Click="OnTryAgainClick"/>
+                <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="2">
+                  <Button Content="{x:Static app:AppStrings.DownloadList_ViewInExplorer}" Command="{Binding ViewInExplorerCommand}"/>
+                  <Button Content="{x:Static app:AppStrings.Toolbar_Delete}" Command="{Binding DeleteCommand}"/>
+                </mui:SpacingUniformGrid>
+              </mui:SpacingUniformGrid>
+
+              <mui:ReferenceSwitch Value="{Binding Parsed}" Margin="0 4 0 4">
+                <mui:ReferenceSwitch.Null>
+                  <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock.Text>
+                      <Binding Path="DisplayName" StringFormat="{x:Static app:AppStrings.RaceResults_FailedToParse}"/>
+                    </TextBlock.Text>
+                  </TextBlock>
+                </mui:ReferenceSwitch.Null>
+                <mui:ReferenceSwitch.NonNull>
+                  <DockPanel Background="Transparent" PointerPressed="OnItemDoubleClick">
+                    <Viewbox Stretch="Uniform" Height="92" VerticalAlignment="Center">
+
+                      <c:LazierSwitch Value="{Binding Track}" Width="160" Height="120" Margin="0 0 20 0">
+                        <c:LazierSwitch.Loading>
+                          <mui:Cell Background="Gray">
+                            <TextBlock Text="{Binding Parsed.TrackId}" Foreground="{DynamicResource CardHeaderTextDisabled}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8 -2 8 2" TextAlignment="Center" Classes="Title"/>
+                          </mui:Cell>
+                        </c:LazierSwitch.Loading>
+                        <c:LazierSwitch.Null>
+                          <mui:Cell Background="Gray">
+                            <TextBlock Text="{x:Static c:ControlsStrings.RaceResults_TrackIsMissing}" Foreground="{DynamicResource CardHeaderTextDisabled}" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="8 -2 8 2" TextAlignment="Center" Classes="Title"/>
+                          </mui:Cell>
+                        </c:LazierSwitch.Null>
+                        <c:LazierSwitch.NonNull>
+                          <mui:Cell Background="Gray" mui:Draggable.Data="{Binding Track}">
+                            <mui:BetterImage Filename="{Binding Track.Value.PreviewImage}" DecodeWidth="160" Stretch="UniformToFill" ClearOnChange="True"/>
+                            <mui:BetterImage Filename="{Binding Track.Value.OutlineImage}" DecodeWidth="160" ShowBroken="False" ClearOnChange="True"/>
+                          </mui:Cell>
+                        </c:LazierSwitch.NonNull>
+                      </c:LazierSwitch>
+                    </Viewbox>
+
+                    <DockPanel>
+                      <mui:SpacingUniformGrid VerticalStackMode="True" HorizontalStackMode="True" Columns="2" Rows="4" VerticalSpacing="2" HorizontalSpacing="20" HorizontalAlignment="Left">
+                        <TextBlock Text="{Binding SessionNames}" Margin="0 0 0 -2" Width="200" Classes="Heading2"/>
+                        <DockPanel VerticalAlignment="Center" c:ContextMenus.Track="{Binding Track.Value}" c:ToolTips.Track="{Binding Track.Value}">
+                          <mui:BetterImage Width="14" Height="14" DockPanel.Dock="Left" Margin="0 0 6 0" Filename="{Binding Track.Value.OutlineImage}" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+                          <TextBlock VerticalAlignment="Center">
+                            <TextBlock.Text>
+                              <MultiBinding Converter="{x:Static pc:FirstNotNullConverter.Instance}">
+                                <Binding Path="Track.Value.Name"/>
+                                <Binding Path="Parsed.TrackId"/>
+                              </MultiBinding>
+                            </TextBlock.Text>
+                          </TextBlock>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding Summary}" VerticalAlignment="Center"/>
+                        <DockPanel VerticalAlignment="Center" c:ContextMenus.Car="{Binding PlayerCar.Value}" c:ToolTips.Car="{Binding PlayerCar.Value}">
+                          <mui:BetterImage Width="14" Height="14" DockPanel.Dock="Left" Margin="0 0 6 0" Filename="{Binding PlayerCar.Value.BrandBadge}"/>
+                          <TextBlock Text="{Binding PlayerCar.Value.DisplayName}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                        </DockPanel>
+
+                        <TextBlock Text="{Binding Date}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding ModeSummary}" VerticalAlignment="Center" FontWeight="Bold"/>
+
+                        <mui:TimePassedBlock From="{Binding Date}" VerticalAlignment="Center" Classes="Small"/>
+                        <TextBlock Text="{Binding ModeDetails.Value}" VerticalAlignment="Center" Classes="Small"/>
+                      </mui:SpacingUniformGrid>
+
+                      <!--<StackPanel Margin="0 0 20 0" Width="240" VerticalAlignment="Bottom">
+                        <TextBlock Text="{Binding SessionNames}" Style="{StaticResource Heading2}" Margin="0 -2 0 0" />
+                        <TextBlock DockPanel.Dock="Top">
+                          <TextBlock.Text>
+                            <PriorityBinding>
+                              <Binding Path="Track.Name" />
+                              <Binding Path="Parsed.TrackId" />
+                            </PriorityBinding>
+                          </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Summary}" VerticalAlignment="Top" DockPanel.Dock="Top" Style="{StaticResource Small}" Margin="0 2 0 2" />
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding Date}" Style="{StaticResource Small}" VerticalAlignment="Center" Margin="0 0 0 2" />
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding DateDeltaString}" Style="{StaticResource Small}" VerticalAlignment="Center" />
+                      </StackPanel>
+
+                      <ItemsControl ItemsSource="{Binding Cars.Value}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Vertical" />
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate>
+                            <DockPanel Margin="0 2 0 2" Width="200">
+                              <mui:BetterImage Width="12" Height="12" DockPanel.Dock="Left" Margin="0 0 6 0" Filename="{Binding Car.BrandBadge}" />
+                              <TextBlock Text="{Binding Car.DisplayName}" VerticalAlignment="Center" Style="{StaticResource Small}" TextTrimming="CharacterEllipsis" />
+                            </DockPanel>
+                            <DataTemplate.Triggers>
+                              <DataTrigger Binding="{Binding IsPlayerCar}" Value="True">
+                                <Setter Property="TextBlock.FontWeight" Value="Bold" />
+                                ~1~<Setter Property="TextBlock.Foreground" Value="{DynamicResource Go}" />@1@
+                              </DataTrigger>
+                            </DataTemplate.Triggers>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>-->
+                    </DockPanel>
+                  </DockPanel>
+                </mui:ReferenceSwitch.NonNull>
+              </mui:ReferenceSwitch>
+
+              <!--<TextBlock DockPanel.Dock="Left" Text="{Binding Position, StringFormat='{}#{0}'}" Style="{StaticResource Small}" VerticalAlignment="Center"
+                Margin="8 4 4 0" />-->
+
+
+            </DockPanel>
+          </mui:Cell>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </mui:Switch>
+</DockPanel>

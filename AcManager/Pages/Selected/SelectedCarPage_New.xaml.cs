@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -41,7 +41,6 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using StringBasedFilter;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 #if INCLUDE_WORKSHOP
 using AcManager.Workshop;
@@ -49,7 +48,7 @@ using AcManager.Pages.Workshop;
 #endif
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedCarPage_New : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedCarPage_New : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public static bool OptionExtendedMode = true;
 
         public class ViewModel : SelectedAcObjectViewModel<CarObject> {
@@ -738,7 +737,7 @@ namespace AcManager.Pages.Selected {
         }
 
         #region Skins
-        private void OnPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewClick(object sender, PointerReleasedEventArgs e) {
             if (e.ClickCount == 2) {
                 e.Handled = true;
                 if (SettingsHolder.CustomShowroom.CustomShowroomInstead) {
@@ -758,7 +757,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnPreviewRightClick(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewRightClick(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
             var context = ((FrameworkElement)sender).DataContext;
             var wrapper = context as AcItemWrapper;
@@ -823,19 +822,19 @@ namespace AcManager.Pages.Selected {
         #endregion
 
         #region Presets (Dynamic Loading)
-        private void OnShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeShowroomPresets();
         }
 
-        private void OnCustomShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnCustomShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeCustomShowroomPresets();
         }
 
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeQuickDrivePresets();
         }
 
-        private void OnUpdatePreviewsButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnUpdatePreviewsButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeUpdatePreviewsPresets();
         }
         #endregion
@@ -847,14 +846,14 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnUpgradeIconClick(object sender, MouseButtonEventArgs e) {
+        private void OnUpgradeIconClick(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new UpgradeIconEditor((CarObject)SelectedAcObject).ShowDialog();
             }
         }
 
-        private void OnParentBlockClick(object sender, MouseButtonEventArgs e) {
+        private void OnParentBlockClick(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new ChangeCarParentDialog((CarObject)SelectedAcObject).ShowDialog();
@@ -903,7 +902,7 @@ namespace AcManager.Pages.Selected {
 
         public static readonly string TatuusId = @"tatuusfa1";
 
-        private void OnSoundBlockClick(object sender, MouseButtonEventArgs e) {
+        private void OnSoundBlockClick(object sender, PointerReleasedEventArgs e) {
             var obj = _model.SelectedObject;
             if (obj.SoundDonorId == TatuusId) {
                 ModernDialog.ShowMessage(

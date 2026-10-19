@@ -42,7 +42,7 @@ using StringBasedFilter.Parsing;
 using StringBasedFilter.TestEntries;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class CarAnalyzer {
+    public partial class CarAnalyzer : global::AcManager.Pages.ContentTools.ContentTool {
         public static double OptionSimilarThreshold = 0.95;
         public static string OptionSimilarAdditionalSourceIds = null;
 

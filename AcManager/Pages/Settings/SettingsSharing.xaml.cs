@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsSharing {
+    public partial class SettingsSharing : global::Avalonia.Controls.UserControl {
         public class SharingViewModel : NotifyPropertyChanged {
             public SettingsHolder.SharingSettings Sharing => SettingsHolder.Sharing;
             public BetterObservableCollection<SharedEntry> History => SharingHelper.Instance.History;
@@ -30,13 +30,13 @@ namespace AcManager.Pages.Settings {
 
         public SharingViewModel Model => (SharingViewModel)DataContext;
 
-        private void OnScrollMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnScrollMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = (ScrollViewer)sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
         }
 
-        private void OnHistoryContextMenu(object sender, MouseButtonEventArgs e) {
+        private void OnHistoryContextMenu(object sender, PointerReleasedEventArgs e) {
             if (HistoryDataGrid.SelectedValue is SharedEntry value && !string.IsNullOrEmpty(value.RemovalKey)) {
                 e.Handled = true;
                 new ContextMenu {
@@ -63,7 +63,7 @@ namespace AcManager.Pages.Settings {
             }
         }
 
-        private void OnHistoryDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnHistoryDoubleClick(object sender, TappedEventArgs e) {
             if (HistoryDataGrid.SelectedValue is SharedEntry value) {
                 Process.Start(value.Url + "#noauto");
             }

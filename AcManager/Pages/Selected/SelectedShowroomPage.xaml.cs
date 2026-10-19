@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 using SharpDX;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedShowroomPage : ILoadableContent, IParametrizedUriContent {
+    public partial class SelectedShowroomPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent {
         private static void FixVertices(Kn5Node node, Matrix parentMatrix) {
             if (node.NodeClass == Kn5NodeClass.Base) {
                 var localMatrix = node.Transform.ToMatrix() * parentMatrix;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -18,7 +18,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedPythonAppPage : ILoadableContent, IParametrizedUriContent, IImmediateContent, ILocalKeyBindings {
+    public partial class SelectedPythonAppPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent, ILocalKeyBindings {
         public class ViewModel : SelectedAcObjectViewModel<PythonAppObject> {
             [NotNull]
             public PythonAppConfigs Configs { get; }
@@ -131,7 +131,7 @@ namespace AcManager.Pages.Selected {
             AppIconEditor.RunAsync(_model.SelectedObject).Ignore();
         }
 
-        private void OnWindowIconClick(object sender, MouseButtonEventArgs e) {
+        private void OnWindowIconClick(object sender, PointerReleasedEventArgs e) {
             AppIconEditor.RunAsync((PythonAppWindow)((FrameworkElement)sender).DataContext).Ignore();
         }
 

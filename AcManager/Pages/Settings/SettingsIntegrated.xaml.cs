@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsIntegrated {
+    public partial class SettingsIntegrated : global::Avalonia.Controls.UserControl {
         private bool _changed;
 
         public SettingsIntegrated() {

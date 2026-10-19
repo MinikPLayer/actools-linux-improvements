@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetRunningStatus {
+    public partial class ServerPresetRunningStatus : global::Avalonia.Controls.UserControl {
         public ServerPresetRunningStatus() {
             InitializeComponent();
 

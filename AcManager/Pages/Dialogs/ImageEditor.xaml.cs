@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class ImageEditor {
+    public partial class ImageEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public class CropModel {
             public double TotalWidth,
                     TotalHeight,
@@ -219,12 +219,12 @@ namespace AcManager.Pages.Dialogs {
             Moving
         }
 
-        private void OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnMouseDown(object sender, PointerPressedEventArgs e) {
             _state = EditorState.Moving;
             _previousPoint = e.GetPosition(this);
         }
 
-        private void OnMouseMove(object sender, MouseEventArgs e) {
+        private void OnMouseMove(object sender, PointerEventArgs e) {
             var pos = e.GetPosition(this);
             var dx = pos.X - _previousPoint.X;
             var dy = pos.Y - _previousPoint.Y;
@@ -240,11 +240,11 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseUp(object sender, PointerReleasedEventArgs e) {
             _state = EditorState.Idle;
         }
 
-        private void OnMouseLeave(object sender, MouseEventArgs e) {
+        private void OnMouseLeave(object sender, PointerEventArgs e) {
             _state = EditorState.Idle;
         }
 
@@ -260,7 +260,7 @@ namespace AcManager.Pages.Dialogs {
             return 1;
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             _model.Scale(e.Delta > 0 ? GetScaleMultiplier() : 1d / GetScaleMultiplier());
             UpdateView();
         }

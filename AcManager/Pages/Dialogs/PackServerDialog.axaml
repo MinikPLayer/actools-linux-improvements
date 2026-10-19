@@ -1,0 +1,31 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:dialogs="clr-namespace:AcManager.Pages.Dialogs" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.PackServerDialog" Title="{Binding Server.DisplayName, StringFormat='{}Pack {0}'}">
+
+  <mui:SpacingStackPanel Spacing="8" Orientation="Vertical">
+    <c:PropertiesGrid VerticalSpacing="8" Columns="2" VerticalAlignment="Top" WithoutMarginForEmptyLabels="True">
+      <mui:BetterComboBox c:PropertiesGrid.Label="Target:" IsEditable="False" ItemsSource="{Binding Modes}" SelectedItem="{Binding Mode}">
+        <mui:BetterComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+          </DataTemplate>
+        </mui:BetterComboBox.ItemTemplate>
+      </mui:BetterComboBox>
+
+      <CheckBox IsChecked="{Binding IncludeExecutable}" VerticalAlignment="Center" Margin="0 -2 0 2">
+        <Label Content="Include executable"/>
+      </CheckBox>
+
+      <CheckBox IsChecked="{Binding PackIntoSingle}" VerticalAlignment="Center" Margin="0 -2 0 2" IsEnabled="{Binding Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static t:ServerPresetPackMode.Windows}}" ToolTip.Tip="Installed and associated with .EVB-files Enigma Virtual Box is required. Only for Windows without Wrapper enabled.">
+        <Label>
+          <DockPanel>
+            <TextBlock Text="Pack into single exe-file"/>
+            <Button CommandParameter="http://enigmaprotector.com/en/aboutvb.html" Theme="{StaticResource MoreDetailsSuperscript}"/>
+          </DockPanel>
+        </Label>
+      </CheckBox>
+    </c:PropertiesGrid>
+  </mui:SpacingStackPanel>
+
+  <mui:ModernDialog.ButtonsRowContent>
+    <c:UserPresetsControl UserPresetable="{Binding}"/>
+  </mui:ModernDialog.ButtonsRowContent>
+</mui:ModernDialog>

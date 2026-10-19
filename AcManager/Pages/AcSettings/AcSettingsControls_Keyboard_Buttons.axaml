@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:acset="clr-namespace:AcManager.Pages.AcSettings" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.AcSettingsControls_Keyboard_Buttons">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+    <ScrollViewer mui:SaveScroll.Key="AcSettingsControls_Keyboard_Buttons">
+    <StackPanel>
+      <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.Controls_BrakeBalance}" Classes="Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarBrakeButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Text="{x:Static g:AppStrings.Controls_Turbo}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarTurboButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Text="{x:Static g:AppStrings.Controls_TractionControl}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarTractionControlButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Text="{x:Static g:AppStrings.Controls_Abs}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarAbsButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Text="{x:Static g:AppStrings.Controls_EngineBrake}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarEngineBrakeButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.Controls_MguK}" Classes="Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarMgukButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Text="{x:Static g:AppStrings.Controls_Miscellaneous}" Classes="Heading2 SettingsPanel.Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelCarButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <TextBlock Margin="0 0 0 4" Text="{x:Static g:AppStrings.Controls_View}" Classes="Heading2"/>
+      <ItemsControl ItemsSource="{Binding Controls.WheelViewButtonEntries}" Margin="0 0 0 20" ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}"/>
+
+      <!--<TextBlock Style="{StaticResource Heading2}" Margin="0 0 0 4" Text="{x:Static g:AppStrings.Controls_Gestures}" />
+      <ItemsControl ItemsSource="{Binding Controls.WheelGesturesButtonEntries}" Margin="0 0 0 20"
+          ItemTemplate="{StaticResource KeyboardCombinedButtonEntryTemplate}" ItemsPanel="{StaticResource TwoColumnsPanel}" />-->
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

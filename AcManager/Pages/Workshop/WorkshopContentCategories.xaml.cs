@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopContentCategories : IParametrizedUriContent, ILoadableContent {
+    public partial class WorkshopContentCategories : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         private string _contentType;
         private string _categoryType;
         private string _searchKeyword;
@@ -65,7 +65,7 @@ namespace AcManager.Pages.Workshop {
             }
         }
 
-        private void OnItemMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnItemMouseDown(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
 
             var element = (FrameworkElement)sender;

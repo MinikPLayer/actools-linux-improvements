@@ -2,7 +2,7 @@
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsGeneral {
+    public partial class AcSettingsGeneral : global::Avalonia.Controls.UserControl {
         public AcSettingsGeneral() {
             InitializeComponent();
             DataContext = new ViewModel();

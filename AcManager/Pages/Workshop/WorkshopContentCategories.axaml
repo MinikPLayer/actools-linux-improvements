@@ -1,0 +1,20 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:w="clr-namespace:AcManager.Pages.Workshop" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Workshop.WorkshopContentCategories">
+  <ListBox x:Name="List" ItemsSource="{Binding Categories}" Margin="20" KeyDown="OnPreviewKeyDown">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <mui:VirtualizingTilePanel HorizontalAlignment="Left" ItemWidth="106" ItemHeight="106" SizeChanged="OnPanelSizeChanged"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <mui:Cell Width="102" Height="102" Background="Transparent" PointerPressed="OnItemMouseDown" x:Name="__Dt0">
+          <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding HasNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+          </Style></Style></mui:Cell.Styles><mui:BetterImage Filename="{Binding Icon}" Margin="8 8 8 24" Width="68" Height="68" HorizontalAlignment="Center" ClearOnChange="True"/>
+          <TextBlock HorizontalAlignment="Center" Text="{Binding Name}" Margin="4" Padding="0" FontSize="14" VerticalAlignment="Bottom" Classes="Label Label.Padding"/>
+          <TextBlock x:Name="CountText" FontSize="12" HorizontalAlignment="Right" Text="{Binding Uses}" Margin="4" VerticalAlignment="Top" Classes="Label"/>
+          <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="2" IsHitTestVisible="False"/>
+        </mui:Cell>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</UserControl>

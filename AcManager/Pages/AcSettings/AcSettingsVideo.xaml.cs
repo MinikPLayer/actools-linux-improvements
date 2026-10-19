@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Controls;
 using AcManager.Controls.Helpers;
@@ -26,10 +26,9 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
-using Application = System.Windows.Application;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsVideo : ILoadableContent {
+    public partial class AcSettingsVideo : global::Avalonia.Controls.UserControl, ILoadableContent {
         public partial class ViewModel : NotifyPropertyChanged {
             public SettingEntry[] Screens { get; }
 

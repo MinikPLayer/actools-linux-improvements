@@ -18,7 +18,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopCarBrandsHorizonal : IParametrizedUriContent, ILoadableContent {
+    public partial class WorkshopCarBrandsHorizonal : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         private string _contentType;
         private string _categoryType;
         private string _searchKeyword;
@@ -52,7 +52,7 @@ namespace AcManager.Pages.Workshop {
 
         private void OnPageLoaded(object sender, RoutedEventArgs e) { }
 
-        private void OnSizeChanged(object sender, EventArgs args) {
+        private void OnSizeChanged(object sender, SizeChangedEventArgs args) {
             UpdateColumnsLayout();
         }
 
@@ -312,7 +312,7 @@ namespace AcManager.Pages.Workshop {
             }
         }
 
-        private void OnCategoriesOverlayClick(object sender, MouseButtonEventArgs e) {
+        private void OnCategoriesOverlayClick(object sender, PointerPressedEventArgs e) {
             Model.LayoutPhase = 1;
         }
 

@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopCarBrandsNarrrowColumns : IParametrizedUriContent, ILoadableContent {
+    public partial class WorkshopCarBrandsNarrrowColumns : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         private string _contentType;
         private string _categoryType;
         private string _searchKeyword;
@@ -44,7 +44,7 @@ namespace AcManager.Pages.Workshop {
             Model.PropertyChanged += OnModelChanged;
         }
 
-        private void OnSizeChanged(object sender, EventArgs args) {
+        private void OnSizeChanged(object sender, SizeChangedEventArgs args) {
             UpdateColumnsLayout();
         }
 

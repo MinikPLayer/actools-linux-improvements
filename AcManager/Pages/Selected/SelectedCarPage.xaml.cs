@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -32,10 +32,9 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 using StringBasedFilter;
-using MenuItem = System.Windows.Controls.MenuItem;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedCarPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedCarPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel<CarObject> {
             public ViewModel([NotNull] CarObject acObject) : base(acObject) {
                 AcContext.Instance.CurrentCar = acObject;
@@ -374,7 +373,7 @@ namespace AcManager.Pages.Selected {
         }
 
         #region Skins
-        private void OnPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewClick(object sender, PointerReleasedEventArgs e) {
             if (e.ClickCount == 2 && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
                 e.Handled = true;
                 CarOpenInShowroomDialog.Run(_model.SelectedObject, _model.SelectedObject.SelectedSkin?.Id);
@@ -390,7 +389,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnPreviewContextMenu(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewContextMenu(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
             var context = ((FrameworkElement)sender).DataContext;
             var wrapper = context as AcItemWrapper;
@@ -455,19 +454,19 @@ namespace AcManager.Pages.Selected {
         #endregion
 
         #region Presets (Dynamic Loading)
-        private void OnShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeShowroomPresets();
         }
 
-        private void OnCustomShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnCustomShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeCustomShowroomPresets();
         }
 
-        private void OnQuickDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnQuickDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeQuickDrivePresets();
         }
 
-        private void OnUpdatePreviewsButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnUpdatePreviewsButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeUpdatePreviewsPresets();
         }
         #endregion
@@ -479,21 +478,21 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void UpgradeIcon_MouseDown(object sender, MouseButtonEventArgs e) {
+        private void UpgradeIcon_MouseDown(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new UpgradeIconEditor((CarObject)SelectedAcObject).ShowDialog();
             }
         }
 
-        private void ParentBlock_OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void ParentBlock_OnMouseDown(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new ChangeCarParentDialog((CarObject)SelectedAcObject).ShowDialog();
             }
         }
 
-        private void SpecsInfoBlock_OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void SpecsInfoBlock_OnMouseDown(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
                 new CarSpecsEditor((CarObject)SelectedAcObject).ShowDialog();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -52,9 +52,6 @@ using FirstFloor.ModernUI.Windows.Media;
 using FirstFloor.ModernUI.Windows.Navigation;
 using JetBrains.Annotations;
 using Microsoft.Win32;
-using Application = System.Windows.Application;
-using DragEventArgs = System.Windows.DragEventArgs;
-using DragDropEffects = System.Windows.DragDropEffects;
 using Path = System.Windows.Shapes.Path;
 using QuickSwitchesBlock = AcManager.QuickSwitches.QuickSwitchesBlock;
 
@@ -63,7 +60,7 @@ using AcManager.Workshop;
 #endif
 
 namespace AcManager.Pages.Windows {
-    public partial class MainWindow : IFancyBackgroundListener, INavigateUriHandler {
+    public partial class MainWindow : global::FirstFloor.ModernUI.Windows.Controls.ModernWindow, IFancyBackgroundListener, INavigateUriHandler {
         private static readonly TitleLinkEnabledEntry DownloadsEntry = new TitleLinkEnabledEntry("downloads", AppStrings.Main_Downloads);
 
         public static TitleLinkEnabledEntry[] GetTitleLinksEntries() {
@@ -763,7 +760,7 @@ namespace AcManager.Pages.Windows {
             if (!_postponeShutdown) EnsureShutdown();
         }
 
-        private void OnClosing(object sender, CancelEventArgs e) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs e) {
             if (_closed) return;
             Logging.Debug("Closing main window…");
 
@@ -933,7 +930,7 @@ namespace AcManager.Pages.Windows {
             e.Handled = true;
         }
 
-        private async void OnMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+        private async void OnMouseRightButtonDown(object sender, PointerReleasedEventArgs e) {
             if (!SettingsHolder.Drive.QuickSwitches || !SettingsHolder.Drive.QuickSwitchesRightMouseButton) return;
 
             await Task.Delay(50);
@@ -943,7 +940,7 @@ namespace AcManager.Pages.Windows {
             e.Handled = true;
         }
 
-        private void OnMouseUp(object sender, MouseButtonEventArgs e) {
+        private void OnMouseUp(object sender, PointerPressedEventArgs e) {
             if (e.Handled || !SettingsHolder.Drive.QuickSwitches) return;
             if (e.ChangedButton == MouseButton.Middle) {
                 ToggleQuickSwitches();
@@ -951,7 +948,7 @@ namespace AcManager.Pages.Windows {
             }
         }
 
-        private void OnPreviewMouseRightButtonUp(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewMouseRightButtonUp(object sender, PointerReleasedEventArgs e) {
             if (QuickSwitchesBlock.GetIsActive(Popup)) {
                 e.Handled = true;
             }
@@ -959,7 +956,7 @@ namespace AcManager.Pages.Windows {
 
         private bool _openOnNext;
 
-        private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewMouseRightButtonDown(object sender, PointerPressedEventArgs e) {
             _openOnNext = !QuickSwitchesBlock.GetIsActive(Popup);
         }
 
@@ -1281,7 +1278,7 @@ namespace AcManager.Pages.Windows {
             }
         }
 
-        private void OnDownloadsButtonClick(object sender, MouseButtonEventArgs e) {
+        private void OnDownloadsButtonClick(object sender, PointerReleasedEventArgs e) {
             var glow = this.FindChild<FrameworkElement>("UpdateMarkGlow");
             (glow?.Parent as Panel)?.Children.Remove(glow);
         }
@@ -1308,7 +1305,7 @@ namespace AcManager.Pages.Windows {
             _runningInstancesPopup.IsOpen = true;
         }
 
-        private void OnRunningInstancesItemClick(object sender, RoutedEventArgs e) {
+        private void OnRunningInstancesItemClick(object sender, SelectionChangedEventArgs e) {
             var list = (ListBox)sender;
             (list.SelectedItem as GameDialog.DialogHolder)?.RestoreCommand.Execute();
         }

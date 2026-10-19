@@ -3,7 +3,7 @@ using AcManager.Tools.Helpers.AcSettings;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Controller_Buttons {
+    public partial class AcSettingsControls_Controller_Buttons : global::Avalonia.Controls.UserControl {
         public AcSettingsControls_Controller_Buttons() {
             InitializeComponent();
 

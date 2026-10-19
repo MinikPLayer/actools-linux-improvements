@@ -1,0 +1,93 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsLive">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer x:Name="ContentRoot" mui:SaveScroll.Key="SettingsLive">
+    <StackPanel set:Search.Category="{x:Static g:AppStrings.Main_Live}" x:Name="Panel" Classes="SettingsPanel">
+      <CheckBox IsChecked="{Binding Live.GridFinderEnabled}">
+        <Label Content="Enable Grid Finder"/>
+      </CheckBox>
+
+      <!--<CheckBox IsChecked="{Binding Live.RaceUEnabled}">
+        <Label Content="Enable RaceU" />
+      </CheckBox>-->
+
+      <CheckBox IsChecked="{Binding Live.RsrEnabled}">
+        <Label Content="{x:Static g:AppStrings.Settings_Live_EnableRsr}"/>
+      </CheckBox>
+
+      <StackPanel IsEnabled="{Binding Live.RsrEnabled}" Margin="20 0 0 8">
+        <CheckBox IsChecked="{Binding Live.RsrCustomStyle}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Live_RsrCustomStyle_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Live_CustomStyle}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_Live_RsrNameLabel}"/>
+          <CheckBox DockPanel.Dock="Left" IsChecked="{Binding Live.RsrDifferentPlayerName}" VerticalAlignment="Center" ToolTip.Tip="{x:Static g:AppStrings.Settings_Live_RsrName_Tooltip}"/>
+          <mui:BetterTextBox Text="{Binding Live.RsrPlayerName}" Placeholder="?" IsEnabled="{Binding Live.RsrDifferentPlayerName}"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Live.RsrDisableAppAutomatically}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Live_RsrAutoToggleApp_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Live_RsrAutoToggleApp}"/>
+        </CheckBox>
+      </StackPanel>
+
+      <CheckBox IsChecked="{Binding Live.SrsEnabled}" Margin="0 20 0 8">
+        <Label Content="{x:Static g:AppStrings.Settings_Live_EnableSrs}"/>
+      </CheckBox>
+
+      <StackPanel IsEnabled="{Binding Live.SrsEnabled}" Margin="20 0 0 8">
+        <CheckBox IsChecked="{Binding Live.SrsCustomStyle}" ToolTip.Tip="{x:Static g:AppStrings.Settings_Live_SrsCustomStyle_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Live_CustomStyle}"/>
+        </CheckBox>
+
+        <!--<CheckBox IsChecked="{Binding LiveSettings.SrsAutoMode}" ToolTip="{x:Static g:AppStrings.Settings_Live_SrsJoinFromOnline_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Live_SrsJoinFromOnline}" />
+        </CheckBox>
+
+        <DockPanel ToolTip="{x:Static g:AppStrings.Settings_Live_SrsOnlineMask_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_Live_SrsOnlineMaskLabel}" />
+          <mui:BetterTextBox Text="{Binding LiveSettings.SrsAutoMask}" Placeholder="?" />
+        </DockPanel>-->
+      </StackPanel>
+
+      <CheckBox IsChecked="{Binding Live.TrackTitanEnabled}">
+        <Label Content="Enable Track Titan"/>
+      </CheckBox>
+
+      <CheckBox IsChecked="{Binding Live.UnitedRacingDataEnabled}">
+        <Label Content="Enable United Racing Data"/>
+      </CheckBox>
+
+      <CheckBox IsChecked="{Binding Live.WorldSimSeriesEnabled}">
+        <Label Content="Enable World Sim Series"/>
+      </CheckBox>
+
+      <!-- Custom services -->
+      <TextBlock Text="Extra Live Services:" Classes="Heading2 SettingsPanel.Heading2"/>
+
+      <DockPanel>
+        <Label Content="Services:"/>
+        <ListBox SelectedItem="{Binding SelectedLiveService}" ItemsSource="{Binding Live.UserEntries}" DockPanel.Dock="Top" ItemContainerTheme="{StaticResource RibbonListBoxItem.Left}">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Margin="20 4">
+                <mui:BetterTextBox Text="{Binding DisplayName}" TextChanged="OnUserLinkTextChanged" Theme="{StaticResource Borderless}"/>
+                <mui:BetterTextBox Text="{Binding Url}" TextChanged="OnUserLinkTextChanged" Theme="{StaticResource Borderless.Small}"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+        <mui:SpacingUniformGrid Rows="1" Columns="2" HorizontalSpacing="4" Margin="0 8 0 0">
+          <Button Content="Add service" Command="{Binding AddLiveServiceCommand}"/>
+          <Button Content="Delete service" Command="{Binding DeleteSelectedServiceCommand}" IsEnabled="{Binding SelectedLiveService, Converter={StaticResource NullToBooleanConverter}, ConverterParameter=inverse}"/>
+        </mui:SpacingUniformGrid>
+      </DockPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

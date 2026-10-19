@@ -6,7 +6,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Lists {
-    public partial class ToolsListPage {
+    public partial class ToolsListPage : global::Avalonia.Controls.UserControl {
         internal class HolderInner : NotifyPropertyChanged {
             private bool _active;
 

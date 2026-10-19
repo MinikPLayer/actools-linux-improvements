@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class LapTimes_Recent : ILoadableContent, IParametrizedUriContent {
+    public partial class LapTimes_Recent : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private string _filter;
 
         public void OnUri(Uri uri) {

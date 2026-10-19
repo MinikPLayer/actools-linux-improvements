@@ -1,0 +1,85 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:customShowroom="clr-namespace:AcManager.CustomShowroom" xmlns:uc="clr-namespace:AcManager.UserControls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.CustomShowroom.Kn5ObjectDialog" Title="Mesh object" Loaded="OnLoaded" Unloaded="OnUnloaded" WindowStartupLocation="CenterScreen" MaxWidth="1200" MaxHeight="1200" Topmost="False">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="480"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <mui:SelectableTextBlock Text="{Binding ObjectName, Mode=OneWay}" Grid.Row="0" Margin="0 0 0 12" Theme="{StaticResource Borderless.Heading2}"/>
+
+    <Grid Grid.Row="1">
+      <StackPanel VerticalAlignment="Top">
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Path:"/>
+          <mui:SelectableTextBlock Text="{Binding ParentObjectPath, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Material:"/>
+          <mui:SelectableTextBlock Text="{Binding Material.Name, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Shader:"/>
+          <mui:SelectableTextBlock Text="{Binding Material.ShaderName, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Main texture:"/>
+          <mui:SelectableTextBlock Text="{Binding TextureDimensions, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Triangles:"/>
+          <mui:SelectableTextBlock Text="{Binding TrianglesCount, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Vertices:"/>
+          <mui:SelectableTextBlock Text="{Binding VerticesCount, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Flags:"/>
+          <mui:SelectableTextBlock Text="{Binding Flags, Mode=OneWay}" Placeholder="?"/>
+        </DockPanel>
+
+        <uc:BakedShadowsSettings Margin="0 20 0 0" DataContext="{Binding BakedShadows}" IsVisible="{Binding IsChecked, ElementName=ShowOptionsItem, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+
+  <mui:ModernDialog.ButtonsRowContent>
+    <mui:SpacingStackPanel Orientation="Horizontal" Spacing="4">
+      <mui:ButtonWithComboBox Command="{Binding UvCommand}" CommandParameter="-1" Content="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping}" ButtonToolTip="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_2048}">
+        <mui:ButtonWithComboBox.MenuItems>
+          <MenuItem Command="{Binding UvCommand}" CommandParameter="512" Header="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_512}"/>
+          <MenuItem Command="{Binding UvCommand}" CommandParameter="1024" Header="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_1024}"/>
+          <MenuItem Command="{Binding UvCommand}" CommandParameter="2048" Header="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_2048}"/>
+          <MenuItem Command="{Binding UvCommand}" CommandParameter="4096" Header="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_4096}"/>
+          <MenuItem Command="{Binding UvCommand}" CommandParameter="custom" Header="{x:Static c:ControlsStrings.CustomShowroom_ViewMapping_Custom}"/>
+        </mui:ButtonWithComboBox.MenuItems>
+      </mui:ButtonWithComboBox>
+
+      <mui:ButtonWithComboBox Content="Calculate AO" Command="{Binding BakedShadows.CalculateAoCommand}" CommandParameter="-1">
+        <mui:ButtonWithComboBox.ButtonToolTip>Generate AO map</mui:ButtonWithComboBox.ButtonToolTip>
+        <mui:ButtonWithComboBox.MenuItems>
+          <MenuItem Command="{Binding BakedShadows.CalculateAoCommand}" CommandParameter="512" Header="Calculate 512×512 Map"/>
+          <MenuItem Command="{Binding BakedShadows.CalculateAoCommand}" CommandParameter="1024" Header="Calculate 1024×1024 Map"/>
+          <MenuItem Command="{Binding BakedShadows.CalculateAoCommand}" CommandParameter="2048" Header="Calculate 2048×2048 Map"/>
+          <MenuItem Command="{Binding BakedShadows.CalculateAoCommand}" CommandParameter="custom" Header="Calculate map of custom size"/>
+          <Separator/>
+          <MenuItem x:Name="ShowOptionsItem" IsChecked="{mui:Stored .BakedShadows.ShowOptions}" Header="Show options"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox.MenuItems>
+      </mui:ButtonWithComboBox>
+    </mui:SpacingStackPanel>
+  </mui:ModernDialog.ButtonsRowContent>
+</mui:ModernDialog>

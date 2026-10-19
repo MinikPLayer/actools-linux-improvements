@@ -1,0 +1,33 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:acManager="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.OnlineAddManuallyDialog" Title="{x:Static acManager:AppStrings.Online_AddServer_Title}" Width="400" MinHeight="240" MaxHeight="400" SizeToContent="Height" Closing="OnClosing">
+    <mui:ModernDialog.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+                <ResourceInclude Source="avares://AcManager.Controls/Assets/OnlineSpecific.axaml"/>
+                <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </mui:ModernDialog.Resources>
+
+    <mui:Switch Value="{Binding Informations.Count}">
+        <TextBlock mui:Switch.When="0" Text="{x:Static acManager:AppStrings.Online_Scanning_NothingFoundMessage}"/>
+        <DockPanel>
+            <TextBlock Text="{Binding Informations.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {server} found.'}" DockPanel.Dock="Bottom" Margin="0 4 0 0"/>
+            <ListBox x:Name="List" ItemsSource="{Binding Informations}" MaxHeight="320" SelectionMode="Multiple" ItemContainerTheme="{StaticResource CheckBoxListBoxItem}" Theme="{StaticResource VirtualizingListBox}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} ({1}:{2})" Mode="OneWay">
+                                    <Binding Path="Name"/>
+                                    <Binding Path="Ip"/>
+                                    <Binding Path="PortHttp"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+    </mui:Switch>
+</mui:ModernDialog>

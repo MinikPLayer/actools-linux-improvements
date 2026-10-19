@@ -1,0 +1,73 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.OnlineListsManager" Title="Online servers lists" SizeToContent="Manual" Width="800" Height="480" MinWidth="600" MinHeight="320" LocationAndSizeKey=".OnlineListManager" Closed="OnClosed" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/OnlineSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="DataGridCell.IsBuiltIn" DataType="{x:Type di:OnlineListsManager+ListEntry}">
+        <TextBlock x:Name="ValueTextBlock"><TextBlock.Styles><Style Selector="TextBlock#ValueTextBlock"><Style Selector="^ TextBlock#ValueTextBlock"><Setter Property="Text" Value="{x:Static mui:UiStrings.No}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsBuiltIn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#ValueTextBlock"><Setter Property="Text" Value="Yes"/>
+          </Style></Style></TextBlock.Styles></TextBlock>
+        </DataTemplate>
+
+      <DataTemplate x:Key="DataGridCell.Name" DataType="{x:Type di:OnlineListsManager+ListEntry}">
+        <mui:BetterTextBox x:Name="TextBox" Placeholder="?" Text="{Binding DisplayName, Mode=TwoWay}" ToolTip.Tip="Name of the list" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsBuiltIn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|BetterTextBox#TextBox"><Setter Property="IsReadOnly" Value="True"/>
+          </Style></Style></mui:BetterTextBox.Styles></mui:BetterTextBox>
+        </DataTemplate>
+
+      <DataTemplate x:Key="DataGridCell.Label" DataType="{x:Type di:OnlineListsManager+ListEntry}">
+        <mui:BetterTextBox x:Name="TextBox" Placeholder="{x:Static t:ToolsStrings.Common_None}" ToolTip.Tip="Label shown in the list" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^ mui|BetterTextBox#TextBox"><Setter Property="Text" Value="{Binding Information.Label, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsBuiltIn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True] mui|BetterTextBox#TextBox"><Setter Property="IsEnabled" Value="False"/>
+            <Setter Property="Text" Value="Default icon"/>
+          </Style></Style></mui:BetterTextBox.Styles></mui:BetterTextBox>
+        </DataTemplate>
+
+      <DataTemplate x:Key="DataGridCell.LabelColor" DataType="{x:Type di:OnlineListsManager+ListEntry}">
+        <mui:ColorPicker Color="{Binding Information.Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="ColorPicker" Theme="{StaticResource ColorPicker.Borderless.White}"><mui:ColorPicker.Styles><Style Selector="mui|ColorPicker#ColorPicker"><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsBuiltIn, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S3)=True] mui|ColorPicker#ColorPicker"><Setter Property="IsVisible" Value="False"/>
+          </Style></Style></mui:ColorPicker.Styles></mui:ColorPicker>
+        </DataTemplate>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <DataGrid ItemsSource="{Binding Entries}" Theme="{StaticResource DataGrid.Lite}">
+    <DataGrid.Columns>
+      <DataGridTemplateColumn Width="90" Header="Built-In" SortMemberPath="IsBuiltIn" CellTemplate="{StaticResource DataGridCell.IsBuiltIn}"/>
+      <DataGridTemplateColumn Width="1*" Header="{x:Static c:ControlsStrings.TableHeader_Name}" SortMemberPath="DisplayName" CellTemplate="{StaticResource DataGridCell.Name}"/>
+      <DataGridTemplateColumn Width="0.6*" MinWidth="100" Header="Label" SortMemberPath="Information.Label" CellTemplate="{StaticResource DataGridCell.Label}"/>
+      <DataGridTemplateColumn Width="120" Header="Label color" SortMemberPath="Information.Color" CellTemplate="{StaticResource DataGridCell.LabelColor}"/>
+      <DataGridCheckBoxColumn Width="90" Header="Hidden" SortMemberPath="Information.Hidden" Binding="{Binding Information.Hidden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><DataGridCheckBoxColumn.CellStyle>
+          <Style Selector="DataGridCell">
+            <Setter Property="IsEnabled" Value="{Binding IsBuiltIn, Converter={StaticResource InvertBooleanConverter}}"/>
+            <Setter Property="ToolTip.Tip" Value="Link to the list will be hidden"/>
+          </Style>
+        </DataGridCheckBoxColumn.CellStyle>
+      </DataGridCheckBoxColumn>
+      <DataGridCheckBoxColumn Width="90" Header="Excluded" SortMemberPath="Information.Excluded" Binding="{Binding Information.Excluded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><DataGridCheckBoxColumn.CellStyle>
+          <Style Selector="DataGridCell">
+            <Setter Property="IsEnabled" Value="{Binding IsBuiltIn, Converter={StaticResource InvertBooleanConverter}}"/>
+            <Setter Property="ToolTip.Tip">
+              <Setter.Value>
+                <TextBlock Text="{Binding Id, StringFormat='{}Check if you want servers in this list to be hidden (to see them, search for `@{0}`)'}"/>
+              </Setter.Value>
+            </Setter>
+          </Style>
+        </DataGridCheckBoxColumn.CellStyle>
+      </DataGridCheckBoxColumn>
+    </DataGrid.Columns>
+    <DataGrid.RowDetailsTemplate>
+      <DataTemplate DataType="{x:Type di:OnlineListsManager+ListEntry}">
+        <StackPanel Margin="20 4 8 8">
+          <ListBox ItemsSource="{Binding Servers}" ItemTemplate="{StaticResource SimpleListItem}" MaxHeight="320" SelectionMode="Multiple" Theme="{StaticResource VirtualizingListBox}"/>
+          <mui:SpacingStackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4" Margin="0 4 0 0">
+            <Button Content="Add server" Command="{Binding AddServerCommand}"/>
+            <Button Content="Remove selected servers" DockPanel.Dock="Right"/>
+            <Button Content="Remove list" Command="{Binding RemoveListCommand}"/>
+          </mui:SpacingStackPanel>
+        </StackPanel>
+      </DataTemplate>
+    </DataGrid.RowDetailsTemplate>
+  </DataGrid>
+</mui:ModernDialog>

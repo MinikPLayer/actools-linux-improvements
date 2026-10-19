@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +35,7 @@ using StringBasedFilter;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Drive {
-    public partial class SpecialEvents : ILoadableContent, IParametrizedUriContent {
+    public partial class SpecialEvents : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         public static bool OptionScalableTiles = true;
         private readonly DiscordRichPresence _discordPresence = new DiscordRichPresence(10, "Preparing to race", "Challenges").Default();
 
@@ -301,7 +301,7 @@ namespace AcManager.Pages.Drive {
             NavigateToPage();
         }
 
-        private void OnCarPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarPreviewClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled || Model.Selected == null) return;
             e.Handled = true;
             new ImageViewer<CarSkinObject>(

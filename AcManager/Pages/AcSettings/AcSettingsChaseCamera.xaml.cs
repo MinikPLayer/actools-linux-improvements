@@ -23,7 +23,7 @@ using Newtonsoft.Json.Linq;
 using SharpDX;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsChaseCamera {
+    public partial class AcSettingsChaseCamera : global::Avalonia.Controls.UserControl {
         public AcSettingsChaseCamera() {
             InitializeComponent();
             DataContext = new ViewModel();

@@ -9,7 +9,7 @@ using FirstFloor.ModernUI.Helpers;
 using StringBasedFilter;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class TrackDlcs {
+    public partial class TrackDlcs : global::AcManager.Pages.SelectionLists.SelectionList {
         public TrackDlcs() : base(TracksManager.Instance, true) {
             InitializeComponent();
         }

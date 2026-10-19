@@ -5,7 +5,7 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class MostSpeed {
+    public partial class MostSpeed : global::AcManager.Pages.Miscellaneous.MostSomethingBase {
         protected override void Initialize(ViewModel viewModel) {
             DataContext = viewModel;
             InitializeComponent();

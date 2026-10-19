@@ -1,0 +1,14 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:at="clr-namespace:AcTools;assembly=AcTools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.UpgradeIconEditor_Library">
+  <ListBox SelectedItem="{Binding Selected}" ItemsSource="{Binding Icons}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <mui:BetterImage Filename="{Binding Filename}" Background="{DynamicResource CarIconBackground}" Width="{Binding Source={x:Static at:CommonAcConsts.UpgradeIconWidth}}" Height="{Binding Source={x:Static at:CommonAcConsts.UpgradeIconHeight}}" Effect="{DynamicResource CarIconEffect}" ToolTip.Tip="{Binding Name}"/>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</UserControl>

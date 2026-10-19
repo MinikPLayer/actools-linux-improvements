@@ -26,7 +26,7 @@ using SharpCompress.Compressors.Deflate;
 using SharpCompress.Writers;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class PackServerDialog {
+    public partial class PackServerDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public PackServerDialog(ServerPresetObject server) {
             DataContext = new ViewModel(null, server);
             InitializeComponent();

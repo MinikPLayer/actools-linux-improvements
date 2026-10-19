@@ -23,7 +23,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.CustomShowroom {
-    public partial class TrackMapRendererTools {
+    public partial class TrackMapRendererTools : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public TrackMapRendererTools(TrackObjectBase track, TrackMapPreparationRenderer renderer) {

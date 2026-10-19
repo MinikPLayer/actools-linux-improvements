@@ -1,0 +1,136 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:in="clr-namespace:AcManager.Internal;assembly=AcManager.Internal" xmlns:at="clr-namespace:AcTools;assembly=AcTools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsGeneral" Loaded="OnLoaded" Unloaded="OnUnloaded">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <ScrollViewer mui:SaveScroll.Key="SettingsGeneral">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True">
+
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Settings_General}" Classes="SettingsPanel">
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_AcFolderLabel}"/>
+          <Button Command="{Binding ChangeAcRootCommand}" Content="{x:Static c:ControlsStrings.Common_Change}"/>
+          <Button Command="{Binding OpenAcRootCommand}" Content="{x:Static g:AppStrings.Settings_General_Open}"/>
+          <mui:PathTrimmingTextBlock Text="{Binding AcRootDirectoryValue, Mode=OneTime}"/>
+        </DockPanel>
+
+        <DockPanel ToolTip.Tip="{x:Static g:AppStrings.Settings_General_SteamProfile_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_General_SteamProfile}"/>
+          <Button Command="{Binding ChangeSteamIdCommand}" Content="{x:Static c:ControlsStrings.Common_Change}" IsVisible="{Binding ChangeSteamIdCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+          <mui:BetterTextBox IsReadOnly="True" Theme="{StaticResource Borderless}">
+            <TextBox.Text>
+              <MultiBinding StringFormat="{}{0} ({1})" Mode="OneWay">
+                <Binding Path="SteamId" TargetNullValue="None"/>
+                <Binding Path="SteamProfileName" TargetNullValue="?"/>
+              </MultiBinding>
+            </TextBox.Text>
+          </mui:BetterTextBox>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Common.LaunchSteamAtStart}" IsVisible="{Binding ChangeSteamIdCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <Label Content="{x:Static g:AppStrings.Settings_General_LaunchSteamAutomatically}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Common.LowerPriorityInBackground}">
+          <Label Content="Reduce priority when Content Manager is in background"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Common.CheckForFaultTolerantHeap}" ToolTip.Tip="If Assetto Corsa is flagged, loading times can increase drastically">
+          <Label Content="Check if Assetto Corsa is flagged to use Fault Tolerant Heap and offer to fix the issue"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Common.DeveloperMode}" IsVisible="{Binding DeveloperMode, Source={x:Static t:SettingsHolder.Common}, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneTime}">
+          <Label Content="{x:Static g:AppStrings.Common_DevMode}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <Button DockPanel.Dock="Right" Command="{Binding ResetOccasionalHintsCommand}" Content="{x:Static g:AppStrings.Settings_General_ResetOccasionalHits}"/>
+          <CheckBox IsChecked="{Binding Enabled, Source={x:Static mui:FancyHintsService.Instance}}" VerticalAlignment="Center">
+            <Label Content="{x:Static g:AppStrings.Settings_General_ShowOccasionalHints}"/>
+          </CheckBox>
+        </DockPanel>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_DontShowAgainInDialogs}"/>
+          <Button Command="{Binding ResetDoNotAskAgainsCommand}" Content="{x:Static g:AppStrings.Settings_General_ResetDoNotShowAgainCheckboxes}"/>
+        </DockPanel>
+
+        <!-- App key and shortcut -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_General_AppHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_AppKeyLabel}"/>
+          <Button Command="{Binding ChangeAppKeyCommand}" Content="{x:Static c:ControlsStrings.Common_Change}"/>
+          <mui:PlaceholderTextBlock Text="{Binding Source={x:Static in:InternalUtils.KeySafe}, Mode=OneTime}" Placeholder="?"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding AppShortcutExists}" ToolTip.Tip="{x:Static g:AppStrings.Settings_General_WindowsShortcut_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_General_WindowsShortcut}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_WindowsRegistry}"/>
+          <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Common.RegistryModes}" SelectedItem="{Binding Common.RegistryMode}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+
+      </StackPanel>
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.Settings_General}" Classes="SettingsPanel">
+
+        <!-- Versions -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_General_AutoUpdatesHeader}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_CheckForUpdatesLabel}"/>
+          <mui:BetterComboBox IsEditable="False" ItemsSource="{Binding Common.Periods}" SelectedItem="{Binding Common.UpdatePeriod}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+
+        <!-- App version -->
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_AppVersionLabel}"/>
+          <Button Command="{Binding AppUpdater.CheckAndUpdateIfNeededCommand}" IsEnabled="{Binding AppUpdater.IsSupported}" Content="{x:Static g:AppStrings.Settings_General_CheckForUpdates}"/>
+          <mui:BetterTextBox Text="{Binding Source={x:Static at:BuildInformation.AppVersion}, Mode=OneTime}" Placeholder="?" IsReadOnly="True" PointerReleased="OnVersionClick" Theme="{StaticResource Borderless}"/>
+        </DockPanel>
+
+        <TextBlock Text="{Binding AppUpdater.LatestError}" IsVisible="{Binding AppUpdater.LatestError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small SettingsPanel.Warning"/>
+
+        <CheckBox IsChecked="{Binding Common.ShowDetailedChangelog}" ToolTip.Tip="{x:Static g:AppStrings.Settings_General_ShowRecentChangesNotification_Tooltip}">
+          <Label Content="{x:Static g:AppStrings.Settings_General_RecentChangesNotification}"/>
+        </CheckBox>
+
+        <!-- Content version -->
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_ContentVersionLabel}"/>
+          <Button Command="{Binding DataUpdater.CheckAndUpdateIfNeededCommand}" Content="{x:Static g:AppStrings.Settings_General_CheckForUpdates}"/>
+          <mui:BetterTextBox Text="{Binding DataUpdater.InstalledVersion, Mode=OneWay}" Placeholder="?" IsReadOnly="True" Theme="{StaticResource Borderless}"/>
+        </DockPanel>
+        <TextBlock Text="{Binding DataUpdater.LatestError}" Margin="136 0 0 8" FontWeight="Bold" Foreground="{DynamicResource Error}" IsVisible="{Binding DataUpdater.LatestError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+
+        <!-- Values storage -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_General_ValuesHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_SizeLabel}"/>
+          <Button Command="{Binding CleanUpStorageCommand}" Content="{x:Static g:AppStrings.Settings_General_ValuesCleanUp}" ToolTip.Tip="{x:Static g:AppStrings.Settings_General_ValuesCleanUp_Tooltip}"/>
+          <TextBlock Text="{Binding Count, Source={x:Static mui:ValuesStorage.Storage}, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static g:AppStrings.Settings_General_ValuesNumber}, Mode=OneWay}"/>
+        </DockPanel>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Settings_General_ValuesSavingTimeLabel}"/>
+          <!-- TODO: Buggy resharper -->
+          <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+          <mui:PlaceholderTextBlock Placeholder="?" Text="{Binding PreviousSaveTime.Value.TotalMilliseconds, Source={x:Static mui:ValuesStorage.Storage}, StringFormat={x:Static g:AppStrings.Common_MillisecondsFormat}, Mode=OneWay}"/>
+        </DockPanel>
+
+        <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="8">
+          <Button Command="{Binding ShowContentManagerDataCommand}" Content="{x:Static g:AppStrings.Settings_General_OpenAppsDataFolder}"/>
+          <Button Command="{Binding ShowContentManagerLogsCommand}" Content="{x:Static g:AppStrings.Settings_General_OpenLogsFolder}"/>
+        </mui:SpacingUniformGrid>
+
+        <!-- Beta access -->
+        <TextBlock Text="{x:Static g:AppStrings.Settings_General_TestingAccessHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+        <CheckBox IsChecked="{Binding Common.UpdateToNontestedVersions}" mui:LimitedService.Limited="True" HorizontalAlignment="Left" ClipToBounds="False" Padding="0 0 24 0">
+          <Label Content="{x:Static g:AppStrings.Settings_General_TestingAccess}"/>
+        </CheckBox>
+      </StackPanel>
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+</UserControl>

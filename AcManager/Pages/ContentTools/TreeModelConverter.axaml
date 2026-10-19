@@ -1,0 +1,63 @@
+﻿<tools:ContentTool xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:tools="clr-namespace:AcManager.Pages.ContentTools" xmlns:g="clr-namespace:AcManager" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ContentTools.TreeModelConverter">
+  <tools:ContentTool.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ContextMenu x:Key="FileContextMenu">
+        <MenuItem Header="{x:Static g:AppStrings.ContentTools_FilesCompressor_ViewInExplorer}" Command="{Binding ViewInExplorerCommand}"/>
+      </ContextMenu>
+    </ResourceDictionary>
+  </tools:ContentTool.Resources>
+
+  <mui:Cell mui:Switch.When="{x:Static tools:Stage.Loading}" Width="400" HorizontalAlignment="Center">
+    <mui:SpacingStackPanel Spacing="8" VerticalAlignment="Center">
+      <ProgressBar IsIndeterminate="{Binding ProgressValue.IsIndeterminate}" Maximum="1" Value="{Binding ProgressValue.Progress, Mode=OneWay}" Height="4"/>
+      <TextBlock Text="{Binding ProgressValue.Message}"/>
+    </mui:SpacingStackPanel>
+    <mui:SelectableBbCodeBlock VerticalAlignment="Bottom" Text="{x:Static g:AppStrings.ContentTools_FilesCompressor_Description}" Theme="{StaticResource RichTextBox.Small.ReadOnly}"/>
+  </mui:Cell>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Empty}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.Online_NothingToDisplay}" Classes="Heading1"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Error}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.ContentTools_BatchPreviewsUpdater_SomeErrorHappened}" DockPanel.Dock="Top" Classes="Heading1"/>
+    <TextBlock Text="{Binding Error}" Margin="0 20 0 0"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Ready}">
+    <mui:SpacingStackPanel Spacing="8" DockPanel.Dock="Top" Margin="0 0 0 20">
+      <TextBlock TextWrapping="Wrap" Text="Save different LOD meshes in an FBX file and select it here. Make sure pivots for each mesh are in the middle of their trunks, at the lowest point. Also, make sure to assign diffuse and normal textures to trees (use multi-material if you need two materials or more)."/>
+      <!--<TextBlock TextWrapping="Wrap" Text="This is an experimental feature, more options will be added soon." />-->
+    </mui:SpacingStackPanel>
+    <Button DockPanel.Dock="Bottom" Content="Convert tree model" Command="{Binding ConvertCommand}"/>
+    <ItemsControl ItemsSource="{Binding KnownEntries}" Theme="{StaticResource VirtualizingItemsControl}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <DockPanel Margin="0 0 0 8">
+            <Button DockPanel.Dock="Right" Command="{Binding ForgetCommand}" Content="Forget" VerticalAlignment="Center" Margin="8 0 0 0" ToolTip.Tip="Remove this tree from list of tracked conversions"/>
+            <Button DockPanel.Dock="Right" Command="{Binding RefreshCommand}" Content="Refresh" VerticalAlignment="Center" Margin="8 0 0 0" ToolTip.Tip="Tracked conversions refresh automatically when source file changes"/>
+            <mui:FallbackSwitch Width="10" Height="10" Margin="0 0 8 0" VerticalAlignment="Center" DockPanel.Dock="Left">
+              <Path Data="{StaticResource AlertIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{DynamicResource Error}" Stretch="Uniform" mui:FallbackSwitch.Value="{Binding LastError}" mui:FallbackSwitch.WhenNot="{x:Null}"/>
+              <Path Data="{StaticResource CheckIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{DynamicResource Go}" Stretch="Uniform" mui:FallbackSwitch.Value="{Binding RefreshCommand.IsAbleToExecute}" mui:FallbackSwitch.When="True"/>
+              <Path Data="{StaticResource RefreshIconData}" Width="10" Height="10" VerticalAlignment="Center" Fill="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Stretch="Uniform" RenderTransformOrigin="0.5, 0.5">
+                <Path.RenderTransform>
+                  <RotateTransform/>
+                </Path.RenderTransform>
+                <!-- PORT: removed Path.Triggers -->
+              </Path>
+            </mui:FallbackSwitch>
+            <avalonedit:TextEditor c:AvalonExtension.Text="{Binding TreeParams}" c:AvalonExtension.Mode="Ini" DockPanel.Dock="Bottom" Margin="0 8 0 0" Height="120"/>
+            <TextBlock Text="{Binding Origin, StringFormat='Origin: {0}'}" DockPanel.Dock="Top"/>
+            <TextBlock Text="{Binding Destination, StringFormat='Destination: {0}'}" DockPanel.Dock="Top" VerticalAlignment="Top"/>
+            <TextBlock Text="{Binding LastError, StringFormat='Error: {0}'}" DockPanel.Dock="Top" VerticalAlignment="Top" IsVisible="{Binding LastError, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}"/>
+          </DockPanel>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+  </DockPanel>
+</tools:ContentTool>

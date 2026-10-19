@@ -10,7 +10,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarSetupsDialog {
+    public partial class CarSetupsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernWindow {
         private class ViewModel {
             [NotNull]
             public CarObject SelectedCar { get; }

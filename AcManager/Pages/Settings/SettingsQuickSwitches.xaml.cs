@@ -11,7 +11,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsQuickSwitches : ILoadableContent {
+    public partial class SettingsQuickSwitches : global::Avalonia.Controls.UserControl, ILoadableContent {
         public async Task LoadAsync(CancellationToken cancellationToken) {
             InitializeComponent();
             if (_widgets == null) {

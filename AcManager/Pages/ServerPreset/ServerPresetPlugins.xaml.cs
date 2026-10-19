@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetPlugins {
+    public partial class ServerPresetPlugins : global::Avalonia.Controls.UserControl {
         public ServerPresetPlugins() {
             InitializeComponent();
         }

@@ -22,13 +22,11 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 using SharpDX;
 using SharpDX.DirectInput;
-using Keys = System.Windows.Forms.Keys;
+using Keys = AcTools.Windows.Compat.Keys;
 using Path = System.Windows.Shapes.Path;
-using Point = System.Windows.Point;
-using Color = System.Windows.Media.Color;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class DiscordJoinRequestDialog {
+    public partial class DiscordJoinRequestDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         [CanBeNull]
         private Joystick[] _devices;
 

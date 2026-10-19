@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsGeneral {
+    public partial class SettingsGeneral : global::Avalonia.Controls.UserControl {
         public ViewModel Model => (ViewModel)DataContext;
 
         public SettingsGeneral() {
@@ -178,7 +178,7 @@ namespace AcManager.Pages.Settings {
 
         private int _clicks;
 
-        private void OnVersionClick(object sender, MouseButtonEventArgs e) {
+        private void OnVersionClick(object sender, PointerReleasedEventArgs e) {
             if (!SettingsHolder.Common.DeveloperMode && ++_clicks == 7 &&
                     ModernDialog.ShowMessage(AppStrings.About_DeveloperMode, AppStrings.About_DeveloperMode_Title, MessageBoxButton.YesNo) ==
                             MessageBoxResult.Yes) {

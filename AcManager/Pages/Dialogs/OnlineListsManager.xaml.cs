@@ -15,7 +15,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class OnlineListsManager {
+    public partial class OnlineListsManager : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public OnlineListsManager() {

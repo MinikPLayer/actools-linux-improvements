@@ -1,0 +1,93 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mi="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:c="http://acstuff.club/app/controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sys="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+
+  <DataTemplate x:Key="MostCarTemplate" DataType="{x:Type mi:MostSomethingBase+MostUsedCar}">
+    <DockPanel Height="40" c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}" Background="Transparent">
+      <TextBlock DockPanel.Dock="Right" Text="{Binding DisplayTotalValue}" VerticalAlignment="Center" Margin="0 0 8 0" Classes="Title"/>
+      <TextBlock DockPanel.Dock="Left" Text="{Binding Position, StringFormat='{}#{0}'}" VerticalAlignment="Center" Margin="0 2 4 0" Width="36" TextAlignment="Right" Classes="Small"/>
+      <c:LazierSwitch Value="{Binding Car}" Margin="12 4 8 4">
+        <c:LazierSwitch.Loading>
+          <TextBlock Text="{Binding AcObjectId}" Opacity="0.5" VerticalAlignment="Center"/>
+        </c:LazierSwitch.Loading>
+        <c:LazierSwitch.NonNull>
+          <DockPanel>
+            <mui:BetterImage Filename="{Binding Car.Value.BrandBadge}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True"/>
+            <TextBlock Text="{Binding Car.Value.DisplayName}" FontWeight="Bold" VerticalAlignment="Center"/>
+          </DockPanel>
+        </c:LazierSwitch.NonNull>
+        <c:LazierSwitch.Null>
+          <TextBlock Text="{Binding AcObjectId, StringFormat='{}Car {0} is missing'}" Opacity="0.5" VerticalAlignment="Center"/>
+        </c:LazierSwitch.Null>
+      </c:LazierSwitch>
+    </DockPanel>
+  </DataTemplate>
+
+  <DataTemplate x:Key="MostTrackTemplate" DataType="{x:Type mi:MostSomethingBase+MostUsedTrack}">
+    <StackPanel x:Name="PART_Panel" MinHeight="40" c:ToolTips.Track="{Binding Track}" c:ContextMenus.Track="{Binding Track}" mui:Draggable.Data="{Binding Track}" Background="Transparent">
+
+      <StackPanel.Styles><Style Selector="StackPanel#PART_Panel"><!-- PORT: storyboard actions of trigger :checked not converted --><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Layouts.Count, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S0)=True] ToggleButton#PART_ExpandButton"><Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <!-- PORT: removed setter of BorderBrush (not in Avalonia) -->
+      </Style></Style></StackPanel.Styles><StackPanel.Resources>
+      <ResourceDictionary>
+        <!-- PORT: removed Storyboard -->
+        <!-- PORT: removed Storyboard -->
+      </ResourceDictionary>
+    </StackPanel.Resources>
+    <ToggleButton x:Name="PART_ExpandButton" DockPanel.Dock="Left" VerticalAlignment="Center" Padding="0 0 0 0" IsChecked="{Binding IsExpanded}" Theme="{StaticResource ExpandCollapseToggleStyle}">
+        <DockPanel Height="40" TextElement.Foreground="{DynamicResource WindowText}">
+          <TextBlock DockPanel.Dock="Right" Text="{Binding DisplayTotalValue}" VerticalAlignment="Center" Margin="0 0 8 0" Classes="Title"/>
+          <TextBlock DockPanel.Dock="Left" Text="{Binding Position, StringFormat='{}#{0}'}" VerticalAlignment="Center" Margin="0 2 4 0" Width="36" TextAlignment="Right" Classes="Small"/>
+          <c:LazierSwitch Value="{Binding Track}" Margin="12 4 8 4">
+            <c:LazierSwitch.Loading>
+              <TextBlock Text="{Binding AcObjectId}" Opacity="0.5" VerticalAlignment="Center"/>
+            </c:LazierSwitch.Loading>
+            <c:LazierSwitch.NonNull>
+              <DockPanel>
+                <mui:BetterImage Filename="{Binding Track.Value.OutlineImage}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+                <TextBlock Text="{Binding Track.Value.DisplayName}" FontWeight="Bold" VerticalAlignment="Center"/>
+              </DockPanel>
+            </c:LazierSwitch.NonNull>
+            <c:LazierSwitch.Null>
+              <TextBlock Text="{Binding AcObjectId, StringFormat='{}Track {0} is missing'}" Opacity="0.5" VerticalAlignment="Center"/>
+            </c:LazierSwitch.Null>
+          </c:LazierSwitch>
+        </DockPanel>
+      </ToggleButton>
+
+      <mui:BooleanSwitch x:Name="PART_ExpandSwitch">
+        <Border ClipToBounds="True">
+          <!-- PORT: removed Border.LayoutTransform -->
+
+          <ItemsControl ItemsSource="{Binding Layouts}" Margin="40 0 0 0" RenderTransform="{Binding Path=(FrameworkElement.LayoutTransform).Inverse, RelativeSource={RelativeSource AncestorType={x:Type Border}}}" Theme="{StaticResource VirtualizingItemsControl}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="{x:Type mi:MostSomethingBase+MostUsedTrackLayout}">
+                <DockPanel Height="40" c:ToolTips.Track="{Binding Track}" c:ContextMenus.Track="{Binding Track}" mui:Draggable.Data="{Binding Track}" Background="Transparent">
+                  <TextBlock DockPanel.Dock="Right" Text="{Binding DisplayTotalValue}" VerticalAlignment="Center" Margin="0 0 8 0" Classes="Title"/>
+                  <TextBlock DockPanel.Dock="Left" Text="{Binding Position, StringFormat='{}#{0}'}" VerticalAlignment="Center" Margin="0 2 4 0" Width="36" TextAlignment="Right" Classes="Small"/>
+                  <c:LazierSwitch Value="{Binding Track}" Margin="12 4 8 4">
+                    <c:LazierSwitch.Loading>
+                      <TextBlock Text="{Binding AcObjectId}" Opacity="0.5" VerticalAlignment="Center"/>
+                    </c:LazierSwitch.Loading>
+                    <c:LazierSwitch.NonNull>
+                      <DockPanel>
+                        <mui:BetterImage Filename="{Binding Track.Value.OutlineImage}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+                        <TextBlock Text="{Binding Track.Value.Name}" FontWeight="Bold" VerticalAlignment="Center"/>
+                      </DockPanel>
+                    </c:LazierSwitch.NonNull>
+                    <c:LazierSwitch.Null>
+                      <TextBlock Text="{Binding AcObjectId, StringFormat='{}Track {0} is missing'}" Opacity="0.5" VerticalAlignment="Center"/>
+                    </c:LazierSwitch.Null>
+                  </c:LazierSwitch>
+                </DockPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+        </Border>
+      </mui:BooleanSwitch>
+
+    </StackPanel>
+
+    </DataTemplate>
+
+</ResourceDictionary>

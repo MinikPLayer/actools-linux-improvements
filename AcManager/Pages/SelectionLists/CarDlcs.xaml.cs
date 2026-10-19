@@ -9,7 +9,7 @@ using FirstFloor.ModernUI.Helpers;
 using StringBasedFilter;
 
 namespace AcManager.Pages.SelectionLists {
-    public partial class CarDlcs {
+    public partial class CarDlcs : global::AcManager.Pages.SelectionLists.SelectionList {
         public CarDlcs() : base(CarsManager.Instance, true) {
             InitializeComponent();
         }

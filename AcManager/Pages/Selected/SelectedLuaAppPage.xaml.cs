@@ -12,10 +12,9 @@ using AcManager.Tools.Objects;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
-using UIElement = System.Windows.UIElement;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedLuaAppPage : ILoadableContent, IParametrizedUriContent, INotifyPropertyChanged, IImmediateContent {
+    public partial class SelectedLuaAppPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, INotifyPropertyChanged, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel<LuaAppObject> {
             public ViewModel([NotNull] LuaAppObject acObject) : base(acObject) { }
         }
@@ -66,7 +65,7 @@ namespace AcManager.Pages.Selected {
             InitializeAcObjectPage(_model = new ViewModel(_object));
         }
 
-        protected void OnVersionInfoBlockClick(object sender, MouseButtonEventArgs e) {
+        protected void OnVersionInfoBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
 

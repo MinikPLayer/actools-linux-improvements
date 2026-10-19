@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime;
 using System.Runtime.CompilerServices;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 
 namespace AcManager {
     [Localizable(false)]

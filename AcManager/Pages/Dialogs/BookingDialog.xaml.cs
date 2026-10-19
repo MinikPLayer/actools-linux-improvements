@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class BookingDialog : IBookingUi, IInvokingNotifyPropertyChanged {
+    public partial class BookingDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IBookingUi, IInvokingNotifyPropertyChanged {
         public ServerEntry ServerEntry { get; private set; }
 
         private CarObject _car;

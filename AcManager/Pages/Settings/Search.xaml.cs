@@ -21,7 +21,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Settings {
-    public partial class Search : IParametrizedUriContent, ILoadableContent {
+    public partial class Search : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         #region Attached properties
         public static string GetCategory(DependencyObject obj) {
             return (string)obj.GetValue(CategoryProperty);
@@ -31,7 +31,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(CategoryProperty, value);
         }
 
-        public static readonly DependencyProperty CategoryProperty = DependencyProperty.RegisterAttached("Category", typeof(string),
+        public static readonly AttachedProperty<string> CategoryProperty = DP.RegisterAttached<string>("Category",
                 typeof(Search), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
 
         public static bool GetLimited(DependencyObject obj) {
@@ -42,7 +42,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(LimitedProperty, value);
         }
 
-        public static readonly DependencyProperty LimitedProperty = DependencyProperty.RegisterAttached("Limited", typeof(bool),
+        public static readonly AttachedProperty<bool> LimitedProperty = DP.RegisterAttached<bool>("Limited",
                 typeof(Search), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.None));
 
         public static string GetKeywords(DependencyObject obj) {
@@ -53,7 +53,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(KeywordsProperty, value);
         }
 
-        public static readonly DependencyProperty KeywordsProperty = DependencyProperty.RegisterAttached("Keywords", typeof(string),
+        public static readonly AttachedProperty<string> KeywordsProperty = DP.RegisterAttached<string>("Keywords",
                 typeof(Search), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
 
         public static bool GetInclude(DependencyObject obj) {
@@ -64,7 +64,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(IncludeProperty, value);
         }
 
-        public static readonly DependencyProperty IncludeProperty = DependencyProperty.RegisterAttached("Include", typeof(bool),
+        public static readonly AttachedProperty<bool> IncludeProperty = DP.RegisterAttached<bool>("Include",
                 typeof(Search), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.None));
 
         public static object GetLinkedTo(DependencyObject obj) {
@@ -75,7 +75,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(LinkedToProperty, value);
         }
 
-        public static readonly DependencyProperty LinkedToProperty = DependencyProperty.RegisterAttached("LinkedTo", typeof(object),
+        public static readonly AttachedProperty<object> LinkedToProperty = DP.RegisterAttached<object>("LinkedTo",
                 typeof(Search), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.None));
 
         public static string GetSubCategory(DependencyObject obj) {
@@ -86,7 +86,7 @@ namespace AcManager.Pages.Settings {
             obj.SetValue(SubCategoryProperty, value);
         }
 
-        public static readonly DependencyProperty SubCategoryProperty = DependencyProperty.RegisterAttached("SubCategory", typeof(string),
+        public static readonly AttachedProperty<string> SubCategoryProperty = DP.RegisterAttached<string>("SubCategory",
                 typeof(Search), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
         #endregion
 
@@ -229,7 +229,7 @@ namespace AcManager.Pages.Settings {
             var pages = new List<UserControl>();
             foreach (var x in filteredTypes) {
                 pages.Add((UserControl)Activator.CreateInstance(x));
-                await Dispatcher.InvokeAsync(() => { }, DispatcherPriority.Background);
+                await Dispatcher.UIThread.InvokeAsync(() => { }, DispatcherPriority.Background);
             }
             Logging.Debug($"Creating pages: {s.Elapsed.TotalMilliseconds:F1} ms ({pages.Count} pages)");
 

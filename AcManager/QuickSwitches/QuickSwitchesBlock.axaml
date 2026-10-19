@@ -1,0 +1,43 @@
+﻿<DockPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.QuickSwitches.QuickSwitchesBlock" Width="330">
+  <DockPanel.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="/QuickSwitches/QuickSwitchesWidgets.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></DockPanel.Resources>
+
+  <Rectangle DockPanel.Dock="Right" HorizontalAlignment="Right" Width="10" IsHitTestVisible="False">
+    <Rectangle.Fill>
+      <LinearGradientBrush StartPoint="0,0" EndPoint="1,0" SpreadMethod="Pad">
+        <LinearGradientBrush.GradientStops>
+          <GradientStop Color="#44000000" Offset="0"/>
+          <GradientStop Color="#11000000" Offset="0.5"/>
+          <GradientStop Color="#00000000" Offset="1"/>
+        </LinearGradientBrush.GradientStops>
+      </LinearGradientBrush>
+    </Rectangle.Fill>
+  </Rectangle>
+
+  <Rectangle DockPanel.Dock="Right" HorizontalAlignment="Right" Width="1" Fill="{DynamicResource Accent}"/>
+  <Border Background="{DynamicResource PopupBackground}">
+    <StackPanel Margin="16 8 8 48" VerticalAlignment="Center">
+      <TextBlock Text="{x:Static c:ControlsStrings.QuickSwitches_Header}" Classes="Heading1"/>
+      <ItemsControl x:Name="List">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Columns="3"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
+      <Button Click="OnCloseButtonClick" Margin="0 20 0 0" BorderThickness="0">
+        <Button.Resources>
+          <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
+        </Button.Resources>
+        <DockPanel>
+          <mui:Cell Width="8" Height="8" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 2 4 0">
+            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="12.99,12.99"/>
+            <Line StrokeThickness="1" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,12.99" EndPoint="12.99,-5.01"/>
+          </mui:Cell>
+          <TextBlock Text="{x:Static mui:UiStrings.Close}" VerticalAlignment="Center"/>
+        </DockPanel>
+      </Button>
+    </StackPanel>
+  </Border>
+</DockPanel>

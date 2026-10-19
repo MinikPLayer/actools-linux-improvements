@@ -46,12 +46,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OxyPlot;
 using OxyPlot.Series;
-using OxyPlot.Wpf;
+using OxyPlot.Avalonia;
 using StringBasedFilter;
 using StringBasedFilter.Parsing;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarGenerateLodsDialog {
+    public partial class CarGenerateLodsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public static long OptionCacheSize = 100 * 1024 * 1024;
         public static readonly string TemporaryDirectoryName = "CarLodGenerator";
         public static readonly string PresetableKey = "Car LODs Generation";

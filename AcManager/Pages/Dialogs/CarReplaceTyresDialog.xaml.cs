@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,7 +42,7 @@ using StringBasedFilter;
 using BooleanSwitch = FirstFloor.ModernUI.Windows.Controls.BooleanSwitch;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarReplaceTyresDialog {
+    public partial class CarReplaceTyresDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private static PluginsRequirement _requirement;
         public static PluginsRequirement Plugins => _requirement ?? (_requirement = new PluginsRequirement(KnownPlugins.Fann));
 
@@ -740,14 +740,14 @@ namespace AcManager.Pages.Dialogs {
         private TyresSet _draggingFrom;
         private bool _draggingFromRearSlot;
 
-        private void OnFrontSlotMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnFrontSlotMouseDown(object sender, PointerPressedEventArgs e) {
             if (((FrameworkElement)sender).DataContext is TyresSet set) {
                 _draggingFrom = set;
                 _draggingFromRearSlot = false;
             }
         }
 
-        private void OnRearSlotMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnRearSlotMouseDown(object sender, PointerPressedEventArgs e) {
             if (((FrameworkElement)sender).DataContext is TyresSet set) {
                 _draggingFrom = set;
                 _draggingFromRearSlot = true;

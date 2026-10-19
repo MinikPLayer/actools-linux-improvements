@@ -1,0 +1,57 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsWebBlocks">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer mui:SaveScroll.Key="SettingsWebBlocks">
+    <StackPanel set:Search.Category="Web" set:Search.Limited="True" x:Name="Panel" Classes="SettingsPanel">
+      <TextBlock Text="Staying alive in background:" Classes="Heading2 SettingsPanel.Heading2.First"/>
+      <DockPanel>
+        <ToolTip.Tip>
+          <TextBlock Text="Use this option to set how many recently used browsers should be kept alive when you switch to a different section" MaxWidth="400" TextWrapping="Wrap"/>
+        </ToolTip.Tip>
+        <mui:ValueLabel Value="{Binding WebBlocks.KeepInMemory}" mui:BetterTextBox.Minimum="0" Content="Keep alive" Postfix="{Binding WebBlocks.KeepInMemory, Converter={StaticResource PluralizingConverter}, ConverterParameter=' browser'}"/>
+        <Slider Minimum="0" Maximum="10" Value="{Binding WebBlocks.KeepInMemory}" TickFrequency="1" TickPlacement="BottomRight"/>
+      </DockPanel>
+      <CheckBox IsChecked="{Binding WebBlocks.AlwaysKeepImportantInMemory}" ToolTip.Tip="With the next option, they’ll still be unloaded before the race">
+        <Label Content="Always keep important browsers alive, such as SRS one"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding WebBlocks.UnloadBeforeRace}">
+        <Label Content="Before the race, unload browsers in background"/>
+      </CheckBox>
+
+      <TextBlock Text="Saving:" Classes="Heading2 SettingsPanel.Heading2"/>
+      <CheckBox IsChecked="{Binding WebBlocks.SaveMainUrl}">
+        <Label Content="Save URL in the main tab"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding WebBlocks.SaveExtraTabs}" IsEnabled="{Binding WebBlocks.SaveMainUrl}">
+        <Label Content="Save extra tabs"/>
+      </CheckBox>
+
+      <TextBlock Text="Downloads:" Classes="Heading2 SettingsPanel.Heading2"/>
+      <CheckBox IsChecked="{Binding WebBlocks.NotifyOnWebDownloads}">
+        <Label Content="Show a notification for new downloads"/>
+      </CheckBox>
+
+      <TextBlock Text="Auto-downloads:" Classes="Heading2 SettingsPanel.Heading2"/>
+      <CheckBox IsChecked="{Binding WebBlocks.CaptureViaFileStorageLoaders}">
+        <Label Content="For supported file storages, capture new tabs and download file immediately" ToolTip.Tip="List of supported storages includes Google Drive, Dropbox, OneDrive, Mega, Yandex.Disk, MediaFire, AdFly."/>
+      </CheckBox>
+
+      <TextBlock Text="Load rules suggested by community automatically:" Classes="Heading2 SettingsPanel.Heading2"/>
+      <CheckBox IsChecked="{Binding WebBlocks.ModsAutoLoadRuleForNew}" x:Name="ModsAutoLoadRuleForNew">
+        <Label Content="For newly added websites" ToolTip.Tip="When you’re adding a new website, CM will set an auto-download rule automatically if somebody already shared it"/>
+      </CheckBox>
+      <CheckBox IsEnabled="{Binding WebBlocks.ModsAutoLoadRuleForNew}" IsChecked="{Binding WebBlocks.ModsAutoLoadExtraForNew}" Margin="20 0 0 8" set:Search.LinkedTo="{Binding ElementName=ModsAutoLoadRuleForNew}">
+        <Label Content="Load extra parameters as well" ToolTip.Tip="Use suggested website name and icon as well"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding WebBlocks.ModsAutoLoadRuleForUnknown}">
+        <Label Content="For loading, if website is unknown" ToolTip.Tip="When downloading a file from an unknown website, CM will check shared rules to see if there is anything helpful to use temporarily"/>
+      </CheckBox>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

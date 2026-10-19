@@ -1,0 +1,19 @@
+﻿<sl:SelectionCategoriesList xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sl="clr-namespace:AcManager.Pages.SelectionLists" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:TypeArguments="t:TrackObject" x:Class="AcManager.Pages.SelectionLists.TrackCategories" VirtualizingStackPanel.IsVirtualizingWhenGrouping="True" Theme="{StaticResource {x:Type ListBox}}">
+  <ListBox.ItemsPanel>
+    <ItemsPanelTemplate>
+      <WrapPanel HorizontalAlignment="Left" ItemWidth="104" ItemHeight="104" SizeChanged="OnPanelSizeChanged" Margin="0 0 0 12"/>
+    </ItemsPanelTemplate>
+  </ListBox.ItemsPanel>
+  <ListBox.ItemTemplate>
+    <DataTemplate DataType="{x:Type sl:SelectCategory}">
+      <mui:Cell Width="100" Height="100" Background="Transparent" PointerPressed="OnItemMouseDown" ToolTip.Tip="{Binding Description.Description}" x:Name="__Dt0">
+        <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+        </Style></Style></mui:Cell.Styles><ContentPresenter Content="{Binding Description.Icon}" Width="68" Height="60" Margin="8 8 8 24" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding DisplayName}" Margin="4" Padding="0" VerticalAlignment="Bottom" Classes="Label Label.Padding"/>
+        <TextBlock x:Name="CountText" FontSize="10" HorizontalAlignment="Right" Text="{Binding ItemsCount}" Margin="4" VerticalAlignment="Top" Classes="Label"/>
+        <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="2" IsHitTestVisible="False"/>
+      </mui:Cell>
+      </DataTemplate>
+  </ListBox.ItemTemplate>
+  <!-- PORT: removed ListBox.GroupStyle (no grouping in Avalonia lists) -->
+</sl:SelectionCategoriesList>

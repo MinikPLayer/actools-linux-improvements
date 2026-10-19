@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Controls.Helpers;
 using AcManager.Controls.ViewModels;
@@ -22,11 +22,10 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 using StringBasedFilter;
-using Application = System.Windows.Application;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace AcManager.Pages.Lists {
-    public partial class TrackSkinsListPage : IParametrizedUriContent, ILoadableContent {
+    public partial class TrackSkinsListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent, ILoadableContent {
         public void OnUri(Uri uri) {
             _trackId = uri.GetQueryParam("TrackId");
             _filter = uri.GetQueryParam("Filter");

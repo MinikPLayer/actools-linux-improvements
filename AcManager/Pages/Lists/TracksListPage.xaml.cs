@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class TracksListPage : IParametrizedUriContent {
+    public partial class TracksListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent {
         public void OnUri(Uri uri) {
             var filter = uri.GetQueryParam("Filter");
             DataContext = new ViewModel(string.IsNullOrEmpty(filter) ? null : Filter.Create(TrackObjectTester.Instance, filter));

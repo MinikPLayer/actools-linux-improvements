@@ -10,13 +10,11 @@ using AcManager.Tools.Objects;
 using FirstFloor.ModernUI.Dialogs;
 using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
-using Button = System.Windows.Controls.Button;
 using DataFormats = System.Windows.DataFormats;
-using DragEventArgs = System.Windows.DragEventArgs;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class UpgradeIconEditor {
+    public partial class UpgradeIconEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         [Localizable(false), CanBeNull]
         public static string TryToGuessLabel(string carName) {
             if (carName == null) return null;

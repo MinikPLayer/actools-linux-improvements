@@ -21,7 +21,7 @@ namespace AcManager.Pages.Selected {
     // I made before relies on a fact that most (all) of them are AcCommonObject — objects with files background, so there are stuff like
     // removal, copying, cloning, all that. Here, with remote content, all that stuff is unavailable. So, I copied required bits.
 
-    public partial class SelectedRemoteCarSetupPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedRemoteCarSetupPage : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel {
             public CarObject Car { get; }
             public RemoteCarSetupObject SelectedObject { get; }

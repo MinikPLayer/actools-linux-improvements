@@ -10,7 +10,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopContentCars : IParametrizedUriContent, ILoadableContent {
+    public partial class WorkshopContentCars : global::Avalonia.Controls.UserControl, IParametrizedUriContent, ILoadableContent {
         private string _content;
         private string _filter;
         private string _rawFilter;
@@ -49,7 +49,7 @@ namespace AcManager.Pages.Workshop {
             }
         }
 
-        private void OnItemMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnItemMouseDown(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
 
             Logging.Debug("selected=" + List.SelectedItem);

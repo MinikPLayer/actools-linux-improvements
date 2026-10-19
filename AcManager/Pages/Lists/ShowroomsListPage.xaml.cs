@@ -18,7 +18,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Lists {
-    public partial class ShowroomsListPage : IParametrizedUriContent {
+    public partial class ShowroomsListPage : global::AcManager.Controls.AcListPage, IParametrizedUriContent {
         public void OnUri(Uri uri) {
             var filter = uri.GetQueryParam("Filter");
             DataContext = new ViewModel(string.IsNullOrEmpty(filter) ? null : Filter.Create(ShowroomObjectTester.Instance, filter));

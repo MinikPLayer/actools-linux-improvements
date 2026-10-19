@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,10 +32,9 @@ using JetBrains.Annotations;
 using Microsoft.Win32;
 using SharpCompress.Common;
 using SharpCompress.Writers;
-using UIElement = System.Windows.UIElement;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedUserChampionship : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedUserChampionship : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class PlacePoints : NotifyPropertyChanged {
             public int Place { get; }
 
@@ -462,7 +461,7 @@ namespace AcManager.Pages.Selected {
 
         private void OnUnloaded(object sender, RoutedEventArgs e) { }
 
-        private void OnRoundTrackClick(object sender, MouseButtonEventArgs e) {
+        private void OnRoundTrackClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             if (((FrameworkElement)sender).DataContext is UserChampionshipRoundExtended round) {
                 round.Track = SelectTrackDialog.Show(round.Track);
@@ -470,7 +469,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnCarBlockClick(object sender, RoutedEventArgs e) {
+        private void OnCarBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             if (((FrameworkElement)sender).DataContext is UserChampionshipObject.PlayerCarEntry playerCar) {
                 var dialog = new SelectCarDialog(playerCar.Car) {
@@ -505,7 +504,7 @@ namespace AcManager.Pages.Selected {
             e.Effects = DragDropEffects.Copy;
         }
 
-        private void OnVersionInfoBlockClick(object sender, MouseButtonEventArgs e) {
+        private void OnVersionInfoBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 1) {
                 e.Handled = true;
 
@@ -516,7 +515,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        private void OnCroppedPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnCroppedPreviewClick(object sender, PointerReleasedEventArgs e) {
             _model.SetCropParamsCommand.Execute();
         }
 
@@ -552,7 +551,7 @@ namespace AcManager.Pages.Selected {
             e.Effects = DragDropEffects.Move;
         }
 
-        private void OnRoundDescriptionDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnRoundDescriptionDoubleClick(object sender, TappedEventArgs e) {
             if (e.ChangedButton != MouseButton.Left) return;
             if (((FrameworkElement)sender).DataContext is UserChampionshipRoundExtended round) {
                 round.Description = Prompt.Show("Round description:", "Round Description", round.Description,

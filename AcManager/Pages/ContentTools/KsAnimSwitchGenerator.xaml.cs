@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Windows.Attached;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class KsAnimSwitchGenerator {
+    public partial class KsAnimSwitchGenerator : global::AcManager.Pages.ContentTools.ContentTool {
         protected override Task<bool> LoadAsyncOverride(IProgress<AsyncProgressEntry> progress, CancellationToken cancellation) {
             return Task.FromResult(true);
         }

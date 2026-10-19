@@ -9,7 +9,7 @@ using AcTools.Processes;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_TimeAttack : IQuickDriveModeControl, ITabCanBePinned {
+    public partial class QuickDrive_TimeAttack : global::Avalonia.Controls.UserControl, IQuickDriveModeControl, ITabCanBePinned {
         public class ViewModel : QuickDriveSingleModeViewModel {
             public ViewModel(bool initialize = true) {
                 Initialize("__QuickDrive_TimeAttack", initialize);

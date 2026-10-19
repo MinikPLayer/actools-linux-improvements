@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Pages.Settings;
 using AcManager.Tools.GameProperties;
@@ -17,9 +17,6 @@ using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
-using Application = System.Windows.Application;
-using ContextMenu = System.Windows.Forms.ContextMenu;
-using MenuItem = System.Windows.Forms.MenuItem;
 
 namespace AcManager {
     public partial class AppHibernator : IDisposable {
@@ -29,7 +26,7 @@ namespace AcManager {
             if (_keyboard != null) return;
             _keyboard = KeyboardListenerFactory.Get();
             _keyboard.WatchFor(Keys.Oemtilde, Keys.F1);
-            _keyboard.PreviewKeyDown += (sender, args) => {
+            _keyboard.AddPreviewKeyDown((sender, args) => {
                 if (SettingsHolder.Drive.ShowCspSettingsWithShortcut
                         && (args.Key == Keys.Oemtilde || args.Key == Keys.F1)
                         && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
@@ -39,7 +36,7 @@ namespace AcManager {
                         ActionExtension.InvokeInMainThreadAsync(() => SettingsShadersPatch.GetShowSettingsCommand().Execute(null));
                     }
                 }
-            };
+            });
         }
 
         public void SetListener() {

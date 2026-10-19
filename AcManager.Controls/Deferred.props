@@ -7,6 +7,6 @@
     <!-- CefSharp (Chromium Embedded Framework) is Windows-only -->
     <Compile Remove="UserControls\Cef\**;Helpers\CefSharpResolverService.cs" />
     <!-- WinForms based web browser wrapper and the Cef bridges -->
-    <Compile Remove="UserControls\CarBlock.xaml.cs;UserControls\Web\FormsWebBrowserWrapper.cs;UserControls\Web\AcCompatibleApiBridge.cs" />
+    <Compile Remove="UserControls\CarBlock.xaml.cs;UserControls\Web\FormsWebBrowserWrapper.cs" />
   </ItemGroup>
 </Project>

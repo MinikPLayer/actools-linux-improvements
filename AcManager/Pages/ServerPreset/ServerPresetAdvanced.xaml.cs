@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +12,7 @@ using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetAdvanced {
+    public partial class ServerPresetAdvanced : global::Avalonia.Controls.UserControl {
         public ServerPresetAdvanced() {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace AcManager.Pages.ServerPreset {
             });
         }
 
-        private void AllowedTyres_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e) {
+        private void AllowedTyres_OnDataContextChanged(object sender, System.EventArgs e) {
             if (_lastSubscribedTo != Model?.SelectedObject) {
                 _lastSubscribedTo.UnsubscribeWeak(OnServerPropertyChanged);
                 _lastSubscribedTo = Model?.SelectedObject;

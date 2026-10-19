@@ -1,0 +1,73 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:ab="clr-namespace:AcManager.Pages.About" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:at="clr-namespace:AcTools;assembly=AcTools" xmlns:sys="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.About.AboutPage">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Margin="20 8">
+        <DockPanel>
+          <Image Source="/Assets/Icons/Icon.ico" Width="48" Height="48" DockPanel.Dock="Left" Margin="0 4 12 -4"/>
+          <StackPanel>
+            <TextBlock Margin="-2 0 0 0" Text="{x:Static g:AppStrings.Main_ContentManager}" Classes="Heading1"/>
+            <mui:BbCodeBlock Text="{x:Static g:AppStrings.About_Description}" Classes="Small"/>
+          </StackPanel>
+        </DockPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+          <Button Command="{Binding MoreInformationCommand}" Margin="0 0 4 0" Content="{x:Static g:AppStrings.About_MoreInformation}"/>
+          <Button Command="{Binding RecentChangesCommand}" Margin="0 0 4 0" Content="{x:Static g:AppStrings.About_RecentChanges}"/>
+          <Button Command="{Binding SendLogsCommand}" Content="{x:Static g:AppStrings.About_ReportAnIssue}" IsVisible="{Binding DeveloperMode, Source={x:Static t:SettingsHolder.Common}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="0 20 0 40" PointerReleased="OnVersionClick">
+          <TextBlock Text="{x:Static c:ControlsStrings.AcObject_VersionLabel}" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DoYouKnowAboutAndroid}}" mui:FancyHintsService.OffsetX="60" Classes="Label"/>
+          <TextBox Margin="8 0 0 0" Theme="{StaticResource TextBoxAsTextBlock.Label.ReadOnly}">
+            <TextBox.Text>
+              <MultiBinding Mode="OneTime" StringFormat="{}{0} ({1})">
+                <Binding Source="{x:Static at:BuildInformation.AppVersion}"/>
+                <Binding Source="{x:Static at:BuildInformation.Platform}"/>
+              </MultiBinding>
+            </TextBox.Text>
+          </TextBox>
+        </StackPanel>
+
+        <TextBlock x:Name="ThankYouHeader" Text="First of all, thank you for your support!" Foreground="{DynamicResource Go}" Classes="Heading2"/>
+        <mui:BbCodeBlock x:Name="ThankYouText" Margin="0 8 0 40" FontSize="{DynamicResource SmallFontSize}" Text="If you want to support development of Content Manager and [url=&quot;https://acstuff.club/f/t/mods&quot;]other projects[/url] more, here is [url=&quot;https://www.patreon.com/x4fab&quot;]a Patreon link[/url]."/>
+
+        <TextBlock Text="{x:Static g:AppStrings.About_ContactUsHeader}" Classes="Heading2"/>
+        <mui:BbCodeBlock Margin="0 8 0 40" FontSize="{DynamicResource SmallFontSize}" Text="{x:Static g:AppStrings.About_ContactInformation}"/>
+
+        <TextBlock Text="Thanks to:" Classes="Heading2"/>
+
+        <TextBlock Text="Contributions:" Margin="0 12 0 0" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="[url=&quot;https://github.com/chrisraff&quot;]chrisraff[/url], [url=&quot;https://github.com/Conor94&quot;]Conor94[/url], [url=&quot;https://github.com/isaac-weisberg&quot;]isaac-weisberg[/url], [url=&quot;https://github.com/Marco01ok&quot;]Marco01ok[/url], [url=&quot;https://github.com/MrXANA91&quot;]MrXANA91[/url], [url=&quot;https://github.com/Ultrawipf&quot;]Ultrawipf[/url]."/>
+        
+        <TextBlock Text="Translation:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="AJ, Alex, Alex Kim, Alessandro Branchi, Alexandr (alexandrvob), andrewz, Artyom Korychev (corych), Byoung Chul Kim, Chris33, Christian Rask, Epistolarius, Gerard Rex, Fetzcat, Haluk, kevin, Krom &amp; Joshker, J D, jimke, Jinho Kim, Joojo19, mayto, Mumaransa, Roberto Geminiani, Roberto Zagallo, shadow118, Shijie Zhang (St3fan), Stanislav Minakov, Tesla Hunt, Tuomas, Vanildo Junior, Xeins, Zhiyu Zhong."/>
+
+        <TextBlock Text="Ideas, reports and testing:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="Anton Malishev, cq.mysk, dr8008, /u/FolkSong, leBluem, lianju, MadMat, Marco Mollace, MicaLovesKPOP, Peter Boese, Scott Shaw, Topuz, Tsuka, visionaryBlender, Zkirtaem."/>
+
+        <TextBlock Text="Screenshots for Discord integration:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="/u/CipherO32."/>
+
+        <TextBlock Text="Ideas for animations:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="[url=&quot;https://twitter.com/beesandbombs&quot;]Bees &amp; Bombs (/u/davebees)[/url], [url=&quot;https://www.reddit.com/user/blueconcepts&quot;]/u/blueconcepts[/url], [url=&quot;https://www.reddit.com/user/FastAsUcan&quot;]/u/FastAsUcan[/url], [url=&quot;https://codepen.io/Akiletour/&quot;]Pascal Gault[/url], [url=&quot;https://dribbble.com/PellyBenassi&quot;]Pelly Benassi[/url], [url=&quot;https://twitter.com/tobiasahlin&quot;]tobiasahlin[/url], [url=&quot;https://codepen.io/tomhazledine/&quot;]Tom Hazledine[/url]."/>
+
+        <TextBlock Text="Services used:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="[url=&quot;https://www.dropbox.com&quot;]Dropbox[/url], [url=&quot;https://www.google.com/drive/&quot;]Google Drive[/url], [url=&quot;https://maps.google.com/&quot;]Google Maps[/url], [url=&quot;https://icons8.com/&quot;]Icons8[/url], [url=&quot;http://ipinfo.io/&quot;]ipinfo[/url], [url=&quot;https://mega.nz/&quot;]Mega[/url], [url=&quot;https://onedrive.live.com/&quot;]Microsoft OneDrive[/url], [url=&quot;http://www.radiators-champ.com/RSRLiveTiming/index.php&quot;]RSR[/url], [url=&quot;http://store.steampowered.com/&quot;]Steam[/url], [url=&quot;https://openweathermap.org/&quot;]OpenWeatherMap[/url], [url=&quot;https://www.yahoo.com/&quot;]Yahoo[/url], [url=&quot;https://disk.yandex.ru&quot;]Yandex.Disk[/url]."/>
+
+        <TextBlock Text="Linux improvements:" Classes="Label Label.Padding"/>
+        <mui:SelectableBbCodeBlock Margin="-4 4 0 12" FontSize="{DynamicResource SmallFontSize}" Text="[url=&quot;https://github.com/MinikPLayer&quot;]Michał Tomecki (Minik)[/url]"/>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <StackPanel Grid.Row="1" Margin="20 12">
+      <mui:BbCodeBlock Background="Transparent" Text="{Binding Source={x:Static sys:DateTime.Now}, StringFormat={x:Static g:AppStrings.About_CopyrightFormat}}" PointerPressed="OnVersionClick" Classes="Small"/>
+      <mui:BbCodeBlock Text="{x:Static g:AppStrings.About_Footer}" Classes="BbCodeBlock.Small"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

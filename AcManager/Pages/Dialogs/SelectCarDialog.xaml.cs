@@ -32,7 +32,7 @@ using FirstFloor.ModernUI.Windows.Navigation;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class SelectCarDialog : IInvokingNotifyPropertyChanged {
+    public partial class SelectCarDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IInvokingNotifyPropertyChanged {
         /*private static WeakReference<SelectCarDialog> _instance;
         public static SelectCarDialog Instance => _instance == null ? null : _instance.TryGetTarget(out var result) ? result : null;*/
 
@@ -292,27 +292,27 @@ namespace AcManager.Pages.Dialogs {
             CarsManager.Instance.WrappersList.WrappedValueChanged += OnListWrappedValueChanged;
 
             if (CarBlock.BrandArea != null) {
-                CarBlock.BrandArea.PreviewMouseLeftButtonUp += (s, args) => Tabs.SelectedSource = BrandUri(SelectedCar.Brand);
+                CarBlock.BrandArea.AddPreviewMouseLeftButtonUp((s, args) => Tabs.SelectedSource = BrandUri(SelectedCar.Brand));
             }
 
             if (CarBlock.ClassArea != null) {
-                CarBlock.ClassArea.PreviewMouseLeftButtonUp += (s, args) => Tabs.SelectedSource = ClassUri(SelectedCar.CarClass);
+                CarBlock.ClassArea.AddPreviewMouseLeftButtonUp((s, args) => Tabs.SelectedSource = ClassUri(SelectedCar.CarClass));
             }
 
             if (CarBlock.YearArea != null) {
-                CarBlock.YearArea.PreviewMouseLeftButtonUp += (s, args) => Tabs.SelectedSource = YearUri(SelectedCar.Year);
+                CarBlock.YearArea.AddPreviewMouseLeftButtonUp((s, args) => Tabs.SelectedSource = YearUri(SelectedCar.Year));
             }
 
             if (CarBlock.CountryArea != null) {
-                CarBlock.CountryArea.PreviewMouseLeftButtonUp += (s, args) => Tabs.SelectedSource = CountryUri(SelectedCar.Country);
+                CarBlock.CountryArea.AddPreviewMouseLeftButtonUp((s, args) => Tabs.SelectedSource = CountryUri(SelectedCar.Country));
             }
 
             if (CarBlock.TagsList != null) {
-                CarBlock.TagsList.PreviewMouseLeftButtonUp += (s, args) => {
+                CarBlock.TagsList.AddPreviewMouseLeftButtonUp((s, args) => {
                     if (CarBlock.TagsList.FindVisualChild<ItemsControl>().GetMouseItem() is string mouseTag) {
                         Tabs.SelectedSource = TagUri(mouseTag);
                     }
-                };
+                });
             }
         }
 

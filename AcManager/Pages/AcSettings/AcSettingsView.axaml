@@ -1,0 +1,190 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:acset="clr-namespace:AcManager.Pages.AcSettings" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.AcSettingsView">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+
+  <ScrollViewer mui:SaveScroll.Key="AcSettingsView">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True">
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.AcSettings_ViewAndUi}" Classes="SettingsPanel">
+        <DockPanel>
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_UnitsLabel}"/>
+          <ComboBox ItemsSource="{Binding Gameplay.UnitsTypes}" SelectedItem="{Binding Gameplay.Units}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Gameplay.DisplayTimeGap}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_TimeGap}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.DisplayDamage}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_Damage}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.DisplayLeaderboard}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_Leaderboard}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.DisplayMirror}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_VirtualMirror}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.DisplayDriverNames}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_DriversNames}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.AllowOverlapping}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_AllowAppsOverlapping}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Gameplay.DownshiftProtectionNotification}">
+          <Label Content="Display downshift protection notification"/>
+        </CheckBox>
+
+        <!-- Camera -->
+        <TextBlock Text="{x:Static t:ToolsStrings.AcSettings_View_CameraHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding CameraOnboard.FieldOfView}" mui:BetterTextBox.Minimum="1" Postfix="°" Content="{x:Static g:AppStrings.AcSettings_FieldOfView}" ToolTip.Tip="{x:Static g:AppStrings.AcSettings_FieldOfView_Tooltip}"/>
+          <Slider Minimum="10" Maximum="120" Value="{Binding CameraOnboard.FieldOfView}" TickFrequency="11" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding CameraOnboard.WorldAligned}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_LockCamera}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding CameraOnboard.GlancingSpeed}" mui:BetterTextBox.Minimum="1" Postfix="%" Content="{x:Static t:ToolsStrings.AcSettings_View_GlancingSpeed}"/>
+          <Slider Minimum="5" Maximum="35" Value="{Binding CameraOnboard.GlancingSpeed}" TickFrequency="3" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding CameraOnboard.GlancingAngle}" mui:BetterTextBox.Minimum="1" Postfix="°" Content="{x:Static t:ToolsStrings.AcSettings_View_GlancingAngle}"/>
+          <Slider Minimum="10" Maximum="90" Value="{Binding CameraOnboard.GlancingAngle}" TickFrequency="8" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding CameraOnboard.HighSpeedShaking, Converter={x:Static t:AcSettingsHolder.ZeroToOffConverter}}" ShowPostfix="{Binding CameraOnboard.HighSpeedShaking, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter='≠0'}" mui:BetterTextBox.Mode="IntegerOrZeroLabel" Postfix="%" Content="{x:Static t:ToolsStrings.AcSettings_View_HighspeedShaking}"/>
+          <Slider Minimum="0" Maximum="200" Value="{Binding CameraOnboard.HighSpeedShaking}" TickFrequency="20" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+      </StackPanel>
+      <StackPanel set:Search.Category="{x:Static g:AppStrings.AcSettings_ViewAndUi}" Classes="SettingsPanel">
+
+        <!-- G-forces -->
+        <StackPanel x:Name="GForcesSection" Margin="0 0 0 12">
+          <TextBlock Text="{x:Static t:ToolsStrings.AcSettings_View_GForcesHeader}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+          <CheckBox IsChecked="{Binding CameraOnboard.GForcesBinded}">
+            <Label Content="{x:Static t:ToolsStrings.AcSettings_View_Locked}"/>
+          </CheckBox>
+
+          <DockPanel IsVisible="{Binding CameraOnboard.GForcesBinded, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <mui:ValueLabel Value="{Binding CameraOnboard.GForceX}" Postfix="%" Content="{x:Static t:ToolsStrings.AcSettings_View_Lateral}"/>
+            <Slider Minimum="0" Maximum="300" Value="{Binding CameraOnboard.GForceX}" TickFrequency="30" TickPlacement="BottomRight"/>
+          </DockPanel>
+
+          <Grid IsVisible="{Binding CameraOnboard.GForcesBinded, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <DockPanel Grid.Column="0">
+              <mui:ValueLabel Value="{Binding CameraOnboard.GForceX}" Postfix="%" DockPanel.Dock="Top" Content="{x:Static t:ToolsStrings.AcSettings_View_Lateral}"/>
+              <Slider Minimum="0" Maximum="300" Value="{Binding CameraOnboard.GForceX}" TickFrequency="30" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel Grid.Column="1">
+              <mui:ValueLabel Value="{Binding CameraOnboard.GForceY}" Postfix="%" DockPanel.Dock="Top" Content="{x:Static t:ToolsStrings.AcSettings_View_Vertical}"/>
+              <Slider Minimum="0" Maximum="300" Value="{Binding CameraOnboard.GForceY}" TickFrequency="30" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel Grid.Column="2">
+              <mui:ValueLabel Value="{Binding CameraOnboard.GForceZ}" Postfix="%" DockPanel.Dock="Top" Content="{x:Static t:ToolsStrings.AcSettings_View_Longtudinal}"/>
+              <Slider Minimum="0" Maximum="300" Value="{Binding CameraOnboard.GForceZ}" TickFrequency="30" TickPlacement="BottomRight"/>
+            </DockPanel>
+          </Grid>
+        </StackPanel>
+
+        <!-- View -->
+        <TextBlock Text="{x:Static t:ToolsStrings.AcSettings_View_ViewHeader}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+        <DockPanel>
+          <Label Content="Fade color:"/>
+          <mui:ColorPicker Color="{Binding CameraManager.FadeColor}"/>
+        </DockPanel>
+
+        <CheckBox IsChecked="{Binding Video.HideArms}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_HideDriverArms}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Video.HideSteeringWheel}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_HideSteeringWheel}"/>
+        </CheckBox>
+
+        <CheckBox IsChecked="{Binding Video.LockSteeringWheel}">
+          <Label Content="{x:Static t:ToolsStrings.AcSettings_View_LockSteeringWheel}"/>
+        </CheckBox>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding Gameplay.SteeringWheelLimit, Converter={x:Static t:AcSettingsHolder.ZeroToOffConverter}}" ShowPostfix="{Binding Gameplay.SteeringWheelLimit, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter='≠0'}" mui:BetterTextBox.Mode="IntegerOrZeroLabel" Postfix="°" Content="{x:Static t:ToolsStrings.AcSettings_View_SteeringWheelLimit}" ToolTip.Tip="{x:Static t:ToolsStrings.AcSettings_View_SteeringWheelLimit_Tooltip}"/>
+          <Slider Minimum="0" Maximum="540" Value="{Binding Gameplay.SteeringWheelLimit}" TickFrequency="45" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <!-- Messages -->
+        <TextBlock Text="Messages:" Classes="Heading2 SettingsPanel.Heading2"/>
+
+        <mui:SpacingUniformGrid Columns="2" HorizontalSpacing="20">
+          <StackPanel>
+            <CheckBox IsChecked="{Binding Messages.NewGhost}">
+              <Label Content="New ghost"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.PenaltyLockControl}">
+              <Label Content="Control locked due to penalty"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.Abs}">
+              <Label Content="ABS"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.TractionControl}">
+              <Label Content="Traction control"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.Turbo}">
+              <Label Content="Turbo"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.BrakeBias}">
+              <Label Content="Brake bias"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.BrakeEngine}">
+              <Label Content="Brake engine"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.Mgu}">
+              <Label Content="MGU"/>
+            </CheckBox>
+          </StackPanel>
+          <StackPanel>
+            <CheckBox IsChecked="{Binding Messages.ServerPlayerJoined}">
+              <Label Content="Online: player joined"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.ServerPlayerDisconnected}">
+              <Label Content="Online: player disconnected"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.ServerKickedMsg}">
+              <Label Content="Online: player kicked"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.ServerSessionVoting}">
+              <Label Content="Online: voting for next session"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.ServerKickVoting}">
+              <Label Content="Online: voting for kick"/>
+            </CheckBox>
+            <CheckBox IsChecked="{Binding Messages.ServerVote}">
+              <Label Content="Online: vote results"/>
+            </CheckBox>
+          </StackPanel>
+        </mui:SpacingUniformGrid>
+
+
+      </StackPanel>
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+</UserControl>

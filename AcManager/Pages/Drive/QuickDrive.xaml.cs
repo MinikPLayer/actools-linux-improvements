@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -64,7 +64,7 @@ namespace AcManager.Pages.Drive {
         }
     }
     
-    public partial class QuickDrive : ILoadableContent {
+    public partial class QuickDrive : global::Avalonia.Controls.UserControl, ILoadableContent {
         public const string PresetableKeyValue = "Quick Drive";
         private const string KeySaveable = "__QuickDrive_Main";
 
@@ -1386,12 +1386,12 @@ namespace AcManager.Pages.Drive {
             e.Menu = menu;
         }
 
-        private void OnCarBlockClick(object sender, RoutedEventArgs e) {
+        private void OnCarBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             Model.ChangeCarCommand.Execute(null);
         }
 
-        private void OnTrackBlockClick(object sender, RoutedEventArgs e) {
+        private void OnTrackBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             Model.ChangeTrackCommand.Execute(null);
         }
@@ -1417,7 +1417,7 @@ namespace AcManager.Pages.Drive {
             CarBlock.OnShowroomButtonClick(Model.SelectedCar, selectedCar.SelectedSkin);
         }
 
-        private void OnShowroomContextMenu(object sender, MouseButtonEventArgs e) {
+        private void OnShowroomContextMenu(object sender, PointerPressedEventArgs e) {
             var selectedCar = Model.SelectedCar;
             if (selectedCar == null) return;
             CarBlock.OnShowroomContextMenu(Model.SelectedCar, selectedCar.SelectedSkin);

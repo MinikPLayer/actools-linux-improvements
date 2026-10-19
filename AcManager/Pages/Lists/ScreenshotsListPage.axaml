@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:lists="clr-namespace:AcManager.Pages.Lists" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Lists.ScreenshotsListPage">
+  <Grid Classes="ContentRootWithPadding">
+    <ListBox ItemsSource="{Binding Screenshots}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <mui:VirtualizingTilePanel HorizontalAlignment="Left" ItemWidth="196" ItemHeight="112"/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <mui:Cell Width="192" Height="108" PointerReleased="OnContextMenu" PointerPressed="OnRightButtonDown">
+            <ToolTip.Tip>
+              <c:PropertiesGrid LabelWidth="60" Columns="1">
+                <TextBlock c:PropertiesGrid.Label="Name:" Text="{Binding DisplayName}"/>
+                <TextBlock c:PropertiesGrid.Label="Date:" Text="{Binding LastWriteTime}"/>
+                <TextBlock c:PropertiesGrid.Label="Size:" Text="{Binding Size, Converter={StaticResource FileSizeConverter}}"/>
+              </c:PropertiesGrid>
+            </ToolTip.Tip>
+            <mui:BetterImage Filename="{Binding Filename}" Width="192" Background="{DynamicResource ThumbnailBackground}" ClearOnChange="True"/>
+            <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource DarkStripeText}" FontSize="{DynamicResource SmallFontSize}"/>
+          </mui:Cell>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Grid>
+</UserControl>

@@ -1,0 +1,266 @@
+﻿<sel:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:g="clr-namespace:AcManager" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sel="clr-namespace:AcManager.Pages.Selected" xmlns:c="http://acstuff.club/app/controls" xmlns:a="clr-namespace:AcTools;assembly=AcTools" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedWeatherPage" mui:InputBindingBehavior.PropagateToWindow="True" x:Name="This">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- ReSharper disable once Xaml.RedundantResource -->
+      <StackPanel x:Key="EditMode">
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_IdLabel}"/>
+          <TextBox Text="{Binding SelectedObject.Id, Mode=OneTime}" Theme="{StaticResource TextBoxAsTextBlock.ReadOnly}"/>
+        </DockPanel>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_WeatherUseAsLabel}"/>
+          <ComboBox ItemsSource="{Binding WeatherTypes}" SelectedItem="{Binding SelectedObject.Type}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </DockPanel>
+
+        <Grid x:Name="Grid">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel>
+            <DockPanel>
+              <ToolTip.Tip>Preferable temperature diapason in Celsius, example: “10-15,17-20,22”</ToolTip.Tip>
+              <Label Content="Temperature diapason:"/>
+              <mui:BetterTextBox Text="{Binding SelectedObject.TemperatureDiapason}" Placeholder="?"/>
+            </DockPanel>
+
+            <DockPanel>
+              <ToolTip.Tip>Preferable time diapason in 24-hour format, example: “10:30-11:00,11:30-15:25”</ToolTip.Tip>
+              <Label Content="Time diapason:"/>
+              <mui:BetterTextBox Text="{Binding SelectedObject.TimeDiapason}" Placeholder="?"/>
+            </DockPanel>
+
+            <CheckBox IsChecked="{Binding SelectedObject.ForceCarLights}">
+              <Label Content="{x:Static g:AppStrings.WeatherEdit_Headlights}"/>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding SelectedObject.DisableShadows}">
+              <Label Content="Disable shadows"/>
+            </CheckBox>
+
+            <CheckBox IsChecked="{Binding SelectedObject.DateDependent}">
+              <Label Content="Date-dependant (for procedural weathers)"/>
+            </CheckBox>
+
+            <DockPanel mui:ContextMenuAdvancement.PropagateToChildren="True" ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_TemperatureCoefficient_Tooltip}">
+              <DockPanel.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Command="{Binding ViewTemperatureReadmeCommand}" Header="{x:Static g:AppStrings.WeatherEdit_ViewReadmeHeader}"/>
+                </ContextMenu>
+              </DockPanel.ContextMenu>
+              <mui:ValueLabel Value="{Binding SelectedObject.TemperatureCoefficient, StringFormat='{}{0:F2}'}" Content="{x:Static g:AppStrings.WeatherEdit_TemperatureCoefficient}"/>
+              <Slider Minimum="-1" Maximum="1" Value="{Binding SelectedObject.TemperatureCoefficient}" TickFrequency="0.2" TickPlacement="BottomRight"/>
+            </DockPanel>
+          </StackPanel>
+
+          <!--Visibility="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Grid}}, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=600}"-->
+          <Grid Grid.Column="1" Margin="8 0 0 0">
+            <Rectangle Stroke="{DynamicResource SeparatorBackground}" StrokeThickness="1" StrokeDashArray="4,4"/>
+            <StackPanel Margin="8">
+              <TextBlock Text="{x:Static g:AppStrings.WeatherEdit_TemperatureCoefficientTesting}" Classes="Label"/>
+
+              <StackPanel Orientation="Horizontal" Margin="0 8 0 8">
+                <StackPanel Margin="0 0 8 0" Width="120">
+                  <mui:ValueLabel Value="{Binding DisplayTime}" mui:BetterTextBox.Mode="Time" Margin="0 0 0 4" Content="{x:Static t:ToolsStrings.Common_Time}"/>
+                  <Slider Value="{Binding Time}" Margin="0 0 0 4" x:Name="TimeSlider" TickFrequency="3600" TickPlacement="BottomRight" IsSnapToTickEnabled="False" Minimum="{Binding Source={x:Static a:CommonAcConsts.TimeMinimum}}" Maximum="{Binding Source={x:Static a:CommonAcConsts.TimeMaximum}}" SmallChange="900" LargeChange="1800"/>
+                </StackPanel>
+                <StackPanel Width="120">
+                  <c:TemperatureValueLabel Value="{Binding Temperature, StringFormat='{}{0:F1}'}" Content="{x:Static g:AppStrings.WeatherEdit_TemperatureCoefficientAirTemperature}"/>
+                  <Slider Minimum="{x:Static a:CommonAcConsts.TemperatureMinimum}" Maximum="{x:Static a:CommonAcConsts.TemperatureMaximum}" Value="{Binding Temperature}" x:Name="TemperatureSlider" TickFrequency="6" IsSnapToTickEnabled="False" TickPlacement="BottomRight"/>
+                </StackPanel>
+              </StackPanel>
+
+              <c:TemperatureBlock Prefix="{x:Static g:AppStrings.Common_RoadTemperature}" Text="{Binding RoadTemperature}" Classes="Heading2"/>
+            </StackPanel>
+          </Grid>
+        </Grid>
+
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+
+          <StackPanel Classes="SettingsCompactPanel">
+            <TextBlock Text="{x:Static g:AppStrings.WeatherEdit_CloudsHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Cover_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsCover, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_Cover}"/>
+              <Slider Minimum="0" Maximum="100" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding SelectedObject.CloudsCover, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <ToolTip.Tip>
+                <mui:BbCodeBlock Text="{x:Static g:AppStrings.WeatherEdit_CutOff_Tooltip}"/>
+              </ToolTip.Tip>
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsCutoff, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_CutOff}"/>
+              <Slider Minimum="0" Maximum="100" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding SelectedObject.CloudsCutoff, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Color_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsColor, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_Color}"/>
+              <Slider Minimum="0" Maximum="100" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding SelectedObject.CloudsColor, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Width_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsWidth, StringFormat='{}{0:F2}'}" mui:BetterTextBox.Mode="Number" Content="{x:Static t:ToolsStrings.Common_Width}"/>
+              <Slider Minimum="0" Maximum="20" Value="{Binding SelectedObject.CloudsWidth}" TickFrequency="2" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Height_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsHeight, StringFormat='{}{0:F2}'}" mui:BetterTextBox.Mode="Number" Content="{x:Static t:ToolsStrings.Common_Height}"/>
+              <Slider Minimum="0" Maximum="20" Value="{Binding SelectedObject.CloudsHeight}" TickFrequency="2" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Radius_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsRadius, StringFormat='{}{0:F2}'}" mui:BetterTextBox.Mode="Number" Content="{x:Static t:ToolsStrings.Common_Radius}"/>
+              <Slider Minimum="0" Maximum="20" Value="{Binding SelectedObject.CloudsRadius}" TickFrequency="2" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_Number_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsNumber}" Content="{x:Static t:ToolsStrings.Common_Number}"/>
+              <Slider Minimum="0" Maximum="200" Value="{Binding SelectedObject.CloudsNumber}" TickFrequency="20" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_SpeedMultipler_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.CloudsSpeedMultiplier}" mui:BetterTextBox.Mode="Number" Postfix="%" Content="{x:Static t:ToolsStrings.Common_Speed}"/>
+              <Slider Minimum="0" Maximum="2" Value="{Binding SelectedObject.CloudsSpeedMultiplierRounded}" TickFrequency="0.2" TickPlacement="BottomRight"/>
+            </DockPanel>
+          </StackPanel>
+
+          <StackPanel Grid.Column="1" Classes="SettingsCompactPanel">
+            <TextBlock Text="{x:Static g:AppStrings.WeatherEdit_FogHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+            <DockPanel>
+              <Label Content="{x:Static g:AppStrings.Common_ColorLabel}"/>
+              <mui:ColorPicker Color="{Binding SelectedObject.FogColor}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.FogColorMultiplier, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_Brightness}"/>
+              <Slider Minimum="0" Maximum="800" TickFrequency="80" TickPlacement="BottomRight" Value="{Binding SelectedObject.FogColorMultiplier, Converter={StaticResource PercentageConverter}, ConverterParameter=1}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.FogBlend, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_Blend}"/>
+              <Slider Minimum="0" Maximum="100" TickFrequency="10" TickPlacement="BottomRight" Value="{Binding SelectedObject.FogBlend, Converter={StaticResource PercentageConverter}, ConverterParameter=0.1}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.FogDistance, StringFormat='{}{0:F0}'}" Postfix="{x:Static c:ControlsStrings.Common_MetersPostfix}" Content="{x:Static g:AppStrings.WeatherEdit_Distance}"/>
+              <Slider Minimum="0" Maximum="12000" Value="{Binding SelectedObject.FogDistance}" TickFrequency="1200" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <TextBlock Text="{x:Static g:AppStrings.WeatherEdit_AdditionalHeader}" Classes="Heading2 SettingsPanel.Heading2"/>
+
+            <DockPanel ToolTip.Tip="{x:Static g:AppStrings.WeatherEdit_HdrOffMultipler_Tooltip}">
+              <mui:ValueLabel Value="{Binding SelectedObject.HdrOffMultiplier, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_HdrOffMultipler}"/>
+              <Slider Minimum="0" Maximum="200" TickFrequency="20" TickPlacement="BottomRight" Value="{Binding SelectedObject.HdrOffMultiplier, Converter={StaticResource PercentageConverter}, ConverterParameter=1}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.AngleGamma, Converter={StaticResource PercentageConverter}}" Postfix="%" mui:BetterTextBox.Mode="Number" Content="{x:Static g:AppStrings.WeatherEdit_AngleGamma}"/>
+              <Slider Minimum="0" Maximum="500" TickFrequency="50" TickPlacement="BottomRight" Value="{Binding SelectedObject.AngleGamma, Converter={StaticResource PercentageConverter}, ConverterParameter=1}"/>
+            </DockPanel>
+          </StackPanel>
+        </Grid>
+
+        <TextBlock Text="{x:Static g:AppStrings.WeatherEdit_ColorCurvesHeader}" IsVisible="{Binding SelectedObject.HasCurvesData, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="Heading2 SettingsPanel.Heading2"/>
+        <ItemsControl ItemsSource="{Binding SelectedObject.ColorCurves}" IsVisible="{Binding SelectedObject.HasCurvesData, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Grid Margin="0 0 0 8">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="100"/>
+                  <ColumnDefinition MinWidth="130" Width="1*"/>
+                  <ColumnDefinition Width="100"/>
+                  <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding DisplayName}" Classes="Label"/>
+                <mui:ColorPicker Grid.Column="1" Color="{Binding Color}" Margin="0 0 20 0" VerticalAlignment="Center" ToolTip.Tip="Low"/>
+                <mui:ValueLabel Grid.Column="2" Value="{Binding Multiplier}" Postfix="×" Content="{x:Static g:AppStrings.WeatherEdit_Multipler}"/>
+                <Slider Grid.Column="3" Minimum="0" Maximum="{Binding Maximum}" Value="{Binding MultiplierRounded}" TickFrequency="{Binding Step}" TickPlacement="BottomRight"/>
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_WeatherTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Clone_WeatherTooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_EditMode}" Command="{Binding ToggleEditModeCommand, ElementName=This}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_EditMode_Tooltip}" IsVisible="{Binding EditMode, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_DisableEditMode}" Command="{Binding ToggleEditModeCommand, ElementName=This}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_DisableEditMode_Tooltip}" IsVisible="{Binding EditMode, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Common_Share}" Command="{Binding ShareCommand}" ToolTip.Tip="{x:Static g:AppStrings.Common_Share_WeatherTooltip}"/>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Common_Test}" Command="{Binding TestCommand}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_Test_WeatherTooltip}">
+          <MenuItem Header="9:00" Command="{Binding TestCommand}" CommandParameter="9:00"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+          <MenuItem Header="12:00" Command="{Binding TestCommand}" CommandParameter="12:00"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+          <MenuItem Header="15:00" Command="{Binding TestCommand}" CommandParameter="15:00"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+          <MenuItem Header="18:00" Command="{Binding TestCommand}" CommandParameter="18:00"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_ChangeId}" Command="{Binding ChangeIdCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_ChangeId_WeatherTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_IniTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_WeatherTooltip}"/>
+        <Separator/>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_UpdatePreview}" Command="{Binding UpdatePreviewCommand}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_UpdatePreview_WeatherTooltip}">
+          <MenuItem Header="{x:Static g:AppStrings.Toolbar_UpdatePreviewWithoutShooting}" Command="{Binding UpdatePreviewDirectCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_UpdatePreviewWithoutShooting_Tooltip}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <StackPanel x:Name="Wrapper" IsVisible="{Binding SelectedObject.HasData, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="SettingsPanel">
+      <StackPanel IsVisible="{Binding EditMode, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+        <mui:BetterImage Margin="0 0 0 12" Filename="{Binding SelectedObject.PreviewImage}" HideBroken="True" c:ImageViewerService.Image="{Binding SelectedObject.PreviewImage}" MaxWidth="1022" Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.5626223}"/>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_IdLabel}"/>
+          <TextBox Text="{Binding SelectedObject.Id, Mode=OneTime}" Theme="{StaticResource TextBoxAsTextBlock.ReadOnly}"/>
+        </DockPanel>
+
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.AcObject_WeatherUseAsLabel}"/>
+          <ComboBox ItemsSource="{Binding WeatherTypes}" SelectedItem="{Binding SelectedObject.Type}">
+            <ComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+              </DataTemplate>
+            </ComboBox.ItemTemplate>
+          </ComboBox>
+        </DockPanel>
+
+        <Grid Margin="0 20 0 8">
+          <Rectangle Stroke="{DynamicResource SeparatorBackground}" StrokeThickness="1" StrokeDashArray="4,4"/>
+          <StackPanel Margin="8">
+            <TextBlock Text="{x:Static g:AppStrings.Weather_SeemsEmpty}" Classes="Label"/>
+            <TextBlock TextWrapping="Wrap" Text="{x:Static g:AppStrings.Weather_SeemsEmpty_Commentary}"/>
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+    </StackPanel>
+  </c:AcObjectBase>
+</sel:SelectedAcObjectPage>

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Objects;
 using AcTools.AiFile;

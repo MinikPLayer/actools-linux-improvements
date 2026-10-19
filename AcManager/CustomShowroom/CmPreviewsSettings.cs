@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Media;
 using AcManager.Controls;
 using AcManager.Controls.Helpers;
@@ -28,7 +28,6 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SharpDX;
-using Color = System.Windows.Media.Color;
 
 namespace AcManager.CustomShowroom {
     public class CmPreviewsSettingsValues {

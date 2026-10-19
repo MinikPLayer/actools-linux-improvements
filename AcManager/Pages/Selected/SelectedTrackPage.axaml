@@ -1,0 +1,292 @@
+﻿<se:SelectedAcJsonObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:se="clr-namespace:AcManager.Pages.Selected" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedTrackPage" mui:InputBindingBehavior.PropagateToWindow="True">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSelectedSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <!-- PORT: removed CollectionViewSource -->
+      <mui:BindingProxy x:Key="Model" Data="{Binding}"/>
+      <DockPanel x:Key="ProgressAnimation">
+        <Canvas Width="20" Height="12" DockPanel.Dock="Left" Margin="0 0 8 0">
+          <mui:ModernProgressRing Width="80" Height="80" IsActive="True" Canvas.Top="-4">
+            <mui:ModernProgressRing.RenderTransform>
+              <ScaleTransform ScaleX="0.25" ScaleY="0.25"><!-- PORT: removed CenterY (not in Avalonia) --><!-- PORT: removed CenterX (not in Avalonia) --></ScaleTransform>
+            </mui:ModernProgressRing.RenderTransform>
+          </mui:ModernProgressRing>
+        </Canvas>
+        <TextBlock Text="Applying changes…" Classes="Label"/>
+      </DockPanel>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_TrackTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_Drive}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_Drive_TrackTooltip}" Command="{Binding DriveCommand}" MenuItems="{Binding QuickDrivePresets}" PointerPressed="ToolbarButtonQuickDrive_OnPreviewMouseDown" Theme="{StaticResource Go.ToolBarButtonWithComboBox}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="0" BandIndex="0" IsVisible="{Binding SelectedTrackConfiguration.AiLaneCandidateExists, ConverterParameter={StaticResource BooleanToVisibilityConverter}, Converter={x:Static pc:VisibilityConverters.ToBool}}">
+        <Button Content="Apply AI lane" Command="{Binding SelectedTrackConfiguration.ApplyAiLaneCandidatesCommand}" ToolTip.Tip="New candidates to AI lanes found, apply? Current lanes, if any, will be moved to the Recycle Bin"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_CarSkins}" Command="{Binding ManageSkinsCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_CarSkins_Tooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_JsonTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_TrackTooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_FindInformation}" Command="{Binding FindInformationCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_FindInformation_TrackTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_CopyValues}" IsEnabled="False" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_CopyValues_Tooltip}" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Separator/>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_UpdatePreview}" Command="{Binding UpdatePreviewCommand}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_UpdatePreview_TrackTooltip}">
+          <MenuItem Header="{x:Static g:AppStrings.Toolbar_UpdatePreviewWithoutShooting}" Command="{Binding UpdatePreviewDirectCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_UpdatePreviewWithoutShooting_Tooltip}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox>
+        <mui:ButtonWithComboBox Content="Update outline" Command="{Binding OutlineSettingsCommand}" ButtonToolTip="Re-create outline.png in Kunos style from map.png (Ctrl+U)">
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Options}" Command="{Binding OutlineSettingsCommand}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_UpdateMap}" Command="{Binding UpdateMapCommand}" ButtonToolTip="Re-create map.png in Kunos style from fast_lane.ai" CommandParameter="True">
+          <MenuItem Header="Update map from surfaces" Command="{Binding UpdateMapCommand}" CommandParameter="False" ToolTip.Tip="Re-create map.png using surfaces instead"/>
+        </mui:ButtonWithComboBox>
+        <!--<Button Content="Bake shaders" Command="{Binding BakeShadersCommand}" />-->
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <StackPanel>
+      <DockPanel Margin="8 0 0 8" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <TextBlock DockPanel.Dock="Left" Margin="0 2 8 0" Text="{x:Static g:AppStrings.AcObject_TrackLayoutNameLabel}" Classes="Label"/>
+        <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.LayoutName}" Placeholder="?" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}" Classes="TextBoxAsTextBlock"/>
+      </DockPanel>
+
+      <!-- layouts, previews -->
+      <StackPanel Margin="0 0 0 12" Height="240" Orientation="Horizontal" HorizontalAlignment="Center" x:Name="LayoutsPanel">
+        <ListBox ItemsSource="{Binding SelectedObject.MultiLayouts}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="180" SelectedItem="{Binding SelectedTrackConfiguration}" Margin="4 -2 0 -2" mui:Draggable.Enabled="True" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <mui:VirtualizingTilePanel Orientation="Horizontal" ItemWidth="84" ItemHeight="64" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <!-- using Name instead of DisplayName, because Display Name of main track layout contains number of layouts -->
+              <mui:BetterImage x:Name="Image" Filename="{Binding OutlineImage}" Width="80" Height="60" ClearOnChange="True" ToolTip.Tip="{Binding Name}" PointerReleased="OnOutlineRightClick"><mui:BetterImage.Styles><Style Selector="mui|BetterImage#Image"><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True] mui|BetterImage#Image"><Setter Property="Background" Value="{DynamicResource TrackOutlineAloneBackground}"/>
+                  <Setter Property="Effect" Value="{DynamicResource TrackOutlineAloneEffect}"/>
+                </Style></Style></mui:BetterImage.Styles></mui:BetterImage>
+
+              </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <mui:Cell Height="200" Width="355" VerticalAlignment="Center" Margin="20 0 0 0" Background="Transparent">
+          <mui:Cell.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="Update outline" Command="{Binding OutlineSettingsCommand}" CommandParameter="{Binding SelectedTrackConfiguration.LayoutId}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+            </ContextMenu>
+          </mui:Cell.ContextMenu>
+          <mui:BetterImage StretchDirection="Both" Filename="{Binding SelectedTrackConfiguration.PreviewImage}" Width="355" Height="200" Stretch="UniformToFill"/>
+          <mui:BetterImage StretchDirection="Both" Filename="{Binding SelectedTrackConfiguration.OutlineImage}" Width="365" Height="192" Stretch="Uniform" Margin="-5 4"/>
+        </mui:Cell>
+      </StackPanel>
+
+      <!-- data section -->
+      <StackPanel IsVisible="{Binding SelectedTrackConfiguration.HasData, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <!-- tags -->
+        <mui:TagsList ItemsSource="{Binding SelectedTrackConfiguration.Tags}" SuggestionsSource="{Binding SelectedTrackConfiguration.TagsList}" Margin="0 0 0 12" PointerPressed="OnTagsListMouseDown"/>
+
+        <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20">
+          <mui:SpacingStackPanel Spacing="20">
+            <c:PropertiesGrid Columns="1" LabelPadding="0 1 0 0" LabelWidth="100">
+              <mui:BetterComboBox c:PropertiesGrid.Label="{x:Static c:ControlsStrings.AcObject_ContryLabel}" ItemsSource="{x:Static t:SuggestionLists.CountriesListView}" mui:ContextMenuAdvancement.PropagateToChildren="True" Placeholder="?" Text="{Binding SelectedTrackConfiguration.Country}" Theme="{StaticResource BetterComboBox.Borderless}">
+                <mui:BetterComboBox.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByCountry}" Command="{Binding Path=FilterCommand}" CommandParameter="country"/>
+                  </ContextMenu>
+                </mui:BetterComboBox.ContextMenu>
+              </mui:BetterComboBox>
+
+              <mui:BetterComboBox c:PropertiesGrid.Label="{x:Static c:ControlsStrings.AcObject_CityLabel}" ItemsSource="{x:Static t:SuggestionLists.CitiesListView}" mui:ContextMenuAdvancement.PropagateToChildren="True" Placeholder="?" Text="{Binding SelectedTrackConfiguration.City}" Theme="{StaticResource BetterComboBox.Borderless}">
+                <mui:BetterComboBox.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByCity}" Command="{Binding Path=FilterCommand}" CommandParameter="city"/>
+                  </ContextMenu>
+                </mui:BetterComboBox.ContextMenu>
+              </mui:BetterComboBox>
+
+              <mui:BbCodeBlock c:PropertiesGrid.Label="{x:Static c:ControlsStrings.AcObject_TrackGeoTagsLabel}" Text="{Binding SelectedTrackConfiguration.GeoTags, TargetNullValue=''}" Placeholder="{x:Static t:ToolsStrings.Common_None}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" PointerPressed="OnGeoTagsClick">
+                <ToolTip.Tip>
+                  <TextBlock Text="{Binding SelectedTrackConfiguration.GeoTags.OriginalString, StringFormat='{}Original values: {0}'}"/>
+                </ToolTip.Tip>
+              </mui:BbCodeBlock>
+
+              <Border c:PropertiesGrid.Label="{x:Static c:ControlsStrings.AcObject_YearLabel}" mui:ContextMenuAdvancement.PropagateToChildren="True" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_YearLabel_CarTooltip}">
+                <Border.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByYear}" Command="{Binding Path=FilterCommand}" CommandParameter="year"/>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByDecade}" Command="{Binding Path=FilterCommand}" CommandParameter="decade"/>
+                  </ContextMenu>
+                </Border.ContextMenu>
+                <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.Year, TargetNullValue=''}" Mode="Integer" Minimum="1900" Maximum="2100" Placeholder="?" Theme="{StaticResource Borderless}"/>
+              </Border>
+
+              <mui:Cell mui:ContextMenuAdvancement.PropagateToChildren="True" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}">
+                <c:PropertiesGrid.Label>
+                  <MultiBinding Converter="{x:Static se:SelectedAcObjectViewModel.VersionInfoLabelConverter}">
+                    <Binding Path="SelectedTrackConfiguration"/>
+                    <Binding Path="SelectedTrackConfiguration.VersionInfoDisplay"/>
+                  </MultiBinding>
+                </c:PropertiesGrid.Label>
+                <mui:Cell.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByAuthor}" Command="{Binding Path=FilterCommand}" CommandParameter="author"/>
+                    <MenuItem Header="Filter by origin" Command="{Binding Path=FilterCommand}" CommandParameter="origin"/>
+                  </ContextMenu>
+                </mui:Cell.ContextMenu>
+                <mui:BbCodeBlock Text="{Binding SelectedTrackConfiguration.VersionInfoDisplay}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" PointerReleased="OnVersionInfoBlockClick"/>
+                <Border Background="Transparent" PointerReleased="OnVersionInfoBlockClick"/>
+              </mui:Cell>
+            </c:PropertiesGrid>
+
+            <c:PropertiesGrid Columns="1" LabelPadding="0 1 0 0">
+              <!-- Length -->
+              <Border c:PropertiesGrid.Label="Length:" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                <ToolTip.Tip>
+                  <ToolTip Content="{x:Static g:AppStrings.TrackSpecs_Length_FormatTooltip}"/>
+                </ToolTip.Tip>
+                <Border.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsLengthValue}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    <Separator/>
+                    <MenuItem Command="{Binding RecalculateLengthCommand}" Header="{x:Static g:AppStrings.CarSpecs_Recalculate}">
+                      <ToolTip.Tip>Recalculate track’s length from fast_lane.ai</ToolTip.Tip>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Command="{Binding FixFormatCommand}" CommandParameter="power" Header="{x:Static g:AppStrings.CarSpecs_FixFormat}"/>
+                    <MenuItem Command="{Binding FixFormatCommand}" Header="{x:Static g:AppStrings.CarSpecs_FixFormats}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByLength}" Command="{Binding Path=FilterCommand}" CommandParameter="length"/>
+                  </ContextMenu>
+                </Border.ContextMenu>
+                <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.SpecsLength}" Mode="Integer" Placeholder="{x:Static g:AppStrings.TrackSpecs_Length_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+              </Border>
+
+              <!-- Width -->
+              <Border c:PropertiesGrid.Label="Width:" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                <ToolTip.Tip>
+                  <ToolTip Content="{x:Static g:AppStrings.TrackSpecs_Width_FormatTooltip}"/>
+                </ToolTip.Tip>
+                <Border.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Command="{Binding RecalculateWidthCommand}" Header="{x:Static g:AppStrings.CarSpecs_Recalculate}">
+                      <ToolTip.Tip>Recalculate track’s width from fast_lane.ai</ToolTip.Tip>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Command="{Binding FixFormatCommand}" CommandParameter="torque" Header="{x:Static g:AppStrings.CarSpecs_FixFormat}"/>
+                    <MenuItem Command="{Binding FixFormatCommand}" Header="{x:Static g:AppStrings.CarSpecs_FixFormats}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByWidth}" Command="{Binding Path=FilterCommand}" CommandParameter="width"/>
+                  </ContextMenu>
+                </Border.ContextMenu>
+                <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.SpecsWidth}" Mode="Integer" Placeholder="{x:Static g:AppStrings.TrackSpecs_Width_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+              </Border>
+
+              <!-- Pits -->
+              <Border c:PropertiesGrid.Label="Pits:" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                <ToolTip.Tip>
+                  <ToolTip Content="{x:Static g:AppStrings.TrackSpecs_Pitboxes_FormatTooltip}"/>
+                </ToolTip.Tip>
+                <Border.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsPitboxesValue}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    <Separator/>
+                    <MenuItem Command="{Binding RecalculatePitboxesCommand}" Header="{x:Static g:AppStrings.CarSpecs_Recalculate}"/>
+                    <Separator/>
+                    <MenuItem Command="{Binding FixFormatCommand}" CommandParameter="weight" Header="{x:Static g:AppStrings.CarSpecs_FixFormat}"/>
+                    <MenuItem Command="{Binding FixFormatCommand}" Header="{x:Static g:AppStrings.CarSpecs_FixFormats}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="{x:Static g:AppStrings.Filter_ByPitboxes}" Command="{Binding Path=FilterCommand}" CommandParameter="pits"/>
+                  </ContextMenu>
+                </Border.ContextMenu>
+                <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.SpecsPitboxes}" Mode="Integer" Placeholder="{x:Static g:AppStrings.TrackSpecs_Pitboxes_FormatTooltip}" Theme="{StaticResource Borderless}"/>
+              </Border>
+
+              <!-- Layout priority -->
+              <Border c:PropertiesGrid.Label="Layout priority:" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.LayoutPriority}" Mode="Integer" Placeholder="Affects order in which layouts are arranged (positive for first, negative for last)" Theme="{StaticResource Borderless}"/>
+              </Border>
+            </c:PropertiesGrid>
+
+            <!-- Description -->
+            <mui:BetterTextBox Text="{Binding SelectedTrackConfiguration.Description}" AcceptsReturn="True" TextWrapping="Wrap" Placeholder="None" Theme="{StaticResource Borderless}"/>
+          </mui:SpacingStackPanel>
+
+          <StackPanel>
+            <c:PropertiesGrid Columns="1" LabelPadding="0 1 0 0">
+              <c:NotesBlock c:PropertiesGrid.Label="Notes:" AcObject="{Binding SelectedObject}">
+                <c:NotesBlock.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="Filter by having notes" Command="{Binding Path=FilterCommand}" CommandParameter="notes"/>
+                    <Separator/>
+                    <MenuItem Header="Clear notes" Command="{Binding Path=ClearNotesCommand}"/>
+                  </ContextMenu>
+                </c:NotesBlock.ContextMenu>
+              </c:NotesBlock>
+
+              <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Total driven:" Placeholder="…" Text="{Binding SelectedTrackConfiguration.TotalDrivenDistance, Converter={StaticResource MultiplyConverter}, ConverterParameter=1e-3, StringFormat='{}{0:F1} km'}">
+                <mui:PlaceholderTextBlock.ContextMenu>
+                  <ContextMenu>
+                    <MenuItem Header="Filter by similar driven distance" Command="{Binding Path=FilterCommand}" CommandParameter="driven"/>
+                    <Separator/>
+                    <MenuItem Header="Clear stats from this track" Command="{Binding Path=ClearStatsCommand}"/>
+                    <MenuItem Header="Clear stats from this track (all layouts)" Command="{Binding Path=ClearStatsAllCommand}" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                  </ContextMenu>
+                </mui:PlaceholderTextBlock.ContextMenu>
+              </mui:PlaceholderTextBlock>
+            </c:PropertiesGrid>
+
+            <mui:PlaceholderTextBlock c:PropertiesGrid.Label="Last used:" Placeholder="…" Text="{Binding SelectedTrackConfiguration.LastUsedAt, StringFormat='{}{0:dd/MM/yyyy hh:mm tt}'}" IsVisible="{Binding SelectedTrackConfiguration.LastUsedSet, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <mui:PlaceholderTextBlock.ContextMenu>
+                <ContextMenu>
+                  <MenuItem Header="Clear stats from this track" Command="{Binding Path=ClearStatsCommand}"/>
+                  <MenuItem Header="Clear stats from this track (all layouts)" Command="{Binding Path=ClearStatsAllCommand}" IsVisible="{Binding SelectedObject.MultiLayoutMode, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </ContextMenu>
+              </mui:PlaceholderTextBlock.ContextMenu>
+            </mui:PlaceholderTextBlock>
+
+            <c:BestLapsList TrackId="{Binding SelectedTrackConfiguration.IdWithLayout}" Margin="0 20 0 0"/>
+          </StackPanel>
+
+          <DockPanel x:Name="SkinsColumn">
+            <DockPanel DockPanel.Dock="Top" Margin="0 0 0 8">
+              <mui:BooleanLazySwitch DockPanel.Dock="Right" Value="{Binding SelectedObject.ApplyingSkins}" TrueResourceKey="ProgressAnimation" Height="20" Margin="4 0 0 0"/>
+              <TextBlock Text="Skins:" Classes="Label"/>
+            </DockPanel>
+
+            <mui:Switch Value="{Binding SelectedObject.EnabledOnlySkins.Count}">
+              <TextBlock mui:Switch.When="0" Text="None" FontStyle="Italic"/>
+              <DockPanel>
+                <mui:SpacingUniformGrid DockPanel.Dock="Bottom" Rows="1" HorizontalSpacing="4" Margin="0 0 1 0">
+                  <Button Content="Manage" Command="{Binding ManageSkinsCommand}"/>
+                  <Button Content="View result" Command="{Binding ViewSkinsResultCommand}"/>
+                </mui:SpacingUniformGrid>
+                <ItemsControl ItemsSource="{Binding SelectedObject.EnabledOnlySkins}" Theme="{StaticResource VirtualizingItemsControl}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <CheckBox IsChecked="{Binding IsActive}" Margin="0 0 0 8" Background="Transparent">
+                        <DockPanel>
+                          <mui:BetterImage Height="32" Width="57" Background="{DynamicResource ThumbnailBackground}" Filename="{Binding PreviewImage}" Stretch="UniformToFill" Margin="2 2 6 -2" VerticalAlignment="Center"/>
+                          <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" Margin="0 0 0 4"/>
+                          <mui:BbCodeBlock Mode="SafeBbCodes" Text="{Binding Description}" Margin="0 0 0 0" Classes="Small"/>
+                        </DockPanel>
+                      </CheckBox>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </DockPanel>
+            </mui:Switch>
+          </DockPanel>
+        </mui:SpacingUniformGrid>
+      </StackPanel>
+    </StackPanel>
+  </c:AcObjectBase>
+</se:SelectedAcJsonObjectPage>

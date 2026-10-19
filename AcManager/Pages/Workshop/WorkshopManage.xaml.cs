@@ -1,7 +1,7 @@
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Workshop {
-    public partial class WorkshopManage {
+    public partial class WorkshopManage : global::Avalonia.Controls.UserControl {
         private ViewModel Model => (ViewModel)DataContext;
 
         public WorkshopManage() {

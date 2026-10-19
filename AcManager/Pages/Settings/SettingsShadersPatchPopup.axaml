@@ -1,0 +1,120 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsShadersPatchPopup">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTab.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernWindow.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ControlTheme x:Key="SettingTabItem" TargetType="ListBoxItem">
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Margin" Value="0 0 0 0"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="ListBoxItem">
+              <Border Background="{TemplateBinding Background}" Margin="-12 0 12 0" Padding="12 10 12 10">
+                <ContentPresenter x:Name="Presenter" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+              </Border>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^:pointerover"><Setter Property="Background">
+                    <Setter.Value>
+                      <SolidColorBrush Color="{DynamicResource AccentColor}" Opacity="0.3"/>
+                    </Setter.Value>
+                  </Setter>
+                </Style></ControlTheme>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <mui:Cell>
+
+    <mui:Switch Value="{Binding Mode}">
+      <DockPanel mui:Switch.When="{x:Static set:SettingsShadersPatch+Mode.NoShadersPatch}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource ContentMarginWithPadding}">
+        <TextBlock Text="Custom Shaders Patch is not installed" DockPanel.Dock="Top" Classes="Heading1"/>
+        <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/patch/" Command="{x:Static mui:LinkCommands.NavigateLink}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource QuestionMarkIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="What is it?"/>
+          </DockPanel>
+        </Button>
+      </DockPanel>
+
+      <DockPanel mui:Switch.When="{x:Static set:SettingsShadersPatch+Mode.NoConfigs}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource ContentMarginWithPadding}">
+        <TextBlock Text="No Custom Shaders Patch configs were found" DockPanel.Dock="Top" Classes="Heading1"/>
+        <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/patch/" Command="{x:Static mui:LinkCommands.NavigateLink}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource DownloadIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="Get a build with configs"/>
+          </DockPanel>
+        </Button>
+      </DockPanel>
+
+      <mui:ModernTab x:Name="Tabs" mui:ModernFrame.KeepContentAlive="True" Margin="0 0 0 0" SaveKey="cspPopup.selectedTab" Layout="List">
+        <mui:ModernTab.Template>
+          <ControlTemplate TargetType="mui:ModernTab">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="50" MaxWidth="100"/>
+                <ColumnDefinition Width="9"/>
+                <ColumnDefinition/>
+              </Grid.ColumnDefinitions>
+              <ListBox x:Name="PART_LinkList" ItemsSource="{TemplateBinding Links}" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel Margin="0 8"/>
+                  </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerTheme>
+                  <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+                    <Setter Property="Template">
+                      <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                          <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                          </Border>
+                          </ControlTemplate>
+                      </Setter.Value>
+                    </Setter>
+                  <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                            </Style><Style Selector="^:selected /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                            </Style></ControlTheme>
+                </ListBox.ItemContainerTheme>
+                <ListBox.ItemTemplate>
+                  <DataTemplate DataType="mui:Link">
+                    <TextBlock x:Name="PART_Text" Text="{Binding DisplayName, Converter={StaticResource ToUpperConverter}}" Margin="10 2 2 2" FontSize="{DynamicResource SmallFontSize}"><TextBlock.Styles><Style Selector="TextBlock#PART_Text"><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Tag, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#PART_Text"><Setter Property="Opacity" Value="0.4"/>
+                      </Style></Style></TextBlock.Styles></TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+              <mui:ModernTabSplitter Grid.Column="1"/>
+              <mui:ModernFrame Grid.Column="2" x:Name="PART_Frame" KeepContentAlive="False" Source="{Binding SelectedSource, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" ContentLoader="{TemplateBinding ContentLoader}" Margin="12 8 0 8"/>
+            </Grid>
+          </ControlTemplate>
+        </mui:ModernTab.Template>
+        <mui:ModernTab.LinksListBoxTemplate>
+          <ControlTemplate>
+            <ItemsPresenter HorizontalAlignment="Left"/>
+          </ControlTemplate>
+        </mui:ModernTab.LinksListBoxTemplate>
+      </mui:ModernTab>
+
+    </mui:Switch>
+
+    <Button Click="OnCloseButtonClick" VerticalAlignment="Top" HorizontalAlignment="Right" ToolTip.Tip="{x:Static mui:UiStrings.Close}" Theme="{StaticResource SystemCloseButton}">
+      <mui:Cell Width="10" Height="10" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="1" StartPoint="-5.01,-5.01" EndPoint="14.99,14.99"/>
+        <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="1" StartPoint="-5.01,14.99" EndPoint="14.99,-5.01"/>
+      </mui:Cell>
+    </Button>
+  </mui:Cell>
+</UserControl>

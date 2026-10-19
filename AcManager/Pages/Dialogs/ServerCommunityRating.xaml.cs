@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class ServerCommunityRating {
+    public partial class ServerCommunityRating : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public ServerCommunityRating(ServerEntry entry) {
             DataContext = new ViewModel(entry);
             InitializeComponent();

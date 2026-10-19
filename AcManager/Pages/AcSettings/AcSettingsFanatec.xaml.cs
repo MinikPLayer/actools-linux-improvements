@@ -3,7 +3,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsFanatec {
+    public partial class AcSettingsFanatec : global::Avalonia.Controls.UserControl {
         public AcSettingsFanatec() {
             InitializeComponent();
             DataContext = new ViewModel();

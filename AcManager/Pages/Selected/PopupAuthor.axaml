@@ -1,0 +1,43 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:c="clr-namespace:AcManager.Controls;assembly=AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:selected="clr-namespace:AcManager.Pages.Selected" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.PopupAuthor">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSelectedSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <Grid Width="400" Margin="0 4 4 4" x:Name="MainGrid" Classes="ObjectDataGrid">
+    <Grid.Resources>
+      <mui:BindingProxy x:Key="Model" Data="{Binding}"/>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition/>
+      <RowDefinition/>
+    </Grid.RowDefinitions>
+
+    <DockPanel Grid.Row="0" mui:ContextMenuAdvancement.PropagateToChildren="True">
+      <DockPanel.ContextMenu>
+        <ContextMenu DataContext="{Binding Data, Source={StaticResource Model}}">
+          <MenuItem Header="{x:Static g:AppStrings.Filter_ByAuthor}" Command="{Binding FilterCommand}" CommandParameter="author"/>
+        </ContextMenu>
+      </DockPanel.ContextMenu>
+      <TextBlock Text="{x:Static c:ControlsStrings.AcObject_AuthorLabel}" ToolTip.Tip="{x:Static g:AppStrings.AcObject_Author_TooltipExt}"/>
+      <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+      <mui:BetterComboBox ItemsSource="{x:Static t:SuggestionLists.AuthorsListView}" Placeholder="?" Text="{Binding SelectedObject.Author}" Theme="{StaticResource BetterComboBox.Borderless}"/>
+    </DockPanel>
+
+    <DockPanel Grid.Row="1">
+      <TextBlock Text="{x:Static c:ControlsStrings.AcObject_UrlLabel}" ToolTip.Tip="{x:Static g:AppStrings.AcObject_Url_TooltipExt}"/>
+      <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+      <mui:BetterTextBox Placeholder="?" Text="{Binding SelectedObject.Url}" Theme="{StaticResource Borderless}"/>
+    </DockPanel>
+
+    <DockPanel Grid.Row="2">
+      <TextBlock Text="{x:Static c:ControlsStrings.AcObject_VersionLabel}" ToolTip.Tip="{x:Static g:AppStrings.AcObject_Version_TooltipExt}"/>
+      <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+      <mui:BetterTextBox Mode="Version" Placeholder="?" Text="{Binding SelectedObject.Version}" Theme="{StaticResource Borderless}"/>
+    </DockPanel>
+  </Grid>
+</UserControl>

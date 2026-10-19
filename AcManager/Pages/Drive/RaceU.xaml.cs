@@ -34,7 +34,6 @@ using AcManager.Tools.SemiGui;
 using AcTools.Processes;
 using AcTools.Utils;
 using AcTools.Utils.Helpers;
-using CefSharp;
 using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
@@ -45,7 +44,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.Pages.Drive {
-    public partial class RaceU {
+    public partial class RaceU : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch {
         private static readonly Uri RaceUUri = new Uri("/Pages/Drive/RaceU.xaml", UriKind.Relative);
         private static RaceU _instance;
 
@@ -309,7 +308,7 @@ namespace AcManager.Pages.Drive {
             });
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class RaceUApiProxy : JsGenericProxy {
             public RaceUApiProxy(JsBridgeBase bridge) : base(bridge) { }
 

@@ -1,0 +1,253 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetDetails" Background="Transparent" PointerWheelChanged="OnMouseWheel">
+  <UserControl.Styles><Style Selector="StackPanel.SettingsMoreCompactPanel">
+        <Setter Property="Margin" Value="0 0 20 20"/>
+        <Setter Property="MinWidth" Value="200"/>
+
+        <Style Selector="^ DockPanel">
+            <Setter Property="Margin" Value="0 0 0 8"/>
+
+            <Style Selector="^ Label">
+                <Setter Property="Margin" Value="0 0 16 0"/>
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="VerticalAlignment" Value="Top"/>
+                <Setter Property="DockPanel.Dock" Value="Left"/>
+              </Style>
+
+              <Style Selector="^ mui|ValueLabel">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Margin" Value="0 0 16 0"/>
+                <Setter Property="Width" Value="100"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="DockPanel.Dock" Value="Left"/>
+              </Style>
+
+              <Style Selector="^ Button">
+                <Setter Property="Margin" Value="8 0 0 0"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="DockPanel.Dock" Value="Right"/>
+              </Style>
+
+              <Style Selector="^ TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+              </Style>
+
+              <Style Selector="^ CheckBox"><Setter Property="VerticalAlignment" Value="Center"/>
+
+    </Style>
+            </Style>
+
+          <Style Selector="^ CheckBox">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+
+    <Setter Property="Margin" Value="0 0 0 8"/>
+          </Style>
+        </Style>
+
+      </UserControl.Styles><UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <mui:BindingProxy x:Key="ShareModes" Data="{Binding ShareModes}"/>
+
+      <ItemsPanelTemplate x:Key="ChildSharedItemsPanel">
+        <mui:SpacingStackPanel Spacing="4"/>
+      </ItemsPanelTemplate>
+
+      <ItemsPanelTemplate x:Key="SharedItemsPanel">
+        <mui:SpacingStackPanel Spacing="20"/>
+      </ItemsPanelTemplate>
+
+      <DataTemplate x:Key="SharedItemChildTemplate" DataType="{x:Type local:WrapperContentObject}">
+        <DockPanel x:Name="DockPanel" Margin="0">
+          <DockPanel.Styles><Style Selector="DockPanel#DockPanel"><Style Selector="^ TextBlock#PART_Name"><Setter Property="DockPanel.Dock" Value="Left"/><Setter Property="Margin" Value="0 0 8 0"/><Setter Property="MaxWidth" Value="100"/><Setter Property="MinWidth" Value="100"/></Style><Style Selector="^ mui|Switch#ParamCell"><Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, Converter={StaticResource SumConverter}, ConverterParameter=-240}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding ShareMode, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=None}"/><Setter Property="pa:T.S1" Value="{Binding ActualWidth, ElementName=DockPanel, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] mui|Switch#ParamCell"><Setter Property="IsVisible" Value="False"/>
+          </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Name"><Setter Property="DockPanel.Dock" Value="Top"/>
+            <Setter Property="Margin" Value="0 0 0 2"/>
+            <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+            <Setter Property="MinWidth" Value="0"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] mui|Switch#ParamCell"><Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, Converter={StaticResource SumConverter}, ConverterParameter=-140}"/>
+          </Style></Style></DockPanel.Styles><TextBlock x:Name="PART_Name" Text="{Binding AcObject.DisplayName}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" HorizontalAlignment="Left" ToolTip.Tip="{Binding AcObject.DisplayName}" Classes="Small"/>
+
+          <mui:Switch x:Name="ParamCell" Margin="8 0 0 0" DockPanel.Dock="Right" Value="{Binding ShareMode}">
+            <mui:BetterTextBox Text="{Binding DownloadUrl}" Placeholder="Download URL" mui:Switch.When="{x:Static local:ShareMode.Url}" Theme="{StaticResource Borderless.Small}"/>
+            <DockPanel mui:Switch.When="{x:Static local:ShareMode.Directly}">
+              <mui:ContextMenuButton Padding="4 0" DockPanel.Dock="Right">
+                <ContextMenu>
+                  <MenuItem Header="Select existing archive" Command="{Binding SelectFileCommand}"/>
+                  <MenuItem Header="Repack" Command="{Binding RepackCommand}"/>
+                </ContextMenu>
+              </mui:ContextMenuButton>
+              <TextBlock Text="{Binding Size, Converter={StaticResource FileSizeConverter}}" Margin="8 0 0 0" DockPanel.Dock="Right" VerticalAlignment="Center" IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Directly}}" Classes="Small"/>
+              <mui:PathTrimmingTextBlock Text="{Binding DisplayFilename}" Placeholder="Packed archive is missing" VerticalAlignment="Center" Margin="-4 0 0 0" IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Directly}}" Theme="{StaticResource RichTextBox.Small.ReadOnly}"/>
+            </DockPanel>
+          </mui:Switch>
+
+          <mui:BetterComboBox ItemsSource="{Binding Data, Source={StaticResource ShareModes}}" SelectedItem="{Binding ShareMode, Mode=TwoWay}" IsEditable="False" Theme="{StaticResource BetterComboBox.Borderless.Small}">
+            <mui:BetterComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+              </DataTemplate>
+            </mui:BetterComboBox.ItemTemplate>
+          </mui:BetterComboBox>
+        </DockPanel>
+        </DataTemplate>
+
+      <DataTemplate x:Key="SharedItemTemplate" DataType="{x:Type local:WrapperContentObject}">
+        <StackPanel Margin="20 0 0 0" Classes="SettingsMoreCompactPanel">
+          <TextBlock Text="{Binding DisplayName}" Margin="-20 0 0 8" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+          <DockPanel IsVisible="{Binding CanBePacked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label Content="{x:Static g:AppStrings.AcObject_IdLabel}"/>
+            <Button Padding="12 0 12 2" Margin="0 -5 0 -1" Content="{x:Static g:AppStrings.Settings_General_Open}" Command="{Binding AcObject.ViewInExplorerCommand}"/>
+            <mui:BetterTextBox IsReadOnly="True" Text="{Binding AcObject.Id, Mode=OneWay}" Theme="{StaticResource Borderless.Small}"/>
+          </DockPanel>
+
+          <DockPanel IsVisible="{Binding CanBePacked, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label Content="Share mode:"/>
+            <mui:BetterComboBox ItemsSource="{Binding Data, Source={StaticResource ShareModes}}" SelectedItem="{Binding ShareMode, Mode=TwoWay}" IsEditable="False" Theme="{StaticResource BetterComboBox.Borderless.Small}">
+              <mui:BetterComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </DataTemplate>
+              </mui:BetterComboBox.ItemTemplate>
+            </mui:BetterComboBox>
+          </DockPanel>
+
+          <DockPanel IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Directly}}">
+            <mui:ContextMenuButton Padding="4 0" DockPanel.Dock="Right">
+              <ContextMenu>
+                <MenuItem Header="Select existing archive" Command="{Binding SelectFileCommand}"/>
+                <Separator IsVisible="{Binding IsCarObject, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                <MenuItem Header="Repack" Command="{Binding RepackCommand}"/>
+                <MenuItem Header="Pack car data" IsChecked="{Binding Value, Source={x:Static local:WrapperContentObject.PackCarData}}" StaysOpenOnClick="True" IsVisible="{Binding IsCarObject, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+              </ContextMenu>
+            </mui:ContextMenuButton>
+            <Label Content="Packed archive:"/>
+            <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="8 0 4 0" VerticalAlignment="Center" IsVisible="{Binding FileIsMissing, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip.Tip="File is missing! Select “Repack” from the menu on the right or select an existing archive."/>
+            <TextBlock Text="{Binding Size, Converter={StaticResource FileSizeConverter}}" Margin="8 0 0 0" DockPanel.Dock="Right" VerticalAlignment="Center" IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Directly}}" Classes="Small"/>
+            <mui:PathTrimmingTextBlock Text="{Binding DisplayFilename}" Placeholder="Missing" VerticalAlignment="Center" Margin="-4 0 0 0" IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Directly}}" Theme="{StaticResource RichTextBox.Small.ReadOnly}"/>
+          </DockPanel>
+
+          <DockPanel IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static local:ShareMode.Url}}">
+            <mui:ContextMenuButton Padding="4 0" DockPanel.Dock="Right">
+              <ContextMenu>
+                <MenuItem Header="Repack &amp; upload" Command="{Binding RepackAndUploadCommand}"/>
+                <MenuItem Header="Pack car data" IsChecked="{Binding Value, Source={x:Static local:WrapperContentObject.PackCarData}}" StaysOpenOnClick="True" IsVisible="{Binding IsCarObject, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+              </ContextMenu>
+            </mui:ContextMenuButton>
+            <Label Content="Download from:"/>
+            <mui:BetterTextBox Text="{Binding DownloadUrl}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Theme="{StaticResource Borderless.Small}"/>
+          </DockPanel>
+
+          <DockPanel Background="Transparent" IsVisible="{Binding ShareMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='≠None'}">
+            <mui:ContextMenuButton DockPanel.Dock="Right" Padding="4 0">
+              <ContextMenu>
+                <MenuItem Header="Reset to content version" Command="{Binding ResetToContentVersionCommand}"/>
+              </ContextMenu>
+            </mui:ContextMenuButton>
+            <Label Content="Version required:"/>
+            <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="8 0 4 0" VerticalAlignment="Center" ToolTip.Tip="Version is different to installed content" IsVisible="{Binding VersionsDiffer, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <mui:BetterTextBox Text="{Binding Version}" Placeholder="Any" Theme="{StaticResource Borderless.Small}"/>
+          </DockPanel>
+
+          <mui:RememberingExpander DefaultValue="False" Key="{Binding AcObject.Id, StringFormat='{}.serverwrapper_{0}', Mode=OneTime}" Margin="-16 0 0 0" IsVisible="{Binding Children, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Expander.Animated}">
+            <Expander.Header>
+              <Label Content="{Binding ChildrenName}" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
+            </Expander.Header>
+            <ItemsControl ItemsSource="{Binding Children}" ItemTemplate="{StaticResource SharedItemChildTemplate}" ItemsPanel="{StaticResource ChildSharedItemsPanel}" Margin="24 4 0 0"/>
+          </mui:RememberingExpander>
+
+          <!--<DockPanel Visibility="{Binding Children, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+            <Label Content="{Binding ChildrenName}" ContentStringFormat="{x:Static mui:ColonConverter.FormatNoSpaceAfterwards}" DockPanel.Dock="Top" HorizontalAlignment="Left" />
+            <ItemsControl ItemsSource="{Binding Children}" ItemTemplate="{StaticResource SharedItemChildTemplate}"
+                ItemsPanel="{StaticResource ChildSharedItemsPanel}" Margin="20 8 0 0" />
+          </DockPanel>-->
+        </StackPanel>
+      </DataTemplate>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer x:Name="ScrollViewer">
+    <mui:SpacingUniformGrid x:Name="Grid" VerticalSpacing="20" HorizontalSpacing="20" Columns="1" VerticalStackMode="True">
+      <ScrollViewer Padding="0 0 0 20" x:Name="ScrollViewerLeft">
+        <StackPanel Classes="SettingsPanel">
+
+          <CheckBox IsChecked="{Binding SelectedObject.ProvideDetails}">
+            <Label>
+              <TextBlock Text="Provide extra details about the server, such as links to extra content, assists or description" TextWrapping="Wrap"/>
+            </Label>
+          </CheckBox>
+
+          <DockPanel IsEnabled="{Binding SelectedObject.ProvideDetails}">
+            <Label Content="Mode to provide extra details:"/>
+            <ListBox ItemsSource="{Binding DetailsModes}" SelectedItem="{Binding SelectedObject.DetailsMode}" ItemContainerTheme="{StaticResource RadioBoxListItem}">
+              <ListBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </DataTemplate>
+              </ListBox.ItemTemplate>
+            </ListBox>
+          </DockPanel>
+
+          <mui:Switch Value="{Binding SelectedObject.DetailsMode}">
+            <StackPanel mui:Switch.When="{x:Static t:ServerPresetDetailsMode.ViaNameIdentifier}" Margin="0" Classes="SettingsPanel">
+              <c:MessageBlock Margin="0 0 0 28">
+                <mui:BbCodeBlock Text="Content Manager will add a few extra symbols to server name, and then apps on client machines will use them to get a full description. Doesn’t require any scripts to run, works everywhere. A bit less functional, but provides all the important details.[br][br]To share extra cars and track, you can provide links to download them."/>
+              </c:MessageBlock>
+
+              <DockPanel ToolTip.Tip="Will be updated automatically on saving if needed">
+                <Label Content="Details ID:"/>
+                <mui:BetterTextBox Text="{Binding SelectedObject.DetailsNamePiece, Mode=OneWay}" Placeholder="{x:Static t:ToolsStrings.Common_None}" IsReadOnly="True"/>
+              </DockPanel>
+            </StackPanel>
+
+            <StackPanel mui:Switch.When="{x:Static t:ServerPresetDetailsMode.ViaWrapper}" Margin="0" Classes="SettingsPanel">
+              <c:MessageBlock Margin="0 0 0 28">
+                <mui:BbCodeBlock Text="AC Server Wrapper is a small script which wraps around acServer, starts another HTTP-server next to it and provides more detailed responses. It allows clients to download missing content and control server remotely. It’s a fully open-source side-project and still heavily WIP, more information might be found [url=&quot;https://github.com/gro-ove/ac-server-wrapper&quot;]here[/url].[br][br]To share extra cars and track, you can either provide links to download or share them from the server."/>
+              </c:MessageBlock>
+
+              <DockPanel>
+                <Label Content="Wrapper port:"/>
+                <mui:BetterTextBox Text="{Binding SelectedObject.WrapperPort}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Mode="Integer" Minimum="1" Maximum="65535"/>
+              </DockPanel>
+            </StackPanel>
+          </mui:Switch>
+
+          <DockPanel>
+            <mui:BetterTextBox Text="{Binding SelectedObject.DetailsDescription}" AcceptsReturn="True" TextWrapping="Wrap" Placeholder="{x:Static t:ToolsStrings.Common_None}" Height="120" DockPanel.Dock="Bottom" Margin="20 8 0 0" Theme="{StaticResource Borderless}"/>
+            <Label Content="Server description (both BB-codes and emojis are allowed):" HorizontalAlignment="Left" Width="300"/>
+          </DockPanel>
+
+          <TextBlock Text="Downloading missing content" Classes="Heading2 SettingsPanel.Heading2"/>
+
+          <CheckBox IsChecked="{Binding SelectedObject.DetailsDownloadPasswordOnly}" Background="Transparent" ToolTip.Tip="Do not allow to download missing content if password is invalid">
+            <Label Content="Allow downloading only with correct password"/>
+          </CheckBox>
+
+          <DockPanel Background="Transparent" ToolTip.Tip="Set some limit if you want for clients downloading content from the server to not take all bandwidth" IsVisible="{Binding SelectedObject.DetailsMode, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static t:ServerPresetDetailsMode.ViaWrapper}}">
+            <mui:ValueLabel Padding="8 0 0 0" Value="{Binding SelectedObject.DisplayWrapperDownloadSpeedLimit}" Background="Transparent" Content="Speed limit"/>
+            <Slider Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.1">
+              <Slider.Value>
+                <Binding Path="SelectedObject.WrapperDownloadSpeedLimit">
+                  <Binding.Converter>
+                    <mui:LogarithmicScale Minimum="0" Middle="2097152" Maximum="10485760"/>
+                  </Binding.Converter>
+                </Binding>
+              </Slider.Value>
+            </Slider>
+          </DockPanel>
+        </StackPanel>
+      </ScrollViewer>
+
+      <ScrollViewer Padding="0 0 0 20" x:Name="ScrollViewerRight">
+        <mui:SpacingStackPanel Spacing="20" Margin="0 0 20 200">
+          <ItemsControl ItemsSource="{Binding WrapperContentCars}" ItemTemplate="{StaticResource SharedItemTemplate}" ItemsPanel="{StaticResource SharedItemsPanel}"/>
+          <ItemsControl ItemsSource="{Binding WrapperContentTracks}" ItemTemplate="{StaticResource SharedItemTemplate}" ItemsPanel="{StaticResource SharedItemsPanel}"/>
+          <ItemsControl ItemsSource="{Binding WrapperContentWeather}" ItemTemplate="{StaticResource SharedItemTemplate}" ItemsPanel="{StaticResource SharedItemsPanel}"/>
+        </mui:SpacingStackPanel>
+      </ScrollViewer>
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+</UserControl>

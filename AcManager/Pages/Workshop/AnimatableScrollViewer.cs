@@ -16,7 +16,7 @@ namespace AcManager.Pages.Workshop {
             var width = 0d;
             var height = 0d;
 
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, count = children.Count; i < count; ++i) {
                 var child = children[i];
                 child.Measure(constraint);
@@ -33,7 +33,7 @@ namespace AcManager.Pages.Workshop {
             var cachedRun = _arrangedActualSize == _measuredActualSize;
             _arrangedActualSize = _measuredActualSize;
             var rect = new Rect(arrangeBounds);
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, count = children.Count; i < count; ++i) {
                 if (cachedRun && GetFixedSize(children[i])) continue;
                 children[i].Arrange(rect);
@@ -49,18 +49,16 @@ namespace AcManager.Pages.Workshop {
             obj.SetValue(FixedSizeProperty, value);
         }
 
-        public static readonly DependencyProperty FixedSizeProperty = DependencyProperty.RegisterAttached("FixedSize", typeof(bool),
+        public static readonly AttachedProperty<bool> FixedSizeProperty = DP.RegisterAttached<bool>("FixedSize",
                 typeof(FixedCell), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
     }
 
     public class AnimatableScrollViewer : ScrollViewer {
         public AnimatableScrollViewer() {
-            DefaultStyleKey = typeof(ScrollViewer);
         }
 
-        public static readonly DependencyProperty CustomHorizontalOffsetProperty = DependencyProperty.Register(
-                "CustomHorizontalOffset", typeof(double), typeof(AnimatableScrollViewer),
+        public static readonly StyledProperty<double> CustomHorizontalOffsetProperty = DP.Register<double>("CustomHorizontalOffset", typeof(AnimatableScrollViewer),
                 new PropertyMetadata(OnChanged));
 
         public double CustomHorizontalOffset

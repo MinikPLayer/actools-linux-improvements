@@ -1,0 +1,84 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:cs="clr-namespace:AcManager.CustomShowroom" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.CustomShowroom.CmPreviewsTools" ShowTitle="False" ShowInTaskbar="False" LocationAndSizeKey="CmPreviewsTools.LS" Topmost="True" Loaded="OnLoaded" Unloaded="OnUnloaded" Width="280" SizeToContent="Manual" MaxHeight="800" Height="{x:Static mui:DpiAwareWindow.UnlimitedSize}" ShowTopBlob="False">
+  <mui:ModernDialog.Styles><Style Selector="DockPanel.DockPanel">
+        <Setter Property="Margin" Value="0 4 0 0"/>
+
+        <Style Selector="^ Label">
+              <Setter Property="Width" Value="80"/>
+              <Setter Property="VerticalAlignment" Value="Center"/>
+              <Setter Property="DockPanel.Dock" Value="Left"/>
+            </Style>
+            <Style Selector="^ StackPanel">
+              <Setter Property="Margin" Value="0 0 0 4"/>
+              <Setter Property="DockPanel.Dock" Value="Top"/>
+            </Style>
+          </Style>
+
+      <Style Selector="DockPanel"/>
+    </mui:ModernDialog.Styles><mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="/CustomShowroom/LiteShowroomSettings.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/UserPresets.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <mui:BindingProxy x:Key="DataContextProxy" Data="{Binding}"/>
+
+      </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <Grid Margin="-4 -12 -4 -20">
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <mui:ModernTab mui:ModernFrame.KeepContentAlive="True" SaveKey=".lss:cmPreviewsSettings" LinksMargin="0 0 0 8" LinksHorizontalAlignment="Stretch" DataContext="{Binding Settings}" Margin="0 0 0 0">
+      <mui:ModernTab.LinksListBoxTemplate>
+        <ControlTemplate>
+          <ItemsPresenter HorizontalAlignment="Left"/>
+        </ControlTemplate>
+      </mui:ModernTab.LinksListBoxTemplate>
+      <mui:ModernTab.Links>
+        <mui:Link DisplayName="Size" Key="Size"/>
+        <mui:Link DisplayName="Camera" Key="Camera"/>
+        <mui:Link DisplayName="Car" Key="Car"/>
+        <mui:Link DisplayName="Quality" Key="Quality"/>
+        <mui:Link DisplayName="Scene" Key="Scene"/>
+        <mui:Link DisplayName="Lights" Key="Lights"/>
+        <mui:Link DisplayName="HDR" Key="Hdr"/>
+        <mui:Link DisplayName="…" Key="Extra"/>
+      </mui:ModernTab.Links>
+      <mui:ModernTab.ContentLoader>
+        <mui:DirectContentLoader>
+          <mui:DirectContentLoaderEntry Key="Size" Content="{StaticResource VisualSettings.Previews.Size}"/>
+          <mui:DirectContentLoaderEntry Key="Camera" Content="{StaticResource VisualSettings.Previews.Camera}"/>
+          <mui:DirectContentLoaderEntry Key="Car" Content="{StaticResource VisualSettings.Previews.Car}"/>
+          <mui:DirectContentLoaderEntry Key="Quality" Content="{StaticResource VisualSettings.Previews.Quality}"/>
+          <mui:DirectContentLoaderEntry Key="Scene" Content="{StaticResource VisualSettings.Scene}"/>
+          <mui:DirectContentLoaderEntry Key="Lights" Content="{StaticResource VisualSettings.Previews.Lights}"/>
+          <mui:DirectContentLoaderEntry Key="Hdr" Content="{StaticResource VisualSettings.Hdr}"/>
+          <mui:DirectContentLoaderEntry Key="Extra" Content="{StaticResource VisualSettings.Extra}"/>
+        </mui:DirectContentLoader>
+      </mui:ModernTab.ContentLoader>
+    </mui:ModernTab>
+
+    <StackPanel Grid.Row="1">
+      <c:UserPresetsControl x:Name="UserPresetsControl" UserPresetable="{Binding Settings}" Margin="0 4" Width="238" Tag="{Binding Settings.ShareCommand}" Theme="{StaticResource UserPresetsControl.Compact.Share}"/>
+      <mui:SpacingUniformGrid HorizontalSpacing="4" Rows="1" Height="24">
+        <Button Padding="4 2 4 3" Command="{Binding TestCommand}" ToolTip.Tip="Update selected skin (with confirmation)">
+          <Path Width="16" Height="16" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 38,33.15C 40.68,33.15 42.85,35.32 42.85,38C 42.85,40.68 40.68,42.85 38,42.85C 35.32,42.85 33.15,40.68 33.15,38C 33.15,35.32 35.32,33.15 38,33.15 Z M 38,25.08C 49.31,25.08 59,33.15 59,38C 59,42.85 49.31,50.92 38,50.92C 26.69,50.92 17,42.85 17,38C 17,33.15 26.69,25.08 38,25.08 Z M 38,29.12C 33.09,29.12 29.12,33.09 29.12,38C 29.12,42.91 33.09,46.88 38,46.88C 42.91,46.88 46.88,42.91 46.88,38C 46.88,33.09 42.91,29.12 38,29.12 Z"/>
+        </Button>
+        <Button Padding="4 2 4 3" Command="{Binding ApplyCommand}" ToolTip.Tip="Update selected skin (without confirmation)">
+          <Path Width="16" Height="16" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 20,20L 56,20L 56,56L 20,56L 20,20 Z M 24,24L 24,52L 52,52L 52,24L 24,24 Z M 31,36L 36,36L 36,31L 40,31L 40,36L 45,36L 45,40L 40,40L 40,45L 36,45L 36,40L 31,40L 31,36 Z"/>
+        </Button>
+        <Button Padding="4 2 4 3" Command="{Binding ApplyAllCommand}" ToolTip.Tip="Update all skins (without confirmation)" IsVisible="{Binding SingleSkin, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <Path Width="16" Height="16" Stretch="Uniform" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" Data="F1 M 19,29L 47,29L 47,57L 19,57L 19,29 Z M 43,33L 23,33L 23,53L 43,53L 43,33 Z M 39,41L 39,45L 35,45L 35,49L 31,49L 31,45L 27,45L 27,41L 31,41L 31,37L 35,37L 35,41L 39,41 Z M 24,24L 52,24L 52,52L 49,52L 49,27L 24,27L 24,24 Z M 54,47L 54,22L 29,22L 29,19L 57,19L 57,47L 54,47 Z"/>
+        </Button>
+      </mui:SpacingUniformGrid>
+    </StackPanel>
+  </Grid>
+</mui:ModernDialog>

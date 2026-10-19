@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -29,7 +29,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls : IAcControlsConflictResolver {
+    public partial class AcSettingsControls : global::Avalonia.Controls.UserControl, IAcControlsConflictResolver {
         private ViewModel Model => (ViewModel)DataContext;
 
         public AcSettingsControls() {
@@ -243,7 +243,7 @@ namespace AcManager.Pages.AcSettings {
             }
         }
 
-        private void OnShareButtonClick(object sender, MouseButtonEventArgs e) {
+        private void OnShareButtonClick(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
             ShareContextMenu.DataContext = DataContext;
             ShareContextMenu.IsOpen = true;

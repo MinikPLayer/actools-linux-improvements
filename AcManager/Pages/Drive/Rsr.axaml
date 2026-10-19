@@ -1,0 +1,73 @@
+﻿<mui:ReferenceSwitch xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:drive="clr-namespace:AcManager.Pages.Drive" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Drive.Rsr" Value="{Binding Value, Source={x:Static t:SteamIdHelper.Instance}}">
+  <mui:ReferenceSwitch.Null>
+    <StackPanel Margin="40 0 40 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock Text="{x:Static c:ControlsStrings.Common_Error}" Classes="Heading1"/>
+      <mui:BbCodeBlock Text="{Binding Source={x:Static t:ToolsStrings.Common_SteamIdIsMissing}, StringFormat='{}{0}.'}" Margin="20"/>
+    </StackPanel>
+  </mui:ReferenceSwitch.Null>
+  <mui:ReferenceSwitch.NonNull>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <!--<DockPanel Margin="0 0 0 20" Visibility="{Binding ShowExtensionMessage, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Button DockPanel.Dock="Right" VerticalAlignment="Top" Command="{Binding GotItCommand}" Content="{x:Static g:AppStrings.Common_GotId}" />
+        <mui:BbCodeBlock Text="{x:Static g:AppStrings.Rsr_Commentary}" />
+      </DockPanel>-->
+
+      <c:WebBlock Grid.Row="1" x:Name="WebBrowser" StartPage="{Binding StartPage}" SaveKey="Rsr:Address" PageLoaded="OnPageLoaded" KeepAliveKey="Rsr" Margin="0 4 0 0"/>
+      <Grid Grid.Row="2" Classes="ContentRootWithPadding">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <ToggleButton Grid.Column="0" x:Name="Button" Content="{x:Static c:ControlsStrings.Common_Options}" IsHitTestVisible="{Binding ElementName=Popup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}"/>
+        <c:ModernPopup Grid.Column="0" x:Name="Popup" PlacementTarget="{Binding ElementName=Button}" IsOpen="{Binding IsChecked, ElementName=Button, Mode=TwoWay}" Padding="8">
+          <StackPanel Width="200">
+            <CheckBox IsChecked="{Binding GhostCar}">
+              <Label Content="{x:Static g:AppStrings.Drive_GhostCar}"/>
+            </CheckBox>
+
+            <Grid Margin="0 8 0 0" DataContext="{x:Static drive:Rsr.Assists}">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+              </Grid.RowDefinitions>
+
+              <c:UserPresetsControl UserPresetable="{Binding}" ShowSaveButton="False" Margin="0 0 0 10"/>
+              <DockPanel Grid.Row="1">
+                <Button DockPanel.Dock="Right" Content="…" PointerReleased="OnAssistsClick">
+                  <ToolTip.Tip>
+                    <c:AssistsDescription/>
+                  </ToolTip.Tip>
+                </Button>
+                <CheckBox IsChecked="{Binding TyreBlankets}">
+                  <Label Content="{x:Static g:AppStrings.Drive_TyreBlankets}"/>
+                </CheckBox>
+              </DockPanel>
+            </Grid>
+          </StackPanel>
+        </c:ModernPopup>
+
+        <StackPanel Grid.Column="1" Margin="20 0" Orientation="Horizontal" VerticalAlignment="Center">
+          <DockPanel Background="Transparent" c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}" IsVisible="{Binding Car, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+            <mui:BetterImage Filename="{Binding CarSkin.LiveryImage}" Width="16" Height="16" Margin="0 0 4 0" DockPanel.Dock="Left" PointerReleased="OnSkinLiveryClick"/>
+            <TextBlock Text="{Binding Car.DisplayName}" VerticalAlignment="Center" Margin="0 -2 0 0" Classes="Heading2"/>
+          </DockPanel>
+
+          <DockPanel Margin="20 0 0 0" Background="Transparent" c:ToolTips.Track="{Binding Track}" c:ContextMenus.Track="{Binding Track}" mui:Draggable.Data="{Binding Track}" IsVisible="{Binding Track, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+            <mui:BetterImage Filename="{Binding Track.OutlineImage}" Height="16" Margin="0 0 4 0" c:ImageViewerService.Image="{Binding Track.PreviewImage}" DockPanel.Dock="Left" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+            <TextBlock Text="{Binding Track.Name}" VerticalAlignment="Center" Margin="0 -2 0 0" Classes="Heading2"/>
+          </DockPanel>
+        </StackPanel>
+
+        <Button Grid.Column="2" Command="{Binding GoCommand}" VerticalAlignment="Bottom" Content="{x:Static g:AppStrings.Common_Go}" ToolTip.Tip="{x:Static g:AppStrings.Common_Go_RaceTooltip}" Theme="{StaticResource Go.Button}"/>
+      </Grid>
+    </Grid>
+  </mui:ReferenceSwitch.NonNull>
+</mui:ReferenceSwitch>

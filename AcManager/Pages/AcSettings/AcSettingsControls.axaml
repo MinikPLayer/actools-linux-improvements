@@ -1,0 +1,198 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:acset="clr-namespace:AcManager.Pages.AcSettings" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Name="This" x:Class="AcManager.Pages.AcSettings.AcSettingsControls" SizeChanged="OnSizeChanged" Loaded="OnLoaded" Unloaded="OnUnloaded" mui:InputBindingBehavior.PropagateToWindow="True" KeyDown="OnPreviewKeyDown">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition Width="Auto"/>
+    </Grid.ColumnDefinitions>
+
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Margin="0 0 0 0" Classes="SettingsPanel">
+        <DockPanel>
+          <Label Content="{x:Static g:AppStrings.Controls_InputMethodLabel}"/>
+          <ComboBox ItemsSource="{Binding Controls.InputMethods}" SelectedItem="{Binding Controls.InputMethod}" DisplayMemberBinding="{Binding DisplayName}"/>
+        </DockPanel>
+      </StackPanel>
+      <mui:ModernFrame Margin="0 4 1 0" Source="{Binding Controls.InputMethod.Id, Converter={x:Static acset:AcSettingsControls.ModeToUriConverter}}"/>
+    </DockPanel>
+
+    <DockPanel Grid.Row="0" Grid.Column="1" Width="164" Margin="20 0 20 0" x:Name="DetectedControllers">
+      <DockPanel Margin="0 0 0 8" DockPanel.Dock="Top">
+        <mui:ModernButton EllipseDiameter="20" IconWidth="10" IconHeight="10" IconData="{StaticResource GearIconData}" VerticalAlignment="Center" Command="{Binding Controls.RunControlPanelCommand}" DockPanel.Dock="Right" Margin="8 0 0 0" ToolTip.Tip="{x:Static g:AppStrings.AcSettings_Controls_DeviceSettings_Tooltip}"/>
+        <TextBlock Text="{x:Static g:AppStrings.Controls_DetectedControllersHeader}" Classes="Heading2"/>
+      </DockPanel>
+      <mui:BooleanSwitch Value="{Binding Controls.IsScanningInProgress}">
+        <mui:BooleanSwitch.True>
+          <DockPanel Margin="8 20 8 60" VerticalAlignment="Center">
+            <mui:ModernProgressRing IsActive="True" Width="80" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Top"/>
+            <TextBlock TextWrapping="Wrap" Text="{x:Static t:ToolsStrings.Common_Scanning}" DockPanel.Dock="Top" Margin="0 8 0 0"/>
+            <mui:BbCodeBlock TextWrapping="Wrap" DockPanel.Dock="Top" Margin="0 8 0 0" Text="{x:Static g:AppStrings.AcSettings_Controls_Scanning_Hint}" Classes="Small"/>
+          </DockPanel>
+        </mui:BooleanSwitch.True>
+        <mui:BooleanSwitch.False>
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <ItemsControl ItemsSource="{Binding Controls.Devices}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <StackPanel/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type t:DirectInputDevice}">
+                    <StackPanel Width="164" Margin="0 0 0 8" Background="Transparent">
+                      <StackPanel.ContextMenu>
+                        <ContextMenu>
+                          <MenuItem Header="{x:Static g:AppStrings.AcSettings_Controls_EditNames}" Click="OnDeviceEditNamesClick"/>
+                        </ContextMenu>
+                      </StackPanel.ContextMenu>
+                      <ToolTip.Tip>
+                        <ToolTip IsVisible="{Binding DeveloperMode, Source={x:Static t:SettingsHolder.Common}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                          <StackPanel Margin="4">
+                            <TextBlock Text="{Binding DisplayName}" Classes="Heading2"/>
+                            <TextBlock Text="{Binding ProductId, StringFormat='{}AC ID: {0}'}" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Device.ProductName, StringFormat='{}Product name: {0}'}"/>
+                            <TextBlock Text="{Binding Device.ProductGuid, StringFormat='{}Product GUID: {0}'}"/>
+                            <TextBlock Text="{Binding Device.ForceFeedbackDriverGuid, StringFormat='{}FFB GUID: {0}'}"/>
+                            <TextBlock Text="{Binding Device.InstanceGuid, StringFormat='{}Instance GUID: {0}'}"/>
+                            <TextBlock Text="{Binding Device.HumanInterfaceDevice, StringFormat='{}HID: {0}'}"/>
+                            <TextBlock Text="{Binding Device.UsageId, StringFormat='{}Usage ID: {0}'}"/>
+                            <TextBlock Text="{Binding Device.UsagePage, StringFormat='{}Usage page: {0}'}"/>
+                            <TextBlock Text="{Binding Device.Type, StringFormat='{}Type: {0}'}"/>
+                            <TextBlock Text="{Binding Device.Subtype, StringFormat='{}Subtype: {0}'}"/>
+                          </StackPanel>
+                        </ToolTip>
+                      </ToolTip.Tip>
+
+                      <DockPanel>
+                        <mui:ContextMenuButton DockPanel.Dock="Right" LookForParentMenu="True"/>
+                        <TextBlock Text="{Binding DisplayName}" Classes="Label"/>
+                      </DockPanel>
+
+                      <ItemsControl ItemsSource="{Binding VisibleAxis}" Margin="0 8 0 0" IsVisible="{Binding VisibleAxis.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate DataType="{x:Type t:DirectInputAxle}">
+                            <Grid Height="8" Margin="0 2 0 2" Background="Transparent" ToolTip.Tip="{Binding DisplayName}">
+                              <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="124"/>
+                              </Grid.ColumnDefinitions>
+
+                              <TextBlock Text="{Binding ShortName}" Grid.Column="0" Margin="0 -3 0 -2" Classes="Small"/>
+
+                              <Rectangle Grid.Column="1" Fill="{DynamicResource ButtonBackground}" Stroke="{DynamicResource ButtonBorder}" StrokeThickness="1"/>
+                              <Rectangle Grid.Column="1" Fill="{DynamicResource Accent}" Height="4" Width="8" Margin="2" HorizontalAlignment="Left">
+                                <Rectangle.RenderTransform>
+                                  <TranslateTransform X="{Binding Value, Converter={StaticResource MultiplyConverter}, ConverterParameter=112}" Y="0"/>
+                                </Rectangle.RenderTransform>
+                              </Rectangle>
+                            </Grid>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+
+                      <ItemsControl ItemsSource="{Binding VisibleButtons}" Margin="0 8 -4 0" IsVisible="{Binding VisibleButtons.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left"/>
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate DataType="{x:Type t:DirectInputButton}">
+                            <mui:Cell Height="24" Margin="0 0 4 4" Background="Transparent" ToolTip.Tip="{Binding DisplayName}" x:Name="__Dt0">
+                              <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackground}"/><Setter Property="Stroke" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^ TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Value, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#Bg"><Setter Property="Fill" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                                <Setter Property="Stroke" Value="{DynamicResource ButtonBorderPressed}"/>
+                                </Style><Style Selector="^[(pa|T.S1)=True] TextBlock#Fg"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                              </Style></Style></mui:Cell.Styles><Ellipse x:Name="Bg" Width="24" Height="24" StrokeThickness="1"/>
+                              <Viewbox Stretch="Uniform" StretchDirection="DownOnly" Width="17" Height="17" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2 1 2 3">
+                                <TextBlock x:Name="Fg" Text="{Binding ShortName}" FontWeight="Normal" Classes="Heading2"/>
+                              </Viewbox>
+                            </mui:Cell>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <DockPanel Margin="0 4 0 0">
+                <mui:ContextMenuButton DockPanel.Dock="Right" Margin="0 2 0 -2">
+                  <ContextMenu>
+                    <MenuItem Header="{x:Static g:AppStrings.AcSettings_Controls_ScanDevicesAtLaunch}" IsChecked="{Binding ScanControllersAutomatically, Source={x:Static t:SettingsHolder.Drive}}">
+                      <!-- PORT: removed IsCheckable (not in Avalonia) --><ToolTip.Tip>
+                        <ToolTip>
+                          <mui:BbCodeBlock TextWrapping="WrapWithOverflow" MaxWidth="400" Text="Content Manager will scan devices in advance to reduce waiting time when devices are needed. It shouldn’t negatively affect the performance."/>
+                        </ToolTip>
+                      </ToolTip.Tip>
+                    </MenuItem>
+                    <MenuItem Header="For several controllers of the same type, keep the first one" IsChecked="{Binding SameControllersKeepFirst, Source={x:Static t:SettingsHolder.Drive}}">
+                      <!-- PORT: removed IsCheckable (not in Avalonia) --><ToolTip.Tip>
+                        <ToolTip>
+                          <mui:BbCodeBlock TextWrapping="WrapWithOverflow" MaxWidth="400" Text="Some (rare) controllers might be listed twice in devices. Apparently, it’s better to keep the last one, but if AC doesn’t see them after being set in CM, change this option and reload CM."/>
+                        </ToolTip>
+                      </ToolTip.Tip>
+                    </MenuItem>
+                  </ContextMenu>
+                </mui:ContextMenuButton>
+                <TextBlock Text="{Binding Controls.DevicesScan.ScanTime, Converter={StaticResource ReadableTimeSpanConverter}, ConverterParameter=ms, StringFormat='{}Scan time: {0}'}"/>
+              </DockPanel>
+            </StackPanel>
+          </ScrollViewer>
+        </mui:BooleanSwitch.False>
+      </mui:BooleanSwitch>
+    </DockPanel>
+
+    <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0 20 20 20" Orientation="Horizontal">
+      <Button Command="{Binding ResetSystemBindinsCommand}" Content="{x:Static g:AppStrings.AcSettings_Controls_ResetSystemBindings}" Margin="0 0 4 0" IsVisible="{Binding ResetSystemBindinsCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      <Grid MinWidth="300">
+        <Grid.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.Controls_WarnAboutUnsaved}" IsChecked="{Binding WarnIfChanged, Source={x:Static c:ControlsPresets.Instance}}" ToolTip.Tip="{x:Static g:AppStrings.Controls_WarnAboutUnsaved_Tooltip}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+          </ContextMenu>
+        </Grid.ContextMenu>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <mui:HierarchicalComboBox ItemsSource="{Binding Presets, Source={x:Static c:ControlsPresets.Instance}}" SelectedItem="{Binding SelectedPreset, Source={x:Static c:ControlsPresets.Instance}}" IsEnabled="{Binding PresetsReady, Source={x:Static c:ControlsPresets.Instance}}" FixedMode="False" PreviewProvider="{Binding Source={x:Static c:ControlsPresets.Instance}}">
+          <mui:HierarchicalComboBox.SelectedContent>
+            <DataTemplate>
+              <TextBlock TextTrimming="CharacterEllipsis" DataContext="{x:Static t:AcSettingsHolder.Controls}" Text="{Binding CurrentPresetName, TargetNullValue={x:Static c:ControlsStrings.Common_Unsaved}}" Classes="inline1">
+                <TextBlock.Styles>
+                  <Style Selector="TextBlock.inline1">
+                    <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding CurrentPresetChanged, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S3" Value="{Binding CurrentPresetName, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="FontStyle" Value="Italic"/>
+                      </Style><Style Selector="^[(pa|T.S3)=True]"><Setter Property="FontStyle" Value="Italic"/>
+                        <Setter Property="Text" Value="{x:Static c:ControlsStrings.Presets_Unsaved}"/>
+                      </Style></Style>
+                </TextBlock.Styles>
+              </TextBlock>
+            </DataTemplate>
+          </mui:HierarchicalComboBox.SelectedContent>
+        </mui:HierarchicalComboBox>
+        <Button Command="{Binding SaveCommand, Mode=OneTime}" Grid.Column="1" Margin="4 0 0 0" Content="{x:Static c:ControlsStrings.Presets_Save}" ToolTip.Tip="{x:Static c:ControlsStrings.Presets_Save_Tooltip}"/>
+      </Grid>
+      <Button Margin="4 0 0 0" Content="{x:Static g:AppStrings.Common_Share}" PointerPressed="OnShareButtonClick" ToolTip.Tip="{x:Static g:AppStrings.Common_Share_SettingsTooltip}">
+        <Button.ContextMenu>
+          <ContextMenu x:Name="ShareContextMenu">
+            <MenuItem Header="{x:Static g:AppStrings.Controls_SharePreset}" Command="{Binding ShareCommand, Mode=OneTime}" CommandParameter="Basic" ToolTip.Tip="{x:Static g:AppStrings.Controls_SharePreset_Tooltip}"/>
+            <MenuItem Header="{x:Static g:AppStrings.Controls_ShareFfbOnly}" Command="{Binding ShareCommand, Mode=OneTime}" CommandParameter="FFBOnly" ToolTip.Tip="{x:Static g:AppStrings.Controls_ShareFfbOnly_Tooltip}"/>
+          </ContextMenu>
+        </Button.ContextMenu>
+      </Button>
+      <Button Command="{Binding TestCommand, Mode=OneTime}" Margin="4 0 0 0" Content="{x:Static g:AppStrings.Common_Test}" ToolTip.Tip="{x:Static g:AppStrings.Controls_Test_Tooltip}" Theme="{StaticResource Go.Button}"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

@@ -17,7 +17,7 @@ using FirstFloor.ModernUI.Helpers;
 using NotifyPropertyChanged = FirstFloor.ModernUI.Presentation.NotifyPropertyChanged;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class CspTrackPatchesOptimizer {
+    public partial class CspTrackPatchesOptimizer : global::AcManager.Pages.ContentTools.ContentTool {
         private class TextureNamesCollector : IKn5TextureLoader {
             private readonly HashSet<string> _textures = new HashSet<string>();
 

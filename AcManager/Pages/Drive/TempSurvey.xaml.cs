@@ -2,7 +2,7 @@ using System.Windows;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Drive {
-    public partial class TempSurvey {
+    public partial class TempSurvey : global::Avalonia.Controls.UserControl {
         public TempSurvey() {
             InitializeComponent();
         }

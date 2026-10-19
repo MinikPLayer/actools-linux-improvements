@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,7 +17,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedTrackSkinPage : ILoadableContent, IParametrizedUriContent {
+    public partial class SelectedTrackSkinPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent {
         public class ViewModel : SelectedAcObjectViewModel<TrackSkinObject> {
             public TrackObject Track { get; }
 
@@ -152,7 +152,7 @@ namespace AcManager.Pages.Selected {
         private ViewModel _model;
 
         #region Presets (Dynamic Loading)
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeQuickDrivePresets();
         }
         #endregion

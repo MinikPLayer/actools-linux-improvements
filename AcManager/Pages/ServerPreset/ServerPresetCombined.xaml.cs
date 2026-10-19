@@ -1,10 +1,10 @@
 ﻿using System.Windows.Input;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetCombined {
+    public partial class ServerPresetCombined : global::Avalonia.Controls.UserControl {
         public ServerPresetCombined() {
             InitializeComponent();
-            PreviewMouseWheel += OnMouseWheel;
+            this.AddPreviewMouseWheel(OnMouseWheel);
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) {

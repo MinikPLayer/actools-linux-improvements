@@ -28,7 +28,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.Drive {
-    public partial class CspNewModes {
+    public partial class CspNewModes : global::Avalonia.Controls.UserControl {
         public CspNewModes() {
             DataContext = new ViewModel();
             InitializeComponent();
@@ -44,12 +44,12 @@ namespace AcManager.Pages.Drive {
             Model.OnUnloaded();
         }
 
-        private void OnCarBlockClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             Model.ChangeCarCommand.Execute(null);
         }
 
-        private void OnTrackBlockClick(object sender, MouseButtonEventArgs e) {
+        private void OnTrackBlockClick(object sender, PointerReleasedEventArgs e) {
             if (e.Handled) return;
             Model.ChangeTrackCommand.Execute(null);
         }

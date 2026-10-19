@@ -710,7 +710,8 @@ class Converter:
             return
         reg = self.ctx.registry
         key = reg.key_of(st) if reg else None
-        if is_markup(st) and st.strip() == '{x:Null}':
+        if is_markup(st) and (st.strip() == '{x:Null}' or st.strip().startswith('{x:Type')):
+            # the default style of a type
             del el.attrib['Style']
             return
         if key and key in reg.styles:

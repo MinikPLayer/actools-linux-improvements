@@ -21,8 +21,7 @@ namespace AcManager.Pages.Dialogs {
     }
 
     public class TyresMachineGraphViewer : GraphDataViewerBase {
-        public static readonly DependencyProperty DataProperty = DependencyProperty.Register(nameof(Data),
-                typeof(TyresMachineGraphData), typeof(TyresMachineGraphViewer), new PropertyMetadata(null, (o, e) => {
+        public static readonly StyledProperty<TyresMachineGraphData> DataProperty = DP.Register<TyresMachineGraphData>(nameof(Data), typeof(TyresMachineGraphViewer), new PropertyMetadata(null, (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._data = (TyresMachineGraphData)e.NewValue;
                     v.UpdateData();
@@ -41,7 +40,7 @@ namespace AcManager.Pages.Dialogs {
             UpdateSeries();
         }
 
-        public static readonly DependencyProperty ValueTitleProperty = DependencyProperty.Register(nameof(ValueTitle), typeof(string),
+        public static readonly StyledProperty<string> ValueTitleProperty = DP.Register<string>(nameof(ValueTitle),
                 typeof(TyresMachineGraphViewer), new PropertyMetadata(@"", (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._valueTitle = (string)e.NewValue;
@@ -55,7 +54,7 @@ namespace AcManager.Pages.Dialogs {
             set => SetValue(ValueTitleProperty, value);
         }
 
-        public static readonly DependencyProperty ValueUnitsProperty = DependencyProperty.Register(nameof(ValueUnits), typeof(string),
+        public static readonly StyledProperty<string> ValueUnitsProperty = DP.Register<string>(nameof(ValueUnits),
                 typeof(TyresMachineGraphViewer), new PropertyMetadata(@"", (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._valueUnits = (string)e.NewValue;
@@ -69,7 +68,7 @@ namespace AcManager.Pages.Dialogs {
             set => SetValue(ValueUnitsProperty, value);
         }
 
-        public static readonly DependencyProperty ValueTitleDigitsProperty = DependencyProperty.Register(nameof(ValueTitleDigits), typeof(int),
+        public static readonly StyledProperty<int> ValueTitleDigitsProperty = DP.Register<int>(nameof(ValueTitleDigits),
                 typeof(TyresMachineGraphViewer), new PropertyMetadata(2, (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._valueTitleDigits = (int)e.NewValue;
@@ -83,7 +82,7 @@ namespace AcManager.Pages.Dialogs {
             set => SetValue(ValueTitleDigitsProperty, value);
         }
 
-        public static readonly DependencyProperty ValueTrackerDigitsProperty = DependencyProperty.Register(nameof(ValueTrackerDigits), typeof(int),
+        public static readonly StyledProperty<int> ValueTrackerDigitsProperty = DP.Register<int>(nameof(ValueTrackerDigits),
                 typeof(TyresMachineGraphViewer), new PropertyMetadata(2, (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._valueTrackerDigits = (int)e.NewValue;
@@ -97,7 +96,7 @@ namespace AcManager.Pages.Dialogs {
             set => SetValue(ValueTrackerDigitsProperty, value);
         }
 
-        public static readonly DependencyProperty GraphWidthProperty = DependencyProperty.Register(nameof(GraphWidth), typeof(bool),
+        public static readonly StyledProperty<bool> GraphWidthProperty = DP.Register<bool>(nameof(GraphWidth),
                 typeof(TyresMachineGraphViewer), new PropertyMetadata(false, (o, e) => {
                     var v = (TyresMachineGraphViewer)o;
                     v._graphWidth = (bool)e.NewValue;

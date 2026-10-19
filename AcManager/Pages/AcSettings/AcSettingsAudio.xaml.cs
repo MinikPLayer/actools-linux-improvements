@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 using NAudio.CoreAudioApi;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsAudio : ILoadableContent {
+    public partial class AcSettingsAudio : global::Avalonia.Controls.UserControl, ILoadableContent {
         private readonly AudioDevices _audioDevices = new AudioDevices();
         private IReadOnlyList<AudioDevice> _audioDevicesList;
 

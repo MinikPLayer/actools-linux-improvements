@@ -1,0 +1,146 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:dialogs="clr-namespace:AcManager.Pages.Dialogs" xmlns:com="clr-namespace:System.ComponentModel;assembly=WindowsBase" xmlns:c="http://acstuff.club/app/controls" xmlns:acTools="clr-namespace:AcTools;assembly=AcTools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.AppIconEditor" Title="App icons" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Width="760" Height="800" SizeToContent="Height" ButtonsRowContentAlignment="Left" Padding="0 20" Loaded="OnLoaded">
+  <mui:ModernDialog.Resources>
+    <!-- PORT: removed CollectionViewSource -->
+  </mui:ModernDialog.Resources>
+  <mui:ModernDialog.ButtonsRowContent>
+    <mui:SpacingStackPanel Orientation="Horizontal" Spacing="8">
+      <CheckBox IsChecked="{Binding MovementMode.Value}">
+        <Label Content="Movement mode"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding ShowEnabled.Value}">
+        <Label Content="Show as enabled"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding InverseBackground.Value}">
+        <Label Content="Highlight background"/>
+      </CheckBox>
+    </mui:SpacingStackPanel>
+  </mui:ModernDialog.ButtonsRowContent>
+
+  <DockPanel>
+
+    <c:MessageBlock CloseKey="AppIconEditor.Hint" Margin="20 0 20 8" DockPanel.Dock="Top">
+      <!--<mui:BbCodeBlock
+          BbCode="To move image and text, hold [b]Ctrl[/b]. To adjust their size, use mouse wheel or [b]Ctrl++[/b] and [b]Ctrl+−[/b] buttons while keeping mouse above them." />-->
+      <mui:BbCodeBlock Text="To adjust image scale or text size, use mouse wheel or [b]+[/b] and [b]−[/b] in movement mode."/>
+    </c:MessageBlock>
+
+    <ItemsControl x:Name="IconsList" ItemsSource="{Binding Windows}" MaxHeight="800" Theme="{StaticResource ScrollingItemsControl}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <DockPanel Tag="Item" Background="Transparent" DragDrop.AllowDrop="True" x:Name="__Dt0">
+            <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^ Border#PART_Bg"><Setter Property="Background" Value="{DynamicResource WindowBackground}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding MovementMode, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding LabelText, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S3" Value="{Binding DataContext.InverseBackground.Value, RelativeSource={RelativeSource AncestorType={x:Type dialogs:AppIconEditor}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding IconShadow, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S5" Value="{Binding TextShadow, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Style Selector="^[(pa|T.S2)=True] Thumb#PART_LabelThumb"><Setter Property="IsVisible" Value="False"/>
+            </Style></Style><Style Selector="^[(pa|T.S3)=True] Border#PART_Bg"><Setter Property="Background" Value="{DynamicResource WindowTextReadOnly}"/>
+            </Style><Style Selector="^[(pa|T.S4)=True] Thumb#PART_IconThumb"><Setter Property="Effect">
+                <Setter.Value>
+                  <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="15" OffsetX="0" OffsetY="2"/>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^[(pa|T.S5)=True] Thumb#PART_LabelThumb"><Setter Property="Effect">
+                <Setter.Value>
+                  <DropShadowEffect Color="Black" Opacity="0.75" BlurRadius="15" OffsetX="0" OffsetY="2"/>
+                </Setter.Value>
+              </Setter>
+            </Style></Style></DockPanel.Styles><mui:UniformGridWithOrientation Rows="5" Columns="3" HorizontalSpacing="8" VerticalSpacing="4" Margin="12 20 20 20" DockPanel.Dock="Right" Width="538" Orientation="Vertical" IsEnabled="{Binding IsInEditMode}">
+              <Label Content="Icon image:"/>
+              <Button Content="Select" Command="{Binding SelectIconCommand}"/>
+              <Button Content="Reset transform" Command="{Binding ResetIconTransformCommand}"/>
+              <Button Content="Remove" Command="{Binding RemoveIconCommand}"/>
+              <CheckBox IsChecked="{Binding IconShadow}">
+                <Label Content="Shadow"/>
+              </CheckBox>
+
+              <Label Content="Text:"/>
+              <DockPanel>
+                <TextBlock Text="Font:" Margin="0 2 4 0" Width="52" Classes="Label"/>
+                <mui:BetterComboBox ItemsSource="{Binding Source={StaticResource AllFonts}}" SelectedItem="{Binding FontFamily}" IsEditable="False"/>
+              </DockPanel>
+              <DockPanel>
+                <TextBlock Text="Weight:" Margin="0 2 4 0" Width="52" Classes="Label"/>
+                <mui:BetterComboBox ItemsSource="{Binding AvailableFontWeights}" SelectedItem="{Binding FontWeight}" IsEditable="False" IsEnabled="{Binding AvailableFontWeights.Count, Converter={StaticResource MoreConverter}, ConverterParameter=1}"/>
+              </DockPanel>
+              <DockPanel>
+                <TextBlock Text="Style:" Margin="0 2 4 0" Width="52" Classes="Label"/>
+                <mui:BetterComboBox ItemsSource="{Binding AvailableFontStyles}" SelectedItem="{Binding FontStyle}" IsEditable="False" IsEnabled="{Binding AvailableFontStyles.Count, Converter={StaticResource MoreConverter}, ConverterParameter=1}"/>
+              </DockPanel>
+              <DockPanel>
+                <TextBlock Text="Stretch:" Margin="0 2 4 0" Width="52" Classes="Label"/>
+                <mui:BetterComboBox ItemsSource="{Binding AvailableFontStretchs}" SelectedItem="{Binding FontStretch}" IsEditable="False" IsEnabled="{Binding AvailableFontStretchs.Count, Converter={StaticResource MoreConverter}, ConverterParameter=1}"/>
+              </DockPanel>
+
+              <Label Content="Text look:"/>
+              <Button Content="Reset transform"/>
+              <DockPanel>
+                <TextBlock Text="Color:" Margin="0 2 4 0" Width="52" Classes="Label"/>
+                <mui:ColorPicker Color="{Binding TextColor}"/>
+              </DockPanel>
+              <CheckBox IsChecked="{Binding TextShadow}">
+                <Label Content="Shadow"/>
+              </CheckBox>
+              <Button Content="Copy to other icons" Click="OnCopyStylesButtonClick"/>
+
+            </mui:UniformGridWithOrientation>
+            <DockPanel Dock="Top" Margin="20 20 0 0">
+              <CheckBox IsChecked="{Binding IsInEditMode}" Margin="0">
+                <TextBlock x:Name="PART_Name" Text="{Binding Window.DisplayName}" TextTrimming="CharacterEllipsis" Classes="Heading2"/>
+              </CheckBox>
+            </DockPanel>
+            <mui:Cell Margin="0 0 0 12" Width="88" Height="88">
+              <Border x:Name="PART_Bg"/>
+              <mui:BooleanSwitch Value="{Binding IsInEditMode}" Margin="12" Width="{Binding Source={x:Static acTools:CommonAcConsts.AppIconWidth}}" Height="{Binding Source={x:Static acTools:CommonAcConsts.AppIconHeight}}">
+                <mui:BooleanSwitch.True>
+                  <Grid x:Name="NewIcon">
+                    <mui:BooleanSwitch Value="{Binding ShowEnabled}">
+                      <mui:BooleanSwitch.True>
+                        <Image Source="/Assets/Img/AppOn.png" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+                      </mui:BooleanSwitch.True>
+                      <mui:BooleanSwitch.False>
+                        <Image Source="/Assets/Img/AppOff.png" RenderOptions.BitmapInterpolationMode="LowQuality"/>
+                      </mui:BooleanSwitch.False>
+                    </mui:BooleanSwitch>
+                    <Canvas>
+                      <Thumb Canvas.Left="{Binding IconPosition.X}" Canvas.Top="{Binding IconPosition.Y}" x:Name="PART_IconThumb" Tag="IconThumb" IsVisible="{Binding IconFilename, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+                        <Thumb.Template>
+                          <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="Thumb">
+                            <Border x:Name="PART_IconBorder" BorderThickness="1" BorderBrush="Transparent" Background="Transparent" RenderTransformOrigin="0.5 0.5">
+                              <Border.RenderTransform>
+                                <ScaleTransform ScaleX="{Binding IconScale}" ScaleY="{Binding IconScale}"/>
+                              </Border.RenderTransform>
+                              <mui:BetterImage x:Name="PART_Icon" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" Filename="{Binding IconFilename}" Margin="-1" Width="40" Height="40" DecodeWidth="200"/>
+                            </Border>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                      </Thumb>
+                      <Thumb Canvas.Left="{Binding TextPosition.X}" Canvas.Top="{Binding TextPosition.Y}" x:Name="PART_LabelThumb" Tag="LabelThumb">
+                        <Thumb.Template>
+                          <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="Thumb">
+                            <Border x:Name="PART_LabelBorder" BorderThickness="1" BorderBrush="Transparent" Background="Transparent">
+                              <TextBox x:Name="PART_Label" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center" FontSize="{Binding FontSize}" FontFamily="{Binding FontFamily}" FontWeight="{Binding FontWeight}" FontStretch="{Binding FontStretch}" FontStyle="{Binding FontStyle}" Text="{Binding LabelText}" Margin="-1" Width="{Binding Source={x:Static acTools:CommonAcConsts.AppIconWidth}}">
+                                <TextBox.Foreground>
+                                  <SolidColorBrush Color="{Binding TextColor}"/>
+                                </TextBox.Foreground>
+                              </TextBox>
+                            </Border>
+                            </ControlTemplate>
+                        </Thumb.Template>
+                      </Thumb>
+                    </Canvas>
+                  </Grid>
+                </mui:BooleanSwitch.True>
+                <mui:BooleanSwitch.False>
+                  <mui:Cell>
+                    <mui:BetterImage x:Name="PART_OriginalIcon" Filename="{Binding IconOriginal}" HideBroken="True" Width="{Binding Source={x:Static acTools:CommonAcConsts.AppIconWidth}}" Height="{Binding Source={x:Static acTools:CommonAcConsts.AppIconHeight}}"/>
+                    <DockPanel x:Name="PART_OriginalIconMissing" IsVisible="{Binding IconOriginal, Converter={StaticResource ExistToVisibilityConverter}, ConverterParameter=inverse}">
+                      <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" Stretch="Uniform" VerticalAlignment="Center" Fill="{DynamicResource Error}" Margin="0 0 4 0"/>
+                      <TextBlock Text="Icon is missing" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                    </DockPanel>
+                  </mui:Cell>
+                </mui:BooleanSwitch.False>
+              </mui:BooleanSwitch>
+            </mui:Cell>
+          </DockPanel>
+          </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+  </DockPanel>
+</mui:ModernDialog>

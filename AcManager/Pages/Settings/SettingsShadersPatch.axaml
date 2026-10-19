@@ -1,0 +1,132 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:set="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsShadersPatch" Loaded="OnLoaded">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcSettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <mui:Switch Value="{Binding MainModel.Mode}">
+    <DockPanel mui:Switch.When="{x:Static t:PatchSettingsModel+PatchMode.NoShadersPatch}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource ContentMarginWithPadding}" Width="480">
+      <TextBlock Text="Custom Shaders Patch is not installed" TextWrapping="Wrap" DockPanel.Dock="Top" Classes="Heading1"/>
+      <mui:SpacingUniformGrid Rows="1" Columns="2" HorizontalSpacing="20">
+        <Button Margin="0 8 0 0" Command="{Binding MainModel.InstallPatchCommand}" Theme="{StaticResource Go.Button}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource DownloadIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="Install"/>
+          </DockPanel>
+        </Button>
+        <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/patch" Command="{x:Static mui:LinkCommands.NavigateLink}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource WebIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="What is it?"/>
+          </DockPanel>
+        </Button>
+      </mui:SpacingUniformGrid>
+    </DockPanel>
+
+    <DockPanel mui:Switch.When="{x:Static t:PatchSettingsModel+PatchMode.NoConfigs}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{StaticResource ContentMarginWithPadding}" Width="480">
+      <TextBlock Text="Configs for Custom Shaders Patch are missing. Reinstall?" TextWrapping="Wrap" DockPanel.Dock="Top" Classes="Heading1"/>
+      <mui:SpacingUniformGrid Rows="1" Columns="2" HorizontalSpacing="20">
+        <Button Margin="0 8 0 0" Command="{Binding MainModel.InstallPatchCommand}" Theme="{StaticResource Go.Button}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource DownloadIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="Yes, please"/>
+          </DockPanel>
+        </Button>
+        <Button Margin="0 8 0 0" CommandParameter="https://acstuff.club/patch" Command="{x:Static mui:LinkCommands.NavigateLink}">
+          <DockPanel IsHitTestVisible="False">
+            <Path Data="{StaticResource WebIconData}" Width="10" Height="10" Stretch="Uniform" DockPanel.Dock="Left" Margin="0 0 4 0" VerticalAlignment="Center" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+            <TextBlock Text="What is Custom Shaders Patch?"/>
+          </DockPanel>
+        </Button>
+      </mui:SpacingUniformGrid>
+    </DockPanel>
+
+    <Grid Margin="{StaticResource ContentMargin}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition MinWidth="50" MaxWidth="400"/>
+        <ColumnDefinition Width="9"/>
+        <ColumnDefinition MinWidth="640"/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Link list -->
+      <ListBox x:Name="LinksList" ItemsSource="{Binding MainModel.PagesView}" SelectedItem="{Binding MainModel.SelectedPage}" IsEnabled="{Binding MainModel.IsBlocked, Converter={StaticResource InvertBooleanConverter}}" VirtualizingStackPanel.IsVirtualizingWhenGrouping="True" Theme="{StaticResource VirtualizingListBox}">
+        <ListBox.RenderTransform>
+          <TranslateTransform/>
+        </ListBox.RenderTransform>
+        <!-- PORT: removed ListBox.GroupStyle (no grouping in Avalonia lists) -->
+        <ListBox.ItemContainerTheme>
+          <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                  <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                  </Border>
+                  </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+          <Style Selector="^ /template/ Border#Bd"><Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/></Style><Style Selector="^:pointerover /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                    </Style><Style Selector="^:selected /template/ Border#Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                    </Style></ControlTheme>
+        </ListBox.ItemContainerTheme>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="{x:Type t:PatchSettingsModel+PatchPage}">
+            <DockPanel Background="Transparent" mui:Draggable.Data="{Binding}" Margin="10 2 2 2" x:Name="__Dt0">
+              <DockPanel.Styles><Style Selector="DockPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding Config.IsActive, FallbackValue=True, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="TextElement.Foreground" Value="{DynamicResource WindowTextReadOnly}"/>
+              </Style></Style></DockPanel.Styles><ToolTip.Tip>
+                <ToolTip IsVisible="{Binding Config.Description, FallbackValue=Collapsed, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+                  <TextBlock Text="{Binding Config.Description}" MaxWidth="400" TextWrapping="Wrap"/>
+                </ToolTip>
+              </ToolTip.Tip>
+              <!--<Path Data="{StaticResource BookmarkIconData}" Width="12" Height="12" DockPanel.Dock="Right" Fill="{DynamicResource FavouriteBrush}"
+                  Stretch="Uniform" Visibility="Collapsed" x:Name="FavouriteIcon" VerticalAlignment="Center" Margin="2 0 4 0" />-->
+              <!--<mui:BetterImage Width="14" Height="14" CollapseIfNull="True" CollapseIfMissing="True" Filename="{Binding AppIcon.Value, FallbackValue={x:Null}}"
+                  Margin="0 0 4 0" ClearOnChange="True" />-->
+              <!--<TextBlock Text="{Binding Description}" DockPanel.Dock="Bottom" Style="{StaticResource Small}" TextTrimming="CharacterEllipsis" Margin="0 2 0 4"
+                  FontWeight="Normal" />
+              <TextBlock Text="{Binding DisplayName}" TextTrimming="CharacterEllipsis" Margin="0 2 0 0" FontWeight="Bold" />-->
+              <Ellipse Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="2" IsHitTestVisible="False" DockPanel.Dock="Right" IsVisible="{Binding Config.HasAnythingNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+              <TextBlock Text="{Binding DisplayName, Converter={StaticResource ToUpperConverter}}" TextTrimming="CharacterEllipsis" Margin="16 0" Classes="Small"/>
+            </DockPanel>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <!-- Separator -->
+      <mui:ModernTabSplitter x:Name="GridSplitter" Moved="OnSplitterMoved" Grid.Column="1" SaveKey="__PatchSettingsPage.Splitter">
+        <mui:ModernTabSplitter.RenderTransform>
+          <TranslateTransform/>
+        </mui:ModernTabSplitter.RenderTransform>
+      </mui:ModernTabSplitter>
+
+      <!-- Content -->
+      <mui:Cell Grid.Column="2" x:Name="ContentCell" Margin="20 0 20 20">
+        <mui:Cell.RenderTransform>
+          <TranslateTransform/>
+        </mui:Cell.RenderTransform>
+        <TextBlock Text="No page selected" Foreground="{DynamicResource WindowTextReadOnly}" IsVisible="{Binding MainModel.SelectedPage, Converter={StaticResource NullToVisibilityConverter}}" Classes="Small"/>
+        <mui:Cell IsVisible="{Binding MainModel.SelectedPage, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <mui:ModernFrame x:Name="PageFrame" Navigated="OnFrameNavigated" IsVisible="{Binding MainModel.SelectedPage.Source, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+          <DockPanel IsVisible="{Binding MainModel.SelectedPage.Source, Converter={StaticResource NullToVisibilityConverter}}">
+            <!--<c:MessageBlock DockPanel.Dock="Bottom" Margin="0 8 0 0">
+              <mui:BbCodeBlock Text="Changed will be saved automatically." />
+            </c:MessageBlock>-->
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 20 0 0">
+              <c:UserPresetsControl x:Name="PresetsControl" UserPresetable="{Binding MainModel.Presets}" MinWidth="300" Margin="0 0 4 0"/>
+              <Button Command="{Binding ShareCommand}" Content="{x:Static g:AppStrings.Common_Share}" Margin="0 0 4 0" ToolTip.Tip="{x:Static g:AppStrings.Common_Share_SettingsTooltip}"/>
+              <Button Command="{Binding ShareSectionCommand}">
+                <TextBlock Text="{Binding MainModel.SelectedPage.DisplayName, StringFormat='{}Share link for {0} settings only'}"/>
+              </Button>
+            </StackPanel>
+            <ContentControl x:Name="ConfigTab" ContentTemplate="{StaticResource PythonAppConfig.NoHeader}"/>
+          </DockPanel>
+        </mui:Cell>
+      </mui:Cell>
+    </Grid>
+  </mui:Switch>
+</UserControl>

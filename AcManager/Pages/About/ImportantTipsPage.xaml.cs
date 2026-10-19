@@ -10,7 +10,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.About {
-    public partial class ImportantTipsPage : IParametrizedUriContent {
+    public partial class ImportantTipsPage : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         private ViewModel Model => (ViewModel)DataContext;
 
         public void OnUri(Uri uri) {

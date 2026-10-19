@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcManager.Controls;
 using AcManager.Tools.Data;
 using AcManager.Tools.Filters.Testers;
@@ -24,10 +24,9 @@ using FirstFloor.ModernUI.Serialization;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using StringBasedFilter;
-using Binding = System.Windows.Data.Binding;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Custom : IQuickDriveModeControl, ITabCanBePinned {
+    public partial class QuickDrive_Custom : global::Avalonia.Controls.UserControl, IQuickDriveModeControl, ITabCanBePinned {
         public static string OpponentNoun { get; set; } = ControlsStrings.Common_OpponentsPostfix;
         
         public QuickDrive_Custom() {

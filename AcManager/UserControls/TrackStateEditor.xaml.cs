@@ -8,7 +8,7 @@ using AcManager.Tools.Miscellaneous;
 using FirstFloor.ModernUI.Commands;
 
 namespace AcManager.UserControls {
-    public partial class TrackStateEditor {
+    public partial class TrackStateEditor : global::Avalonia.Controls.DockPanel {
         public TrackStateEditor() {
             InitializeComponent();
         }

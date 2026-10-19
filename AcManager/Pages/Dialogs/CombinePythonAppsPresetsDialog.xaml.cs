@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CombinePythonAppsPresetsDialog {
+    public partial class CombinePythonAppsPresetsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public CombinePythonAppsPresetsDialog() {
             DataContext = new ViewModel();
             InitializeComponent();

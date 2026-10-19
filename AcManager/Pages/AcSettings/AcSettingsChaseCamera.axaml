@@ -1,0 +1,41 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:acSettings="clr-namespace:AcManager.Pages.AcSettings" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.AcSettingsChaseCamera" Loaded="OnLoaded" Unloaded="OnUnloaded">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+
+  <ScrollViewer mui:SaveScroll.Key="AcSettingsChaseCamera">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True">
+
+      <DockPanel Width="400">
+        <ListBox ItemsSource="{Binding Cameras}" SelectedItem="{Binding SelectedCamera}" Margin="20 20 0 0" DockPanel.Dock="Bottom" DisplayMemberBinding="{Binding DisplayName}" ItemContainerTheme="{StaticResource RadioBoxListItem}"/>
+        <mui:Cell x:Name="Wrapper" Width="400" Height="225" Background="#222222">
+          <mui:ModernProgressRing x:Name="Progress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80"/>
+          <Image x:Name="Scene" Stretch="Fill"/>
+        </mui:Cell>
+      </DockPanel>
+
+      <StackPanel Classes="SettingsPanel">
+
+        <TextBlock Text="{x:Static g:AppStrings.AcSettings_ChaseCamera_Params}" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding SelectedCamera.Distance}" Postfix=" m" Content="{x:Static g:AppStrings.WeatherEdit_Distance}"/>
+          <Slider Minimum="0" Maximum="5" Value="{Binding SelectedCamera.Distance, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.01}" TickFrequency="0.5" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding SelectedCamera.Height}" Postfix=" m" Content="{x:Static t:ToolsStrings.Common_Height}"/>
+          <Slider Minimum="0" Maximum="5" Value="{Binding SelectedCamera.Height, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.01}" TickFrequency="0.5" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding SelectedCamera.PitchDeg}" Postfix="°" Content="{x:Static g:AppStrings.AcSettings_ChaseCamera_Pitch}"/>
+          <Slider Minimum="-90" Maximum="90" TickFrequency="18" TickPlacement="BottomRight" Value="{Binding SelectedCamera.PitchDeg, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}"/>
+        </DockPanel>
+
+      </StackPanel>
+
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+
+</UserControl>

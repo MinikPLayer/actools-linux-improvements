@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -29,7 +29,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using StringBasedFilter;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class BatchPreviewsUpdater {
+    public partial class BatchPreviewsUpdater : global::AcManager.Pages.ContentTools.ContentTool {
         #region Loading
         protected override async Task<bool> LoadAsyncOverride(IProgress<AsyncProgressEntry> progress, CancellationToken cancellation) {
             await CarsManager.Instance.EnsureLoadedAsync();
@@ -340,7 +340,7 @@ namespace AcManager.Pages.ContentTools {
             e.Handled = true;
         }*/
 
-        private void OnCarsListBoxItemClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarsListBoxItemClick(object sender, PointerReleasedEventArgs e) {
             if (((FrameworkElement)sender).DataContext is CarObjectEntry item) {
                 SelectedEntry = item;
                 if (Keyboard.Modifiers == ModifierKeys.Control) {
@@ -446,12 +446,12 @@ namespace AcManager.Pages.ContentTools {
             }
         }
 
-        private void OnPreviewsButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnPreviewsButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _runButtonClicked = true;
             InitializePreviews();
         }
 
-        private void OnDifferentButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDifferentButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _runButtonClicked = false;
             InitializePreviews();
         }

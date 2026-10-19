@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Converters;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Weekend : IQuickDriveModeControl, ITabCanBePinned {
+    public partial class QuickDrive_Weekend : global::Avalonia.Controls.UserControl, IQuickDriveModeControl, ITabCanBePinned {
         public QuickDrive_Weekend() {
             InitializeComponent();
         }

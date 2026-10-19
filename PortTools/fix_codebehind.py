@@ -24,7 +24,8 @@ def load_xmlns(root_dir):
 
 def resolve(uri, name, type_index):
     if uri == NS_AV:
-        return {'UserControl': 'Avalonia.Controls.UserControl', 'Window': 'Avalonia.Controls.Window', 'Page': 'Avalonia.Controls.UserControl'}.get(name)
+        return {'UserControl': 'Avalonia.Controls.UserControl', 'Window': 'Avalonia.Controls.Window', 'Page': 'Avalonia.Controls.UserControl',
+                'Application': 'Avalonia.Application'}.get(name) or ('Avalonia.Controls.' + name if name in ('DockPanel', 'Grid', 'StackPanel', 'Border', 'Canvas', 'WrapPanel', 'Panel', 'ContentControl') else None)
     if uri.startswith('clr-namespace:'):
         return '%s.%s' % (uri[len('clr-namespace:'):].split(';')[0], name)
     if uri.startswith('using:'):

@@ -1,0 +1,33 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:settings="clr-namespace:AcManager.Pages.Settings" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsDev">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <ScrollViewer mui:SaveScroll.Key="SettingsContent">
+    <StackPanel Classes="SettingsPanel">
+      <DockPanel>
+        <Label Content="User-entered years:"/>
+        <Button Command="{Binding SendYearsCommand}" Content="Send" ToolTip.Tip="Please, help us extend database with years"/>
+      </DockPanel>
+
+      <DockPanel>
+        <Label Content="Update track values:"/>
+        <Button Command="{Binding PrepareTrackParamsCommand}" Content="Update"/>
+      </DockPanel>
+
+      <DockPanel>
+        <Label Content="Sidekick databases:"/>
+        <Button Command="{Binding UpdateSidekickDatabaseCommand}" Content="Update both" ToolTip.Tip="Update tyres and brakes information for all cars installed and enabled"/>
+      </DockPanel>
+
+      <DockPanel>
+        <Label Content="Start with current race.ini:"/>
+        <Button Command="{Binding StartDirectCommand}" Content="Start"/>
+      </DockPanel>
+
+      <CheckBox IsChecked="{Binding RateCars, Source={x:Static t:SettingsHolder.Content}}">
+        <ToolTip.Tip>Might help to check quality of modded cars</ToolTip.Tip>
+        <Label Content="While analyzing, check some extra cars’ details"/>
+      </CheckBox>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

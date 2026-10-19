@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarSkinsDialog {
+    public partial class CarSkinsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernWindow {
         private class ViewModel {
             [NotNull]
             public CarObject SelectedCar { get; }

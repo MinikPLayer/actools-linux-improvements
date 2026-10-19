@@ -18,7 +18,7 @@ using JetBrains.Annotations;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedDriverModelPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedDriverModelPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public class ViewModel : SelectedAcObjectViewModel<DriverModelObject> {
             public ViewModel([NotNull] DriverModelObject acObject) : base(acObject) { }
 

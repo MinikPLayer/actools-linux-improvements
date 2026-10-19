@@ -6,7 +6,7 @@ using AcTools.Utils;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarTransmissionLossSelector : INotifyPropertyChanged {
+    public partial class CarTransmissionLossSelector : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, INotifyPropertyChanged {
         public double DataTorque { get; }
 
         public double DataPower { get; }

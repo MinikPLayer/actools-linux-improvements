@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsLive : IParametrizedUriContent {
+    public partial class SettingsLive : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         private bool _changed;
 
         public SettingsLive() {

@@ -1,5 +1,4 @@
 ﻿using System;
-using FirstFloor.ModernUI.Win32;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Tools {

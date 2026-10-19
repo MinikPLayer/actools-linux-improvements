@@ -34,7 +34,7 @@ using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 using FirstFloor.ModernUI.Windows.Navigation;
 
 namespace AcManager.Pages.Drive {
-    public partial class Online : IParametrizedUriContent, IContent {
+    public partial class Online : global::Avalonia.Controls.UserControl, IParametrizedUriContent, IContent {
         private readonly DiscordRichPresence _discordPresence = new DiscordRichPresence(50, "Preparing to race", "Online");
 
         private string[] _hideIconSourceIds;

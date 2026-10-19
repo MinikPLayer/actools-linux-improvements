@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.Drive {
-    public partial class KunosCareer_SelectedPage : ILoadableContent, IParametrizedUriContent {
+    public partial class KunosCareer_SelectedPage : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private readonly DiscordRichPresence _discordPresence = new DiscordRichPresence(10, "Preparing to race", "Career").Default();
 
         public void OnUri(Uri uri) {
@@ -166,25 +166,25 @@ namespace AcManager.Pages.Drive {
             new AssistsDialog(Model.AssistsViewModel).ShowDialog();
         }
 
-        private void NextButton_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+        private void NextButton_OnMouseLeftButtonUp(object sender, PointerReleasedEventArgs e) {
             var career = Model.AcObject.NextCareerObject;
             if (career == null) return;
             KunosCareer.NavigateToCareerPage(career);
         }
 
-        private void TableSection_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void TableSection_OnPreviewMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = (ScrollViewer)sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
         }
 
-        private void ResetButton_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+        private void ResetButton_OnMouseLeftButtonUp(object sender, PointerReleasedEventArgs e) {
             if (ModernDialog.ShowMessage(AppStrings.KunosCareer_ResetProgress_Message, AppStrings.KunosCareer_ResetProgress_Title,
                     MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
             Model.AcObject.ChampionshipResetCommand.Execute();
         }
 
-        private void OnCarPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarPreviewClick(object sender, PointerReleasedEventArgs e) {
             var ev = Model.AcObject.SelectedEvent;
             if (ev == null) return;
 
@@ -213,7 +213,7 @@ namespace AcManager.Pages.Drive {
             }
         }
 
-        private async void OnChangeSkinMenuItemClick(object sender, MouseButtonEventArgs e) {
+        private async void OnChangeSkinMenuItemClick(object sender, PointerReleasedEventArgs e) {
             var ev = Model.AcObject.SelectedEvent;
             if (ev == null) return;
 

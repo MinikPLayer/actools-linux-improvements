@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -19,7 +19,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class BrandBadgeEditor : IInvokingNotifyPropertyChanged {
+    public partial class BrandBadgeEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IInvokingNotifyPropertyChanged {
         private FilesStorage.ContentEntry _selected;
         public CarObject Car { get; }
 
@@ -125,7 +125,7 @@ namespace AcManager.Pages.Dialogs {
             Close();
         }
 
-        private void BrandBadge_OnMouseDown(object sender, MouseButtonEventArgs e) {
+        private void BrandBadge_OnMouseDown(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton == MouseButton.Left && e.ClickCount == 2) {
                 e.Handled = true;
                 CloseWithResult(MessageBoxResult.OK);

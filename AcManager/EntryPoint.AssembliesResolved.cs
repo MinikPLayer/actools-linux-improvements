@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Interop;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Miscellaneous;

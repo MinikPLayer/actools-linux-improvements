@@ -1,0 +1,34 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.ImageEditor" Title="{x:Static g:AppStrings.CropImage_Title}" MinWidth="200" MinHeight="200" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" SizeToContent="Manual" Width="640" Height="640" LocationAndSizeKey=".imageEditor" PointerExited="OnMouseLeave" PointerMoved="OnMouseMove" PointerReleased="OnMouseUp" PointerWheelChanged="OnMouseWheel" KeyDown="OnKeyDown" CanResize="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <Thickness x:Key="BorderThickness">1</Thickness>
+      <Thickness x:Key="MarginThickness">-1</Thickness>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <DockPanel>
+    <TextBlock Text="{x:Static g:AppStrings.Dialogs_ImageEditor_UseMouseWheelOrKeysToAdjust}" DockPanel.Dock="Bottom" Margin="0 20 0 0" Classes="Small"/>
+    <mui:BorderyViewbox SizeChanged="OnViewboxSizeChanged" x:Name="Viewbox" StretchDirection="DownOnly" Stretch="Uniform">
+      <mui:Cell x:Name="MainGrid" HorizontalAlignment="Center" VerticalAlignment="Center" ClipToBounds="True" PointerPressed="OnMouseDown">
+        <Image x:Name="OriginalImage"/>
+        <mui:Cell x:Name="SelectedArea" HorizontalAlignment="Left" VerticalAlignment="Top">
+          <Border x:Name="CutBorder" BorderBrush="{DynamicResource Accent}" Background="Transparent" Cursor="SizeAll"/>
+          <Canvas Opacity="0.4">
+            <Rectangle Canvas.Left="-49999" Canvas.Bottom="{Binding ActualHeight, ElementName=SelectedArea}" Fill="{DynamicResource Accent}" Width="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Height="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+            <Rectangle Canvas.Left="-49999" Canvas.Top="{Binding ActualHeight, ElementName=SelectedArea}" Fill="{DynamicResource Accent}" Width="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Height="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+            <Rectangle Canvas.Top="-49999" Canvas.Right="{Binding ActualWidth, ElementName=SelectedArea}" Fill="{DynamicResource Accent}" Width="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Height="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+            <Rectangle Canvas.Top="-49999" Canvas.Left="{Binding ActualWidth, ElementName=SelectedArea}" Fill="{DynamicResource Accent}" Width="{x:Static mui:DpiAwareWindow.UnlimitedSize}" Height="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
+          </Canvas>
+          <Thumb x:Name="ResizeTop" VerticalAlignment="Top" Opacity="0" DragDelta="OnResizeTopDelta" Cursor="SizeNorthSouth"/>
+          <Thumb x:Name="ResizeBottom" VerticalAlignment="Bottom" Opacity="0" DragDelta="OnResizeBottomDelta" Cursor="SizeNorthSouth"/>
+          <Thumb x:Name="ResizeLeft" HorizontalAlignment="Left" Opacity="0" DragDelta="OnResizeLeftDelta" Cursor="SizeWestEast"/>
+          <Thumb x:Name="ResizeRight" HorizontalAlignment="Right" Opacity="0" DragDelta="OnResizeRightDelta" Cursor="SizeWestEast"/>
+          <Thumb x:Name="ResizeTopLeft" VerticalAlignment="Top" HorizontalAlignment="Left" Opacity="0" DragDelta="OnResizeTopLeftDelta" Cursor="TopLeftCorner"/>
+          <Thumb x:Name="ResizeTopRight" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" DragDelta="OnResizeTopRightDelta" Cursor="TopRightCorner"/>
+          <Thumb x:Name="ResizeBottomLeft" VerticalAlignment="Bottom" HorizontalAlignment="Left" Opacity="0" DragDelta="OnResizeBottomLeftDelta" Cursor="TopRightCorner"/>
+          <Thumb x:Name="ResizeBottomRight" VerticalAlignment="Bottom" HorizontalAlignment="Right" Opacity="0" DragDelta="OnResizeBottomRightDelta" Cursor="TopLeftCorner"/>
+        </mui:Cell>
+      </mui:Cell>
+    </mui:BorderyViewbox>
+  </DockPanel>
+</mui:ModernDialog>

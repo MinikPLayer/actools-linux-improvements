@@ -1,0 +1,21 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:m="clr-namespace:AcManager.Tools.Managers;assembly=AcManager.Tools" xmlns:h="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:c="clr-namespace:AcManager.Controls;assembly=AcManager.Controls" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.VersionInfoEditor" Title="{x:Static g:AppStrings.VersionInfo_Title}">
+    <Grid Margin="0 8 8 8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="240"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_AuthorLabel}" Grid.Column="0" Grid.Row="0" Classes="Label Label.Padding"/>
+        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_UrlLabel}" Grid.Column="0" Grid.Row="1" Classes="Label Label.Padding"/>
+        <TextBlock Text="{x:Static c:ControlsStrings.AcObject_VersionLabel}" Grid.Column="0" Grid.Row="2" Classes="Label Label.Padding"/>
+
+        <ComboBox Text="{Binding AcObj.Author, Mode=OneWay, TargetNullValue=''}" x:Name="AuthorInput" Grid.Column="1" Grid.Row="0" Background="Transparent" BorderThickness="0" ItemsSource="{x:Static m:SuggestionLists.AuthorsListView}" IsEditable="True" h:WatermarkService.Watermark="?" h:FocusAdvancement.AdvancesByEnterKey="True"/>
+        <TextBox Text="{Binding AcObj.Url, Mode=OneWay, TargetNullValue=''}" x:Name="UrlInput" Grid.Column="1" Grid.Row="1" Background="Transparent" BorderThickness="0" h:WatermarkService.Watermark="?" h:FocusAdvancement.AdvancesByEnterKey="True"/>
+        <TextBox Text="{Binding AcObj.Version, Mode=OneWay, TargetNullValue=''}" x:Name="VersionInput" Grid.Column="1" Grid.Row="2" Background="Transparent" BorderThickness="0" h:WatermarkService.Watermark="?" h:FocusAdvancement.AdvancesByEnterKey="True"/>
+    </Grid>
+</mui:ModernDialog>

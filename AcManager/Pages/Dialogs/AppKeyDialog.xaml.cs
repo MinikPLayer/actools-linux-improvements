@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class AppKeyDialog {
+    public partial class AppKeyDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public static bool OptionOfflineMode;
 
         public const string AppKeyRevokedKey = "AppKeyRevoked";
@@ -219,7 +219,7 @@ namespace AcManager.Pages.Dialogs {
 
         private int _counter;
 
-        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+        private void UIElement_OnPreviewMouseLeftButtonUp(object sender, PointerReleasedEventArgs e) {
             if (++_counter == 10) {
                 OptionOfflineMode = true;
             }

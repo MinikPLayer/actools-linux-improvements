@@ -53,7 +53,7 @@ using SharpDX.DXGI;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class CarCreateTyresMachineDialog {
+    public partial class CarCreateTyresMachineDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public static int OptionSupportedVersion = 10;
 
         public static readonly string TrainingParamsKey = "Tyres Generation";

@@ -1,0 +1,42 @@
+﻿<sel:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sel="clr-namespace:AcManager.Pages.Selected" xmlns:av="http://icsharpcode.net/sharpdevelop/avalonedit" xmlns:g="clr-namespace:AcManager" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedPpFilterPage" mui:InputBindingBehavior.PropagateToWindow="True">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/TextEditor.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+
+  <c:AcObjectBase Scrollable="False" AcObject="{Binding SelectedObject}" ShowIcon="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_PpFilterTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneCommand}" ToolTip.Tip="Clone PP filter (Ctrl+Shift+D)"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Common_Share}" Command="{Binding ShareCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Share_FilterTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Common_Test}" Command="{Binding TestCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Test_FilterTooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_JsonTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_PpFilterTooltip}"/>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <DockPanel>
+      <mui:BooleanSwitch Value="{Binding SelectedObject.IsKunosName}" DockPanel.Dock="Top">
+        <mui:BooleanSwitch.False>
+          <c:MessageBlock CloseKey="csp-info" Margin="0 0 0 20">
+            <mui:BbCodeBlock Text="With [url=&quot;https://acstuff.club/patch/&quot;]Custom Shaders Patch[/url] you can create and edit filters in-game, seeing changes live."/>
+          </c:MessageBlock>
+        </mui:BooleanSwitch.False>
+        <mui:BooleanSwitch.True>
+          <c:MessageBlock CloseKey="kunos-pp-filter" Margin="0 0 0 20">
+            <mui:BbCodeBlock Text="This is one of built-in PP-filters. Instead of editing it, please consider making a copy and editing it."/>
+          </c:MessageBlock>
+        </mui:BooleanSwitch.True>
+      </mui:BooleanSwitch>
+      <av:TextEditor c:AvalonExtension.Text="{Binding SelectedObject.Content}" c:AvalonExtension.Mode="Ini"/>
+    </DockPanel>
+
+  </c:AcObjectBase>
+</sel:SelectedAcObjectPage>

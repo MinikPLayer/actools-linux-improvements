@@ -10,7 +10,7 @@ using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Helpers;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class InstallAdditionalContentDialog {
+    public partial class InstallAdditionalContentDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private static InstallAdditionalContentDialog _dialog;
 
         public static void Initialize() {

@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.About {
-    public partial class ReleaseNotesPage : ILoadableContent {
+    public partial class ReleaseNotesPage : global::Avalonia.Controls.UserControl, ILoadableContent {
         private IReadOnlyList<ChangelogEntry> _changelog;
 
         public async Task LoadAsync(CancellationToken cancellationToken) {

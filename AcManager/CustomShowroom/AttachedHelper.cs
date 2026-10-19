@@ -4,8 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Forms.Integration;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using System.Windows.Media;
 using AcManager.Controls.Presentation;
@@ -18,9 +17,6 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 using AcTools.Render.Wrapper;
-using CheckBox = System.Windows.Controls.CheckBox;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;
 
 namespace AcManager.CustomShowroom {
     internal class AttachedHelper {

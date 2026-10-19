@@ -1,0 +1,45 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:settings="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsLapTimes">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <ScrollViewer mui:SaveScroll.Key="SettingsLapTimes">
+    <StackPanel Classes="SettingsPanel">
+      <TextBlock Classes="Heading2 SettingsPanel.Heading2.First">
+        <TextBlock.Text>Sources:</TextBlock.Text>
+      </TextBlock>
+
+      <ItemsControl ItemsSource="{Binding Sources, Source={x:Static t:LapTimesManager.Instance}}" Margin="0 -12 0 0">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="t:LapTimesSource">
+            <CheckBox IsChecked="{Binding IsEnabled}" Margin="0 12 0 0">
+              <DockPanel Margin="0 -12 0 0">
+                <!--name-->
+                <mui:ReferenceSwitch Value="{Binding DetailsUrl}" Height="32" DockPanel.Dock="Top" Margin="0 0 0 2">
+                  <mui:ReferenceSwitch.Null>
+                    <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Bottom"/>
+                  </mui:ReferenceSwitch.Null>
+                  <mui:ReferenceSwitch.NonNull>
+                    <DockPanel VerticalAlignment="Bottom">
+                      <TextBlock Text="{Binding DisplayName}"/>
+                      <Button CommandParameter="{Binding DetailsUrl}" Theme="{StaticResource MoreDetailsSuperscript}"/>
+                    </DockPanel>
+                  </mui:ReferenceSwitch.NonNull>
+                </mui:ReferenceSwitch>
+
+                <!--description-->
+                <mui:BbCodeBlock Text="{Binding Description}" TextWrapping="Wrap" Classes="Small"/>
+              </DockPanel>
+            </CheckBox>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <mui:SpacingStackPanel Spacing="4"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </ItemsControl>
+
+      <Button Content="{x:Static g:AppStrings.Settings_LapTimes_ClearCache}" Command="{Binding ClearCacheCommand}" Margin="0 20 0 0"/>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

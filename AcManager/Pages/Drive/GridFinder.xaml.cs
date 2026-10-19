@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Drive {
-    public partial class GridFinder: ILoadableContent {
+    public partial class GridFinder : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch, ILoadableContent {
         private static readonly Uri GridFinderUri = new Uri("/Pages/Drive/GridFinder.xaml", UriKind.Relative);
         private static string _loginToken;
 
@@ -60,7 +60,7 @@ namespace AcManager.Pages.Drive {
 
         public class ViewModel : NotifyPropertyChanged { }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class GridFinderApiProxy : JsGenericProxy {
             public GridFinderApiProxy(JsBridgeBase bridge) : base(bridge) { }
         }

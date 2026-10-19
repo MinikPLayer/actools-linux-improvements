@@ -9,7 +9,7 @@ using AcTools.Utils.Helpers;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class LapTimes_Grid : ILoadableContent {
+    public partial class LapTimes_Grid : global::Avalonia.Controls.UserControl, ILoadableContent {
         public async Task LoadAsync(CancellationToken cancellationToken) {
             await CarsManager.Instance.EnsureLoadedAsync();
             await TracksManager.Instance.EnsureLoadedAsync();
@@ -31,9 +31,9 @@ namespace AcManager.Pages.Miscellaneous {
 
         private CarObject[] _cars;
 
-        protected override void OnRender(DrawingContext drawingContext) {
+        public override void Render(DrawingContext drawingContext) {
             // var cellSize = 200;
-            // base.OnRender(drawingContext);
+            // base.Render(drawingContext);
         }
 
         private LapTimes_Recent.ViewModel Model => (LapTimes_Recent.ViewModel)DataContext;

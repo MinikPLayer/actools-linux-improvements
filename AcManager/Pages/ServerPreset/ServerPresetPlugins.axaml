@@ -1,0 +1,35 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetPlugins" Background="Transparent">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer>
+    <StackPanel Classes="SettingsCompactPanel">
+
+      <CheckBox IsChecked="{Binding SelectedObject.UseCmPlugin}" ToolTip.Tip="Using CM as server plugin allows to track server state and connect several other plugins at once">
+        <Label Content="Use Content Manager as server plugin"/>
+      </CheckBox>
+
+      <TextBlock Text="Server plugin:" Classes="Heading2 SettingsPanel.Heading2"/>
+      <DockPanel>
+        <Label Content="Address:"/>
+        <mui:BetterTextBox Text="{Binding SelectedObject.PluginUdpAddress}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+      </DockPanel>
+      <DockPanel>
+        <Label Content="Local port:"/>
+        <mui:BetterTextBox Text="{Binding SelectedObject.PluginUdpPort}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Mode="Integer" Minimum="1" Maximum="65535"/>
+      </DockPanel>
+      <DockPanel>
+        <Label Content="Auth:"/>
+        <mui:BetterTextBox Text="{Binding SelectedObject.PluginAuthAddress}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+      </DockPanel>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

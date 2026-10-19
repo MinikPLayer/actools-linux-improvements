@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Serialization;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Drive {
-    public partial class UserLiveService : IParametrizedUriContent, ILoadableContent {
+    public partial class UserLiveService : global::FirstFloor.ModernUI.Windows.Controls.ReferenceSwitch, IParametrizedUriContent, ILoadableContent {
         private string _url;
 
         public void OnUri(Uri uri) {
@@ -63,7 +63,7 @@ namespace AcManager.Pages.Drive {
 
         public class ViewModel : NotifyPropertyChanged { }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class UserLiveServiceApiProxy : JsGenericProxy {
             public UserLiveServiceApiProxy(JsBridgeBase bridge) : base(bridge) { }
         }

@@ -27,7 +27,7 @@ using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Race : IQuickDriveModeControl {
+    public partial class QuickDrive_Race : global::Avalonia.Controls.UserControl, IQuickDriveModeControl {
         public QuickDrive_Race() {
             InitializeComponent();
             // DataContext = new QuickDrive_RaceViewModel();

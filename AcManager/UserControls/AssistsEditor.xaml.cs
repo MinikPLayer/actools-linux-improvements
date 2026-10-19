@@ -8,7 +8,7 @@ using AcManager.Tools.Miscellaneous;
 using FirstFloor.ModernUI.Commands;
 
 namespace AcManager.UserControls {
-    public partial class AssistsEditor {
+    public partial class AssistsEditor : global::Avalonia.Controls.Grid {
         public AssistsEditor() {
             InitializeComponent();
         }

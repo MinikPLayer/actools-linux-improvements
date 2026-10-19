@@ -22,8 +22,6 @@ using FirstFloor.ModernUI.Serialization;
 using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 using SharpDX.DirectWrite;
-using Color = System.Windows.Media.Color;
-using FontStyle = SharpDX.DirectWrite.FontStyle;
 
 namespace AcManager.PaintShop {
     public static partial class PaintShop {

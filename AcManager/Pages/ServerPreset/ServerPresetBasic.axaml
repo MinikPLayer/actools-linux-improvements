@@ -1,0 +1,161 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:AcManager.Pages.ServerPreset" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sys="using:System" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.ServerPresetBasic">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <sys:String x:Key="MaximumCapacityMessage" xml:space="preserve">Maximum number of clients is limited by track’s {0} pit</sys:String>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ScrollViewer>
+    <StackPanel>
+      <Grid Margin="0 0 0 20">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="0 0 20 0" Grid.Column="0" Background="Gray" Width="160" Height="120">
+          <Button Padding="0" Width="160" Height="120" Command="{Binding ChangeTrackCommand}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" c:ToolTips.Track="{Binding Track}" c:ContextMenus.Track="{Binding Track}" mui:Draggable.Data="{Binding Track}">
+            <Grid Margin="-1" ClipToBounds="True" IsHitTestVisible="False" DataContext="{Binding Track}">
+              <mui:BetterImage Filename="{Binding PreviewImage}" DecodeWidth="160" Stretch="UniformToFill"/>
+              <mui:BetterImage Filename="{Binding OutlineImage}" DecodeWidth="160" ShowBroken="False"/>
+              <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding Name}" Foreground="{DynamicResource DarkStripeText}"/>
+            </Grid>
+          </Button>
+        </StackPanel>
+
+        <StackPanel Margin="0 0 20 0" Grid.Column="1" Background="Gray" Width="160" Height="120">
+          <Button Padding="0" Width="160" Height="120" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="GoToPage" CommandParameter="/Pages/ServerPreset/ServerPresetEntryList.xaml" c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}">
+            <Grid Margin="-1" ClipToBounds="True" IsHitTestVisible="False">
+              <mui:BetterImage Filename="{Binding Car.SelectedSkin.PreviewImage}" DecodeWidth="320" Stretch="UniformToFill"/>
+              <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding Car.DisplayName}" Foreground="{DynamicResource DarkStripeText}"/>
+            </Grid>
+          </Button>
+        </StackPanel>
+
+        <ItemsControl Grid.Column="2" ItemsSource="{Binding Cars}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="120" Theme="{StaticResource VirtualizingItemsControl}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <DockPanel Margin="0 0 0 4" Background="Transparent" mui:Draggable.Data="{Binding}" c:ToolTips.Car="{Binding}" c:ContextMenus.Car="{Binding}">
+                <mui:BetterImage Filename="{Binding BrandBadge}" Width="16" Height="16" DockPanel.Dock="Left" Margin="0 0 8 0" ClearOnChange="True"/>
+                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+              </DockPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </Grid>
+
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="1*" MinWidth="240"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Classes="SettingsCompactPanel">
+          <DockPanel ToolTip.Tip="Number of allowed clients">
+            <mui:ValueLabel Value="{Binding SelectedObject.Capacity}" Content="Capacity"/>
+            <Slider Minimum="2" Maximum="{Binding MaximumCapacity}" Value="{Binding SelectedObject.Capacity}" TickPlacement="BottomRight" TickFrequency="{Binding MaximumCapacity, Converter={x:Static local:SelectedPage.ProgressCapacityConverter}}"/>
+          </DockPanel>
+          <TextBlock Margin="0 0 0 4" Text="{Binding MaximumCapacity, Converter={StaticResource PluralizingConverter}, ConverterParameter={StaticResource MaximumCapacityMessage}}" Classes="Small"/>
+          <TextBlock Margin="0 0 0 8" Classes="Small">
+            <TextBlock.Text>
+              <MultiBinding Converter="{x:Static local:SelectedPage.ClientsToBandwidthConverter}" StringFormat="{}Approximate upload bandwidth required: {0:F2} Mbit/s">
+                <Binding Path="SelectedObject.SendIntervalHz"/>
+                <Binding Path="SelectedObject.Capacity"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+          <DockPanel Margin="0 20 0 8" ToolTip.Tip="Set a password if you want a private server">
+            <Label Content="{x:Static g:AppStrings.Online_PasswordLabel}"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.Password}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+          </DockPanel>
+          <DockPanel>
+            <ToolTip.Tip>
+              <mui:BbCodeBlock>Use it while joining the server or enter it later with “/admin [i]password[/i]”; use “/help” to see the list of commands</mui:BbCodeBlock>
+            </ToolTip.Tip>
+            <Label Content="Admin password:"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.AdminPassword}" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>
+          </DockPanel>
+          <CheckBox IsChecked="{Binding SelectedObject.ShowOnLobby}" ToolTip.Tip="Disable if you want for users to join directly through IP (or using LAN connection)">
+            <Label Content="Public server (show in the lobby)"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SelectedObject.ShowOnCmLobby}" ToolTip.Tip="Might be less crowded than the main lobby" IsVisible="{Binding HasCmLobbies, Source={x:Static t:ThirdPartyOnlineSourcesManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Label Content="CM public server (show in the CM lobby)"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SelectedObject.DisableChecksums}" ToolTip.Tip="With integrity verification disabled clients will be able to modify their versions of cars and tracks and get an unfair advantage">
+            <Label Content="Disable integrity verification (not recommended)"/>
+          </CheckBox>
+          <DockPanel Margin="0 20 0 8">
+            <Label Content="Welcome msg file:"/>
+            <DockPanel DockPanel.Dock="Bottom" Margin="0 0 0 0" IsVisible="{Binding SelectedObject.WelcomeMessageMissing, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="0 0 8 0" VerticalAlignment="Center"/>
+              <TextBlock Text="File is missing." VerticalAlignment="Center" TextWrapping="Wrap"/>
+            </DockPanel>
+            <Button Content="Change" Command="{Binding ChangeWelcomeMessagePathCommand}"/>
+            <mui:PathTrimmingTextBlock Placeholder="{x:Static t:ToolsStrings.Common_None}" Text="{Binding SelectedObject.WelcomeMessagePath}" Margin="0 2 0 0"/>
+          </DockPanel>
+          <DockPanel Margin="0 0 0 8">
+            <mui:BetterTextBox Text="{Binding SelectedObject.WelcomeMessage}" AcceptsReturn="True" TextWrapping="Wrap" Placeholder="{x:Static t:ToolsStrings.Common_None}" Height="200" DockPanel.Dock="Bottom" Margin="20 8 0 0" x:Name="WelcomeMessageTextArea" Theme="{StaticResource Borderless}"/>
+            <Label Content="Welcome message:" HorizontalAlignment="Left"/>
+          </DockPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Classes="SettingsCompactPanel">
+          <DockPanel ToolTip.Tip="Remember to open this port on your firewall">
+            <Label Content="UDP port:"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.UdpPort}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Mode="Integer" Minimum="1" Maximum="65535"/>
+          </DockPanel>
+          <DockPanel ToolTip.Tip="Remember to open this port on your firewall">
+            <Label Content="TCP port:"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.TcpPort}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Mode="Integer" Minimum="1" Maximum="65535"/>
+          </DockPanel>
+          <DockPanel ToolTip.Tip="Remember to open this port on your firewall">
+            <Label Content="HTTP port:"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.HttpPort}" Placeholder="{x:Static t:ToolsStrings.Common_None}" Mode="Integer" Minimum="1" Maximum="65535"/>
+          </DockPanel>
+          <DockPanel ToolTip.Tip="Higher value provides better multiplayer quality, but requires a more powerful connection">
+            <mui:ValueLabel Value="{Binding SelectedObject.SendIntervalHz}" Postfix=" Hz" Content="Packets"/>
+            <Slider Minimum="10" Maximum="60" Value="{Binding SelectedObject.SendIntervalHz}" TickFrequency="10" TickPlacement="BottomRight"/>
+          </DockPanel>
+          <DockPanel>
+            <mui:ValueLabel Value="{Binding SelectedObject.Threads}" Content="Threads"/>
+            <Slider Minimum="2" Maximum="8" Value="{Binding SelectedObject.Threads}" TickFrequency="2" TickPlacement="BottomRight"/>
+          </DockPanel>
+          <DockPanel Margin="0 0 0 8">
+            <mui:BetterTextBox Text="{Binding SelectedObject.ManagerDescription}" AcceptsReturn="False" TextWrapping="Wrap" Placeholder="{x:Static t:ToolsStrings.Common_None}" Height="60" DockPanel.Dock="Bottom" Margin="20 8 0 0" Theme="{StaticResource Borderless}"/>
+            <Label Content="Manager description:" HorizontalAlignment="Left" Width="200"/>
+          </DockPanel>
+
+          <TextBlock Text="Custom Shaders Patch:" Classes="Heading2 SettingsPanel.Heading2"/>
+          <CheckBox IsChecked="{Binding SelectedObject.CspRequired}" ToolTip.Tip="If CSP is not installed, track would be shown as not available">
+            <Label Content="Require CSP to join"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SelectedObject.CspExtendedCarsPhysics}" IsEnabled="{Binding SelectedObject.RequiredCspVersion, Converter={StaticResource MoreConverter}, ConverterParameter=1999}" ToolTip.Tip="Available starting with build 2000">
+            <Label Content="Use extended physics for cars"/>
+          </CheckBox>
+          <CheckBox IsChecked="{Binding SelectedObject.CspExtendedTrackPhysics}" IsEnabled="{Binding SelectedObject.RequiredCspVersion, Converter={StaticResource MoreConverter}, ConverterParameter=1999}" ToolTip.Tip="Available starting with build 2000">
+            <Label Content="Use extended physics for tracks"/>
+          </CheckBox>
+          <DockPanel Margin="0 0 0 8" ToolTip.Tip="{Binding Source={x:Static t:PatchHelper.MinimumTestOnlineVersion}, StringFormat='{}Version ID is a single number, minimum version is {0} (previous builds do not support this filtering system)'}">
+            <mui:ContextMenuButton DockPanel.Dock="Right" VerticalAlignment="Center">
+              <ContextMenu>
+                <MenuItem Header="Hide pit crew (speeds up loading)" IsChecked="{Binding SelectedObject.CspHidePitCrew}" IsEnabled="{Binding SelectedObject.RequiredCspVersion, Converter={StaticResource MoreConverter}, ConverterParameter=1999}" ToolTip.Tip="Available starting with build 2000"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+                <MenuItem Header="Icy surfaces" IsChecked="{Binding SelectedObject.CspIcePhysics}" IsEnabled="{Binding SelectedObject.RequiredCspVersion, Converter={StaticResource MoreConverter}, ConverterParameter=3213}" ToolTip.Tip="Available starting with build 3214"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+              </ContextMenu>
+            </mui:ContextMenuButton>
+            
+            <Label Content="Minimum version:"/>
+            <Button x:Name="CspVersionAutoFill" Click="CspVersionAutoFillClick" Content="Auto-fill" DockPanel.Dock="Right" Margin="8 0 0 0" ToolTip.Tip="Use version of CSP you have installed"/>
+            <mui:BetterTextBox Text="{Binding SelectedObject.RequiredCspVersion}" Placeholder="{Binding Source={x:Static t:PatchHelper.MinimumTestOnlineVersion}}" Mode="Integer" Minimum="{Binding Source={x:Static t:PatchHelper.MinimumTestOnlineVersion}}" Maximum="65535"/>
+          </DockPanel>
+          <Button Click="CspExtendedConfigClick" Content="Extra options" Margin="0 0 0 8" IsEnabled="{Binding SelectedObject.RequiredCspVersion, Converter={StaticResource MoreConverter}, ConverterParameter=1265}" ToolTip.Tip="Here you can define some extra options for Custom Shaders Patch, available starting with build 1266 (v0.1.69)"/>
+        </StackPanel>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

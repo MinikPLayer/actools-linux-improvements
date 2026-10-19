@@ -1,0 +1,54 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mi="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Miscellaneous.LapTimes_Recent">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/LapTimesSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ItemsControl Margin="{StaticResource ContentMarginWithPadding}" ItemsSource="{Binding View}" Theme="{StaticResource VirtualizingItemsControl}">
+    <ItemsControl.ItemTemplate>
+      <DataTemplate DataType="{x:Type t:LapTimeWrapped}">
+        <Grid Height="60" x:Name="Grid" ContextMenu="{StaticResource BestLapWrappedContextMenu}" Background="Transparent">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="30"/>
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="250"/>
+          </Grid.ColumnDefinitions>
+
+          <mui:ReferenceSwitch Grid.Column="0" Grid.Row="0" Value="{Binding Car}" Margin="12 4 8 2">
+            <mui:ReferenceSwitch.Null>
+              <TextBlock Text="{Binding Entry.CarId, StringFormat='{}Car {0} is missing'}" Opacity="0.5"/>
+            </mui:ReferenceSwitch.Null>
+            <mui:ReferenceSwitch.NonNull>
+              <DockPanel c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}" Background="Transparent" c:ContextMenus.AdditionalItems="{StaticResource BestLapWrappedContextMenuItems}">
+                <mui:BetterImage Filename="{Binding Car.BrandBadge}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True"/>
+                <TextBlock Text="{Binding Car.DisplayName}" FontWeight="Bold" VerticalAlignment="Center"/>
+              </DockPanel>
+            </mui:ReferenceSwitch.NonNull>
+          </mui:ReferenceSwitch>
+
+          <mui:ReferenceSwitch Grid.Column="0" Grid.Row="1" Value="{Binding Track}" Margin="12 2 8 4">
+            <mui:ReferenceSwitch.Null>
+              <TextBlock Text="{Binding Entry.TrackId, StringFormat='{}Track {0} is missing'}" Opacity="0.5"/>
+            </mui:ReferenceSwitch.Null>
+            <mui:ReferenceSwitch.NonNull>
+              <DockPanel c:ToolTips.Track="{Binding Track}" c:ContextMenus.Track="{Binding Track}" mui:Draggable.Data="{Binding Track}" Background="Transparent" c:ContextMenus.AdditionalItems="{StaticResource BestLapWrappedContextMenuItems}">
+                <mui:BetterImage Filename="{Binding Track.OutlineImage}" Width="24" Height="24" Margin="0 0 12 0" ClearOnChange="True" CropTransparentAreas="True" Effect="{DynamicResource TrackOutlineAloneEffect}"/>
+                <TextBlock Text="{Binding Track.Name}" VerticalAlignment="Center"/>
+              </DockPanel>
+            </mui:ReferenceSwitch.NonNull>
+          </mui:ReferenceSwitch>
+
+          <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Text="{Binding Entry.LapTime, Converter={StaticResource MillisecondsTimeSpanConverter}}" VerticalAlignment="Center" Margin="0 0 0 8" Classes="Heading1"/>
+          <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Text="{Binding Entry.EntryDate}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="4" Classes="Small"/>
+          <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Text="{Binding Entry.Source}" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="4" Classes="Small"/>
+        </Grid>
+      </DataTemplate>
+    </ItemsControl.ItemTemplate>
+  </ItemsControl>
+</UserControl>

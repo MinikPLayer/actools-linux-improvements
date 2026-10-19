@@ -1,0 +1,27 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:w="clr-namespace:AcManager.Pages.Workshop" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Workshop.WorkshopContentTags">
+  <ListBox x:Name="List" ItemsSource="{Binding Categories}" Margin="20" ScrollViewer.HorizontalScrollBarVisibility="Disabled" KeyDown="OnPreviewKeyDown">
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <mui:StretchyWrapPanel SizeChanged="OnPanelSizeChanged"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <mui:Cell Background="Transparent" HorizontalAlignment="Center" PointerPressed="OnItemMouseDown" x:Name="__Dt0">
+          <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ TextBlock#Text"><Setter Property="FontSize" Value="14"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding HasNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Accented, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+          </Style><Style Selector="^[(pa|T.S2)=True] TextBlock#Text"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
+            <Setter Property="FontSize" Value="16"/>
+          </Style></Style></mui:Cell.Styles><ToolTip.Tip>
+            <ToolTip IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+              <mui:BbCodeBlock Text="{Binding Description}" MaxWidth="400" TextWrapping="Wrap"/>
+            </ToolTip>
+          </ToolTip.Tip>
+          <TextBlock x:Name="Text" HorizontalAlignment="Center" Text="{Binding Name}" Margin="8 4" VerticalAlignment="Bottom"/>
+          <TextBlock FontSize="16" HorizontalAlignment="Center" Text="{Binding Name}" Margin="8 4" VerticalAlignment="Bottom" FontWeight="Bold" IsVisible="False"/>
+          <TextBlock FontSize="10" HorizontalAlignment="Right" Text="{Binding Uses}" Margin="2" VerticalAlignment="Top" Classes="Label"/>
+          <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="0" IsHitTestVisible="False"/>
+        </mui:Cell>
+        </DataTemplate>
+    </ListBox.ItemTemplate>
+  </ListBox>
+</UserControl>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedCarSkinPage : ILoadableContent, IParametrizedUriContent {
+    public partial class SelectedCarSkinPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent {
         public class ViewModel : SelectedAcObjectViewModel<CarSkinObject> {
             public CarObject Car { get; }
 
@@ -281,19 +281,19 @@ namespace AcManager.Pages.Selected {
         }
 
         #region Presets (Dynamic Loading)
-        private void OnShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeShowroomPresets();
         }
 
-        private void OnCustomShowroomButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnCustomShowroomButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeCustomShowroomPresets();
         }
 
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeQuickDrivePresets();
         }
 
-        private void OnUpdatePreviewsButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnUpdatePreviewsButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializeUpdatePreviewsPresets();
         }
         #endregion

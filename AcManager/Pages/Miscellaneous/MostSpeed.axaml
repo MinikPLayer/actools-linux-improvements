@@ -1,0 +1,27 @@
+﻿<mi:MostSomethingBase xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:mi="clr-namespace:AcManager.Pages.Miscellaneous" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Miscellaneous.MostSpeed">
+  <mi:MostSomethingBase.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="MostSomethingBase.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></mi:MostSomethingBase.Resources>
+  <mui:SpacingUniformGrid Classes="MostPageStyle">
+    <ItemsControl ItemsSource="{Binding CarEntries}" ItemTemplate="{StaticResource MostCarTemplate}" Theme="{StaticResource VirtualizingItemsControl}"/>
+
+    <mui:BooleanSwitch>
+      <mui:BooleanSwitch.Value>
+        <MultiBinding Converter="{StaticResource AndConverter}">
+          <Binding Path="CarEntries.Count" Converter="{StaticResource EnumToBooleanConverter}" ConverterParameter="≠0"/>
+          <Binding Path="TrackEntries.Count" Converter="{StaticResource EnumToBooleanConverter}" ConverterParameter="0"/>
+        </MultiBinding>
+      </mui:BooleanSwitch.Value>
+      <mui:BooleanSwitch.True>
+        <StackPanel Margin="0 80 0 0">
+          <TextBlock Text="Entries are missing. Recalculation might help." HorizontalAlignment="Center"/>
+          <Button Command="{Binding RebuildOverallCommand}" Content="{x:Static g:AppStrings.CarSpecs_Recalculate}" HorizontalAlignment="Center" Margin="0 8 0 0"/>
+        </StackPanel>
+      </mui:BooleanSwitch.True>
+      <mui:BooleanSwitch.False>
+        <ItemsControl ItemsSource="{Binding TrackEntries}" ItemTemplate="{StaticResource MostTrackTemplate}" Theme="{StaticResource VirtualizingItemsControl}"/>
+      </mui:BooleanSwitch.False>
+    </mui:BooleanSwitch>
+
+  </mui:SpacingUniformGrid>
+</mi:MostSomethingBase>

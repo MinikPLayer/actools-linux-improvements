@@ -1,0 +1,10 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.AcSettingsControls_Controller">
+  <mui:ModernTab Layout="Tab" SelectedSource="/Pages/AcSettings/AcSettingsControls_Controller_Main.xaml" SaveKey="__AcSettingsControls_Controller.SelectedPage" Margin="0 0 0 0" LinksMargin="0 0 44 0" FrameMargin="0 28 0 0">
+    <mui:ModernTab.Links>
+      <mui:Link DisplayName="Main" Source="/Pages/AcSettings/AcSettingsControls_Controller_Main.xaml"/>
+      <mui:Link DisplayName="Additional" Source="/Pages/AcSettings/AcSettingsControls_Controller_Buttons.xaml"/>
+      <mui:Link DisplayName="{x:Static g:AppStrings.AcSettings_System}" Source="/Pages/AcSettings/AcSettingsControls_Wheel_System.xaml"/>
+      <mui:Link DisplayName="Patch" Source="/Pages/AcSettings/AcSettingsControls_Wheel_Patch.xaml"/>
+    </mui:ModernTab.Links>
+  </mui:ModernTab>
+</UserControl>

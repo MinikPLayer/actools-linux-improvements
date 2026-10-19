@@ -1,0 +1,66 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:acSettings="clr-namespace:AcManager.Pages.AcSettings" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.AcSettings.AcSettingsDamageDisplayer">
+  <UserControl.Resources>
+    <ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+  </ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+
+  <ScrollViewer mui:SaveScroll.Key="AcSettingsDamageDisplayer">
+    <mui:SpacingUniformGrid x:Name="Grid" Columns="1" HorizontalSpacing="20" VerticalStackMode="True">
+
+      <StackPanel Classes="SettingsPanel">
+        <Viewbox Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Top">
+          <Canvas x:Name="MainCanvas" Width="1920" Height="1080" Background="#404040" ClipToBounds="True">
+            <mui:Cell x:Name="BackgroundImageCell">
+              <mui:ModernProgressRing x:Name="BackgroundImageProgress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80"/>
+              <mui:BetterImage x:Name="BackgroundImage" Opacity="1" Stretch="UniformToFill"/>
+            </mui:Cell>
+
+            <Thumb x:Name="ImagesThumb" DragDelta="OnThumbDragDelta" Cursor="SizeAll">
+              <Thumb.Template>
+                <ControlTemplate>
+                  <mui:Cell>
+                    <mui:BooleanSwitch Value="{mui:Stored 'AcSettingsDamageDisplayer.HighlightArea=True'}">
+                      <Border Background="#22ffffff"/>
+                    </mui:BooleanSwitch>
+                    <mui:Cell Loaded="OnThumbLoaded"/>
+                  </mui:Cell>
+                </ControlTemplate>
+              </Thumb.Template>
+            </Thumb>
+          </Canvas>
+        </Viewbox>
+
+        <CheckBox IsChecked="{mui:Stored 'AcSettingsDamageDisplayer.HighlightArea=True'}" Margin="0 8 0 0">
+          <Label Content="Highlight area in visual editor"/>
+        </CheckBox>
+
+      </StackPanel>
+      <StackPanel Classes="SettingsPanel">
+
+        <TextBlock Text="Params:" Classes="Heading2 SettingsPanel.Heading2.First"/>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding DamageDisplayer.X}" Postfix=" px" Content="{x:Static c:ControlsStrings.TableHeader_X}"/>
+          <Slider x:Name="XSlider" Minimum="0" Maximum="2000" Value="{Binding DamageDisplayer.X}" TickFrequency="100" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding DamageDisplayer.Y}" Postfix=" px" Content="{x:Static c:ControlsStrings.TableHeader_Y}"/>
+          <Slider x:Name="YSlider" Minimum="0" Maximum="2000" Value="{Binding DamageDisplayer.Y}" TickFrequency="100" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding DamageDisplayer.Time}" Postfix=" s" Content="Time visible"/>
+          <Slider Minimum="0" Maximum="10" Value="{Binding DamageDisplayer.Time}" TickFrequency="1" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+        <DockPanel>
+          <mui:ValueLabel Value="{Binding DamageDisplayer.MaxDamageSpeed, Converter={StaticResource MultiplyConverter}, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}}" Postfix="{x:Static t:SettingsHolder+CommonSettings.SpaceSpeedPostfix}" Content="Max damage at"/>
+          <Slider Minimum="30" Maximum="90" Value="{Binding DamageDisplayer.MaxDamageSpeed}" TickFrequency="6" TickPlacement="BottomRight"/>
+        </DockPanel>
+
+      </StackPanel>
+
+    </mui:SpacingUniformGrid>
+  </ScrollViewer>
+
+</UserControl>

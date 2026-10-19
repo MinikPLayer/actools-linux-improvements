@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class FindInformationDialog {
+    public partial class FindInformationDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public FindInformationDialog(AcJsonObjectNew obj) {
@@ -29,7 +29,7 @@ namespace AcManager.Pages.Dialogs {
             WebBrowser.SetJsBridge<JsBridge>(x => x.Model = Model);
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class JsProxy : JsProxyCSharp {
             private JsBridge _bridge;
 

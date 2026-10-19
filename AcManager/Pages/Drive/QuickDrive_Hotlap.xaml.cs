@@ -7,7 +7,7 @@ using AcManager.Tools.Profile;
 using AcTools.Processes;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Hotlap : IQuickDriveModeControl {
+    public partial class QuickDrive_Hotlap : global::Avalonia.Controls.UserControl, IQuickDriveModeControl {
         public class ViewModel : QuickDriveSingleModeViewModel {
             private bool _ghostCar;
 

@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Wheel_System : INotifyPropertyChanged, ILoadableContent {
+    public partial class AcSettingsControls_Wheel_System : global::Avalonia.Controls.UserControl, INotifyPropertyChanged, ILoadableContent {
         public void Initialize() {
             InitializeComponent();
 

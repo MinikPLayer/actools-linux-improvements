@@ -32,7 +32,7 @@ namespace AcManager.CustomShowroom {
         Task OfferToInstall([Localizable(false)] string showroomName, [Localizable(false)] string showroomId, [Localizable(false)] string informationUrl);
     }
 
-    public partial class CmPreviewsTools {
+    public partial class CmPreviewsTools : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public static IMissingShowroomHelper MissingShowroomHelper { get; set; }
 
         private readonly string _loadPreset;

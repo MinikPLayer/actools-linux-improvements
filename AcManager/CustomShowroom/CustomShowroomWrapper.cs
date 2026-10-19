@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms.Integration;
 using AcManager.AcSound;
 using AcManager.Controls;
 using AcManager.Tools.Helpers;

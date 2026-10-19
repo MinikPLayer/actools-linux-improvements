@@ -1,0 +1,33 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Pages.Dialogs" xmlns:mu="clr-namespace:FirstFloor.ModernUI;assembly=FirstFloor.ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.AcErrorSolutionSelector" Title="{Binding AcError.Message}" Loaded="OnLoaded" Unloaded="OnUnloaded">
+  <mui:ModernDialog.ButtonsRowContent>
+    <StackPanel Orientation="Horizontal">
+      <Button Content="{x:Static mu:UiStrings.Ok}" IsDefault="True" Command="{Binding RunCommand}"/>
+      <Button Content="{x:Static g:AppStrings.AcError_SolveAllSimilarErrors}" Command="{Binding RunAllCommand}" Margin="4 0 0 0" IsVisible="{Binding MultiAppliable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+    </StackPanel>
+  </mui:ModernDialog.ButtonsRowContent>
+  <mui:ReferenceSwitch Value="{Binding ErrorMessage}">
+    <mui:ReferenceSwitch.NonNull>
+      <mui:BbCodeBlock Text="{Binding ErrorMessage}"/>
+    </mui:ReferenceSwitch.NonNull>
+    <mui:ReferenceSwitch.Null>
+      <StackPanel>
+        <TextBlock Margin="0 0 0 8" Text="{Binding Solutions.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static g:AppStrings.AcError_AvailableSolutions}}" Classes="Heading2"/>
+        <ListBox ItemsSource="{Binding Solutions}" SelectedItem="{Binding SelectedSolution, Mode=TwoWay}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel ToolTip.Tip="{Binding Description}">
+                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Stretch" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Margin="0 4 0 0" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse'}" Classes="Small"/>
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+          <ListBox.ItemContainerTheme>
+            <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource RadioBoxListItem}">
+              <Setter Property="Margin" Value="8 4 4 8"/>
+            </ControlTheme>
+          </ListBox.ItemContainerTheme>
+        </ListBox>
+      </StackPanel>
+    </mui:ReferenceSwitch.Null>
+  </mui:ReferenceSwitch>
+</mui:ModernDialog>

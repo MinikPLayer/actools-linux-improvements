@@ -15,7 +15,9 @@ namespace AcTools.NeuralTyres.Implementations {
 
         static FannNetwork() {
             // TODO!
-            Kernel32.LoadLibrary(@"fanndouble.dll");
+            if (OperatingSystem.IsWindows()) {
+                Kernel32.LoadLibrary(@"fanndouble.dll");
+            }
         }
 
         private NeuralTyresOptions _options = NeuralTyresOptions.Default;

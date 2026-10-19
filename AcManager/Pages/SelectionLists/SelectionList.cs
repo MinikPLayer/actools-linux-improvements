@@ -97,7 +97,7 @@ namespace AcManager.Pages.SelectionLists {
 
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
-            PreviewKeyDown += OnPreviewKeyDown;
+            this.AddPreviewKeyDown(OnPreviewKeyDown);
         }
 
         protected virtual ICollectionView GetCollectionView(BetterObservableCollection<TItem> items) {
@@ -124,13 +124,14 @@ namespace AcManager.Pages.SelectionLists {
 
         private ScrollViewer _scrollViewer;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_scrollViewer != null) {
                 _scrollViewer.ScrollChanged -= OnScrollChanged;
             }
 
-            base.OnApplyTemplate();
-            _scrollViewer = GetTemplateChild(@"PART_ScrollViewer") as ScrollViewer;
+            base.OnApplyTemplate(e);
+            _scrollViewer = this.GetTemplateChild(@"PART_ScrollViewer") as ScrollViewer;
 
             if (_scrollViewer != null) {
                 _scrollViewer.ScrollChanged += OnScrollChanged;
@@ -149,7 +150,7 @@ namespace AcManager.Pages.SelectionLists {
         }
 
         protected void OnPanelSizeChanged(object sender, SizeChangedEventArgs e) {
-            Dispatcher.BeginInvoke(DispatcherPriority.Render, (Action)LoadScroll);
+            Dispatcher.UIThread.BeginInvoke(DispatcherPriority.Render, (Action)LoadScroll);
         }
 
         private void SaveListToCache(IList<TItem> list) {
@@ -191,7 +192,7 @@ namespace AcManager.Pages.SelectionLists {
         private void OnItemContainerGeneratorStatusChanged(object sender, EventArgs e) {
             if (ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated) {
                 ItemContainerGenerator.StatusChanged -= OnItemContainerGeneratorStatusChanged;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => {
+                Dispatcher.UIThread.BeginInvoke(DispatcherPriority.Input, new Action(() => {
                     ((UIElement)ItemContainerGenerator.ContainerFromItem(SelectedItem))?.Focus();
                 }));
             }

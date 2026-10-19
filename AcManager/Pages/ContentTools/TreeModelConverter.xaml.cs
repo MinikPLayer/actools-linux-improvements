@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class TreeModelConverter {
+    public partial class TreeModelConverter : global::AcManager.Pages.ContentTools.ContentTool {
         protected override Task<bool> LoadAsyncOverride(IProgress<AsyncProgressEntry> progress, CancellationToken cancellation) {
             return Task.FromResult(true);
         }

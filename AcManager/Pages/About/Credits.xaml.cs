@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,7 +7,7 @@ using AcManager.About;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.About {
-    public partial class Credits {
+    public partial class Credits : global::Avalonia.Controls.UserControl {
         public Credits() {
             InitializeComponent();
 
@@ -42,7 +42,7 @@ namespace AcManager.Pages.About {
             });
         }
 
-        private void OnTreeViewMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnTreeViewMouseWheel(object sender, PointerWheelEventArgs e) {
             e.Handled = true;
             (((FrameworkElement)sender).Parent as UIElement)?.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) {
                 RoutedEvent = MouseWheelEvent,

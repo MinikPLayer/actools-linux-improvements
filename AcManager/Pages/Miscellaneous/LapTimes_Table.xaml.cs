@@ -19,7 +19,7 @@ using FirstFloor.ModernUI.Windows;
 using StringBasedFilter;
 
 namespace AcManager.Pages.Miscellaneous {
-    public partial class LapTimes_Table : ILoadableContent, IParametrizedUriContent {
+    public partial class LapTimes_Table : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private string _filter;
         private string _key;
 

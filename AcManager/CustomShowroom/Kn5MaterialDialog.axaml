@@ -1,0 +1,167 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:customShowroom="clr-namespace:AcManager.CustomShowroom" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.CustomShowroom.Kn5MaterialDialog" Title="Car material" Loaded="OnLoaded" Unloaded="OnUnloaded" WindowStartupLocation="CenterScreen" MaxWidth="640" Topmost="False" SizeToContent="Height" Width="640">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <ControlTheme TargetType="mui:ValueLabel" x:Key="{x:Type mui:ValueLabel}">
+        <Setter Property="Margin" Value="0 0 0 4"/>
+        <Setter Property="Padding" Value="0 0 0 0"/>
+        <Setter Property="mui:BetterTextBox.Mode" Value="Integer"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="mui:ValueLabel">
+              <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+                <mui:BbCodeBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+              </StackPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </ControlTheme>
+
+      <ControlTheme x:Key="ValueLabel.EqualsSign" TargetType="mui:ValueLabel">
+        <Setter Property="Margin" Value="0 0 0 4"/>
+        <Setter Property="Padding" Value="0 0 0 0"/>
+        <Setter Property="mui:BetterTextBox.Mode" Value="Integer"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="mui:ValueLabel">
+              <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+                <mui:BbCodeBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0}='}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <mui:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+              </StackPanel>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </ControlTheme>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <mui:ReferenceSwitch Value="{Binding Material}">
+    <mui:ReferenceSwitch.Null>
+      <DockPanel>
+        <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" Fill="{DynamicResource Error}" Stretch="Uniform" DockPanel.Dock="Right"/>
+        <TextBlock Text="Material is missing!" Margin="10 2 2 2" Classes="Heading2"/>
+      </DockPanel>
+    </mui:ReferenceSwitch.Null>
+    <mui:ReferenceSwitch.NonNull>
+      <mui:SpacingStackPanel VerticalAlignment="Top" Spacing="4" IsVisible="{Binding ChangeMaterialCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Name:"/>
+          <mui:SelectableTextBlock Text="{Binding Material.Name}"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Shader:"/>
+          <mui:SelectableTextBlock Text="{Binding Material.ShaderName}"/>
+        </DockPanel>
+        <DockPanel>
+          <Label DockPanel.Dock="Left" Width="100" Content="Used for:"/>
+          <mui:SelectableTextBlock Text="{Binding UsedFor}"/>
+        </DockPanel>
+
+        <TextBlock Text="Parameters:" Margin="0 16 0 0" Classes="Heading2"/>
+        <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
+          <DockPanel.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{Binding OriginalAlphaMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetAlphaModeCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+            </ContextMenu>
+          </DockPanel.ContextMenu>
+          <Label DockPanel.Dock="Left" Width="100" Content="Alpha mode:" VerticalAlignment="Center"/>
+          <mui:BetterComboBox IsEditable="False" SelectedItem="{Binding AlphaMode}" ItemsSource="{Binding AlphaModes}">
+            <mui:BetterComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+              </DataTemplate>
+            </mui:BetterComboBox.ItemTemplate>
+          </mui:BetterComboBox>
+        </DockPanel>
+        <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
+          <DockPanel.ContextMenu>
+            <ContextMenu>
+              <MenuItem Header="{Binding OriginalDepthMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetDepthModeCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+            </ContextMenu>
+          </DockPanel.ContextMenu>
+          <Label DockPanel.Dock="Left" Width="100" Content="Depth mode:" VerticalAlignment="Center"/>
+          <mui:BetterComboBox IsEditable="False" SelectedItem="{Binding DepthMode}" ItemsSource="{Binding DepthModes}">
+            <mui:BetterComboBox.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+              </DataTemplate>
+            </mui:BetterComboBox.ItemTemplate>
+          </mui:BetterComboBox>
+        </DockPanel>
+
+        <mui:SpacingStackPanel Spacing="4" Margin="0 16 0 0" IsVisible="{Binding ValuesSingle.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+          <TextBlock Text="Values:" Classes="Heading2"/>
+          <ItemsControl ItemsSource="{Binding ValuesSingle}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <mui:UniformGridWithOrientation Orientation="Vertical" Columns="4" VerticalSpacing="4" HorizontalSpacing="20"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <mui:ValueLabel Content="{Binding DisplayName}" Value="{Binding Value, UpdateSourceTrigger=PropertyChanged}" mui:BetterTextBox.Mode="Number" Padding="0" Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <mui:ValueLabel.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    </ContextMenu>
+                  </mui:ValueLabel.ContextMenu>
+                </mui:ValueLabel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </mui:SpacingStackPanel>
+
+        <mui:SpacingStackPanel Spacing="4" Margin="0 16 0 0" IsVisible="{Binding Values3D.Count, Converter={StaticResource MoreToVisibilityConverter}}">
+          <TextBlock Text="Vector values:" Classes="Heading2"/>
+          <ItemsControl ItemsSource="{Binding Values3D}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <mui:UniformGridWithOrientation Orientation="Vertical" Columns="2" VerticalSpacing="4" HorizontalSpacing="20"/>
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
+                  <DockPanel.ContextMenu>
+                    <ContextMenu>
+                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    </ContextMenu>
+                  </DockPanel.ContextMenu>
+
+                  <DockPanel LastChildFill="False">
+                    <mui:BbCodeBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" DockPanel.Dock="Left" Margin="0 0 4 0" Classes="Label"/>
+                    <mui:ValueLabel Content="X" Value="{Binding X, UpdateSourceTrigger=PropertyChanged}" mui:BetterTextBox.Mode="Number" Padding="0 0 4 0" Margin="0" Theme="{StaticResource ValueLabel.EqualsSign}"/>
+                    <mui:ValueLabel Content="Y" Value="{Binding Y, UpdateSourceTrigger=PropertyChanged}" mui:BetterTextBox.Mode="Number" Padding="0 0 4 0" Margin="0" Theme="{StaticResource ValueLabel.EqualsSign}"/>
+                    <mui:ValueLabel Content="Z" Value="{Binding Z, UpdateSourceTrigger=PropertyChanged}" mui:BetterTextBox.Mode="Number" Padding="0 0 4 0" Margin="0" Theme="{StaticResource ValueLabel.EqualsSign}"/>
+                  </DockPanel>
+                </DockPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </mui:SpacingStackPanel>
+
+        <c:MessageBlock Margin="0 16 0 0" IsVisible="{Binding ChangeMaterialCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <mui:BbCodeBlock Text="Here, you can change only numerical values for shaders, but it should be enough to fix shaders for old cars (which are less reflective then they should). Firstly, I recommend to load some Kunos cars and same their values using presets control beneath. Then, just load saved preset for an old car you want to update and you’ll get perfect values.[br][br]By the way, those presets are compatible with [url=&quot;https://ascobash.wordpress.com/2015/07/22/kseditor/&quot;]patched KsEditor’s[/url] material library."/>
+        </c:MessageBlock>
+      </mui:SpacingStackPanel>
+    </mui:ReferenceSwitch.NonNull>
+  </mui:ReferenceSwitch>
+
+  <mui:ModernDialog.ButtonsRowContent>
+    <mui:SpacingStackPanel Orientation="Horizontal" Spacing="4">
+      <c:UserPresetsControl UserPresetable="{Binding}"/>
+      <mui:ButtonWithComboBox Content="Change material" Command="{Binding ChangeMaterialCommand}" ButtonToolTip="Change material for selected mesh" IsVisible="{Binding ChangeMaterialCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <mui:ButtonWithComboBox.MenuItems>
+          <MenuItem Command="{Binding RenameCommand}" Header="Rename material"/>
+          <MenuItem Command="{Binding ForkCommand}" Header="{Binding Material.Name}" IsEnabled="{Binding IsForkAvailable}" IsVisible="{Binding Material, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" ToolTip.Tip="Fork material to be used only for this mesh"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+        </mui:ButtonWithComboBox.MenuItems>
+      </mui:ButtonWithComboBox>
+    </mui:SpacingStackPanel>
+  </mui:ModernDialog.ButtonsRowContent>
+</mui:ModernDialog>

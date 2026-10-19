@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -44,7 +44,7 @@ using JetBrains.Annotations;
 using CarEntry = AcManager.Tools.Managers.Online.ServerEntry.CarEntry;
 
 namespace AcManager.Pages.Drive {
-    public partial class OnlineServer : IParametrizedUriContent, IImmediateContent {
+    public partial class OnlineServer : global::Avalonia.Controls.UserControl, IParametrizedUriContent, IImmediateContent {
         private readonly DiscordRichPresence _discordPresence = new DiscordRichPresence(100, "Preparing to race", "Online");
 
         public static TimeSpan OptionAutoConnectPeriod = TimeSpan.FromSeconds(5d);
@@ -154,7 +154,7 @@ namespace AcManager.Pages.Drive {
 
         private bool _listsButtonInitialized;
 
-        private void ListsButton_OnPreviewMouseDown(object sender, MouseButtonEventArgs e) {
+        private void ListsButton_OnPreviewMouseDown(object sender, PointerPressedEventArgs e) {
             if (_listsButtonInitialized) return;
             _listsButtonInitialized = true;
 
@@ -307,7 +307,7 @@ namespace AcManager.Pages.Drive {
             }
         }
 
-        private async void OnMouseRightButtonUp(object sender, MouseButtonEventArgs e) {
+        private async void OnMouseRightButtonUp(object sender, PointerReleasedEventArgs e) {
             await Task.Delay(1);
             if (e.Handled) return;
 
@@ -710,7 +710,7 @@ namespace AcManager.Pages.Drive {
 • Burnt {stats.FuelBurnt:F1} l of fuel, worn out {PluralizingConverter.PluralizeExt(stats.TotalTyreWearRounded.RoundToInt(), "{0} tyre")}.");
         }
 
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             Model.QuickDriveButton.Initialize();
         }
 

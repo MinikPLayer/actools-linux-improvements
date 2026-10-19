@@ -19,7 +19,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Dialogs {
-    public sealed partial class CarSpecsEditor : IInvokingNotifyPropertyChanged {
+    public sealed partial class CarSpecsEditor : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IInvokingNotifyPropertyChanged {
         public CarObject Car { get; private set; }
 
         private GraphData _torqueGraph, _powerGraph;
@@ -54,7 +54,7 @@ namespace AcManager.Pages.Dialogs {
             };
 
             foreach (var input in _fixableInputs) {
-                input.PreviewMouseDown += FixableInput_MouseDown;
+                input.AddPreviewMouseDown(FixableInput_MouseDown);
             }
 
             Car = car;

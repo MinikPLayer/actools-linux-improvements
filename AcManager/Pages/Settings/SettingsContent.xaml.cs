@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using AcManager.Internal;
 using AcManager.Tools;
@@ -14,7 +14,7 @@ using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsContent {
+    public partial class SettingsContent : global::Avalonia.Controls.UserControl {
         public SettingsContent() {
             InitializeComponent();
             DataContext = new ViewModel();

@@ -33,7 +33,7 @@ using SharpCompress.Common;
 using SharpCompress.Writers;
 
 namespace AcManager.Pages.Selected {
-    public partial class SelectedWeatherPage : ILoadableContent, IParametrizedUriContent, INotifyPropertyChanged, IImmediateContent {
+    public partial class SelectedWeatherPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, INotifyPropertyChanged, IImmediateContent {
         private const string KeyEditMode = "weather.editmode";
 
         public class ViewModel : SelectedAcObjectViewModel<WeatherObject> {

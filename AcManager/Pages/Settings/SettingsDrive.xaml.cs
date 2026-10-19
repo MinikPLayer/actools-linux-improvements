@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using Microsoft.Win32;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsDrive {
+    public partial class SettingsDrive : global::Avalonia.Controls.UserControl {
         public ViewModel Model => (ViewModel)DataContext;
 
         public SettingsDrive() {

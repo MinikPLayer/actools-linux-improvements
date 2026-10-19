@@ -1,0 +1,18 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Dialogs.UpgradeIconEditor" Title="{x:Static g:AppStrings.UpgradeIcon_Title}" LocationAndSizeKey=".UpgradeIconEditor.ls_" ContentMargin="0 -42 0 0" MinWidth="360" MinHeight="200" Width="380" Height="240" SizeToContent="Manual" DragDrop.Drop="OnDrop" DragDrop.AllowDrop="True" CanResize="True">
+  <mui:ModernDialog.MainButtonsPanelTemplate>
+    <ItemsPanelTemplate>
+      <mui:StretchyWrapPanel Margin="-4 0 0 0" StretchToFill="True" StretchProportionally="True" LineSpace="4" Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}, Converter={StaticResource SumConverter}, ConverterParameter=4}"/>
+    </ItemsPanelTemplate>
+  </mui:ModernDialog.MainButtonsPanelTemplate>
+  <mui:ModernTab SelectedSource="/Pages/Dialogs/UpgradeIconEditor_Editor.xaml" Layout="Tab" LinksMargin="0 0 0 10" x:Name="Tabs">
+    <mui:ModernTab.LinksListBoxTemplate>
+      <ControlTemplate>
+        <ItemsPresenter HorizontalAlignment="Right"/>
+      </ControlTemplate>
+    </mui:ModernTab.LinksListBoxTemplate>
+    <mui:ModernTab.Links>
+      <mui:Link DisplayName="{x:Static g:AppStrings.UpgradeIcon_Editor}" Source="/Pages/Dialogs/UpgradeIconEditor_Editor.xaml"/>
+      <mui:Link DisplayName="{x:Static g:AppStrings.UpgradeIcon_Library}" Source="/Pages/Dialogs/UpgradeIconEditor_Library.xaml"/>
+    </mui:ModernTab.Links>
+  </mui:ModernTab>
+</mui:ModernDialog>

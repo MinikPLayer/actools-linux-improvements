@@ -2,7 +2,7 @@
 using FirstFloor.ModernUI.Windows;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class ServerPresetSessions {
+    public partial class ServerPresetSessions : global::Avalonia.Controls.UserControl {
         public ServerPresetSessions() {
             InitializeComponent();
             this.AddSizeCondition(x => x.ActualWidth < 500 ? 1 : x.ActualWidth < 1200 ? 2 : 4)

@@ -1,0 +1,110 @@
+﻿<selected:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:selected="clr-namespace:AcManager.Pages.Selected" xmlns:serverPreset="clr-namespace:AcManager.Pages.ServerPreset" xmlns:g="clr-namespace:AcManager" xmlns:system="using:System" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ServerPreset.SelectedPage" mui:InputBindingBehavior.PropagateToWindow="True" Loaded="OnLoaded">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+      <!-- PORT: removed CollectionViewSource -->
+      <system:Uri x:Key="RunningLogUri">/Pages/ServerPreset/ServerPresetRunningLog.xaml</system:Uri>
+      <system:Uri x:Key="RunningStatusUri">/Pages/ServerPreset/ServerPresetRunningStatus.xaml</system:Uri>
+      <system:Uri x:Key="EntryListUri">/Pages/ServerPreset/ServerPresetEntryList.xaml</system:Uri>
+      <system:Uri x:Key="AdvancedUri">/Pages/ServerPreset/ServerPresetAdvanced.xaml</system:Uri>
+      <system:Uri x:Key="PluginsUri">/Pages/ServerPreset/ServerPresetPlugins.xaml</system:Uri>
+      <system:Uri x:Key="DetailsUri">/Pages/ServerPreset/ServerPresetDetails.xaml</system:Uri>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <c:AcObjectBase x:Name="Base" AcObject="{Binding SelectedObject}" ShowIcon="False" Scrollable="False">
+    <c:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}">
+          <ToolTip.Tip>Open preset’s folder (Ctrl+F)</ToolTip.Tip>
+        </Button>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneCommand}" ToolTip.Tip="Clone preset (Ctrl+Shift+D)"/>
+        <Separator/>
+        <!--<Button Content="{x:Static g:AppStrings.Common_Share}" Command="{Binding ShareCommand}" ToolTip="Share preset (Ctrl+Page Up)" IsEnabled="False" />-->
+        <mui:ButtonWithComboBox Content="Pack" ButtonToolTip="Pack a new package for quick launching on a remote machine (Ctrl+P)" Command="{Binding PackCommand}" PointerPressed="OnPackServerButtonMouseDown">
+          <!--<MenuItem Header="Pack For Linux" ToolTip="Pack server for Linux machine" Command="{Binding PackCommand}" CommandParameter="linux" />-->
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Options}" Command="{Binding PackOptionsCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_ShowroomOptions_Tooltip}"><!-- PORT: removed InputGestureText (not in Avalonia) --></MenuItem>
+          <MenuItem Header="{x:Static c:ControlsStrings.Common_Presets}">
+            <MenuItem.Items>
+              <!-- PORT: removed CollectionContainer -->
+              </MenuItem.Items>
+          </MenuItem>
+        </mui:ButtonWithComboBox>
+        <Button Content="Run" Command="{Binding GoCommand}" ToolTip.Tip="Run a new server using this preset (Ctrl+G)" IsVisible="{Binding SelectedObject.IsRunning, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Go.ToolBarButton}"/>
+        <Button Content="Restart" Command="{Binding RestartCommand}" ToolTip.Tip="Restart server using this preset (Ctrl+Shift+G)" IsVisible="{Binding SelectedObject.IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource Go.ToolBarButton}"/>
+        <Button Content="Stop" Command="{Binding SelectedObject.StopServerCommand}" ToolTip.Tip="Stop running server" IsVisible="{Binding SelectedObject.IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <Separator x:Name="InviteButtonSeparator" IsVisible="False"/>
+        <mui:ButtonWithComboBox x:Name="InviteButton" Content="{x:Static mui:UiStrings.Toolbar_Invite}" Command="{Binding InviteCommand}" IsVisible="False" ToolTip.Tip="{x:Static mui:UiStrings.Toolbar_Invite_Tooltip}">
+          <MenuItem Header="{x:Static mui:UiStrings.Toolbar_Invite_IncludePasswordHeader}" IsChecked="{Binding CopyPasswordToInviteLink.Value}" IsEnabled="{Binding SelectedObject.Password, Converter={StaticResource NullToBooleanConverter}, ConverterParameter=inverse}" StaysOpenOnClick="True"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+          <Separator/>
+          <MenuItem Header="Invite Steam friend…" Command="{Binding InviteSteamFriendCommand}" ToolTip.Tip="Please maks sure both you and your friend have Steam integration in CM settings/Integrated enabled (currently it’s in experimental stage, so it’s disabled by default)"/>
+        </mui:ButtonWithComboBox>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_IniTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="Remove object to Recycle Bin (Ctrl+Delete)"/>
+        <Separator x:Name="ExtraButtonsSeparator"/>
+        <Button x:Name="RandomizeSkinsButton" Content="Randomize skins" Command="{Binding SelectedObject.RandomizeSkinsCommand}"/>
+        <Button x:Name="RemoveEntriesButton" Content="Delete all entries" Command="{Binding SelectedObject.DeleteAllEntriesCommand}"/>
+        <Button x:Name="RepackAllArchivesButton" Content="Repack all" Command="{Binding WrapperRepackAllCommand}"/>
+        <Button x:Name="ClearUnusedArchivesButton" Content="Remove unused archives" Command="{Binding WrapperRemoveUnusedCommand}" ToolTip.Tip="Unused files from content subfolder will be moved to the Recycle Bin"/>
+        <Separator/>
+        <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_Drive}" Command="{Binding QuickDriveButton.DriveCommand}" PointerPressed="OnDriveButtonMouseDown" Classes="ToolBarButtonWithComboBox">
+          <mui:ButtonWithComboBox.Resources>
+            <!-- PORT: removed CollectionViewSource -->
+          </mui:ButtonWithComboBox.Resources>
+          <mui:ButtonWithComboBox.ButtonToolTip>
+            <StackPanel>
+              <TextBlock Text="{x:Static g:AppStrings.Toolbar_QuickDrive_FirstLine}"/>
+              <TextBlock Text="{x:Static g:AppStrings.Toolbar_QuickDrive_SecondLine}"/>
+            </StackPanel>
+          </mui:ButtonWithComboBox.ButtonToolTip>
+          <mui:ButtonWithComboBox.MenuItems>
+            <!-- PORT: removed CollectionContainer -->
+            </mui:ButtonWithComboBox.MenuItems>
+        </mui:ButtonWithComboBox>
+      </mui:ToolBar>
+    </c:AcObjectBase.ToolBars>
+
+    <mui:Cell>
+      <mui:ModernTab x:Name="Tab" Layout="TabWithTitle" Margin="0" LinksMargin="0 0 0 0" FrameMargin="0 12 0 0" SaveKey="__serpr.st" mui:ModernFrame.TopSource="/Pages/ServerPreset/ServerPresetBasic.xaml" FrameNavigated="OnFrameNavigated" SelectedSource="/Pages/ServerPreset/ServerPresetBasic.xaml" SavePolicy="Strict">
+        <mui:ModernTab.LinksListBoxTemplate>
+          <ControlTemplate>
+            <ItemsPresenter HorizontalAlignment="Left"/>
+          </ControlTemplate>
+        </mui:ModernTab.LinksListBoxTemplate>
+        <mui:ModernTab.Links>
+          <mui:Link x:Name="RunningLogLink" DisplayName="Log" Source="{StaticResource RunningLogUri}"/>
+          <mui:Link x:Name="RunningStatusLink" DisplayName="Status" Source="{StaticResource RunningStatusUri}"/>
+          <mui:Link x:Name="MainBasicLink" DisplayName="Main" Source="/Pages/ServerPreset/ServerPresetBasic.xaml"/>
+          <!--<mui:Link x:Name="MainCombinedLink" DisplayName="Main" Source="/Pages/ServerPreset/ServerPresetCombined.xaml" />-->
+          <mui:Link DisplayName="Entry list" Source="{StaticResource EntryListUri}"/>
+          <mui:Link x:Name="AssistsLink" DisplayName="Rules" Source="/Pages/ServerPreset/ServerPresetAssists.xaml"/>
+          <mui:Link x:Name="ConditionsLink" DisplayName="Conditions" Source="/Pages/ServerPreset/ServerPresetConditions.xaml"/>
+          <mui:Link x:Name="SessionsLink" DisplayName="Sessions" Source="/Pages/ServerPreset/ServerPresetSessions.xaml"/>
+          <mui:Link DisplayName="Advanced" Source="{StaticResource AdvancedUri}"/>
+          <!--<mui:Link DisplayName="Plugins" Source="{StaticResource PluginsUri}" />-->
+          <mui:Link DisplayName="Details" Source="{StaticResource DetailsUri}"/>
+        </mui:ModernTab.Links>
+      </mui:ModernTab>
+
+      <Border x:Name="IsRunningMessage">
+        <Border Background="{DynamicResource DarkStripeBackground}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" MaxWidth="320" TextElement.Foreground="{DynamicResource DarkStripeText}" IsVisible="{Binding SelectedObject.IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
+          <DockPanel>
+            <Path Data="{StaticResource PlayIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Go}" Stretch="Uniform" Margin="0 0 8 0" VerticalAlignment="Center"/>
+            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+              <TextBlock.Text>Server is running</TextBlock.Text>
+            </TextBlock>
+          </DockPanel>
+        </Border>
+      </Border>
+    </mui:Cell>
+  </c:AcObjectBase>
+</selected:SelectedAcObjectPage>

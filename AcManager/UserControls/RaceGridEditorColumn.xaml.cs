@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +21,7 @@ using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 
 namespace AcManager.UserControls {
-    public sealed partial class RaceGridEditorColumn : INotifyPropertyChanged {
+    public sealed partial class RaceGridEditorColumn : global::FirstFloor.ModernUI.Windows.Controls.Cell, INotifyPropertyChanged {
         public RaceGridEditorColumn() {
             InputBindings.AddRange(new[] {
                 new InputBinding(new DelegateCommand(() => {
@@ -204,7 +204,7 @@ namespace AcManager.UserControls {
             return false;
         }
 
-        private void OnDetailsButtonClick(object sender, RoutedEventArgs e) {
+        private void OnDetailsButtonClick(object sender, PointerPressedEventArgs e) {
             if (!CloseDetailsPopup()) {
                 var resizeableHint = new Border {
                     HorizontalAlignment = HorizontalAlignment.Right,

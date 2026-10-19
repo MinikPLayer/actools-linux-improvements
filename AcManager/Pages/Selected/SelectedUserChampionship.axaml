@@ -1,0 +1,499 @@
+﻿<se:SelectedAcObjectPage xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls;assembly=AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:se="clr-namespace:AcManager.Pages.Selected" xmlns:g="clr-namespace:AcManager" xmlns:dr="clr-namespace:AcManager.Pages.Drive" xmlns:t="http://acstuff.club/app/tools" xmlns:uc="clr-namespace:AcManager.UserControls" xmlns:a="clr-namespace:AcTools;assembly=AcTools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Selected.SelectedUserChampionship" mui:InputBindingBehavior.PropagateToWindow="True" Loaded="OnLoaded" Unloaded="OnUnloaded" x:Name="This">
+  <UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/AcItemWrapperSpecific.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <se:NumberToColumnsConverter x:Key="NumberToColumnsConverter"/>
+
+      <DataTemplate x:Key="RoundDataTemplate" DataType="t:UserChampionshipRoundExtended">
+        <mui:Cell Height="120">
+          <Border Opacity="0.5" ClipToBounds="True" Background="{DynamicResource WindowBackground}">
+            <Border.Effect>
+              <BlurEffect Radius="20"><!-- PORT: removed KernelType (not in Avalonia) --><!-- PORT: removed RenderingBias (not in Avalonia) --></BlurEffect>
+            </Border.Effect>
+            <mui:BetterImage Margin="-20" Stretch="UniformToFill" Filename="{Binding Track.PreviewImage}" ClearOnChange="True"/>
+          </Border>
+
+          <DockPanel Margin="8">
+            <mui:BetterImage DockPanel.Dock="Left" Width="104" Height="104" VerticalAlignment="Center" Filename="{Binding Track.OutlineImage}" ClearOnChange="True" Margin="0 0 20 0" PointerReleased="OnRoundTrackClick" IsVisible="{Binding ActualWidth, ElementName=This, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=640}"/>
+
+            <mui:SpacingUniformGrid DockPanel.Dock="Bottom" HorizontalSpacing="8" Rows="1" Margin="0 4 0 0" Height="50">
+              <mui:SpacingStackPanel Spacing="4" IsVisible="{Binding DataContext.ShowTimeControls, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <mui:SpacingStackPanel.IsEnabled>
+                  <MultiBinding Converter="{StaticResource OrConverter}">
+                    <Binding Path="DataContext.AllowCustomTime" ElementName="This"/>
+                    <Binding Path="Index" Converter="{StaticResource EnumToBooleanConverter}" ConverterParameter="0"/>
+                  </MultiBinding>
+                </mui:SpacingStackPanel.IsEnabled>
+                <mui:ValueLabel Value="{Binding Time, Converter={StaticResource AcTimeDisplayConverter}}" mui:BetterTextBox.Mode="Time" Content="{x:Static g:AppStrings.Drive_Time}"/>
+                <Slider Value="{Binding Time}" TickFrequency="3600" TickPlacement="BottomRight" IsSnapToTickEnabled="False" SmallChange="900" LargeChange="1800" c:TimeSliderService.IsTimeSlider="True"/>
+              </mui:SpacingStackPanel>
+
+              <mui:SpacingStackPanel Spacing="4" IsVisible="{Binding DataContext.ShowWeatherControls, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <c:TemperatureValueLabel Value="{Binding Temperature, StringFormat='\{0:F1\}'}" Background="Transparent" Content="{x:Static g:AppStrings.Drive_Temperature}">
+                  <ToolTip.Tip>
+                    <c:TemperatureBlock Prefix="{x:Static g:AppStrings.Common_RoadTemperature}" Rounding="0.1" Text="{Binding RoadTemperature}"/>
+                  </ToolTip.Tip>
+                </c:TemperatureValueLabel>
+                <Slider Value="{Binding Temperature}" TickFrequency="6" IsSnapToTickEnabled="False" TickPlacement="BottomRight" Minimum="{x:Static a:CommonAcConsts.TemperatureMinimum}" Maximum="{x:Static a:CommonAcConsts.TemperatureMaximum}"/>
+              </mui:SpacingStackPanel>
+
+              <mui:SpacingStackPanel Spacing="4" IsVisible="{Binding DataContext.ShowWeatherControls, ElementName=This, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="{x:Static g:AppStrings.Drive_WeatherLabel}" Classes="Label Label.Padding"/>
+                <!--<ComboBox ItemsSource="{Binding Enabled, Source={x:Static t:WeatherManager.Instance}}" SelectedItem="{Binding Weather}">
+                  <ComboBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                      ~1~ TODO: Replace by WeatherPreviewToolTip from ToolTips.xaml? @1@
+                      <Setter Property="ToolTip" Value="{StaticResource WeatherPreviewToolTip}" />
+                    </Style>
+                  </ComboBox.ItemContainerStyle>
+                </ComboBox>-->
+
+                <!-- TODO: When loaded, settings are reset -->
+                <c:WeatherComboBox AllowRandomWeather="True" AllowWeatherByType="True" SelectedItem="{Binding Weather}" c:ToolTips.Weather="{Binding WeatherObject, Mode=OneWay}" UseWeatherFX="True"/>
+              </mui:SpacingStackPanel>
+
+              <mui:SpacingStackPanel Spacing="4">
+                <TextBlock Text="{x:Static g:AppStrings.Drive_TrackStateLabel}" Classes="Label Label.Padding"/>
+                <ComboBox ItemsSource="{Binding DataContext.TrackPropertiesPresets, ElementName=This}" SelectedItem="{Binding TrackProperties}"/>
+              </mui:SpacingStackPanel>
+            </mui:SpacingUniformGrid>
+
+            <Button DockPanel.Dock="Right" Width="13" Height="13" Margin="20 0 8 0" VerticalAlignment="Center" Padding="2" Command="{Binding DeleteCommand}" ToolTip.Tip="Remove this round" IsVisible="{Binding DataContext.SelectedObject.ExtendedRounds.Count, ElementName=This, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter='1,hidden'}" Classes="inline1">
+              <Button.Styles>
+                <Style Selector="Button.inline1">
+                  <Setter Property="Background" Value="Transparent"/>
+                  <Setter Property="BorderBrush" Value="Transparent"/>
+                </Style>
+              </Button.Styles>
+              <Path Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+            </Button>
+
+            <mui:SpacingStackPanel DockPanel.Dock="Right" Width="200" Spacing="4" Margin="8 0 0 0" IsVisible="{Binding ActualWidth, ElementName=This, Converter={StaticResource MoreToVisibilityConverter}, ConverterParameter=800}">
+              <TextBlock Text="Description:" Classes="Label Label.Padding"/>
+              <mui:BetterTextBox Text="{Binding Description}" Placeholder="{Binding DisplayDescription}" AcceptsReturn="True" DoubleTapped="OnRoundDescriptionDoubleClick"/>
+            </mui:SpacingStackPanel>
+
+            <StackPanel DockPanel.Dock="Right" Width="200">
+              <mui:ValueLabel Value="{Binding LapsCount}" Content="{x:Static g:AppStrings.Drive_RaceDuration}" Postfix="{Binding LapsCount, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.Common_LapsPostfix}}"/>
+              <Slider Minimum="1" Maximum="40" Value="{Binding LapsCount}"/>
+            </StackPanel>
+
+            <mui:SpacingStackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Spacing="4" Background="Transparent" PointerReleased="OnRoundTrackClick">
+              <TextBlock Text="{Binding Track.Name}" Classes="Heading2"/>
+              <TextBlock Text="{Binding Track.SpecsInfoDisplay}" TextWrapping="NoWrap" Classes="Small"/>
+            </mui:SpacingStackPanel>
+          </DockPanel>
+        </mui:Cell>
+      </DataTemplate>
+
+      <se:RoundsListDataTemplateSelector x:Key="RoundsListDataTemplateSelector" RoundDataTemplate="{StaticResource RoundDataTemplate}">
+        <se:RoundsListDataTemplateSelector.NewRoundDataTemplate>
+          <DataTemplate>
+            <ContentPresenter Content="{Binding}"/>
+          </DataTemplate>
+        </se:RoundsListDataTemplateSelector.NewRoundDataTemplate>
+      </se:RoundsListDataTemplateSelector>
+
+      <ScrollViewer x:Key="Rules" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}">
+        <mui:SpacingStackPanel Spacing="12">
+          <DockPanel IsVisible="{Binding Visibility, Source={x:Reference PreviewImage}, Converter={x:Static pc:VisibilityConverters.ToBool}}">
+            <DockPanel DockPanel.Dock="Left" Width="210">
+              <TextBlock Text="Cropped preview:" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Label Label.Padding"/>
+              <mui:BetterImage Crop="{Binding SelectedObject.PreviewCrop}" CropUnits="Absolute" Filename="{Binding SelectedObject.PreviewImage}" Width="202" Height="202" Stretch="UniformToFill" HorizontalAlignment="Left" PointerReleased="OnCroppedPreviewClick"/>
+            </DockPanel>
+            <DockPanel>
+              <TextBlock Text="Full preview:" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Label Label.Padding"/>
+              <mui:BetterImage x:Name="PreviewImage" Filename="{Binding SelectedObject.PreviewImage}" c:ImageViewerService.Image="{Binding SelectedObject.PreviewImage}" Width="359" Height="202" CollapseIfMissing="True" HorizontalAlignment="Left"/>
+            </DockPanel>
+          </DockPanel>
+
+          <c:PropertiesGrid LabelWidth="100" VerticalSpacing="4">
+            <mui:BetterTextBox c:PropertiesGrid.Label="Code:" Text="{Binding SelectedObject.Code}" Placeholder="{Binding SelectedObject.DisplayCode}" Theme="{StaticResource Borderless}"/>
+
+            <mui:BetterComboBox c:PropertiesGrid.Label="Difficulty:" IsEditable="True" Text="{Binding SelectedObject.Difficulty}" ItemsSource="{Binding DifficultyList}" Placeholder="?" Theme="{StaticResource BetterComboBox.Borderless}"/>
+
+            <DockPanel c:PropertiesGrid.Label="Win condition:">
+              <mui:BooleanSwitch Value="{Binding SelectedObject.ChampionshipPointsGoalType}" Margin="0 0 8 0" DockPanel.Dock="Left" Width="32">
+                <mui:BooleanSwitch.True>
+                  <mui:BetterTextBox Text="{Binding SelectedObject.ChampionshipPointsGoal}" Placeholder="1" Mode="Integer" Minimum="1" Maximum="{x:Static mui:DpiAwareWindow.UnlimitedSize}" ToolTip.Tip="To win, you need to get this much points" Theme="{StaticResource Borderless}"/>
+                </mui:BooleanSwitch.True>
+                <mui:BooleanSwitch.False>
+                  <mui:BetterTextBox Text="{Binding SelectedObject.ChampionshipRankingGoal}" Placeholder="1" Mode="Integer" Minimum="1" Maximum="{Binding SelectedObject.Drivers.Count}" ToolTip.Tip="To win, you need to get at this place in the final ranking table" Theme="{StaticResource Borderless}"/>
+                </mui:BooleanSwitch.False>
+              </mui:BooleanSwitch>
+              <mui:LabeledToggleButton IsChecked="{Binding SelectedObject.ChampionshipPointsGoalType}" LabelChecked="{Binding SelectedObject.ChampionshipPointsGoal, Converter={StaticResource PluralizingConverter}, ConverterParameter='Point'}" LabelUnchecked="Place" Height="18" Width="60" Padding="0" HorizontalAlignment="Left"/>
+            </DockPanel>
+
+            <mui:BbCodeBlock Text="{Binding SelectedObject.VersionInfoDisplay}" Placeholder="?" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" PointerReleased="OnVersionInfoBlockClick" ToolTip.Tip="{x:Static c:ControlsStrings.AcObject_Author_Tooltip}">
+              <c:PropertiesGrid.Label>
+                <MultiBinding Converter="{x:Static se:SelectedAcObjectViewModel.VersionInfoLabelConverter}">
+                  <Binding Path="SelectedObject"/>
+                  <Binding Path="SelectedObject.VersionInfoDisplay"/>
+                </MultiBinding>
+              </c:PropertiesGrid.Label>
+            </mui:BbCodeBlock>
+          </c:PropertiesGrid>
+
+          <!-- description -->
+          <mui:BetterTextBox Text="{Binding SelectedObject.Description}" AcceptsReturn="True" TextWrapping="Wrap" Placeholder="Description" Theme="{StaticResource Borderless}"/>
+
+          <StackPanel Classes="SettingsPanel">
+            <TextBlock Text="Rules:" Classes="Heading2 SettingsPanel.Heading2"/>
+
+            <CheckBox IsChecked="{Binding SelectedObject.Rules.Penalties}">
+              <Label Content="{x:Static g:AppStrings.Drive_Penalties}"/>
+            </CheckBox>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.Rules.Practice, Converter={x:Static dr:QuickDrive_Weekend.SpecialSessionConverter}}" mui:BetterTextBox.Mode="IntegerOrZeroLabel" Content="{x:Static t:ToolsStrings.Session_Practice}" Postfix="{Binding SelectedObject.Rules.Practice, Converter={x:Static dr:QuickDrive_Weekend.SpecialPluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.Common_MinutePostfix}}"/>
+              <Slider Minimum="0" Maximum="100" Value="{Binding SelectedObject.Rules.Practice}" TickFrequency="10" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:ValueLabel Value="{Binding SelectedObject.Rules.Qualifying}" mui:BetterTextBox.Minimum="1" Content="{x:Static t:ToolsStrings.Session_Qualification}" Postfix="{Binding SelectedObject.Rules.Qualifying, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static ac:ControlsStrings.Common_MinutePostfix}}"/>
+              <Slider Minimum="4" Maximum="104" Value="{Binding SelectedObject.Rules.Qualifying}" TickFrequency="10" TickPlacement="BottomRight"/>
+            </DockPanel>
+
+            <DockPanel>
+              <Label Content="{x:Static g:AppStrings.Drive_JumpStartPenalty}"/>
+              <ComboBox ItemsSource="{Binding JumpStartPenaltyTypes}" SelectedItem="{Binding SelectedObject.Rules.JumpStartPenalty}" mui:ComboBoxAdvancement.DisplayConverter="{x:Static dr:QuickDrive_Race+ViewModel.JumpStartPenaltyTypeToStringConverter}"/>
+            </DockPanel>
+
+            <DockPanel>
+              <Label Content="Points:"/>
+              <ItemsControl ItemsSource="{Binding Points}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <mui:SpacingUniformGrid HorizontalSpacing="8" VerticalSpacing="8" Columns="{Binding DataContext.Points.Count, Converter={StaticResource NumberToColumnsConverter}, ConverterParameter=10, ElementName=This}"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <mui:SpacingStackPanel Spacing="4">
+                      <TextBlock Text="{Binding Place, Converter={StaticResource OrdinalizingShortConverter}}"/>
+                      <mui:BetterTextBox Text="{Binding Value}" Mode="Integer"/>
+                    </mui:SpacingStackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </DockPanel>
+
+            <DockPanel>
+              <Label Content="Bonus points for the best lap:"/>
+              <mui:BetterTextBox Text="{Binding SelectedObject.PointsForBestLap}" Mode="Integer"/>
+            </DockPanel>
+
+            <DockPanel>
+              <Label Content="Bonus points for pole position:"/>
+              <mui:BetterTextBox Text="{Binding SelectedObject.PointsForPolePosition}" Mode="Integer"/>
+            </DockPanel>
+          </StackPanel>
+        </mui:SpacingStackPanel>
+      </ScrollViewer>
+
+      <DockPanel x:Key="Rounds" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}">
+        <StackPanel DockPanel.Dock="Top" Margin="20 8" Classes="SettingsPanel">
+          <DockPanel>
+            <mui:ContextMenuButton DockPanel.Dock="Right" IsVisible="{Binding SelectedObject.RealConditions, Converter={StaticResource BooleanToVisibilityConverter}}">
+              <ContextMenu>
+                <!--<MenuItem Header="{x:Static g:AppStrings.Drive_LocalWeatherHeader}"
+                                            IsChecked="{Binding RealConditionsLocalWeather, Mode=OneWay}" IsCheckable="True"
+                                            ToolTip="{x:Static g:AppStrings.Drive_LocalWeather_Tooltip}" Command="{Binding SwitchLocalWeatherCommand}" />-->
+                <MenuItem Header="{x:Static g:AppStrings.Drive_SetTimeManuallyHeader}" IsChecked="{Binding SelectedObject.RealConditionsManualTime}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
+                <!--<MenuItem Header="{x:Static g:AppStrings.Drive_ConsiderTimezones}" IsChecked="{Binding RealConditionsTimezones}"
+                                            IsCheckable="True" IsEnabled="{Binding RealConditionsManualTime, Converter={StaticResource InvertBooleanConverter}}" />
+                                    <MenuItem Header="Real lighting" IsChecked="{Binding RealConditionsLighting}" IsCheckable="True" IsEnabled="False" />-->
+              </ContextMenu>
+            </mui:ContextMenuButton>
+            <CheckBox IsChecked="{Binding SelectedObject.RealConditions}">
+              <Label Content="{x:Static g:AppStrings.Drive_RealConditions}"/>
+            </CheckBox>
+          </DockPanel>
+
+          <CheckBox IsChecked="{Binding SelectedObject.CoherentTime}" IsEnabled="{Binding ShowTimeControls}">
+            <Label Content="Sheduled rounds"/>
+          </CheckBox>
+
+          <DockPanel>
+            <mui:ValueLabel Value="{Binding SelectedObject.TimeMultiplier}" Postfix="×" Content="{x:Static g:AppStrings.Drive_TimeMultiplerLabel}"/>
+            <Slider Minimum="0" Maximum="1" TickFrequency="0.2" TickPlacement="None" IsSnapToTickEnabled="False">
+              <Slider.Value>
+                <Binding Path="SelectedObject.TimeMultiplier">
+                  <Binding.Converter>
+                    <mui:LogarithmicScale Minimum="0" Middle="10" Maximum="60"/>
+                  </Binding.Converter>
+                </Binding>
+              </Slider.Value>
+            </Slider>
+          </DockPanel>
+        </StackPanel>
+
+        <ListBox mui:Draggable.Enabled="True" mui:Draggable.Destination="{x:Static t:UserChampionshipRoundExtended.DraggableFormat}" SelectionMode="Multiple" ItemTemplate="{StaticResource RoundsListDataTemplateSelector}" Theme="{StaticResource VirtualizingListBox}">
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <VirtualizingStackPanel Margin="0 0 0 140"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ItemsControl.Resources>
+            <!-- PORT: removed CollectionViewSource -->
+          </ItemsControl.Resources>
+          <ItemsControl.Items>
+            <!-- PORT: removed CollectionContainer -->
+              <Border Height="120">
+                <Border.Resources>
+                  <SolidColorBrush x:Key="ButtonBackground" Color="Transparent"/>
+                </Border.Resources>
+                <Button BorderThickness="0" Click="OnAddNewRoundButtonClick">
+                  <mui:SpacingStackPanel Orientation="Horizontal" Spacing="8">
+                    <Path Data="{StaticResource AddIconData}" Stretch="Fill" Width="12" Height="12" VerticalAlignment="Center" Margin="0 1 0 -1" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+                    <TextBlock Text="{x:Static g:AppStrings.UserChampionships_CreateNew}" VerticalAlignment="Center" Classes="Heading2"/>
+                  </mui:SpacingStackPanel>
+                </Button>
+              </Border>
+            </ItemsControl.Items>
+          <ListBox.ItemContainerTheme>
+            <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource RibbonListBoxItem.Left}">
+              <Setter Property="Padding" Value="0"/>
+            </ControlTheme>
+          </ListBox.ItemContainerTheme>
+        </ListBox>
+      </DockPanel>
+
+      <Grid x:Key="Cars" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*"/>
+          <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <mui:SpacingStackPanel Spacing="20" Margin="0 8 20 0">
+          <ItemsControl ItemsSource="{Binding SelectedObject.PlayerCarEntries}" DragDrop.Drop="OnCarBlockDrop">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <DockPanel Margin="4 0">
+                  <!--Drop="OnCarBlockDrop"-->
+                  <mui:Cell Width="160" Height="120" Background="Gray" mui:Draggable.Data="{Binding Car}" ClipToBounds="True" DragDrop.AllowDrop="True" PointerReleased="OnCarBlockClick">
+                    <mui:BetterImage Filename="{Binding CarSkin.PreviewImage}" DecodeWidth="320" Stretch="UniformToFill"/>
+                    <TextBlock Padding="4 4 12 4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding Car.DisplayName}" Foreground="{DynamicResource DarkStripeText}" TextTrimming="CharacterEllipsis"/>
+                  </mui:Cell>
+
+                  <ListBox ItemsSource="{Binding Car.EnabledSkinsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="8 0 0 0" SelectedItem="{Binding CarSkin}" VerticalAlignment="Top" MaxHeight="120" BorderThickness="0" ItemTemplate="{StaticResource CarSkinItemTemplate}">
+                    <ListBox.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal"/>
+                      </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                  </ListBox>
+                </DockPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <mui:SpacingUniformGrid Columns="1" VerticalSpacing="8">
+            <StackPanel>
+              <TextBlock Text="{x:Static t:ToolsStrings.Drive_GridType}" Margin="0 0 0 4" Classes="Label Label.Padding"/>
+              <mui:HierarchicalComboBox Margin="4 0 4 0" ItemsSource="{Binding RaceGridViewModel.Modes}" SelectedItem="{Binding RaceGridViewModel.Mode}" FixedMode="False" PreviewProvider="{Binding}"/>
+            </StackPanel>
+
+            <StackPanel IsEnabled="{Binding RaceGridViewModel.Mode.CandidatesMode}">
+              <ToolTip.Tip>
+                <ToolTip Content="{Binding RaceGridViewModel.TrackPitsNumber}"/>
+              </ToolTip.Tip>
+              <mui:ValueLabel Value="{Binding RaceGridViewModel.OpponentsNumberLimited}" Postfix="{Binding RaceGridViewModel.OpponentsNumberLimited, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static c:ControlsStrings.Common_OpponentsPostfix}}"/>
+              <Slider Minimum="1" Maximum="{Binding RaceGridViewModel.OpponentsNumberLimit}" Value="{Binding RaceGridViewModel.OpponentsNumberLimited}"/>
+            </StackPanel>
+
+            <DockPanel>
+              <mui:DoubleSlider DockPanel.Dock="Bottom" Minimum="{Binding RaceGridViewModel.AiLevelMinimumLimited}" Maximum="100" From="{Binding RaceGridViewModel.AiLevelMin, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" To="{Binding RaceGridViewModel.AiLevel, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" SmallChange="5" LargeChange="5" BindingMode="FromToFixed" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.DoubleSlider}}" mui:FancyHintsService.HorizontalContentAlignment="Center" mui:FancyHintsService.VerticalContentAlignment="Bottom" mui:FancyHintsService.TriggerOnLoad="True" mui:FancyHintsService.AttachTo="{x:Type Thumb}"/>
+              <mui:ContextMenuButton DockPanel.Dock="Right" IsVisible="{Binding RaceGridViewModel.AiLevelFixed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+                <c:ModernPopup Padding="8">
+                  <StackPanel Margin="0" Classes="SettingsPanel">
+                    <DockPanel IsEnabled="{Binding RaceGridViewModel.AiLevelArrangeRandom, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter='≠1'}">
+                      <Label Content="{x:Static g:AppStrings.Drive_AiArrangeOrder}" ToolTip.Tip="{x:Static g:AppStrings.Drive_AiArrangeOrder_Tooltip}"/>
+                      <mui:LabeledToggleButton LabelChecked="{x:Static mui:UiStrings.Common_Ascending}" Margin="0 0 0 0" LabelUnchecked="{x:Static mui:UiStrings.Common_Descending}" IsChecked="{Binding RaceGridViewModel.AiLevelArrangeReverse}"/>
+                    </DockPanel>
+
+                    <CheckBox IsChecked="{Binding RaceGridViewModel.AiLevelArrangePowerRatio}">
+                      <Label Content="{x:Static t:ToolsStrings.Race_ArrangeAIStrengthBasedOnPWRatio}"/>
+                    </CheckBox>
+
+                    <DockPanel>
+                      <Label Content="{x:Static t:ToolsStrings.Race_RandomizationTitle}"/>
+                      <Slider Minimum="0" Maximum="100" TickFrequency="20" TickPlacement="BottomRight" Value="{Binding RaceGridViewModel.AiLevelArrangeRandom, Converter={StaticResource PercentageConverter}}"/>
+                    </DockPanel>
+
+                    <CheckBox IsChecked="{Binding RaceGridViewModel.AiLevelInDriverName, Mode=TwoWay}">
+                      <Label Content="{x:Static g:AppStrings.Drive_AiLevelInDriverName}"/>
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{mui:Stored 'aiRelativeRange=True'}" Margin="0">
+                      <Label Content="{x:Static t:ToolsStrings.Race_ShowRelativeRange}"/>
+                    </CheckBox>
+                  </StackPanel>
+                </c:ModernPopup>
+              </mui:ContextMenuButton>
+              <mui:DoubleValueLabel Value="{Binding RaceGridViewModel.AiLevelMin}" SecondValue="{Binding RaceGridViewModel.AiLevel}" Postfix="%" JoinIfEqual="True" RelativeRange="{mui:Stored 'aiRelativeRange=True'}" Content="{x:Static g:AppStrings.Drive_OpponentsStrength}" RelativeRangeStringFormat="0.#"/>
+            </DockPanel>
+
+            <DockPanel>
+              <mui:DoubleSlider DockPanel.Dock="Bottom" Minimum="0" Maximum="100" From="{Binding RaceGridViewModel.AiAggressionMin, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" To="{Binding RaceGridViewModel.AiAggression, Converter={StaticResource SliderRoundConverter}, ConverterParameter=0.1}" SmallChange="5" LargeChange="5" BindingMode="FromToFixed"/>
+              <mui:ContextMenuButton DockPanel.Dock="Right" IsVisible="{Binding RaceGridViewModel.AiAggressionFixed, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}">
+                <c:ModernPopup Padding="8">
+                  <StackPanel Margin="0" Classes="SettingsPanel">
+                    <DockPanel IsEnabled="{Binding RaceGridViewModel.AiAggressionArrangeRandom, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter='≠1'}">
+                      <Label Content="{x:Static g:AppStrings.Drive_AiArrangeOrder}" ToolTip.Tip="{x:Static g:AppStrings.Drive_AiArrangeOrder_Tooltip}"/>
+                      <mui:LabeledToggleButton LabelChecked="{x:Static mui:UiStrings.Common_Ascending}" Margin="0 0 0 0" LabelUnchecked="{x:Static mui:UiStrings.Common_Descending}" IsChecked="{Binding RaceGridViewModel.AiAggressionArrangeReverse}"/>
+                    </DockPanel>
+
+                    <DockPanel>
+                      <Label Content="{x:Static t:ToolsStrings.Race_RandomizationTitle}"/>
+                      <Slider Minimum="0" Maximum="100" TickFrequency="20" TickPlacement="BottomRight" Value="{Binding RaceGridViewModel.AiAggressionArrangeRandom, Converter={StaticResource PercentageConverter}}"/>
+                    </DockPanel>
+
+                    <CheckBox IsChecked="{Binding RaceGridViewModel.AiAggressionInDriverName, Mode=TwoWay}">
+                      <Label Content="{x:Static t:ToolsStrings.Race_ShowAIAggression}"/>
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{mui:Stored 'aiRelativeRange=True'}" Margin="0">
+                      <Label Content="{x:Static t:ToolsStrings.Race_ShowRelativeRange}"/>
+                    </CheckBox>
+                  </StackPanel>
+                </c:ModernPopup>
+              </mui:ContextMenuButton>
+              <mui:DoubleValueLabel Value="{Binding RaceGridViewModel.AiAggressionMin}" SecondValue="{Binding RaceGridViewModel.AiAggression}" Postfix="%" JoinIfEqual="True" RelativeRange="{mui:Stored 'aiRelativeRange=True'}" Content="{x:Static t:ToolsStrings.Race_OpponentsAggression}" RelativeRangeStringFormat="0.#"/>
+            </DockPanel>
+
+            <!--<StackPanel>
+                            <mui:ValueLabel Value="{Binding RaceGridViewModel.AiLevel}" Postfix='%' Content="{x:Static g:AppStrings.Drive_OpponentsStrength}" />
+                            <Slider Minimum="{Binding RaceGridViewModel.AiLevelMinimumLimited}" Maximum="100" Value="{Binding RaceGridViewModel.AiLevel}" />
+                        </StackPanel>
+
+                        <DockPanel IsEnabled="{Binding RaceGridViewModel.AiLevelFixed, Converter={StaticResource InvertBooleanConverter}}">
+                            <Slider DockPanel.Dock="Bottom" Minimum="{Binding RaceGridViewModel.AiLevelMinimumLimited}" Maximum="100"
+                                    Value="{Binding RaceGridViewModel.AiLevelMin}" />
+                            <mui:ContextMenuButton DockPanel.Dock="Right">
+                                <c:ModernPopup Padding="8">
+                                    <StackPanel Style="{StaticResource SettingsPanel}" Margin="0">
+                                        <DockPanel
+                                                IsEnabled="{Binding RaceGridViewModel.AiLevelArrangeRandom, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter='≠1'}">
+                                            <Label Content="AI arrange order:"
+                                                    ToolTip="Set to Ascending if you want smartest bot to start in the end of starting grid" />
+                                            <mui:LabeledToggleButton LabelChecked="Ascending" LabelUnchecked="Descending"
+                                                    IsChecked="{Binding RaceGridViewModel.AiLevelArrangeReverse}" />
+                                        </DockPanel>
+
+                                        <DockPanel>
+                                            <Label Content="Randomization:" />
+                                            <Slider Minimum="0" Maximum="100" TickFrequency="20" TickPlacement="BottomRight"
+                                                    Value="{Binding RaceGridViewModel.AiLevelArrangeRandom, Converter={StaticResource PercentageConverter}}" />
+                                        </DockPanel>
+
+                                        <TextBlock Text="Global:" Style="{StaticResource SettingsPanel.Heading2}" />
+                                        <CheckBox IsChecked="{Binding RaceGridViewModel.AiLevelInDriverName, Mode=TwoWay}" Margin="0">
+                                            <Label Content="{x:Static g:AppStrings.Drive_AiLevelInDriverName}" />
+                                        </CheckBox>
+                                    </StackPanel>
+                                </c:ModernPopup>
+                            </mui:ContextMenuButton>
+                            <mui:ValueLabel Value="{Binding RaceGridViewModel.AiLevelMin}" Postfix='%'
+                                    Content="{x:Static g:AppStrings.Drive_OpponentsStrengthMin}" />
+                        </DockPanel>
+
+                        <StackPanel>
+                            <CheckBox Margin="8 0 0 0" IsChecked="{Binding RaceGridViewModel.AiLevelFixed}">
+                                <Label Content="{x:Static g:AppStrings.Drive_FixedOpponentsStrength}" />
+                            </CheckBox>
+                        </StackPanel>-->
+          </mui:SpacingUniformGrid>
+
+          <!--<DockPanel Visibility="{Binding SelectedObject.IsStarted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}"
+                                Stretch="Uniform" x:Name="ErrorIcon" Margin="0 0 8 0" VerticalAlignment="Center" />
+                        <TextBlock Text="Can't apply change: competion is in process. Please, restart championship to get an updated grid."
+                                VerticalAlignment="Center" TextWrapping="Wrap" />
+                    </DockPanel>-->
+
+          <DockPanel IsVisible="{Binding UpdatingSerializedRaceGridData, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Canvas Width="20" Height="20" DockPanel.Dock="Left" Margin="0 0 8 0">
+              <mui:ModernProgressRing Width="80" Height="80" IsActive="True">
+                <mui:ModernProgressRing.RenderTransform>
+                  <ScaleTransform ScaleX="0.25" ScaleY="0.25"><!-- PORT: removed CenterY (not in Avalonia) --><!-- PORT: removed CenterX (not in Avalonia) --></ScaleTransform>
+                </mui:ModernProgressRing.RenderTransform>
+              </mui:ModernProgressRing>
+            </Canvas>
+            <TextBlock Text="Converting to original format…" VerticalAlignment="Center"/>
+          </DockPanel>
+        </mui:SpacingStackPanel>
+
+        <uc:RaceGridEditorColumn DataContext="{Binding RaceGridViewModel}" Grid.Column="1"/>
+      </Grid>
+    </ResourceDictionary>
+  </UserControl.Resources>
+
+  <ac:AcObjectBase x:Name="Base" Scrollable="False" AcObject="{Binding SelectedObject}" ShowIcon="False" HeaderPadding="0 0 360 0">
+    <ac:AcObjectBase.ToolBars>
+      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_AppTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneCommand}" ToolTip.Tip="Clone championship (Ctrl+Shift+D)"/>
+        <Separator/>
+        <Button Content="{x:Static g:AppStrings.Common_Share}" Command="{Binding ShareCommand}" ToolTip.Tip="Share championship (Ctrl+Page Up)"/>
+        <!--<Button Content="{x:Static g:AppStrings.Toolbar_Test}" Command="{Binding TestCommand}" ToolTip="Test filter in showroom (Ctrl+G)" />-->
+      </mui:ToolBar>
+      <!--<ToolBar Band="0" BandIndex="0">
+                <Button>
+                    <TextBlock Text="{Binding SelectedObject.ChangedData, StringFormat='{}Changed data: {0}'}" />
+                </Button>
+                <Button>
+                    <TextBlock Text="{Binding SelectedObject.ChangedExtended, StringFormat='{}Changed ext.: {0}'}" />
+                </Button>
+            </ToolBar>-->
+      <mui:ToolBar Band="1" BandIndex="1" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}">
+        <Button Content="{x:Static g:AppStrings.Toolbar_Disable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Disable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Enable}" Command="{Binding SelectedObject.ToggleCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Enable_Tooltip}" IsVisible="{Binding SelectedObject.Enabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}" PointerReleased="OnToggleClick"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_JsonTooltip}"/>
+        <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_AppTooltip}"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1" IsVisible="{Binding SelectedSource, Source={x:Reference Tab}, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rules'}">
+        <Button Content="{x:Static g:AppStrings.Toolbar_UpdatePreview}" Command="{Binding UpdatePreviewDirectCommand}">
+          <ToolTip.Tip>Update championship’s preview (Ctrl+P)</ToolTip.Tip>
+        </Button>
+        <Button Content="Set crop params" Command="{Binding SetCropParamsCommand}" ToolTip.Tip="Set offset and size for cropped square version of preview"/>
+      </mui:ToolBar>
+      <mui:ToolBar Band="1" BandIndex="1" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}" IsVisible="{Binding SelectedSource, Source={x:Reference Tab}, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rounds'}">
+        <Button Content="Add new round" Command="{Binding AddNewRoundCommand}" ToolTip.Tip="Add a new round (Ctrl+N)"/>
+      </mui:ToolBar>
+    </ac:AcObjectBase.ToolBars>
+
+    <mui:Cell>
+      <mui:ModernTab x:Name="Tab" mui:ModernFrame.KeepContentAlive="True" SaveKey=".selectedUserChampionship:editing" LinksMargin="0" FrameMargin="0 28 0 0">
+        <mui:ModernTab.Links>
+          <mui:Link DisplayName="Rules &amp; information" Key="Rules"/>
+          <mui:Link DisplayName="Rounds" Key="Rounds"/>
+          <mui:Link DisplayName="Cars" Key="Cars"/>
+        </mui:ModernTab.Links>
+        <mui:ModernTab.ContentLoader>
+          <mui:DirectContentLoader>
+            <mui:DirectContentLoaderEntry Key="Rules" Content="{StaticResource Rules}"/>
+            <mui:DirectContentLoaderEntry Key="Rounds" Content="{StaticResource Rounds}"/>
+            <mui:DirectContentLoaderEntry Key="Cars" Content="{StaticResource Cars}"/>
+          </mui:DirectContentLoader>
+        </mui:ModernTab.ContentLoader>
+      </mui:ModernTab>
+
+      <Border Background="{DynamicResource DarkStripeBackground}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" MaxWidth="320" TextElement.Foreground="{DynamicResource DarkStripeText}" IsVisible="{Binding SelectedObject.IsStarted, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <DockPanel>
+          <Path Data="{StaticResource AlertIconData}" Width="12" Height="12" DockPanel.Dock="Left" Fill="{DynamicResource Error}" Stretch="Uniform" Margin="0 0 8 0" VerticalAlignment="Center"/>
+          <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+            <TextBlock.Text>Can’t modify: competion is in process. Please, reset championship progress to get an updated grid.</TextBlock.Text>
+          </TextBlock>
+        </DockPanel>
+      </Border>
+    </mui:Cell>
+  </ac:AcObjectBase>
+</se:SelectedAcObjectPage>

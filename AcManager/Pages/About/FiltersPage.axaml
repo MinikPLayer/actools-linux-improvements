@@ -1,0 +1,39 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:AcManager.Pages.About" xmlns:g="clr-namespace:AcManager" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:ta="clr-namespace:AcManager.Tools.About" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.About.FiltersPage">
+  <Grid Classes="ContentRoot">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200"/>
+        <ColumnDefinition Width="9"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <!-- Link list -->
+      <ListBox ItemsSource="{Binding NotesList}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox.ContextMenu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static g:AppStrings.About_MarkAllAsRead}" Command="{Binding MarkAllAsReadCommand}"/>
+          </ContextMenu>
+        </ListBox.ContextMenu>
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="ta:PieceOfInformation">
+            <Grid Margin="10 2 2 2">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+
+              <Ellipse Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="2" Width="8" Height="8" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" ToolTip.Tip="{x:Static g:AppStrings.About_NewTooltip}" IsVisible="{Binding IsNew, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding DisplayName}" FontSize="{DynamicResource SmallFontSize}" TextTrimming="CharacterEllipsis"/>
+            </Grid>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+
+      <!-- Separator -->
+      <mui:ModernTabSplitter Grid.Column="1" SaveKey="ReleaseNotes"/>
+
+      <!-- Content -->
+      <a:PieceOfInformationBlock Grid.Column="2" Margin="32 0 0 0" Piece="{Binding NotesList.CurrentItem}"/>
+    </Grid>
+  </Grid>
+</UserControl>

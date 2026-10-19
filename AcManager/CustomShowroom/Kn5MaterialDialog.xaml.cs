@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace AcManager.CustomShowroom {
-    public partial class Kn5MaterialDialog : IDisposable {
+    public partial class Kn5MaterialDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IDisposable {
         private static readonly string PresetableKey = "Kn5 Material";
         private ViewModel Model => (ViewModel)DataContext;
 

@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Wheel_Patch : INotifyPropertyChanged, ILoadableContent {
+    public partial class AcSettingsControls_Wheel_Patch : global::Avalonia.Controls.UserControl, INotifyPropertyChanged, ILoadableContent {
         public void Initialize() {
             InitializeComponent();
             this.AddWidthCondition(1200).Add(x =>

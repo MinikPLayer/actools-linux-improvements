@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using FirstFloor.ModernUI.Windows.Media;
 
 namespace AcManager.Pages.Drive {
-    public partial class UserChampionships_SelectedPage : ILoadableContent, IParametrizedUriContent {
+    public partial class UserChampionships_SelectedPage : global::Avalonia.Controls.UserControl, ILoadableContent, IParametrizedUriContent {
         private readonly DiscordRichPresence _discordPresence = new DiscordRichPresence(10, "Preparing to race", "Championships").Default();
 
         public void OnUri(Uri uri) {
@@ -470,17 +470,17 @@ namespace AcManager.Pages.Drive {
             Model.GoCommand.ExecuteAsync(AssistsViewModel.Instance).Ignore();
         }
 
-        private void TableSection_OnPreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void TableSection_OnPreviewMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = (ScrollViewer)sender;
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
             e.Handled = true;
         }
 
-        private void OnResetButtonClick(object sender, MouseButtonEventArgs e) {
+        private void OnResetButtonClick(object sender, PointerReleasedEventArgs e) {
             Model.ResetCommand.ExecuteAsync().Ignore();
         }
 
-        private void OnCarPreviewClick(object sender, MouseButtonEventArgs e) {
+        private void OnCarPreviewClick(object sender, PointerReleasedEventArgs e) {
             var userCar = Model.AcObject.UserCar;
             if (userCar?.Car == null) return;
 
@@ -512,7 +512,7 @@ namespace AcManager.Pages.Drive {
             }
         }
 
-        private async void OnChangeSkinMenuItemClick(object sender, MouseButtonEventArgs e) {
+        private async void OnChangeSkinMenuItemClick(object sender, PointerReleasedEventArgs e) {
             var userCar = Model.AcObject.UserCar;
             if (userCar?.Car == null) return;
 

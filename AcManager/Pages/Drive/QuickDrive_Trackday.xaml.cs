@@ -8,7 +8,7 @@ using AcTools.Utils;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Trackday : IQuickDriveModeControl, ITabCanBePinned {
+    public partial class QuickDrive_Trackday : global::Avalonia.Controls.UserControl, IQuickDriveModeControl, ITabCanBePinned {
         public QuickDrive_Trackday() {
             InitializeComponent();
         }

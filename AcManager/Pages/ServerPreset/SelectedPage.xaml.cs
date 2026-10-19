@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -41,7 +41,7 @@ using Microsoft.Win32;
 using StringBasedFilter;
 
 namespace AcManager.Pages.ServerPreset {
-    public partial class SelectedPage : ILoadableContent, IParametrizedUriContent, IImmediateContent {
+    public partial class SelectedPage : global::AcManager.Pages.Selected.SelectedAcObjectPage, ILoadableContent, IParametrizedUriContent, IImmediateContent {
         public static ServerPresetAssistState[] AssistStates { get; } = EnumExtension.GetValues<ServerPresetAssistState>();
         public static ServerPresetJumpStart[] JumpStarts { get; } = EnumExtension.GetValues<ServerPresetJumpStart>();
         public static ServerPresetRaceJoinType[] RaceJoinTypes { get; } = EnumExtension.GetValues<ServerPresetRaceJoinType>();
@@ -678,11 +678,11 @@ namespace AcManager.Pages.ServerPreset {
             ExtraButtonsSeparator.Visibility = entryListTab || wrappedTab ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void OnPackServerButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnPackServerButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.InitializePackServerPresets();
         }
 
-        private void OnDriveButtonMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
             _model.QuickDriveButton.Initialize();
         }
     }

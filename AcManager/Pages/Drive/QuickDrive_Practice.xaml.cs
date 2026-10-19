@@ -8,7 +8,7 @@ using AcTools.Processes;
 using AcTools.Utils.Helpers;
 
 namespace AcManager.Pages.Drive {
-    public partial class QuickDrive_Practice : IQuickDriveModeControl {
+    public partial class QuickDrive_Practice : global::Avalonia.Controls.UserControl, IQuickDriveModeControl {
         public class ViewModel : QuickDriveSingleModeViewModel {
             public Game.StartType[] StartTypes => Game.StartType.Values;
 

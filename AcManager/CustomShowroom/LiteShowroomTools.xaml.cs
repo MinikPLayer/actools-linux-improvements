@@ -43,17 +43,12 @@ using FirstFloor.ModernUI.Windows.Media;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 using OxyPlot;
-using Button = System.Windows.Controls.Button;
-using CheckBox = System.Windows.Controls.CheckBox;
-using Control = System.Windows.Controls.Control;
 using FileDialogCustomPlace = Microsoft.Win32.FileDialogCustomPlace;
-using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;
 using WaitingDialog = FirstFloor.ModernUI.Dialogs.WaitingDialog;
 
 namespace AcManager.CustomShowroom {
-    public partial class LiteShowroomTools {
+    public partial class LiteShowroomTools : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private const string KeySavedData = "__LiteShowroomTools";
 
         public static ILiveryGenerator LiveryGenerator { get; set; }

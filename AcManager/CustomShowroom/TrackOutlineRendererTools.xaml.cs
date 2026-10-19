@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Presentation;
 using JetBrains.Annotations;
 
 namespace AcManager.CustomShowroom {
-    public partial class TrackOutlineRendererTools {
+    public partial class TrackOutlineRendererTools : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
 
         public TrackOutlineRendererTools(TrackObjectBase track, TrackOutlineRenderer renderer) {

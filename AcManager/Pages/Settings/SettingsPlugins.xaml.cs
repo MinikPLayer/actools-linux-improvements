@@ -5,7 +5,7 @@ using FirstFloor.ModernUI;
 using FirstFloor.ModernUI.Presentation;
 
 namespace AcManager.Pages.Settings {
-    public partial class SettingsPlugins {
+    public partial class SettingsPlugins : global::Avalonia.Controls.UserControl {
         public SettingsPlugins() {
             InitializeComponent();
             DataContext = new ViewModel();

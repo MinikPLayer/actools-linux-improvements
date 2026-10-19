@@ -4,7 +4,7 @@ using FirstFloor.ModernUI.Windows;
 using FirstFloor.ModernUI.Windows.Controls;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsPage : IParametrizedUriContent {
+    public partial class AcSettingsPage : global::Avalonia.Controls.UserControl, IParametrizedUriContent {
         public AcSettingsPage() {
             InitializeComponent();
         }

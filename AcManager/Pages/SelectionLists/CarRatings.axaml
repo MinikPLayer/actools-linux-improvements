@@ -1,0 +1,26 @@
+﻿<sl:SelectionList xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:sl="clr-namespace:AcManager.Pages.SelectionLists" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:TypeArguments="t:CarObject, sl:SelectRating" x:Class="AcManager.Pages.SelectionLists.CarRatings" Theme="{StaticResource {x:Type ListBox}}">
+  <ListBox.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/FavouritesSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </ListBox.Resources>
+  <ListBox.ItemTemplate>
+    <DataTemplate DataType="{x:Type sl:SelectRating}">
+      <mui:Cell Height="80" Background="Transparent" PointerPressed="OnItemMouseDown" x:Name="__Dt0">
+        <mui:Cell.Styles><Style Selector="mui|Cell#__Dt0"><Style Selector="^ Ellipse#NewMark"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Path#FavouriteIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S2" Value="{Binding Rating, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S1)=True] Ellipse#NewMark"><Setter Property="IsVisible" Value="True"/>
+        </Style><Style Selector="^[(pa|T.S2)=True] c|RatingBar#RatingBar"><Setter Property="IsVisible" Value="False"/>
+          </Style><Style Selector="^[(pa|T.S2)=True] Path#FavouriteIcon"><Setter Property="IsVisible" Value="True"/>
+        </Style></Style></mui:Cell.Styles><mui:Cell Margin="8 8 8 24">
+          <c:RatingBar x:Name="RatingBar" Rating="{Binding Rating, Mode=OneWay}" IsReadOnly="True"/>
+          <Path x:Name="FavouriteIcon" Data="{StaticResource BookmarkIconData}" Width="24" Height="24" DockPanel.Dock="Right" Fill="{DynamicResource FavouriteBrush}" Stretch="Uniform" VerticalAlignment="Center"/>
+        </mui:Cell>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding DisplayName}" Margin="4" VerticalAlignment="Bottom" Classes="Label"/>
+        <TextBlock FontSize="10" HorizontalAlignment="Right" Text="{Binding ItemsCount}" Margin="4" VerticalAlignment="Top" Classes="Label"/>
+        <Ellipse x:Name="NewMark" Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="2" IsHitTestVisible="False"/>
+      </mui:Cell>
+      </DataTemplate>
+  </ListBox.ItemTemplate>
+</sl:SelectionList>

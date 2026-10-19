@@ -1,0 +1,165 @@
+﻿<tools:ContentTool xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:tools="clr-namespace:AcManager.Pages.ContentTools" xmlns:c="http://acstuff.club/app/controls" xmlns:system="using:System" xmlns:g="clr-namespace:AcManager" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.ContentTools.BatchPreviewsUpdater" mui:InputBindingBehavior.PropagateToWindow="True">
+  <tools:ContentTool.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <!-- PORT: removed CollectionViewSource -->
+    </ResourceDictionary>
+  </tools:ContentTool.Resources>
+
+  <mui:SpacingStackPanel mui:Switch.When="{x:Static tools:Stage.Loading}" Width="400" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+    <ProgressBar IsIndeterminate="{Binding ProgressValue.IsIndeterminate}" Maximum="1" Value="{Binding ProgressValue.Progress, Mode=OneWay}" Height="4"/>
+    <TextBlock Text="{Binding ProgressValue.Message}"/>
+  </mui:SpacingStackPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Empty}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.Online_NothingToDisplay}" Classes="Heading1"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Error}" Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <TextBlock Text="{x:Static g:AppStrings.ContentTools_BatchPreviewsUpdater_SomeErrorHappened}" DockPanel.Dock="Top" Classes="Heading1"/>
+    <TextBlock Text="{Binding Error}" Margin="0 20 0 0"/>
+  </DockPanel>
+
+  <DockPanel mui:Switch.When="{x:Static tools:Stage.Ready}">
+    <mui:SpacingStackPanel DockPanel.Dock="Bottom" Spacing="4" Orientation="Horizontal" Classes="BottomRow">
+      <TextBlock Text="{Binding TotalSelected, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {skin} selected in total'}" Width="100" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0 0 4 0" Classes="Small"/>
+
+      <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.ContentTools_BatchPreviewsUpdater_AutoSelect}" Command="{Binding SelectDifferentCommand}" ButtonToolTip="Select all previews made with different style" PointerPressed="OnDifferentButtonMouseDown" IsVisible="{Binding CustomShowroomPreviews, Source={x:Static t:SettingsHolder.CustomShowroom}, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <mui:ButtonWithComboBox.MenuItems>
+          <!-- PORT: removed CollectionContainer -->
+          </mui:ButtonWithComboBox.MenuItems>
+      </mui:ButtonWithComboBox>
+
+      <mui:ButtonWithComboBox Content="{x:Static g:AppStrings.Toolbar_UpdatePreviews}" Command="{Binding UpdatePreviewsCommand}" ButtonToolTip="{x:Static g:AppStrings.Toolbar_UpdatePreviews_Tooltip}" PointerPressed="OnPreviewsButtonMouseDown">
+        <mui:ButtonWithComboBox.MenuItems>
+          <!-- PORT: removed CollectionContainer -->
+          </mui:ButtonWithComboBox.MenuItems>
+      </mui:ButtonWithComboBox>
+
+      <Button Content="{x:Static c:ControlsStrings.Common_Options}" Command="{Binding UpdatePreviewsOptionsCommand}"/>
+    </mui:SpacingStackPanel>
+
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="200"/>
+        <ColumnDefinition Width="9"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+
+      <DockPanel Margin="-24 0 0 0">
+        <DockPanel DockPanel.Dock="Top" Margin="24 0 0 8">
+          <TextBlock Text="{x:Static c:ControlsStrings.Common_FilterLabel}" Width="60" DockPanel.Dock="Left" Classes="Label"/>
+          <mui:HistoricalTextBox Placeholder="*" Text="{Binding FilterValue, UpdateSourceTrigger=PropertyChanged}" SaveKey="btchpreviewsupdr.filter" Theme="{StaticResource BetterComboBox.Borderless}">
+            <mui:HistoricalTextBox.DefaultItems>
+              <system:String>kunos-</system:String>
+              <system:String>new+</system:String>
+            </mui:HistoricalTextBox.DefaultItems>
+          </mui:HistoricalTextBox>
+        </DockPanel>
+
+        <ListBox ItemsSource="{Binding EntriesView}" SelectionMode="Single" SelectedItem="{Binding SelectedEntry, Mode=TwoWay}" KeyDown="OnCarsListKeyDown" Theme="{StaticResource VirtualizingListBox}">
+          <ListBox.ItemContainerTheme>
+            <ControlTheme TargetType="ListBoxItem">
+              <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Bd" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" PointerReleased="OnCarsListBoxItemClick">
+                      <mui:Cell>
+                        <Rectangle Fill="{TemplateBinding Background}" HorizontalAlignment="Left" Width="4"/>
+                        <Rectangle x:Name="BgHighlight" Fill="{DynamicResource ItemBackgroundSelectedSubtle}"/>
+                        <Border Margin="6 0 8 0" Padding="{TemplateBinding Padding}">
+                          <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        </Border>
+                      </mui:Cell>
+                    </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+              <Style Selector="^ /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                </Style><Style Selector="^:selected"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+                </Style><Style Selector="^:selected /template/ Rectangle#BgHighlight"><Setter Property="IsVisible" Value="True"/>
+                      </Style></ControlTheme>
+          </ListBox.ItemContainerTheme>
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type tools:BatchPreviewsUpdater+CarObjectEntry}">
+              <DockPanel Margin="4" Background="Transparent">
+                <mui:Cell Width="24" DockPanel.Dock="Left">
+                  <CheckBox IsChecked="{Binding IsSelectedReadOnly, Mode=TwoWay}" IsThreeState="True" Click="OnCarsListCheckboxClick"/>
+                </mui:Cell>
+                <TextBlock Text="{Binding SelectedSkins.Count}" VerticalAlignment="Center" DockPanel.Dock="Right" Width="32" TextAlignment="Right" Classes="Small"/>
+                <TextBlock Text="{Binding Car.DisplayName}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0 0 4 0"/>
+              </DockPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+
+      <mui:ModernTabSplitter Grid.Column="1" SaveKey="BatchPreviewsUpdater"/>
+
+      <DockPanel Grid.Column="2" Margin="20 0 0 0">
+        <DockPanel DockPanel.Dock="Top" Margin="0 0 0 20">
+          <mui:BetterImage Width="24" Height="24" DockPanel.Dock="Left" Margin="0 0 8 0" Filename="{Binding SelectedEntry.Car.BrandBadge}"/>
+          <TextBlock Text="{Binding SelectedEntry.Car.DisplayName}" VerticalAlignment="Center" Classes="Heading2"/>
+        </DockPanel>
+
+        <ListBox x:Name="SkinsList" ItemsSource="{Binding SelectedEntry.Car.EnabledOnlySkins}" SelectionChanged="OnSkinsListSelectionChanged" mui:ListBoxHelper.ProperMultiSelectionMode="True" Theme="{StaticResource VirtualizingListBox}">
+          <ListBox.ItemContainerTheme>
+            <ControlTheme TargetType="ListBoxItem">
+              <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+              <Setter Property="BorderThickness" Value="1"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="ListBoxItem">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                      <mui:Cell>
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                        <CheckBox Background="{TemplateBinding Background}" IsHitTestVisible="False" Margin="4" HorizontalAlignment="Left" VerticalAlignment="Top" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"/>
+                      </mui:Cell>
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+
+              <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+                  <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+                </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                </Style><Style Selector="^[(Button.IsPressed)=True]"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                  <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+                </Style></ControlTheme>
+          </ListBox.ItemContainerTheme>
+          <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+              <mui:VirtualizingTilePanel ItemWidth="162" ItemHeight="92" Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </ListBox.ItemsPanel>
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <mui:Cell Width="160" Height="90" Background="{DynamicResource ThumbnailBackground}">
+                <mui:BetterImage Filename="{Binding PreviewImage}" MaxWidth="200" Stretch="UniformToFill"/>
+                <TextBlock Padding="4 4 12 4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding DisplayName}" Foreground="{DynamicResource DarkStripeText}" TextTrimming="CharacterEllipsis"/>
+              </mui:Cell>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </Grid>
+  </DockPanel>
+</tools:ContentTool>

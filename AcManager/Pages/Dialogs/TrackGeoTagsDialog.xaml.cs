@@ -16,7 +16,7 @@ using FirstFloor.ModernUI.Serialization;
 using JetBrains.Annotations;
 
 namespace AcManager.Pages.Dialogs {
-    public partial class TrackGeoTagsDialog {
+    public partial class TrackGeoTagsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         private ViewModel Model => (ViewModel)DataContext;
         private bool _closed;
 
@@ -84,7 +84,7 @@ namespace AcManager.Pages.Dialogs {
             }
         }
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust"), ComVisible(true)]
+        [ComVisible(true)]
         public class JsProxy : JsProxyCSharp {
             private JsBridge _bridge;
 

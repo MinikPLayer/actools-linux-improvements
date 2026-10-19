@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Helpers;
 using FirstFloor.ModernUI.Windows.Attached;
 
 namespace AcManager.QuickSwitches {
-    public partial class QuickSwitchesBlock {
+    public partial class QuickSwitchesBlock : global::Avalonia.Controls.DockPanel {
         public QuickSwitchesBlock() {
             InitializeComponent();
             Rebuild();

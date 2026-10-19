@@ -1,0 +1,60 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:se="clr-namespace:AcManager.Pages.Settings" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:g="clr-namespace:AcManager" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Settings.SettingsQuickSwitches" mui:ModernFrame.KeepAlive="False">
+  <UserControl.Styles><Style Selector="ListBox.WidgetsList">
+        <Setter Property="mui:Draggable.Enabled" Value="True"/>
+        <Setter Property="mui:Draggable.Destination" Value="{x:Static se:SettingsQuickSwitches+WidgetEntry.DraggableFormat}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ItemTemplate" Value="{StaticResource ItemTemplate}"/>
+        <Setter Property="ItemsPanel">
+          <Setter.Value>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </UserControl.Styles><UserControl.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+        <ResourceInclude Source="/QuickSwitches/QuickSwitchesWidgets.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+
+      <DataTemplate x:Key="ItemTemplate" DataType="{x:Type se:SettingsQuickSwitches+WidgetEntry}">
+        <mui:Cell>
+          <ContentPresenter Content="{Binding Element}"/>
+          <Border Background="Transparent" ToolTip.Tip="{Binding ToolTip}"/>
+        </mui:Cell>
+      </DataTemplate>
+
+      </ResourceDictionary>
+  </UserControl.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="260" MinWidth="100" MaxWidth="400"/>
+      <ColumnDefinition Width="9"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+
+    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 20" Classes="SettingsPanel">
+      <CheckBox IsChecked="{Binding Drive.QuickSwitches}">
+        <Label Content="{x:Static g:AppStrings.Settings_QuickSwitches_Enable}"/>
+      </CheckBox>
+      <CheckBox IsChecked="{Binding Drive.QuickSwitchesRightMouseButton}">
+        <Label Content="Use right mouse button to toggle quick switches too"/>
+      </CheckBox>
+      <mui:BbCodeBlock TextWrapping="Wrap" Text="{x:Static g:AppStrings.Settings_QuickSwitches_Description}"/>
+    </StackPanel>
+
+    <TextBlock Grid.Row="1" Grid.Column="0" Margin="0 0 0 4" Text="{x:Static g:AppStrings.Settings_QuickSwitches_AddedLabel}" Classes="Label"/>
+    <TextBlock Grid.Row="1" Grid.Column="2" Margin="0 0 0 4" Text="{x:Static g:AppStrings.Settings_QuickSwitches_LibraryLabel}" Classes="Label"/>
+
+    <ListBox Grid.Row="2" Grid.Column="0" ItemsSource="{Binding Added}" Classes="WidgetsList"/>
+    <mui:ModernTabSplitter Grid.Row="2" Grid.Column="1" SaveKey=".QuickSwitches:Splitter"/>
+    <ListBox Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Stored}" Classes="WidgetsList"/>
+  </Grid>
+</UserControl>

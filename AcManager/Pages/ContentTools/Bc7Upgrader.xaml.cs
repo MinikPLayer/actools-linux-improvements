@@ -15,7 +15,7 @@ using FirstFloor.ModernUI.Windows.Converters;
 using Displayable = FirstFloor.ModernUI.Presentation.Displayable;
 
 namespace AcManager.Pages.ContentTools {
-    public partial class Bc7Upgrader {
+    public partial class Bc7Upgrader : global::AcManager.Pages.ContentTools.ContentTool {
         protected override Task<bool> LoadAsyncOverride(IProgress<AsyncProgressEntry> progress, CancellationToken cancellation) {
             return Task.FromResult(true);
         }

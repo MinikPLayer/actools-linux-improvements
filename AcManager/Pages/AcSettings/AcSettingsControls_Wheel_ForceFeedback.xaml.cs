@@ -21,7 +21,7 @@ using JetBrains.Annotations;
 using Microsoft.Win32;
 
 namespace AcManager.Pages.AcSettings {
-    public partial class AcSettingsControls_Wheel_ForceFeedback {
+    public partial class AcSettingsControls_Wheel_ForceFeedback : global::Avalonia.Controls.UserControl {
         [CanBeNull]
         private LutLibraryWrapper _wrapper;
 
@@ -36,7 +36,7 @@ namespace AcManager.Pages.AcSettings {
 
             var mainWindow = Application.Current.MainWindow;
             if (mainWindow != null) {
-                mainWindow.Drop += OnMainWindowDrop;
+                mainWindow.AddDrop(OnMainWindowDrop);
             }
 
             DataContext = new ViewModel(_wrapper);
@@ -50,7 +50,7 @@ namespace AcManager.Pages.AcSettings {
 
             this.OnActualUnload(() => {
                 if (mainWindow != null) {
-                    mainWindow.Drop -= OnMainWindowDrop;
+                    mainWindow.RemoveDrop(OnMainWindowDrop);
                 }
             });
 

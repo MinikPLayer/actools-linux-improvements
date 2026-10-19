@@ -1,0 +1,45 @@
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:w="clr-namespace:AcManager.Pages.Workshop" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Workshop.WorkshopEditProfile" Title="Edit CM Workshop profile" MinWidth="400" Width="580" Height="400" MaxWidth="{x:Static mui:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static mui:DpiAwareWindow.UnlimitedSize}" SizeToContent="Manual" LocationAndSizeKey="WorkshopEditProfile.LS" CanResize="True" DragDrop.Drop="OnDrop" DragDrop.AllowDrop="True">
+  <mui:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
+        <ResourceInclude Source="avares://AcManager.Controls/Assets/SettingsSpecific.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </mui:ModernDialog.Resources>
+
+  <mui:SpacingStackPanel Spacing="8">
+    <mui:Cell Height="184" Margin="0 0 0 12">
+      <Border Height="184" Background="{DynamicResource CardBackground}" Opacity="0.2"/>
+      <mui:Cell Width="184" HorizontalAlignment="Center" Background="{DynamicResource CardBackground}">
+        <TextBlock Text="Avatar is missing" Foreground="{DynamicResource CardHeaderTextDisabled}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 20" TextWrapping="Wrap" IsVisible="{Binding AvatarImageSource, Converter={StaticResource NullToVisibilityConverter}}" Classes="Heading1"/>
+        <mui:BetterImage Width="184" Height="184" Source="{Binding AvatarImageSource}"/>
+      </mui:Cell>
+      <mui:SpacingUniformGrid HorizontalSpacing="4" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 0 8" Rows="1" IsVisible="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type mui:Cell}}, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Button Content="Change avatar" Command="{Binding ChangeAvatarCommand}"/>
+        <Button Content="Revert avatar" Command="{Binding RevertAvatarCommand}" IsVisible="{Binding RevertAvatarCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+      </mui:SpacingUniformGrid>
+    </mui:Cell>
+    <DockPanel>
+      <Path Data="{StaticResource PersonIconData}" Width="12" Height="12" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+      <TextBlock Text="Nickname:" Width="80" Classes="Label"/>
+      <mui:BetterTextBox Text="{Binding Username}"/>
+    </DockPanel>
+    <DockPanel>
+      <Path Data="{StaticResource PersonDetailIconData}" Width="12" Height="12" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+      <TextBlock Text="Name:" Width="80" Classes="Label"/>
+      <mui:BetterTextBox Text="{Binding Name}"/>
+    </DockPanel>
+    <DockPanel>
+      <Path Data="{StaticResource EditIconData}" Width="12" Height="12" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+      <TextBlock Text="Bio:" Width="80" Classes="Label"/>
+      <mui:BetterTextBox Text="{Binding Bio}"/>
+    </DockPanel>
+    <DockPanel>
+      <Path Data="{StaticResource LocationIconData}" Width="12" Height="12" Stretch="Uniform" Margin="0 0 4 0" Fill="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}"/>
+      <TextBlock Text="Location:" Width="80" Classes="Label"/>
+      <mui:BetterTextBox Text="{Binding Location}"/>
+    </DockPanel>
+  </mui:SpacingStackPanel>
+
+</mui:ModernDialog>
