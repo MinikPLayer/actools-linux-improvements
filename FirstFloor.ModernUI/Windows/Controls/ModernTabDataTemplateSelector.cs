@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using FirstFloor.ModernUI.Presentation;
 
@@ -18,7 +18,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return item is LinkWithList ? LinkWithListDataTemplate 
                     : item is ListOfLinks ? ListOfLinksDataTemplate 
                     : item is Link l ? l.IsPinned ? PinnedLinkDataTemplate : LinkDataTemplate 
-                    : TitleDataTemplate;
+                    : item is ModernTab.TitleItem ? TitleDataTemplate : null;
         }
     }
 }

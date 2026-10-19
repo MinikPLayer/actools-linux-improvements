@@ -91,7 +91,77 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
+        /// <summary>
+        /// Item of <see cref="LinksWithTitle"/> which shows the title of the current page (TabWithTitle layout).
+        /// </summary>
+        public sealed class TitleItem : NotifyPropertyChanged {
+            private string _title;
+
+            public string Title {
+                get => _title;
+                set => Apply(value, ref _title);
+            }
+        }
+
+        public static readonly StyledProperty<System.Collections.IEnumerable> LinksWithTitleProperty = DP.Register<System.Collections.IEnumerable>(
+                nameof(LinksWithTitle), typeof(ModernTab));
+
+        /// <summary>
+        /// Links, pinned links and the title of the current page, WPF used CompositeCollection for that.
+        /// </summary>
+        public System.Collections.IEnumerable LinksWithTitle => (System.Collections.IEnumerable)GetValue(LinksWithTitleProperty);
+
+        private readonly Avalonia.Collections.AvaloniaList<object> _linksWithTitle = new Avalonia.Collections.AvaloniaList<object>();
+        private readonly TitleItem _titleItem = new TitleItem();
+        private LinkCollection _observedLinks, _observedPinnedLinks;
+
+        private void ObserveLinks(ref LinkCollection observed, LinkCollection collection) {
+            if (observed != null) {
+                observed.CollectionChanged -= OnLinksCollectionChanged;
+            }
+
+            observed = collection;
+            if (observed != null) {
+                observed.CollectionChanged += OnLinksCollectionChanged;
+            }
+
+            RebuildLinksWithTitle();
+        }
+
+        private void OnLinksCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            RebuildLinksWithTitle();
+        }
+
+        private void RebuildLinksWithTitle() {
+            var selected = _linkList?.SelectedItem;
+            var items = (Links ?? Enumerable.Empty<Link>()).Cast<object>().Concat(PinnedLinks ?? Enumerable.Empty<Link>()).ToList();
+            var titled = Title != null;
+            if (titled) {
+                _titleItem.Title = Title;
+                items.Add(_titleItem);
+            }
+
+            if (_linksWithTitle.SequenceEqual(items)) return;
+            _linksWithTitle.Clear();
+            _linksWithTitle.AddRange(items);
+            if (selected != null && _linksWithTitle.Contains(selected) && _linkList != null) {
+                _linkList.SelectedItem = selected;
+            }
+        }
+
+        protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (change.Property == LinksProperty) {
+                ObserveLinks(ref _observedLinks, change.NewValue as LinkCollection);
+            } else if (change.Property == PinnedLinksProperty) {
+                ObserveLinks(ref _observedPinnedLinks, change.NewValue as LinkCollection);
+            } else if (change.Property == TitleProperty) {
+                RebuildLinksWithTitle();
+            }
+        }
+
         public ModernTab() {
+            SetCurrentValue(LinksWithTitleProperty, _linksWithTitle);
             SetCurrentValue(LinksProperty, new LinkCollection());
             SetCurrentValue(PinnedLinksProperty, new LinkCollection());
             SetCurrentValue(PinCurrentCommandProperty, new DelegateCommand(async () => {

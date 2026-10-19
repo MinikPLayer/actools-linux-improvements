@@ -3,6 +3,8 @@ using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.VisualTree;
 
 namespace FirstFloor.ModernUI.Helpers {
@@ -31,6 +33,8 @@ namespace FirstFloor.ModernUI.Helpers {
             if (v is Control c && !string.IsNullOrEmpty(c.Name)) sb.Append('#').Append(c.Name);
             sb.Append(' ').Append(v.Bounds.Width.ToString("F0")).Append('x').Append(v.Bounds.Height.ToString("F0"));
             if (!v.IsVisible) sb.Append(" (hidden)");
+            if (v is Layoutable lay && lay.Margin != default) sb.Append(" m=").Append(lay.Margin);
+            if (v is TemplatedControl tc && tc.Theme != null) sb.Append(" theme");
             if (v is ItemsControl ic) sb.Append(" items=").Append(ic.ItemCount).Append(" src=").Append(ic.ItemsSource?.GetType().Name ?? "null").Append(" tpl=").Append(ic.Template?.GetType().Name ?? "null").Append(" theme=").Append(ic.Theme != null).Append(" panel=").Append(ic.ItemsPanel?.GetType().Name ?? "null").Append(" vc=").Append(ic.GetVisualChildren().Count());
             if (v is TextBlock t && !string.IsNullOrEmpty(t.Text)) sb.Append(" “").Append(t.Text.Length > 40 ? t.Text.Substring(0, 40) : t.Text).Append('”');
             sb.AppendLine();
