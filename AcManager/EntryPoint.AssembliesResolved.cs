@@ -66,7 +66,9 @@ namespace AcManager {
             }
 
             using (var mutex = new Mutex(false, mutexId)) {
-                _secondInstanceMessage = User32.RegisterWindowMessage(mutexId);
+                if (OperatingSystem.IsWindows()) {
+                    _secondInstanceMessage = User32.RegisterWindowMessage(mutexId);
+                }
                 if (mutex.WaitOne(0, false)) {
                     if (AppUpdater.OnUniqueStartup(args)) return;
 
@@ -173,8 +175,11 @@ namespace AcManager {
         }
 
         private static void PassArgsToRunningInstance(IEnumerable<string> args) {
+            // Windows uses a broadcasted message to wake up the running instance, other platforms: the file with arguments is watched
             PassSomeData(args);
-            User32.PostMessage(User32.HWND_BROADCAST, _secondInstanceMessage, 0, 0);
+            if (OperatingSystem.IsWindows()) {
+                User32.PostMessage(User32.HWND_BROADCAST, _secondInstanceMessage, 0, 0);
+            }
         }
 
         private static bool _crashed;
@@ -298,9 +303,51 @@ namespace AcManager {
             }
         }
 
+        private static readonly List<FileSystemWatcher> SecondInstanceWatchers = new List<FileSystemWatcher>();
+
+        private static void HandleSecondInstanceFile(Window window, Func<IEnumerable<string>, bool> handler) {
+            try {
+                var watcher = new FileSystemWatcher(Path.GetDirectoryName(CommunicationFilename) ?? Path.GetTempPath(), Path.GetFileName(CommunicationFilename)) {
+                    NotifyFilter = NotifyFilters.FileName | NotifyFilters.LastWrite,
+                    EnableRaisingEvents = true
+                };
+
+                void OnChanged(object sender, FileSystemEventArgs e) {
+                    FirstFloor.ModernUI.ActionExtension.InvokeInMainThreadAsync(() => {
+                        try {
+                            var data = ReceiveSomeData(out var currentDirectory);
+                            if (!data.Any()) return;
+
+                            if (!string.IsNullOrWhiteSpace(currentDirectory)) {
+                                Environment.CurrentDirectory = currentDirectory;
+                            }
+                            if (handler(data)) {
+                                (window as DpiAwareWindow)?.BringToFront();
+                            }
+                        } catch (Exception ex) {
+                            Logging.Warning("Can’t handle arguments of a second instance: " + ex);
+                        }
+                    });
+                }
+
+                watcher.Created += OnChanged;
+                watcher.Changed += OnChanged;
+                SecondInstanceWatchers.Add(watcher);
+                window.Closed += (sender, args) => {
+                    watcher.Dispose();
+                    SecondInstanceWatchers.Remove(watcher);
+                };
+            } catch (Exception e) {
+                Logging.Warning("Can’t watch for second instances: " + e);
+            }
+        }
+
         public static void HandleSecondInstanceMessages(Window window, Func<IEnumerable<string>, bool> handler) {
-            // Second instances pass their arguments with a custom Windows message; other platforms don’t have it (see LinuxPortDocs.md)
-            if (!OperatingSystem.IsWindows()) return;
+            // Second instances pass their arguments with a custom Windows message; other platforms watch the file with arguments (see LinuxPortDocs.md)
+            if (!OperatingSystem.IsWindows()) {
+                HandleSecondInstanceFile(window, handler);
+                return;
+            }
 
             Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam, ref bool handled) => {
                 if (message == _secondInstanceMessage) {

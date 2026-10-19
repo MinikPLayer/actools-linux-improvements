@@ -58,11 +58,15 @@ namespace AcManager {
             // ProfileOptimization.SetProfileRoot(profileDirectory);
             // ProfileOptimization.StartProfile("Startup.Profile");
 
-            try {
+            #if DEBUG
                 MainReal(a);
-            } catch (Exception e) {
-                UnhandledExceptionHandler(e);
-            }
+            #else
+                try {
+                    MainReal(a);
+                } catch (Exception e) {
+                    UnhandledExceptionHandler(e);
+                }
+            #endif
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
