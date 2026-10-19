@@ -36,7 +36,11 @@ namespace System.Windows {
         Error = 16,
         Question = 32,
         Warning = 48,
-        Information = 64
+        Information = 64,
+        Hand = 16,
+        Stop = 16,
+        Exclamation = 48,
+        Asterisk = 64
     }
 
     public enum ResizeMode {

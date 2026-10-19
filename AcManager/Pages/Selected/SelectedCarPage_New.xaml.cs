@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -817,7 +817,7 @@ namespace AcManager.Pages.Selected {
                 Command = skin.DeleteCommand
             });
 
-            contextMenu.IsOpen = true;
+            contextMenu.ShowAtPointer();
         }
         #endregion
 

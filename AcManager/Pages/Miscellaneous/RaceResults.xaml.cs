@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -558,7 +558,7 @@ namespace AcManager.Pages.Miscellaneous {
 
                 c.AddItem("Setup race", item.SetupRaceCommand)
                         .AddItem("Start race", item.StartRaceCommand, style: this.TryFindResource("GoMenuItem") as Style)
-                        .IsOpen = true;
+                        .ShowAtPointer();
             }
         }
     }

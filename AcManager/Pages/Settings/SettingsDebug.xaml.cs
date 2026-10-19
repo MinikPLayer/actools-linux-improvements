@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -225,7 +225,6 @@ namespace AcManager.Pages.Settings {
                         Width = CommonAcConsts.TrackOutlineWidth,
                         Height = CommonAcConsts.TrackOutlineHeight,
                         Source = BetterImage.LoadBitmapSource(track.OutlineImage).ImageSource,
-                        Effect = new InvertKeepColorEffect(),
                     },
                 };
 
@@ -234,21 +233,14 @@ namespace AcManager.Pages.Settings {
                 result.ApplyTemplate();
                 result.UpdateLayout();
 
-                var bmp = new RenderTargetBitmap(CommonAcConsts.TrackOutlineWidth, CommonAcConsts.TrackOutlineHeight, 96, 96, PixelFormats.Pbgra32);
+                var bmp = new RenderTargetBitmap(new PixelSize((int)(CommonAcConsts.TrackOutlineWidth), (int)(CommonAcConsts.TrackOutlineHeight)), new Vector(96, 96));
                 bmp.Render(result);
                 bmp.SaveTo(filename);
                 WindowsHelper.ViewFile(filename);
             }));
 
-            private static BitmapImage LoadBitmapImage(string filename) {
-                var bi = new BitmapImage();
-                bi.BeginInit();
-                bi.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bi.CacheOption = BitmapCacheOption.OnLoad;
-                bi.UriSource = new Uri(filename);
-                bi.EndInit();
-                bi.Freeze();
-                return bi;
+            private static Bitmap LoadBitmapImage(string filename) {
+                return new Bitmap(filename);
             }
 
             private void MakeCollage(IEnumerable<string> imageFilenames, string outputFilename) {
@@ -264,8 +256,7 @@ namespace AcManager.Pages.Settings {
                 collage.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 collage.Arrange(new Rect(0d, 0d, collage.DesiredSize.Width, collage.DesiredSize.Height));
 
-                var bitmap = new RenderTargetBitmap((int)collage.DesiredSize.Width, (int)collage.DesiredSize.Height,
-                        96, 96, PixelFormats.Default);
+                var bitmap = new RenderTargetBitmap(new PixelSize((int)((int)collage.DesiredSize.Width), (int)((int)collage.DesiredSize.Height)), new Vector(96, 96));
                 bitmap.Render(collage);
                 bitmap.SaveTo(outputFilename);
             }

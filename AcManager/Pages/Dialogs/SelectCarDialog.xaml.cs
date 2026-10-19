@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -309,7 +309,7 @@ namespace AcManager.Pages.Dialogs {
 
             if (CarBlock.TagsList != null) {
                 CarBlock.TagsList.AddPreviewMouseLeftButtonUp((s, args) => {
-                    if (CarBlock.TagsList.FindVisualChild<ItemsControl>().GetMouseItem() is string mouseTag) {
+                    if ((args.Source as StyledElement)?.DataContext is string mouseTag) {
                         Tabs.SelectedSource = TagUri(mouseTag);
                     }
                 });

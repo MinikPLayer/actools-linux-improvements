@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace Microsoft.Win32 {
         public bool OverwritePrompt { get; set; }
         public bool Multiselect { get; set; }
         public string[] FileNames { get; protected set; } = new string[0];
-        public IList<FileDialogCustomPlace> CustomPlaces { get; } = new List<FileDialogCustomPlace>();
+        public IList<FileDialogCustomPlace> CustomPlaces { get; set; } = new List<FileDialogCustomPlace>();
 
         protected List<DialogFilterPiece> ParseFilters() {
             var result = new List<DialogFilterPiece>();

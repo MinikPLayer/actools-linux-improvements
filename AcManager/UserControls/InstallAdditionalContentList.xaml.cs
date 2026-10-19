@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,9 +54,9 @@ namespace AcManager.UserControls {
 
         private void OnItemMouseUp(object sender, PointerReleasedEventArgs e) {
             if (((FrameworkElement)sender).DataContext is ContentInstallationEntry item && !ReferenceEquals(ItemsListBox.SelectedItem, item)) {
-                var control = ItemsListBox.GetItemVisual(item);
+                var control = ItemsListBox.ContainerFromIndex(ItemsListBox.Items.IndexOf(item));
                 if (control != null) {
-                    var button = control.FindVisualChildren<Button>().FirstOrDefault(x => x.IsMouseOverElement());
+                    var button = control.FindVisualChildren<Button>().FirstOrDefault(x => x.IsPointerOver);
                     button?.Command?.Execute(button.CommandParameter);
                 }
 

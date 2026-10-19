@@ -63,7 +63,7 @@ namespace AcManager.Pages.Dialogs {
             NewIcon.ApplyTemplate();
             NewIcon.UpdateLayout();
 
-            var bmp = new RenderTargetBitmap(CommonAcConsts.UpgradeIconWidth, CommonAcConsts.UpgradeIconHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(new PixelSize((int)(CommonAcConsts.UpgradeIconWidth), (int)(CommonAcConsts.UpgradeIconHeight)), new Vector(96, 96));
             bmp.Render(NewIcon);
 
             try {

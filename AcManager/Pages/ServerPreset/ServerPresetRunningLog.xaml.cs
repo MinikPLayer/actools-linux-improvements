@@ -13,7 +13,7 @@ namespace AcManager.Pages.ServerPreset {
         public ServerPresetRunningLog() {
             InitializeComponent();
             if (this.TryFindResource(@"TextEditorSyntaxLog") is string data) {
-                this.Text.SyntaxHighlighting = HighlighterHolder.Get(data);
+                Text.SyntaxHighlighting = HighlighterHolder.Get(data);
             }
             Loaded += (sender, args) => EnsureSet();
             DataContextChanged += (sender, args) => EnsureSet();
@@ -47,10 +47,10 @@ namespace AcManager.Pages.ServerPreset {
 
                 if (serverLog != null) {
                     serverLog.CollectionChanged += OnLogChanged;
-                    this.Text.Document = new TextDocument(serverLog.JoinToString("\n")) { UndoStack = { SizeLimit = 0 } };
-                    this.Text.ScrollToEnd();
+                    Text.Document = new TextDocument(serverLog.JoinToString("\n")) { UndoStack = { SizeLimit = 0 } };
+                    Text.ScrollToEnd();
                 } else {
-                    this.Text.Document = new TextDocument { UndoStack = { SizeLimit = 0 } };
+                    Text.Document = new TextDocument { UndoStack = { SizeLimit = 0 } };
                 }
 
                 _previousServerLog = serverLog;
@@ -64,20 +64,20 @@ namespace AcManager.Pages.ServerPreset {
         private void OnLogChanged(object sender, NotifyCollectionChangedEventArgs e) {
             if (_previousServerLog == null) return;
 
-            var textView = this.Text.TextArea.TextView;
+            var textView = Text.TextArea.TextView;
             var needsToScroll = textView.VerticalOffset + textView.ActualHeight + 1 >= textView.DocumentHeight;
             if (e.Action == NotifyCollectionChangedAction.Add) {
-                this.Text.Document.BeginUpdate();
+                Text.Document.BeginUpdate();
                 foreach (var item in e.NewItems.OfType<string>()) {
-                    this.Text.Document.Insert(this.Text.Document.TextLength, "\n");
-                    this.Text.Document.Insert(this.Text.Document.TextLength, item);
+                    Text.Document.Insert(Text.Document.TextLength, "\n");
+                    Text.Document.Insert(Text.Document.TextLength, item);
                 }
-                this.Text.Document.EndUpdate();
+                Text.Document.EndUpdate();
             } else {
-                this.Text.Document.Text = _previousServerLog.JoinToString("\n");
+                Text.Document.Text = _previousServerLog.JoinToString("\n");
             }
             if (needsToScroll) {
-                this.Text.ScrollToEnd();
+                Text.ScrollToEnd();
             }
         }
     }

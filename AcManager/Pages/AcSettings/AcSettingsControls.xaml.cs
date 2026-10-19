@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -246,7 +246,7 @@ namespace AcManager.Pages.AcSettings {
         private void OnShareButtonClick(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
             ShareContextMenu.DataContext = DataContext;
-            ShareContextMenu.IsOpen = true;
+            ShareContextMenu.ShowAtPointer();
         }
 
         private void OnDeviceEditNamesClick(object sender, RoutedEventArgs e) {

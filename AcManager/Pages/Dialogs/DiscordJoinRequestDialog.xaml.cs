@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,7 +37,7 @@ namespace AcManager.Pages.Dialogs {
         private readonly CmInGameAppJoinRequestParams _inGameAppParams;
 
         private static Point GetWindowPosition(int width, int height) {
-            var screen = System.Windows.Forms.Screen.FromPoint(System.Windows.Forms.Cursor.Position);
+            var screen = AcTools.Windows.Compat.Screen.FromPoint(AcTools.Windows.Compat.Cursor.Position);
             var bounds = screen.Bounds;
             var x = bounds.Left + (bounds.Width - width) / 2;
             var y = bounds.Bottom - height - 20;
@@ -204,12 +204,9 @@ namespace AcManager.Pages.Dialogs {
         public AsyncCommand YesCommand => _yesCommand ?? (_yesCommand = new AsyncCommand(async () => {
             MessageBoxResult = MessageBoxResult.Yes;
             YesBar.Value = 1d;
-            YesBar.Foreground = new SolidColorBrush { Color = ((SolidColorBrush)YesBar.Foreground).Color };
-            YesBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)this.FindResource("GoColor"),
-                    new Duration(TimeSpan.FromSeconds(0.12))));
-            TextBlock.SetForeground(YesText, new SolidColorBrush { Color = ((SolidColorBrush)TextBlock.GetForeground(YesText)).Color });
-            TextBlock.GetForeground(YesText).BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(Colors.Black,
-                    new Duration(TimeSpan.FromSeconds(0.12))));
+            // color animations of brushes are replaced with instant changes
+            YesBar.Foreground = new SolidColorBrush((Color)this.FindResource("GoColor"));
+            Avalonia.Controls.Documents.TextElement.SetForeground(YesText, new SolidColorBrush(Colors.Black));
             await Task.Delay(500);
             CloseWithResult(MessageBoxResult.Yes);
         }, () => MessageBoxResult == MessageBoxResult.None));
@@ -219,12 +216,8 @@ namespace AcManager.Pages.Dialogs {
         public AsyncCommand NoCommand => _noCommand ?? (_noCommand = new AsyncCommand(async () => {
             MessageBoxResult = MessageBoxResult.No;
             NoBar.Value = 1d;
-            NoBar.Foreground = new SolidColorBrush { Color = ((SolidColorBrush)NoBar.Foreground).Color };
-            NoBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)this.FindResource("AccentColor"),
-                    new Duration(TimeSpan.FromSeconds(0.12))));
-            TextBlock.SetForeground(NoText, new SolidColorBrush { Color = ((SolidColorBrush)TextBlock.GetForeground(NoText)).Color });
-            TextBlock.GetForeground(NoText).BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(Colors.White,
-                    new Duration(TimeSpan.FromSeconds(0.12))));
+            NoBar.Foreground = new SolidColorBrush((Color)this.FindResource("AccentColor"));
+            Avalonia.Controls.Documents.TextElement.SetForeground(NoText, new SolidColorBrush(Colors.White));
             await Task.Delay(500);
             CloseWithResult(MessageBoxResult.No);
         }, () => MessageBoxResult == MessageBoxResult.None));

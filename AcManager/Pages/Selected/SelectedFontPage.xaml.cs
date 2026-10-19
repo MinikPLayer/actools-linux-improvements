@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -179,12 +179,12 @@ namespace AcManager.Pages.Selected {
     /// Draws characters of a font bitmap one by one.
     /// </summary>
     public class FontTestHost : Control {
-        private readonly List<Avalonia.Media.Imaging.Bitmap> _bitmaps;
+        private readonly List<CroppedBitmap> _bitmaps;
 
         public FontTestHost(string text, FontObjectBitmap fontObjectBitmap) {
             _bitmaps = text.Select(fontObjectBitmap.BitmapForChar).Where(cropped => cropped != null).ToList();
-            Width = _bitmaps.Sum(x => x.PixelSize.Width);
-            Height = _bitmaps.Count == 0 ? 0 : _bitmaps.Max(x => x.PixelSize.Height);
+            Width = _bitmaps.Sum(x => x.Size.Width);
+            Height = _bitmaps.Count == 0 ? 0 : _bitmaps.Max(x => x.Size.Height);
             HorizontalAlignment = HorizontalAlignment.Left;
             VerticalAlignment = VerticalAlignment.Top;
             Margin = new Thickness(4d);
@@ -193,8 +193,8 @@ namespace AcManager.Pages.Selected {
         public override void Render(DrawingContext context) {
             var totalX = 0d;
             foreach (var cropped in _bitmaps) {
-                context.DrawImage(cropped, new Rect(totalX, 0, cropped.PixelSize.Width, cropped.PixelSize.Height));
-                totalX += cropped.PixelSize.Width;
+                context.DrawImage(cropped, new Rect(totalX, 0, cropped.Size.Width, cropped.Size.Height));
+                totalX += cropped.Size.Width;
             }
         }
     }

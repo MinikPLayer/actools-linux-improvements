@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -103,7 +103,7 @@ namespace AcManager.Pages.Dialogs {
                     Content = UiStrings.Toolbar_Hide,
                     Command = new DelegateCommand(() => {
                         HiddenInstances.Add(new DialogHolder(this));
-                        Visibility = Visibility.Collapsed;
+                        IsVisible = false;
                     }),
                 },
                 OptionHideCancelButton ? null : CancelButton
@@ -989,10 +989,8 @@ namespace AcManager.Pages.Dialogs {
             var columns = ((DataGrid)sender).Columns.TakeLast(3).ToList();
             this.AddWidthCondition(1000).Add(columns[1]).Add(columns[2])
                     .Add(x => {
-                        columns[0].Width = x ? 100 : 140;
-                        columns[0].HeaderStyle = (Style)this.FindResource(x ?
-                                @"DataGridColumnHeader.RightAlignment" : @"DataGridColumnHeader.RightAlignment.FarRight");
-                        ((DataGridTemplateColumn)columns[0]).CellTemplate = (DataTemplate)this.FindResource(x ?
+                        columns[0].Width = new Avalonia.Controls.DataGridLength(x ? 100 : 140);
+                        ((Avalonia.Controls.DataGridTemplateColumn)columns[0]).CellTemplate = (DataTemplate)this.FindResource(x ?
                                 @"TotalTimeDeltaTemplate" : @"TotalTimeDeltaTemplate.FarRight");
                         if (x) {
                             FancyHints.GameDialogTableSize.MarkAsUnnecessary();
@@ -1008,7 +1006,8 @@ namespace AcManager.Pages.Dialogs {
 
         private void OnDataGridMouseDown(object sender, PointerPressedEventArgs e) {
             var grid = (DataGrid)sender;
-            if (grid.IsMouseOverItem(grid.SelectedItem)) {
+            var row = Avalonia.VisualTree.VisualExtensions.FindAncestorOfType<Avalonia.Controls.DataGridRow>(e.Source as Visual, true);
+            if (row != null && row.DataContext == grid.SelectedItem) {
                 grid.SelectedItem = null;
                 e.Handled = true;
             }
@@ -1019,7 +1018,7 @@ namespace AcManager.Pages.Dialogs {
                 // header styles of columns are applied by classes in Avalonia
                 e.Column.CellStyleClasses.Add("Small");
             } else {
-                e.Column.Width = e.PropertyName == @"Lap" ? 60 : 100;
+                e.Column.Width = new Avalonia.Controls.DataGridLength(e.PropertyName == @"Lap" ? 60 : 100);
                 e.Column.CellStyleClasses.Add("Transparent");
                 e.Column.CellStyleClasses.Add("RightAlignment");
             }

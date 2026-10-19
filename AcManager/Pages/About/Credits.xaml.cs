@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,11 +43,7 @@ namespace AcManager.Pages.About {
         }
 
         private void OnTreeViewMouseWheel(object sender, PointerWheelEventArgs e) {
-            e.Handled = true;
-            (((FrameworkElement)sender).Parent as UIElement)?.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) {
-                RoutedEvent = MouseWheelEvent,
-                Source = sender
-            });
+            // tree view doesn’t swallow wheel events in Avalonia, so there is nothing to forward to its parent
         }
     }
 }

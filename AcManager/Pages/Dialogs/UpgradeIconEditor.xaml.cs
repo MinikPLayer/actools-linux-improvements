@@ -68,7 +68,7 @@ namespace AcManager.Pages.Dialogs {
         }
 
         private void OnDrop(object sender, DragEventArgs e) {
-            var files = e.Data.GetFiles()?.Select(x => x.TryGetLocalPath()).ToArray();
+            var files = e.Data.GetFiles()?.Select(x => Avalonia.Platform.Storage.StorageProviderExtensions.TryGetLocalPath(x)).ToArray();
             if (files?.Length > 1 && files[0] != null) {
                 ApplyFile(files[0]);
             }

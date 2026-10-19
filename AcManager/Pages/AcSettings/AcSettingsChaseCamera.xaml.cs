@@ -85,7 +85,7 @@ namespace AcManager.Pages.AcSettings {
                 if (_imageEx != null || car == null) return;
 
                 Progress.IsActive = true;
-                var panoramaBg = new Uri("pack://application:,,,/Assets/Img/ShowroomPanoramaExample.jpg", UriKind.Absolute);
+                var panoramaBg = new Uri("avares://AssettoCorsa/Assets/Img/ShowroomPanoramaExample.jpg", UriKind.Absolute);
                 var renderer = new DarkKn5ObjectRenderer(CarDescription.FromDirectory(car.Location, car.AcdData)) {
                     WpfMode = true,
                     UseMsaa = false,
@@ -115,7 +115,7 @@ namespace AcManager.Pages.AcSettings {
                     UseDither = true,
                     MaterialsReflectiveness = 1.5f,
                     UseCustomReflectionCubemap = true,
-                    CustomReflectionCubemap = Application.GetResourceStream(panoramaBg)?.Stream.ReadAsBytesAndDispose(),
+                    CustomReflectionCubemap = Avalonia.Platform.AssetLoader.Open(panoramaBg).ReadAsBytesAndDispose(),
                     CubemapAmbientWhite = false,
                     CubemapAmbient = 0.6f,
                 };

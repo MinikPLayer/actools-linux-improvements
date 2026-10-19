@@ -1,124 +1,64 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Globalization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
 using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
+    /// <summary>
+    /// Viewbox which exposes its scale (to make borders and such keep their size, see <see cref="ThicknessConverter"/>).
+    /// </summary>
     public class BorderyViewbox : Decorator {
-        public static readonly StyledProperty<Stretch> StretchProperty = DP.Register<Stretch>(nameof(Stretch), typeof(BorderyViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly StyledProperty<Stretch> StretchProperty = AvaloniaProperty.Register<BorderyViewbox, Stretch>(nameof(Stretch), Stretch.Uniform);
 
         public Stretch Stretch {
-            get => GetValue(StretchProperty) as Stretch? ?? default;
+            get => GetValue(StretchProperty);
             set => SetValue(StretchProperty, value);
         }
 
-        public static readonly StyledProperty<StretchDirection> StretchDirectionProperty = DP.Register<StretchDirection>(nameof(StretchDirection), typeof(BorderyViewbox), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        public static readonly StyledProperty<StretchDirection> StretchDirectionProperty = AvaloniaProperty.Register<BorderyViewbox, StretchDirection>(nameof(StretchDirection), StretchDirection.Both);
 
         public StretchDirection StretchDirection {
-            get => GetValue(StretchDirectionProperty) as StretchDirection? ?? default;
+            get => GetValue(StretchDirectionProperty);
             set => SetValue(StretchDirectionProperty, value);
         }
 
-        public static readonly DependencyPropertyKey ScalePropertyKey = DP.RegisterReadOnly(nameof(Scale), typeof(Size),
-                typeof(BorderyViewbox), new PropertyMetadata(default(Size)));
+        public static readonly StyledProperty<Size> ScaleProperty = AvaloniaProperty.Register<BorderyViewbox, Size>(nameof(Scale));
 
-        public static readonly DependencyProperty ScaleProperty = ScalePropertyKey.DependencyProperty;
-
-        public Size Scale => GetValue(ScaleProperty) as Size? ?? default;
-
-        private ContainerVisual InternalVisual {
-            get {
-                if (_internalVisual == null) {
-                    _internalVisual = new ContainerVisual();
-                    AddVisualChild(_internalVisual);
-                }
-                return _internalVisual;
-            }
+        public Size Scale {
+            get => GetValue(ScaleProperty);
+            private set => SetValue(ScaleProperty, value);
         }
 
-        private UIElement InternalChild {
-            get {
-                var vc = InternalVisual.Children;
-                return vc.Count != 0 ? vc[0] as UIElement : null;
-            }
-            set {
-                var vc = InternalVisual.Children;
-                if (vc.Count != 0) vc.Clear();
-                vc.Add(value);
-            }
+        static BorderyViewbox() {
+            AffectsMeasure<BorderyViewbox>(StretchProperty, StretchDirectionProperty);
         }
-
-        private Transform InternalTransform {
-            get => InternalVisual.Transform;
-            set => InternalVisual.Transform = value;
-        }
-
-        public override UIElement Child {
-            get => InternalChild;
-            set {
-                var old = InternalChild;
-                if (!ReferenceEquals(old, value)) {
-                    RemoveLogicalChild(old);
-
-                    if (value != null) {
-                        AddLogicalChild(value);
-                    }
-
-                    InternalChild = value;
-                    InvalidateMeasure();
-                }
-            }
-        }
-
-        protected override int VisualChildrenCount => 1;
-
-        protected override Visual GetVisualChild(int index) {
-            if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
-            return InternalVisual;
-        }
-
-        protected override IEnumerator LogicalChildren => InternalChild == null ? EmptyEnumerator.Instance : new SingleChildEnumerator(InternalChild);
 
         protected override Size MeasureOverride(Size constraint) {
-            var child = InternalChild;
-            var parentSize = new Size();
+            var child = Child;
+            if (child == null) return default;
 
-            if (child != null) {
-                var infinteConstraint = new Size(double.PositiveInfinity, double.PositiveInfinity);
-
-                child.Measure(infinteConstraint);
-                var childSize = child.DesiredSize;
-
-                var scale = ComputeScaleFactor(constraint, childSize, Stretch, StretchDirection);
-                SetValue(ScalePropertyKey.DependencyProperty, scale);
-
-                parentSize.Width = scale.Width * childSize.Width;
-                parentSize.Height = scale.Height * childSize.Height;
-            }
-
-            return parentSize;
-
+            child.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            var childSize = child.DesiredSize;
+            var scale = ComputeScaleFactor(constraint, childSize, Stretch, StretchDirection);
+            Scale = scale;
+            return new Size(scale.Width * childSize.Width, scale.Height * childSize.Height);
         }
 
         protected override Size ArrangeOverride(Size arrangeSize) {
-            var child = InternalChild;
-            if (child != null) {
-                var childSize = child.DesiredSize;
+            var child = Child;
+            if (child == null) return arrangeSize;
 
-                var scale = ComputeScaleFactor(arrangeSize, childSize, Stretch, StretchDirection);
-                SetValue(ScalePropertyKey.DependencyProperty, scale);
+            var childSize = child.DesiredSize;
+            var scale = ComputeScaleFactor(arrangeSize, childSize, Stretch, StretchDirection);
+            Scale = scale;
 
-                InternalTransform = new ScaleTransform(scale.Width, scale.Height);
-                child.Arrange(new Rect(new Point(), child.DesiredSize));
-
-                arrangeSize.Width = scale.Width * childSize.Width;
-                arrangeSize.Height = scale.Height * childSize.Height;
-            }
-            return arrangeSize;
+            child.RenderTransformOrigin = RelativePoint.TopLeft;
+            child.RenderTransform = new ScaleTransform(scale.Width, scale.Height);
+            child.Arrange(new Rect(new Point(), childSize));
+            return new Size(scale.Width * childSize.Width, scale.Height * childSize.Height);
         }
 
         private static Size ComputeScaleFactor(Size availableSize, Size contentSize, Stretch stretch, StretchDirection stretchDirection) {
@@ -148,9 +88,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                             var maxscale = scaleX > scaleY ? scaleX : scaleY;
                             scaleX = scaleY = maxscale;
                             break;
-
-                        case Stretch.Fill:
-                            break;
                     }
                 }
 
@@ -164,16 +101,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                         if (scaleX > 1.0) scaleX = 1.0;
                         if (scaleY > 1.0) scaleY = 1.0;
                         break;
-
-                    case StretchDirection.Both:
-                        break;
                 }
             }
 
             return new Size(scaleX, scaleY);
         }
-
-        private ContainerVisual _internalVisual;
 
         #region Converter-related stuff
         private class ThicknessConverterInner : IValueConverter {
@@ -212,6 +144,5 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public static IValueConverter InvertConverter { get; } = new InvertConverterInner();
         #endregion
-
     }
 }

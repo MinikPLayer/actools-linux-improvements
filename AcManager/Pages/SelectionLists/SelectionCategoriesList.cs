@@ -30,7 +30,7 @@ namespace AcManager.Pages.SelectionLists {
                                             .Select(x => new SelectCategoryInner(x, Filter.Create(tester, x.Filter)));
         }
 
-        protected override ICollectionView GetCollectionView(BetterObservableCollection<SelectCategory> items) {
+        protected override ListCollectionView GetCollectionView(BetterObservableCollection<SelectCategory> items) {
             var result = base.GetCollectionView(items);
             result.GroupDescriptions.Add(new PropertyGroupDescription(nameof(SelectCategory.Group)));
             result.SortDescriptions.Add(new SortDescription(nameof(SelectCategory.Group), ListSortDirection.Ascending));

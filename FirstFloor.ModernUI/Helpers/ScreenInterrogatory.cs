@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Helpers {
@@ -272,6 +272,7 @@ namespace FirstFloor.ModernUI.Helpers {
 
         [CanBeNull]
         public static string GetFriendlyName([NotNull] this Screen screen) {
+            if (!OperatingSystem.IsWindows()) return null;
             try {
                 var allFriendlyNames = GetAllMonitorsFriendlyNames();
                 for (var index = 0; index < Screen.AllScreens.Length; index++) {
@@ -287,6 +288,7 @@ namespace FirstFloor.ModernUI.Helpers {
 
         [CanBeNull]
         public static Dictionary<Screen, string> GetFriendlyNames() {
+            if (!OperatingSystem.IsWindows()) return null;
             try {
                 return GetAllMonitorsFriendlyNames().Zip(Screen.AllScreens, (x, y) => Tuple.Create(y, x)).ToDictionary(x => x.Item1, x => x.Item2);
             } catch (Exception e) {

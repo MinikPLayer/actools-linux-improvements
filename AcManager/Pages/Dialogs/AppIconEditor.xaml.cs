@@ -84,7 +84,7 @@ namespace AcManager.Pages.Dialogs {
                     result.ApplyTemplate();
                     result.UpdateLayout();
 
-                    var bmp = new RenderTargetBitmap(CommonAcConsts.AppIconWidth, CommonAcConsts.AppIconHeight, 96, 96, PixelFormats.Pbgra32);
+                    var bmp = new RenderTargetBitmap(new PixelSize((int)(CommonAcConsts.AppIconWidth), (int)(CommonAcConsts.AppIconHeight)), new Vector(96, 96));
                     bmp.Render(result);
                     bmp.SaveTo(data.IconOriginal);
                     BetterImage.Refresh(data.IconOriginal);

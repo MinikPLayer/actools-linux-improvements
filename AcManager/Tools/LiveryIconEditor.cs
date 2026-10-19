@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -34,11 +34,9 @@ namespace AcManager.Tools {
         }
 
         public FrameworkElement Load() {
-            using (var fs = new FileStream(_filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)) {
-                return (FrameworkElement)XamlReader.Load(fs, new ParserContext {
-                    BaseUri = new Uri(_filename, UriKind.Absolute)
-                });
-            }
+            // Livery templates are loaded with Avalonia’s runtime XAML loader now, so they should be written in Avalonia’s XAML dialect
+            return (FrameworkElement)Avalonia.Markup.Xaml.AvaloniaRuntimeXamlLoader.Load(
+                    new Avalonia.Markup.Xaml.RuntimeXamlLoaderDocument(new Uri(_filename, UriKind.Absolute), File.ReadAllText(_filename)));
         }
 
         private static LiveryResource FromFilename([NotNull] string filename) {
@@ -420,7 +418,7 @@ namespace AcManager.Tools {
             result.UpdateLayout();
 
             if (Skin == null) return;
-            var bmp = new RenderTargetBitmap(CommonAcConsts.LiveryWidth, CommonAcConsts.LiveryHeight, 96, 96, PixelFormats.Pbgra32);
+            var bmp = new RenderTargetBitmap(new PixelSize((int)(CommonAcConsts.LiveryWidth), (int)(CommonAcConsts.LiveryHeight)), new Vector(96, 96));
             bmp.Render(result);
             bmp.SaveTo(Skin.LiveryImage);
         }
@@ -578,8 +576,8 @@ namespace AcManager.Tools {
 
             return await Task.Run(() => {
                 try {
-                    using (var bitmap = Image.FromFile(skin.PreviewImage)) {
-                        var baseColors = ImageUtils.GetBaseColors((Bitmap)bitmap);
+                    using (var bitmap = System.Drawing.Image.FromFile(skin.PreviewImage)) {
+                        var baseColors = ImageUtils.GetBaseColors((System.Drawing.Bitmap)bitmap);
                         Logging.Debug("Colors from preview: " + baseColors.Select(x => x.ToString()).JoinToString(", "));
 
                         var a = baseColors.Select(x => (System.Drawing.Color?)x).FirstOrDefault()?.ToColor() ?? Colors.White;

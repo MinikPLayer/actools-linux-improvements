@@ -156,17 +156,17 @@ namespace AcManager.PaintShop {
             }, jObj["mapsAdjust"] ?? jObj["mapsAdjustment"]);
         }
 
-        private static Size? GetSize(JToken token) {
+        private static System.Drawing.Size? GetSize(JToken token) {
             if (token == null || token.Type == JTokenType.Null || token.Type == JTokenType.None) return null;
 
             if (token.Type == JTokenType.Object) {
                 var x = token.GetIntValueOnly("width", 1024);
                 var y = token.GetIntValueOnly("height", 1024);
-                return new Size(x, y);
+                return new System.Drawing.Size(x, y);
             }
 
             var v = token.ToString().As(1024);
-            return new Size(v, v);
+            return new System.Drawing.Size(v, v);
         }
 
         private static PaintShopPatternColorReference GetPatternColorReference(JToken t, [NotNull] ReferenceSolver refSolver) {
@@ -186,22 +186,22 @@ namespace AcManager.PaintShop {
             return s.StartsWith("#") ? new PaintShopPatternColorReference(s.ToColor()?.ToColor()) : new PaintShopPatternColorReference(s.As(0));
         }
 
-        private static FontWeight GetFontWeight(JToken t) {
-            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return FontWeight.Normal;
+        private static SharpDX.DirectWrite.FontWeight GetFontWeight(JToken t) {
+            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return SharpDX.DirectWrite.FontWeight.Normal;
             var s = t.ToString();
-            return Enum.TryParse(s, true, out FontWeight v) ? v : s.As((int)FontWeight.Normal).FindClosest<FontWeight>();
+            return Enum.TryParse(s, true, out SharpDX.DirectWrite.FontWeight v) ? v : s.As((int)SharpDX.DirectWrite.FontWeight.Normal).FindClosest<SharpDX.DirectWrite.FontWeight>();
         }
 
-        private static FontStyle GetFontStyle(JToken t) {
-            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return FontStyle.Normal;
+        private static SharpDX.DirectWrite.FontStyle GetFontStyle(JToken t) {
+            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return SharpDX.DirectWrite.FontStyle.Normal;
             var s = t.ToString();
-            return Enum.TryParse(s, true, out FontStyle v) ? v : s.As((int)FontStyle.Normal).FindClosest<FontStyle>();
+            return Enum.TryParse(s, true, out SharpDX.DirectWrite.FontStyle v) ? v : s.As((int)SharpDX.DirectWrite.FontStyle.Normal).FindClosest<SharpDX.DirectWrite.FontStyle>();
         }
 
-        private static FontStretch GetFontStretch(JToken t) {
-            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return FontStretch.Normal;
+        private static SharpDX.DirectWrite.FontStretch GetFontStretch(JToken t) {
+            if (t == null || t.Type == JTokenType.Null || t.Type == JTokenType.None) return SharpDX.DirectWrite.FontStretch.Normal;
             var s = t.ToString();
-            return Enum.TryParse(s, true, out FontStretch v) ? v : s.As((int)FontStretch.Normal).FindClosest<FontStretch>();
+            return Enum.TryParse(s, true, out SharpDX.DirectWrite.FontStretch v) ? v : s.As((int)SharpDX.DirectWrite.FontStretch.Normal).FindClosest<SharpDX.DirectWrite.FontStretch>();
         }
 
         [NotNull]
@@ -705,7 +705,7 @@ namespace AcManager.PaintShop {
         }
 
         [CanBeNull]
-        private static CarPaintPattern GetPattern(JObject obj, [NotNull] ReferenceSolver refSolver, Size? size) {
+        private static CarPaintPattern GetPattern(JObject obj, [NotNull] ReferenceSolver refSolver, System.Drawing.Size? size) {
             var sourceParams = GetSourceParams(obj);
             var name = obj.GetStringValueOnly(KeyName);
             var pattern = GetSource(obj[KeyPattern], refSolver, sourceParams);

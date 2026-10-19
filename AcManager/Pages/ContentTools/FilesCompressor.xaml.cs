@@ -40,7 +40,7 @@ namespace AcManager.Pages.ContentTools {
         public static Func<IEnumerable<string>> NotAvailableReason { get; } = GetNonAvailableReason;
 
         private static IEnumerable<string> GetNonAvailableReason() {
-            if (!WindowsVersionHelper.IsWindows10OrGreater) {
+            if (!FirstFloor.ModernUI.Windows.WindowsVersionHelper.IsWindows10OrGreater) {
                 yield return "Tool “compact.exe” was added in Windows 10";
             }
 
@@ -358,7 +358,8 @@ namespace AcManager.Pages.ContentTools {
                 var savedLabel = string.Format(TotalRatio < 0.9 ? ColonConverter.FormatBoth : "{0}", "Saved", (TotalSize - CompressedSize).ToReadableSize());
                 var compressedLabel = string.Format(TotalRatio < 0.9 ? ColonConverter.FormatBoth : "{0}", "On disk", CompressedSize.ToReadableSize());
 
-                if (_savedSlide == null) {
+                // slices are immutable in the Avalonia version of OxyPlot, so the model is recreated every time
+                {
                     var color = this.ToOxyColor("WindowText");
                     _savedSlide = new PieSlice(savedLabel, TotalSize - CompressedSize) { Fill = Colors.SeaGreen.ToOxyColor() };
                     _compressedSlice = new PieSlice(compressedLabel, CompressedSize) { Fill = Colors.Peru.ToOxyColor() };
@@ -382,12 +383,6 @@ namespace AcManager.Pages.ContentTools {
                             }
                         }
                     };
-                } else {
-                    _savedSlide.Label = savedLabel;
-                    _savedSlide.Value = TotalSize - CompressedSize;
-                    _compressedSlice.Label = compressedLabel;
-                    _compressedSlice.Value = CompressedSize;
-                    PlotModel.InvalidatePlot(true);
                 }
             });
         }

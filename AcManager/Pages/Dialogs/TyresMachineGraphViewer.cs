@@ -8,6 +8,7 @@ using FirstFloor.ModernUI.Helpers;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using ConverterExtensions = OxyPlot.Avalonia.ConverterExtensions;
 
@@ -331,12 +332,8 @@ namespace AcManager.Pages.Dialogs {
             return new PlotModel {
                 TextColor = BaseTextColor,
                 PlotAreaBorderColor = OxyColors.Transparent,
-                LegendTextColor = BaseTextColor,
-                LegendPosition = LegendPosition.RightBottom,
                 Padding = new OxyThickness(0d),
-                LegendPadding = 0d,
                 TitlePadding = 0d,
-                LegendMargin = 0d,
                 PlotMargins = new OxyThickness(40d, 0d, 40d, 32d),
                 Axes = {
                     _horizontalAxis,
@@ -345,6 +342,14 @@ namespace AcManager.Pages.Dialogs {
                 Annotations = {
                     _leftThreshold,
                     _rightThreshold
+                },
+                Legends = {
+                    new Legend {
+                        LegendTextColor = BaseTextColor,
+                        LegendPosition = LegendPosition.RightBottom,
+                        LegendPadding = 0d,
+                        LegendMargin = 0d
+                    }
                 }
             };
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -176,7 +176,7 @@ namespace AcManager.Pages.Lists {
                     .AddItem("Open in system", () => WindowsHelper.OpenFile(image.Filename))
                     .AddItem("Show in folder", image.ViewInExplorerCommand)
                     .AddItem("Remove to the Recycle Bin", image.DeleteCommand)
-                    .IsOpen = true;
+                    .ShowAtPointer();
         }
 
         private void OnContextMenu(object sender, PointerReleasedEventArgs e) {

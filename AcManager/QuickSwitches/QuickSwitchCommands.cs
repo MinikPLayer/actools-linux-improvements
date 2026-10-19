@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -75,7 +75,7 @@ namespace AcManager.QuickSwitches {
                     }))
                     .AddSeparator()
                     .AddItem("RHM settings", RhmService.Instance.ShowSettingsCommand, iconData: icons["GearIconData"] as Geometry)
-                    .IsOpen = true;
+                    .ShowAtPointer();
         }, () => SettingsHolder.Drive.RhmIntegration && !string.IsNullOrWhiteSpace(SettingsHolder.Drive.RhmLocation));
     }
 }

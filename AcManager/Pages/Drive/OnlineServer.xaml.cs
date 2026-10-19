@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -522,7 +522,7 @@ namespace AcManager.Pages.Drive {
         }
 
         private void OnEntryPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            if (Application.Current?.Dispatcher.Thread != Thread.CurrentThread) {
+            if (!Avalonia.Threading.Dispatcher.UIThread.CheckAccess()) {
                 ActionExtension.InvokeInMainThreadAsyncLater(() => {
                     OnEntryPropertyChanged(sender, e);
                 });
@@ -723,11 +723,11 @@ namespace AcManager.Pages.Drive {
             await Task.Yield();
             var self = (SelectableBbCodeBlock)sender;
             var downloadIcon = BbCodeBlock.IconsDictionary[@"DownloadIconData"] as Geometry;
-            foreach (var child in self.FindVisualChildren<Path>()) {
+            foreach (var child in self.FindVisualChildren<Avalonia.Controls.Shapes.Path>()) {
                 if (child.Data == downloadIcon) {
-                    var pos = child.TranslatePoint(new Point(0, 0), self);
-                    FancyHintsService.SetOffsetX(self, pos.X + child.ActualWidth / 2d);
-                    FancyHintsService.SetOffsetY(self, pos.Y + child.ActualHeight / 2d);
+                    var pos = child.TranslatePoint(new Point(0, 0), self) ?? default;
+                    FancyHintsService.SetOffsetX(self, pos.X + child.Bounds.Width / 2d);
+                    FancyHintsService.SetOffsetY(self, pos.Y + child.Bounds.Height / 2d);
                     FancyHints.CupV2IndexedContent.Trigger(TimeSpan.FromSeconds(1d));
                     break;
                 }

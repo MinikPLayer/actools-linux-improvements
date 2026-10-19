@@ -498,6 +498,7 @@ namespace AcManager.CustomShowroom {
                 if (_sizeBusy) return;
                 _sizeBusy = true;
 
+#if INCLUDE_SHOWROOMS
                 var form = Renderer.AssociatedWindow;
                 if (form != null) {
                     var width = Width;
@@ -528,6 +529,11 @@ namespace AcManager.CustomShowroom {
                     Renderer.Height = height;
                     Renderer.ResolutionMultiplier = GetRendererResolutionMultiplier() / scale;
                 }
+#else
+                // the renderer window is a WinForms form which is not available without showrooms (Windows only)
+                Renderer.Width = Width;
+                Renderer.Height = Height;
+#endif
             } finally {
                 _sizeBusy = false;
             }

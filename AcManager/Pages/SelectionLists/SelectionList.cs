@@ -52,9 +52,8 @@ namespace AcManager.Pages.SelectionLists {
         protected SelectionList([NotNull] BaseAcManager<TObject> manager, bool isCacheable) {
             if (manager == null) throw new ArgumentNullException(nameof(manager));
 
-            TextSearch.SetTextPath(this, nameof(SelectCategoryBase.DisplayName));
+            Avalonia.Controls.Primitives.TextSearch.SetTextBinding(this, new Avalonia.Data.Binding(nameof(SelectCategoryBase.DisplayName)));
             ScrollViewer.SetHorizontalScrollBarVisibility(this, ScrollBarVisibility.Disabled);
-            ScrollViewer.SetCanContentScroll(this, true);
 
             var baseLey = $@".SelectionList:{typeof(TObject).FullName}:{typeof(TItem).FullName}";
             _scrollKey = $@"{baseLey}:Scroll";
@@ -73,7 +72,7 @@ namespace AcManager.Pages.SelectionLists {
             this.AddPreviewKeyDown(OnPreviewKeyDown);
         }
 
-        protected virtual ICollectionView GetCollectionView(BetterObservableCollection<TItem> items) {
+        protected virtual ListCollectionView GetCollectionView(BetterObservableCollection<TItem> items) {
             return (ListCollectionView)CollectionViewSource.GetDefaultView(items);
         }
 
@@ -160,16 +159,11 @@ namespace AcManager.Pages.SelectionLists {
         private void SetSelectedItem(TItem item) {
             EnsureItemsSourceSet();
             SelectedItem = item;
-            ItemContainerGenerator.StatusChanged += OnItemContainerGeneratorStatusChanged;
-        }
-
-        private void OnItemContainerGeneratorStatusChanged(object sender, EventArgs e) {
-            if (ItemContainerGenerator.Status == System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated) {
-                ItemContainerGenerator.StatusChanged -= OnItemContainerGeneratorStatusChanged;
-                Dispatcher.UIThread.BeginInvoke(DispatcherPriority.Input, new Action(() => {
-                    ((UIElement)ItemContainerGenerator.ContainerFromItem(SelectedItem))?.Focus();
-                }));
-            }
+            Dispatcher.UIThread.Post(() => {
+                if (SelectedIndex >= 0) {
+                    ContainerFromIndex(SelectedIndex)?.Focus();
+                }
+            }, DispatcherPriority.Input);
         }
 
         private AcObjectNew _selectedAcItem;

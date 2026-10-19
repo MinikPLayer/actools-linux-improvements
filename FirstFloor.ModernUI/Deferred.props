@@ -1,4 +1,4 @@
-<Project>
+﻿<Project>
   <!--
     Sources which are not ported to Avalonia yet (excluded from the build, see LinuxPortDocs.md).
     Move files out of this list as they get ported.
@@ -22,13 +22,12 @@
     <Compile Remove="Windows\Controls\RelativeAnimatingContentControl.cs" />
     <!-- Pending port -->
     <Compile Remove="Windows\Controls\OutlinedTextBlock.cs" />
-    <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs" />
+    <Compile Remove="Windows\Controls\LimitedViewbox.cs" />
     <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\SplitButton.cs" />
     
     <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs" />
     <Compile Remove="Windows\Media\VisualExtension.Mouse.cs" />
     <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
-    <Compile Remove="Helpers\ScreenInterrogatory.cs" />
     <!-- XAML not ported yet -->
     <AvaloniaXaml Remove="Assets\FancyHint.axaml" />
     <AvaloniaXaml Remove="Assets\FancyScroll.axaml" />

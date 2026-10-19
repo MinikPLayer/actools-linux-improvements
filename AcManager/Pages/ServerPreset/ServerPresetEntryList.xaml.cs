@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -35,7 +35,7 @@ namespace AcManager.Pages.ServerPreset {
                     .Add(TeamColumn);
 
             if (AppArguments.Has(AppFlag.ServerManagementMode)) {
-                EntriesGrid.RowStyle = this.TryFindResource("RowStyleWithSpacing") as Style ?? EntriesGrid.RowStyle;
+                EntriesGrid.RowTheme = this.TryFindResource("RowStyleWithSpacing") as Avalonia.Styling.ControlTheme ?? EntriesGrid.RowTheme;
             }
         }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -445,7 +445,6 @@ namespace AcManager.Pages.Dialogs {
                 }
 
                 focused.AppendText(value);
-                focused.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
             }
         }
     }

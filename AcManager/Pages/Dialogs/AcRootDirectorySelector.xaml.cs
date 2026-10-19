@@ -197,7 +197,7 @@ namespace AcManager.Pages.Dialogs {
                     SelectedPath = Value
                 };
 
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
+                if (dialog.ShowDialog() == AcTools.Windows.Compat.DialogResult.OK) {
                     Value = dialog.SelectedPath;
                 }
             }));

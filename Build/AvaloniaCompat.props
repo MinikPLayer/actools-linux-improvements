@@ -117,6 +117,10 @@
     <Using Include="System.Windows.DataFormats" Alias="DataFormats" />
     <Using Include="Avalonia.Media.DropShadowEffect" Alias="DropShadowEffect" />
     <Using Include="Avalonia.Media.VisualBrush" Alias="VisualBrush" />
+    <Using Include="Avalonia.Controls.Primitives.UniformGrid" Alias="UniformGrid" />
+    <Using Include="Avalonia.Media.TransformGroup" Alias="TransformGroup" />
+    <Using Include="Avalonia.Controls.Shapes.Shape" Alias="Shape" />
+    <Using Include="Avalonia.Media.EllipseGeometry" Alias="EllipseGeometry" />
     <Using Include="Avalonia.Media.RotateTransform" Alias="RotateTransform" />
     <Using Include="Avalonia.Media.ScaleTransform" Alias="ScaleTransform" />
     <Using Include="Avalonia.Controls.Primitives.RangeBase" Alias="RangeBase" />

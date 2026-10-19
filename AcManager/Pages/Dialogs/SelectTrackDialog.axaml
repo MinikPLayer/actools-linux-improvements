@@ -26,7 +26,7 @@
               </Grid.Effect>
               <mui:BetterImage x:Name="BackgroundImage0" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" RenderOptions.BitmapInterpolationMode="LowQuality"/>
               <mui:BetterImage x:Name="BackgroundImage1" Stretch="UniformToFill" Margin="-20" DecodeWidth="200" Opacity="0" RenderOptions.BitmapInterpolationMode="LowQuality">
-                <!-- PORT: removed VisualStateManager.VisualStateGroups -->
+                <mui:BetterImage.Transitions><Transitions><DoubleTransition Property="Opacity" Duration="0:0:0.3"/></Transitions></mui:BetterImage.Transitions>
               </mui:BetterImage>
             </Grid>
           </VisualBrush.Visual>

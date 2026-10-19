@@ -19,6 +19,8 @@ want = collections.defaultdict(set)
 for l in open(errs):
     m = re.match(r"(\S+\.xaml\.cs)\(\d+,\d+\): error CS0103: The name '(\w+)'", l)
     if m: want[m.group(1)].add(m.group(2))
+    m = re.match(r"(\S+\.xaml\.cs)\(\d+,\d+\): error CS0120: .*?property '(\w+)\.", l)
+    if m: want[m.group(1)].add(m.group(2))
 for cs, names in want.items():
     ax = cs[:-len('.xaml.cs')] + '.axaml'
     if not os.path.exists(ax): continue
@@ -37,6 +39,6 @@ for cs, names in want.items():
     if not props: continue
     ns, _, short = cls.rpartition('.')
     out = os.path.join(os.path.dirname(cs), os.path.basename(cs)[:-len('.xaml.cs')] + '.Names.cs')
-    body = '\n'.join('        private global::%s _%s_;\n        private global::%s %s => _%s_ ?? (_%s_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("%s") as global::%s);\n' % (t, n, t, n, n, n, n, t) for n, t in props)
+    body = '\n'.join('        private global::%s _%s_;\n        internal global::%s %s => _%s_ ?? (_%s_ = Avalonia.Controls.NameScopeExtensions.FindNameScope(this)?.Find("%s") as global::%s);\n' % (t, n, t, n, n, n, n, t) for n, t in props)
     open(out, 'w', encoding='utf-8').write('// Named objects which are not controls (no generated fields for them), see PortTools/gen_names.py\nnamespace %s {\n    public partial class %s {\n%s    }\n}\n' % (ns, short, body))
     print('written', out, [p[0] for p in props])

@@ -44,6 +44,21 @@ using BooleanSwitch = FirstFloor.ModernUI.Windows.Controls.BooleanSwitch;
 
 namespace AcManager.Pages.Dialogs {
     public partial class CarReplaceTyresDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
+        /// <summary>
+        /// Point from WPF was mutable, which is used here for particles physics (Avalonia’s one is readonly).
+        /// </summary>
+        private struct Point {
+            public double X, Y;
+
+            public Point(double x, double y) {
+                X = x;
+                Y = y;
+            }
+
+            public static implicit operator Avalonia.Point(Point p) => new Avalonia.Point(p.X, p.Y);
+            public static implicit operator Point(Avalonia.Point p) => new Point(p.X, p.Y);
+        }
+
         private static PluginsRequirement _requirement;
         public static PluginsRequirement Plugins => _requirement ?? (_requirement = new PluginsRequirement(KnownPlugins.Fann));
 
@@ -1147,13 +1162,13 @@ namespace AcManager.Pages.Dialogs {
                         _scale = new ScaleTransform();
 
                         Brush = new SolidColorBrush(Color);
-                        _element = new Rectangle {
+                        _element = new Avalonia.Controls.Shapes.Rectangle {
                             RadiusX = CornerRadius,
                             RadiusY = CornerRadius,
                             Width = 20d,
                             Height = 20d,
                             Fill = Brush,
-                            RenderTransformOrigin = new Point(0.5, 0.5),
+                            RenderTransformOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
                             RenderTransform = new TransformGroup {
                                 Children = {
                                     _rotate,

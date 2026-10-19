@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -467,8 +467,9 @@ namespace AcManager.Pages.Selected {
                                 ? new LayoutProvider(_model.SelectedTrackConfiguration, (ISelectedAcObjectViewModel)DataContext) 
                                 : (ISelectedAcObjectViewModel)DataContext),
                         PlacementTarget = sender as UIElement,
-                        StaysOpen = false
-                    }.IsOpen = true;
+                        StaysOpen = false,
+                        IsOpen = true
+                    };
                 } else if (SelectedAcJsonObject.Url != null) {
                     WindowsHelper.ViewInBrowser(SelectedAcJsonObject.Url);
                 }
@@ -538,7 +539,7 @@ namespace AcManager.Pages.Selected {
                             CommandParameter = wrapper.LayoutId
                         }
                     }
-                }.IsOpen = true;
+                }.ShowAtPointer();
             }
         }
     }

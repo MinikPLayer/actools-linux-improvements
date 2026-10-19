@@ -560,7 +560,7 @@ class Converter:
             comment.tail = el.tail
             parent.replace(el, comment)
             return
-        if ns == NS_WPF and (tag.endswith('Transform') or (tag.startswith('DataGrid') and tag.endswith('Column')) or tag in ('SolidColorBrush', 'LinearGradientBrush', 'GradientStop')):
+        if ns == NS_WPF and (tag.endswith('Transform') or tag in ('SolidColorBrush', 'LinearGradientBrush', 'GradientStop')):
             # not named in Avalonia (no Name property); transforms are reachable by the property path only
             el.attrib.pop(X + 'Name', None)
             el.attrib.pop('Name', None)

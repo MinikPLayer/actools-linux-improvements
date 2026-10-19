@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using Avalonia.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
@@ -8,6 +8,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
     public static class Draggable {
         public static event System.EventHandler<DraggableMovedEventArgs> DragStarted { add { } remove { } }
         public static event System.EventHandler<DraggableMovedEventArgs> DragEnded { add { } remove { } }
+
+        public static void RegisterDraggable(System.Type type) { }
+        public static void RegisterDraggable<T>() { }
 
         public const string SourceFormat = "X-Draggable-Source";
 

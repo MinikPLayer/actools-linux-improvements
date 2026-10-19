@@ -72,9 +72,9 @@ namespace AcManager.Pages.ContentTools {
             InitializeOverride(uri);
             DataContext = this;
 
-            SetBinding(ValueProperty, new Binding {
+            this.SetBinding(ValueProperty, new Binding {
                 Source = this,
-                Path = new PropertyPath(nameof(CurrentStage))
+                Path = nameof(CurrentStage)
             });
 
             this.OnActualUnload(() => {

@@ -1,4 +1,4 @@
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using AcManager.Controls.UserControls;
@@ -31,8 +31,9 @@ namespace AcManager.Pages.Selected {
                     new ModernPopup {
                         Content = new PopupAuthor((ISelectedAcObjectViewModel)DataContext),
                         PlacementTarget = sender as UIElement,
-                        StaysOpen = false
-                    }.IsOpen = true;
+                        StaysOpen = false,
+                        IsOpen = true
+                    };
                 } else if (SelectedAcJsonObject.Url != null) {
                     WindowsHelper.ViewInBrowser(SelectedAcJsonObject.Url);
                 }
@@ -58,7 +59,7 @@ namespace AcManager.Pages.Selected {
                         InputGestureText = @"Ctrl+Alt+T"
                     }
                 }
-            }.IsOpen = true;
+            }.ShowAtPointer();
             e.Handled = true;
         }
     }

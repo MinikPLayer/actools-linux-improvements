@@ -399,7 +399,9 @@ namespace AcManager.CustomShowroom {
                                         ImageUtils.Convert(stream, jpgStream, 97);
                                         using (var output = File.Create(destination)) {
                                             jpgStream.Position = 0;
-                                            Image.FromStream(jpgStream).Save(output, ImageFormat.Png);
+                                            using (var image = new ImageMagick.MagickImage(jpgStream)) {
+                                                image.Write(output, ImageMagick.MagickFormat.Png);
+                                            }
                                         }
                                     }
                                     break;

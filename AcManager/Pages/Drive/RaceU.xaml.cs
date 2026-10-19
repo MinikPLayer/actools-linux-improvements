@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -181,16 +181,10 @@ namespace AcManager.Pages.Drive {
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
             _windowBackButton = Application.Current?.MainWindow?.FindChild<Button>("WindowBackButton");
-            if (_windowBackButton != null && _windowBackButtonPreviousTarget == null) {
-                _windowBackButtonPreviousTarget = _windowBackButton.CommandTarget;
-                _windowBackButton.CommandTarget = this;
-            }
+            // command target of the window’s back button can’t be changed in Avalonia (the page handles back command itself)
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e) {
-            if (_windowBackButton != null) {
-                _windowBackButton.CommandTarget = _windowBackButtonPreviousTarget;
-            }
         }
 
         public class ViewModel : NotifyPropertyChanged { }

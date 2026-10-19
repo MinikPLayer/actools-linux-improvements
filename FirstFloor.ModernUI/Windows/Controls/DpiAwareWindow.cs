@@ -74,7 +74,15 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return null;
         }
 
+        private Point _lastPointerPosition;
+
+        /// <summary>
+        /// Last known mouse position, relative to the window (Avalonia can’t ask for it directly).
+        /// </summary>
+        public Point GetMousePosition() => _lastPointerPosition;
+
         private void OnChromePointerMoved(object sender, PointerEventArgs e) {
+            _lastPointerPosition = e.GetPosition(this);
             var edge = GetEdge(e.GetPosition(this));
             Cursor = edge == null ? null : new Cursor(edge == WindowEdge.North || edge == WindowEdge.South ? StandardCursorType.SizeNorthSouth
                     : edge == WindowEdge.East || edge == WindowEdge.West ? StandardCursorType.SizeWestEast

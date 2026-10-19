@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
@@ -24,7 +24,7 @@ using SharpDX;
 
 namespace AcManager.Pages.Selected {
     public partial class SelectedShowroomPage : global::AcManager.Pages.Selected.SelectedAcJsonObjectPage, ILoadableContent, IParametrizedUriContent {
-        private static void FixVertices(Kn5Node node, Matrix parentMatrix) {
+        private static void FixVertices(Kn5Node node, SharpDX.Matrix parentMatrix) {
             if (node.NodeClass == Kn5NodeClass.Base) {
                 var localMatrix = node.Transform.ToMatrix() * parentMatrix;
                 foreach (var child in node.Children) {
@@ -58,7 +58,7 @@ namespace AcManager.Pages.Selected {
             var kn5Filename = showroom.Kn5Filename;
             using (var newFile = FileUtils.RecycleOriginal(kn5Filename)) {
                 var kn5 = Kn5.FromFile(kn5Filename);
-                FixVertices(kn5.RootNode, Matrix.Identity);
+                FixVertices(kn5.RootNode, SharpDX.Matrix.Identity);
                 kn5.Save(newFile.Filename);
             }
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +59,7 @@ namespace AcManager.Pages.Settings {
                             })
                         }
                     }
-                }.IsOpen = true;
+                }.ShowAtPointer();
             }
         }
 

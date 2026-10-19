@@ -82,6 +82,10 @@ namespace AcTools.Windows.Compat {
 
         public string DeviceName { get; }
 
+        public override bool Equals(object obj) => obj is Screen s && s.DeviceName == DeviceName && s.Bounds == Bounds;
+
+        public override int GetHashCode() => (DeviceName ?? "").GetHashCode() ^ Bounds.GetHashCode();
+
         public bool Primary { get; }
 
         [DllImport("user32.dll")]

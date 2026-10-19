@@ -1,12 +1,15 @@
-<Project>
+﻿<Project>
   <!--
     Sources which are not ported to Avalonia yet (excluded from the build, see LinuxPortDocs.md).
     Move files out of this list as they get ported.
   -->
+  <PropertyGroup Condition="'$(IncludeShowrooms)' == 'true'">
+    <DefineConstants>$(DefineConstants);INCLUDE_SHOWROOMS</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Condition="'$(IncludeShowrooms)' == 'true'" Remove="CustomShowroom\ShowroomStubs.cs" />
     <!-- 3D showrooms are built on AcTools.Render.Wrapper (WinForms + Direct3D forms, Windows-only; AcToolsRenderForms is not enabled) -->
-    <Compile Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\AttachedHelper.cs;CustomShowroom\CustomShowroomWrapper.cs;CustomShowroom\LiteShowroomFormWrapperWith*.cs;CustomShowroom\CmPreviewsFormWrapper.cs;CustomShowroom\TrackMapRendererWrapper.cs;CustomShowroom\TrackOutlineRendererWrapper.cs" />
+    <Compile Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\AttachedHelper.cs;CustomShowroom\CustomShowroomWrapper.cs;CustomShowroom\LiteShowroomFormWrapperWith*.cs;CustomShowroom\UIElementExtensions.cs;CustomShowroom\WindowExtensions.cs;CustomShowroom\CmPreviewsFormWrapper.cs;CustomShowroom\TrackMapRendererWrapper.cs;CustomShowroom\TrackOutlineRendererWrapper.cs" />
     <Compile Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\LiteShowroomTools*.cs;CustomShowroom\TrackMapRendererTools*.cs;CustomShowroom\TrackOutlineRendererTools*.cs" />
     <AvaloniaXaml Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\LiteShowroom*.axaml;CustomShowroom\TrackMapRendererTools.axaml;CustomShowroom\TrackOutlineRendererTools.axaml" />
     <!-- CefSharp / WebBrowser-based pages -->

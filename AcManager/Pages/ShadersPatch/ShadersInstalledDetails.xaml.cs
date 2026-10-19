@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -73,7 +73,7 @@ namespace AcManager.Pages.ShadersPatch {
             e.Handled = true;
             if (sender is FrameworkElement fe && fe.ContextMenu != null) {
                 fe.ContextMenu.DataContext = fe.DataContext;
-                fe.ContextMenu.IsOpen = true;
+                fe.ContextMenu.Open(fe);
             }
         }
     }

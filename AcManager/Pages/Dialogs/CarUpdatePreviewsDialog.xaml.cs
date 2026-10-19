@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -265,7 +265,7 @@ namespace AcManager.Pages.Dialogs {
                 _resultPreviewComparisons = value;
                 OnPropertyChanged();
 
-                ResultPreviewComparisonsView = new CollectionView(value);
+                ResultPreviewComparisonsView = new ListCollectionView(value);
             }
         }
 
@@ -582,12 +582,12 @@ namespace AcManager.Pages.Dialogs {
                 MinWidth = Math.Min(width.Value, area.Width);
                 MinHeight = Math.Min(height.Value, area.Height);
                 SizeToContent = SizeToContent.Manual;
-                ResizeMode = resizeable ? ResizeMode.CanResizeWithGrip : ResizeMode.NoResize;
+                this.ResizeMode = resizeable ? ResizeMode.CanResizeWithGrip : ResizeMode.NoResize;
             } else {
                 MinWidth = 240d;
                 MinHeight = 120d;
                 SizeToContent = SizeToContent.WidthAndHeight;
-                ResizeMode = ResizeMode.NoResize;
+                this.ResizeMode = ResizeMode.NoResize;
             }
 
             this.Left = Math.Max(area.Left, this.Left + (oldWidth - Width) / 2d);
@@ -596,7 +596,7 @@ namespace AcManager.Pages.Dialogs {
 
         protected override void OnSizeChangedOverride(SizeChangedEventArgs e) {
             base.OnSizeChangedOverride(e);
-            if (ResizeMode == ResizeMode.CanResizeWithGrip) {
+            if (this.ResizeMode == ResizeMode.CanResizeWithGrip) {
                 ValuesStorage.Set(KeySize, new Point(Width, Height).As<string>());
             }
         }

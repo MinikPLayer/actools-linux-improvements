@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -1173,7 +1173,7 @@ window.$KEY = outline.stop.bind(outline);
                     Visibility = Visibility.Collapsed
                 };
 
-                DockPanel.SetDock(_finder, Dock.Bottom);
+                DockPanel.SetDock(_finder, Avalonia.Controls.Dock.Bottom);
                 _webBlock.SetJsBridge<JsBridge>(x => {
                     x.DownloadFromCallback = OnDownloadFromCallback;
                     x.Finder = null;

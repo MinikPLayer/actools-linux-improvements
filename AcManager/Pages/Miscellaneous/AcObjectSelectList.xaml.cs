@@ -91,8 +91,8 @@ namespace AcManager.Pages.Miscellaneous {
         }
 
         private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e) {
-            var s = (DependencyObject)e.OriginalSource;
-            var l = (s.GetParent<ListBoxItem>()?.DataContext as AcItemWrapper)?.Loaded();
+            var s = e.Source as Visual;
+            var l = (Avalonia.VisualTree.VisualExtensions.FindAncestorOfType<Avalonia.Controls.ListBoxItem>(s, true)?.DataContext as AcItemWrapper)?.Loaded();
             if (l != null) {
                 ItemChosen?.Invoke(this, new ItemChosenEventArgs<AcObjectNew>(l));
             }

@@ -35,7 +35,7 @@ namespace AcManager.PaintShop {
         public CarPaintPattern(string name, [CanBeNull] PaintShopSource source,
                 [CanBeNull] PaintShopSource overlay, [CanBeNull] PaintShopSource underlay,
                 bool? overlayWithoutAo, bool? underlayWithoutAo,
-                [CanBeNull] Size? size, CarPaintColors colors,
+                [CanBeNull] System.Drawing.Size? size, CarPaintColors colors,
                 [CanBeNull] IEnumerable<PaintShopPatternNumber> numbers,
                 [CanBeNull] IEnumerable<PaintShopPatternFlag> flags,
                 [CanBeNull] IEnumerable<PaintShopPatternLabel> labels,
@@ -117,7 +117,7 @@ namespace AcManager.PaintShop {
         public CarPaintColors Colors { get; }
 
         [CanBeNull]
-        public Size? Size { get; }
+        public System.Drawing.Size? Size { get; }
 
         [NotNull]
         public List<PaintShopPatternNumber> Numbers { get; }

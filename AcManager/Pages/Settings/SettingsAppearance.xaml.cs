@@ -1,4 +1,4 @@
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 ﻿using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -211,7 +211,11 @@ namespace AcManager.Pages.Settings {
         }
 
         private void OnBackgroundChangeClick(object sender, RoutedEventArgs e) {
-            BackgroundChangeMenu.IsOpen = !BackgroundChangeMenu.IsOpen;
+            if (BackgroundChangeMenu.IsOpen) {
+                BackgroundChangeMenu.Close();
+            } else {
+                BackgroundChangeMenu.ShowAtPointer();
+            }
         }
     }
 }

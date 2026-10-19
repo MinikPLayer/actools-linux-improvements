@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -404,18 +404,10 @@ namespace AcManager.CustomShowroom {
 
             try {
                 var pngData = TextureReader.ToPng(renderer.DeviceContextHolder, imageData, true, out var format);
-                var image = new BitmapImage();
-                using (var stream = new MemoryStream(pngData) {
-                    Position = 0
-                }) {
-                    image.BeginInit();
-                    image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.UriSource = null;
-                    image.StreamSource = stream;
-                    image.EndInit();
+                Bitmap image;
+                using (var stream = new MemoryStream(pngData)) {
+                    image = new Bitmap(stream);
                 }
-                image.Freeze();
 
                 return new LoadedImage {
                     Image = image,
@@ -438,18 +430,10 @@ namespace AcManager.CustomShowroom {
                     imageData = await Task.Run(() => ImageUtils.LoadAsConventionalBuffer(data, true, out formatDescription));
                 }
 
-                var image = new BitmapImage();
-                using (var stream = new MemoryStream(imageData) {
-                    Position = 0
-                }) {
-                    image.BeginInit();
-                    image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.UriSource = null;
-                    image.StreamSource = stream;
-                    image.EndInit();
+                Bitmap image;
+                using (var stream = new MemoryStream(imageData)) {
+                    image = new Bitmap(stream);
                 }
-                image.Freeze();
 
                 return new LoadedImage {
                     Image = image,

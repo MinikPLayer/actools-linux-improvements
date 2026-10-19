@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -344,7 +344,7 @@ namespace AcManager.Pages.Selected {
             private DelegateCommand _setCropParamsCommand;
 
             public DelegateCommand SetCropParamsCommand => _setCropParamsCommand ?? (_setCropParamsCommand = new DelegateCommand(() => {
-                var source = ImageEditor.Proceed(SelectedObject.PreviewImage, new Size(206, 206), false, SelectedObject.PreviewCrop, out Int32Rect rect);
+                var source = ImageEditor.Proceed(SelectedObject.PreviewImage, new Size(206, 206), false, SelectedObject.PreviewCrop, out PixelRect rect);
                 if (source != null) {
                     SelectedObject.PreviewCrop = new Rect(rect.X, rect.Y, rect.Width, rect.Height);
                 }
@@ -529,7 +529,7 @@ namespace AcManager.Pages.Selected {
                 return;
             }
 
-            var newIndex = ((ItemsControl)sender).GetMouseItemIndex();
+            var newIndex = FirstFloor.ModernUI.Windows.Attached.Draggable.GetMouseItemIndex((ItemsControl)sender);
             var list = _model.SelectedObject.ExtendedRounds;
             var oldIndex = list.IndexOf(roundObject);
             if (newIndex != oldIndex) {
@@ -552,7 +552,6 @@ namespace AcManager.Pages.Selected {
         }
 
         private void OnRoundDescriptionDoubleClick(object sender, TappedEventArgs e) {
-            if (e.ChangedButton != MouseButton.Left) return;
             if (((FrameworkElement)sender).DataContext is UserChampionshipRoundExtended round) {
                 round.Description = Prompt.Show("Round description:", "Round Description", round.Description,
                         round.Track?.Description, multiline: true) ?? round.Description;

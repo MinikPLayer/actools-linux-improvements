@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -146,17 +146,18 @@ namespace AcManager.Pages.Drive {
                 if (value == ListMode.Simple) {
                     ServersListBox.ItemTemplate = (DataTemplate)this.FindResource(@"SimpleListItem");
                 } else {
-                    var factory = new FrameworkElementFactory(typeof(OnlineItem));
-                    factory.SetBinding(OnlineItem.ServerProperty, new Binding());
-                    factory.SetValue(OnlineItem.HideSourceIconsProperty, _hideIconSourceIds);
-                    ServersListBox.ItemTemplate = new DataTemplate(typeof(OnlineItem)) {
-                        VisualTree = factory
-                    };
+                    var hideSourceIcons = _hideIconSourceIds;
+                    ServersListBox.ItemTemplate = new Avalonia.Controls.Templates.FuncDataTemplate<object>((item, scope) => {
+                        var control = new OnlineItem();
+                        control.SetValue(OnlineItem.HideSourceIconsProperty, hideSourceIcons);
+                        control.Bind(OnlineItem.ServerProperty, new Avalonia.Data.Binding());
+                        return control;
+                    });
                 }
 
                 if (value == ListMode.Simple || _simpleListMode == ListMode.Simple) {
-                    ServersListBox.ItemContainerStyle =
-                            (Style)this.FindResource(value == ListMode.Simple ? @"SimpledListItemContainer" : @"DetailedListItemContainer");
+                    ServersListBox.ItemContainerTheme =
+                            (Avalonia.Styling.ControlTheme)this.FindResource(value == ListMode.Simple ? @"SimpledListItemContainer" : @"DetailedListItemContainer");
                 }
 
                 _simpleListMode = value;

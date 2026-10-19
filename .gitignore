@@ -87,3 +87,4 @@ PortTools/api.json
 PortTools/apidump/out/
 PortTools/apidump/obj/
 PortTools/apidump/bin/
+__pycache__/

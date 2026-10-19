@@ -411,7 +411,7 @@ namespace AcManager.Pages.Drive {
             }
 
             PlacementMode IHierarchicalItemPreviewProvider.GetPlacementMode(object item) {
-                return PlacementMode.Mouse;
+                return PlacementMode.Pointer;
             }
 
             public void SetRaceGridData(string serializedRaceGrid) {

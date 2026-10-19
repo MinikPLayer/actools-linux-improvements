@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -127,7 +127,7 @@ namespace AcManager.Pages.Dialogs {
         private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e) {
             if (e.PropertyName != nameof(Model.CurrentPreviewImage)) return;
             (_state == 0 ? BackgroundImage1 : BackgroundImage0).Filename = Model.CurrentPreviewImage;
-            VisualStateManager.GoToElementState(BackgroundImage1, @"State" + _state, true);
+            BackgroundImage1.Opacity = _state == 0 ? 1d : 0d;
             _state = 1 - _state;
         }
 

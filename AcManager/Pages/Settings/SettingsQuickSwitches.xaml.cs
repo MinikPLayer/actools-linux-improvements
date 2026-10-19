@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace AcManager.Pages.Settings {
             InitializeComponent();
             if (_widgets == null) {
                 // creating a list of widget’s IDs
-                _widgets = Resources.MergedDictionaries.SelectMany(x => x.Keys.OfType<string>()).Where(x => x.StartsWith(@"Widget")).ToArray();
+                _widgets = Resources.MergedDictionaries.SelectMany(x => x.GetKeys().OfType<string>()).Where(x => x.StartsWith(@"Widget")).ToArray();
             }
 
             var widgets = new Dictionary<string, WidgetEntry>(_widgets.Length);
@@ -33,7 +33,7 @@ namespace AcManager.Pages.Settings {
             InitializeComponent();
             if (_widgets == null) {
                 // creating a list of widget’s IDs
-                _widgets = Resources.MergedDictionaries.SelectMany(x => x.Keys.OfType<string>()).Where(x => x.StartsWith(@"Widget")).ToArray();
+                _widgets = Resources.MergedDictionaries.SelectMany(x => x.GetKeys().OfType<string>()).Where(x => x.StartsWith(@"Widget")).ToArray();
             }
 
             Logging.Write(_widgets.JoinToString("\n"));

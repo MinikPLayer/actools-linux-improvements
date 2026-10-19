@@ -101,7 +101,7 @@ namespace AcManager.Pages.Dialogs {
             contextMenu.AddTextBoxItems();
 
             e.Handled = true;
-            contextMenu.IsOpen = true;
+            contextMenu.ShowAtPointer();
         }
 
         private void FixValue(TextBox textBox) {
@@ -147,7 +147,7 @@ namespace AcManager.Pages.Dialogs {
             item.ToolTip = AppStrings.CarSpecs_RecalculateCurvesUsingDataOnly_Tooltip;
             contextMenu.Items.Add(item);
 
-            contextMenu.IsOpen = true;
+            contextMenu.ShowAtPointer();
         }
 
         private void ScaleCurves(object sender, RoutedEventArgs e) {

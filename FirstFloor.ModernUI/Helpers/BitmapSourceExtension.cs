@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using ImageMagick;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Helpers {
     public static class BitmapSourceExtension {
-        public static Bitmap Resize(this Bitmap bitmap, int width, int height, BitmapInterpolationMode mode = BitmapInterpolationMode.HighQuality) {
+        public static Bitmap Resize(this IImage bitmap, int width, int height, BitmapInterpolationMode mode = BitmapInterpolationMode.HighQuality) {
             var target = new RenderTargetBitmap(new PixelSize(width, height), new Vector(96, 96));
             using (var context = target.CreateDrawingContext()) {
                 using (context.PushRenderOptions(new Avalonia.Media.RenderOptions { BitmapInterpolationMode = mode })) {

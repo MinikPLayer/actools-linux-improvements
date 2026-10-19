@@ -353,8 +353,7 @@ namespace AcManager.Pages.Dialogs {
                             var r = GraphWidth ? testRadiusDenormalized : radius.Denormalize((double)i / (result.Length - 1));
                             var u = profile.Denormalize(profileNormalized.Saturate());
                             var value = machine.Conjure(key, w, r, u) * multiplier;
-                            result[i].X = (GraphWidth ? w : r) * SizeToDisplayMultiplier;
-                            result[i].Y = value;
+                            result[i] = new DataPoint((GraphWidth ? w : r) * SizeToDisplayMultiplier, value);
                             valueRange.Update(value);
                         }
                         return Tuple.Create($"Profile: {profile.Denormalize(profileNormalized) * 100:F2} cm",

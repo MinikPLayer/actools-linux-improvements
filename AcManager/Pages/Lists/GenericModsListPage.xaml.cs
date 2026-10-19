@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -101,13 +101,13 @@ namespace AcManager.Pages.Lists {
                 }
             }
 
-            private Predicate<object> CreateFilter(bool enabled) {
+            private Func<object, bool> CreateFilter(bool enabled) {
                 return _filter == null
                         ? (enabled ?
-                                (Predicate<object>)(o => (o as GenericMod)?.IsEnabled == true) :
+                                (Func<object, bool>)(o => (o as GenericMod)?.IsEnabled == true) :
                                 (o => (o as GenericMod)?.IsEnabled == false))
                         : (enabled ?
-                                (Predicate<object>)(o => o is GenericMod m && _filter.Test(m.DisplayName) && m.IsEnabled) :
+                                (Func<object, bool>)(o => o is GenericMod m && _filter.Test(m.DisplayName) && m.IsEnabled) :
                                 (o => o is GenericMod m && _filter.Test(m.DisplayName) && !m.IsEnabled));
             }
 

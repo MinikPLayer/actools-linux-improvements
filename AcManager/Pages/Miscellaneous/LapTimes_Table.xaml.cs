@@ -47,7 +47,8 @@ namespace AcManager.Pages.Miscellaneous {
             var sortDirection = LimitedStorage.Get(LimitedSpace.LapTimesSortingDescending, _filter) == @"1"
                     ? ListSortDirection.Descending : ListSortDirection.Ascending;
             var sortedColumn = Grid.Columns.FirstOrDefault(x => x.SortMemberPath == savedSortPath) ?? DefaultColumn;
-            sortedColumn.SortDirection = sortDirection;
+            _sortedColumn = sortedColumn;
+            _sortDescending = sortDirection == ListSortDirection.Descending;
 
             DataContext = new ViewModel(string.IsNullOrEmpty(_filter) ? null : Filter.Create(LapTimeTester.Instance, _filter),
                     sortedColumn.SortMemberPath, sortDirection);
@@ -83,10 +84,17 @@ namespace AcManager.Pages.Miscellaneous {
             public ListCollectionView View { get; }
         }
 
+        private Avalonia.Controls.DataGridColumn _sortedColumn;
+        private bool _sortDescending;
+
         private async void OnGridSorting(object sender, Avalonia.Controls.DataGridColumnEventArgs e) {
+            // Avalonia doesn’t keep sort direction of a column, so it’s tracked here (a click on the same column flips the direction)
+            _sortDescending = ReferenceEquals(_sortedColumn, e.Column) && !_sortDescending;
+            _sortedColumn = e.Column;
+
             await Task.Delay(1);
             LimitedStorage.Set(LimitedSpace.LapTimesSortingColumn, _key, e.Column.SortMemberPath);
-            LimitedStorage.Set(LimitedSpace.LapTimesSortingDescending, _key, e.Column.SortDirection != ListSortDirection.Descending ? @"1" : @"0");
+            LimitedStorage.Set(LimitedSpace.LapTimesSortingDescending, _key, _sortDescending ? @"1" : @"0");
         }
 
         public static void OnLinkChanged(LinkChangedEventArgs e) {

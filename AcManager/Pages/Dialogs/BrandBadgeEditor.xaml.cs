@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -137,7 +137,7 @@ namespace AcManager.Pages.Dialogs {
                     var item = new MenuItem { Header = AppStrings.Toolbar_Delete };
                     item.Click += (o, args) => FilesStorage.Instance.Remove(entry);
                     contextMenu.Items.Add(item);
-                    contextMenu.IsOpen = true;
+                    contextMenu.ShowAtPointer();
                 }
             }
         }
