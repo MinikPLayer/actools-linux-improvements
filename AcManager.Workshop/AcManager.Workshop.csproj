@@ -36,7 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="B2.NET">
-      <HintPath>..\Libraries\B2.NET\B2.NET.dll</HintPath>
+      <HintPath>..\Libraries\B2.NET\B2.Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=null">

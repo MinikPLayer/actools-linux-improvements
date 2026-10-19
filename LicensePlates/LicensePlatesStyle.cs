@@ -4,8 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using ImageMagick;
+using ImageMagick.Drawing;
 using JetBrains.Annotations;
 using MoonSharp.Interpreter;
 
@@ -106,7 +106,7 @@ namespace LicensePlates {
         }
 
         private void BindState() {
-            _state.Globals["showMsg"] = new Action<string>(m => { MessageBox.Show(m); });
+            _state.Globals["showMsg"] = new Action<string>(m => { Console.Error.WriteLine(m); });
 
             _state.Globals["fs"] = new MoonSharpFsHelper();
             _state.Globals["path"] = new MoonSharpPathHelper();
@@ -237,12 +237,12 @@ namespace LicensePlates {
             if (_textLayer == null) {
                 if (_plateParams.Size == null) {
                     var background = LoadImage(Path.Combine(_directory, _plateParams.Background));
-                    _plateParams.Size = new[] { background.Width, background.Height };
+                    _plateParams.Size = new[] { (int)background.Width, (int)background.Height };
                 }
 
                 _textLayer = new MagickImage(MagickColors.Transparent,
-                        (int)(_plateParams.Size[0] * _plateParams.SizeMultipler),
-                        (int)(_plateParams.Size[1] * _plateParams.SizeMultipler));
+                        (uint)(_plateParams.Size[0] * _plateParams.SizeMultipler),
+                        (uint)(_plateParams.Size[1] * _plateParams.SizeMultipler));
             }
             return _textLayer;
         }
@@ -305,7 +305,7 @@ namespace LicensePlates {
             }
         }
 
-        private static TypeMetric Measure(MagickImage image, string line, bool ignoreNewLines = false) {
+        private static ITypeMetric Measure(MagickImage image, string line, bool ignoreNewLines = false) {
             return string.IsNullOrEmpty(line) ? image.FontTypeMetrics("​") : image.FontTypeMetrics(line, ignoreNewLines);
         }
 
@@ -404,7 +404,7 @@ namespace LicensePlates {
         }
 
         private MagickImage DiffuseMap(MagickImage textLayer, MagickImage textFlatLayer, string backgroundFile, double lightDirection, bool previewMode) {
-            var image = LoadImage(backgroundFile).Clone();
+            var image = new MagickImage(LoadImage(backgroundFile));
             if (_disposed) return image;
 
             if (image.Width != textLayer.Width || image.Height != textLayer.Height) {
@@ -425,7 +425,7 @@ namespace LicensePlates {
                 image.Composite(textFlatLayer, 0, 0, CompositeOperator.Over);
             }
 
-            var textAlpha = textLayer.Clone();
+            var textAlpha = new MagickImage(textLayer);
             // textAlpha.HasAlpha = false;
             // textAlpha.FloodFill(); = false;
             // textAlpha.Negate();
@@ -444,11 +444,11 @@ namespace LicensePlates {
             }
 
             layer.Resize(new Percentage(200));
-            layer.Morphology(MorphologyMethod.Dilate, Kernel.Diamond, 1);
+            layer.Morphology(new MorphologySettings { Method = MorphologyMethod.Dilate, Kernel = Kernel.Diamond, KernelArguments = "1" });
             layer.Resize(textLayer.Width, textLayer.Height);
 
-            layer.Shade(0, 30, true, Channels.Red);
-            layer.Shade(-90, 30, true, Channels.Green);
+            layer.Shade(0, 30, Channels.Red);
+            layer.Shade(-90, 30, Channels.Green);
             layer.Evaluate(Channels.Blue, EvaluateOperator.Set, new Percentage(100d));
 
             return layer;
@@ -457,9 +457,10 @@ namespace LicensePlates {
         private static void NormalizeNormalsMap(MagickImage image, double maxHorizontalLength) {
             var m2 = maxHorizontalLength * maxHorizontalLength;
             using (var pc = image.GetPixels()) {
-                foreach (var p in pc) {
-                    var x = p.GetChannel(0) / 255.0 * 2.0 - 1.0;
-                    var y = p.GetChannel(1) / 255.0 * 2.0 - 1.0;
+                var pixels = pc.ToByteArray(PixelMapping.RGBA);
+                for (var i = 0; i < pixels.Length; i += 4) {
+                    var x = pixels[i] / 255.0 * 2.0 - 1.0;
+                    var y = pixels[i + 1] / 255.0 * 2.0 - 1.0;
                     var x2 = x * x;
                     var y2 = y * y;
 
@@ -470,21 +471,22 @@ namespace LicensePlates {
                         x2 *= m;
                         y2 *= m;
 
-                        p.SetChannel(0, (byte)(255 * (x * 0.5 + 0.5)));
-                        p.SetChannel(1, (byte)(255 * (y * 0.5 + 0.5)));
+                        pixels[i] = (byte)(255 * (x * 0.5 + 0.5));
+                        pixels[i + 1] = (byte)(255 * (y * 0.5 + 0.5));
                     }
 
                     if (Math.Abs(x) > 0.1 || Math.Abs(y) > 0.1) {
                         var z = Math.Sqrt(Math.Max(1.0 - x2 - y2, 0d));
-                        p.SetChannel(2, (byte)(255 * (z * 0.5 + 0.5)));
-                        pc.Set(p);
+                        pixels[i + 2] = (byte)(255 * (z * 0.5 + 0.5));
                     }
                 }
+
+                pc.SetBytePixels(pixels);
             }
         }
 
         private MagickImage NormalsMap(MagickImage textLayer, string backgroundFile, bool previewMode) {
-            var image = LoadImage(backgroundFile).Clone();
+            var image = new MagickImage(LoadImage(backgroundFile));
             if (_disposed) return image;
 
             if (image.Width != textLayer.Width || image.Height != textLayer.Height) {
