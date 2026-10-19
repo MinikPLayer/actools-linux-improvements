@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>AcManager.Internal</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>14.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj" />
+    <Reference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ChangelogEntry.cs" />
+    <Compile Include="InternalUtils.cs" />
+    <Compile Include="WebClientExtension.cs" />
+    <Compile Include="WebDownloadRule.cs" />
+  </ItemGroup>
+</Project>

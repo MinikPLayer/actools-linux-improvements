@@ -204,7 +204,6 @@ namespace AcManager.Controls {
                         Height = 160,
                         VerticalAlignment = VerticalAlignment.Top
                     };
-                    graph.Theme = (Avalonia.Styling.ControlTheme)this.FindResource(typeof(CarGraphViewer));
                     var grid = new Grid {
                         ColumnDefinitions = new Avalonia.Controls.ColumnDefinitions("*,Auto"),
                         Children = { textBlock, graph }
