@@ -44,7 +44,7 @@ namespace AcManager.Pages.Drive {
             }
 
             OpponentNounLabel.SetBinding(ValueLabel.PostfixProperty, new Binding("RaceGridViewModel.OpponentsNumberLimited") {
-                Converter = (IValueConverter)FindResource("PluralizingConverter"),
+                Converter = (IValueConverter)this.FindResource("PluralizingConverter"),
                 ConverterParameter = OpponentNoun
             });
         }

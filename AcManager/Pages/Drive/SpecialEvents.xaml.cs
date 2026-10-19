@@ -63,7 +63,7 @@ namespace AcManager.Pages.Drive {
             this.OnActualUnload(_discordPresence);
             DataContext = new ViewModel(_filter, _discordPresence);
             InitializeComponent();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(new AsyncCommand(() => Model.Selected?.GoCommand.ExecuteAsync(null)), new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(() => Model.Selected?.ViewInExplorerCommand.Execute(null)), new KeyGesture(Key.F, ModifierKeys.Control))
             });
@@ -270,7 +270,7 @@ namespace AcManager.Pages.Drive {
             _positionLoaded = false;
 
             // Width="195" Height="110"
-            var scale = 1d + ((ActualHeight - 640d) / 540d).Saturate();
+            var scale = 1d + ((this.ActualHeight - 640d) / 540d).Saturate();
             if (scale < 1.3) scale = 1d;
             if (Math.Abs(scale - _scale) < 0.2) return;
 

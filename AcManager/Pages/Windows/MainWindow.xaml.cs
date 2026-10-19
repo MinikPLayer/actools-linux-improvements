@@ -97,7 +97,7 @@ namespace AcManager.Pages.Windows {
             if (_steamOverlayFixApplied == SteamStarter.IsOverlayVisible) return;
             _steamOverlayFixApplied = !_steamOverlayFixApplied;
             if (_steamOverlayFix == null) {
-                _steamOverlayFix = (FrameworkElement)FindResource(@"SteamOverlayFix");
+                _steamOverlayFix = (FrameworkElement)this.FindResource(@"SteamOverlayFix");
             }
             if (_steamOverlayFixApplied) {
                 OverlayContentCell.Children.Add(_steamOverlayFix);
@@ -133,7 +133,7 @@ namespace AcManager.Pages.Windows {
 
             var downloadsNavigateCommand = new NavigateCommand(this, new Uri("/Pages/Miscellaneous/DownloadsList.xaml", UriKind.Relative));
             DataContext = new ViewModel();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(new NavigateCommand(this, "drive"), new KeyGesture(Key.F1)),
                 new InputBinding(new NavigateCommand(this, "lapTimes"), new KeyGesture(Key.F2)),
                 new InputBinding(new NavigateCommand(this, "stats"), new KeyGesture(Key.F3)),
@@ -181,7 +181,7 @@ namespace AcManager.Pages.Windows {
 
             if (SteamStarter.IsInitialized) {
                 if (_steamOverlayFix == null) {
-                    _steamOverlayFix = (FrameworkElement)FindResource(@"SteamOverlayFix");
+                    _steamOverlayFix = (FrameworkElement)this.FindResource(@"SteamOverlayFix");
                 }
                 OverlayContentCell.Children.Add(_steamOverlayFix);
                 _steamOverlayFixApplied = true;
@@ -253,7 +253,7 @@ namespace AcManager.Pages.Windows {
                         _runningInstancesPopup.IsOpen = false;
                     }
                 } else if (TitleLinksPrefix == null) {
-                    TitleLinksPrefix = FindResource(@"RunningInstances");
+                    TitleLinksPrefix = this.FindResource(@"RunningInstances");
                     (TitleLinksPrefix as FrameworkElement)?.ResetElementNameBindings();
                 }
             };
@@ -404,7 +404,7 @@ namespace AcManager.Pages.Windows {
             if (!AppAppearanceManager.Instance.DownloadsInSeparatePage) {
                 _downloadListParent = (Border)sender;
                 if (_downloadListParent.Child == null) {
-                    _downloadListParent.Child = (FrameworkElement)FindResource(@"DownloadsMenuSection");
+                    _downloadListParent.Child = (FrameworkElement)this.FindResource(@"DownloadsMenuSection");
                     _downloadsListSet = false;
                 }
             }
@@ -414,7 +414,7 @@ namespace AcManager.Pages.Windows {
             if (args.PropertyName == nameof(AppAppearanceManager.Instance.DownloadsInSeparatePage)) {
                 var value = AppAppearanceManager.Instance.DownloadsInSeparatePage;
                 if (_downloadListParent != null) {
-                    _downloadListParent.Child = value ? null : (FrameworkElement)FindResource(@"DownloadsMenuSection");
+                    _downloadListParent.Child = value ? null : (FrameworkElement)this.FindResource(@"DownloadsMenuSection");
                 }
                 DownloadsEntry.IsAvailable = value;
                 BrowserLinkGroup.GroupKey = value ? @"downloads" : @"content";
@@ -1178,7 +1178,7 @@ namespace AcManager.Pages.Windows {
         private void OnDownloadSomethingItemClick(object sender, RoutedEventArgs e) {
             string defaultUrl = null;
             try {
-                defaultUrl = Clipboard.GetText().Trim('"');
+                defaultUrl = System.Windows.Clipboard.GetText().Trim('"');
             } catch {
                 // ignored
             }
@@ -1194,10 +1194,10 @@ namespace AcManager.Pages.Windows {
             string defaultFilename = null;
 
             try {
-                if (Clipboard.ContainsData(DataFormats.FileDrop)) {
-                    defaultFilename = Clipboard.GetFileDropList().OfType<string>().FirstOrDefault();
-                } else if (Clipboard.ContainsData(DataFormats.UnicodeText)) {
-                    defaultFilename = Clipboard.GetText().Trim('"');
+                if (System.Windows.Clipboard.ContainsData(DataFormats.FileDrop)) {
+                    defaultFilename = System.Windows.Clipboard.GetFileDropList().OfType<string>().FirstOrDefault();
+                } else if (System.Windows.Clipboard.ContainsData(DataFormats.UnicodeText)) {
+                    defaultFilename = System.Windows.Clipboard.GetText().Trim('"');
                 }
             } catch {
                 // ignored
@@ -1242,19 +1242,12 @@ namespace AcManager.Pages.Windows {
             NavigateTo(_lastAboutSection.Value ?? AboutPageUri);
         }
 
-        private async void OnCompleted(object sender, EventArgs e) {
-            var s = (Storyboard)sender;
-            await Task.Yield();
-            s.Stop();
-            s.Begin();
-        }
-
         private Border _cupNotificationPanel;
 
         private void OnCupNotificationPanelLoaded(object sender, RoutedEventArgs e) {
             _cupNotificationPanel = (Border)sender;
             if (_cupNotificationPanel.Child == null) {
-                var child = (FrameworkElement)FindResource(@"CupNotificationBlock");
+                var child = (FrameworkElement)this.FindResource(@"CupNotificationBlock");
                 _cupNotificationPanel.Child = child;
             }
         }
@@ -1281,7 +1274,7 @@ namespace AcManager.Pages.Windows {
                 _runningInstancesPopup.IsOpen = false;
             }
             _runningInstancesPopup = new ModernPopup {
-                Content = (UIElement)FindResource("RunningInstancesPopupContent"),
+                Content = (UIElement)this.FindResource("RunningInstancesPopupContent"),
                 PlacementTarget = (UIElement)sender,
                 Placement = PlacementMode.Bottom,
                 StaysOpen = false,

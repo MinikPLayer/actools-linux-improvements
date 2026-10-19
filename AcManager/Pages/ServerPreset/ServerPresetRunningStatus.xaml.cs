@@ -96,8 +96,8 @@ namespace AcManager.Pages.ServerPreset {
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Top,
                 RenderTransform = new TranslateTransform(),
-                ToolTip = FindResource(@"DriverToolTip"),
-                ContextMenu = FindResource(@"DriverContextMenu") as ContextMenu
+                ToolTip = this.FindResource(@"DriverToolTip"),
+                ContextMenu = this.FindResource(@"DriverContextMenu") as ContextMenu
             };
             TrackMapItems.Children.Add(created);
             return created;

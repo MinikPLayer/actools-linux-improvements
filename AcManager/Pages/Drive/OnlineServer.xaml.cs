@@ -136,7 +136,7 @@ namespace AcManager.Pages.Drive {
         }
 
         private void ResizingStuff() {
-            ShowExtendedInformation = ActualWidth > 600;
+            ShowExtendedInformation = this.ActualWidth > 600;
 
             // var contentHeight = ErrorsPanel.ActualHeight + PasswordPanel.ActualHeight + DataPanel.ActualHeight;
             // var availableHeight = ScrollViewer.ActualHeight;
@@ -191,8 +191,8 @@ namespace AcManager.Pages.Drive {
         }
 
         private void UpdateBindings() {
-            InputBindings.Clear();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.Clear();
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.Entry.ToggleFavouriteCommand, new KeyGesture(Key.B, ModifierKeys.Control)),
                 new InputBinding(Model.Entry.RefreshCommand, new KeyGesture(Key.R, ModifierKeys.Alt)),
                 new InputBinding(Model.Entry.JoinCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
@@ -605,7 +605,7 @@ namespace AcManager.Pages.Drive {
                     continue;
                 }
 
-                var baseIcon = (Decorator)TryFindResource(@"BaseIcon");
+                var baseIcon = (Decorator)this.TryFindResource(@"BaseIcon");
                 if (baseIcon == null) {
                     continue;
                 }
@@ -634,7 +634,7 @@ namespace AcManager.Pages.Drive {
 
             var menu = new ContextMenu();
             foreach (var tag in ServerEntry.DriverTag.GetTags().OrderBy(x => x.DisplayName)) {
-                var icon = TryFindResource(@"PlayerTagIcon") as Shape;
+                var icon = this.TryFindResource(@"PlayerTagIcon") as Shape;
                 icon?.SetBinding(Shape.FillProperty, new Binding {
                     Source = tag,
                     Path = new PropertyPath(nameof(tag.Color)),

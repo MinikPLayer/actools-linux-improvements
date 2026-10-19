@@ -351,7 +351,7 @@ namespace AcManager.Pages.Selected {
         private void SetModel() {
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_object));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.UpdatePreviewsCommand, new KeyGesture(Key.P, ModifierKeys.Control)),
                 new InputBinding(_model.UpdatePreviewsOptionsCommand, new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Shift)),
                 new InputBinding(_model.UpdatePreviewsManuallyCommand, new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Alt)),

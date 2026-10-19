@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -143,9 +143,9 @@ namespace AcManager.Pages.Dialogs {
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
-            var point = GetWindowPosition(ActualWidth.RoundToInt(), ActualHeight.RoundToInt());
-            Left = point.X;
-            Top = point.Y;
+            var point = GetWindowPosition(this.ActualWidth.RoundToInt(), this.ActualHeight.RoundToInt());
+            this.Left = point.X;
+            this.Top = point.Y;
         }
 
         private static void AlterValue([NotNull] RangeBase slider, bool value, [CanBeNull] ICommand run) {
@@ -205,7 +205,7 @@ namespace AcManager.Pages.Dialogs {
             MessageBoxResult = MessageBoxResult.Yes;
             YesBar.Value = 1d;
             YesBar.Foreground = new SolidColorBrush { Color = ((SolidColorBrush)YesBar.Foreground).Color };
-            YesBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)FindResource("GoColor"),
+            YesBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)this.FindResource("GoColor"),
                     new Duration(TimeSpan.FromSeconds(0.12))));
             TextBlock.SetForeground(YesText, new SolidColorBrush { Color = ((SolidColorBrush)TextBlock.GetForeground(YesText)).Color });
             TextBlock.GetForeground(YesText).BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(Colors.Black,
@@ -220,7 +220,7 @@ namespace AcManager.Pages.Dialogs {
             MessageBoxResult = MessageBoxResult.No;
             NoBar.Value = 1d;
             NoBar.Foreground = new SolidColorBrush { Color = ((SolidColorBrush)NoBar.Foreground).Color };
-            NoBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)FindResource("AccentColor"),
+            NoBar.Foreground.BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation((Color)this.FindResource("AccentColor"),
                     new Duration(TimeSpan.FromSeconds(0.12))));
             TextBlock.SetForeground(NoText, new SolidColorBrush { Color = ((SolidColorBrush)TextBlock.GetForeground(NoText)).Color });
             TextBlock.GetForeground(NoText).BeginAnimation(SolidColorBrush.ColorProperty, new ColorAnimation(Colors.White,

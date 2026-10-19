@@ -32,7 +32,7 @@ namespace AcManager.Pages.Settings {
 
         private void OnScrollMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = (ScrollViewer)sender;
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta.Y * 120d);
             e.Handled = true;
         }
 

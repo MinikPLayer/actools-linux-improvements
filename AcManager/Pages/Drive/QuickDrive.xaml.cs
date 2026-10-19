@@ -133,7 +133,7 @@ namespace AcManager.Pages.Drive {
             _current = new WeakReference<QuickDrive>(this);
 
             InitializeComponent();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.GoCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
                 new InputBinding(UserPresetsControl.SaveCommand, new KeyGesture(Key.S, ModifierKeys.Control)),
@@ -181,7 +181,7 @@ namespace AcManager.Pages.Drive {
             _selectNextTime = null;
 
             if (AppArguments.Has(AppFlag.SimpleQuickDriveMode)) {
-                Content = FindResource("SimpleVersion");
+                Content = this.FindResource("SimpleVersion");
             } else {
                 /*this.AddWidthCondition(1300d).Add(x => {
                     MainGrid.HorizontalAlignment = x ? HorizontalAlignment.Center : HorizontalAlignment.Stretch;
@@ -196,7 +196,7 @@ namespace AcManager.Pages.Drive {
                         ValuesStorage.Remove(".qd.rz.h");
                     }
                 });
-                this.AddSizeCondition(x => (((ActualWidth - 720) / 440).Saturate() * 93 + 120).Round()).Add(x => {
+                this.AddSizeCondition(x => (((this.ActualWidth - 720) / 440).Saturate() * 93 + 120).Round()).Add(x => {
                     if (!_loaded && ValuesStorage.Contains(".qd.rz.w")) {
                         CarCell.Width = TrackCell.Width = ValuesStorage.Get(".qd.rz.w", CarCell.Width);
                     } else {
@@ -1369,7 +1369,7 @@ namespace AcManager.Pages.Drive {
                     .AddItem(AppStrings.QuickDrive_ChangeCar_Tooltip, Model.ChangeCarCommand)
                     .AddItem(AppStrings.Drive_Quick_ChangeCarToRandom, Model.RandomCarCommand, @"Ctrl+Alt+1")
                     .AddItem(AppStrings.Drive_Quick_ChangeSkinToRandom, Model.RandomCarSkinCommand, @"Ctrl+Alt+R")
-                    .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)TryFindResource(@"ShuffleIconData"))
+                    .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)this.TryFindResource(@"ShuffleIconData"))
                     .AddSeparator();
             ContextMenus.ContextMenusProvider.SetCarObjectMenu(menu, selectedCar, null);
             e.Menu = menu;
@@ -1380,7 +1380,7 @@ namespace AcManager.Pages.Drive {
             var menu = new ContextMenu()
                     .AddItem(AppStrings.QuickDrive_ChangeTrack_Tooltip, Model.ChangeTrackCommand)
                     .AddItem(AppStrings.Drive_Quick_ChangeTrackToRandom, Model.RandomTrackCommand, @"Ctrl+Alt+2")
-                    .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)TryFindResource(@"ShuffleIconData"))
+                    .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)this.TryFindResource(@"ShuffleIconData"))
                     .AddSeparator();
             ContextMenus.ContextMenusProvider.SetTrackObjectMenu(menu, Model.SelectedTrack);
             e.Menu = menu;
@@ -1398,16 +1398,16 @@ namespace AcManager.Pages.Drive {
 
         private void OnConditionsContextMenu(object sender, ContextMenuButtonEventArgs e) {
             if (Model.RealConditions) {
-                e.Menu = (TryFindResource(@"RealConditionsContextMenu") as ContextMenu)?
+                e.Menu = (this.TryFindResource(@"RealConditionsContextMenu") as ContextMenu)?
                         .AddSeparator()
                         .AddItem(AppStrings.Drive_Quick_SetRandomTime, Model.RandomTimeCommand, @"Ctrl+Alt+3")
-                        .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)TryFindResource(@"ShuffleIconData"));
+                        .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)this.TryFindResource(@"ShuffleIconData"));
             } else {
                 e.Menu = new ContextMenu()
                         .AddItem(AppStrings.Drive_Quick_SetRandomTime, Model.RandomTimeCommand, @"Ctrl+Alt+3")
                         .AddItem(AppStrings.Drive_Quick_SetRandomWeather, Model.RandomWeatherCommand, @"Ctrl+Alt+4")
                         .AddItem(AppStrings.Drive_Quick_SetRandomTemperature, Model.RandomTemperatureCommand, @"Ctrl+Alt+5")
-                        .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)TryFindResource(@"ShuffleIconData"));
+                        .AddItem(AppStrings.Drive_Quick_RandomizeEverything, Model.RandomizeCommand, @"Alt+R", iconData: (Geometry)this.TryFindResource(@"ShuffleIconData"));
             }
         }
 
@@ -1448,7 +1448,7 @@ namespace AcManager.Pages.Drive {
         }
 
         private void OnCarTrackSeparatorDrag(object sender, DragDeltaEventArgs e) {
-            CarCell.Width = (CarCell.Width + e.HorizontalChange / 2).Clamp(80d, (ActualWidth - 400d) / 2d);
+            CarCell.Width = (CarCell.Width + e.HorizontalChange / 2).Clamp(80d, (this.ActualWidth - 400d) / 2d);
             TrackCell.Width = CarCell.Width;
             ValuesStorage.Set(".qd.rz.w", TrackCell.Width);
         }

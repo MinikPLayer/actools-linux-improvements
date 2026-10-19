@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -446,6 +446,20 @@ namespace System.Windows {
             if (clipboard != null) SyncHelper.Wait(clipboard.SetTextAsync(text));
         }
 
+        public static bool ContainsData(string format) {
+            var clipboard = Get();
+            return clipboard != null && SyncHelper.Wait(clipboard.GetFormatsAsync()).Contains(format);
+        }
+
+        public static bool ContainsFileDropList() => ContainsData(DataFormats.FileDrop);
+
+        public static System.Collections.Generic.List<string> GetFileDropList() {
+            var clipboard = Get();
+            var files = clipboard == null ? null : SyncHelper.Wait(Avalonia.Input.Platform.ClipboardExtensions.TryGetFilesAsync(clipboard));
+            return files?.Select(x => Avalonia.Platform.Storage.StorageProviderExtensions.TryGetLocalPath(x)).Where(x => x != null).ToList()
+                    ?? new System.Collections.Generic.List<string>();
+        }
+
         public static void Clear() {
             var clipboard = Get();
             if (clipboard != null) SyncHelper.Wait(clipboard.ClearAsync());
@@ -633,6 +647,10 @@ namespace System.Windows.Interop {
         }
 
         public IntPtr Handle { get; }
+
+        public IntPtr Owner { get; set; }
+
+        public IntPtr EnsureHandle() => Handle;
     }
 }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -219,8 +219,7 @@ namespace AcManager.CustomShowroom {
 
                 _started = Stopwatch.StartNew();
 
-                _dispatcherTimer = new DispatcherTimer(TimeSpan.FromSeconds(0.5), DispatcherPriority.Background, TimerCallback,
-                        Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher);
+                _dispatcherTimer = new DispatcherTimer(TimeSpan.FromSeconds(0.5), DispatcherPriority.Background, TimerCallback);
                 _dispatcherTimer.Start();
             }
 

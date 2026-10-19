@@ -1,4 +1,5 @@
 ﻿using System;
+using Avalonia;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -104,7 +105,7 @@ namespace AcManager {
             if (!AppArguments.GetBool(AppFlag.DisableLogging)) {
                 var logFilename = EntryPoint.GetLogName("Main Log");
                 Logging.Initialize(FilesStorage.Instance.GetFilename("Logs", logFilename), AppArguments.GetBool(AppFlag.OptimizeLogging));
-                Logging.Write($"App version: {BuildInformation.AppVersion} ({BuildInformation.Platform}, {WindowsVersionHelper.GetVersion()})");
+                Logging.Write($"App version: {BuildInformation.AppVersion} ({BuildInformation.Platform}, {Environment.OSVersion})");
             }
 
             Storage.TemporaryBackupsDirectory = FilesStorage.Instance.GetTemporaryDirectory("Storages Backups");
@@ -146,15 +147,9 @@ namespace AcManager {
                 Logging.Debug("Wine detected, switching to safer image loading method");
             }
 
-            if (AppArguments.GetDouble(AppFlag.DesiredFrameRate) is double v && v > 0d) {
-                DP.OverrideMetadata(Timeline.DesiredFrameRateProperty, typeof(Timeline), new FrameworkPropertyMetadata(v));
-                if (softwareRenderingModeIsEnabled) {
-                    RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-                    ModernFrame.OptionDisableTransitionAnimation = true;
-                }
-            } else if (softwareRenderingModeIsEnabled) {
-                RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
-                DP.OverrideMetadata(Timeline.DesiredFrameRateProperty, typeof(Timeline), new FrameworkPropertyMetadata(30));
+            // WPF’s frame rate and render mode overrides are meaningless for Avalonia
+            if (AppArguments.GetDouble(AppFlag.DesiredFrameRate) is double v && v > 0d && softwareRenderingModeIsEnabled) {
+                ModernFrame.OptionDisableTransitionAnimation = true;
             }
 
             var app = new App();
@@ -199,7 +194,11 @@ namespace AcManager {
                     });
                 }
             }
-            app.Run();
+
+            AppBuilder.Configure(() => app)
+                    .UsePlatformDetect()
+                    .LogToTrace()
+                    .StartWithClassicDesktopLifetime(Environment.GetCommandLineArgs().Skip(1).ToArray(), Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
         }
 
         private static void OnFatalError(object o, FatalErrorEventArgs args) {
@@ -454,8 +453,7 @@ namespace AcManager {
                 PluginsWrappers.Initialize(
                         new AssemblyResolvingWrapper(KnownPlugins.Fmod, FmodResolverService.Resolver),
                         new AssemblyResolvingWrapper(KnownPlugins.Fann, FannResolverService.Resolver),
-                        new AssemblyResolvingWrapper(KnownPlugins.Magick, ImageUtils.MagickResolver),
-                        new AssemblyResolvingWrapper(KnownPlugins.CefSharp, CefSharpResolverService.Resolver));
+                        new AssemblyResolvingWrapper(KnownPlugins.Magick, ImageUtils.MagickResolver));
             }
 
             {
@@ -777,7 +775,6 @@ namespace AcManager {
             }
 
             // Let’s roll
-            ShutdownMode = ShutdownMode.OnExplicitShutdown;
             new AppUi(this).Run(() => {
                 if (PatchHelper.OptionPatchSupport) {
                     PatchUpdater.Instance.Updated += OnPatchUpdated;
@@ -868,11 +865,7 @@ namespace AcManager {
 
         private static void PrepareUi() {
             try {
-                DP.OverrideMetadata(ToolTipService.ShowOnDisabledProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(true));
-                DP.OverrideMetadata(ToolTipService.InitialShowDelayProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(500));
-                DP.OverrideMetadata(ToolTipService.BetweenShowDelayProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(0));
-                DP.OverrideMetadata(ToolTipService.ShowDurationProperty, typeof(DependencyObject), new FrameworkPropertyMetadata(60000));
-                DP.OverrideMetadata(ItemsControl.IsTextSearchCaseSensitiveProperty, typeof(ComboBox), new FrameworkPropertyMetadata(true));
+                // tooltip delays and text search case sensitivity are set by the theme in Avalonia
 
                 if (AppAppearanceManager.Instance.DisallowTransparency || WineHelper.IsOnWine) {
                     DisableTransparencyHelper.Disable();

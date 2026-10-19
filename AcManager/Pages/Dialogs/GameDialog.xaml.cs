@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -256,7 +256,7 @@ namespace AcManager.Pages.Dialogs {
                             Model.WaitingStatus = Encoding.UTF8.GetString(d, 0, i < 0 ? d.Length : i);
                         }
                     }
-                }, Application.Current.Dispatcher);
+                });
                 
             }
         }
@@ -978,7 +978,7 @@ namespace AcManager.Pages.Dialogs {
 
         private void OnScrollMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = sender as ScrollViewer ?? (sender as FrameworkElement)?.FindVisualChild<ScrollViewer>();
-            scrollViewer?.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            scrollViewer?.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta.Y * 120d);
             e.Handled = true;
         }
 
@@ -990,16 +990,16 @@ namespace AcManager.Pages.Dialogs {
             this.AddWidthCondition(1000).Add(columns[1]).Add(columns[2])
                     .Add(x => {
                         columns[0].Width = x ? 100 : 140;
-                        columns[0].HeaderStyle = (Style)FindResource(x ?
+                        columns[0].HeaderStyle = (Style)this.FindResource(x ?
                                 @"DataGridColumnHeader.RightAlignment" : @"DataGridColumnHeader.RightAlignment.FarRight");
-                        ((DataGridTemplateColumn)columns[0]).CellTemplate = (DataTemplate)FindResource(x ?
+                        ((DataGridTemplateColumn)columns[0]).CellTemplate = (DataTemplate)this.FindResource(x ?
                                 @"TotalTimeDeltaTemplate" : @"TotalTimeDeltaTemplate.FarRight");
                         if (x) {
                             FancyHints.GameDialogTableSize.MarkAsUnnecessary();
                         }
                     });
 
-            if (ActualWidth < 1000d) {
+            if (this.ActualWidth < 1000d) {
                 FancyHints.GameDialogTableSize.Trigger();
             } else {
                 FancyHints.GameDialogTableSize.MarkAsUnnecessary();

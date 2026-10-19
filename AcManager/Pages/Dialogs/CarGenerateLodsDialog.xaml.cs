@@ -72,7 +72,7 @@ namespace AcManager.Pages.Dialogs {
                 CloseWithResult(MessageBoxResult.OK);
             };
             InitializeComponent();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.OpenDirectoryCommand, new KeyGesture(Key.F, ModifierKeys.Control)),
                 new InputBinding(Model.OpenShowroomCommand, new KeyGesture(Key.H, ModifierKeys.Alt)),
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -32,7 +32,7 @@ namespace AcManager.QuickSwitches {
             foreach (var key in active) {
                 FrameworkElement item;
                 try {
-                    item = (FrameworkElement)FindResource(key);
+                    item = (FrameworkElement)this.FindResource(key);
                 } catch (Exception e) {
                     Logging.Write("Can’t find widget: " + key + ", " + e);
                     continue;

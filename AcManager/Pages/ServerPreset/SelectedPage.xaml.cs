@@ -630,19 +630,19 @@ namespace AcManager.Pages.ServerPreset {
             RunningLogLink.IsShown = _object.RunningLog != null;
             RunningStatusLink.IsShown = _object.CmPlugin != null;
             InitializeAcObjectPage(_model = new ViewModel(_object, _track, _cars));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.GoCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(_model.RestartCommand, new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift)),
                 new InputBinding(_model.PackCommand, new KeyGesture(Key.P, ModifierKeys.Control)),
                 new InputBinding(_model.PackOptionsCommand, new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Shift)),
                 new InputBinding(_model.InviteCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
             });
-            InputBindings.AddRange(_model.QuickDriveButton.GetInputBindingCommands());
+            this.InputBindings.AddRange(_model.QuickDriveButton.GetInputBindingCommands());
 
             foreach (var binding in Enumerable.Range(0, 8).Select(i => new InputBinding(new DelegateCommand(() =>
                     Tab.SelectedSource = Tab.Links.ApartFrom(RunningLogLink, RunningStatusLink).ElementAtOrDefault(i)?.Source ?? Tab.SelectedSource),
                     new KeyGesture(Key.F1 + i, ModifierKeys.Alt | ModifierKeys.Control)))) {
-                InputBindings.Add(binding);
+                this.InputBindings.Add(binding);
             }
         }
 
@@ -665,10 +665,10 @@ namespace AcManager.Pages.ServerPreset {
 
         private void OnFrameNavigated(object sender, NavigationEventArgs e) {
             var source = Tab.SelectedSource;
-            var runningLogTab = source == TryFindResource(@"RunningLogUri") as Uri;
-            var runningStatusTab = source == TryFindResource(@"RunningStatusUri") as Uri;
-            var entryListTab = !runningLogTab && source == TryFindResource(@"EntryListUri") as Uri;
-            var wrappedTab = !runningLogTab && !entryListTab && source == TryFindResource(@"WrappedUri") as Uri;
+            var runningLogTab = source == this.TryFindResource(@"RunningLogUri") as Uri;
+            var runningStatusTab = source == this.TryFindResource(@"RunningStatusUri") as Uri;
+            var entryListTab = !runningLogTab && source == this.TryFindResource(@"EntryListUri") as Uri;
+            var wrappedTab = !runningLogTab && !entryListTab && source == this.TryFindResource(@"WrappedUri") as Uri;
 
             IsRunningMessage.Visibility = runningLogTab || runningStatusTab ? Visibility.Collapsed : Visibility.Visible;
             RandomizeSkinsButton.Visibility = entryListTab ? Visibility.Visible : Visibility.Collapsed;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,7 +98,7 @@ namespace AcManager.Pages.Miscellaneous {
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e) {
-            Model.Columns = 4 + Math.Floor((ActualWidth - 795) / 191);
+            Model.Columns = 4 + Math.Floor((this.ActualWidth - 795) / 191);
         }
     }
 }

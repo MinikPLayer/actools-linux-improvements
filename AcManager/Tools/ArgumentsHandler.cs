@@ -98,9 +98,9 @@ namespace AcManager.Tools {
         }
 
         public static void OnDragEnter(DragEventArgs e) {
-            if (e.AllowedEffects.HasFlag(DragDropEffects.All) &&
+            if (e.AllowedEffects.HasFlag((DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link)) &&
                     (e.Data.GetDataPresent(DataFormats.FileDrop) || e.Data.GetDataPresent(DataFormats.UnicodeText))) {
-                e.Effects = DragDropEffects.All;
+                e.Effects = (DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
             }
         }
         #endregion

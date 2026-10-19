@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -53,7 +53,7 @@ namespace AcManager.Pages.Dialogs {
             // _instance = new WeakReference<SelectTrackDialog>(this);
 
             DataContext = new ViewModel(selectedTrackConfiguration);
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(ToggleFavouriteCommand, new KeyGesture(Key.B, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(() => OnScrollToSelectedButtonClick(null, null)),
                         new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift))

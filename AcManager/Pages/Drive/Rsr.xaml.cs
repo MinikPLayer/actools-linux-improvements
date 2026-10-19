@@ -39,7 +39,7 @@ namespace AcManager.Pages.Drive {
         public Rsr() {
             DataContext = new ViewModel();
             this.OnActualUnload(Model);
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.GoCommand, new KeyGesture(Key.G, ModifierKeys.Control))
             });
             InitializeComponent();

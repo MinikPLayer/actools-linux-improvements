@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -78,9 +78,9 @@ namespace AcManager.Pages.Miscellaneous {
             }
 
             InitializeComponent();
-            InputBindings.Add(new InputBinding(new DelegateCommand(() => OnScrollToSelectedButtonClick(null, null)),
+            this.InputBindings.Add(new InputBinding(new DelegateCommand(() => OnScrollToSelectedButtonClick(null, null)),
                     new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift)));
-            InputBindings.Add(new InputBinding(Instance.AddNewSourceCommand,
+            this.InputBindings.Add(new InputBinding(Instance.AddNewSourceCommand,
                     new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift)));
             Loaded += OnLoaded;
         }

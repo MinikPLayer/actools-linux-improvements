@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -312,7 +312,7 @@ namespace AcManager.Pages.Selected {
         }));
 
         private void ToEditMode() {
-            _editMode = (FrameworkElement)FindResource(@"EditMode");
+            _editMode = (FrameworkElement)this.FindResource(@"EditMode");
             Wrapper.Children.Add(_editMode);
         }
 
@@ -349,7 +349,7 @@ namespace AcManager.Pages.Selected {
 
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_object));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(ToggleEditModeCommand, new KeyGesture(Key.E, ModifierKeys.Control)),
                 new InputBinding(_model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
                 new InputBinding(_model.TestCommand, new KeyGesture(Key.G, ModifierKeys.Control)),

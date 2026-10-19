@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -162,7 +162,7 @@ namespace AcManager.Pages.AcSettings {
             DataContext = new ViewModel(this);
             InitializeComponent();
             this.AddWidthCondition(1080).Add(v => Grid.Columns = v ? 2 : 1);
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.BenchmarkCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(Model.BenchmarkFastCommand, new KeyGesture(Key.G, ModifierKeys.Control | ModifierKeys.Shift)),
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),

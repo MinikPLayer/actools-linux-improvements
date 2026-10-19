@@ -86,7 +86,7 @@ namespace AcManager.Pages.ContentTools {
 
         protected override void InitializeOverride(Uri uri) {
             InitializeComponent();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(SelectAllCarsCommand, new KeyGesture(Key.A, ModifierKeys.Control)),
                 new InputBinding(RemoveSelectionFromCarsCommand, new KeyGesture(Key.D, ModifierKeys.Control)),
             });

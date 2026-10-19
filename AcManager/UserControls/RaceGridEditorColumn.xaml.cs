@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -23,7 +23,7 @@ using JetBrains.Annotations;
 namespace AcManager.UserControls {
     public sealed partial class RaceGridEditorColumn : global::FirstFloor.ModernUI.Windows.Controls.Cell, INotifyPropertyChanged {
         public RaceGridEditorColumn() {
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(new DelegateCommand(() => {
                     if (SelectCarPopup?.IsOpen == true) {
                         var model = Model;

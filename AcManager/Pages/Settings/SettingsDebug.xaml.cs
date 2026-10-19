@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -74,7 +74,7 @@ namespace AcManager.Pages.Settings {
 
             ProgressRingsComboBox.ItemsSource = ExtraProgressRings.StylesLazy.Keys.Select(x => new RingStyle(x)).ToArray();
             ProgressRingsComboBox.SelectedItem = ProgressRingsComboBox.ItemsSource.OfType<RingStyle>().FirstOrDefault();
-            ProgressRingColor = (Color)FindResource("AccentColor");
+            ProgressRingColor = (Color)this.FindResource("AccentColor");
 
             ExtraProgressRings.StylesUpdated += (sender, args) => {
                 var selected = (ProgressRingsComboBox.SelectedItem as RingStyle)?.Key;

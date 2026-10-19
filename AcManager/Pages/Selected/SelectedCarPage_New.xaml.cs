@@ -713,7 +713,7 @@ namespace AcManager.Pages.Selected {
         private void SetModel() {
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_object));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.UpdatePreviewsCommand, new KeyGesture(Key.P, ModifierKeys.Control)),
                 new InputBinding(_model.UpdatePreviewsCommand, new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)),
                 new InputBinding(_model.UpdatePreviewsOptionsCommand, new KeyGesture(Key.P, ModifierKeys.Control | ModifierKeys.Shift)),
@@ -883,7 +883,7 @@ namespace AcManager.Pages.Selected {
                 newParent.Child = SkinsList;
                 newParent.Visibility = Visibility.Visible;
 
-                SkinsList.ItemsPanel = TryFindResource(value ? @"ExtendedSkinsPanel" : @"CompactSkinsPanel") as ItemsPanelTemplate;
+                SkinsList.ItemsPanel = this.TryFindResource(value ? @"ExtendedSkinsPanel" : @"CompactSkinsPanel") as ItemsPanelTemplate;
                 ScrollViewer.SetHorizontalScrollBarVisibility(SkinsList, value ? ScrollBarVisibility.Disabled : ScrollBarVisibility.Auto);
                 ScrollViewer.SetVerticalScrollBarVisibility(SkinsList, value ? ScrollBarVisibility.Auto : ScrollBarVisibility.Disabled);
                 HorizontalScrollBehavior.IsEnabled = !value;

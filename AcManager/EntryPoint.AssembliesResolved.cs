@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using AcTools.Windows.Compat;
-using System.Windows.Interop;
+using Avalonia.Controls;
 using AcManager.Tools.Helpers;
 using AcManager.Tools.Miscellaneous;
 using AcTools.Utils;
@@ -192,7 +192,7 @@ namespace AcManager {
         private static void UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs args) {
             _crashed = true;
             var e = args.Exception as Exception;
-            var dispatcher = System.Windows.Application.Current?.Dispatcher;
+            var dispatcher = Application.Current?.Dispatcher;
             if (dispatcher != null) {
                 dispatcher.Invoke(() => { UnhandledExceptionHandler(e); });
             } else {
@@ -218,7 +218,7 @@ namespace AcManager {
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void UnhandledExceptionFancyHandler(Exception e) {
-            if (System.Windows.Application.Current?.Windows.OfType<Window>().Any(x => x.IsLoaded && x.IsVisible) != true) {
+            if (Application.Current?.Windows.OfType<Window>().Any(x => x.IsLoaded && x.IsVisible) != true) {
                 throw new Exception();
             }
 
@@ -290,7 +290,7 @@ namespace AcManager {
         private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args) {
             _crashed = true;
             var e = args.ExceptionObject as Exception;
-            var app = System.Windows.Application.Current;
+            var app = Application.Current;
             if (app != null) {
                 app.Dispatcher?.Invoke(() => { UnhandledExceptionHandler(e); });
             } else {
@@ -299,8 +299,10 @@ namespace AcManager {
         }
 
         public static void HandleSecondInstanceMessages(Window window, Func<IEnumerable<string>, bool> handler) {
-            HwndSource hwnd = null;
-            HwndSourceHook hook = (IntPtr handle, int message, IntPtr wParam, IntPtr lParam, ref bool handled) => {
+            // Second instances pass their arguments with a custom Windows message; other platforms don’t have it (see LinuxPortDocs.md)
+            if (!OperatingSystem.IsWindows()) return;
+
+            Win32Properties.AddWndProcHookCallback(window, (IntPtr hWnd, uint message, IntPtr wParam, IntPtr lParam, ref bool handled) => {
                 if (message == _secondInstanceMessage) {
                     try {
                         var data = ReceiveSomeData(out var currentDirectory);
@@ -316,46 +318,7 @@ namespace AcManager {
                 }
 
                 return IntPtr.Zero;
-            };
-
-            RoutedEventHandler[] handlers = { null, null };
-
-            // loaded
-            handlers[0] = (sender, args) => {
-                window.Loaded -= handlers[0];
-
-                try {
-                    hwnd = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
-                    if (hwnd == null) {
-                        Logging.Warning("Can’t add one-instance hook: HwndSource is null");
-                        return;
-                    }
-
-                    hwnd.AddHook(hook);
-                    window.Unloaded += handlers[1];
-                } catch (Exception e) {
-                    Logging.Warning("Can’t add one-instance hook: " + e);
-                    hook = null;
-                }
-            };
-
-            // unloaded
-            handlers[1] = (sender, args) => {
-                window.Unloaded -= handlers[1];
-
-                try {
-                    hwnd.RemoveHook(hook);
-                } catch (Exception e) {
-                    Logging.Warning("Can’t remove one-instance hook: " + e);
-                    hook = null;
-                }
-            };
-
-            if (!window.IsLoaded) {
-                window.Loaded += handlers[0];
-            } else {
-                handlers[0](null, null);
-            }
+            });
         }
     }
 }

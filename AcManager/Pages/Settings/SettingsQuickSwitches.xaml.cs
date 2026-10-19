@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,7 +21,7 @@ namespace AcManager.Pages.Settings {
 
             var widgets = new Dictionary<string, WidgetEntry>(_widgets.Length);
             foreach (var key in _widgets) {
-                widgets[key] = new WidgetEntry(key, (FrameworkElement)FindResource(key));
+                widgets[key] = new WidgetEntry(key, (FrameworkElement)this.FindResource(key));
                 await Task.Delay(10, cancellationToken);
                 if (cancellationToken.IsCancellationRequested) return;
             }
@@ -37,7 +37,7 @@ namespace AcManager.Pages.Settings {
             }
 
             Logging.Write(_widgets.JoinToString("\n"));
-            DataContext = new ViewModel(_widgets.Select(x => new WidgetEntry(x, (FrameworkElement)FindResource(x))).ToDictionary(x => x.Key, x => x));
+            DataContext = new ViewModel(_widgets.Select(x => new WidgetEntry(x, (FrameworkElement)this.FindResource(x))).ToDictionary(x => x.Key, x => x));
         }
 
         public void Initialize() {}

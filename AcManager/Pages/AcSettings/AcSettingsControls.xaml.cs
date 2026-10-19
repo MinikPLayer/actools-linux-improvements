@@ -36,7 +36,7 @@ namespace AcManager.Pages.AcSettings {
             AcSettingsHolder.Controls.ConflictResolver = this;
 
             DataContext = new ViewModel();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
                 new InputBinding(Model.SaveCommand, new KeyGesture(Key.S, ModifierKeys.Control))
             });
@@ -49,7 +49,7 @@ namespace AcManager.Pages.AcSettings {
         }
 
         private void ResizingStuff() {
-            DetectedControllers.Visibility = ActualWidth > 800 ? Visibility.Visible : Visibility.Collapsed;
+            DetectedControllers.Visibility = this.ActualWidth > 800 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public class ViewModel : NotifyPropertyChanged {

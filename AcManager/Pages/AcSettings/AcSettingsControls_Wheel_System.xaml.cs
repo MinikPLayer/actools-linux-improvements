@@ -1,4 +1,4 @@
-﻿using Avalonia.Threading;
+using Avalonia.Threading;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,7 +54,7 @@ namespace AcManager.Pages.AcSettings {
             var p = this.FindVisualChildren<Border>().FirstOrDefault(x => x.Name == name);
             if (p == null) return;
 
-            var c = (TryFindResource(@"AccentColor") as Color? ?? Colors.White).SetAlpha(80);
+            var c = (this.TryFindResource(@"AccentColor") as Color? ?? Colors.White).SetAlpha(80);
             if (_highlightTimers.TryGetValue(name, out var u)) {
                 u.Stop();
             }

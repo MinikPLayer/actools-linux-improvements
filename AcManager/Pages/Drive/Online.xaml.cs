@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -68,7 +68,7 @@ namespace AcManager.Pages.Drive {
             DataContext = new OnlineViewModel(uri.GetQueryParam("Filter"), ShowDetails);
             SetHideIcon();
 
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.AddNewServerCommand, new KeyGesture(Key.A, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(() => OnScrollToSelectedButtonClick(null, null)),
                         new KeyGesture(Key.V, ModifierKeys.Control | ModifierKeys.Shift)),
@@ -144,7 +144,7 @@ namespace AcManager.Pages.Drive {
                 if (Equals(value, _simpleListMode)) return;
 
                 if (value == ListMode.Simple) {
-                    ServersListBox.ItemTemplate = (DataTemplate)FindResource(@"SimpleListItem");
+                    ServersListBox.ItemTemplate = (DataTemplate)this.FindResource(@"SimpleListItem");
                 } else {
                     var factory = new FrameworkElementFactory(typeof(OnlineItem));
                     factory.SetBinding(OnlineItem.ServerProperty, new Binding());
@@ -156,7 +156,7 @@ namespace AcManager.Pages.Drive {
 
                 if (value == ListMode.Simple || _simpleListMode == ListMode.Simple) {
                     ServersListBox.ItemContainerStyle =
-                            (Style)FindResource(value == ListMode.Simple ? @"SimpledListItemContainer" : @"DetailedListItemContainer");
+                            (Style)this.FindResource(value == ListMode.Simple ? @"SimpledListItemContainer" : @"DetailedListItemContainer");
                 }
 
                 _simpleListMode = value;
@@ -175,7 +175,7 @@ namespace AcManager.Pages.Drive {
         }
 
         private void ResizingStuff() {
-            var width = ActualWidth;
+            var width = this.ActualWidth;
             SimpleListMode = width > 1080 ? ListMode.DetailedPlus : width > 800 ? ListMode.Detailed : ListMode.Simple;
             WideInformationMode = width > 1280;
         }

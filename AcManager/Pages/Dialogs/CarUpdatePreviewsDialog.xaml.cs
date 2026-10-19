@@ -590,8 +590,8 @@ namespace AcManager.Pages.Dialogs {
                 ResizeMode = ResizeMode.NoResize;
             }
 
-            Left = Math.Max(area.Left, Left + (oldWidth - Width) / 2d);
-            Top = Math.Max(area.Top, Top + (oldHeight - Height) / 2d);
+            this.Left = Math.Max(area.Left, this.Left + (oldWidth - Width) / 2d);
+            this.Top = Math.Max(area.Top, this.Top + (oldHeight - Height) / 2d);
         }
 
         protected override void OnSizeChangedOverride(SizeChangedEventArgs e) {
@@ -751,7 +751,7 @@ namespace AcManager.Pages.Dialogs {
                     SelectPhase(Phase.Options);
                 } else {
                     _cancelled = true;
-                    Top = -9999;
+                    this.Top = -9999;
                     await Task.Delay(1);
                     Close();
                 }
@@ -764,7 +764,7 @@ namespace AcManager.Pages.Dialogs {
                     SelectPhase(Phase.Options);
                 } else {
                     _cancelled = true;
-                    Top = -9999;
+                    this.Top = -9999;
                     await Task.Delay(1);
                     Close();
                 }

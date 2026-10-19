@@ -70,7 +70,7 @@ namespace AcManager.Pages.Drive {
 
             if (!(DataContext is ViewModel)) return;
             InitializeComponent();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(new AsyncCommand(() => Model.GoCommand.ExecuteAsync(AssistsViewModel.Instance)), new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(() => UserChampionships.NavigateToChampionshipPage(null)), new KeyGesture(Key.W, ModifierKeys.Control)),
             });
@@ -472,7 +472,7 @@ namespace AcManager.Pages.Drive {
 
         private void TableSection_OnPreviewMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = (ScrollViewer)sender;
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta.Y * 120d);
             e.Handled = true;
         }
 

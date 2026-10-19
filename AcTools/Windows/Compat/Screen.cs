@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Linq;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -60,9 +61,50 @@ namespace AcTools.Windows.Compat {
 
         private static Rectangle ToRectangle(NativeRect r) => new Rectangle(r.Left, r.Top, r.Right - r.Left, r.Bottom - r.Top);
 
-        private Screen(Rectangle bounds, Rectangle workingArea) {
+        private Screen(Rectangle bounds, Rectangle workingArea, string deviceName = null, bool primary = false) {
             Bounds = bounds;
             WorkingArea = workingArea;
+            DeviceName = deviceName ?? @"\\.\DISPLAY1";
+            Primary = primary;
+        }
+
+        /// <summary>
+        /// Creates a screen description, to be used by <see cref="AllScreensProvider"/> on platforms where Win32 can’t be asked.
+        /// </summary>
+        public static Screen Create(string deviceName, Rectangle bounds, Rectangle workingArea, bool primary) {
+            return new Screen(bounds, workingArea, deviceName, primary);
+        }
+
+        /// <summary>
+        /// Source of screens for platforms other than Windows (set by UI layer, which knows how to ask windowing system).
+        /// </summary>
+        public static Func<Screen[]> AllScreensProvider { get; set; }
+
+        public string DeviceName { get; }
+
+        public bool Primary { get; }
+
+        [DllImport("user32.dll")]
+        private static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr clip, MonitorEnumProc callback, IntPtr data);
+
+        private delegate bool MonitorEnumProc(IntPtr monitor, IntPtr hdc, IntPtr rect, IntPtr data);
+
+        public static Screen[] AllScreens {
+            get {
+                if (!OperatingSystem.IsWindows()) {
+                    return AllScreensProvider?.Invoke() ?? new[] { Fallback() };
+                }
+
+                var list = new System.Collections.Generic.List<Screen>();
+                EnumDisplayMonitors(IntPtr.Zero, IntPtr.Zero, (monitor, hdc, rect, data) => {
+                    var info = new MonitorInfo { Size = Marshal.SizeOf<MonitorInfo>() };
+                    if (GetMonitorInfo(monitor, ref info)) {
+                        list.Add(new Screen(ToRectangle(info.Monitor), ToRectangle(info.Work), info.DeviceName, (info.Flags & 1) != 0));
+                    }
+                    return true;
+                }, IntPtr.Zero);
+                return list.Count == 0 ? new[] { Fallback() } : list.ToArray();
+            }
         }
 
         public Rectangle Bounds { get; }
@@ -71,13 +113,16 @@ namespace AcTools.Windows.Compat {
 
         private static Screen Fallback() {
             var r = new Rectangle(0, 0, 1920, 1080);
-            return new Screen(r, r);
+            return new Screen(r, r, null, true);
         }
 
         public static Screen PrimaryScreen => FromPoint(Point.Empty);
 
         public static Screen FromPoint(Point point) {
-            if (!OperatingSystem.IsWindows()) return Fallback();
+            if (!OperatingSystem.IsWindows()) {
+                var all = AllScreensProvider?.Invoke();
+                return all?.FirstOrDefault(x => x.Bounds.Contains(point)) ?? all?.FirstOrDefault(x => x.Primary) ?? Fallback();
+            }
 
             // MONITOR_DEFAULTTOPRIMARY
             var monitor = MonitorFromPoint(new NativePoint { X = point.X, Y = point.Y }, 1);

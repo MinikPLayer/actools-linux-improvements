@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -43,7 +43,7 @@ namespace AcManager.Pages.Settings {
             SetKeyboardInputs();
             UpdateConfigsTabs();
 
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
                 new InputBinding(Model.ShareSectionCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control | ModifierKeys.Shift)),
                 PresetsControl != null ? new InputBinding(PresetsControl.SaveCommand, new KeyGesture(Key.S, ModifierKeys.Control)) : null
@@ -91,7 +91,7 @@ namespace AcManager.Pages.Settings {
             var width = PatchUpdater.Instance.NothingAtAll ? (GridSplitter.GetWidth() ?? 0d) : 0d;
 
             if (animated) {
-                var easing = _selectionEasingFunction ?? (_selectionEasingFunction = (EasingFunctionBase)FindResource(@"StandardEase"));
+                var easing = _selectionEasingFunction ?? (_selectionEasingFunction = (EasingFunctionBase)this.FindResource(@"StandardEase"));
                 ((TranslateTransform)LinksList.RenderTransform).BeginAnimation(TranslateTransform.XProperty,
                         new DoubleAnimation { To = -width, Duration = new Duration(TimeSpan.FromSeconds(0.5)), EasingFunction = easing });
                 ((TranslateTransform)GridSplitter.RenderTransform).BeginAnimation(TranslateTransform.XProperty,

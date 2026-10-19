@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -50,7 +50,7 @@ namespace AcManager.Pages.AcSettings {
             _audioDevices.EndpointsChanged += OnEndpointsChanged;
             DataContext = new ViewModel(_audioDevicesList);
 
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
                 new InputBinding(UserPresetsControl.SaveCommand, new KeyGesture(Key.S, ModifierKeys.Control))
             });

@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using AcManager.Controls;
@@ -12,8 +12,8 @@ namespace AcManager.Pages.ServerPreset {
     public partial class ServerPresetRunningLog : global::Avalonia.Controls.UserControl {
         public ServerPresetRunningLog() {
             InitializeComponent();
-            if (TryFindResource(@"TextEditorSyntaxLog") is string data) {
-                Text.SyntaxHighlighting = HighlighterHolder.Get(data);
+            if (this.TryFindResource(@"TextEditorSyntaxLog") is string data) {
+                this.Text.SyntaxHighlighting = HighlighterHolder.Get(data);
             }
             Loaded += (sender, args) => EnsureSet();
             DataContextChanged += (sender, args) => EnsureSet();
@@ -47,10 +47,10 @@ namespace AcManager.Pages.ServerPreset {
 
                 if (serverLog != null) {
                     serverLog.CollectionChanged += OnLogChanged;
-                    Text.Document = new TextDocument(serverLog.JoinToString("\n")) { UndoStack = { SizeLimit = 0 } };
-                    Text.ScrollToEnd();
+                    this.Text.Document = new TextDocument(serverLog.JoinToString("\n")) { UndoStack = { SizeLimit = 0 } };
+                    this.Text.ScrollToEnd();
                 } else {
-                    Text.Document = new TextDocument { UndoStack = { SizeLimit = 0 } };
+                    this.Text.Document = new TextDocument { UndoStack = { SizeLimit = 0 } };
                 }
 
                 _previousServerLog = serverLog;
@@ -64,20 +64,20 @@ namespace AcManager.Pages.ServerPreset {
         private void OnLogChanged(object sender, NotifyCollectionChangedEventArgs e) {
             if (_previousServerLog == null) return;
 
-            var textView = Text.TextArea.TextView;
+            var textView = this.Text.TextArea.TextView;
             var needsToScroll = textView.VerticalOffset + textView.ActualHeight + 1 >= textView.DocumentHeight;
             if (e.Action == NotifyCollectionChangedAction.Add) {
-                Text.Document.BeginUpdate();
+                this.Text.Document.BeginUpdate();
                 foreach (var item in e.NewItems.OfType<string>()) {
-                    Text.Document.Insert(Text.Document.TextLength, "\n");
-                    Text.Document.Insert(Text.Document.TextLength, item);
+                    this.Text.Document.Insert(this.Text.Document.TextLength, "\n");
+                    this.Text.Document.Insert(this.Text.Document.TextLength, item);
                 }
-                Text.Document.EndUpdate();
+                this.Text.Document.EndUpdate();
             } else {
-                Text.Document.Text = _previousServerLog.JoinToString("\n");
+                this.Text.Document.Text = _previousServerLog.JoinToString("\n");
             }
             if (needsToScroll) {
-                Text.ScrollToEnd();
+                this.Text.ScrollToEnd();
             }
         }
     }

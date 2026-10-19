@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -85,7 +85,7 @@ namespace AcManager.Pages.Selected {
         private void SetModel() {
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_object));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.TestCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(_model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
             });

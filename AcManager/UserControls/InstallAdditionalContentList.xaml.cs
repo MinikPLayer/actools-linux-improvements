@@ -69,7 +69,7 @@ namespace AcManager.UserControls {
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             var scrollViewer = ((FrameworkElement)sender).FindVisualChild<ScrollViewer>();
             if (scrollViewer == null) return;
-            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta);
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - e.Delta.Y * 120d);
             e.Handled = true;
         }
     }

@@ -35,7 +35,7 @@ namespace AcManager.Pages.ServerPreset {
                     .Add(TeamColumn);
 
             if (AppArguments.Has(AppFlag.ServerManagementMode)) {
-                EntriesGrid.RowStyle = TryFindResource("RowStyleWithSpacing") as Style ?? EntriesGrid.RowStyle;
+                EntriesGrid.RowStyle = this.TryFindResource("RowStyleWithSpacing") as Style ?? EntriesGrid.RowStyle;
             }
         }
 

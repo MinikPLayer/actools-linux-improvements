@@ -120,7 +120,7 @@ namespace AcManager.Pages.Selected {
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_object));
             KeyBindingsController.Set(_model.KeyValues);
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.TestCommand, new KeyGesture(Key.G, ModifierKeys.Control))
             });
         }

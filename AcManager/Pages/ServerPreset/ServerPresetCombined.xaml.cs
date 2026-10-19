@@ -8,7 +8,7 @@ namespace AcManager.Pages.ServerPreset {
         }
 
         private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
-            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta);
+            ScrollViewer.ScrollToVerticalOffset(ScrollViewer.VerticalOffset - e.Delta.Y * 120d);
             e.Handled = true;
         }
     }

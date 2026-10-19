@@ -261,7 +261,7 @@ namespace AcManager.Pages.Dialogs {
         }
 
         private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
-            _model.Scale(e.Delta > 0 ? GetScaleMultiplier() : 1d / GetScaleMultiplier());
+            _model.Scale(e.Delta.Y > 0 ? GetScaleMultiplier() : 1d / GetScaleMultiplier());
             UpdateView();
         }
 

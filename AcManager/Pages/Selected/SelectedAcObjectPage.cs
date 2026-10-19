@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -22,8 +22,8 @@ namespace AcManager.Pages.Selected {
 
         protected void InitializeAcObjectPage([NotNull] ISelectedAcObjectViewModel model) {
             SelectedAcObject = model.SelectedAcObject;
-            InputBindings.Clear();
-            InputBindings.AddRange(new[] {
+            this.InputBindings.Clear();
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(SelectedAcObject.ToggleFavouriteCommand, new KeyGesture(Key.B, ModifierKeys.Control)),
                 new InputBinding(SelectedAcObject.CopyIdCommand, new KeyGesture(Key.C, ModifierKeys.Control)), // TODO: why doesn’t work after quick switching?
                 new InputBinding(SelectedAcObject.CopyIdCommand, new KeyGesture(Key.C, ModifierKeys.Control | ModifierKeys.Shift | ModifierKeys.Alt)),

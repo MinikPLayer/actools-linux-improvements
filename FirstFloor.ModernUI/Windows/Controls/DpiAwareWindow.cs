@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -368,9 +368,15 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             OnInitializedOverride();
         }
 
+        /// <summary>
+        /// Raised when the first frame with window’s content is rendered (WPF’s ContentRendered).
+        /// </summary>
+        public event EventHandler ContentRendered;
+
         private void OnOpened(object sender, EventArgs e) {
             LoadLocationAndSize();
             OnSourceInitializedOverride();
+            Dispatcher.UIThread.Post(() => ContentRendered?.Invoke(this, EventArgs.Empty), DispatcherPriority.Render);
         }
 
         private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) {

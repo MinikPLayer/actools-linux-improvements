@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -41,7 +41,7 @@ namespace AcManager.CustomShowroom {
             _loadPreset = presetFilename;
 
             DataContext = new ViewModel(renderer, car, skinId);
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(Model.PreviewSkinCommand, new KeyGesture(Key.PageUp)),
                 new InputBinding(Model.NextSkinCommand, new KeyGesture(Key.PageDown)),
                 new InputBinding(Model.OpenSkinDirectoryCommand, new KeyGesture(Key.F, ModifierKeys.Control))

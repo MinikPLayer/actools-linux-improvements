@@ -83,7 +83,6 @@ namespace AcManager {
             }
 
             if (AppArguments.GetBool(AppFlag.VisualStyles, true)) {
-                Application.EnableVisualStyles();
             }
 
             AppArguments.AddFromFile(Path.Combine(ApplicationDataDirectory, "Arguments.txt"));

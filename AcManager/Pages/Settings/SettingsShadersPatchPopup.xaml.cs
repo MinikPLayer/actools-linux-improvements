@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace AcManager.Pages.Settings {
         public object LoadContent(Uri uri) {
             var config = Model.Configs?.FirstOrDefault(x => x.Id == uri.OriginalString);
             var ret = new ContentControl {
-                ContentTemplate = (DataTemplate)FindResource("PythonAppConfig.Compact.NoHeader"),
+                ContentTemplate = (DataTemplate)this.FindResource("PythonAppConfig.Compact.NoHeader"),
                 Content = null,
                 Visibility = Visibility.Collapsed
             };

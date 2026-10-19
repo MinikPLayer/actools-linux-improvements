@@ -26,7 +26,7 @@ namespace AcManager {
             if (_keyboard != null) return;
             _keyboard = KeyboardListenerFactory.Get();
             _keyboard.WatchFor(Keys.Oemtilde, Keys.F1);
-            _keyboard.AddPreviewKeyDown((sender, args) => {
+            _keyboard.PreviewKeyDown += (sender, args) => {
                 if (SettingsHolder.Drive.ShowCspSettingsWithShortcut
                         && (args.Key == Keys.Oemtilde || args.Key == Keys.F1)
                         && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt) && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)) {
@@ -36,7 +36,7 @@ namespace AcManager {
                         ActionExtension.InvokeInMainThreadAsync(() => SettingsShadersPatch.GetShowSettingsCommand().Execute(null));
                     }
                 }
-            });
+            };
         }
 
         public void SetListener() {
@@ -125,7 +125,7 @@ namespace AcManager {
             menu.Items.Add(CreateMenuItem(UiStrings.Close, () => OnCloseMenuItemClick(null, EventArgs.Empty)));
 
             _trayIcon = new Avalonia.Controls.TrayIcon {
-                Icon = new Avalonia.Controls.WindowIcon(Avalonia.Platform.AssetLoader.Open(AppIconService.GetTrayIcon())),
+                Icon = new Avalonia.Controls.WindowIcon(Avalonia.Platform.AssetLoader.Open(AppIconService.GetTrayIconUri())),
                 ToolTipText = AppStrings.Hibernate_TrayText,
                 Menu = menu,
                 IsVisible = true

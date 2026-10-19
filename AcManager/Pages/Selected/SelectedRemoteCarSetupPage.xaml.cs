@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -102,7 +102,7 @@ namespace AcManager.Pages.Selected {
         private void SetModel() {
             _model?.Unload();
             InitializeAcObjectPage(_model = new ViewModel(_carObject, _object, _model));
-            InputBindings.AddRange(new InputBinding[] {
+            this.InputBindings.AddRange(new InputBinding[] {
                 new InputBinding(_model.SelectedObject.ViewInBrowserCommand, new KeyGesture(Key.F, ModifierKeys.Control)),
                 new InputBinding(_model.SelectedObject.CopyUrlCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control | ModifierKeys.Alt)),
                 new InputBinding(_model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
@@ -117,8 +117,8 @@ namespace AcManager.Pages.Selected {
 
         protected void InitializeAcObjectPage([NotNull] ViewModel model) {
             SelectedAcObject = model.SelectedObject;
-            InputBindings.Clear();
-            InputBindings.AddRange(new InputBinding[] { });
+            this.InputBindings.Clear();
+            this.InputBindings.AddRange(new InputBinding[] { });
             DataContext = model;
 
             if (!_set) {

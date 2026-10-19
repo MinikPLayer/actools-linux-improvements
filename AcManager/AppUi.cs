@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +32,7 @@ namespace AcManager {
 
             // Extra close-if-nothing-shown timer just to be sure
             if (_application.Dispatcher != null) {
-                _timer = new DispatcherTimer(TimeSpan.FromSeconds(2), DispatcherPriority.Background, OnTimer, _application.Dispatcher);
+                _timer = new DispatcherTimer(TimeSpan.FromSeconds(2), DispatcherPriority.Background, OnTimer);
                 _timer.Start();
             }
         }
@@ -41,7 +41,7 @@ namespace AcManager {
 
         private void OnTimer(object sender, EventArgs eventArgs) {
             if (NoExitOnTimeout) return;
-            if (_application.Windows.Count == 0 && System.Windows.Forms.Application.OpenForms.Count == 0) {
+            if (_application.Windows.Count == 0) {
                 if (_nothing > 2) {
                     Logging.Write("Nothing shown! Existing…");
                     _timer.Stop();
@@ -82,7 +82,11 @@ namespace AcManager {
 
                 if (!_firstWindowFocused && AppArguments.GetBool(AppFlag.ForcefullyFocusFirstWindow, true)) {
                     _firstWindowFocused = true;
-                    User32.SetForegroundWindow(new WindowInteropHelper(window).EnsureHandle());
+                    if (OperatingSystem.IsWindows()) {
+                        User32.SetForegroundWindow(new WindowInteropHelper(window).EnsureHandle());
+                    } else {
+                        window.Activate();
+                    }
                 }
             }
         }
@@ -205,7 +209,7 @@ namespace AcManager {
 
         public void Run(Action mainWindowIsReadyCallback) {
             ((Action)(async () => {
-                EventManager.RegisterClassHandler(typeof(Window), FrameworkElement.LoadedEvent, new RoutedEventHandler(OnWindowLoaded));
+                Avalonia.Controls.Control.LoadedEvent.AddClassHandler<Window>((s, e) => OnWindowLoaded(s, e));
                 ContentInstallationManager.Instance.TaskAdded += OnTaskAdded;
 
                 try {
@@ -248,7 +252,6 @@ namespace AcManager {
                     Logging.Write("Shutdown…");
                     _timer.Stop();
                     _application.Shutdown();
-                    System.Windows.Forms.Application.Exit();
                 }
 
                 Logging.Write("Main loop is finished");

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -201,7 +201,7 @@ namespace AcManager.Pages.Dialogs {
             // _instance = new WeakReference<SelectCarDialog>(this);
 
             DataContext = this;
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(ToggleFavouriteCommand, new KeyGesture(Key.B, ModifierKeys.Control)),
                 new InputBinding(OpenInShowroomCommand, new KeyGesture(Key.H, ModifierKeys.Control)),
                 new InputBinding(OpenInShowroomOptionsCommand, new KeyGesture(Key.H, ModifierKeys.Control | ModifierKeys.Shift)),

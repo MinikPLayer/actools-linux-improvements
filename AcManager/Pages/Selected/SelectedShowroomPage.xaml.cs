@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
@@ -182,7 +182,7 @@ namespace AcManager.Pages.Selected {
             if (_object == null) throw new ArgumentException(AppStrings.Common_CannotFindObjectById);
 
             InitializeAcObjectPage(_model = new ViewModel(_object));
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.UpdatePreviewCommand, new KeyGesture(Key.P, ModifierKeys.Control)),
                 new InputBinding(_model.CreateNewShowroomCommand, new KeyGesture(Key.N, ModifierKeys.Control)),
                 new InputBinding(_model.SelectedObject.ToggleSoundCommand, new KeyGesture(Key.I, ModifierKeys.Control)),

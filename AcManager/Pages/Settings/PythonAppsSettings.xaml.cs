@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -25,10 +25,10 @@ namespace AcManager.Pages.Settings {
     public partial class PythonAppsSettings : global::Avalonia.Controls.UserControl, ILoadableContent, ILocalKeyBindings, IContentLoader {
         public PythonAppsSettings() {
             KeyBindingsController = new LocalKeyBindingsController(this);
-            InputBindings.Add(new InputBinding(new DelegateCommand(() => {
+            this.InputBindings.Add(new InputBinding(new DelegateCommand(() => {
                 Model.SelectedApp?.ViewInExplorerCommand.Execute(null);
             }), new KeyGesture(Key.F, ModifierKeys.Control)));
-            InputBindings.Add(new InputBinding(new DelegateCommand(() => {
+            this.InputBindings.Add(new InputBinding(new DelegateCommand(() => {
                 Model.SelectedApp?.ReloadCommand.Execute(null);
             }), new KeyGesture(Key.R, ModifierKeys.Control)));
         }
@@ -98,11 +98,11 @@ namespace AcManager.Pages.Settings {
             var config = Model.SelectedAppConfigs?.FirstOrDefault(x => x.DisplayName == uri.OriginalString);
             return config?.IsSingleSection == true
                     ? new ContentControl {
-                        ContentTemplate = (DataTemplate)FindResource("PythonAppConfig.SectionTemplate.NoHeader"),
+                        ContentTemplate = (DataTemplate)this.FindResource("PythonAppConfig.SectionTemplate.NoHeader"),
                         Content = config
                     }
                     : new ContentControl {
-                        ContentTemplate = (DataTemplate)FindResource("PythonAppConfig.NoHeader"),
+                        ContentTemplate = (DataTemplate)this.FindResource("PythonAppConfig.NoHeader"),
                         Content = config
                     };
         }

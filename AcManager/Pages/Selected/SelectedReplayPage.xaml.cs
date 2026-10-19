@@ -469,11 +469,11 @@ namespace AcManager.Pages.Selected {
                 Weather = _weather
             });
 
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(_model.PlayCommand, new KeyGesture(Key.G, ModifierKeys.Control)),
                 new InputBinding(_model.ShareCommand, new KeyGesture(Key.PageUp, ModifierKeys.Control)),
             });
-            InputBindings.AddRange(_model.QuickDriveButton.GetInputBindingCommands());
+            this.InputBindings.AddRange(_model.QuickDriveButton.GetInputBindingCommands());
         }
 
         private void OnDriveButtonMouseDown(object sender, PointerPressedEventArgs e) {
