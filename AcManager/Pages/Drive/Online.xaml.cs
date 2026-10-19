@@ -85,7 +85,7 @@ namespace AcManager.Pages.Drive {
             BigButtonsParent.AddWidthCondition(430).Add(FilteringComboBox);
         }
 
-        private void OnScrollToSelectedButtonClick(object sender, object args) {
+        private void OnScrollToSelectedButtonClick(object sender, RoutedEventArgs args) {
             var list = this.FindChild<ListBox>("ServersListBox");
             list?.ScrollIntoView(list.SelectedItem);
         }

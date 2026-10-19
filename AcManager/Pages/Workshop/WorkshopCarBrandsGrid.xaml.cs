@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -126,7 +126,7 @@ namespace AcManager.Pages.Workshop {
             }
         }
 
-        private void OnItemMouseDown(object sender, MouseButtonEventArgs e) {
+        private void OnItemMouseDown(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
 
             var element = (FrameworkElement)sender;

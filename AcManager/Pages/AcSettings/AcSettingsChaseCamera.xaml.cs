@@ -51,12 +51,12 @@ namespace AcManager.Pages.AcSettings {
 
         private bool _loaded;
 
-        private void OnLoaded(object sender, EventArgs e) {
+        private void OnLoaded(object sender, RoutedEventArgs e) {
             _loaded = true;
             _enableRendererBusy.Task(EnableRenderer);
         }
 
-        private void OnUnloaded(object sender, EventArgs e) {
+        private void OnUnloaded(object sender, RoutedEventArgs e) {
             _loaded = false;
             _enableRendererBusy.Task(DisableRenderer);
         }

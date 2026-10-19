@@ -40,7 +40,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        protected void OnTagsListMouseDown(object sender, MouseButtonEventArgs e) {
+        protected void OnTagsListMouseDown(object sender, PointerPressedEventArgs e) {
             if (e.ChangedButton != MouseButton.Right) return;
 
             new ContextMenu {

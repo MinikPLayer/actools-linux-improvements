@@ -113,7 +113,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTemplateColumn x:Name="PositionColumn" Width="504" Header="Position" SortMemberPath="First.Position">
+          <DataGridTemplateColumn Width="504" Header="Position" SortMemberPath="First.Position" pa:ColumnNames.Name="PositionColumn">
             <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
               <ControlTheme TargetType="DataGridColumnHeader" BasedOn="{StaticResource DesktopsGridColumn.LeftAlignment}" x:Key="{x:Type DataGridColumnHeader}">
                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
@@ -174,7 +174,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTemplateColumn x:Name="ScaleColumn" Width="158" Header="Scale" SortMemberPath="First.Scale">
+          <DataGridTemplateColumn Width="158" Header="Scale" SortMemberPath="First.Scale" pa:ColumnNames.Name="ScaleColumn">
             <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
               <ControlTheme TargetType="DataGridColumnHeader" BasedOn="{StaticResource DesktopsGridColumn.LeftAlignment}" x:Key="{x:Type DataGridColumnHeader}">
                 <Setter Property="HorizontalContentAlignment" Value="Right"/>
@@ -251,7 +251,7 @@
               </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
-          <DataGridTemplateColumn x:Name="BlockedColumn" Width="94" SortMemberPath="First.IsBlocked" Header="{x:Static c:ControlsStrings.TableHeader_Locked}">
+          <DataGridTemplateColumn Width="94" SortMemberPath="First.IsBlocked" Header="{x:Static c:ControlsStrings.TableHeader_Locked}" pa:ColumnNames.Name="BlockedColumn">
             <!-- PORT: removed HeaderStyle (not in Avalonia) --><DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="{x:Type t:AcFormEntry}">
                 <ItemsControl ItemsSource="{Binding Desktops}" HorizontalAlignment="Right">

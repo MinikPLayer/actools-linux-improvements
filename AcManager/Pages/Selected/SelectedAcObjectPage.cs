@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -70,7 +70,7 @@ namespace AcManager.Pages.Selected {
             }
         }
 
-        protected void OnToggleClick(object sender, MouseButtonEventArgs e) {
+        protected void OnToggleClick(object sender, PointerReleasedEventArgs e) {
             e.Handled = true;
             ToggleObject();
         }

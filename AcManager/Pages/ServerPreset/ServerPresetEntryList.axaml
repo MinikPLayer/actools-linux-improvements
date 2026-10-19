@@ -248,9 +248,9 @@
         <DataGridTemplateColumn Width="200*" Header="{x:Static c:ControlsStrings.TableHeader_CarSkin}" SortMemberPath="CarSkin.DisplayName" CellTemplate="{StaticResource Detailed.SkinDataTemplate}"/>
         <DataGridTemplateColumn Width="140" Header="GUID" SortMemberPath="Name" CellTemplate="{StaticResource Detailed.GuidDataTemplate}"/>
         <DataGridTemplateColumn Width="140*" Header="{x:Static c:ControlsStrings.TableHeader_Name}" SortMemberPath="Name" CellTemplate="{StaticResource Detailed.NameDataTemplate}"/>
-        <DataGridTemplateColumn x:Name="TeamColumn" Width="100*" Header="Team" SortMemberPath="Nationality" CellTemplate="{StaticResource Detailed.NationalityDataTemplate}"/>
-        <DataGridTemplateColumn x:Name="BallastColumn" Width="100" Header="{x:Static t:ToolsStrings.Common_Ballast}" SortMemberPath="Ballast" CellTemplate="{StaticResource Detailed.BallastDataTemplate}"/>
-        <DataGridTemplateColumn x:Name="RestrictorColumn" Width="100" Header="{x:Static t:ToolsStrings.Common_Restrictor}" SortMemberPath="Restrictor" CellTemplate="{StaticResource Detailed.RestrictorDataTemplate}"/>
+        <DataGridTemplateColumn Width="100*" Header="Team" SortMemberPath="Nationality" CellTemplate="{StaticResource Detailed.NationalityDataTemplate}" pa:ColumnNames.Name="TeamColumn"/>
+        <DataGridTemplateColumn Width="100" Header="{x:Static t:ToolsStrings.Common_Ballast}" SortMemberPath="Ballast" CellTemplate="{StaticResource Detailed.BallastDataTemplate}" pa:ColumnNames.Name="BallastColumn"/>
+        <DataGridTemplateColumn Width="100" Header="{x:Static t:ToolsStrings.Common_Restrictor}" SortMemberPath="Restrictor" CellTemplate="{StaticResource Detailed.RestrictorDataTemplate}" pa:ColumnNames.Name="RestrictorColumn"/>
       </DataGrid.Columns>
     </DataGrid>
   </DockPanel>

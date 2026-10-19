@@ -351,7 +351,7 @@ namespace AcManager.Pages.SelectionLists {
             }
         }
 
-        protected void OnItemMouseDown(object sender, MouseButtonEventArgs e) {
+        protected void OnItemMouseDown(object sender, PointerPressedEventArgs e) {
             e.Handled = true;
 
             if (((FrameworkElement)sender).DataContext is TItem selected) {

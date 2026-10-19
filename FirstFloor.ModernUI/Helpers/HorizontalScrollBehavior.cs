@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -9,6 +9,8 @@ using Avalonia.Xaml.Interactivity;
 namespace FirstFloor.ModernUI.Helpers {
     /// <summary>Mouse wheel scrolls horizontally: for ItemsControl with its own ScrollViewer.</summary>
     public class HorizontalScrollBehavior : Behavior<ItemsControl> {
+        public string Name { get; set; }
+
         private ScrollViewer _scrollViewer;
 
         public bool IsInverted { get; set; }
