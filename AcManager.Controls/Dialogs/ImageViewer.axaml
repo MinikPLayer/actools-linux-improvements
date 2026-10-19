@@ -1,4 +1,4 @@
-﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:pr="clr-namespace:AcManager.Controls.Presentation" xmlns:sys="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.ImageViewer" Title="{Binding Current.DisplayName}" KeyDown="OnKeyDown" KeyUp="OnKeyUp" Loaded="OnLoaded" PointerReleased="OnMouseRightButtonUp">
+﻿<mui:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:di="clr-namespace:AcManager.Controls.Dialogs" xmlns:pr="clr-namespace:AcManager.Controls.Presentation" xmlns:sys="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.Dialogs.ImageViewer" Title="{Binding Current.DisplayName}" KeyDown="OnKeyDown" KeyUp="OnKeyUp" Loaded="OnLoaded" PointerReleased="OnMouseRightButtonUp">
   <mui:ModernDialog.Styles><Style Selector="Border.FadingBorder">
         <Setter Property="Opacity" Value="0"/>
         <!-- PORT: storyboard actions of trigger :pointerover not converted --></Style>
@@ -28,9 +28,7 @@
               <Setter.Value>
                 <ControlTemplate TargetType="di:BlurredPiece">
                   <mui:Cell ClipToBounds="True">
-                    <mui:Cell.CacheMode>
-                      <BitmapCache RenderAtScale="{Binding BitmapCacheScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}" EnableClearType="{Binding BitmapCacheClearType, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}"/>
-                    </mui:Cell.CacheMode>
+                    <!-- PORT: removed Cell.CacheMode -->
                     <Border Margin="{TemplateBinding InnerMargin}" Background="#606060">
                       <FrameworkElement.Effect>
                         <BlurEffect Radius="{Binding BlurRadius, RelativeSource={RelativeSource TemplatedParent}}"><!-- PORT: removed RenderingBias (not in Avalonia) --><!-- PORT: removed KernelType (not in Avalonia) --></BlurEffect>
@@ -112,8 +110,8 @@
           </Setter.Value>
         </Setter>
       <Style Selector="^ /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/></Style><Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
-      </Style><Style Selector="^[MaxAreaWidth=PositiveInfinity] /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Stretch"/>
-                </Style><Style Selector="^[MaxAreaHeight=PositiveInfinity] /template/ mui|Cell#MainCell"><Setter Property="VerticalAlignment" Value="Stretch"/>
+      </Style><Style Selector="^[MaxAreaWidth=Infinity] /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style><Style Selector="^[MaxAreaHeight=Infinity] /template/ mui|Cell#MainCell"><Setter Property="VerticalAlignment" Value="Stretch"/>
                 </Style><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pointerover not converted --></ControlTheme>
 
       <ControlTheme x:Key="StyleNotSubtle" TargetType="di:ImageViewer">
@@ -180,8 +178,8 @@
           </Setter.Value>
         </Setter>
       <Style Selector="^ /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/></Style><Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
-      </Style><Style Selector="^[MaxAreaWidth=PositiveInfinity] /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Stretch"/>
-                </Style><Style Selector="^[MaxAreaHeight=PositiveInfinity] /template/ mui|Cell#MainCell"><Setter Property="VerticalAlignment" Value="Stretch"/>
+      </Style><Style Selector="^[MaxAreaWidth=Infinity] /template/ mui|Cell#MainCell"><Setter Property="HorizontalAlignment" Value="Stretch"/>
+                </Style><Style Selector="^[MaxAreaHeight=Infinity] /template/ mui|Cell#MainCell"><Setter Property="VerticalAlignment" Value="Stretch"/>
                 </Style><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pointerover not converted --></ControlTheme>
     </ResourceDictionary>
   </mui:ModernDialog.Resources>

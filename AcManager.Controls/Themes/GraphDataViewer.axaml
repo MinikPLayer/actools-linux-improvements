@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:oxy="http://oxyplot.org/wpf" xmlns:gr="clr-namespace:AcManager.Controls.Graphs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:oxy="http://oxyplot.org/wpf" xmlns:gr="clr-namespace:AcManager.Controls.Graphs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
   </ResourceDictionary.MergedDictionaries>
@@ -11,9 +11,8 @@
     <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
     <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
-    <Setter Property="LineDashArray" Value="4 2"/>
+    <Setter Property="LineDashArray" Value="4,2"/>
     <Setter Property="BorderThickness" Value="1"/>
-    <Setter Property="BorderEdgeMode" Value="Aliased"/>
     <Setter Property="LineStroke" Value="{DynamicResource Accent}"/>
     <Setter Property="HorizontalLineVisibility" Value="Visible"/>
     <Setter Property="VerticalLineVisibility" Value="Visible"/>

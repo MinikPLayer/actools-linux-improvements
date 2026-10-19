@@ -6,7 +6,6 @@ using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace FirstFloor.ModernUI.Windows.Converters {
-    [ContentProperty(nameof(Converters)), ContentWrapper(typeof(ValueConverterCollection))]
     public class ChainConverter : IValueConverter {
         [Avalonia.Metadata.Content] public ValueConverterCollection Converters { get; } = new ValueConverterCollection();
 

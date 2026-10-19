@@ -21,13 +21,12 @@
     <Compile Remove="Windows\Controls\StretchyWrapPanel.cs" />
     <Compile Remove="Windows\Controls\RelativeAnimatingContentControl.cs" />
     <!-- Pending port -->
-    <Compile Remove="Windows\Controls\OutlinedTextBlock.cs;Windows\Controls\PathTrimmingTextBlock.cs" />
-    <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs;Windows\Controls\TextBlockAutoShrink.cs" />
+    <Compile Remove="Windows\Controls\OutlinedTextBlock.cs" />
+    <Compile Remove="Windows\Controls\BorderyViewbox.cs;Windows\Controls\LimitedViewbox.cs" />
     <Compile Remove="Windows\Controls\DoubleSlider.cs;Windows\Controls\SplitButton.cs" />
-    <Compile Remove="Windows\Controls\HistoricalTextBox.cs;Windows\Controls\LabeledToggleButton.cs" />
     
     <Compile Remove="Presentation\AutoCompleteBehavior.cs;Windows\Controls\TextBoxEnterKeyUpdateBehavior.cs;Helpers\HorizontalScroll*.cs" />
-    <Compile Remove="Windows\Converters\ChainConverter.cs;Windows\Media\VisualExtension.Mouse.cs" />
+    <Compile Remove="Windows\Media\VisualExtension.Mouse.cs" />
     <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
     <Compile Remove="Helpers\ScreenInterrogatory.cs" />
     <!-- XAML not ported yet -->
@@ -40,10 +39,6 @@
     <AvaloniaXaml Remove="Themes\ColorPicker.axaml" />
     <AvaloniaXaml Remove="Themes\DoubleSlider.axaml" />
     <AvaloniaXaml Remove="Themes\Generic.axaml" />
-    <AvaloniaXaml Remove="Themes\HistoricalTextBox.axaml" />
-    <AvaloniaXaml Remove="Themes\HistoricalTextBox.styles.axaml" />
-    <AvaloniaXaml Remove="Themes\LabeledToggleButton.axaml" />
-    <AvaloniaXaml Remove="Themes\LabeledToggleButton.styles.axaml" />
     <AvaloniaXaml Remove="Themes\ModernProgressRing.axaml" />
     <AvaloniaXaml Remove="Themes\SplitButton.axaml" />
     <AvaloniaXaml Remove="Themes\SplitButton.styles.axaml" />

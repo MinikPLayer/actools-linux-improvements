@@ -89,4 +89,7 @@ PATCHES = [
     </Setter>
   </ControlTheme>'''),
     ]),
+    ('Themes/LabeledToggleButton.axaml', [
+        ('re', r'<ControlTheme TargetType="c:SelectableBbCodeBlock".*?</ControlTheme>\s*(?=<ControlTheme TargetType="c:LabeledToggleButton")', ''),
+    ]),
 ]

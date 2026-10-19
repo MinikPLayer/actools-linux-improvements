@@ -140,7 +140,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e) {
             SetAnimateTo(null);
-            _lastChange = e.HorizontalChange / _helper.ActualWidth;
+            _lastChange = e.Vector.X / _helper.ActualWidth;
             SetPosition(_position + _lastChange);
         }
 

@@ -3,129 +3,44 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using FirstFloor.ModernUI.Helpers;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
-    public class PathTrimmingTextBlock : RichTextBox, IValueConverter {
-        public PathTrimmingTextBlock() {
+    /// <summary>
+    /// Selectable text which trims the middle of a path to fit the width. The text is shown by a template (see Themes/PathTrimmingTextBlock.axaml).
+    /// </summary>
+    public class PathTrimmingTextBlock : TemplatedControl {
+        public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<PathTrimmingTextBlock, string>(nameof(Text));
+        public static readonly StyledProperty<string> PlaceholderProperty = AvaloniaProperty.Register<PathTrimmingTextBlock, string>(nameof(Placeholder));
+        public static readonly StyledProperty<string> DisplayTextProperty = AvaloniaProperty.Register<PathTrimmingTextBlock, string>(nameof(DisplayText));
+        public static readonly StyledProperty<bool> IsPlaceholderProperty = AvaloniaProperty.Register<PathTrimmingTextBlock, bool>(nameof(IsPlaceholder));
 
-            Loaded += OnLoaded;
-            SizeChanged += OnSizeChanged;
-            Background = new SolidColorBrush(Colors.Transparent);
-            // TextTrimming = TextTrimming.CharacterEllipsis;
+        public string Text { get => GetValue(TextProperty); set => SetValue(TextProperty, value); }
+        public string Placeholder { get => GetValue(PlaceholderProperty); set => SetValue(PlaceholderProperty, value); }
+        public string DisplayText { get => GetValue(DisplayTextProperty); private set => SetValue(DisplayTextProperty, value); }
+        public bool IsPlaceholder { get => GetValue(IsPlaceholderProperty); private set => SetValue(IsPlaceholderProperty, value); }
 
-            DataObject.AddCopyingHandler(this, CopyCommand);
-            this.AddMouseDown(OnMouseDown);
-
-            HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
-            Document.PageWidth = 2000;
-        }
-
-        private void OnMouseDown(object sender, MouseButtonEventArgs mouseButtonEventArgs) {
-            SelectAll();
-        }
-
-        private void CopyCommand(object sender, DataObjectEventArgs e) {
-            e.Handled = true;
-            e.CancelCommand();
-            ClipboardHelper.SetText(Text);
+        static PathTrimmingTextBlock() {
+            TextProperty.Changed.AddClassHandler<PathTrimmingTextBlock>((o, e) => o.Update());
+            PlaceholderProperty.Changed.AddClassHandler<PathTrimmingTextBlock>((o, e) => o.Update());
+            BoundsProperty.Changed.AddClassHandler<PathTrimmingTextBlock>((o, e) => o.Update());
+            FontSizeProperty.Changed.AddClassHandler<PathTrimmingTextBlock>((o, e) => o.Update());
         }
 
         private void Update() {
             var text = Text;
             if (string.IsNullOrEmpty(text)) {
-                ToolTip = null;
-                SetPlaceholder();
+                DisplayText = Placeholder;
+                IsPlaceholder = true;
+                ToolTip.SetTip(this, null);
             } else {
-                var trimmed = GetTrimmedPath(ActualWidth);
-                ToolTip = trimmed == text ? null : text;
-
-                var r = new Run(trimmed);
-                r.SetBinding(TextElement.ForegroundProperty, new Binding { Path = new PropertyPath(ForegroundProperty), Source = this });
-                r.SetBinding(Inline.TextDecorationsProperty, new Binding { Path = new PropertyPath(TextBlock.TextDecorationsProperty), Source = this });
-
-                Document.Blocks.Clear();
-                Document.Blocks.Add(new Paragraph(r) {
-                    TextAlignment = TextAlignment.Left
-                });
-            }
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs sizeChangedEventArgs) {
-            if (IsLoaded) {
-                Update();
-            }
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e) {
-            Update();
-        }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
-            if (value is SolidColorBrush brush) {
-                var color = brush.Color;
-                return new SolidColorBrush(Color.FromArgb((byte)(color.A / 2.7), color.R, color.G, color.B));
-            }
-
-            return new SolidColorBrush();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) {
-            throw new NotSupportedException();
-        }
-
-        protected void SetPlaceholder() {
-            Document.Blocks.Clear();
-            var placeholder = Placeholder;
-            if (!string.IsNullOrEmpty(placeholder)) {
-                var inline = new Run { Text = placeholder };
-                inline.SetBinding(TextElement.ForegroundProperty, new Binding {
-                    Path = new PropertyPath(nameof(Foreground)),
-                    Source = this,
-                    Converter = this
-                });
-                Document.Blocks.Add(new Paragraph(inline) {
-                    TextAlignment = TextAlignment.Left
-                });
-            }
-        }
-
-        public static readonly StyledProperty<string> PlaceholderProperty = DP.Register<string>(nameof(Placeholder),
-                typeof(PathTrimmingTextBlock), new PropertyMetadata(OnPlaceholderChanged));
-
-        public string Placeholder {
-            get => (string)GetValue(PlaceholderProperty);
-            set => SetValue(PlaceholderProperty, value);
-        }
-
-        private static void OnPlaceholderChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((PathTrimmingTextBlock)o).Update();
-        }
-
-        public static readonly StyledProperty<string> TextProperty = DP.Register<string>(nameof(Text),
-                typeof(PathTrimmingTextBlock), new PropertyMetadata(OnTextChanged));
-
-        private string _text;
-        public string Text {
-            get => _text;
-            set => SetValue(TextProperty, value);
-        }
-
-        private static void OnTextChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((PathTrimmingTextBlock)o).OnTextChanged((string)e.NewValue);
-        }
-
-        private void OnTextChanged(string newValue) {
-            _text = newValue;
-
-            if (IsLoaded) {
-                Update();
+                var trimmed = GetTrimmedPath(Bounds.Width);
+                DisplayText = trimmed;
+                IsPlaceholder = false;
+                ToolTip.SetTip(this, trimmed == text ? null : text);
             }
         }
 
@@ -165,17 +80,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             width -= 20d;
 
-            var fontStyle = FontStyle;
-            var fontWeight = FontWeight;
-            var fontStretch = FontStretch;
-            var fontFamily = FontFamily.GetTypefaces().FirstOrDefault(x => x.Style == fontStyle && x.Weight == fontWeight && x.Stretch == fontStretch) ??
-                    FontFamily.GetTypefaces().First();
+            var typeface = new Typeface(FontFamily, FontStyle, FontWeight, FontStretch);
             var fontSize = FontSize;
             var foreground = Foreground;
 
             bool TestWidth(string text) {
                 return new FormattedText(text, CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        fontFamily, fontSize, foreground).Width < width;
+                        typeface, fontSize, foreground).Width < width;
             }
 
             if (TestWidth(Text)) return Text;

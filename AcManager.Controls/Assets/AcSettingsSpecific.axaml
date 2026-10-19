@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:acs="clr-namespace:AcManager.Tools.Helpers.AcSettingsControls;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:acset="clr-namespace:AcManager.Tools.Helpers.AcSettings;assembly=AcManager.Tools" xmlns:t="http://acstuff.club/app/tools" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:helpers="clr-namespace:AcManager.Controls.Helpers" xmlns:se="clr-namespace:AcManager.Controls.Services" xmlns:system="using:System" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:acs="clr-namespace:AcManager.Tools.Helpers.AcSettingsControls;assembly=AcManager.Tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:acset="clr-namespace:AcManager.Tools.Helpers.AcSettings;assembly=AcManager.Tools" xmlns:t="http://acstuff.club/app/tools" xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" xmlns:helpers="clr-namespace:AcManager.Controls.Helpers" xmlns:se="clr-namespace:AcManager.Controls.Services" xmlns:system="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -390,7 +390,7 @@
 
   <DataTemplate x:Key="PythonAppConfig.ItemTemplate" DataType="t:IPythonAppConfigValue">
     <Border mui:ContextMenuAdvancement.PropagateToChildren="True" Background="Transparent" x:Name="__Dt5">
-      <Border.Styles><Style Selector="Border#__Dt5"><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S6)=True]"><Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
+      <Border.Styles><Style Selector="Border#__Dt5"><Style Selector="^"><Setter Property="pa:T.S6" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S6)=True]"><Setter Property="TextElement.Foreground" Value="{DynamicResource Accent}"/>
       </Style></Style></Border.Styles><Control.ContextMenu>
         <ContextMenu IsEnabled="{Binding IsResettable}">
           <MenuItem Header="{x:Static c:ControlsStrings.Common_Reset}" Command="{Binding ResetCommand}" IsEnabled="{Binding IsNonDefault}"/>
@@ -400,7 +400,7 @@
       <ContentControl Content="{Binding}" IsEnabled="{Binding IsEnabled}">
         <ContentControl.DataTemplates><DataTemplate DataType="{x:Type t:PythonAppConfigBoolValue}">
             <CheckBox IsChecked="{Binding Value}" Height="23" VerticalAlignment="Top" mui:NewMarkService.New="{Binding IsNew}" x:Name="__Dt1">
-              <CheckBox.Styles><Style Selector="CheckBox#__Dt1"><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True] Label#Label"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
+              <CheckBox.Styles><Style Selector="CheckBox#__Dt1"><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNonDefault, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True] Label#Label"><Setter Property="Foreground" Value="{DynamicResource Accent}"/>
               </Style></Style></CheckBox.Styles><Label x:Name="Label" Content="{Binding DisplayName}"/>
             </CheckBox>
             </DataTemplate>
@@ -470,7 +470,7 @@
                 <mui:BetterComboBox.ItemTemplate>
                   <DataTemplate>
                     <DockPanel Background="Transparent" x:Name="__Dt3">
-                      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^:is(Control)[(pa|T.S4)=True] DockPanel#PART_Details"><Setter Property="IsVisible" Value="False"/>
+                      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S4)=True] DockPanel#PART_Details"><Setter Property="IsVisible" Value="False"/>
                       </Style></Style></DockPanel.Styles><DockPanel.ContextMenu>
                         <ContextMenu>
                           <MenuItem Header="View in Explorer" Command="{Binding ViewInExplorerCommand}"/>
@@ -504,7 +504,7 @@
             </DockPanel>
           </DataTemplate>
         </ContentControl.DataTemplates><ToolTip.Tip>
-          <ToolTip IsVisible="{Binding ToolTip.Length, Converter={StaticResource MoreToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}">
+          <ToolTip IsVisible="{Binding ToolTip.Length, Converter={StaticResource MoreToVisibilityConverter}}">
             <ToolTip.Content>
               <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="{Binding ToolTip}"/>
             </ToolTip.Content>
@@ -522,8 +522,8 @@
           <Style.Resources>
             <ResourceDictionary><system:Boolean x:Key="True">True</system:Boolean>
           </ResourceDictionary></Style.Resources>
-          <Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/><Setter Property="pa:T.S8" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/></Style><Style Selector="^:is(Control)[(pa|T.S7)=True]"><Setter Property="Columns" Value="3"/>
-            </Style><Style Selector="^:is(Control)[(pa|T.S8)=True]"><Setter Property="Columns" Value="4"/>
+          <Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/><Setter Property="pa:T.S8" Value="{Binding ActualWidth, RelativeSource={RelativeSource Self}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={StaticResource True}}"/></Style><Style Selector="^[(pa|T.S7)=True]"><Setter Property="Columns" Value="3"/>
+            </Style><Style Selector="^[(pa|T.S8)=True]"><Setter Property="Columns" Value="4"/>
             </Style></Style>
       </mui:UniformGridWithOrientation.Style>
     </mui:UniformGridWithOrientation>

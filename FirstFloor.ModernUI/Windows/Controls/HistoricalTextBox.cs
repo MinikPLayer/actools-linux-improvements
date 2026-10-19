@@ -17,17 +17,18 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public HistoricalTextBox() {
 
-            AddHandler(FrameworkContentElement.LoadedEvent, new RoutedEventHandler(OnLoaded));
-            AddHandler(ContentElement.LostFocusEvent, new RoutedEventHandler(OnLostFocus));
-            AddHandler(TextBoxBase.TextChangedEvent, new RoutedEventHandler(OnTextChanged));
+            Loaded += OnLoaded;
+            LostFocus += OnLostFocus;
+            TextProperty.Changed.AddClassHandler<HistoricalTextBox>((o, e) => o.OnTextChanged(o, null));
             ItemsSource = _filtersHistory;
+            DropDownOpened += (sender, e) => SelectedItem = null;
 
             SetCurrentValue(DefaultItemsProperty, new ObservableCollection<string>());
         }
 
         private bool _dirty;
 
-        private void OnLoaded(object o, EventArgs e) {
+        private void OnLoaded(object o, RoutedEventArgs e) {
             Update();
         }
 
@@ -62,11 +63,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             UpdateDirty();
-        }
-
-        protected override void OnDropDownOpened(EventArgs e) {
-            SelectedItem = null;
-            base.OnDropDownOpened(e);
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e) {

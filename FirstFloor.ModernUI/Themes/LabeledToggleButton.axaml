@@ -5,26 +5,6 @@
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
   </ResourceDictionary.MergedDictionaries>
 
-  <ControlTheme TargetType="c:SelectableBbCodeBlock" x:Key="{x:Type c:SelectableBbCodeBlock}">
-    <Setter Property="ContextMenu" Value="{StaticResource TextBoxReadOnlyContextMenu}"/>
-    <Setter Property="CaretBrush" Value="{DynamicResource InputText}"/>
-    <Setter Property="DragDrop.AllowDrop" Value="True"/>
-    <Setter Property="SelectionBrush" Value="{DynamicResource Accent}"/>
-    <Setter Property="IsReadOnly" Value="True"/>
-    <Setter Property="Background" Value="Transparent"/>
-    <Setter Property="BorderBrush" Value="Transparent"/>
-    <Setter Property="BorderThickness" Value="0"/>
-    <Setter Property="Padding" Value="0"/>
-    <Setter Property="Template">
-      <Setter.Value>
-        <ControlTemplate TargetType="TextBox">
-          <ScrollViewer x:Name="PART_ScrollViewer" HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}" VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"><TextPresenter x:Name="PART_TextPresenter" Text="{TemplateBinding Text, Mode=TwoWay}" CaretIndex="{TemplateBinding CaretIndex}" SelectionStart="{TemplateBinding SelectionStart}" SelectionEnd="{TemplateBinding SelectionEnd}" TextAlignment="{TemplateBinding TextAlignment}" TextWrapping="{TemplateBinding TextWrapping}" PasswordChar="{TemplateBinding PasswordChar}" RevealPassword="{TemplateBinding RevealPassword}" SelectionBrush="{TemplateBinding SelectionBrush}" SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}" CaretBrush="{TemplateBinding CaretBrush}"/></ScrollViewer>
-          </ControlTemplate>
-      </Setter.Value>
-    </Setter>
-  <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
-            </Style></ControlTheme>
-
   <ControlTheme TargetType="c:LabeledToggleButton" x:Key="{x:Type c:LabeledToggleButton}">
     <Setter Property="Background" Value="{DynamicResource SliderTrackBackground}"/>
     <Setter Property="BorderBrush" Value="{DynamicResource SliderTrackBorder}"/>

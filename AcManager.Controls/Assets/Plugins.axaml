@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -112,7 +112,7 @@
 
   <DataTemplate x:Key="PluginItemTemplate" DataType="t:PluginEntry">
     <StackPanel Margin="0 0 0 20" x:Name="__Dt0">
-      <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CanWork, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True] TextBlock#PART_Name"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+      <StackPanel.Styles><Style Selector="StackPanel#__Dt0"><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CanWork, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#PART_Name"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
       </Style></Style></StackPanel.Styles><DockPanel IsEnabled="{Binding CanWork}">
         <!-- Enabling checkbox -->
         <CheckBox DockPanel.Dock="Left" IsChecked="{Binding IsEnabled}" Margin="0 0 4 0" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>

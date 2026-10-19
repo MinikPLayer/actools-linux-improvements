@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lo="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:h="http://acstuff.club/app/sharing" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.UploaderBlock">
+﻿<UserControl xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:lo="clr-namespace:AcManager.Controls.UserControls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:h="http://acstuff.club/app/sharing" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Controls.UserControls.UploaderBlock">
   <UserControl.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
@@ -40,11 +40,11 @@
         <ComboBox.ItemTemplate>
           <DataTemplate>
             <DockPanel x:Name="Panel" MaxWidth="320" HorizontalAlignment="Left">
-              <DockPanel.Styles><Style Selector="DockPanel#Panel"><Style Selector="^ DockPanel#Panel"><Setter Property="Margin" Value="0 4"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] mui|BbCodeBlock#Description"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^:is(Control)[(pa|T.S0)=True] DockPanel#Panel"><Setter Property="Margin" Value="0"/>
-              </Style></Style></DockPanel.Styles><mui:BetterImage ImageSource="{Binding Icon}" Margin="0 0 6 0" ShowBroken="False" Width="16" Height="16" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="Linear">
+              <DockPanel.Styles><Style Selector="DockPanel#Panel"><Style Selector="^ DockPanel#Panel"><Setter Property="Margin" Value="0 4"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBoxItem}}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S0)=True] mui|BbCodeBlock#Description"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S0)=True] DockPanel#Panel"><Setter Property="Margin" Value="0"/>
+              </Style></Style></DockPanel.Styles><mui:BetterImage ImageSource="{Binding Icon}" Margin="0 0 6 0" ShowBroken="False" Width="16" Height="16" VerticalAlignment="Center" RenderOptions.BitmapInterpolationMode="MediumQuality">
                 <mui:BetterImage.Effect>
-                  <mui:OverlayColorEffect OverlayColor="{Binding Path=(TextBlock.Foreground).(SolidColorBrush.Color), RelativeSource={RelativeSource AncestorType={x:Type DockPanel}}}"/>
+                  <!-- PORT: removed OverlayColorEffect (pixel shader effect) -->
                 </mui:BetterImage.Effect>
               </mui:BetterImage>
               <mui:BbCodeBlock x:Name="Description" Margin="0 4 0 0" Text="{Binding Description}" DockPanel.Dock="Bottom" TextWrapping="Wrap" Theme="{StaticResource Small}"/>
@@ -79,7 +79,21 @@
         </mui:ReferenceSwitch.Null>
         <mui:ReferenceSwitch.NonNull>
           <TreeView x:Name="UploaderDirectoriesTreeView" ItemsSource="{Binding UploaderDirectories}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-17 -1 -4 0" IsVisible="{Binding UploaderDirectories, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
-            <!-- PORT: removed SelectedItemChanged (not in Avalonia) --><TreeView.Resources>
+            <TreeView.DataTemplates><TreeDataTemplate DataType="{x:Type h:DirectoryEntry}" ItemsSource="{Binding Children}">
+                <Border x:Name="Panel" Padding="4 3" Background="Transparent">
+                  <Border.Styles><Style Selector="Border#Panel"><Style Selector="^:pointerover Border#Panel"><Setter Property="TemplatedControl.Foreground" Value="{DynamicResource ItemTextHover}"/>
+                    <Setter Property="TemplatedControl.Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                  </Style><!-- PORT: DataTrigger with element binding not converted --></Style></Border.Styles><DockPanel>
+                    <TextBlock Text="{Binding Size, Converter={StaticResource FileSizeConverter}}" VerticalAlignment="Center" DockPanel.Dock="Right" IsVisible="{Binding Size, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
+                    <TextBlock Text="{Binding DisplayName}">
+                      <ToolTip.Tip>
+                        <TextBlock Text="{Binding Id, StringFormat='{}ID: {0}', TargetNullValue='?'}"/><!-- {x:Static g:AppStrings.Common_IdFormat} -->
+                      </ToolTip.Tip>
+                    </TextBlock>
+                  </DockPanel>
+                </Border>
+                </TreeDataTemplate>
+            </TreeView.DataTemplates><!-- PORT: removed SelectedItemChanged (not in Avalonia) --><TreeView.Resources>
               <ControlTheme TargetType="TreeViewItem" x:Key="{x:Type TreeViewItem}">
                 <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
                 <Setter Property="Template">
@@ -91,7 +105,7 @@
                     </ControlTemplate>
                   </Setter.Value>
                 </Setter>
-                <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True]"><Setter Property="Template">
+                <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="Template">
                       <Setter.Value>
                         <ControlTemplate>
                           <ContentPresenter Margin="16 0 0 0" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=Header}"/>
@@ -99,36 +113,7 @@
                       </Setter.Value>
                     </Setter>
                   </Style></ControlTheme>
-              <HierarchicalDataTemplate DataType="{x:Type h:DirectoryEntry}" ItemsSource="{Binding Children}">
-                <Border x:Name="Panel" Padding="4 3" Background="Transparent">
-                  <DockPanel>
-                    <TextBlock Text="{Binding Size, Converter={StaticResource FileSizeConverter}}" VerticalAlignment="Center" DockPanel.Dock="Right" IsVisible="{Binding Size, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Theme="{StaticResource Small}"/>
-                    <TextBlock Text="{Binding DisplayName}">
-                      <ToolTip.Tip>
-                        <TextBlock Text="{Binding Id, StringFormat='{}ID: {0}', TargetNullValue='?'}"/><!-- {x:Static g:AppStrings.Common_IdFormat} -->
-                      </ToolTip.Tip>
-                    </TextBlock>
-                  </DockPanel>
-                </Border>
-                <HierarchicalDataTemplate.Triggers>
-                  <Trigger SourceName="Panel" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Panel" Property="Control.Foreground" Value="{DynamicResource ItemTextHover}"/>
-                    <Setter TargetName="Panel" Property="Control.Background" Value="{DynamicResource ItemBackgroundHover}"/>
-                  </Trigger>
-                  <DataTrigger Value="True">
-                    <DataTrigger.Binding>
-                      <MultiBinding Converter="{StaticResource EqualToBooleanConverter}">
-                        <Binding Path="DataContext.UploaderDirectory.Id" RelativeSource="{RelativeSource AncestorType={x:Type lo:UploaderBlock}}"/>
-                        <Binding Path="Id"/>
-                      </MultiBinding>
-                    </DataTrigger.Binding>
-                    <Setter TargetName="Panel" Property="TextBlock.FontWeight" Value="Bold"/>
-                    <Setter TargetName="Panel" Property="Control.Foreground" Value="{DynamicResource ItemTextSelected}"/>
-                    <Setter TargetName="Panel" Property="Control.Background" Value="{DynamicResource ItemBackgroundSelected}"/>
-                  </DataTrigger>
-                </HierarchicalDataTemplate.Triggers>
-              </HierarchicalDataTemplate>
-            </TreeView.Resources>
+              </TreeView.Resources>
           </TreeView>
         </mui:ReferenceSwitch.NonNull>
       </mui:ReferenceSwitch>

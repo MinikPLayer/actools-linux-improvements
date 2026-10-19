@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://AcManager.Controls/Assets/IconData.axaml"/>
     <ResourceInclude Source="avares://AcManager.Controls/Assets/Converters.axaml"/>
@@ -189,14 +189,14 @@
 
   <!-- Session block -->
   <DataTemplate x:Key="SessionItem" DataType="{x:Type t:ServerEntry+Session}">
-    <TextBlock Text="{Binding DisplayTypeShort}" x:Name="TextBlock" Height="20" Width="20" TextAlignment="Center" Padding="0 2 0 0" ToolTip.Tip="{StaticResource SessionItemTooltip}" Theme="{StaticResource Label}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+    <TextBlock Text="{Binding DisplayTypeShort}" x:Name="TextBlock" Height="20" Width="20" TextAlignment="Center" Padding="0 2 0 0" ToolTip.Tip="{StaticResource SessionItemTooltip}" Theme="{StaticResource Label}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="Foreground" Value="{DynamicResource ButtonText}"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsActive, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] TextBlock#TextBlock"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></Style></TextBlock.Styles></TextBlock>
     </DataTemplate>
 
   <!-- Car block -->
   <DataTemplate x:Key="CarItem" DataType="{x:Type t:ServerEntry+CarEntry}">
-    <TextBlock x:Name="TextBlock" HorizontalAlignment="Center" Margin="4 0" Height="20" Padding="2" ToolTip.Tip="{StaticResource CarPreviewTooltip.Online}" Theme="{StaticResource Small}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding CarWrapper.Value.DisplayName}"/><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarExists, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Text" Value="{Binding Id}"/>
+    <TextBlock x:Name="TextBlock" HorizontalAlignment="Center" Margin="4 0" Height="20" Padding="2" ToolTip.Tip="{StaticResource CarPreviewTooltip.Online}" Theme="{StaticResource Small}"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Text" Value="{Binding CarWrapper.Value.DisplayName}"/><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/></Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarExists, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S1)=True] TextBlock#TextBlock"><Setter Property="Text" Value="{Binding Id}"/>
         <Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
         <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
       </Style></Style></TextBlock.Styles></TextBlock>
@@ -216,13 +216,11 @@
   <!-- Lite version -->
   <DataTemplate x:Key="SimpleListItem" DataType="{x:Type t:ServerEntry}">
     <Grid ContextMenu="{StaticResource ListItemContextMenu}" x:Name="__Dt2">
-      <Grid.Styles><Style Selector="Grid#__Dt2"><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Path#PasswordIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding HasErrors, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding PasswordRequired, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S3)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of FontWeight (not in Avalonia) -->
-        </Style><Style Selector="^:is(Control)[(pa|T.S3)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
-        </Style><Style Selector="^:is(Control)[(pa|T.S3)=True] StackPanel#PingPanel"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^:is(Control)[(pa|T.S4)=True] Path#PasswordIcon"><Setter Property="IsVisible" Value="True"/>
-      </Style></Style></Grid.Styles><Grid.CacheMode>
-        <BitmapCache RenderAtScale="{Binding BitmapCacheScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}" EnableClearType="{Binding BitmapCacheClearType, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}"/>
-      </Grid.CacheMode>
+      <Grid.Styles><Style Selector="Grid#__Dt2"><Style Selector="^ Path#ErrorIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Path#PasswordIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding HasErrors, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S4" Value="{Binding PasswordRequired, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S3)=True] TextBlock#DisplayNameText"><!-- PORT: removed setter of FontWeight (not in Avalonia) -->
+        </Style><Style Selector="^[(pa|T.S3)=True] Path#ErrorIcon"><Setter Property="IsVisible" Value="True"/>
+        </Style><Style Selector="^[(pa|T.S3)=True] StackPanel#PingPanel"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S4)=True] Path#PasswordIcon"><Setter Property="IsVisible" Value="True"/>
+      </Style></Style></Grid.Styles><!-- PORT: removed Grid.CacheMode -->
 
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>

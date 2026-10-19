@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls.Helpers" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:ac="clr-namespace:AcManager.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls.Helpers" xmlns:vm="clr-namespace:AcManager.Controls.ViewModels" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
@@ -28,8 +28,8 @@
       </Setter.Value>
     </Setter>
   <Style Selector="^ /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:expanded /template/ ContentPresenter#PART_ExpandSite"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=(DependencyProperty.UnsetValue)}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^:is(Control)[(pa|T.S1)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S1" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=(DependencyProperty.UnsetValue)}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(pa|T.S1)=True] /template/ DockPanel#PART_Header"><Setter Property="IsVisible" Value="False"/>
             </Style></ControlTheme>
 
   <ControlTheme TargetType="ac:AcListPage" x:Key="{x:Type ac:AcListPage}">
@@ -57,30 +57,7 @@
                 <ListBox.GroupStyle>
                   <GroupStyle>
                     <GroupStyle.ContainerStyle>
-                      <ControlTheme TargetType="GroupItem" x:Key="{x:Type GroupItem}">
-                        <Setter Property="Template">
-                          <Setter.Value>
-                            <ControlTemplate TargetType="GroupItem">
-                              <mui:RememberingExpander Key="{Binding Name, StringFormat='{}.content_category_{0}', Mode=OneTime}" Margin="0 0 0 20" DefaultValue="True" Theme="{StaticResource GroupBoxExpander}">
-                                <Expander.Header>
-                                  <TextBlock Theme="{StaticResource Label}">
-                                    <Run Text="{Binding Name, Mode=OneWay}"/>
-                                    <Run Text="{Binding ItemCount, Mode=OneWay, StringFormat='{}({0})'}"/>
-                                  </TextBlock>
-                                </Expander.Header>
-                                <ItemsPresenter/>
-                              </mui:RememberingExpander>
-                            </ControlTemplate>
-                          </Setter.Value>
-                        </Setter>
-                        <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=''}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True]"><Setter Property="Template">
-                              <Setter.Value>
-                                <ControlTemplate TargetType="GroupItem">
-                                  <ItemsPresenter/>
-                                </ControlTemplate>
-                              </Setter.Value>
-                            </Setter>
-                          </Style></ControlTheme>
+                      <!-- PORT: removed Style for GroupItem (no such control in Avalonia) -->
                     </GroupStyle.ContainerStyle>
                   </GroupStyle>
                 </ListBox.GroupStyle>
@@ -100,7 +77,7 @@
 
               <DockPanel Grid.Row="1" Background="Transparent">
                 <mui:ContextMenuButton x:Name="PART_ListContextMenu" VerticalAlignment="Center" DockPanel.Dock="Right"/>
-                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue={x:Static Visibility.Collapsed}}" Theme="{StaticResource NonTransparent}"/>
+                <mui:ModernButton x:Name="AddNewButton" DockPanel.Dock="Right" IconData="{StaticResource AddIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.ContentList_CreateNewItem_Tooltip}" IsVisible="{Binding AddNewCommand.IsAbleToExecute, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource NonTransparent}"/>
                 <mui:ModernButton x:Name="SaveAllButton" DockPanel.Dock="Right" IconData="{StaticResource SaveIconData}" IconWidth="10" IconHeight="10" Margin="4 0 0 0" ToolTip.Tip="Save all (Ctrl+Shift+S)" Theme="{StaticResource NonTransparent}"/>
                 <mui:ModernButton x:Name="ScrollToSelectedButton" DockPanel.Dock="Right" IconData="{StaticResource CollapsedIconData}" Margin="4 0 0 0" ToolTip.Tip="{x:Static ac:ControlsStrings.Common_ScrollToSelected}" Theme="{StaticResource NonTransparent}"/>
                 <TextBlock Text="{Binding Status}" Margin="{StaticResource StatusMargin}" Foreground="{DynamicResource WindowTextReadOnly}"/>
@@ -216,7 +193,7 @@
     </ResourceDictionary></ControlTheme.Resources>
 
     <!-- Empty version -->
-    <Style Selector="^"><Setter Property="pa:T.S3" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S3)=True]"><Setter Property="Template">
+    <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsEmpty, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Template">
           <Setter.Value>
             <ControlTemplate TargetType="ac:AcListPage">
               <DockPanel Margin="0 0 0 100" HorizontalAlignment="Center" VerticalAlignment="Center">

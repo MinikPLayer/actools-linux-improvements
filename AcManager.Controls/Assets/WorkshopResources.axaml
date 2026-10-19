@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="clr-namespace:AcManager.Workshop.Data;assembly=AcManager.Workshop" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:services="clr-namespace:AcManager.Controls.Services" xmlns:ws="http://acstuff.club/app/workshop" xmlns:t="http://acstuff.club/app/tools" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:data="clr-namespace:AcManager.Workshop.Data;assembly=AcManager.Workshop" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="clr-namespace:AcManager.Controls" xmlns:services="clr-namespace:AcManager.Controls.Services" xmlns:ws="http://acstuff.club/app/workshop" xmlns:t="http://acstuff.club/app/tools" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
@@ -74,7 +74,7 @@
 
         <DataTemplate DataType="{x:Type data:WorkshopContentCar}">
           <mui:Cell x:Name="PART_Panel" mui:Draggable.Enabled="True" Background="{DynamicResource ThumbnailBackground}" ClipToBounds="True">
-            <mui:Cell.Styles><Style Selector="mui|Cell#PART_Panel"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S0)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
+            <mui:Cell.Styles><Style Selector="mui|Cell#PART_Panel"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S0)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
             </Style></Style></mui:Cell.Styles><mui:BetterImage Filename="{Binding PreviewImage}" AsyncDecode="True" ClearOnChange="True" DecodeWidth="320" Stretch="UniformToFill" Margin="-8 -10 -8 0"/>
             <DockPanel Background="{DynamicResource DarkStripeBackground}" VerticalAlignment="Bottom">
               <mui:BetterImage Width="12" Height="12" DockPanel.Dock="Left" Margin="2 0 4 0" VerticalAlignment="Center" Filename="{Binding BrandBadge}" ClearOnChange="True" AsyncDecode="True"/>
@@ -105,7 +105,7 @@
 
         <DataTemplate DataType="{x:Type data:WorkshopContentCar}">
           <DockPanel x:Name="__Dt1">
-            <DockPanel.Styles><Style Selector="DockPanel#__Dt1"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S2)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
+            <DockPanel.Styles><Style Selector="DockPanel#__Dt1"><Style Selector="^ Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding IsNew, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S2)=True] Ellipse#PART_NewIcon"><Setter Property="IsVisible" Value="True"/>
             </Style></Style></DockPanel.Styles><mui:Cell ClipToBounds="True" Height="50" Width="80" Margin="0 0 12 0">
               <mui:BetterImage Filename="{Binding PreviewImage}" AsyncDecode="True" ClearOnChange="True" DecodeWidth="320" Stretch="UniformToFill" Margin="-4 -6 -2 0"/>
               <Ellipse Width="4" Height="4" VerticalAlignment="Top" HorizontalAlignment="Right" Fill="{DynamicResource Go}" Margin="4" IsHitTestVisible="False" x:Name="PART_NewIcon"/>
@@ -141,7 +141,7 @@
   <!-- DataTemplateArgument.Flag1: show reply counter and buttons -->
   <DataTemplate x:Key="WorkshopComment" DataType="{x:Type ws:WorkshopComment}">
     <DockPanel x:Name="__Dt3">
-      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^ mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding ReportWith, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^:is(Control)[(pa|T.S4)=True] mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^ mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding ReportWith, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S4)=True] mui|BbCodeBlock#PART_Message"><!-- PORT: removed setter of Foreground (not in Avalonia) -->
       </Style></Style></DockPanel.Styles><mui:BetterImage Filename="{Binding UserInfo.Value.AvatarSmall}" Height="24" Width="24" DockPanel.Dock="Left" Margin="0 4 12 0" AsyncDecode="True" VerticalAlignment="Top"/>
       <DockPanel Dock="Top" Margin="0 0 0 8">
         <mui:ContextMenuButton DockPanel.Dock="Right" Padding="4 0" Margin="0 0 8 0">

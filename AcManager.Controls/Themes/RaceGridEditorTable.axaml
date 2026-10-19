@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls.ViewModels" xmlns:uc="clr-namespace:AcManager.Controls.UserControls" xmlns:co="clr-namespace:AcManager.Controls" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="clr-namespace:AcManager.Controls.ViewModels" xmlns:uc="clr-namespace:AcManager.Controls.UserControls" xmlns:co="clr-namespace:AcManager.Controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
   <ResourceDictionary.MergedDictionaries>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
     <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/CheckBox.axaml"/>
@@ -19,9 +19,9 @@
     <Button Theme="{StaticResource BaseButtonStyle.Nothing}" x:Name="__Dt0">
       <Button.Styles><Style Selector="Button#__Dt0"><Style Selector="^ Button#SetButton"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ Button#RandomButton"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover Button#SetButton"><Setter Property="IsVisible" Value="True"/>
         </Style><Style Selector="^:pointerover Button#RandomButton"><Setter Property="IsVisible" Value="True"/>
-      </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S2" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S1)=True] mui|BetterImage#Livery"><Setter Property="IsVisible" Value="False"/>
-        </Style><Style Selector="^:is(Control)[(pa|T.S1)=True] Button#RandomButton"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^:is(Control)[(pa|T.S2)=True] mui|PlaceholderTextBlock#TextBox"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S2" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True] mui|BetterImage#Livery"><Setter Property="IsVisible" Value="False"/>
+        </Style><Style Selector="^[(pa|T.S1)=True] Button#RandomButton"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S2)=True] mui|PlaceholderTextBlock#TextBox"><Setter Property="IsVisible" Value="False"/>
       </Style></Style></Button.Styles><DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True">
         <!-- PORT: removed DockPanel.InputBindings -->
         <mui:BetterImage x:Name="Livery" Filename="{Binding CarSkin.LiveryImage}" Width="16" Height="16" Margin="0 0 4 0" DockPanel.Dock="Left" ClearOnChange="True"/>
@@ -40,8 +40,8 @@
 
   <DataTemplate x:Key="Detailed.SkinDataTemplatePopup" DataType="{x:Type c:RaceGridEntry}">
     <DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True" x:Name="__Dt3">
-      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S5" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S4)=True] mui|BetterImage#Livery"><Setter Property="IsVisible" Value="False"/>
-      </Style><Style Selector="^:is(Control)[(pa|T.S5)=True] mui|PlaceholderTextBlock#TextBox"><Setter Property="IsVisible" Value="False"/>
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt3"><Style Selector="^"><Setter Property="pa:T.S4" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S5" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S4)=True] mui|BetterImage#Livery"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^[(pa|T.S5)=True] mui|PlaceholderTextBlock#TextBox"><Setter Property="IsVisible" Value="False"/>
       </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
       <mui:ContextMenuButton DockPanel.Dock="Right">
         <uc:ModernPopup mui:PopupHelper.Group="1">
@@ -64,15 +64,15 @@
 
   <DataTemplate x:Key="Detailed.SkinDataTemplate" DataType="{x:Type c:RaceGridEntry}">
     <DockPanel Background="Transparent" mui:DoubleClickEvent.Enabled="True" x:Name="__Dt8">
-      <DockPanel.Styles><Style Selector="DockPanel#__Dt8"><Style Selector="^ mui|BetterComboBox#ComboBox"><!-- PORT: removed setter of Nullable (not in Avalonia) --><!-- PORT: removed setter of SelectedItem (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S10" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S10)=True] mui|BetterComboBox#ComboBox"><!-- PORT: removed setter of Nullable (not in Avalonia) -->
+      <DockPanel.Styles><Style Selector="DockPanel#__Dt8"><Style Selector="^ mui|BetterComboBox#ComboBox"><!-- PORT: removed setter of Nullable (not in Avalonia) --><!-- PORT: removed setter of SelectedItem (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S9" Value="{Binding CarSkin, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S10" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S10)=True] mui|BetterComboBox#ComboBox"><!-- PORT: removed setter of Nullable (not in Avalonia) -->
         <!-- PORT: removed setter of SelectedItem (not in Avalonia) -->
       </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
       <mui:BetterComboBox x:Name="ComboBox" IsEditable="False" Placeholder="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}" ItemsSource="{Binding Car.EnabledSkinsListView}" Theme="{StaticResource BetterComboBox.Borderless.White}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="{x:Type t:CarSkinObject}">
             <DockPanel Height="18" x:Name="__Dt6">
-              <DockPanel.Styles><Style Selector="DockPanel#__Dt6"><Style Selector="^ TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NullValue}"/></Style><Style Selector="^:is(Control)[(pa|T.S7)=True] mui|BetterImage#Image"><Setter Property="IsVisible" Value="False"/>
-                </Style><Style Selector="^:is(Control)[(pa|T.S7)=True] TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) -->
+              <DockPanel.Styles><Style Selector="DockPanel#__Dt6"><Style Selector="^ TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) --></Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=NullValue}"/></Style><Style Selector="^[(pa|T.S7)=True] mui|BetterImage#Image"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[(pa|T.S7)=True] TextBlock#Text"><!-- PORT: removed setter of Text (not in Avalonia) -->
               </Style></Style></DockPanel.Styles><mui:BetterImage x:Name="Image" Margin="0 0 4 0" ClearOnChange="True" Filename="{Binding LiveryImage}" Width="18" Height="18"/>
               <TextBlock x:Name="Text" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
             </DockPanel>
@@ -83,26 +83,26 @@
     </DataTemplate>
 
   <DataTemplate x:Key="Detailed.NameDataTemplate" DataType="{x:Type c:RaceGridEntry}">
-    <mui:BetterTextBox x:Name="TextBox" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^ mui|BetterTextBox#TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Name, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S11" Value="{Binding QuickDriveUseSkinNames, Source={x:Static t:SettingsHolder.Drive}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S12" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S13" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S13)=True] mui|BetterTextBox#TextBox"><Setter Property="Placeholder" Value="{Binding PlayerName, Source={x:Static t:SettingsHolder.Drive}}"/>
+    <mui:BetterTextBox x:Name="TextBox" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^ mui|BetterTextBox#TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Name, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S11" Value="{Binding QuickDriveUseSkinNames, Source={x:Static t:SettingsHolder.Drive}, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S12" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/><Setter Property="pa:T.S13" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S13)=True] mui|BetterTextBox#TextBox"><Setter Property="Placeholder" Value="{Binding PlayerName, Source={x:Static t:SettingsHolder.Drive}}"/>
         <Setter Property="Text" Value=""/>
         <Setter Property="IsEnabled" Value="False"/>
       </Style></Style></mui:BetterTextBox.Styles></mui:BetterTextBox>
     </DataTemplate>
 
   <DataTemplate x:Key="Detailed.NationalityDataTemplate" DataType="{x:Type c:RaceGridEntry}">
-    <mui:BetterComboBox x:Name="TextBox" ItemsSource="{Binding KunosIdsCountries, Source={x:Static t:DataProvider.Instance}}" Theme="{StaticResource BetterComboBox.Borderless.White}"><mui:BetterComboBox.Styles><Style Selector="mui|BetterComboBox#TextBox"><Style Selector="^ mui|BetterComboBox#TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Nationality, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S14" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S14)=True] mui|BetterComboBox#TextBox"><Setter Property="Placeholder" Value="{Binding PlayerNationality, Source={x:Static t:SettingsHolder.Drive}}"/>
+    <mui:BetterComboBox x:Name="TextBox" ItemsSource="{Binding KunosIdsCountries, Source={x:Static t:DataProvider.Instance}}" Theme="{StaticResource BetterComboBox.Borderless.White}"><mui:BetterComboBox.Styles><Style Selector="mui|BetterComboBox#TextBox"><Style Selector="^ mui|BetterComboBox#TextBox"><Setter Property="Placeholder" Value="{x:Static t:ToolsStrings.RaceGrid_OpponentSkin_Random}"/><Setter Property="Text" Value="{Binding Nationality, Mode=TwoWay}"/></Style><Style Selector="^"><Setter Property="pa:T.S14" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S14)=True] mui|BetterComboBox#TextBox"><Setter Property="Placeholder" Value="{Binding PlayerNationality, Source={x:Static t:SettingsHolder.Drive}}"/>
         <Setter Property="Text" Value=""/>
         <Setter Property="IsEnabled" Value="False"/>
       </Style></Style></mui:BetterComboBox.Styles></mui:BetterComboBox>
     </DataTemplate>
 
   <DataTemplate x:Key="Detailed.AiDataTemplate" DataType="{x:Type c:RaceGridEntry}">
-    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="50" Maximum="100" Mode="Integer" Text="{Binding InputAiLevel, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^"><Setter Property="pa:T.S15" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S15)=True] mui|BetterTextBox#TextBox"><Setter Property="IsVisible" Value="False"/>
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="50" Maximum="100" Mode="Integer" Text="{Binding InputAiLevel, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^"><Setter Property="pa:T.S15" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S15)=True] mui|BetterTextBox#TextBox"><Setter Property="IsVisible" Value="False"/>
       </Style></Style></mui:BetterTextBox.Styles></mui:BetterTextBox>
     </DataTemplate>
 
   <DataTemplate x:Key="Detailed.AggressionDataTemplate" DataType="{x:Type c:RaceGridEntry}">
-    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="0" Maximum="100" Mode="Integer" Text="{Binding InputAiAggression, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^"><Setter Property="pa:T.S16" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^:is(Control)[(pa|T.S16)=True] mui|BetterTextBox#TextBox"><Setter Property="IsVisible" Value="False"/>
+    <mui:BetterTextBox x:Name="TextBox" Placeholder="Auto" Minimum="0" Maximum="100" Mode="Integer" Text="{Binding InputAiAggression, Mode=TwoWay}" Theme="{StaticResource Borderless.White}"><mui:BetterTextBox.Styles><Style Selector="mui|BetterTextBox#TextBox"><Style Selector="^"><Setter Property="pa:T.S16" Value="{Binding SpecialEntry, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S16)=True] mui|BetterTextBox#TextBox"><Setter Property="IsVisible" Value="False"/>
       </Style></Style></mui:BetterTextBox.Styles></mui:BetterTextBox>
     </DataTemplate>
 

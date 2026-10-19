@@ -22,6 +22,8 @@ NS_D = 'http://schemas.microsoft.com/expression/blend/2008'
 NS_MUI = 'http://firstfloorsoftware.com/ModernUI'
 # prefixes for helper namespaces added to every converted file (they are removed again if unused)
 HELPER_NS = {
+    'i': 'using:Avalonia.Xaml.Interactivity',
+    'ia': 'using:Avalonia.Xaml.Interactions.Core',
     'mui': 'http://firstfloorsoftware.com/ModernUI',
     'pa': 'clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI',
     'pc': 'clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI',
@@ -35,7 +37,7 @@ NS_BLEND_AV_CORE = 'using:Avalonia.Xaml.Interactions.Core'
 # WPF controls which Avalonia doesn't have and which are replaced by ModernUI ones
 CUSTOM_ELEMENTS = {'ToolBar': NS_MUI, 'ToolBarTray': NS_MUI}
 # custom shader effects of ModernUI, there are no pixel shaders in Avalonia
-CUSTOM_EFFECTS = {'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
+CUSTOM_EFFECTS = {'OverlayColorEffect', 'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
 # styles for types which don't exist in Avalonia
 UNSUPPORTED_TARGETS = {'GroupItem', 'Hyperlink_', 'ToolBarOverflowPanel', 'ToolBarPanel', 'DocumentViewer', 'FlowDocumentScrollViewer'}
 # resource dictionaries of ModernUI which aren't converted (Avalonia’s own templates are used instead)
@@ -108,6 +110,7 @@ PSEUDO = {
 }
 
 PROP_RENAME = {
+    'CacheMode': None, 'RenderOptions.BitmapScalingMode_': None, 'BorderEdgeMode': None, 'EdgeMode': None,
     'Panel.ZIndex': 'ZIndex',
     'SnapsToDevicePixels': None,
     'UseLayoutRounding': None,
@@ -236,6 +239,22 @@ def retag(old_tag, new_local):
     """New tag in the namespace of the old one (WPF’s becomes Avalonia’s, custom controls stay where they are)."""
     ns = ns_of(old_tag)
     return '{%s}%s' % (NS_AV if ns in (NS_WPF, None) else ns, new_local)
+
+
+def typed_parent(style):
+    """Nested `^` selector whose parent is a theme or a style with a type selector: the type is known already."""
+    sel = style.get('Selector') or ''
+    if not sel.startswith('^'):
+        return False
+    p = style.getparent()
+    if p is None or not isinstance(p.tag, str):
+        return False
+    if local(p.tag) == 'ControlTheme':
+        return True
+    if local(p.tag) == 'Style':
+        ps = p.get('Selector') or ''
+        return bool(re.match(r'^[A-Za-z]', ps)) or typed_parent(p)
+    return False
 
 
 def is_handler_name(v):
@@ -394,6 +413,9 @@ def convert_markup(mk, ctx, prop=None, el=None):
         rs = mk.get('RelativeSource')
         if isinstance(rs, Markup):
             fix_relative_source(rs)
+        fb = mk.get('FallbackValue')
+        if isinstance(fb, Markup) and fb.name == 'x:Static' and fb.args and str(fb.args[0]).startswith('Visibility.'):
+            mk.remove('FallbackValue')
         # Path=(Foo.Bar) is OK, Path=. also ok
     elif name == 'RelativeSource':
         fix_relative_source(mk)
@@ -485,6 +507,12 @@ class Converter:
             # not named in Avalonia (no Name property); transforms are reachable by the property path only
             el.attrib.pop(X + 'Name', None)
             el.attrib.pop('Name', None)
+        if ns == NS_WPF and tag in ('Style', 'ControlTemplate') and (el.get('TargetType') or '').split(':')[-1] in UNSUPPORTED_TARGETS:
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s for %s (no such control in Avalonia) ' % (tag, el.get('TargetType')))
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
         if ns == NS_WPF:
             if tag == 'Style':
                 StyleConverter(self).convert(el)
@@ -492,7 +520,7 @@ class Converter:
             if tag == 'ControlTemplate':
                 StyleConverter(self).convert_template_standalone(el)
                 return
-            if tag == 'DataTemplate':
+            if tag in ('DataTemplate', 'HierarchicalDataTemplate'):
                 StyleConverter(self).convert_data_template(el)
                 return
             if tag == 'ResourceDictionary':
@@ -636,6 +664,8 @@ class Converter:
             new = PROP_RENAME[name]
             if new is None:
                 return None, val
+            if name == 'RenderOptions.BitmapScalingMode':
+                return new, {'Linear': 'MediumQuality', 'NearestNeighbor': 'None', 'HighQuality': 'HighQuality', 'Fant': 'HighQuality', 'LowQuality': 'LowQuality', 'Unspecified': 'Unspecified'}.get(val, 'HighQuality')
             return new, convert_markup_value(val, self.ctx, name, el)
         if name == 'ItemContainerStyle':
             return name, val
@@ -674,6 +704,12 @@ class Converter:
     def convert_property_element(self, el, tag, ns):
         owner, prop = tag.split('.', 1)
         if prop == 'LayoutTransform':
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
+            return
+        if prop in ('CacheMode', 'BitmapEffect', 'OpacityMask_'):
             parent = el.getparent()
             comment = etree.Comment(' PORT: removed %s ' % tag)
             comment.tail = el.tail
@@ -1095,12 +1131,13 @@ class StyleConverter:
             self.ctx.warn(el, 'ControlTemplate with triggers outside of a style (%d triggers)' % len(triggers))
 
     def convert_data_template(self, el):
-        trig = next((c for c in el if is_el(c) and local(c.tag) == 'DataTemplate.Triggers'), None)
-        el.tag = qn('DataTemplate')
+        hier = local(el.tag) == 'HierarchicalDataTemplate'
+        trig = next((c for c in el if is_el(c) and local(c.tag) in ('DataTemplate.Triggers', 'HierarchicalDataTemplate.Triggers')), None)
+        el.tag = qn('TreeDataTemplate' if hier else 'DataTemplate')
         triggers = list(trig) if trig is not None else []
         if trig is not None:
             el.remove(trig)
-        res = next((c for c in el if is_el(c) and local(c.tag) == 'DataTemplate.Resources'), None)
+        res = next((c for c in el if is_el(c) and local(c.tag) in ('DataTemplate.Resources', 'HierarchicalDataTemplate.Resources')), None)
         if res is not None:
             # Avalonia’s data templates have no resources, those go to the root element of the template
             el.remove(res)
@@ -1557,7 +1594,7 @@ def relocate_implicit(root, uri):
                         holder = etree.Element(holder_tag)
                         owner.insert(0, holder)
                     holder.append(c)
-            elif t == 'DataTemplate' and c.get('DataType') and ot not in ('Style', 'ControlTheme'):
+            elif t in ('DataTemplate', 'TreeDataTemplate') and c.get('DataType') and ot not in ('Style', 'ControlTheme'):
                 container.remove(c)
                 holder_tag = retag(owner.tag, ot + '.DataTemplates')
                 holder = next((h for h in owner if is_el(h) and h.tag == holder_tag), None)
@@ -1573,7 +1610,7 @@ def relocate_implicit(root, uri):
     if local(root.tag) == 'ResourceDictionary':
         found = False
         for c in root:
-            if is_el(c) and local(c.tag) == 'DataTemplate' and c.get(X + 'Key') is None and c.get('DataType'):
+            if is_el(c) and local(c.tag) in ('DataTemplate', 'TreeDataTemplate') and c.get(X + 'Key') is None and c.get('DataType'):
                 dt = c.get('DataType')
                 c.set(X + 'Key', 'ImplicitTemplate:' + re.sub(r'[{}]|x:Type\s*', '', dt).strip())
                 found = True
@@ -1610,6 +1647,14 @@ def convert_file(path, registry, out_dir=None):
     fix_handler_types(cs, ctx.handlers)
     relocate_implicit(root, 'avares://%s/%s.axaml' % (ASM[0], os.path.relpath(os.path.splitext(path)[0], ASM[1]).replace(os.sep, '/')))
 
+    for e in root.iter():
+        if is_el(e) and e.tag.endswith('}TreeDataTemplate'):
+            for a in ('ItemTemplate', 'ItemContainerStyle', 'ItemTemplateSelector'):
+                e.attrib.pop(a, None)
+        if is_el(e) and e.get('Selector'):
+            e.set('Selector', e.get('Selector').replace('=PositiveInfinity]', '=Infinity]').replace('=NegativeInfinity]', '=-Infinity]'))
+        if is_el(e) and e.tag.endswith('}Setter') and e.get('Property') == 'LineDashArray':
+            e.set('Value', e.get('Value').replace(' ', ','))
     # namespaces
     new_nsmap = {}
     for p, u in root.nsmap.items():
@@ -1666,7 +1711,7 @@ def convert_file(path, registry, out_dir=None):
                 continue
             el.attrib.pop('__plain', None)
             # attached property selectors need a type, `:is(Control)` matches everything
-            if local(el.tag) == 'Style' and el.get('Selector'):
+            if local(el.tag) == 'Style' and el.get('Selector') and not typed_parent(el):
                 el.set('Selector', re.sub(r'(^|[\s>^,])(\[\()', r'\1:is(Control)\2', el.get('Selector')))
         etree.cleanup_namespaces(r, top_nsmap=new_nsmap, keep_ns_prefixes=[k for k in new_nsmap if k])
         s = etree.tostring(r, encoding='unicode')
