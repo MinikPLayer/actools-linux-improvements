@@ -33,7 +33,7 @@ namespace AcTools.Utils {
                             break;
                         } else if (lastSep && filename[i + 1] == '.' && (i >= filename.Length - 2 || IsSeparator(filename[i + 2]))) {
                             int j;
-                            for (j = Math.Max(result.Length - 2, 0); j > 0 && result[j] != '\\'; j--){}
+                            for (j = Math.Max(result.Length - 2, 0); j > 0 && result[j] != Path.DirectorySeparatorChar; j--){}
                             result.Remove(j, result.Length - (j == 0 ? 0 : j + 1));
                             i += 2;
                             allGood = false;
@@ -46,7 +46,7 @@ namespace AcTools.Utils {
                     case '\\':
                         if (!lastSep){
                             lastSep = true;
-                            result.Append('\\');
+                            result.Append(Path.DirectorySeparatorChar);
                         }
                         break;
                     default:
@@ -56,7 +56,7 @@ namespace AcTools.Utils {
                 }
             }
 
-            return result.Length > 0 && result[result.Length - 1] == '\\'
+            return result.Length > 0 && result[result.Length - 1] == Path.DirectorySeparatorChar
                     ? result.ToString(0, result.Length - 1)
                     : allGood ? filename : result.ToString();
 
