@@ -80,7 +80,7 @@
         </mui:Cell>
 
         <!-- Skins list -->
-        <ListBox ItemsSource="{Binding SelectedObject.EnabledSkinsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Width="120" Margin="4 -2 0 -2" VerticalAlignment="Top" HorizontalAlignment="Left" Height="{Binding ActualHeight, Source={x:Reference SelectedSkinPreviewImage}, Converter={StaticResource SumConverter}, ConverterParameter=4}">
+        <ListBox ItemsSource="{Binding SelectedObject.EnabledSkinsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Width="120" Margin="4 -2 0 -2" VerticalAlignment="Top" HorizontalAlignment="Left" Height="{Binding ActualHeight, Converter={StaticResource SumConverter}, ConverterParameter=4, ElementName=SelectedSkinPreviewImage}">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
               <mui:VirtualizingTilePanel HorizontalAlignment="Left" ItemWidth="36" ItemHeight="36"/>

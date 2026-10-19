@@ -13,7 +13,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private double _itemWidth = double.NaN;
 
-        [TypeConverter(typeof(LengthConverter))]
         public double ItemWidth {
             get => _itemWidth;
             set => SetValue(ItemWidthProperty, value);
@@ -26,7 +25,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private double _itemHeight = double.NaN;
 
-        [TypeConverter(typeof(LengthConverter))]
         public double ItemHeight {
             get => _itemHeight;
             set => SetValue(ItemHeightProperty, value);

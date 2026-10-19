@@ -104,7 +104,7 @@
       <!--IsHitTestVisible="{Binding ElementName=DetailsPopup, Path=IsOpen, Mode=OneWay, Converter={StaticResource InvertBooleanConverter}}"-->
 
       <c:ModernPopup Grid.Column="0" Grid.ColumnSpan="2" x:Name="SelectCarPopup" Placement="Custom" Padding="8" IsOpen="{Binding IsChecked, ElementName=AddCarButton, Mode=TwoWay}" StaysOpen="False" HorizontalAlignment="Right" Opened="OnSelectCarPopupOpened" mui:PopupHelper.Register="True">
-        <Grid Width="320" DataContext="{x:Reference This}">
+        <Grid Width="320" DataContext="{Binding #This}">
           <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="480"/>
@@ -150,7 +150,7 @@
 
     <ListBox x:Name="ListBox" ItemsSource="{Binding FilteredView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True" mui:Draggable.Enabled="True" SelectionMode="Multiple" DragDrop.Drop="OnItemsControlDrop" ItemContainerTheme="{StaticResource ListBoxItem}" Classes="inline1">
       <ListBox.ContextMenu>
-        <ContextMenu DataContext="{x:Reference This}">
+        <ContextMenu DataContext="{Binding #This}">
           <MenuItem Header="{x:Static mui:UiStrings.RaceGrid_SavePresetHeader}" Command="{Binding SavePresetCommand}"/>
           <MenuItem Header="{x:Static mui:UiStrings.RaceGrid_ShareHeader}" Command="{Binding SavePresetCommand}"/>
         </ContextMenu>
@@ -167,7 +167,7 @@
                   </Style><Style Selector="^[(pa|T.S4)=True] mui|BetterTextBox#PriorityTextBox"><Setter Property="IsVisible" Value="False"/>
                   </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
                   <DockPanel.ContextMenu>
-                    <mui:InheritingContextMenu DataContext="{x:Reference This}">
+                    <mui:InheritingContextMenu DataContext="{Binding #This}">
                       <MenuItem Header="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding DeleteSelectedCommand}"/>
                     </mui:InheritingContextMenu>
                   </DockPanel.ContextMenu>
@@ -200,7 +200,7 @@
                       </Style><Style Selector="^[(pa|T.S7)=True] mui|BbCodeBlock#EntryName"><Setter Property="Opacity" Value="0.5"/>
                       </Style></Style></DockPanel.Styles><!-- PORT: removed DockPanel.InputBindings -->
                       <DockPanel.ContextMenu>
-                        <mui:InheritingContextMenu DataContext="{x:Reference This}">
+                        <mui:InheritingContextMenu DataContext="{Binding #This}">
                           <MenuItem Header="{x:Static g:AppStrings.Toolbar_Clone}" Command="{Binding CloneSelectedCommand}"/>
                           <MenuItem Header="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding DeleteSelectedCommand}"/>
                         </mui:InheritingContextMenu>

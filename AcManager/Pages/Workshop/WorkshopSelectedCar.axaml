@@ -57,7 +57,7 @@
           </mui:Cell>
 
           <!-- Description -->
-          <DockPanel Grid.Column="1" Height="{Binding ActualHeight, Source={x:Reference SelectedSkinPreviewImage}}" Margin="20 0 0 0">
+          <DockPanel Grid.Column="1" Margin="20 0 0 0" Height="{Binding ActualHeight, ElementName=SelectedSkinPreviewImage}">
             <!--<c:RatingBar Rating="{Binding SelectedObject.Rating}" DockPanel.Dock="Bottom" Margin="0 12 0 0" HorizontalAlignment="Center" />-->
             <Border DockPanel.Dock="Top" x:Name="SkinsListExtendedModeParent" Margin="0 0 0 12" MaxHeight="180" IsVisible="False"/>
             <mui:BbCodeBlock Text="{Binding SelectedObject.Description}" Mode="WithoutBbCodes" TextWrapping="Wrap" Placeholder="{x:Static t:ToolsStrings.Common_None}"/>

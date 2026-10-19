@@ -80,6 +80,10 @@ TYPE_RENAME = {
 }
 
 PSEUDO = {
+    ('SortDirection', 'Ascending'): ':sortascending',
+    ('SortDirection', 'Descending'): ':sortdescending',
+    ('CanUserSort', 'True'): '',
+    ('CanUserSort', 'False'): ':not(:sortascending):not(:sortdescending)',
     ('IsMouseOver', 'True'): ':pointerover',
     ('IsMouseOver', 'False'): ':not(:pointerover)',
     ('IsMouseDirectlyOver', 'True'): ':pointerover',
@@ -427,7 +431,14 @@ def convert_markup(mk, ctx, prop=None, el=None):
             kv[1] = convert_markup(kv[1], ctx, kv[0], el)
         elif isinstance(kv[1], str) and 'pack://' in kv[1]:
             kv[1] = convert_pack_uri(kv[1])
+    if name == 'x:Reference':
+        # {x:Reference Foo} -> binding to the named element itself
+        return Markup('Binding', ['#' + str(mk.args[0] if mk.args else mk.get('Name'))])
     if name == 'Binding':
+        src = mk.get('Source')
+        if isinstance(src, Markup) and src.name == 'Binding' and len(src.args) == 1 and str(src.args[0]).startswith('#') and not src.kwargs:
+            mk.remove('Source')
+            mk.set('ElementName', str(src.args[0])[1:])
         for dead in ('IsAsync', 'NotifyOnSourceUpdated', 'NotifyOnTargetUpdated', 'NotifyOnValidationError', 'ValidatesOnDataErrors',
                      'ValidatesOnExceptions', 'ValidatesOnNotifyDataErrors', 'BindsDirectlyToSource', 'BindingGroupName', 'XPath', 'Delay'):
             mk.remove(dead)
@@ -553,6 +564,8 @@ class Converter:
             comment.tail = el.tail
             parent.replace(el, comment)
             return
+        if ns == NS_WPF and tag == 'Duration':
+            el.tag = X + 'TimeSpan'
         if ns == NS_WPF and tag in UNSUPPORTED:
             self.ctx.todo.append('removed %s' % tag)
             parent = el.getparent()
@@ -1930,6 +1943,7 @@ def convert_file(path, registry, out_dir=None):
         if head and ' xmlns="' not in head.group(0):
             name = re.match(r'<[\w:.\-]+', s)
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
+        s = re.sub(r'<(/?)Duration(?=[ >])', r'<\1x:TimeSpan', s)
         # lxml likes to invent prefixes for elements which got created in other contexts
         for m in set(re.findall(r'xmlns:(ns\d+)="%s"' % re.escape(NS_AV), s)):
             s = re.sub(r' xmlns:%s="%s"' % (m, re.escape(NS_AV)), '', s)

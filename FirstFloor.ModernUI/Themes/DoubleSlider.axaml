@@ -208,9 +208,8 @@
               </Style><Style Selector="^[TickPlacement=TopLeft] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 2 5 0"/>
             </Style><Style Selector="^[TickPlacement=BottomRight] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
               </Style><Style Selector="^[TickPlacement=BottomRight] /template/ Border#TrackBackground"><Setter Property="Margin" Value="5 0 5 2"/>
-            </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
-              </Style><Style Selector="^[TickPlacement=Both] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
-            </Style><Style Selector="^[IsSelectionRangeEnabled=True] /template/ Rectangle#PART_SelectionRange"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[TickPlacement=Outside] /template/ TickBar#TopTick"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[TickPlacement=Outside] /template/ TickBar#BottomTick"><Setter Property="IsVisible" Value="True"/>
             </Style><Style Selector="^:disabled /template/ TickBar#TopTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
               </Style><Style Selector="^:disabled /template/ TickBar#BottomTick"><Setter Property="Fill" Value="{DynamicResource SliderTickDisabled}"/>
             </Style></ControlTheme>

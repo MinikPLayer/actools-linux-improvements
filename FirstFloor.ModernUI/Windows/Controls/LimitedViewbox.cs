@@ -1,69 +1,20 @@
-using System;
-using System.Collections;
+﻿using System;
+using Avalonia;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class LimitedViewbox : Decorator {
-        private ContainerVisual _internalVisual;
-
         static LimitedViewbox() { }
 
-        private ContainerVisual InternalVisual {
-            get {
-                if (_internalVisual == null) {
-                    _internalVisual = new ContainerVisual();
-                    AddVisualChild(_internalVisual);
-                }
-                return _internalVisual;
-            }
+        private Avalonia.Controls.Control InternalChild => Child;
+
+        private void SetScale(double x, double y) {
+            if (Child == null) return;
+            Child.RenderTransformOrigin = RelativePoint.TopLeft;
+            Child.RenderTransform = new ScaleTransform(x, y);
         }
-
-        private UIElement InternalChild {
-            get {
-                var children = InternalVisual.Children;
-                return children.Count != 0 ? children[0] as UIElement : null;
-            }
-            set {
-                var children = InternalVisual.Children;
-                if (children.Count != 0) {
-                    children.Clear();
-                }
-                children.Add(value);
-            }
-        }
-
-        private Transform InternalTransform {
-            get => InternalVisual.Transform;
-            set => InternalVisual.Transform = value;
-        }
-
-        public override UIElement Child {
-            get => InternalChild;
-            set {
-                var internalChild = InternalChild;
-                if (ReferenceEquals(internalChild, value)) return;
-
-                RemoveLogicalChild(internalChild);
-                if (value != null) {
-                    AddLogicalChild(value);
-                }
-
-                InternalChild = value;
-                InvalidateMeasure();
-            }
-        }
-
-        protected override int VisualChildrenCount => 1;
-
-        protected override Visual GetVisualChild(int index) {
-            if (index != 0) throw new ArgumentOutOfRangeException(nameof(index));
-            return InternalVisual;
-        }
-
-        protected override IEnumerator LogicalChildren => InternalChild == null ? EmptyEnumerator.Instance :
-                new SingleChildEnumerator(InternalChild);
 
         public static readonly StyledProperty<Stretch> StretchProperty = DP.Register<Stretch>(nameof(Stretch),
                 typeof(LimitedViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
@@ -117,18 +68,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var internalChild = InternalChild;
             var size = new Size();
             if (internalChild != null) {
-                var availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-
-                if (MinimumScale != 0d) {
-                    availableSize.Width = constraint.Width / MinimumScale;
-                    availableSize.Height = constraint.Height / MinimumScale;
-                }
+                var availableSize = MinimumScale != 0d
+                        ? new Size(constraint.Width / MinimumScale, constraint.Height / MinimumScale)
+                        : new Size(double.PositiveInfinity, double.PositiveInfinity);
 
                 internalChild.Measure(availableSize);
                 var desiredSize = internalChild.DesiredSize;
                 var scaleFactor = ComputeScaleFactor(constraint, desiredSize, Stretch, StretchDirection);
-                size.Width = scaleFactor.Width * desiredSize.Width;
-                size.Height = scaleFactor.Height * desiredSize.Height;
+                size = new Size(scaleFactor.Width * desiredSize.Width, scaleFactor.Height * desiredSize.Height);
             }
             return size;
         }
@@ -138,10 +85,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (internalChild != null) {
                 var desiredSize = internalChild.DesiredSize;
                 var scaleFactor = ComputeScaleFactor(arrangeSize, desiredSize, Stretch, StretchDirection);
-                InternalTransform = new ScaleTransform(scaleFactor.Width, scaleFactor.Height);
+                SetScale(scaleFactor.Width, scaleFactor.Height);
                 internalChild.Arrange(new Rect(new Point(), desiredSize));
-                arrangeSize.Width = scaleFactor.Width * desiredSize.Width;
-                arrangeSize.Height = scaleFactor.Height * desiredSize.Height;
+                arrangeSize = new Size(scaleFactor.Width * desiredSize.Width, scaleFactor.Height * desiredSize.Height);
             }
             return arrangeSize;
         }

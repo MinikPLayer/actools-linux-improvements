@@ -1,3 +1,4 @@
+﻿using Avalonia;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -258,8 +259,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             var thumbSize = ThumbSize;
             var thumbSubSize = ThumbSubSize;
-            SetValue(RangeLeftWidthPropertyKey.DependencyProperty, (ActualWidth - thumbSize) * leftLimit / range + thumbSubSize);
-            SetValue(RangeRightWidthPropertyKey.DependencyProperty, (ActualWidth - thumbSize) * rightLimit / range + thumbSubSize);
+            SetValue(RangeLeftWidthPropertyKey.DependencyProperty, (Bounds.Width - thumbSize) * leftLimit / range + thumbSubSize);
+            SetValue(RangeRightWidthPropertyKey.DependencyProperty, (Bounds.Width - thumbSize) * rightLimit / range + thumbSubSize);
         }
 
         private void UpdateThumbValues() {
@@ -267,29 +268,19 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
         #endregion
 
-        protected override void OnValueChanged(double oldValue, double newValue) {
-            _valueNotSet = false;
-            base.OnValueChanged(oldValue, newValue);
-            _publicValuesBusy.Do(() => {
-                From = newValue - _range / 2;
-                To = newValue + _range / 2;
-            });
-            UpdateThumbValues();
-        }
-
-        protected override void OnMinimumChanged(double oldMinimum, double newMinimum) {
-            base.OnMinimumChanged(oldMinimum, newMinimum);
-            UpdateThumbValues();
-        }
-
-        protected override void OnMaximumChanged(double oldMaximum, double newMaximum) {
-            base.OnMaximumChanged(oldMaximum, newMaximum);
-            UpdateThumbValues();
-        }
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo) {
-            base.OnRenderSizeChanged(sizeInfo);
-            UpdateThumbValues();
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (change.Property == ValueProperty) {
+                var newValue = change.GetNewValue<double>();
+                _valueNotSet = false;
+                _publicValuesBusy.Do(() => {
+                    From = newValue - _range / 2;
+                    To = newValue + _range / 2;
+                });
+                UpdateThumbValues();
+            } else if (change.Property == MinimumProperty || change.Property == MaximumProperty || change.Property == BoundsProperty) {
+                UpdateThumbValues();
+            }
         }
 
         public static readonly StyledProperty<DoubleSliderBindingMode> BindingModeProperty = DP.Register<DoubleSliderBindingMode>(nameof(BindingMode),

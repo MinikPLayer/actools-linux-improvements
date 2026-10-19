@@ -16,7 +16,6 @@
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTabSplitter.axaml"/>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernWindow.axaml"/>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/RoundSlider.axaml"/>
-        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/SplitButton.axaml"/>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/TransitioningContentControl.axaml"/>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/TagsList.axaml"/>
         <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ValueLabel.axaml"/>

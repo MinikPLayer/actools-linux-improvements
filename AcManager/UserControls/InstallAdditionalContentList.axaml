@@ -14,18 +14,18 @@
       <!-- ReSharper disable once Xaml.UnexpectedTextToken -->
       <sys:TimeSpan x:Key="IconFadeDelay">0:0:0.11</sys:TimeSpan>
 
-      <Duration x:Key="ExpandDuration">0:0:0.21</Duration>
-      <Duration x:Key="SlideUpDuration">0:0:0.15</Duration><!-- 23 px -->
-      <Duration x:Key="SlideRightDuration">0:0:0.15</Duration><!-- 24 px -->
-      <Duration x:Key="SlideLeftDuration">0:0:0.13</Duration><!-- 16 px -->
-      <Duration x:Key="IconFadeDuration">0:0:0.1</Duration>
+      <x:TimeSpan x:Key="ExpandDuration">0:0:0.21</x:TimeSpan>
+      <x:TimeSpan x:Key="SlideUpDuration">0:0:0.15</x:TimeSpan><!-- 23 px -->
+      <x:TimeSpan x:Key="SlideRightDuration">0:0:0.15</x:TimeSpan><!-- 24 px -->
+      <x:TimeSpan x:Key="SlideLeftDuration">0:0:0.13</x:TimeSpan><!-- 16 px -->
+      <x:TimeSpan x:Key="IconFadeDuration">0:0:0.1</x:TimeSpan>
 
       <!--<sys:TimeSpan x:Key="ResetTime">0:0:5.0</sys:TimeSpan>
-      <Duration x:Key="ExpandDuration">0:0:2.7</Duration>
-      <Duration x:Key="SlideUpDuration">0:0:2.1</Duration>~1~ 23 px @1@
-      <Duration x:Key="SlideRightDuration">0:0:2.1</Duration>~1~ 24 px @1@
-      <Duration x:Key="SlideLeftDuration">0:0:1.5</Duration>~1~ 16 px @1@
-      <Duration x:Key="IconFadeDuration">0:0:1.0</Duration>
+      <x:TimeSpan x:Key="ExpandDuration">0:0:2.7</x:TimeSpan>
+      <x:TimeSpan x:Key="SlideUpDuration">0:0:2.1</x:TimeSpan>~1~ 23 px @1@
+      <x:TimeSpan x:Key="SlideRightDuration">0:0:2.1</x:TimeSpan>~1~ 24 px @1@
+      <x:TimeSpan x:Key="SlideLeftDuration">0:0:1.5</x:TimeSpan>~1~ 16 px @1@
+      <x:TimeSpan x:Key="IconFadeDuration">0:0:1.0</x:TimeSpan>
       <sys:TimeSpan x:Key="IconFadeDelay">0:0:1.1</sys:TimeSpan>-->
 
       <DataTemplate x:Key="EntryDataTemplate" DataType="{x:Type t:ContentEntryBase}">

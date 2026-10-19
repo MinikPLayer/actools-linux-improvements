@@ -320,7 +320,7 @@
                     <mui:BooleanSwitch.Value>
                       <MultiBinding Converter="{StaticResource OrConverter}">
                         <Binding Path="FixedCar"/>
-                        <Binding Path="Visibility" Source="{x:Reference ExtendedInformation}" Converter="{StaticResource EnumToBooleanConverter}" ConverterParameter="Visible"/>
+                        <Binding Path="Visibility" Converter="{StaticResource EnumToBooleanConverter}" ConverterParameter="Visible" Source="{Binding #ExtendedInformation}"/>
                       </MultiBinding>
                     </mui:BooleanSwitch.Value>
                     <mui:BooleanSwitch.True>

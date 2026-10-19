@@ -87,7 +87,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// The Split Button’s Items property maps to the base classes ContextMenu.Items property
         /// </summary>
-        [Avalonia.Metadata.Content] public ItemCollection Items => ContextMenu.Items;
+        [Avalonia.Metadata.Content] public Avalonia.Controls.ItemCollection Items => ContextMenu.Items;
 
         /*
          * DependencyProperty CLR wrappers

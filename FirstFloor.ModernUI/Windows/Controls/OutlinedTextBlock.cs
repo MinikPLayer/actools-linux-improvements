@@ -65,7 +65,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
-        public static readonly StyledProperty<TextDecorationCollection> TextDecorationsProperty = DP.Register<TextDecorationCollection>("TextDecorations",
+        public static readonly StyledProperty<Avalonia.Media.TextDecorationCollection> TextDecorationsProperty = DP.Register<Avalonia.Media.TextDecorationCollection>("TextDecorations",
                 typeof(OutlinedTextBlock),
                 new FrameworkPropertyMetadata(OnFormattedTextUpdated));
 
@@ -91,7 +91,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FontFamilyProperty, value);
         }
 
-        [TypeConverter(typeof(FontSizeConverter))]
         public double FontSize {
             get => GetValue(FontSizeProperty) as double? ?? default;
             set => SetValue(FontSizeProperty, value);
@@ -132,8 +131,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TextAlignmentProperty, value);
         }
 
-        public TextDecorationCollection TextDecorations {
-            get => (TextDecorationCollection)GetValue(TextDecorationsProperty);
+        public Avalonia.Media.TextDecorationCollection TextDecorations {
+            get => (Avalonia.Media.TextDecorationCollection)GetValue(TextDecorationsProperty);
             set => SetValue(TextDecorationsProperty, value);
         }
 
@@ -149,7 +148,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public OutlinedTextBlock() {
             UpdatePen();
-            TextDecorations = new TextDecorationCollection();
+            TextDecorations = new Avalonia.Media.TextDecorationCollection();
         }
 
         public override void Render(DrawingContext drawingContext) {

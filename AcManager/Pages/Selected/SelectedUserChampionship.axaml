@@ -101,7 +101,7 @@
 
       <ScrollViewer x:Key="Rules" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}">
         <mui:SpacingStackPanel Spacing="12">
-          <DockPanel IsVisible="{Binding Visibility, Source={x:Reference PreviewImage}, Converter={x:Static pc:VisibilityConverters.ToBool}}">
+          <DockPanel IsVisible="{Binding Visibility, ElementName=PreviewImage, Converter={x:Static pc:VisibilityConverters.ToBool}}">
             <DockPanel DockPanel.Dock="Left" Width="210">
               <TextBlock Text="Cropped preview:" DockPanel.Dock="Top" Margin="0 0 0 8" Classes="Label Label.Padding"/>
               <mui:BetterImage Crop="{Binding SelectedObject.PreviewCrop}" CropUnits="Absolute" Filename="{Binding SelectedObject.PreviewImage}" Width="202" Height="202" Stretch="UniformToFill" HorizontalAlignment="Left" PointerReleased="OnCroppedPreviewClick"/>
@@ -459,13 +459,13 @@
         <Button Content="{x:Static g:AppStrings.Toolbar_Save}" Command="{Binding SelectedObject.SaveCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Save_JsonTooltip}"/>
         <Button Content="{x:Static g:AppStrings.Toolbar_Delete}" Command="{Binding SelectedObject.DeleteCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Delete_AppTooltip}"/>
       </mui:ToolBar>
-      <mui:ToolBar Band="1" BandIndex="1" IsVisible="{Binding SelectedSource, Source={x:Reference Tab}, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rules'}">
+      <mui:ToolBar Band="1" BandIndex="1" IsVisible="{Binding SelectedSource, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rules', ElementName=Tab}">
         <Button Content="{x:Static g:AppStrings.Toolbar_UpdatePreview}" Command="{Binding UpdatePreviewDirectCommand}">
           <ToolTip.Tip>Update championship’s preview (Ctrl+P)</ToolTip.Tip>
         </Button>
         <Button Content="Set crop params" Command="{Binding SetCropParamsCommand}" ToolTip.Tip="Set offset and size for cropped square version of preview"/>
       </mui:ToolBar>
-      <mui:ToolBar Band="1" BandIndex="1" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}" IsVisible="{Binding SelectedSource, Source={x:Reference Tab}, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rounds'}">
+      <mui:ToolBar Band="1" BandIndex="1" IsEnabled="{Binding SelectedObject.IsStarted, Converter={StaticResource InvertBooleanConverter}}" IsVisible="{Binding SelectedSource, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter='Rounds', ElementName=Tab}">
         <Button Content="Add new round" Command="{Binding AddNewRoundCommand}" ToolTip.Tip="Add a new round (Ctrl+N)"/>
       </mui:ToolBar>
     </ac:AcObjectBase.ToolBars>

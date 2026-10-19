@@ -132,7 +132,7 @@
     </DockPanel>
 
     <c:ModernPopup x:Name="SelectCarPopup" Placement="Right" PlacementTarget="{Binding ElementName=AddCarButton}" Padding="8" IsOpen="{Binding IsChecked, ElementName=AddCarButton, Mode=TwoWay}" StaysOpen="False" HorizontalAlignment="Right" Opened="SelectCarPopup_OnOpened" mui:PopupHelper.Register="True">
-      <Grid Width="320" DataContext="{x:Reference This}">
+      <Grid Width="320" DataContext="{Binding #This}">
         <Grid.RowDefinitions>
           <RowDefinition Height="Auto"/>
           <RowDefinition Height="480"/>

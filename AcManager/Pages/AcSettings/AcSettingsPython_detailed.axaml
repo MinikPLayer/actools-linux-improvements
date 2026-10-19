@@ -40,18 +40,18 @@
           </Setter.Value>
         </Setter>
 
-        <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:pointerover"><Style Selector="^[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
+        <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:pointerover"><Style Selector="^"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
             <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundHover}"/>
-          </Style></Style><Style Selector="^:pressed"><Style Selector="^[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
+          </Style></Style><Style Selector="^:pressed"><Style Selector="^"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
             <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundPressed}"/>
-          </Style></Style><Style Selector="^[SortDirection=Ascending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+          </Style></Style><Style Selector="^:sortascending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
                   <Setter Property="RenderTransform">
                     <Setter.Value>
                       <RotateTransform Angle="180"/>
                     </Setter.Value>
                   </Setter>
-                </Style><Style Selector="^[SortDirection=Descending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                </Style><Style Selector="^[CanUserSort=False] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^:sortdescending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+                </Style><Style Selector="^:not(:sortascending):not(:sortdescending) /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
                 </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
                 </Style></ControlTheme>
     </ResourceDictionary>
@@ -139,14 +139,14 @@
                       </ControlTemplate>
                   </Setter.Value>
                 </Setter>
-              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^[SortDirection=Ascending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:sortascending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
                           <Setter Property="RenderTransform">
                             <Setter.Value>
                               <RotateTransform Angle="180"/>
                             </Setter.Value>
                           </Setter>
-                        </Style><Style Selector="^[SortDirection=Descending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                        </Style><Style Selector="^[CanUserSort=False] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^:sortdescending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:not(:sortascending):not(:sortdescending) /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
                         </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
                         </Style></ControlTheme>
             </DataGridTemplateColumn.HeaderStyle>
@@ -200,14 +200,14 @@
                       </ControlTemplate>
                   </Setter.Value>
                 </Setter>
-              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^[SortDirection=Ascending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:sortascending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
                           <Setter Property="RenderTransform">
                             <Setter.Value>
                               <RotateTransform Angle="180"/>
                             </Setter.Value>
                           </Setter>
-                        </Style><Style Selector="^[SortDirection=Descending] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                        </Style><Style Selector="^[CanUserSort=False] /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^:sortdescending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:not(:sortascending):not(:sortdescending) /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
                         </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
                         </Style></ControlTheme>
             </DataGridTemplateColumn.HeaderStyle>

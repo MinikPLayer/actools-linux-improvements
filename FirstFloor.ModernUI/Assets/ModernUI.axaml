@@ -47,6 +47,7 @@
     <ResourceInclude Source="Watermark.axaml"/>
 
     <ResourceInclude Source="BetterTextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/Generic.axaml"/>
     <!--<ResourceDictionary Source="{x:Static presentation:AppearanceManager.DefaultValuesSource}" />-->
   </ResourceDictionary.MergedDictionaries>
 
