@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Layout;
@@ -22,8 +22,18 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public double ItemWidth { get => GetValue(ItemWidthProperty); set => SetValue(ItemWidthProperty, value); }
         public double ItemHeight { get => GetValue(ItemHeightProperty); set => SetValue(ItemHeightProperty, value); }
 
+        public static readonly StyledProperty<HorizontalAlignment> HorizontalContentAlignmentProperty = AvaloniaProperty.Register<VirtualizingTilePanel, HorizontalAlignment>(
+                nameof(HorizontalContentAlignment), HorizontalAlignment.Left);
+
+        public static readonly StyledProperty<VerticalAlignment> VerticalContentAlignmentProperty = AvaloniaProperty.Register<VirtualizingTilePanel, VerticalAlignment>(
+                nameof(VerticalContentAlignment), VerticalAlignment.Top);
+
+        public HorizontalAlignment HorizontalContentAlignment { get => GetValue(HorizontalContentAlignmentProperty); set => SetValue(HorizontalContentAlignmentProperty, value); }
+        public VerticalAlignment VerticalContentAlignment { get => GetValue(VerticalContentAlignmentProperty); set => SetValue(VerticalContentAlignmentProperty, value); }
+
         static VirtualizingTilePanel() {
             AffectsMeasure<VirtualizingTilePanel>(OrientationProperty, ItemWidthProperty, ItemHeightProperty);
+            AffectsArrange<VirtualizingTilePanel>(HorizontalContentAlignmentProperty, VerticalContentAlignmentProperty);
         }
 
         private Size _tile;
@@ -65,13 +75,25 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         protected override Size ArrangeOverride(Size finalSize) {
             var horizontal = Orientation == Orientation.Horizontal;
+            var count = Children.Count;
+            var lines = count == 0 ? 0 : (int)Math.Ceiling((double)count / _perLine);
+            var inLine = Math.Min(_perLine, count);
+            var contentWidth = horizontal ? inLine * _tile.Width : lines * _tile.Width;
+            var contentHeight = horizontal ? lines * _tile.Height : inLine * _tile.Height;
+            var offsetX = HorizontalContentAlignment == HorizontalAlignment.Center ? (finalSize.Width - contentWidth) / 2
+                    : HorizontalContentAlignment == HorizontalAlignment.Right ? finalSize.Width - contentWidth : 0d;
+            var offsetY = VerticalContentAlignment == VerticalAlignment.Center ? (finalSize.Height - contentHeight) / 2
+                    : VerticalContentAlignment == VerticalAlignment.Bottom ? finalSize.Height - contentHeight : 0d;
+            if (double.IsInfinity(offsetX) || offsetX < 0d) offsetX = 0d;
+            if (double.IsInfinity(offsetY) || offsetY < 0d) offsetY = 0d;
+
             var i = 0;
             foreach (var child in Children) {
                 var line = i / _perLine;
                 var pos = i % _perLine;
                 var x = horizontal ? pos * _tile.Width : line * _tile.Width;
                 var y = horizontal ? line * _tile.Height : pos * _tile.Height;
-                child.Arrange(new Rect(x, y, _tile.Width, _tile.Height));
+                child.Arrange(new Rect(offsetX + x, offsetY + y, _tile.Width, _tile.Height));
                 i++;
             }
 

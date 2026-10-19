@@ -529,7 +529,7 @@ namespace AcManager.Pages.Selected {
                 return;
             }
 
-            var newIndex = FirstFloor.ModernUI.Windows.Attached.Draggable.GetMouseItemIndex((ItemsControl)sender);
+            var newIndex = FirstFloor.ModernUI.Windows.Media.VisualExtension.GetMouseItemIndex((ItemsControl)sender);
             var list = _model.SelectedObject.ExtendedRounds;
             var oldIndex = list.IndexOf(roundObject);
             if (newIndex != oldIndex) {

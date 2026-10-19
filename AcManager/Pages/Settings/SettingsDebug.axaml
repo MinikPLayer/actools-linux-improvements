@@ -76,7 +76,7 @@
 
         <!--<DockPanel>
           <Label Content="Sel. range:" Width="200" DockPanel.Dock="Left" />
-          <Slider Minimum="0" Maximum="60" AutoToolTipPlacement="TopLeft" IsSelectionRangeEnabled="True" TickPlacement="Both" Margin="0 0 20 0"
+          <Slider Minimum="0" Maximum="60" AutoToolTipPlacement="TopLeft" IsSelectionRangeEnabled="True" TickPlacement="Outside" Margin="0 0 20 0"
               SelectionStart="20" SelectionEnd="40" />
         </DockPanel>-->
 

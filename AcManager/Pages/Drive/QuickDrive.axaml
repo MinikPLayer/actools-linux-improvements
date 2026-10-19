@@ -556,7 +556,7 @@
             </ContextMenu>
           </DockPanel.ContextMenu>
 
-          <mui:RoundSlider Minimum="0" Maximum="360" TickFrequency="22.5" Value="{Binding WindDirectionFlipped}" DockPanel.Dock="Right" Margin="4 -14 0 0" TickPlacement="Both" IsSnapToTickEnabled="{Binding Value, ElementName=WindDirectionSwitch, Converter={StaticResource InvertBooleanConverter}}" IsEnabled="{Binding RandomWindDirection, Converter={StaticResource InvertBooleanConverter}}">
+          <mui:RoundSlider Minimum="0" Maximum="360" TickFrequency="22.5" Value="{Binding WindDirectionFlipped}" DockPanel.Dock="Right" Margin="4 -14 0 0" TickPlacement="Outside" IsSnapToTickEnabled="{Binding Value, ElementName=WindDirectionSwitch, Converter={StaticResource InvertBooleanConverter}}" IsEnabled="{Binding RandomWindDirection, Converter={StaticResource InvertBooleanConverter}}">
             <mui:RoundSlider.Content>
               <Viewbox Stretch="Uniform" StretchDirection="DownOnly" HorizontalAlignment="Center" VerticalAlignment="Center" Width="24" Height="24">
                 <mui:BooleanSwitch x:Name="WindDirectionSwitch">

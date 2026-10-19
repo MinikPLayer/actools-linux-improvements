@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,8 +17,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SetWidth(LoadWidth());
         }
 
-        public static readonly RoutedEvent MovedEvent = EventManager.RegisterRoutedEvent(nameof(Moved), RoutingStrategy.Bubble,
-                typeof(EventHandler<MovedEventArgs>), typeof(ModernMenu));
+        public static readonly RoutedEvent<MovedEventArgs> MovedEvent = (RoutedEvent<MovedEventArgs>)EventManager.RegisterRoutedEvent(nameof(Moved), RoutingStrategy.Bubble,
+                typeof(EventHandler<MovedEventArgs>), typeof(ModernTabSplitter));
 
         public event EventHandler<MovedEventArgs> Moved {
             add => AddHandler(MovedEvent, value);

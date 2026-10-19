@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -26,7 +26,15 @@ namespace AcManager.Pages.About {
             ThankYouText.Visibility = InternalUtils.IsAllRight ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        private void OnVersionClick(object sender, PointerReleasedEventArgs e) {
+            OnVersionClick();
+        }
+
         private void OnVersionClick(object sender, PointerPressedEventArgs e) {
+            OnVersionClick();
+        }
+
+        private void OnVersionClick() {
             if (!SettingsHolder.Common.DeveloperMode && ++_clicks == 4 &&
                     ModernDialog.ShowMessage(AppStrings.About_DeveloperMode, AppStrings.About_DeveloperMode_Title, MessageBoxButton.YesNo) ==
                             MessageBoxResult.Yes) {

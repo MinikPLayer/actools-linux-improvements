@@ -32,7 +32,7 @@
 
   <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="True" Icon="{Binding Car.BrandBadge}" IsNameReadOnly="True" Scrollable="False">
     <c:AcObjectBase.ToolBars>
-      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+      <mui:ToolBar mui:ToolBar.IsLocked="True" Band="0" BandIndex="0">
         <Button Content="View in browser" Command="{Binding SelectedObject.ViewInBrowserCommand}" ToolTip.Tip="View setup’s page in the webbrowser (Ctrl+F)"/>
         <Button Content="Copy URL" Command="{Binding SelectedObject.CopyUrlCommand}" ToolTip.Tip="Copy URL to this setup to the clipboard (Ctrl+Alt+Page Up)"/>
         <Button Content="Share link" Command="{Binding ShareCommand}" ToolTip.Tip="Copy URL to quickly install this setup via Content Manager (Ctrl+Page Up)"/>

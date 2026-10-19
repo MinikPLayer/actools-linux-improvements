@@ -109,7 +109,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             if (e.Property == DataProperty && (GetEnabled(element) || e.OldValue != null)) return;
             if (e.Property == EnabledProperty && (GetData(element) != null || e.OldValue as bool? != false)) return;
 
-            MouseEventHandler handler;
+            EventHandler<PointerEventArgs> handler;
             switch (element) {
                 case DataGrid _:
                     handler = OnDataGridMouseMove;
@@ -129,11 +129,11 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                     e.Property == EnabledProperty && e.NewValue as bool? != false) {
                 element.AddPreviewMouseDown(OnElementMouseDown);
                 element.AddPreviewMouseMove(handler);
-                element.AllowDrop = true;
+                DragDrop.SetAllowDrop(element, true);
             } else {
                 element.RemovePreviewMouseDown(OnElementMouseDown);
                 element.RemovePreviewMouseMove(handler);
-                element.AllowDrop = false;
+                DragDrop.SetAllowDrop(element, false);
             }
         }
 
@@ -156,9 +156,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         [CanBeNull]
-        private static ItemsControl PrepareItem(FrameworkElement element) {
+        private static Avalonia.Controls.Control PrepareItem(FrameworkElement element) {
             {
-                var item = element as ListBoxItem;
+                var item = element as Avalonia.Controls.ListBoxItem;
                 var parent = item?.GetParent<ListBox>();
                 if (parent != null) {
                     if (!GetKeepSelection(parent)) {
@@ -169,11 +169,11 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             }
 
             {
-                var row = element as DataGridRow;
+                var row = element as Avalonia.Controls.DataGridRow;
                 var parent = row?.GetParent<DataGrid>();
                 if (parent != null) {
                     if (!GetKeepSelection(parent)) {
-                        parent.SelectedItem = row.Item;
+                        parent.SelectedItem = row.DataContext;
                     }
                     return parent;
                 }
@@ -182,10 +182,13 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             return element?.GetParent<ItemsControl>();
         }
 
+        private static System.Collections.Generic.IEnumerable<Window> GetWindows() {
+            return (Avalonia.Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?
+                    .Windows ?? (System.Collections.Generic.IEnumerable<Window>)new Window[0];
+        }
+
         private static void MarkDestinations(string format) {
-            var app = Application.Current;
-            if (app == null) return;
-            foreach (var destination in app.Windows.OfType<Window>()
+            foreach (var destination in GetWindows()
                     .SelectMany(VisualTreeHelperEx.FindVisualChildren<FrameworkElement>)
                     .Where(x => string.Equals(GetDestination(x)?.ToString(), format, StringComparison.Ordinal))) {
                 SetIsDestinationHighlighted(destination, true);
@@ -193,9 +196,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         private static void UnmarkDestinations() {
-            var app = Application.Current;
-            if (app == null) return;
-            foreach (var destination in app.Windows.OfType<Window>()
+            foreach (var destination in GetWindows()
                     .SelectMany(VisualTreeHelperEx.FindVisualChildren<FrameworkElement>)
                     .Where(GetIsDestinationHighlighted)) {
                 SetIsDestinationHighlighted(destination, false);
@@ -230,75 +231,79 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             return null;
         }
 
-        private static bool MoveDraggable([CanBeNull] FrameworkElement element, [CanBeNull] object draggable) {
+        private static bool MoveDraggable([CanBeNull] FrameworkElement element, [CanBeNull] object draggable, [NotNull] PointerEventArgs e) {
             if (element == null || draggable == null) return false;
 
             var format = GetFormat(draggable);
             if (format == null) return false;
 
+            _dragging = true;
+
+            var data = new DataObject();
+            data.Set(format, draggable);
+            MarkDestinations(format);
+            Events.RaiseDragStarted(format, draggable);
+
+            var source = PrepareItem(element);
+            if (source != null) {
+                data.Set(SourceFormat, source);
+            }
+
+            // PORT: no drag preview for now (WPF version showed a semi-transparent copy of the element)
+            DoDragAsync(e, data, (draggable as IDraggableCloneable)?.CanBeCloned == true ?
+                    DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.Move, format, draggable);
+            return true;
+        }
+
+        private static async void DoDragAsync(PointerEventArgs e, DataObject data, DragDropEffects effects, string format, object draggable) {
             try {
-                _dragging = true;
-
-                var data = new DataObject();
-                data.SetData(format, draggable);
-                MarkDestinations(format);
-                Events.RaiseDragStarted(format, draggable);
-
-                var source = PrepareItem(element);
-                if (source != null) {
-                    data.SetData(SourceFormat, source);
-                }
-
-                using (new DragPreview(element)) {
-                    DragDrop.DoDragDrop(element, data, (draggable as IDraggableCloneable)?.CanBeCloned == true ?
-                            DragDropEffects.Copy | DragDropEffects.Move : DragDropEffects.Move);
-                }
+                await DragDrop.DoDragDrop(e, data, effects);
+            } catch (Exception ex) {
+                Logging.Warning(ex);
             } finally {
                 _dragging = false;
                 UnmarkDestinations();
                 Events.RaiseDragEnded(format, draggable);
             }
-
-            return true;
         }
 
-        private static bool MoveBasic(FrameworkElement element) {
-            return element != null && MoveDraggable(element, GetData(element) ?? element.DataContext);
+        private static bool MoveBasic(FrameworkElement element, PointerEventArgs e) {
+            return element != null && MoveDraggable(element, GetData(element) ?? element.DataContext, e);
         }
 
-        private static bool MoveFromListBox(IInputElement element, MouseEventArgs e) {
-            return MoveBasic((element as ListBox)?.GetFromPoint<ListBoxItem>(e.GetPosition(element)));
+        private static bool MoveFromListBox(FrameworkElement element, PointerEventArgs e) {
+            return MoveBasic((element as ListBox)?.GetFromPoint<Avalonia.Controls.ListBoxItem>(e.GetPosition(element)), e);
         }
 
-        private static bool MoveFromItemsControl(IInputElement element, MouseEventArgs e) {
+        private static bool MoveFromItemsControl(FrameworkElement element, PointerEventArgs e) {
             if (!(element is ItemsControl items)) return false;
             var item = items.GetFromPoint<FrameworkElement>(e.GetPosition(element))?
                     .GetParents()
                     .OfType<FrameworkElement>()
-                    .FirstOrDefault(x => items.ItemsSource.OfType<object>().Contains(x.DataContext) ||
+                    .FirstOrDefault(x => items.ItemsSource?.OfType<object>().Contains(x.DataContext) == true ||
                             ReferenceEquals(x.TemplatedParent, element));
-            return MoveBasic(item);
+            return MoveBasic(item, e);
         }
 
-        private static bool MoveFromDataGrid(FrameworkElement element, MouseEventArgs e) {
-            var row = (element as DataGrid)?.GetFromPoint<DataGridRow>(e.GetPosition(element));
-            return row != null && MoveDraggable(row, row.Item);
+        private static bool MoveFromDataGrid(FrameworkElement element, PointerEventArgs e) {
+            var row = (element as DataGrid)?.GetFromPoint<Avalonia.Controls.DataGridRow>(e.GetPosition(element));
+            return row != null && MoveDraggable(row, row.DataContext, e);
         }
 
         private static bool IsIgnored(DependencyObject o) {
             return (o as UIElement)?.IsEnabled == true &&
-                    (o is TextBoxBase || o is Thumb || o is PasswordBox || o is ColorPicker || o is Slider);
+                    (o is TextBox || o is Thumb || o is ColorPicker || o is Slider);
         }
 
         private static bool IgnoreSpecialControls(object sender, MouseEventArgs e) {
             var reference = sender as UIElement;
             if (!(reference?.InputHitTest(e.GetPosition(reference)) is DependencyObject element) || IsIgnored(element) ||
-                    reference.FindVisualChildren<Popup>().Any(x => x.IsOpen)) return true;
+                    reference.FindVisualChildren<Avalonia.Controls.Primitives.Popup>().Any(x => x.IsOpen)) return true;
             return element.GetParents().TakeWhile(parent => !ReferenceEquals(parent, sender)).Any(IsIgnored);
         }
 
         private static bool IsDragging(object sender, MouseEventArgs e) {
-            if (_dragging || _previous != sender || e.LeftButton != MouseButtonState.Pressed ||
+            if (_dragging || _previous != sender || !e.GetCurrentPoint(sender as Visual).Properties.IsLeftButtonPressed ||
                     VisualExtension.GetMousePosition().DistanceTo(_startingPoint) < 3d) return false;
             if (IgnoreSpecialControls(sender, e)) {
                 _previous = null;
@@ -309,7 +314,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         private static void OnElementMouseMove(object sender, MouseEventArgs e) {
-            e.Handled = e.Handled || IsDragging(sender, e) && MoveBasic((FrameworkElement)sender);
+            e.Handled = e.Handled || IsDragging(sender, e) && MoveBasic((FrameworkElement)sender, e);
         }
 
         private static void OnListBoxMouseMove(object sender, MouseEventArgs e) {
@@ -344,10 +349,10 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                 }
 
                 element.AddDrop(OnDestinationDrop);
-                element.AllowDrop = true;
+                DragDrop.SetAllowDrop(element, true);
             } else {
                 element.RemoveDrop(OnDestinationDrop);
-                element.AllowDrop = false;
+                DragDrop.SetAllowDrop(element, false);
             }
         }
 
@@ -366,18 +371,18 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             var newValue = (IDraggableDestinationConverter)e.NewValue;
             if (newValue != null) {
                 element.AddDrop(OnDestinationConverterDrop);
-                element.AllowDrop = true;
+                DragDrop.SetAllowDrop(element, true);
             } else {
                 element.RemoveDrop(OnDestinationConverterDrop);
-                element.AllowDrop = false;
+                DragDrop.SetAllowDrop(element, false);
             }
         }
 
         private static void OnDestinationDrop(object sender, DragEventArgs e) {
             var destination = (ItemsControl)sender;
             var format = GetDestination(destination);
-            var item = e.Data.GetData(format?.ToString());
-            var source = e.Data.GetData(SourceFormat) as ItemsControl;
+            var item = e.Data.Get(format?.ToString());
+            var source = e.Data.Get(SourceFormat) as Avalonia.Controls.Control;
             InnerDrop(source, destination, item, e);
         }
 
@@ -385,19 +390,15 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             var destination = (ItemsControl)sender;
             var converter = GetDestinationConverter(destination);
             var item = converter?.Convert(e.Data);
-            var source = e.Data.GetData(SourceFormat) as ItemsControl;
+            var source = e.Data.Get(SourceFormat) as Avalonia.Controls.Control;
             InnerDrop(source, destination, item, e);
         }
 
         [CanBeNull]
-        private static IEnumerable GetActualList([CanBeNull] ItemsControl itemsControl) {
-            var list = itemsControl?.ItemsSource;
-            if (list is CompositeCollection collection) {
-                list = collection.OfType<CollectionContainer>()
-                        .Select(x => x.Collection)
-                        .OfType<ListCollectionView>()
-                        .Select(x => x.SourceCollection)
-                        .FirstOrDefault();
+        private static IEnumerable GetActualList([CanBeNull] Avalonia.Controls.Control itemsControl) {
+            var list = (itemsControl as ItemsControl)?.ItemsSource ?? (itemsControl as DataGrid)?.ItemsSource;
+            if (list is ListCollectionView view) {
+                list = view.SourceCollection;
             }
 
             return list;
@@ -418,11 +419,11 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         public static bool IsCopyAction(this DragEventArgs e) {
-            return (e.KeyStates & DragDropKeyStates.ControlKey) != 0;
+            return e.KeyModifiers.HasFlag(KeyModifiers.Control);
         }
 
         public static bool IsSpecificAction(this DragEventArgs e) {
-            return (e.KeyStates & DragDropKeyStates.ShiftKey) != 0;
+            return e.KeyModifiers.HasFlag(KeyModifiers.Shift);
         }
 
         [ContractAnnotation("item:null => null; item:notnull => notnull")]
@@ -431,9 +432,9 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                     ((IDraggableCloneable)item).Clone() : item;
         }
 
-        private static void InnerDrop([CanBeNull] ItemsControl source, [NotNull] ItemsControl destination, [CanBeNull] object item, DragEventArgs e) {
+        private static void InnerDrop([CanBeNull] Avalonia.Controls.Control source, [NotNull] ItemsControl destination, [CanBeNull] object item, DragEventArgs e) {
             if (item == null) {
-                e.Effects = DragDropEffects.None;
+                e.DragEffects = DragDropEffects.None;
                 return;
             }
 
@@ -446,18 +447,18 @@ namespace FirstFloor.ModernUI.Windows.Attached {
 
                 if (destinationList == null) {
                     Logging.Warning("Can’t find target: " + destination.ItemsSource);
-                    e.Effects = DragDropEffects.None;
+                    e.DragEffects = DragDropEffects.None;
                     return;
                 }
 
                 if (ReferenceEquals(sourceList, destinationList) && sourceList.IndexOf(item) == newIndex) {
-                    e.Effects = DragDropEffects.None;
+                    e.DragEffects = DragDropEffects.None;
                     return;
                 }
 
                 var method = GetListMethod(destinationList, type, newIndex == -1);
                 if (method == null) {
-                    e.Effects = DragDropEffects.None;
+                    e.DragEffects = DragDropEffects.None;
                     return;
                 }
 
@@ -471,7 +472,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                     method = GetListMethod(destinationList, type, true);
 
                     if (method == null) {
-                        e.Effects = DragDropEffects.None;
+                        e.DragEffects = DragDropEffects.None;
                         return;
                     }
                 }
@@ -479,7 +480,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                 method.Invoke(destinationList, newIndex == -1 ? new[] { draggedItem } : new[] { newIndex, draggedItem });
             } catch (Exception ex) {
                 Logging.Debug(ex);
-                e.Effects = DragDropEffects.None;
+                e.DragEffects = DragDropEffects.None;
             }
         }
     }

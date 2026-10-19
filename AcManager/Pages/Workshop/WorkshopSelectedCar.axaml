@@ -15,7 +15,7 @@
 
   <DockPanel Background="Transparent" Margin="16 0 16 0">
     <!--<c:AcToolBar x:Name="ToolBar" IsActive="True" DockPanel.Dock="Bottom" Panel.ZIndex="1">
-      <ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+      <ToolBar mui:ToolBar.IsLocked="True" Band="0" BandIndex="0">
         <Button Content="Install" Style="{StaticResource Go.ToolBarButton}" />
       </ToolBar>
     </c:AcToolBar>-->

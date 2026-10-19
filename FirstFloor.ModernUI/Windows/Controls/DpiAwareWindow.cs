@@ -33,6 +33,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static event EventHandler NewWindowCreated;
 
         protected DpiAwareWindow() {
+            FirstFloor.ModernUI.Windows.Media.VisualExtension.StartTrackingMouse();
             Keyboard.Hook();
 
             // windows are drawn by the theme (title bar, buttons, border), moving and resizing is handled here

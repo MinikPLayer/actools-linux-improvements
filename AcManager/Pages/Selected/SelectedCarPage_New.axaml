@@ -23,7 +23,7 @@
 
   <c:AcObjectBase AcObject="{Binding SelectedObject}" ShowIcon="True" IconMouseUp="OnIconClick" Icon="{Binding SelectedObject.BrandBadge}" mui:FancyHintsService.Hint="{Binding Id, Source={x:Static c:FancyHints.ChangeBrandBadge}, Mode=OneTime}" mui:FancyHintsService.TriggerOnLoad="True" mui:FancyHintsService.HorizontalAlignment="Left" mui:FancyHintsService.VerticalAlignment="Top" mui:FancyHintsService.HorizontalContentAlignment="Left" mui:FancyHintsService.VerticalContentAlignment="Top" mui:FancyHintsService.OffsetX="12" mui:FancyHintsService.OffsetY="12">
     <c:AcObjectBase.ToolBars>
-      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+      <mui:ToolBar mui:ToolBar.IsLocked="True" Band="0" BandIndex="0">
         <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Folder_CarTooltip}"/>
         <Button Content="{x:Static g:AppStrings.Toolbar_Reload}" Command="{Binding SelectedObject.ReloadCommand}" CommandParameter="full" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Reload_Tooltip}"/>
         <Separator/>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -1392,6 +1392,17 @@ namespace AcManager.Pages.Drive {
         }
 
         private void OnTrackBlockClick(object sender, PointerReleasedEventArgs e) {
+            if (e.Handled) return;
+            Model.ChangeTrackCommand.Execute(null);
+        }
+
+        // for buttons (Click)
+        private void OnCarBlockClick(object sender, RoutedEventArgs e) {
+            if (e.Handled) return;
+            Model.ChangeCarCommand.Execute(null);
+        }
+
+        private void OnTrackBlockClick(object sender, RoutedEventArgs e) {
             if (e.Handled) return;
             Model.ChangeTrackCommand.Execute(null);
         }

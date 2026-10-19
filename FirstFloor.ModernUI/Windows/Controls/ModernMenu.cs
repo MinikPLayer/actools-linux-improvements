@@ -42,12 +42,29 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             Loaded += OnLoaded;
         }
 
-        public static readonly RoutedEvent InitializeEvent = EventManager.RegisterRoutedEvent(nameof(Initialize), RoutingStrategy.Bubble,
+        public static readonly RoutedEvent<InitializeEventArgs> InitializeEvent = (RoutedEvent<InitializeEventArgs>)EventManager.RegisterRoutedEvent(nameof(Initialize), RoutingStrategy.Bubble,
                 typeof(EventHandler<InitializeEventArgs>), typeof(ModernMenu));
 
         public event EventHandler<InitializeEventArgs> Initialize {
             add => AddHandler(InitializeEvent, value);
             remove => RemoveHandler(InitializeEvent, value);
+        }
+
+        // attached event handlers for XAML (mui:ModernMenu.Initialize="...")
+        public static void AddInitializeHandler(Avalonia.Interactivity.Interactive element, EventHandler<InitializeEventArgs> handler) {
+            element.AddHandler(InitializeEvent, handler);
+        }
+
+        public static void RemoveInitializeHandler(Avalonia.Interactivity.Interactive element, EventHandler<InitializeEventArgs> handler) {
+            element.RemoveHandler(InitializeEvent, handler);
+        }
+
+        public static void AddSelectedChangeHandler(Avalonia.Interactivity.Interactive element, EventHandler<SelectedChangeEventArgs> handler) {
+            element.AddHandler(SelectedChangeEvent, handler);
+        }
+
+        public static void RemoveSelectedChangeHandler(Avalonia.Interactivity.Interactive element, EventHandler<SelectedChangeEventArgs> handler) {
+            element.RemoveHandler(SelectedChangeEvent, handler);
         }
 
         public class InitializeEventArgs : RoutedEventArgs {
@@ -59,7 +76,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             public Uri LoadedUri { get; }
         }
 
-        public static readonly RoutedEvent SelectedChangeEvent = EventManager.RegisterRoutedEvent(nameof(SelectedChange), RoutingStrategy.Bubble,
+        public static readonly RoutedEvent<SelectedChangeEventArgs> SelectedChangeEvent = (RoutedEvent<SelectedChangeEventArgs>)EventManager.RegisterRoutedEvent(nameof(SelectedChange), RoutingStrategy.Bubble,
                 typeof(EventHandler<SelectedChangeEventArgs>), typeof(ModernMenu));
 
         public event EventHandler<SelectedChangeEventArgs> SelectedChange {

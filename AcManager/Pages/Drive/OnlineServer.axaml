@@ -30,7 +30,7 @@
 
   <DockPanel Background="Transparent" Margin="16 0 16 0">
     <c:AcToolBar x:Name="ToolBar" IsActive="True" DockPanel.Dock="Bottom" ZIndex="1">
-      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+      <mui:ToolBar mui:ToolBar.IsLocked="True" Band="0" BandIndex="0">
         <Button Content="{x:Static g:AppStrings.Toolbar_Refresh}" Command="{Binding Entry.RefreshCommand}" ToolTip.Tip="{x:Static g:AppStrings.Toolbar_Refresh_OnlineTooltip}"/>
         <Separator/>
 
@@ -69,7 +69,7 @@
           <TextBlock Text="{Binding Entry.DisplayVotes, StringFormat='Community rating: {0}'}"/>
         </Button>
       </mui:ToolBar>
-      <mui:ToolBar ToolBarTray.IsLocked="True" Band="1" BandIndex="1">
+      <mui:ToolBar mui:ToolBar.IsLocked="True" Band="1" BandIndex="1">
         <mui:AsyncButton Command="{Binding Entry.InstallMissingContentCommand}" IsVisible="{Binding Entry.IsInstallMissingContentCommandAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
           <DockPanel>
             <Path Data="{StaticResource DownloadIconData}" Stretch="Uniform" Fill="{DynamicResource Accent}" Margin="0 0 6 -1" VerticalAlignment="Center" Width="12" Height="12"/>

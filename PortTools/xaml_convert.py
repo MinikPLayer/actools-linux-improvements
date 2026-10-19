@@ -282,6 +282,9 @@ def is_handler_name(v):
     return bool(v) and re.match(r'^[A-Za-z_]\w*$', v) is not None
 
 
+ALL_HANDLER_ARGS = {}
+
+
 def fix_handler_types(cs_path, handlers):
     """Makes handlers referenced by XAML events match the exact Avalonia delegate types (`MouseButtonEventArgs` etc. are aliases of the base ones)."""
     if not os.path.exists(cs_path) or not handlers:
@@ -292,6 +295,9 @@ def fix_handler_types(cs_path, handlers):
         if not args:
             continue
         pat = re.compile(r'(\b%s\s*\(\s*(?:object|\w+)\??\s+\w+\s*,\s*)([\w.<>]+)(\s+\w+\s*\))' % re.escape(name))
+        if len(pat.findall(src)) > 1 or len(ALL_HANDLER_ARGS.get(name, ())) > 1:
+            # one handler for several kinds of events: overloads are maintained by hand
+            continue
         src = pat.sub(lambda m: m.group(1) + args + m.group(3), src)
     if src != orig:
         open(cs_path, 'w', encoding='utf-8').write(src)
@@ -769,6 +775,7 @@ class Converter:
             new = EVENT_RENAME.get(name, name)
             if is_handler_name(val):
                 self.ctx.handlers[val] = (new, EVENT_ARGS.get(new))
+                ALL_HANDLER_ARGS.setdefault(val, set()).add(EVENT_ARGS.get(new))
             return new, val
         if name == 'Visibility':
             return 'IsVisible', self.convert_visibility(val, el)
@@ -1943,6 +1950,8 @@ def convert_file(path, registry, out_dir=None):
         if head and ' xmlns="' not in head.group(0):
             name = re.match(r'<[\w:.\-]+', s)
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
+        s = s.replace(' TickPlacement="Both"', ' TickPlacement="Outside"')
+        s = s.replace(' ToolBarTray.IsLocked=', ' mui:ToolBar.IsLocked=')
         s = re.sub(r'<(/?)Duration(?=[ >])', r'<\1x:TimeSpan', s)
         # lxml likes to invent prefixes for elements which got created in other contexts
         for m in set(re.findall(r'xmlns:(ns\d+)="%s"' % re.escape(NS_AV), s)):

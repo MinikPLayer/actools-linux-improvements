@@ -17,7 +17,7 @@
 
   <c:AcObjectBase x:Name="Base" AcObject="{Binding SelectedObject}" ShowIcon="False" Scrollable="False">
     <c:AcObjectBase.ToolBars>
-      <mui:ToolBar ToolBarTray.IsLocked="True" Band="0" BandIndex="0">
+      <mui:ToolBar mui:ToolBar.IsLocked="True" Band="0" BandIndex="0">
         <Button Content="{x:Static g:AppStrings.Toolbar_Folder}" Command="{Binding SelectedObject.ViewInExplorerCommand}">
           <ToolTip.Tip>Open preset’s folder (Ctrl+F)</ToolTip.Tip>
         </Button>
