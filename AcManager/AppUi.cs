@@ -246,8 +246,8 @@ namespace AcManager {
 
                     Logging.Write("No more windows");
                 } catch (Exception e) {
-                    FatalErrorHandler.OnFatalError(e);
                     Logging.Error(e);
+                    FatalErrorHandler.OnFatalError(e);
                 } finally {
                     Logging.Write("Shutdown…");
                     _timer.Stop();

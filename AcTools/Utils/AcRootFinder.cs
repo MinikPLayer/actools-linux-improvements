@@ -59,6 +59,11 @@ namespace AcTools.Utils {
             return null;
         }
 
+        private static RegistryKey OpenSteamKey() {
+            // there is no registry on other platforms
+            return OperatingSystem.IsWindows() ? Registry.CurrentUser?.OpenSubKey(@"Software\Valve\Steam") : null;
+        }
+
         public static IEnumerable<string> GetSteamDirectories(bool checkReg)
         {
             var linuxSteamAppsDirectory = GetLinuxSteamAppsDirectory();
@@ -77,11 +82,11 @@ namespace AcTools.Utils {
 
             if(checkReg)
             {
-                var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+                var regKey = OpenSteamKey();
                 if (regKey != null)
                 {
-                    var steamPath = regKey.GetValue("SteamPath").ToString();
-                    yield return steamPath;
+                    var steamPath = regKey.GetValue("SteamPath")?.ToString();
+                    if (steamPath != null) yield return steamPath;
                 }
             }
 
@@ -91,12 +96,14 @@ namespace AcTools.Utils {
             foreach(var dir in GetSteamDirectories(false))
                 yield return Path.Combine(dir, "steamapps");
             
-            var regKey = Registry.CurrentUser.OpenSubKey(@"Software\Valve\Steam");
+            var regKey = OpenSteamKey();
             if (regKey == null) yield break;
 
-            yield return Path.GetDirectoryName(regKey.GetValue("SourceModInstallPath").ToString());
+            var sourceMods = regKey.GetValue("SourceModInstallPath")?.ToString();
+            if (sourceMods != null) yield return Path.GetDirectoryName(sourceMods);
 
-            var steamPath = regKey.GetValue("SteamPath").ToString();
+            var steamPath = regKey.GetValue("SteamPath")?.ToString();
+            if (steamPath == null) yield break;
             var config = File.ReadAllText(Path.Combine(steamPath, @"config", @"config.vdf"));
 
             var match = Regex.Match(config, "\"BaseInstallFolder_\\d\"\\s+\"(.+?)\"");

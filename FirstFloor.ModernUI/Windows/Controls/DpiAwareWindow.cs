@@ -126,7 +126,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             get => _windowStyle;
             set {
                 _windowStyle = value;
-                Classes.Set(":borderless", value == WindowStyle.None);
+                if (value == WindowStyle.None) {
+                    PseudoClasses.Add(":borderless");
+                } else {
+                    PseudoClasses.Remove(":borderless");
+                }
             }
         }
 

@@ -91,7 +91,7 @@
     </ResourceDictionary></ControlTheme.Resources>
 
     <Style Selector="^ /template/ Border#PART_BorderActive"><Setter Property="IsVisible" Value="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ c|Cell#ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[ExtraContent=null] /template/ ContentControl#PART_ExtraContent"><Setter Property="IsVisible" Value="False"/>
-            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Path=BorderBrush.(SolidColorBrush.Color).(Color.A), ElementName=PART_Border, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ Border#PART_BorderActive"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding Path=BorderBrush.(SolidColorBrush.Color).A, ElementName=PART_Border, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(pa|T.S0)=True] /template/ Border#PART_BorderActive"><Setter Property="IsVisible" Value="False"/>
             </Style><Style Selector="^[CanResize=True]"><Style Selector="^[WindowState=Normal] /template/ c|Cell#ResizeGrip"><Setter Property="IsVisible" Value="True"/>
             </Style></Style><Style Selector="^[ShowTitle=False]"><Style Selector="^[ShowTopBlob=False]"><Style Selector="^[IconSource=null] /template/ StackPanel#PART_Title"><Setter Property="IsVisible" Value="False"/>
             </Style></Style></Style></ControlTheme>

@@ -102,6 +102,7 @@ namespace AcManager.Internal {
         public static Task<bool?> CheckKeyAsync(string value, string privateValue, string userAgent, CancellationToken cancellation = default) => Task.FromResult<bool?>(false);
         public static void SetSteamId(string steamId) { }
         public static byte[] CmGetData_v3(string url, string userAgent) {
+            url = Absolute(url);
             using (var client = new DecompressingWebClient()) {
                 client.Headers[HttpRequestHeader.UserAgent] = userAgent;
                 return client.DownloadData(url);
@@ -116,7 +117,10 @@ namespace AcManager.Internal {
             return Task.FromResult<Tuple<byte[], DateTime?>>(null);
         }
 
+        private static string Absolute(string url) => url.Contains("://") ? url : CmGetApiAddress(url);
+
         public static async Task<byte[]> CmGetDataAsync(string url, string userAgent, IProgress<AsyncProgressEntry> progress = null, CancellationToken cancellation = default) {
+            url = Absolute(url);
             using (var client = new DecompressingWebClient()) {
                 client.Headers[HttpRequestHeader.UserAgent] = userAgent;
                 using (cancellation.Register(client.CancelAsync)) {

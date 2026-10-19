@@ -20,8 +20,16 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public ModernProgressRing() {
         }
 
+        private void SetPseudoClass(string name, bool value) {
+            if (value) {
+                PseudoClasses.Add(name);
+            } else {
+                PseudoClasses.Remove(name);
+            }
+        }
+
         private static void OnIsActiveChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((ModernProgressRing)o).Classes.Set(":active", (bool)e.NewValue);
+            ((ModernProgressRing)o).SetPseudoClass(":active", (bool)e.NewValue);
         }
 
         /// <summary>

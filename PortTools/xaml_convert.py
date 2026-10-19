@@ -2072,6 +2072,7 @@ def convert_file(path, registry, out_dir=None):
         if head and ' xmlns="' not in head.group(0):
             name = re.match(r'<[\w:.\-]+', s)
             s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
+        s = re.sub(r'\.\(Color\.([ARGB])\)', r'.\1', s)
         s = s.replace(' TickPlacement="Both"', ' TickPlacement="Outside"')
         s = s.replace(' ToolBarTray.IsLocked=', ' mui:ToolBar.IsLocked=')
         s = re.sub(r'<(/?)Duration(?=[ >])', r'<\1x:TimeSpan', s)

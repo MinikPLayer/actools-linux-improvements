@@ -135,8 +135,12 @@ namespace AcManager {
             LocaleHelper.InitializeAsync().Wait();
         }
 
-        private static App CreateAndRun_CreateApp(bool forceSoftwareRenderingMode) {
+        private static bool _forceSoftwareRenderingMode, _softwareRenderingModeWasEnabled;
+
+        private static void CreateAndRun_Prepare(bool forceSoftwareRenderingMode) {
             var softwareRenderingModeWasEnabled = IsSoftwareRenderingModeEnabled();
+            _forceSoftwareRenderingMode = forceSoftwareRenderingMode;
+            _softwareRenderingModeWasEnabled = softwareRenderingModeWasEnabled;
             if (forceSoftwareRenderingMode) {
                 ValuesStorage.Set(AppAppearanceManager.KeySoftwareRendering, true);
             }
@@ -152,27 +156,25 @@ namespace AcManager {
                 ModernFrame.OptionDisableTransitionAnimation = true;
             }
 
-            var app = new App();
-
-            // Some sort of safe mode
-            if (forceSoftwareRenderingMode && !softwareRenderingModeWasEnabled) {
-                Toast.Show("Safe mode", "Failed to start the last time, now CM uses software rendering", () => {
-                    if (MessageDialog.Show(
-                            "Would you like to switch back to hardware rendering? You can always do that in Settings/Appearance. App will be restarted.",
-                            "Switch back", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
-                        ValuesStorage.Set(AppAppearanceManager.KeySoftwareRendering, false);
-                        Storage.SaveBeforeExit(); // Just in case
-                        WindowsHelper.RestartCurrentApplication();
-                    }
-                });
-            }
-
-            return app;
         }
 
         public static void CreateAndRun(bool forceSoftwareRenderingMode) {
             CreateAndRun_InitializeBase();
-            var app = CreateAndRun_CreateApp(forceSoftwareRenderingMode);
+            CreateAndRun_Prepare(forceSoftwareRenderingMode);
+
+            // Platform has to be set up before anything touches Avalonia’s dispatcher, App.Start() is called when it’s ready
+            var lifetime = new Avalonia.Controls.ApplicationLifetimes.ClassicDesktopStyleApplicationLifetime {
+                Args = Environment.GetCommandLineArgs().Skip(1).ToArray(),
+                ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown
+            };
+            if (Environment.GetEnvironmentVariable("CM_AVALONIA_LOG") != null) {
+                System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.ConsoleTraceListener());
+            }
+
+            AppBuilder.Configure(() => new App())
+                    .UsePlatformDetect()
+                    .LogToTrace(Avalonia.Logging.LogEventLevel.Information)
+                    .SetupWithLifetime(lifetime);
             var move = AppArguments.Get(AppFlag.MoveApp);
             if (move != null && File.Exists(move)) {
                 for (var i = 0; i < 10; i++) {
@@ -195,10 +197,7 @@ namespace AcManager {
                 }
             }
 
-            AppBuilder.Configure(() => app)
-                    .UsePlatformDetect()
-                    .LogToTrace()
-                    .StartWithClassicDesktopLifetime(Environment.GetCommandLineArgs().Skip(1).ToArray(), Avalonia.Controls.ShutdownMode.OnExplicitShutdown);
+            Environment.ExitCode = lifetime.Start(lifetime.Args);
         }
 
         private static void OnFatalError(object o, FatalErrorEventArgs args) {
@@ -213,10 +212,6 @@ namespace AcManager {
         public static bool IsSoftwareRenderingModeEnabled() {
             return AppArguments.GetBool(AppFlag.SoftwareRendering) || ValuesStorage.Get<bool>(AppAppearanceManager.KeySoftwareRendering)
                     || MainExecutingFile.Name.IndexOf(@"safe", StringComparison.OrdinalIgnoreCase) != -1;
-        }
-
-        public override void Initialize() {
-            // XAML is loaded in the constructor
         }
 
         private AppHibernator _hibernator;
@@ -273,9 +268,41 @@ namespace AcManager {
             }
         }
 
-        private App() {
-            // the whole initialization is done here (like WPF’s App constructor did), so resources have to be loaded first
+        private App() { }
+
+        public override void Initialize() {
             Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
+        }
+
+        public override void OnFrameworkInitializationCompleted() {
+            base.OnFrameworkInitializationCompleted();
+            if (_started) return;
+            _started = true;
+
+            // The whole initialization was done in WPF’s App constructor, but Avalonia’s Application.Current
+            // and resources are available only now
+            Start();
+        }
+
+        private bool _started;
+
+        private void Start() {
+            if (Environment.GetEnvironmentVariable("CM_DUMP_TREE") is string dump && double.TryParse(dump, out var delay)) {
+                FirstFloor.ModernUI.Helpers.VisualTreeDumper.DumpAfter(TimeSpan.FromSeconds(delay));
+            }
+            // Some sort of safe mode
+            if (_forceSoftwareRenderingMode && !_softwareRenderingModeWasEnabled) {
+                Toast.Show("Safe mode", "Failed to start the last time, now CM uses software rendering", () => {
+                    if (MessageDialog.Show(
+                            "Would you like to switch back to hardware rendering? You can always do that in Settings/Appearance. App will be restarted.",
+                            "Switch back", MessageBoxButton.YesNo) == MessageBoxResult.Yes) {
+                        ValuesStorage.Set(AppAppearanceManager.KeySoftwareRendering, false);
+                        Storage.SaveBeforeExit(); // Just in case
+                        WindowsHelper.RestartCurrentApplication();
+                    }
+                });
+            }
+
             TryTls13();
             AppArguments.Set(AppFlag.SyncNavigation, ref ModernFrame.OptionUseSyncNavigation);
             AppArguments.Set(AppFlag.DisableTransitionAnimation, ref ModernFrame.OptionDisableTransitionAnimation);
