@@ -12,9 +12,7 @@
   <VisualBrush x:Key="UltimateAnimated">
     <VisualBrush.Visual>
       <Ellipse Fill="Aqua" Width="8" Height="8">
-        <Ellipse.Triggers>
-          <!-- PORT: removed EventTrigger -->
-        </Ellipse.Triggers>
+        <!-- PORT: removed Ellipse.Triggers -->
       </Ellipse>
     </VisualBrush.Visual>
   </VisualBrush>
@@ -28,16 +26,12 @@
           <Path.Data>
             <PathGeometry>
               <PathGeometry.Figures>
-                <PathFigureCollection>
-                  <PathFigure StartPoint="0,4">
+                <PathFigure StartPoint="0,4">
                     <PathFigure.Segments>
-                      <PathSegmentCollection>
-                        <ArcSegment Size="8,8" RotationAngle="0" IsLargeArc="False" SweepDirection="CounterClockwise" Point="8,4"/>
-                      </PathSegmentCollection>
-                    </PathFigure.Segments>
+                      <ArcSegment Size="8,8" RotationAngle="0" IsLargeArc="False" SweepDirection="CounterClockwise" Point="8,4"/>
+                      </PathFigure.Segments>
                   </PathFigure>
-                </PathFigureCollection>
-              </PathGeometry.Figures>
+                </PathGeometry.Figures>
             </PathGeometry>
           </Path.Data>
         </Path>

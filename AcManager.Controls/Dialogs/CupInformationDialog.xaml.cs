@@ -42,7 +42,7 @@ namespace AcManager.Controls.Dialogs {
             }
         }
 
-        private void OnClosing(object sender, CancelEventArgs e) {}
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs e) {}
 
         private bool _click;
 

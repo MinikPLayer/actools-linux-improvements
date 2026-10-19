@@ -4,7 +4,7 @@
     <Setter Property="StretchDirection" Value="DownOnly"/>
     <Setter Property="Effect">
       <Setter.Value>
-        <mui:AsTransparencyMask OverlayColor="{DynamicResource AccentColor}"/>
+        <!-- PORT: removed AsTransparencyMask (pixel shader effect) -->
       </Setter.Value>
     </Setter>
   </Style>

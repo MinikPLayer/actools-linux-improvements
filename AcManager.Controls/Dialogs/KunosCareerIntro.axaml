@@ -8,8 +8,8 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </mui:ModernDialog.Resources>
-  <mui:ModernDialog.Style>
-    <ControlTheme TargetType="mui:ModernDialog" x:Key="{x:Type mui:ModernDialog}">
+  <mui:ModernDialog.Theme>
+    <ControlTheme TargetType="mui:ModernDialog">
       <Setter Property="BackgroundContent" Value="{x:Null}"/>
     <Setter Property="Background" Value="#dd151515"/>
     <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
@@ -49,7 +49,7 @@
       </Setter>
     <Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
       </Style></ControlTheme>
-  </mui:ModernDialog.Style>
+  </mui:ModernDialog.Theme>
 
   <mui:Cell>
     <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1240" Height="560">

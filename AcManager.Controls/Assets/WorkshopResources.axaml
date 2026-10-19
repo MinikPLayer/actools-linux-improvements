@@ -262,7 +262,7 @@
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
-                    <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal" VirtualizationMode="Recycling" IsVirtualizing="True" ScrollUnit="Pixel"/>
+                    <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal"/>
                   </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
               </ListBox>
@@ -459,7 +459,7 @@
           <WrapPanel/>
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
-      <ItemsControl.ItemTemplateSelector>
+      <ItemsControl.ItemTemplate>
         <mui:MixedDataTemplateSelector>
           <mui:MixedDataTemplateSelector.DataTemplate>
             <DataTemplate DataType="data:WorkshopCollabReference">
@@ -479,7 +479,7 @@
             </DataTemplate>
           </mui:MixedDataTemplateSelector.UIElementTemplate>
         </mui:MixedDataTemplateSelector>
-      </ItemsControl.ItemTemplateSelector>
+      </ItemsControl.ItemTemplate>
       <ItemsControl.Resources>
         <!-- PORT: removed CollectionViewSource -->
       </ItemsControl.Resources>

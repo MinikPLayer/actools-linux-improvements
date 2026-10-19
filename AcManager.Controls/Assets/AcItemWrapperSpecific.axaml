@@ -225,7 +225,7 @@
               </Style><Style Selector="^[(pa|T.S52)=True] c|RatingBar#PART_RatingIcon"><!-- PORT: removed setter of ActiveBrush (not in Avalonia) -->
             </Style></Style></DockPanel.Styles><c:FontIconImage Width="24" Height="24" DockPanel.Dock="Left" Margin="10 0 0 0" Source="{Binding IconBitmap}">
               <c:FontIconImage.Effect>
-                <mui:AsTransparencyMask OverlayColor="{Binding Path=(TextBlock.Foreground), ElementName=PART_Panel, Converter={StaticResource SolidBrushToColorConverter}}"/>
+                <!-- PORT: removed AsTransparencyMask (pixel shader effect) -->
               </c:FontIconImage.Effect>
             </c:FontIconImage>
             <Path Data="{StaticResource AlertIconData}" Width="16" Height="16" DockPanel.Dock="Right" Stretch="Uniform" x:Name="PART_ErrorIcon"/>

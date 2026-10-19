@@ -12,6 +12,21 @@ namespace AcManager.Controls.UserControls {
             Placement = PlacementMode.Bottom;
         }
 
+        /// <summary>WPF’s StaysOpen is the opposite of light dismiss.</summary>
+        public static readonly StyledProperty<bool> StaysOpenProperty = Avalonia.AvaloniaProperty.Register<ModernPopup, bool>(nameof(StaysOpen), true);
+
+        public bool StaysOpen {
+            get => GetValue(StaysOpenProperty);
+            set => SetValue(StaysOpenProperty, value);
+        }
+
+        protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (change.Property == StaysOpenProperty) {
+                IsLightDismissEnabled = !(bool)change.NewValue;
+            }
+        }
+
         public static readonly StyledProperty<Thickness> PaddingProperty = DP.Register<Thickness>(nameof(Padding),
                 typeof(ModernPopup), new PropertyMetadata(new Thickness(4d)));
 

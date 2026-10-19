@@ -126,7 +126,7 @@
           </ControlTemplate>
       </Setter.Value>
     </Setter>
-  <Style Selector="^[HasItems=False] /template/ Border#DropDownBorder"><Setter Property="Height" Value="95"/>
+  <Style Selector="^[ItemCount=0] /template/ Border#DropDownBorder"><Setter Property="Height" Value="95"/>
             </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
             </Style></ControlTheme>
 

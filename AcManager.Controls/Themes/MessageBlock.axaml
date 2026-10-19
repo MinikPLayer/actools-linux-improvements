@@ -16,7 +16,7 @@
       <Setter.Value>
         <ControlTemplate TargetType="ac:MessageBlock">
           <mui:Cell Background="{TemplateBinding Background}">
-            <Rectangle Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeDashArray="4 4"/>
+            <Rectangle Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding BorderThickness}" StrokeDashArray="4,4"/>
             <DockPanel Margin="{TemplateBinding Padding}">
               <Button DockPanel.Dock="Right" x:Name="PART_CloseButton" Margin="4 0 0 0" VerticalAlignment="Top"/>
               <mui:ReferenceSwitch Value="{TemplateBinding Content}">

@@ -37,7 +37,7 @@ NS_BLEND_AV_CORE = 'using:Avalonia.Xaml.Interactions.Core'
 # WPF controls which Avalonia doesn't have and which are replaced by ModernUI ones
 CUSTOM_ELEMENTS = {'ToolBar': NS_MUI, 'ToolBarTray': NS_MUI}
 # custom shader effects of ModernUI, there are no pixel shaders in Avalonia
-CUSTOM_EFFECTS = {'OverlayColorEffect', 'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
+CUSTOM_EFFECTS = {'AsTransparencyMask', 'OverlayColorEffect', 'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
 # styles for types which don't exist in Avalonia
 UNSUPPORTED_TARGETS = {'GroupItem', 'Hyperlink_', 'ToolBarOverflowPanel', 'ToolBarPanel', 'DocumentViewer', 'FlowDocumentScrollViewer'}
 # resource dictionaries of ModernUI which aren't converted (Avalonia’s own templates are used instead)
@@ -83,6 +83,10 @@ PSEUDO = {
     ('IsMouseOver', 'True'): ':pointerover',
     ('IsMouseOver', 'False'): ':not(:pointerover)',
     ('IsMouseDirectlyOver', 'True'): ':pointerover',
+    ('IsHighlighted', 'True'): ':pointerover',
+    ('IsHighlighted', 'False'): ':not(:pointerover)',
+    ('HasItems', 'False'): '[ItemCount=0]',
+    ('HasItems', 'True'): ':not([ItemCount=0])',
     ('IsPressed', 'True'): ':pressed',
     ('IsPressed', 'False'): ':not(:pressed)',
     ('IsEnabled', 'False'): ':disabled',
@@ -110,6 +114,7 @@ PSEUDO = {
 }
 
 PROP_RENAME = {
+    'ContentStringFormat': None, 'ItemTemplateSelector': 'ItemTemplate',
     'CacheMode': None, 'RenderOptions.BitmapScalingMode_': None, 'BorderEdgeMode': None, 'EdgeMode': None,
     'Panel.ZIndex': 'ZIndex',
     'SnapsToDevicePixels': None,
@@ -163,7 +168,7 @@ PROP_RENAME = {
     'SnapsToDevicePixels': None,
     'ContentStringFormat': None,
     'ContentTemplateSelector': None,
-    'ItemTemplateSelector': None,
+    'ItemTemplateSelector': 'ItemTemplate',
     'NavigationUIVisibility': None,
     'TextOptions.TextFormattingMode': None,
     'TextBlock.TextOptions': None,
@@ -216,8 +221,10 @@ EVENT_ARGS = {
     'TextInput': 'TextInputEventArgs', 'DoubleTapped': 'TappedEventArgs', 'Tapped': 'TappedEventArgs',
     'DragDrop.Drop': 'DragEventArgs', 'DragDrop.DragOver': 'DragEventArgs', 'DragDrop.DragEnter': 'DragEventArgs', 'DragDrop.DragLeave': 'DragEventArgs',
     'SelectionChanged': 'SelectionChangedEventArgs', 'TextChanged': 'TextChangedEventArgs', 'SizeChanged': 'SizeChangedEventArgs',
-    'GotFocus': 'GotFocusEventArgs', 'ContextRequested': 'ContextRequestedEventArgs',
+    'GotFocus': 'GotFocusEventArgs', 'Closing': 'Avalonia.Controls.WindowClosingEventArgs', 'ContextRequested': 'ContextRequestedEventArgs',
 }
+
+EVENT_RENAME_EXTRA = {}
 
 CURSORS = {'SizeWE': 'SizeWestEast', 'SizeNS': 'SizeNorthSouth', 'IBeam': 'Ibeam', 'ScrollAll': 'SizeAll',
            'SizeNESW': 'TopRightCorner', 'SizeNWSE': 'TopLeftCorner'}
@@ -471,7 +478,7 @@ class Converter:
         if '.' in tag:
             self.convert_property_element(el, tag, ns)
             return
-        if ns == NS_MUI and tag in CUSTOM_EFFECTS or ns == NS_WPF and tag in ('PriorityBinding_',):
+        if (ns == NS_MUI or (ns or '').startswith('clr-namespace:FirstFloor.ModernUI.Effects')) and tag in CUSTOM_EFFECTS or ns == NS_WPF and tag in ('PriorityBinding_',):
             self.ctx.todo.append('removed %s' % tag)
             parent = el.getparent()
             comment = etree.Comment(' PORT: removed %s (pixel shader effect) ' % tag)
@@ -493,6 +500,17 @@ class Converter:
             el.tag = '{%s}%s' % (CUSTOM_ELEMENTS[tag], tag)
             self.convert_attributes(el)
             for c in list(el):
+                if is_el(c):
+                    self.convert_element(c)
+            return
+        if ns == NS_WPF and tag in ('PathFigureCollection', 'PathSegmentCollection'):
+            parent = el.getparent()
+            idx = parent.index(el)
+            kids = list(el)
+            parent.remove(el)
+            for k, c in enumerate(kids):
+                parent.insert(idx + k, c)
+            for c in kids:
                 if is_el(c):
                     self.convert_element(c)
             return
@@ -643,7 +661,7 @@ class Converter:
     def convert_attribute(self, el, name, val):
         tag = local(el.tag)
         if name in ('IsItemsHost', 'CacheLength', 'CacheLengthUnit', 'ScrollUnit', 'VirtualizationMode', 'IsVirtualizing') and tag in (
-                'VirtualizingStackPanel', 'StackPanel', 'WrapPanel', 'VirtualizingPanel', 'Grid', 'DockPanel', 'Canvas', 'UniformGrid'):
+                'VirtualizingStackPanel', 'VirtualizingTilePanel', 'VirtualizingColumnsPanel', 'VirtualizingWrapPanel', 'StackPanel', 'WrapPanel', 'VirtualizingPanel', 'Grid', 'DockPanel', 'Canvas', 'UniformGrid'):
             return None, val
         if name == 'SelectionMode' and val == 'Extended':
             return name, 'Multiple'
@@ -653,6 +671,8 @@ class Converter:
         m = re.match(r'^TextBlock\.(Foreground|FontSize|FontFamily|FontWeight|FontStyle)$', name)
         if m:
             return 'TextElement.' + m.group(1), convert_markup_value(val, self.ctx, name, el)
+        if name == 'DisplayMemberPath' and val and re.match(r'^[\w.]+$', val):
+            return 'DisplayMemberBinding', '{Binding %s}' % val
         if name in EVENT_RENAME or name in EVENT_ARGS:
             new = EVENT_RENAME.get(name, name)
             if is_handler_name(val):
@@ -685,6 +705,8 @@ class Converter:
             return name, convert_markup_value(val, self.ctx, name, el)
         if 'pack://' in val:
             return name, convert_pack_uri(val)
+        if name.endswith('DashArray'):
+            return name, val.replace(' ', ',')
         return name, val
 
     def convert_visibility(self, val, el):
@@ -719,7 +741,10 @@ class Converter:
             el.tag = qn('ToolTip.Tip')
             self.convert_tree(el)
             return
-        if ns != NS_WPF:
+        if ns == NS_BLEND:
+            self.convert_blend(el, tag)
+            return
+        if ns != NS_WPF and prop not in ('Style', 'ItemContainerStyle', 'Resources', 'Triggers'):
             self.convert_tree(el)
             return
         if prop == 'ToolTip':
@@ -745,10 +770,17 @@ class Converter:
             parent.replace(el, comment)
             return
         if prop == 'Resources':
-            el.tag = qn('%s.Resources' % TYPE_RENAME.get(owner, owner))
+            el.tag = retag(el.tag, '%s.Resources' % TYPE_RENAME.get(owner, owner))
             self.convert_tree(el)
             return
         if prop in ('Triggers',) and owner in ('Style', 'ControlTemplate', 'DataTemplate'):
+            return
+        if prop == 'Triggers':
+            # EventTrigger animations
+            parent = el.getparent()
+            comment = etree.Comment(' PORT: removed %s ' % tag)
+            comment.tail = el.tail
+            parent.replace(el, comment)
             return
         if prop == 'Visibility':
             el.tag = qn('%s.IsVisible' % owner)
@@ -764,6 +796,15 @@ class Converter:
             el.tag = qn('%s.Effect' % owner)
             self.convert_tree(el)
             return
+        if prop in PROP_RENAME:
+            new = PROP_RENAME[prop]
+            if new is None:
+                parent = el.getparent()
+                comment = etree.Comment(' PORT: removed %s ' % tag)
+                comment.tail = el.tail
+                parent.replace(el, comment)
+                return
+            prop = new
         prop = {'DecreaseRepeatButton': 'DecreaseButton', 'IncreaseRepeatButton': 'IncreaseButton'}.get(prop, prop)
         el.tag = qn('%s.%s' % (TYPE_RENAME.get(owner, owner), prop))
         self.convert_tree(el)
@@ -842,7 +883,7 @@ class Converter:
         st = styles[0]
         has_t = any(is_el(s) and local(s.tag) == 'Setter' and s.get('Property') == 'Template' for s in st)
         if has_t:
-            el.tag = qn('%s.Theme' % owner)
+            el.tag = retag(el.tag, '%s.Theme' % owner)
             StyleConverter(self).convert(st, force_theme=True)
             st.attrib.pop(X + 'Key', None)
         else:
@@ -852,7 +893,7 @@ class Converter:
             parent = el.getparent()
             tt = type_name(st.get('TargetType') or owner)
             StyleConverter(self).convert(st, class_name=cls)
-            st.attrib['Selector'] = '%s.%s' % (tt, cls)
+            st.attrib['Selector'] = ('%s.%s' % (tt, cls)).replace(':', '|')
             el.tag = retag(el.tag, '%s.Styles' % owner)
             classes = (parent.get('Classes') or '').split()
             classes.append(cls)
@@ -866,13 +907,13 @@ class Converter:
         st = styles[0]
         has_t = any(is_el(s) and local(s.tag) == 'Setter' and s.get('Property') == 'Template' for s in st)
         if has_t:
-            el.tag = qn('%s.ItemContainerTheme' % owner)
+            el.tag = retag(el.tag, '%s.ItemContainerTheme' % owner)
             StyleConverter(self).convert(st, force_theme=True)
             st.attrib.pop(X + 'Key', None)
         else:
             tt = type_name(st.get('TargetType') or 'ListBoxItem')
             StyleConverter(self).convert(st, class_name=None)
-            st.attrib['Selector'] = tt
+            st.attrib['Selector'] = tt.replace(':', '|')
             el.tag = retag(el.tag, '%s.Styles' % owner)
 
 
@@ -1662,6 +1703,8 @@ def convert_file(path, registry, out_dir=None):
             new_nsmap[p] = NS_AV
         elif u == NS_D:
             continue
+        elif u == NS_BLEND:
+            new_nsmap[p] = NS_BLEND_AV
         else:
             new_nsmap[p] = u
     for hp, hu in HELPER_NS.items():

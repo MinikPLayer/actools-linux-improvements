@@ -45,7 +45,7 @@
                         ItemWidth="{Binding ActualWidth, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.49, RelativeSource={RelativeSource Self}}"
                         ItemHeight="{Binding ActualWidth, Converter={StaticResource MultiplyConverter}, ConverterParameter=0.275625, RelativeSource={RelativeSource Self}}"
                         VirtualizationMode="Recycling" IsVirtualizing="True" CacheLength="24,24" CacheLengthUnit="Item" />-->
-                    <mui:VirtualizingColumnsPanel Columns="{Binding ActualWidth, Converter={x:Static ac:AcObjectListBox.ThumbnailColumnsConverter}, RelativeSource={RelativeSource Self}}" ItemHeightModifier="0.5625" VirtualizationMode="Recycling" IsVirtualizing="True" CacheLength="2,2" CacheLengthUnit="Item"/>
+                    <mui:VirtualizingColumnsPanel Columns="{Binding ActualWidth, Converter={x:Static ac:AcObjectListBox.ThumbnailColumnsConverter}, RelativeSource={RelativeSource Self}}" ItemHeightModifier="0.5625"/>
                   </ItemsPanelTemplate>
                 </Setter.Value>
               </Setter>

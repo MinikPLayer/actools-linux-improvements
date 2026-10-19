@@ -50,7 +50,7 @@
             <ListBox ItemsSource="{Binding Car.EnabledSkinsListView}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="4" SelectedItem="{Binding CarSkin}" VerticalAlignment="Top" BorderThickness="0" ItemTemplate="{StaticResource CarSkinItemTemplate}">
               <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                  <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal" VirtualizationMode="Recycling" IsVirtualizing="True" ScrollUnit="Pixel"/>
+                  <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
               </ListBox.ItemsPanel>
             </ListBox>
@@ -156,7 +156,7 @@
             <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
           </TextBlock>
           <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Theme="{StaticResource Label}"/>
-          <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" DisplayMemberPath="Key" VerticalAlignment="Top"/>
+          <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" VerticalAlignment="Top" DisplayMemberBinding="{Binding Key}"/>
         </DockPanel>
       </mui:SpacingStackPanel>
     </uc:ModernPopup>
@@ -213,7 +213,7 @@
                     <Run Text="{Binding RatioMaxSpeed, Mode=OneWay, ConverterParameter={x:Static t:SettingsHolder+CommonSettings.DistanceMultiplier}, StringFormat={x:Static t:SettingsHolder+CommonSettings.SpeedFormat}}"/>
                   </TextBlock>
                   <TextBlock Text="{Binding DisplayName, StringFormat={x:Static mui:ColonConverter.FormatNoSpaceAfterwards}}" Margin="0 2 0 4" Width="100" DockPanel.Dock="Left" VerticalAlignment="Top" Theme="{StaticResource Label}"/>
-                  <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" DisplayMemberPath="Key" VerticalAlignment="Top"/>
+                  <mui:BetterComboBox SelectedItem="{Binding ValuePair}" ItemsSource="{Binding Values}" IsEditable="False" VerticalAlignment="Top" DisplayMemberBinding="{Binding Key}"/>
                 </DockPanel>
               </mui:SpacingStackPanel>
             </uc:ModernPopup>

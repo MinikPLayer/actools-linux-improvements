@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -325,7 +325,7 @@ namespace AcManager.Controls.Dialogs {
             Buttons = new[] { GoButton, CloseButton };
         }
 
-        private void OnClosing(object sender, CancelEventArgs e) {
+        private void OnClosing(object sender, Avalonia.Controls.WindowClosingEventArgs e) {
             if (!IsResultOk) return;
             Model.Run();
             Model.Dispose();

@@ -26,16 +26,16 @@
   <DockPanel Height="100" IsVisible="{Binding Converter={StaticResource NullToVisibilityConverter}, ConverterParameter='inverse, hidden'}">
     <!-- previed image -->
     <Grid DockPanel.Dock="Left" Background="{DynamicResource ThumbnailBackground}" Margin="0 0 24 0" Width="100" Height="100">
-      <mui:BetterImage Filename="{Binding PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="100" ToolTip.Tip="{Binding DisplayName}">
-        <mui:BetterImage.Style>
-          <Style Selector="mui|BetterImage">
+      <mui:BetterImage Filename="{Binding PreviewImage}" Stretch="UniformToFill" StretchDirection="DownOnly" Width="100" ToolTip.Tip="{Binding DisplayName}" Classes="inline1">
+        <mui:BetterImage.Styles>
+          <Style Selector="mui|BetterImage.inline1">
             <Style Selector="^"><Setter Property="pa:T.S0" Value="{Binding IsAvailable, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(pa|T.S0)=True]"><Setter Property="Effect">
                   <Setter.Value>
-                    <effects:GrayscaleEffect x:Name="GrayscaleEffect" SaturationFactor="0"/>
+                    <!-- PORT: removed GrayscaleEffect (pixel shader effect) -->
                   </Setter.Value>
                 </Setter>
               </Style></Style>
-        </mui:BetterImage.Style>
+        </mui:BetterImage.Styles>
       </mui:BetterImage>
 
       <Grid Opacity="0" Background="Transparent" Cursor="Hand" PointerReleased="OnClick" IsVisible="{Binding IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -47,10 +47,7 @@
           <Ellipse StrokeThickness="2" Stroke="White" Fill="Transparent" Width="64" Height="64"/>
           <Path Data="{StaticResource InformationIconData}" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="32" Stretch="Uniform" x:Name="InformationIcon"/>
         </Grid>
-        <Grid.Triggers>
-          <!-- PORT: removed EventTrigger -->
-          <!-- PORT: removed EventTrigger -->
-        </Grid.Triggers>
+        <!-- PORT: removed Grid.Triggers -->
       </Grid>
     </Grid>
 
@@ -95,7 +92,7 @@
             </Style>
           </StackPanel.Styles><!--completed events: 0/0-->
           <TextBlock Text="{x:Static c:ControlsStrings.KunosCareer_CompletedLabel}"/>
-          <TextBlock FontWeight="Bold" Classes="inline1">
+          <TextBlock FontWeight="Bold" Classes="inline2">
             <TextBlock.Text>
               <MultiBinding StringFormat="{}{0}/{1}">
                 <Binding Path="CompletedEvents"/>
@@ -103,7 +100,7 @@
               </MultiBinding>
             </TextBlock.Text>
             <TextBlock.Styles>
-              <Style Selector="TextBlock.inline1">
+              <Style Selector="TextBlock.inline2">
                 <Style Selector="^"><Setter Property="pa:T.S1" Value="{Binding IsCompleted, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(pa|T.S1)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
                   </Style></Style>
             </TextBlock.Styles>
@@ -131,9 +128,9 @@
           <StackPanel IsVisible="{Binding Type, Converter={StaticResource EnumToVisibilityConverter}, ConverterParameter={x:Static objects:KunosCareerObjectType.Championship}}">
             <TextBlock IsVisible="{Binding IsStarted, Converter={StaticResource BooleanToVisibilityConverter}}">
               <Run Text=","/>
-              <Run Text="{Binding ChampionshipPlace, Converter={StaticResource LowerCaseOrdinalizing}, Mode=OneWay}" FontWeight="Bold" Classes="inline2">
+              <Run Text="{Binding ChampionshipPlace, Converter={StaticResource LowerCaseOrdinalizing}, Mode=OneWay}" FontWeight="Bold" Classes="inline3">
                 <Run.Styles>
-                  <Style Selector="Run.inline2">
+                  <Style Selector="Run.inline3">
                     <Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding ChampionshipPlace, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=1}"/></Style><Style Selector="^[(pa|T.S2)=True]"><Setter Property="Foreground" Value="{DynamicResource Go}"/>
                       </Style></Style>
                 </Run.Styles>

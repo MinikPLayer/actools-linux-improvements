@@ -20,8 +20,8 @@
       <SolidColorBrush x:Key="ButtonTextDisabled" Color="#a1a1a1"/>
     </ResourceDictionary>
   </mui:ModernDialog.Resources>
-  <mui:ModernDialog.Style>
-    <ControlTheme TargetType="mui:ModernDialog" x:Key="{x:Type mui:ModernDialog}">
+  <mui:ModernDialog.Theme>
+    <ControlTheme TargetType="mui:ModernDialog">
       <Setter Property="BackgroundContent" Value="{x:Null}"/>
     <Setter Property="Background" Value="#dd151515"/>
     <Setter Property="MaxWidth" Value="{x:Static mui:DpiAwareWindow.UnlimitedSize}"/>
@@ -61,7 +61,7 @@
       </Setter>
     <Style Selector="^[BlurBackground=True]"><Setter Property="Background" Value="#66101010"/>
       </Style></ControlTheme>
-  </mui:ModernDialog.Style>
+  </mui:ModernDialog.Theme>
 
   <mui:Cell>
     <mui:Cell VerticalAlignment="Center" HorizontalAlignment="Center" Margin="-100 0 0 0" Background="{DynamicResource ThumbnailBackground}" Width="1022" Height="575">
@@ -78,7 +78,7 @@
           <mui:SpacingUniformGrid mui:Switch.When="{x:Static di:UserChampionshipIntroMode.InstallationAlreadyExistingPreview}" VerticalSpacing="4" Columns="1" Margin="0 8 0 0">
             <Button Content="Install as new" mui:ModernDialog.ButtonBehavior="OK"/>
             <Button Content="{Binding ExistingName}" mui:ModernDialog.ButtonBehavior="Yes">
-              <Button.ContentStringFormat>Replace “{0}”</Button.ContentStringFormat>
+              <!-- PORT: removed Button.ContentStringFormat -->
             </Button>
             <Button Content="Cancel" mui:ModernDialog.ButtonBehavior="Cancel"/>
           </mui:SpacingUniformGrid>

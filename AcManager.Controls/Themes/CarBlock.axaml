@@ -106,7 +106,7 @@
                   <ListBox ItemsSource="{Binding Car.EnabledSkinsListView, RelativeSource={RelativeSource TemplatedParent}}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="4" SelectedItem="{Binding SelectedSkin, RelativeSource={RelativeSource TemplatedParent}}" VerticalAlignment="Top" MaxHeight="76" BorderThickness="0" ItemTemplate="{StaticResource CarSkinItemTemplate}" IsVisible="{Binding SelectSkin, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <ListBox.ItemsPanel>
                       <ItemsPanelTemplate>
-                        <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal" VirtualizationMode="Recycling" IsVirtualizing="True" ScrollUnit="Pixel"/>
+                        <mui:VirtualizingTilePanel ItemWidth="36" ItemHeight="36" Orientation="Horizontal"/>
                       </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                   </ListBox>
