@@ -1920,6 +1920,11 @@ def convert_file(path, registry, out_dir=None):
                 el.set('Selector', re.sub(r'(^|[\s>^,])(\[\()', r'\1:is(Control)\2', el.get('Selector')))
         etree.cleanup_namespaces(r, top_nsmap=new_nsmap, keep_ns_prefixes=[k for k in new_nsmap if k])
         s = etree.tostring(r, encoding='unicode')
+        # the default namespace is needed by markup extensions in attributes even if no element uses it
+        head = re.match(r'<[^>]*>', s)
+        if head and ' xmlns="' not in head.group(0):
+            name = re.match(r'<[\w:.\-]+', s)
+            s = s[:name.end()] + ' xmlns="%s"' % NS_AV + s[name.end():]
         # lxml likes to invent prefixes for elements which got created in other contexts
         for m in set(re.findall(r'xmlns:(ns\d+)="%s"' % re.escape(NS_AV), s)):
             s = re.sub(r' xmlns:%s="%s"' % (m, re.escape(NS_AV)), '', s)

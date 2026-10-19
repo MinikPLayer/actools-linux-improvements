@@ -13,13 +13,13 @@
       <Setter.Value>
         <ControlTemplate TargetType="c:ModernProgressRing">
           <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
-            <Border.Resources>
-              <Style Selector="Ellipse.ProgressRingEllipseStyle" __plain="1">
+            <Border.Styles>
+              <Style Selector="Ellipse.ProgressRingEllipseStyle">
                 <Setter Property="Opacity" Value="0"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
               </Style>
-            </Border.Resources>
+            </Border.Styles>
             <!-- PORT: removed VisualStateManager.VisualStateGroups -->
             <Grid x:Name="Ring" Margin="{TemplateBinding Padding}" IsVisible="False">
               <Grid.ColumnDefinitions>

@@ -29,11 +29,6 @@
     <Compile Remove="Windows\Media\VisualExtension.Mouse.cs" />
     <Compile Remove="Windows\Converters\IconPathToImageConverter.cs" />
     <!-- XAML not ported yet -->
-    <AvaloniaXaml Remove="Assets\FancyHint.axaml" />
-    <AvaloniaXaml Remove="Assets\FancyScroll.axaml" />
-    <AvaloniaXaml Remove="Assets\FancyScroll.styles.axaml" />
-    <AvaloniaXaml Remove="Assets\ModernProgressRing.Special.axaml" />
-    <AvaloniaXaml Remove="Assets\ModernUI.axaml" />
     <AvaloniaXaml Remove="Themes\DoubleSlider.axaml" />
     <AvaloniaXaml Remove="Themes\Generic.axaml" />
     <AvaloniaXaml Remove="Themes\ModernProgressRing.axaml" />
@@ -55,5 +50,6 @@
     <AvaloniaXaml Remove="Assets\ProperPasswordBox.axaml" />
     <AvaloniaXaml Remove="Assets\PasswordBox.axaml" />
     <AvaloniaXaml Remove="Assets\MenuItem.axaml" />
+    <AvaloniaXaml Remove="Assets\FancyHint.axaml;Assets\FancyScroll.axaml;Assets\FancyScroll.styles.axaml" />
   </ItemGroup>
 </Project>
