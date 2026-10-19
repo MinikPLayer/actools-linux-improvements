@@ -90,10 +90,10 @@
         <mui:ButtonWithComboBox.MenuItems>
           <MenuItem Command="{Binding RenameCommand}" Header="Rename texture"/>
           <MenuItem Command="{Binding ForkCommand}" IsEnabled="{Binding IsForkAvailable}" Header="{Binding Material.Name}" IsVisible="{Binding Material, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" ToolTip.Tip="Fork texture to be used only in this material">
-            <MenuItem.HeaderStringFormat>Fork texture for material “{0}”</MenuItem.HeaderStringFormat>
+            <!-- PORT: removed MenuItem.HeaderStringFormat -->
           </MenuItem>
           <MenuItem Command="{Binding ChangeTextureCommand}" IsEnabled="{Binding IsChangeAvailable}" Header="{Binding Material.Name}" IsVisible="{Binding Material, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" ToolTip.Tip="Change texture in this material">
-            <MenuItem.HeaderStringFormat>Change texture for material “{0}”</MenuItem.HeaderStringFormat>
+            <!-- PORT: removed MenuItem.HeaderStringFormat -->
           </MenuItem>
         </mui:ButtonWithComboBox.MenuItems>
       </mui:ButtonWithComboBox>

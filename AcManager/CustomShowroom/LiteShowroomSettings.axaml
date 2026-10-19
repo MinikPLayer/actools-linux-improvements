@@ -340,12 +340,12 @@
       </DockPanel>
 
       <mui:SpacingStackPanel Spacing="4" Margin="0 20 0 0">
-        <!-- PORT: Visibility property element --><SpacingStackPanel.IsVisible>
+        <!-- PORT: Visibility property element --><mui:SpacingStackPanel.IsVisible>
           <MultiBinding Converter="{StaticResource OrConverter}">
             <Binding Path="Showroom" Converter="{StaticResource EnumToVisibilityConverter}" ConverterParameter="≠null"/>
             <Binding Path="Renderer.UseCustomReflectionCubemap"/>
           </MultiBinding>
-        </SpacingStackPanel.IsVisible>
+        </mui:SpacingStackPanel.IsVisible>
         <DockPanel DataContext="{Binding Renderer}">
           <mui:ValueLabel Value="{Binding CubemapAmbient, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" mui:BetterTextBox.Mode="Number" DockPanel.Dock="Top" Content="Ambient from surroundings" Postfix="%"/>
           <Slider Minimum="0" Maximum="100" Value="{Binding CubemapAmbient, Converter={StaticResource PercentageConverter}, ConverterParameter=1}" TickFrequency="10" TickPlacement="BottomRight"/>

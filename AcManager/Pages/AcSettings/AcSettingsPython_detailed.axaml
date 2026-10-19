@@ -114,42 +114,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
           <DataGridTemplateColumn Width="504" Header="Position" SortMemberPath="First.Position" pa:ColumnNames.Name="PositionColumn">
-            <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
-              <ControlTheme TargetType="DataGridColumnHeader" BasedOn="{StaticResource DesktopsGridColumn.LeftAlignment}" x:Key="{x:Type DataGridColumnHeader}">
-                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                <Setter Property="Template">
-                  <Setter.Value>
-                    <ControlTemplate TargetType="DataGridColumnHeader">
-                      <mui:Cell>
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                          <DockPanel x:Name="containerGrid">
-                            <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="20" DockPanel.Dock="Bottom" Margin="0 2 -4 0">
-                              <TextBlock Text="1" ToolTip.Tip="First desktop" Classes="Small"/>
-                              <TextBlock Text="2" ToolTip.Tip="Second desktop" Classes="Small"/>
-                              <TextBlock Text="3" ToolTip.Tip="Third desktop" Classes="Small"/>
-                              <TextBlock Text="4" ToolTip.Tip="Fourth desktop" Classes="Small"/>
-                            </mui:SpacingUniformGrid>
-                            <Path x:Name="SortArrow" HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="6" Margin="4 0" Stretch="Fill" Opacity="0.5" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.4" Data="M0,0 L1,0 0.5,1 z"/>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                          </DockPanel>
-                        </Border>
-                        <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
-                        <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
-                      </mui:Cell>
-                      </ControlTemplate>
-                  </Setter.Value>
-                </Setter>
-              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:sortascending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                          <Setter Property="RenderTransform">
-                            <Setter.Value>
-                              <RotateTransform Angle="180"/>
-                            </Setter.Value>
-                          </Setter>
-                        </Style><Style Selector="^:sortdescending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                        </Style><Style Selector="^:not(:sortascending):not(:sortdescending) /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
-                        </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
-                        </Style></ControlTheme>
-            </DataGridTemplateColumn.HeaderStyle>
+            <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed DataGridTemplateColumn.HeaderStyle (not in Avalonia) -->
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="{x:Type t:AcFormEntry}">
                 <mui:BooleanSwitch Value="{Binding AnyVisible}" HorizontalAlignment="Right">
@@ -175,42 +140,7 @@
             </DataGridTemplateColumn.CellTemplate>
           </DataGridTemplateColumn>
           <DataGridTemplateColumn Width="158" Header="Scale" SortMemberPath="First.Scale" pa:ColumnNames.Name="ScaleColumn">
-            <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
-              <ControlTheme TargetType="DataGridColumnHeader" BasedOn="{StaticResource DesktopsGridColumn.LeftAlignment}" x:Key="{x:Type DataGridColumnHeader}">
-                <Setter Property="HorizontalContentAlignment" Value="Right"/>
-                <Setter Property="Template">
-                  <Setter.Value>
-                    <ControlTemplate TargetType="DataGridColumnHeader">
-                      <mui:Cell>
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
-                          <DockPanel x:Name="containerGrid">
-                            <mui:SpacingUniformGrid Rows="1" HorizontalSpacing="2" DockPanel.Dock="Bottom" Margin="0 2 5 0">
-                              <TextBlock Text="1" ToolTip.Tip="First desktop" Classes="Small"/>
-                              <TextBlock Text="2" ToolTip.Tip="Second desktop" Classes="Small"/>
-                              <TextBlock Text="3" ToolTip.Tip="Third desktop" Classes="Small"/>
-                              <TextBlock Text="4" ToolTip.Tip="Fourth desktop" Classes="Small"/>
-                            </mui:SpacingUniformGrid>
-                            <Path x:Name="SortArrow" HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="6" Margin="4 0" Stretch="Fill" Opacity="0.5" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.4" Data="M0,0 L1,0 0.5,1 z"/>
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
-                          </DockPanel>
-                        </Border>
-                        <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
-                        <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
-                      </mui:Cell>
-                      </ControlTemplate>
-                  </Setter.Value>
-                </Setter>
-              <Style Selector="^ /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:sortascending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                          <Setter Property="RenderTransform">
-                            <Setter.Value>
-                              <RotateTransform Angle="180"/>
-                            </Setter.Value>
-                          </Setter>
-                        </Style><Style Selector="^:sortdescending /template/ Path#SortArrow"><Setter Property="IsVisible" Value="True"/>
-                        </Style><Style Selector="^:not(:sortascending):not(:sortdescending) /template/ Path#SortArrow"><Setter Property="IsVisible" Value="False"/>
-                        </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ Path#SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
-                        </Style></ControlTheme>
-            </DataGridTemplateColumn.HeaderStyle>
+            <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed DataGridTemplateColumn.HeaderStyle (not in Avalonia) -->
             <DataGridTemplateColumn.CellTemplate>
               <DataTemplate DataType="{x:Type t:AcFormEntry}">
                 <mui:BooleanSwitch Value="{Binding AnyVisible}">

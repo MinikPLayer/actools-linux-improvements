@@ -227,16 +227,7 @@
         </CheckBox>
 
         <mui:BetterComboBox ItemsSource="{Binding ExampleCarsModel.TestKeysView}" SelectedItem="{Binding ExampleCarsModel.SelectedTestKey}" Width="120" IsEditable="False" Margin="8 0" IsEnabled="{Binding ExampleCarsModel.TestSingleKey}" IsVisible="{Binding TrainingModel.SeparateNetworks, Converter={StaticResource BooleanToVisibilityConverter}}">
-          <mui:BetterComboBox.GroupStyle>
-            <GroupStyle>
-              <GroupStyle.HeaderTemplate>
-                <DataTemplate DataType="GroupItem">
-                  <TextBlock x:Name="PART_Name" Text="{Binding Name}" Foreground="{DynamicResource WindowText}" Margin="0 4" Classes="Label"><TextBlock.Styles><Style Selector="TextBlock#PART_Name"><Style Selector="^"><Setter Property="pa:T.S2" Value="{Binding Name, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/></Style><Style Selector="^[(pa|T.S2)=True] TextBlock#PART_Name"><Setter Property="IsVisible" Value="False"/>
-                    </Style></Style></TextBlock.Styles></TextBlock>
-                  </DataTemplate>
-              </GroupStyle.HeaderTemplate>
-            </GroupStyle>
-          </mui:BetterComboBox.GroupStyle>
+          <!-- PORT: removed BetterComboBox.GroupStyle (no grouping in Avalonia lists) -->
           <mui:BetterComboBox.ItemTemplate>
             <DataTemplate DataType="t:SettingEntry">
               <TextBlock DockPanel.Dock="Top" Text="{Binding DisplayName}" ToolTip.Tip="{Binding Value}"/>

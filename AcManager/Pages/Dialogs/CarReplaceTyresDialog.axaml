@@ -8,7 +8,7 @@
         <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonTextHover}"/>
-          </Style><Style Selector="^[(Button.IsPressed)=True]"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+          </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
             <Setter Property="TextElement.Foreground" Value="{DynamicResource ButtonTextPressed}"/>
           </Style></Style>
@@ -179,7 +179,7 @@
             <mui:SpacingUniformGrid HorizontalSpacing="20" Margin="20 0" Rows="1">
               <TextBlock DockPanel.Dock="Left" IsVisible="{Binding Source.Author, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small">
                 <Run>Version:</Run>
-                <Run Text="{Binding Version, Mode=OneWay}" Foreground="{DynamicResource Error}" Background="Transparent" ToolTip.Tip="Not compatible with current version, existing entries have to be removed if used" Classes="inline1">
+                <Run Text="{Binding Version, Mode=OneWay}" Foreground="{DynamicResource Error}" Background="Transparent" Classes="inline1">
                   <Run.Styles>
                     <Style Selector="Run.inline1">
                       <!-- PORT: DataTrigger with element binding not converted --></Style>

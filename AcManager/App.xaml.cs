@@ -215,6 +215,10 @@ namespace AcManager {
                     || MainExecutingFile.Name.IndexOf(@"safe", StringComparison.OrdinalIgnoreCase) != -1;
         }
 
+        public override void Initialize() {
+            // XAML is loaded in the constructor
+        }
+
         private AppHibernator _hibernator;
 
         private static void TryTls13() {
@@ -270,6 +274,8 @@ namespace AcManager {
         }
 
         private App() {
+            // the whole initialization is done here (like WPF’s App constructor did), so resources have to be loaded first
+            Avalonia.Markup.Xaml.AvaloniaXamlLoader.Load(this);
             TryTls13();
             AppArguments.Set(AppFlag.SyncNavigation, ref ModernFrame.OptionUseSyncNavigation);
             AppArguments.Set(AppFlag.DisableTransitionAnimation, ref ModernFrame.OptionDisableTransitionAnimation);

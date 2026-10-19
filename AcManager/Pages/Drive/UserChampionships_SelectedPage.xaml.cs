@@ -466,7 +466,7 @@ namespace AcManager.Pages.Drive {
             }
         }
 
-        private void ListBox_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void ListBox_OnPreviewMouseDoubleClick(object sender, TappedEventArgs e) {
             Model.GoCommand.ExecuteAsync(AssistsViewModel.Instance).Ignore();
         }
 

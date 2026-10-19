@@ -1,9 +1,5 @@
 ﻿<mui:ReferenceSwitch xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:l="clr-namespace:AcManager.Pages.Drive" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:t="http://acstuff.club/app/tools" xmlns:c="http://acstuff.club/app/controls" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI" x:Class="AcManager.Pages.Drive.RaceU" Value="{Binding Value, Source={x:Static t:SteamIdHelper.Instance}}" Unloaded="OnUnloaded" Loaded="OnLoaded">
-  <mui:ReferenceSwitch.CommandBindings>
-    <CommandBinding CanExecute="BrowseBack_CanExecute" Executed="BrowseBack_Executed" Command="{x:Static swi:NavigationCommands.BrowseBack}"/>
-    <CommandBinding CanExecute="BrowseForward_CanExecute" Executed="BrowseForward_Executed" Command="{x:Static swi:NavigationCommands.BrowseForward}"/>
-    <CommandBinding CanExecute="Refresh_CanExecute" Executed="Refresh_Executed" Command="{x:Static swi:NavigationCommands.Refresh}"/>
-  </mui:ReferenceSwitch.CommandBindings>
+  <!-- PORT: removed ReferenceSwitch.CommandBindings -->
   <mui:ReferenceSwitch.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>

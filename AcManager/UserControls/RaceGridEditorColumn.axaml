@@ -16,8 +16,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <ControlTheme x:Key="ListBoxItem" TargetType="ListBoxItem" BasedOn="{StaticResource FlatListBoxItem}">
-        <EventSetter Event="PreviewMouseDoubleClick" Handler="OnItemDoubleClick"/>
-      </ControlTheme>
+        <!-- PORT: removed EventSetter for PreviewMouseDoubleClick (styles can’t set event handlers) --></ControlTheme>
     </ResourceDictionary>
   </mui:Cell.Resources>
 

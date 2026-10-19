@@ -30,7 +30,7 @@
         </StackPanel>
 
         <StackPanel Margin="0 0 20 0" Grid.Column="1" Background="Gray" Width="160" Height="120">
-          <Button Padding="0" Width="160" Height="120" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="GoToPage" CommandParameter="/Pages/ServerPreset/ServerPresetEntryList.xaml" c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}">
+          <Button Padding="0" Width="160" Height="120" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" CommandParameter="/Pages/ServerPreset/ServerPresetEntryList.xaml" c:ToolTips.Car="{Binding Car}" c:ContextMenus.Car="{Binding Car}" mui:Draggable.Data="{Binding Car}" Command="{x:Static swi:NavigationCommands.GoToPage}">
             <Grid Margin="-1" ClipToBounds="True" IsHitTestVisible="False">
               <mui:BetterImage Filename="{Binding Car.SelectedSkin.PreviewImage}" DecodeWidth="320" Stretch="UniformToFill"/>
               <TextBlock Padding="4" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{DynamicResource DarkStripeBackground}" Text="{Binding Car.DisplayName}" Foreground="{DynamicResource DarkStripeText}"/>

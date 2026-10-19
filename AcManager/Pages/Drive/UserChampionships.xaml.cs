@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,7 +68,7 @@ namespace AcManager.Pages.Drive {
             Model.Unload();
         }
 
-        private void OnListBoxDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnListBoxDoubleClick(object sender, TappedEventArgs e) {
             Model.SelectSeriesCommand.Execute(null);
         }
 

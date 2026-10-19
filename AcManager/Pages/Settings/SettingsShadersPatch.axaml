@@ -54,7 +54,7 @@
       </Grid.ColumnDefinitions>
 
       <!-- Link list -->
-      <ListBox x:Name="LinksList" ItemsSource="{Binding MainModel.PagesView}" SelectedItem="{Binding MainModel.SelectedPage}" IsEnabled="{Binding MainModel.IsBlocked, Converter={StaticResource InvertBooleanConverter}}" VirtualizingStackPanel.IsVirtualizingWhenGrouping="True" Theme="{StaticResource VirtualizingListBox}">
+      <ListBox x:Name="LinksList" ItemsSource="{Binding MainModel.PagesView}" SelectedItem="{Binding MainModel.SelectedPage}" IsEnabled="{Binding MainModel.IsBlocked, Converter={StaticResource InvertBooleanConverter}}" Theme="{StaticResource VirtualizingListBox}">
         <ListBox.RenderTransform>
           <TranslateTransform/>
         </ListBox.RenderTransform>

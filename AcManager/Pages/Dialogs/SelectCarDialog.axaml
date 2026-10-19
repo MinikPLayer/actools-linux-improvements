@@ -45,9 +45,7 @@
                 </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
                 </Style><Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
                 </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
-                </Style><Style Selector="^[(ScrollViewer.CanContentScroll)=False] /template/ Rectangle#OpaqueRect"><Setter Property="Canvas.Top" Value="{Binding ElementName=DropDownScrollViewer, Path=VerticalOffset}"/>
-                  <Setter Property="Canvas.Left" Value="{Binding ElementName=DropDownScrollViewer, Path=HorizontalOffset}"/>
-                </Style></ControlTheme>
+                </Style><!-- PORT: removed style for CanContentScroll (not in Avalonia) --></ControlTheme>
 
       <DataTemplate x:Key="TunableVersions.ItemTemplate" DataType="{x:Type t:CarObject}">
         <mui:Cell x:Name="__Dt0">
@@ -106,7 +104,7 @@
 
     <DockPanel Grid.Column="2">
       <DockPanel DockPanel.Dock="Bottom" Margin="0 20 0 0">
-        <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 12" FrameworkElement.Visibility="{Binding HiddenCars, Converter={StaticResource MoreToVisibilityConverter}}">
+        <c:MessageBlock DockPanel.Dock="Top" Margin="0 0 0 12" IsVisible="{Binding HiddenCars, Converter={StaticResource MoreToVisibilityConverter}}">
           <TextBlock Text="{Binding HiddenCars, Converter={StaticResource PluralizingConverter}, ConverterParameter='{}{0} {car} are hidden.'}"/>
         </c:MessageBlock>
         

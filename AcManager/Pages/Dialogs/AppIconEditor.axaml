@@ -105,7 +105,7 @@
                               <Border.RenderTransform>
                                 <ScaleTransform ScaleX="{Binding IconScale}" ScaleY="{Binding IconScale}"/>
                               </Border.RenderTransform>
-                              <mui:BetterImage x:Name="PART_Icon" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" VerticalAlignment="Top" Filename="{Binding IconFilename}" Margin="-1" Width="40" Height="40" DecodeWidth="200"/>
+                              <mui:BetterImage x:Name="PART_Icon" Background="Transparent" HorizontalAlignment="Left" VerticalAlignment="Top" Filename="{Binding IconFilename}" Margin="-1" Width="40" Height="40" DecodeWidth="200"/>
                             </Border>
                             </ControlTemplate>
                         </Thumb.Template>

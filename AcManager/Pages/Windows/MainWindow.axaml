@@ -146,7 +146,7 @@
         </DataTemplate>
 
       <DockPanel x:Key="DownloadsMenuSection">
-        <Separator DockPanel.Dock="Top" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+        <Separator DockPanel.Dock="Top"/>
         <TextBlock DockPanel.Dock="Top" Text="{x:Static g:AppStrings.MainWindow_Downloads}" Margin="8 8 8 8" Classes="Label"/>
         <mui:SpacingUniformGrid Rows="1" HorizontalAlignment="Right" DockPanel.Dock="Bottom" DataContext="{x:Static t:ContentInstallationManager.Instance}" Margin="8 0 4 0">
           <Button Command="{Binding InstallAllCommand}" Margin="0 8 4 8" IsVisible="{Binding HasMoreThanOneWaiting, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -166,7 +166,7 @@
       </DockPanel>
 
       <DockPanel x:Key="CupNotificationBlock" DataContext="{x:Static c:CupViewModel.Instance}" IsVisible="{Binding ToUpdate.Count, Converter={StaticResource MoreToVisibilityConverter}}">
-        <Separator DockPanel.Dock="Top" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+        <Separator DockPanel.Dock="Top"/>
         <TextBlock DockPanel.Dock="Top" Margin="8 8 8 0" Text="{Binding Path=ToUpdate.Count, Converter={StaticResource PluralizingConverter}, ConverterParameter={x:Static g:AppStrings.MainWindow_FoundNModUpdates}}" Classes="Label"/>
         <ItemsControl MaxHeight="320" ItemsSource="{Binding ToUpdate}" DockPanel.Dock="Top" Margin="12 6 12 6" Theme="{StaticResource VirtualizingItemsControl}">
           <ItemsControl.ItemTemplate>
@@ -294,7 +294,7 @@
             <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_ViewChangelog}" Command="{Binding ViewChangelogCommand}"/>
             <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_SkipUpdate}" Command="{Binding AppUpdater.IgnoreUpdateCommand}"/>
             <MenuItem Header="{x:Static g:AppStrings.MainWindow_UpdateMenu_DisableAutoUpdates}" Command="{Binding AppUpdater.DisableAutoUpdatesCommand}"/>
-            <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+            <Separator/>
           </StackPanel>
 
           <MenuItem Header="{x:Static g:AppStrings.MainWindow_AddDownload_MenuItem}" Click="OnDownloadSomethingItemClick">
@@ -307,7 +307,7 @@
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource OpenFolderIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
             </MenuItem.Icon>
           </MenuItem>
-          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <Separator/>
           <MenuItem Header="{x:Static g:AppStrings.Main_Drive}" Click="OnNavigateItemClick" CommandParameter="/Pages/Drive/QuickDrive.xaml">
             <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource CarsIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
@@ -328,7 +328,7 @@
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource VideoIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
             </MenuItem.Icon>
           </MenuItem>
-          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <Separator/>
           <!--<MenuItem Header="{x:Static g:AppStrings.Main_Workshop}" Click="OnNavigateItemClick" CommandParameter="/Pages/Workshop/WorkshopCars.xaml">
             <MenuItem.Icon>
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource CloudIconData}" HorizontalAlignment="Center"
@@ -345,13 +345,13 @@
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource ServerIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
             </MenuItem.Icon>
           </MenuItem>
-          <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <Separator/>
           <MenuItem Header="{x:Static g:AppStrings.Main_Downloads}" Click="OnNavigateItemClick" CommandParameter="/Pages/Miscellaneous/DownloadsList.xaml" IsVisible="{Binding DownloadsInSeparatePage, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}">
             <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource DownloadIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
             </MenuItem.Icon>
           </MenuItem>
-          <Separator IsVisible="{Binding DownloadsInSeparatePage, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}" Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+          <Separator IsVisible="{Binding DownloadsInSeparatePage, Source={x:Static c:AppAppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
           <MenuItem Header="{x:Static g:AppStrings.Main_CMSettings}" Click="OnNavigateItemClick" CommandParameter="/Pages/Settings/SettingsPage.xaml">
             <!-- PORT: removed InputGestureText (not in Avalonia) --><MenuItem.Icon>
               <Path Width="12" Height="12" Margin="4 0 -2 0" Stretch="Uniform" Data="{StaticResource GearIconData}" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="{Binding Path=(Control.Foreground), RelativeSource={RelativeSource Self}}"/>
@@ -375,7 +375,7 @@
             </MenuItem.Icon>
           </MenuItem>
           <StackPanel IsVisible="{Binding HasUnseen, Source={x:Static mui:NonfatalError.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Separator Theme="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
+            <Separator/>
             <MenuItem Command="{Binding ViewErrorsCommand, Source={x:Static mui:NonfatalError.Instance}}">
               <MenuItem.Header>
                 <Binding Path="Errors.Count" Source="{x:Static mui:NonfatalError.Instance}" Converter="{StaticResource PluralizingConverter}" ConverterParameter="{x:Static g:AppStrings.MainWindow_Errors_Format}"/>
@@ -747,7 +747,7 @@
           <!-- PORT: EventTrigger not converted --><!-- PORT: EventTrigger not converted --></Style>
       </Border.Styles>
     </Border>
-    <Popup Placement="Absolute" HorizontalOffset="{Binding ActualRight, ElementName=Window, Converter={StaticResource SumConverter}, ConverterParameter=-140}" VerticalOffset="{Binding ActualBottom, ElementName=Window, Converter={StaticResource SumConverter}, ConverterParameter=-100}" Height="80" Width="120" x:Name="QuickSwitchesNotification">
+    <Popup Height="80" Width="120" x:Name="QuickSwitchesNotification" Placement="BottomEdgeAlignedRight" HorizontalOffset="-20" VerticalOffset="-20">
       <!-- PORT: removed StaysOpen (not in Avalonia) --><Border Background="{DynamicResource WindowBackground}" Padding="12" CornerRadius="0" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
         <DockPanel>
           <TextBlock x:Name="QuickSwitchesNotificationText" DockPanel.Dock="Bottom" Margin="0 4 0 0" HorizontalAlignment="Center" Classes="Label"/>

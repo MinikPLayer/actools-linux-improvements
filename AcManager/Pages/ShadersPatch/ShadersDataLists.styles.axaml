@@ -1,12 +1,12 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="http://acstuff.club/app/tools" xmlns:mui="http://firstfloorsoftware.com/ModernUI" xmlns:c="http://acstuff.club/app/controls" xmlns:sys="using:System" xmlns:i="using:Avalonia.Xaml.Interactivity" xmlns:ia="using:Avalonia.Xaml.Interactions.Core" xmlns:pa="clr-namespace:FirstFloor.ModernUI.Windows.Attached;assembly=FirstFloor.ModernUI" xmlns:pc="clr-namespace:FirstFloor.ModernUI.Windows.Converters;assembly=FirstFloor.ModernUI" xmlns:sw="clr-namespace:System.Windows;assembly=FirstFloor.ModernUI" xmlns:swi="clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI">
-  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AcManager/Pages/ShadersPatch/ShadersDataLists.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="DataGridRow.BaseRowStyle">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://AssettoCorsa/Pages/ShadersPatch/ShadersDataLists.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="DataGridRow.BaseRowStyle">
     <Setter Property="IsEnabled" Value="True"/>
     <Setter Property="Padding" Value="4 4 4 0"/>
     <Setter Property="ContextMenu">
       <Setter.Value>
         <ContextMenu>
-          <MenuItem Header="{Binding LatestVersion, Mode=OneTime}" StaysOpenOnClick="True"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
-          <MenuItem Header="{Binding InstalledVersion}" StaysOpenOnClick="True" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+          <MenuItem Header="{Binding LatestVersion, Mode=OneTime}" StaysOpenOnClick="True"/>
+          <MenuItem Header="{Binding InstalledVersion}" StaysOpenOnClick="True" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
           <Separator/>
           <MenuItem Header="Install now" Command="{Binding InstallCommand}" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
           <MenuItem Header="Reinstall" Command="{Binding InstallCommand}" CommandParameter="force" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -29,10 +29,10 @@
             <MenuItem Header="Odometer" StaysOpenOnClick="True" IsChecked="{Binding HasOdometer, Mode=OneTime}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
             <MenuItem Header="Turning signals" StaysOpenOnClick="True" IsChecked="{Binding HasTurnSignals, Mode=OneTime}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
             <MenuItem Header="Tyres textures" StaysOpenOnClick="True" IsChecked="{Binding HasTyresTextures, Mode=OneTime}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
-            <MenuItem Header="{Binding DisplayTextures, Mode=OneTime}" StaysOpenOnClick="True" IsVisible="{Binding HasTyresTextures, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed IsCheckable (not in Avalonia) --><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+            <MenuItem Header="{Binding DisplayTextures, Mode=OneTime}" StaysOpenOnClick="True" IsVisible="{Binding HasTyresTextures, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed IsCheckable (not in Avalonia) --></MenuItem>
           </MenuItem>
-          <MenuItem Header="{Binding LatestVersion, Mode=OneTime}" StaysOpenOnClick="True"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
-          <MenuItem Header="{Binding InstalledVersion}" StaysOpenOnClick="True" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+          <MenuItem Header="{Binding LatestVersion, Mode=OneTime}" StaysOpenOnClick="True"/>
+          <MenuItem Header="{Binding InstalledVersion}" StaysOpenOnClick="True" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
           <Separator/>
           <MenuItem Header="Install now" Command="{Binding InstallCommand}" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/>
           <MenuItem Header="Reinstall" Command="{Binding InstallCommand}" CommandParameter="force" IsVisible="{Binding IsInstalled, Converter={StaticResource BooleanToVisibilityConverter}}"/>

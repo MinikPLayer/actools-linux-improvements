@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -90,7 +90,7 @@ namespace AcManager.Pages.Miscellaneous {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void OnMouseDoubleClick(object sender, TappedEventArgs e) {
             var s = e.Source as Visual;
             var l = (Avalonia.VisualTree.VisualExtensions.FindAncestorOfType<Avalonia.Controls.ListBoxItem>(s, true)?.DataContext as AcItemWrapper)?.Loaded();
             if (l != null) {

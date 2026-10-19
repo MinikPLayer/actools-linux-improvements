@@ -37,24 +37,10 @@
       <DataGridTemplateColumn Width="0.6*" MinWidth="100" Header="Label" SortMemberPath="Information.Label" CellTemplate="{StaticResource DataGridCell.Label}"/>
       <DataGridTemplateColumn Width="120" Header="Label color" SortMemberPath="Information.Color" CellTemplate="{StaticResource DataGridCell.LabelColor}"/>
       <DataGridCheckBoxColumn Width="90" Header="Hidden" SortMemberPath="Information.Hidden" Binding="{Binding Information.Hidden, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><DataGridCheckBoxColumn.CellStyle>
-          <Style Selector="DataGridCell">
-            <Setter Property="IsEnabled" Value="{Binding IsBuiltIn, Converter={StaticResource InvertBooleanConverter}}"/>
-            <Setter Property="ToolTip.Tip" Value="Link to the list will be hidden"/>
-          </Style>
-        </DataGridCheckBoxColumn.CellStyle>
+        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><!-- PORT: removed DataGridCheckBoxColumn.CellStyle (not in Avalonia) -->
       </DataGridCheckBoxColumn>
       <DataGridCheckBoxColumn Width="90" Header="Excluded" SortMemberPath="Information.Excluded" Binding="{Binding Information.Excluded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><DataGridCheckBoxColumn.CellStyle>
-          <Style Selector="DataGridCell">
-            <Setter Property="IsEnabled" Value="{Binding IsBuiltIn, Converter={StaticResource InvertBooleanConverter}}"/>
-            <Setter Property="ToolTip.Tip">
-              <Setter.Value>
-                <TextBlock Text="{Binding Id, StringFormat='{}Check if you want servers in this list to be hidden (to see them, search for `@{0}`)'}"/>
-              </Setter.Value>
-            </Setter>
-          </Style>
-        </DataGridCheckBoxColumn.CellStyle>
+        <!-- PORT: removed EditingElementStyle (not in Avalonia) --><!-- PORT: removed ElementStyle (not in Avalonia) --><!-- PORT: removed DataGridCheckBoxColumn.CellStyle (not in Avalonia) -->
       </DataGridCheckBoxColumn>
     </DataGrid.Columns>
     <DataGrid.RowDetailsTemplate>

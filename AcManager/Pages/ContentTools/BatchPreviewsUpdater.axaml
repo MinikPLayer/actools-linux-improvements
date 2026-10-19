@@ -140,7 +140,7 @@
                   <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
                 </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
                 </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
-                </Style><Style Selector="^[(Button.IsPressed)=True]"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
                   <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
                 </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
                 </Style></ControlTheme>

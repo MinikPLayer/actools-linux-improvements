@@ -158,7 +158,7 @@ namespace AcManager.Pages.Drive {
             public SettingsHolder.DriveSettings DriveSettings => SettingsHolder.Drive;
         }
 
-        private void ListBox_OnPreviewMouseDoubleClick(object sender, MouseButtonEventArgs e) {
+        private void ListBox_OnPreviewMouseDoubleClick(object sender, TappedEventArgs e) {
             Model.AcObject.SelectedEvent?.GoCommand.ExecuteAsync().Ignore();
         }
 

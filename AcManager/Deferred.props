@@ -12,6 +12,9 @@
     <Compile Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\AttachedHelper.cs;CustomShowroom\CustomShowroomWrapper.cs;CustomShowroom\LiteShowroomFormWrapperWith*.cs;CustomShowroom\UIElementExtensions.cs;CustomShowroom\WindowExtensions.cs;CustomShowroom\CmPreviewsFormWrapper.cs;CustomShowroom\TrackMapRendererWrapper.cs;CustomShowroom\TrackOutlineRendererWrapper.cs" />
     <Compile Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\LiteShowroomTools*.cs;CustomShowroom\TrackMapRendererTools*.cs;CustomShowroom\TrackOutlineRendererTools*.cs" />
     <AvaloniaXaml Condition="'$(IncludeShowrooms)' != 'true'" Remove="CustomShowroom\LiteShowroom*.axaml;CustomShowroom\TrackMapRendererTools.axaml;CustomShowroom\TrackOutlineRendererTools.axaml" />
+    <AvaloniaXaml Condition="'$(IncludeShowrooms)' != 'true'" Include="CustomShowroom\LiteShowroomSettings.axaml" />
+    <!-- 3D (Viewport3D) design experiment of the progress ring, not used by the app -->
+    <AvaloniaXaml Remove="Assets\Development\**" />
     <!-- CefSharp / WebBrowser-based pages -->
   </ItemGroup>
 </Project>

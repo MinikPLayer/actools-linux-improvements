@@ -155,7 +155,7 @@
                 </ToolTip.Tip>
                 <Border.ContextMenu>
                   <ContextMenu>
-                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsLengthValue}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsLengthValue}"/>
                     <Separator/>
                     <MenuItem Command="{Binding RecalculateLengthCommand}" Header="{x:Static g:AppStrings.CarSpecs_Recalculate}">
                       <ToolTip.Tip>Recalculate track’s length from fast_lane.ai</ToolTip.Tip>
@@ -197,7 +197,7 @@
                 </ToolTip.Tip>
                 <Border.ContextMenu>
                   <ContextMenu>
-                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsPitboxesValue}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                    <MenuItem StaysOpenOnClick="True" Header="{Binding SelectedTrackConfiguration.SpecsPitboxesValue}"/>
                     <Separator/>
                     <MenuItem Command="{Binding RecalculatePitboxesCommand}" Header="{x:Static g:AppStrings.CarSpecs_Recalculate}"/>
                     <Separator/>

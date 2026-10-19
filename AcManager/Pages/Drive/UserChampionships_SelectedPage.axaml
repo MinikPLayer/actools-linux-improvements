@@ -162,8 +162,8 @@
         </ScrollViewer>
       </DockPanel>
 
-      <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding AcObject.ExtendedRounds}" SelectedItem="{Binding AcObject.CurrentRound, Mode=TwoWay}" x:Name="ListBox" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ItemTemplate}" Margin="-4 0 -4 12" ScrollViewer.ScrollChanged="ListBox_ScrollChanged" SelectionChanged="ListBox_OnSelectionChanged">
-        <!-- PORT: removed PreviewMouseDoubleClick (not in Avalonia) --><i:Interaction.Behaviors>
+      <ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding AcObject.ExtendedRounds}" SelectedItem="{Binding AcObject.CurrentRound, Mode=TwoWay}" x:Name="ListBox" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ItemTemplate}" Margin="-4 0 -4 12" ScrollViewer.ScrollChanged="ListBox_ScrollChanged" SelectionChanged="ListBox_OnSelectionChanged" DoubleTapped="ListBox_OnPreviewMouseDoubleClick">
+        <i:Interaction.Behaviors>
           <mui:HorizontalScrollBehavior/>
         </i:Interaction.Behaviors>
         <ListBox.ItemContainerTheme>

@@ -35,7 +35,9 @@ NS_BLEND = 'http://schemas.microsoft.com/expression/2010/interactivity'
 NS_BLEND_AV = 'using:Avalonia.Xaml.Interactivity'
 NS_BLEND_AV_CORE = 'using:Avalonia.Xaml.Interactions.Core'
 # WPF controls which Avalonia doesn't have and which are replaced by ModernUI ones
-CUSTOM_ELEMENTS = {'ToolBar': NS_MUI, 'ToolBarTray': NS_MUI}
+CUSTOM_ELEMENTS = {'ToolBar': NS_MUI, 'ToolBarTray': NS_MUI,
+                   'RoutedCommand': 'clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI',
+                   'RoutedUICommand': 'clr-namespace:System.Windows.Input;assembly=FirstFloor.ModernUI'}
 # custom shader effects of ModernUI, there are no pixel shaders in Avalonia
 CUSTOM_EFFECTS = {'AsTransparencyMask', 'OverlayColorEffect', 'GrayscaleEffect', 'InvertKeepColorEffect', 'InvertColorEffect', 'AsTransparencyMaskEffect', 'ColorEffect'}
 # styles for types which don't exist in Avalonia
@@ -64,7 +66,7 @@ UNSUPPORTED = {
     'ObjectAnimationUsingKeyFrames', 'SplineDoubleKeyFrame', 'EasingDoubleKeyFrame', 'LinearDoubleKeyFrame', 'DiscreteDoubleKeyFrame',
     'DiscreteObjectKeyFrame', 'ExponentialEase', 'CubicEase', 'QuadraticEase', 'PowerEase', 'WindowChrome', 'Typography',
     'CollectionViewSource', 'CollectionContainer', 'TickBar', 'AdornedElementPlaceholder', 'MouseBinding', 'KeyBinding', 'VisualStateGroup', 'VisualState',
-    'VisualTransition', 'EventTrigger', 'MouseGesture', 'KeyGesture', 'PopupAnimation', 'ShaderEffect', 'AdornerDecorator_',
+    'VisualTransition', 'EventTrigger', 'MouseGesture', 'KeyGesture', 'PopupAnimation', 'EventSetter', 'GroupStyle', 'ShaderEffect', 'AdornerDecorator_',
 }
 
 TYPE_RENAME = {
@@ -91,6 +93,8 @@ PSEUDO = {
     ('IsHighlighted', 'False'): ':not(:pointerover)',
     ('HasItems', 'False'): '[ItemCount=0]',
     ('HasItems', 'True'): ':not([ItemCount=0])',
+    ('Button.IsPressed', 'True'): ':pressed',
+    ('ButtonBase.IsPressed', 'True'): ':pressed',
     ('IsPressed', 'True'): ':pressed',
     ('IsPressed', 'False'): ':not(:pressed)',
     ('IsEnabled', 'False'): ':disabled',
@@ -118,6 +122,7 @@ PSEUDO = {
 }
 
 PROP_RENAME = {
+    'VirtualizingStackPanel.IsVirtualizingWhenGrouping': None, 'HeaderStringFormat': None,
     'VirtualizingPanel.IsVirtualizingWhenGrouping': None, 'VirtualizingPanel.IsContainerVirtualizable': None,
     'VirtualizingPanel.ScrollUnit': None, 'VirtualizingPanel.CacheLength': None, 'VirtualizingPanel.CacheLengthUnit': None,
     'ContentStringFormat': None, 'ItemTemplateSelector': 'ItemTemplate',
@@ -216,7 +221,7 @@ EVENT_RENAME = {
     'PreviewKeyDown': 'KeyDown', 'PreviewKeyUp': 'KeyUp', 'PreviewTextInput': 'TextInput',
     'SelectedItemChanged': 'SelectionChanged', 'LostMouseCapture': 'PointerCaptureLost', 'MouseDoubleClick': 'DoubleTapped',
     'Drop': 'DragDrop.Drop', 'DragOver': 'DragDrop.DragOver', 'DragEnter': 'DragDrop.DragEnter', 'DragLeave': 'DragDrop.DragLeave',
-    'PreviewDrop': 'DragDrop.Drop', 'PreviewDragOver': 'DragDrop.DragOver',
+    'PreviewMouseDoubleClick': 'DoubleTapped', 'PreviewDrop': 'DragDrop.Drop', 'PreviewDragOver': 'DragDrop.DragOver',
 }
 
 # argument types of Avalonia events which have to match exactly the signature of handlers referenced from XAML
@@ -231,6 +236,9 @@ EVENT_ARGS = {
 }
 
 EVENT_RENAME_EXTRA = {}
+
+NAVIGATION_COMMAND_NAMES = {'BrowseBack', 'BrowseForward', 'BrowseHome', 'BrowseStop', 'Refresh', 'Favorites', 'Search', 'IncreaseZoom', 'DecreaseZoom',
+                            'Zoom', 'NextPage', 'PreviousPage', 'FirstPage', 'LastPage', 'GoToPage', 'GoToStatus'}
 
 CURSORS = {'SizeWE': 'SizeWestEast', 'SizeNS': 'SizeNorthSouth', 'IBeam': 'Ibeam', 'ScrollAll': 'SizeAll',
            'SizeNESW': 'TopRightCorner', 'SizeNWSE': 'TopLeftCorner'}
@@ -324,6 +332,7 @@ def type_name(t):
 class Registry:
     def __init__(self):
         self.styles = {}      # key -> dict(file, target, based, has_template, el)
+        self.prefixes = {}     # xmlns prefix -> set of namespaces (with assembly) declared in the scanned files
         self.dict_styles = {}  # key -> [Style elements]: keyed resource dictionaries used as a bundle of styles (`Resources="{StaticResource K}"`)
 
     def scan(self, paths):
@@ -335,11 +344,32 @@ class Registry:
                     if f.endswith('.xaml'):
                         self.scan_file(os.path.join(root, f))
 
+    @staticmethod
+    def assembly_of(path):
+        d = os.path.dirname(os.path.abspath(path))
+        while d and d != os.path.dirname(d):
+            cands = [f for f in os.listdir(d) if f.endswith('.csproj')]
+            if cands:
+                m = re.search(r'<AssemblyName>([^<]+)</AssemblyName>', open(os.path.join(d, cands[0]), encoding='utf-8-sig').read())
+                return m.group(1) if m else cands[0][:-len('.csproj')]
+            d = os.path.dirname(d)
+        m = re.search(r'/wpf_scan/([^/]+)', os.path.abspath(path))
+        return m.group(1) if m else None
+
     def scan_file(self, path):
         try:
             tree = etree.parse(path)
         except Exception:
             return
+        asm = None
+        for p, u in tree.getroot().nsmap.items():
+            if p and u.startswith('clr-namespace:'):
+                if 'assembly=' not in u:
+                    asm = asm or self.assembly_of(path)
+                    if not asm:
+                        continue
+                    u = '%s;assembly=%s' % (u, asm)
+                self.prefixes.setdefault(p, set()).add(u)
         for rd in tree.getroot().findall('{%s}ResourceDictionary' % NS_WPF):
             k = rd.get(X + 'Key')
             kids = [c for c in rd if is_el(c)]
@@ -384,6 +414,8 @@ class Ctx:
         self.style_parts = []   # plain styles which go to X.styles.axaml
         self.inline_counter = 0
         self.handlers = {}
+        self.command_bindings = []
+        self.extra_ns = {}      # prefixes used by selectors of inlined styles, which could be declared somewhere else
 
     def warn(self, el, msg):
         self.todo.append(msg)
@@ -758,6 +790,22 @@ class Converter:
 
     def convert_attribute(self, el, name, val):
         tag = local(el.tag)
+        m = re.match(r'^(?:FrameworkElement|UIElement)\.(\w+)$', name)
+        if m:
+            name = m.group(1)
+        if tag == 'Popup' and name == 'Placement' and val == 'Absolute':
+            return name, 'BottomEdgeAlignedRight'
+        if tag == 'Popup' and name in ('HorizontalOffset', 'VerticalOffset') and (val or '').startswith('{Binding'):
+            return name, '-20'
+        if tag == 'BetterImage' and name == 'BorderThickness':
+            return None, val
+        if tag == 'Run' and name.startswith('ToolTip'):
+            return None, val
+        if name == 'Command' and val in NAVIGATION_COMMAND_NAMES:
+            return name, '{x:Static swi:NavigationCommands.%s}' % val
+        if val and 'SeparatorStyleKey' in val:
+            # separators use the default style
+            return None, val
         if name in ('IsItemsHost', 'CacheLength', 'CacheLengthUnit', 'ScrollUnit', 'VirtualizationMode', 'IsVirtualizing') and tag in (
                 'VirtualizingStackPanel', 'VirtualizingTilePanel', 'VirtualizingColumnsPanel', 'VirtualizingWrapPanel', 'StackPanel', 'WrapPanel', 'VirtualizingPanel', 'Grid', 'DockPanel', 'Canvas', 'UniformGrid'):
             return None, val
@@ -851,7 +899,7 @@ class Converter:
         if ns == NS_BLEND:
             self.convert_blend(el, tag)
             return
-        if ns != NS_WPF and prop not in ('Style', 'ItemContainerStyle', 'Resources', 'Triggers') and prop not in PROP_RENAME:
+        if ns != NS_WPF and prop not in ('Style', 'ItemContainerStyle', 'Resources', 'Triggers', 'CommandBindings', 'InputBindings', 'GroupStyle') and prop not in PROP_RENAME:
             self.convert_tree(el)
             return
         if prop == 'ToolTip':
@@ -870,6 +918,11 @@ class Converter:
             comment.tail = el.tail
             parent.replace(el, comment)
             return
+        if prop == 'CommandBindings' and el.getparent() is not None and el.getparent().getparent() is None:
+            # command bindings of the root element are registered by generated code (see write_command_bindings())
+            for cb in el:
+                if is_el(cb):
+                    self.ctx.command_bindings.append((cb.get('Command'), cb.get('Executed'), cb.get('CanExecute'), dict(el.nsmap)))
         if prop in ('InputBindings', 'CommandBindings'):
             parent = el.getparent()
             comment = etree.Comment(' PORT: removed %s ' % tag)
@@ -907,7 +960,7 @@ class Converter:
             parent.replace(el, comment)
             return
         if prop == 'Visibility':
-            el.tag = qn('%s.IsVisible' % owner)
+            el.tag = retag(el.tag, '%s.IsVisible' % owner)
             self.ctx.warn(el, 'Visibility property element')
             return
         if prop == 'LayoutTransform':
@@ -1093,6 +1146,8 @@ class StyleConverter:
         for p, u in el.nsmap.items():
             if u == ns and p:
                 prefix = p
+        if prefix:
+            self.ctx.extra_ns[prefix] = ns
         return '%s|%s' % (prefix, tag) if prefix else tag
 
     def sel(self, name):
@@ -1706,6 +1761,22 @@ def drop_missing_members(root, ctx_todo=None):
             if not a.has(name, attr):
                 del el.attrib[attr]
                 el.insert(0, etree.Comment(' PORT: removed %s (not in Avalonia) ' % attr))
+    for es in list(root.iter(qn('EventSetter'))):
+        es.getparent().replace(es, etree.Comment(' PORT: removed EventSetter for %s (styles can’t set event handlers) ' % es.get('Event')))
+    for st in list(root.iter(qn('Style'))):
+        if '(ScrollViewer.CanContentScroll)' in (st.get('Selector') or ''):
+            st.getparent().replace(st, etree.Comment(' PORT: removed style for CanContentScroll (not in Avalonia) '))
+    # property elements: <DataGridCheckBoxColumn.CellStyle>
+    for el in list(root.iter()):
+        if not is_el(el) or el.tag.split('}')[0] != '{' + NS_AV:
+            continue
+        owner, _, member = local(el.tag).partition('.')
+        if not member or '.' in member or a.members(owner) is None or a.has(owner, member):
+            continue
+        parent = el.getparent()
+        comment = etree.Comment(' PORT: removed %s (not in Avalonia) ' % local(el.tag))
+        comment.tail = el.tail
+        parent.replace(el, comment)
     for setter in list(root.iter(qn('Setter'))):
         prop = setter.get('Property')
         if not prop or '.' in prop:
@@ -1848,6 +1919,25 @@ namespace %s {
 ''' % (namespace, items)
 
 
+_CS_TYPES = {}
+
+
+def cs_type_namespaces():
+    """Type name -> namespaces which declare it (for the whole solution)."""
+    if not _CS_TYPES:
+        root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        for d, dirs, files in os.walk(root):
+            dirs[:] = [x for x in dirs if x not in ('obj', 'bin', '.git', 'packages', 'Libraries')]
+            for f in files:
+                if f.endswith('.cs'):
+                    txt = open(os.path.join(d, f), encoding='utf-8-sig', errors='ignore').read()
+                    ns = re.search(r'^\s*namespace\s+([\w.]+)', txt, re.M)
+                    if ns:
+                        for t in re.findall(r'\b(?:class|struct|enum|interface)\s+(\w+)', txt):
+                            _CS_TYPES.setdefault(t, set()).add(ns.group(1))
+    return _CS_TYPES
+
+
 def convert_file(path, registry, out_dir=None):
     parser = etree.XMLParser(remove_blank_text=False, remove_comments=False, resolve_entities=False)
     tree = etree.parse(path, parser)
@@ -1890,6 +1980,10 @@ def convert_file(path, registry, out_dir=None):
             continue
         elif u == NS_BLEND:
             new_nsmap[p] = NS_BLEND_AV
+        elif u == 'http://acstuff.club/app/internal':
+            new_nsmap[p] = 'clr-namespace:AcManager.Internal;assembly=AcManager.Internal'
+        elif u == 'http://oxyplot.org/wpf':
+            new_nsmap[p] = 'http://oxyplot.org/avalonia'
         elif u.startswith('clr-namespace:System.Windows.Forms'):
             new_nsmap[p] = 'clr-namespace:AcTools.Windows.Compat;assembly=AcTools'
         else:
@@ -1923,6 +2017,7 @@ def convert_file(path, registry, out_dir=None):
     for c in list(root):
         new_root.append(c)
     outputs.append((base + '.axaml', new_root))
+    write_command_bindings(ctx, root, base)
     if plain:
         sroot = etree.Element(qn('Styles'), nsmap=new_nsmap)
         sroot.text = '\n  '
@@ -1945,6 +2040,33 @@ def convert_file(path, registry, out_dir=None):
                 el.set('Selector', re.sub(r'(^|[\s>^,])(\[\()', r'\1:is(Control)\2', el.get('Selector')))
         etree.cleanup_namespaces(r, top_nsmap=new_nsmap, keep_ns_prefixes=[k for k in new_nsmap if k])
         s = etree.tostring(r, encoding='unicode')
+        s = s.replace('http://oxyplot.org/wpf', 'http://oxyplot.org/avalonia')
+        # Avalonia wants all xmlns declarations on the root element
+        head_end = re.match(r'<[^>]*>', s).end()
+        nested = re.findall(r' xmlns:(\w+)="([^"]*)"', s[head_end:])
+        if nested:
+            body = re.sub(r' xmlns:\w+="[^"]*"', '', s[head_end:])
+            head = s[:head_end]
+            for pfx, uri in nested:
+                if (' xmlns:%s="' % pfx) not in head:
+                    name = re.match(r'<[\w:.\-]+', head)
+                    head = head[:name.end()] + ' xmlns:%s="%s"' % (pfx, uri) + head[name.end():]
+            s = head + body
+        for pfx in set(re.findall(r'Selector="[^"]*?\b(\w+)\|', s)):
+            known = registry.prefixes.get(pfx, ())
+            if pfx in ctx.extra_ns or (' xmlns:%s="' % pfx) in re.match(r'<[^>]*>', s).group(0):
+                continue
+            if len(known) > 1:
+                # same prefix means different namespaces in different files: the one which has the used types wins
+                used = set(re.findall(r'\b%s\|(\w+)' % pfx, s))
+                known = [k for k in known if all(k.split(':')[1].split(';')[0] in cs_type_namespaces().get(t, ()) for t in used)]
+            if len(known) == 1:
+                ctx.extra_ns[pfx] = next(iter(known))
+        for pfx, uri in ctx.extra_ns.items():
+            head = re.match(r'<[^>]*>', s).group(0)
+            if ('%s|' % pfx) in s and (' xmlns:%s="' % pfx) not in head:
+                name = re.match(r'<[\w:.\-]+', s)
+                s = s[:name.end()] + ' xmlns:%s="%s"' % (pfx, uri) + s[name.end():]
         # the default namespace is needed by markup extensions in attributes even if no element uses it
         head = re.match(r'<[^>]*>', s)
         if head and ' xmlns="' not in head.group(0):
@@ -1967,6 +2089,38 @@ def convert_file(path, registry, out_dir=None):
         with open(p, 'w', encoding='utf-8-sig') as f:
             f.write(s)
     return ctx, [p for p, _ in outputs]
+
+
+def write_command_bindings(ctx, root, base):
+    """WPF’s CommandBindings of a root element: Avalonia doesn’t have them, so they get registered when the element is loaded."""
+    cls = root.get(X + 'Class')
+    if not ctx.command_bindings or not cls:
+        return
+    ns, _, short = cls.rpartition('.')
+    lines = []
+    for cmd, executed, can, nsmap in ctx.command_bindings:
+        m = re.match(r'^\{x:Static\s+(\w+):([\w.]+)\}$', cmd or '')
+        m2 = re.match(r'^\{StaticResource\s+(?:ResourceKey=)?(\w+)\}$', cmd or '')
+        if m:
+            uri = nsmap.get(m.group(1)) or ''
+            clr = re.match(r'clr-namespace:([\w.]+)', uri)
+            expr = 'global::%s.%s' % (clr.group(1) if clr else 'System.Windows.Input', m.group(2))
+            if uri == NS_MUI or not clr:
+                expr = 'global::System.Windows.Input.%s' % m.group(2)
+        elif m2:
+            expr = '(global::System.Windows.Input.ICommand)s.FindResource("%s")' % m2.group(1)
+        elif re.match(r'^[\w.]+$', cmd or ''):
+            expr = 'global::System.Windows.Input.%s' % cmd
+        else:
+            continue
+        lines.append('                s.CommandBindings.Add(new global::System.Windows.Input.CommandBinding(%s, %s, %s));' % (
+            expr, 's.' + executed if executed else 'null', 's.' + can if can else 'null'))
+    out = ('// Generated by PortTools/xaml_convert.py from CommandBindings of the root element\n'
+           'namespace %s {\n    public partial class %s {\n        [global::System.Runtime.CompilerServices.ModuleInitializer]\n'
+           '        internal static void RegisterCommandBindings%s() {\n'
+           '            global::Avalonia.Controls.Control.LoadedEvent.AddClassHandler<%s>((s, e) => {\n%s\n            });\n        }\n    }\n}\n') % (
+        ns, short, short, short, '\n'.join(lines))
+    open(base + '.CommandBindings.g.cs', 'w', encoding='utf-8').write(out)
 
 
 ASM = ['__ASM__', '.']

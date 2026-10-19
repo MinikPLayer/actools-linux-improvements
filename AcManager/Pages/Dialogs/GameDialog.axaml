@@ -260,12 +260,7 @@
 
                 <DataGridTextColumn Width="100" Header="{x:Static c:ControlsStrings.TableHeader_BestLap}" SortMemberPath="BestLapTime" Binding="{Binding BestLapTime, Converter={StaticResource MillisecondsTimeSpanConverter}, TargetNullValue={x:Static t:ToolsStrings.Common_NA}}" pa:ColumnNames.Name="BestLapTimeColumn" IsVisible="False"><!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed HeaderStyle (not in Avalonia) --></DataGridTextColumn>
                 <DataGridTemplateColumn Width="140" Header="{x:Static g:AppStrings.Dialogs_GameDialog_BestDelta}" SortMemberPath="DeltaToSessionBest" pa:ColumnNames.Name="BestLapTimeDeltaColumn" IsVisible="False">
-                  <!-- PORT: removed CellStyle (not in Avalonia) --><DataGridTemplateColumn.HeaderStyle>
-                    <Style Selector="DataGridColumnHeader">
-                      <Setter Property="HorizontalContentAlignment" Value="Right"/>
-  <Setter Property="Padding" Value="8 4 44 4"/>
-                    </Style>
-                  </DataGridTemplateColumn.HeaderStyle>
+                  <!-- PORT: removed CellStyle (not in Avalonia) --><!-- PORT: removed DataGridTemplateColumn.HeaderStyle (not in Avalonia) -->
                   <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate DataType="{x:Type di:GameDialog+SessionFinishedData+PlayerEntry}">
                       <TextBlock x:Name="TextBlock" Margin="8 4 39 4"><TextBlock.Styles><Style Selector="TextBlock#TextBlock"><Style Selector="^ TextBlock#TextBlock"><Setter Property="Foreground" Value="{DynamicResource TimePositiveDelta}"/><Setter Property="Text" Value="{Binding DeltaToSessionBest, Converter={StaticResource MillisecondsTimeSpanConverter}, StringFormat='{}+{0}'}"/></Style><Style Selector="^"><Setter Property="pa:T.S7" Value="{Binding DeltaToSessionBest, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter={x:Null}}"/><Setter Property="pa:T.S8" Value="{Binding DeltaToSessionBest, Converter={x:Static pc:StateConverter.Instance}, ConverterParameter=Zero}"/></Style><Style Selector="^[(pa|T.S7)=True] TextBlock#TextBlock"><Setter Property="IsVisible" Value="False"/>

@@ -67,7 +67,7 @@
         <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
           <DockPanel.ContextMenu>
             <ContextMenu>
-              <MenuItem Header="{Binding OriginalAlphaMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetAlphaModeCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+              <MenuItem Header="{Binding OriginalAlphaMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetAlphaModeCommand}"/>
             </ContextMenu>
           </DockPanel.ContextMenu>
           <Label DockPanel.Dock="Left" Width="100" Content="Alpha mode:" VerticalAlignment="Center"/>
@@ -82,7 +82,7 @@
         <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
           <DockPanel.ContextMenu>
             <ContextMenu>
-              <MenuItem Header="{Binding OriginalDepthMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetDepthModeCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+              <MenuItem Header="{Binding OriginalDepthMode, Converter={StaticResource EnumToDescriptionConverter}}" Command="{Binding ResetDepthModeCommand}"/>
             </ContextMenu>
           </DockPanel.ContextMenu>
           <Label DockPanel.Dock="Left" Width="100" Content="Depth mode:" VerticalAlignment="Center"/>
@@ -108,7 +108,7 @@
                 <mui:ValueLabel Content="{Binding DisplayName}" Value="{Binding Value, UpdateSourceTrigger=PropertyChanged}" mui:BetterTextBox.Mode="Number" Padding="0" Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
                   <mui:ValueLabel.ContextMenu>
                     <ContextMenu>
-                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"/>
                     </ContextMenu>
                   </mui:ValueLabel.ContextMenu>
                 </mui:ValueLabel>
@@ -130,7 +130,7 @@
                 <DockPanel Background="Transparent" mui:ContextMenuAdvancement.PropagateToChildren="True">
                   <DockPanel.ContextMenu>
                     <ContextMenu>
-                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+                      <MenuItem Header="{Binding OriginalValue}" Command="{Binding ResetCommand}"/>
                     </ContextMenu>
                   </DockPanel.ContextMenu>
 
@@ -159,7 +159,7 @@
       <mui:ButtonWithComboBox Content="Change material" Command="{Binding ChangeMaterialCommand}" ButtonToolTip="Change material for selected mesh" IsVisible="{Binding ChangeMaterialCommand.IsAbleToExecute, Converter={StaticResource BooleanToVisibilityConverter}}">
         <mui:ButtonWithComboBox.MenuItems>
           <MenuItem Command="{Binding RenameCommand}" Header="Rename material"/>
-          <MenuItem Command="{Binding ForkCommand}" Header="{Binding Material.Name}" IsEnabled="{Binding IsForkAvailable}" IsVisible="{Binding Material, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" ToolTip.Tip="Fork material to be used only for this mesh"><!-- PORT: removed HeaderStringFormat (not in Avalonia) --></MenuItem>
+          <MenuItem Command="{Binding ForkCommand}" Header="{Binding Material.Name}" IsEnabled="{Binding IsForkAvailable}" IsVisible="{Binding Material, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" ToolTip.Tip="Fork material to be used only for this mesh"/>
         </mui:ButtonWithComboBox.MenuItems>
       </mui:ButtonWithComboBox>
     </mui:SpacingStackPanel>
