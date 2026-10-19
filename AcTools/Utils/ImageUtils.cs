@@ -80,7 +80,7 @@ namespace AcTools.Utils {
             }
 
             using (var image = new MagickImage(data)) {
-                formatDescription = image.CompressionMethod.ToString();
+                formatDescription = image.Compression.ToString();
 
                 if (noAlpha) {
                     image.HasAlpha = false;
@@ -108,11 +108,11 @@ namespace AcTools.Utils {
                     image.Interpolate = PixelInterpolateMethod.Catrom;
                     image.FilterType = FilterType.Lanczos;
                     image.Sharpen();
-                    image.Resize((int)(k * image.Width), (int)(k * image.Height));
-                    image.Crop((int)maxWidth, (int)maxHeight, Gravity.Center);
+                    image.Resize((uint)(k * image.Width), (uint)(k * image.Height));
+                    image.Crop((uint)maxWidth, (uint)maxHeight, Gravity.Center);
                 }
 
-                image.Quality = ImageUtilsOptions.JpegQuality;
+                image.Quality = (uint)ImageUtilsOptions.JpegQuality;
                 image.Density = new Density(96, 96);
                 if (File.Exists(destination)) {
                     try {
@@ -134,7 +134,7 @@ namespace AcTools.Utils {
                     profile.SetValue(ExifTag.ImageDescription, information.Name);
                 }
 
-                image.AddProfile(profile);
+                image.SetProfile(profile);
                 image.Write(destination);
             }
         }
@@ -283,10 +283,10 @@ namespace AcTools.Utils {
                 profile.SetValue(ExifTag.DateTimeOriginal, date);
                 profile.SetValue(ExifTag.DateTimeDigitized, date);
 
-                image.AddProfile(profile);
+                image.SetProfile(profile);
             }
 
-            image.Quality = quality ?? ImageUtilsOptions.JpegQuality;
+            image.Quality = (uint)(quality ?? ImageUtilsOptions.JpegQuality);
             image.Density = new Density(96, 96);
             image.Write(destination, format);
         }
@@ -330,8 +330,8 @@ namespace AcTools.Utils {
                     image.Interpolate = PixelInterpolateMethod.Catrom;
                     image.FilterType = FilterType.Lanczos;
                     image.Sharpen();
-                    image.Resize((int)(k * image.Width), (int)(k * image.Height));
-                    image.Crop(resize.Value.Width, resize.Value.Height, Gravity.Center);
+                    image.Resize((uint)(k * image.Width), (uint)(k * image.Height));
+                    image.Crop((uint)resize.Value.Width, (uint)resize.Value.Height, Gravity.Center);
                 }
 
                 SaveImage(image, destination, quality, exif, format.ToMagickFormat());

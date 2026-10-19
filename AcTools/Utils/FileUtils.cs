@@ -1,5 +1,6 @@
 ﻿using AcTools.Windows;
 using System;
+using AcTools.Windows.Compat;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
 using AcTools.Utils.Helpers;
 using JetBrains.Annotations;
 

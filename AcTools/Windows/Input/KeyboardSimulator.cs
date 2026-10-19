@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 
 namespace AcTools.Windows.Input {
     public class KeyboardSimulator {

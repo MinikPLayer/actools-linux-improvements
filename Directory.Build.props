@@ -5,7 +5,7 @@
     same way as before.
   -->
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Platforms>x86;x64</Platforms>
     <Platform Condition="'$(Platform)' == '' Or '$(Platform)' == 'AnyCPU'">x86</Platform>
 
@@ -26,6 +26,7 @@
     <!-- Plenty of legacy code in here, warnings are not very helpful at this point. -->
     <NoWarn>$(NoWarn);CS0618;CS0612;CS0168;CS0169;CS0219;CS0414;CS0649;CS0108;CS0114;CS1591;CS8981;CS0067;CS0105;CS0109;CS0659;CS0661;CS1570;CS1572;CS1573;CS1587;CS1574;CS1584;CS1658;CS1710;CS1711;CS1712;CA1416;SYSLIB0001;SYSLIB0003;SYSLIB0011;SYSLIB0014;SYSLIB0021;SYSLIB0022;SYSLIB0023;SYSLIB0027;SYSLIB0032;SYSLIB0036;SYSLIB0040;SYSLIB0045;SYSLIB0050;SYSLIB0051;SYSLIB0057;NU1701;NU1702;NU1903;NU1904;MSB3277;MSB3243;WFO1000;WFAC010;WPF0001</NoWarn>
     <NuGetAudit>false</NuGetAudit>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>3</WarningLevel>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
@@ -42,6 +43,7 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Annotations" Version="2025.2.2" />
+    <PackageReference Include="System.Resources.Extensions" Version="10.0.0" />
 
     <!-- System.Diagnostics.CodeAnalysis.NotNullAttribute (since .NET Core 3.0) clashes with the one from JetBrains. -->
     <Using Include="JetBrains.Annotations.NotNullAttribute" Alias="NotNullAttribute" />

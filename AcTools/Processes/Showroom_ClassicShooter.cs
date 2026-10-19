@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcTools.DataFile;
 using AcTools.Utils.Helpers;
 using AcTools.Windows;

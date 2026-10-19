@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Globalization;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcTools.DataFile;
 using AcTools.Utils;
 using AcTools.Windows.Input;

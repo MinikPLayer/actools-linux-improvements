@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 
 namespace AcTools.Utils.Helpers {
@@ -13,7 +12,7 @@ namespace AcTools.Utils.Helpers {
             task.ContinueWith(x => {
                 AcToolsLogging.Write(x.Exception?.Flatten());
 #if DEBUG
-                MessageBox.Show("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
+                System.Diagnostics.Debug.WriteLine("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
 #endif
             }, TaskContinuationOptions.NotOnRanToCompletion);
         }
@@ -22,7 +21,7 @@ namespace AcTools.Utils.Helpers {
             task.ContinueWith(x => {
                 AcToolsLogging.Write(x.Exception?.Flatten());
 #if DEBUG
-                MessageBox.Show("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
+                System.Diagnostics.Debug.WriteLine("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
 #endif
             }, TaskContinuationOptions.OnlyOnFaulted);
         }

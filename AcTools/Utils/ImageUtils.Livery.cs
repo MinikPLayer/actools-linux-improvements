@@ -218,8 +218,8 @@ namespace AcTools.Utils {
             var count = 0;
 
             using (var img = new MagickImage(bytes)) {
-                var imgWidth = img.Width;
-                var imgHeight = img.Height;
+                var imgWidth = (int)img.Width;
+                var imgHeight = (int)img.Height;
                 var dx = Math.Max(imgWidth / 40, 2);
                 var dy = Math.Max(imgHeight / 40, 2);
 

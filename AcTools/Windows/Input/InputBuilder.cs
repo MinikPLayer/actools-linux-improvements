@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 
 namespace AcTools.Windows.Input {
     internal class InputBuilder : IEnumerable<User32.Input> {

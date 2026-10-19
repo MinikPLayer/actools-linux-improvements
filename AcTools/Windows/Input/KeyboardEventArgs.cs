@@ -1,5 +1,5 @@
 using System;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 
 namespace AcTools.Windows.Input {
     public class KeyboardEventArgs : EventArgs {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using AcTools.Utils.Helpers;
 
 // ReSharper disable InconsistentNaming
@@ -136,7 +136,7 @@ namespace AcTools.Windows {
                     keyCode == Keys.Down ||
                     keyCode == Keys.NumLock ||
                     keyCode == Keys.Cancel ||
-                    keyCode == Keys.Snapshot ||
+                    keyCode == Keys.PrintScreen ||
                     keyCode == Keys.Divide;
         }
 

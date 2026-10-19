@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 
 namespace AcTools.Windows.Input {
     public interface IKeyboardListener : IDisposable {
