@@ -35,10 +35,7 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcManager.Internal, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Libraries\AcManager.Internal\AcManager.Internal.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <ProjectReference Include="..\AcManager.Internal.Stub\AcManager.Internal.Stub.csproj" />
     <Reference Include="Unosquare.Labs.EmbedIO, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Unosquare.Labs.EmbedIO\Unosquare.Labs.EmbedIO.dll</HintPath>

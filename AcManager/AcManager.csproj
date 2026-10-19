@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
     The app, on top of Avalonia (it used to be a WPF project with explicit item lists, see git history). Uses glob patterns for sources
@@ -55,10 +55,7 @@
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
     <PackageReference Include="SharpDX.Direct3D9" Version="4.2.0" />
-    <Reference Include="AcManager.Internal, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\Libraries\AcManager.Internal\AcManager.Internal.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
+    <ProjectReference Include="..\AcManager.Internal.Stub\AcManager.Internal.Stub.csproj" />
     <Reference Include="AcTools.AcdEncryption, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Libraries\AcTools\AcTools.AcdEncryption.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <!--
     Controls of the app, on top of Avalonia. Uses glob patterns for sources (see FirstFloor.ModernUI.csproj);
@@ -33,9 +33,7 @@
     <PackageReference Include="Avalonia.AvaloniaEdit" Version="11.3.0" />
     <PackageReference Include="OxyPlot.Avalonia" Version="2.1.0-Avalonia11" />
     <PackageReference Include="Avalonia.Markup.Xaml.Loader" Version="$(AvaloniaVersion)" />
-    <Reference Include="AcManager.Internal">
-      <HintPath>..\Libraries\AcManager.Internal\AcManager.Internal.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\AcManager.Internal.Stub\AcManager.Internal.Stub.csproj" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Libraries\Newtonsoft.Json\Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Replacement of the closed-source AcManager.Internal.dll, which is a 32-bit .NET Framework assembly and can’t be loaded by a 64-bit .NET 10 process (see LinuxPortDocs.md) -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>AcManager.Internal</AssemblyName>
+    <RootNamespace>AcManager.Internal</RootNamespace>
+    <Platforms>x86;x64;AnyCPU</Platforms>
+  </PropertyGroup>
+  <Import Project="..\Build\AvaloniaCompat.props" />
+  <PropertyGroup Condition="'$(Platform)' == 'x64'">
+    <OutputPath>..\Output\x64\Debug\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <OutputPath>..\Output\x86\Debug\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="InternalUtils.cs" />
+    <ProjectReference Include="..\FirstFloor.ModernUI\FirstFloor.ModernUI.csproj" />
+  </ItemGroup>
+</Project>
