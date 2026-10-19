@@ -34,13 +34,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }));
 
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(ObservableCollection<string>),
+        public static readonly DependencyProperty ItemsSourceProperty = DP.Register("ItemsSource", typeof(ObservableCollection<string>),
             typeof(TagsList));
 
-        public static readonly DependencyProperty SuggestionsSourceProperty = DependencyProperty.Register("SuggestionsSource", typeof(CollectionView),
+        public static readonly DependencyProperty SuggestionsSourceProperty = DP.Register("SuggestionsSource", typeof(CollectionView),
             typeof(TagsList));
 
-        public static readonly DependencyProperty ItemContextMenuProperty = DependencyProperty.Register(nameof(ItemContextMenu), typeof(ContextMenu),
+        public static readonly DependencyProperty ItemContextMenuProperty = DP.Register(nameof(ItemContextMenu), typeof(ContextMenu),
                 typeof(TagsList));
 
         public ContextMenu ItemContextMenu {
@@ -49,7 +49,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         public TagsList() {
-            DefaultStyleKey = typeof(TagsList);
         }
 
         public ObservableCollection<string> ItemsSource {
@@ -64,17 +63,18 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private ComboBox _previousTextBox;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_previousTextBox != null) {
-                _previousTextBox.PreviewKeyDown -= TextBox_KeyDown;
+                _previousTextBox.RemovePreviewKeyDown(TextBox_KeyDown);
                 _previousTextBox.LostFocus -= TextBox_LostFocus;
                 _previousTextBox = null;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
             if (!(Template.FindName("PART_NewTagTextBox", this) is ComboBox textBox)) return;
-            textBox.PreviewKeyDown += TextBox_KeyDown;
+            textBox.AddPreviewKeyDown(TextBox_KeyDown);
             textBox.LostFocus += TextBox_LostFocus;
             _previousTextBox = textBox;
         }
@@ -135,7 +135,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(nameof(IsReadOnly), typeof(bool),
+        public static readonly DependencyProperty IsReadOnlyProperty = DP.Register(nameof(IsReadOnly), typeof(bool),
                 typeof(TagsList));
 
         public bool IsReadOnly {

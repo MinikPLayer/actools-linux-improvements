@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private IRecyclingItemContainerGenerator _itemsGenerator;
         private readonly Dictionary<UIElement, Rect> _childLayouts = new Dictionary<UIElement, Rect>();
 
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
                 typeof(VirtualizingTilePanel), new PropertyMetadata(Orientation.Horizontal));
 
         public Orientation Orientation {
@@ -27,14 +27,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register("ItemWidth", typeof(double), typeof(VirtualizingTilePanel),
+        public static readonly DependencyProperty ItemWidthProperty = DP.Register("ItemWidth", typeof(double), typeof(VirtualizingTilePanel),
                 new PropertyMetadata(double.PositiveInfinity, HandleItemDimensionChanged));
 
-        public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight", typeof(double), typeof(VirtualizingTilePanel),
+        public static readonly DependencyProperty ItemHeightProperty = DP.Register("ItemHeight", typeof(double), typeof(VirtualizingTilePanel),
                 new PropertyMetadata(double.PositiveInfinity, HandleItemDimensionChanged));
 
         private static readonly DependencyProperty VirtualItemIndexProperty =
-                DependencyProperty.RegisterAttached("VirtualItemIndex", typeof(int), typeof(VirtualizingTilePanel), new PropertyMetadata(-1));
+                DP.RegisterAttached("VirtualItemIndex", typeof(int), typeof(VirtualizingTilePanel), new PropertyMetadata(-1));
 
         private bool _isInMeasure;
 
@@ -58,7 +58,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public VirtualizingTilePanel() {
             if (!DesignerProperties.GetIsInDesignMode(this)) {
-                Dispatcher.BeginInvoke((Action)Initialize);
+                Dispatcher.UIThread.BeginInvoke((Action)Initialize);
             }
         }
 
@@ -97,7 +97,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 if (recyclePos.Index >= 0) {
                     _itemsGenerator.Recycle(recyclePos, 1);
                 }
-                var index = InternalChildren.IndexOf(child);
+                var index = Children.IndexOf(child);
                 if (index >= 0) {
                     RemoveInternalChildRange(index, 1);
                 }
@@ -564,14 +564,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.Register(nameof(HorizontalContentAlignment), typeof(HorizontalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.AffectsArrange));
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DP.Register(nameof(HorizontalContentAlignment), typeof(HorizontalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public HorizontalAlignment HorizontalContentAlignment {
             get => GetValue(HorizontalContentAlignmentProperty) as HorizontalAlignment? ?? default;
             set => SetValue(HorizontalContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.Register(nameof(VerticalContentAlignment), typeof(VerticalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.AffectsArrange));
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DP.Register(nameof(VerticalContentAlignment), typeof(VerticalAlignment), typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.AffectsArrange));
 
         public VerticalAlignment VerticalContentAlignment {
             get => GetValue(VerticalContentAlignmentProperty) as VerticalAlignment? ?? default;
@@ -581,26 +581,26 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #region Initialization
         static VirtualizingTilePanel() {
             var style = CreateDefaultStyles();
-            StyleProperty.OverrideMetadata(typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(style));
+            DP.OverrideMetadata(StyleProperty, typeof(VirtualizingTilePanel), new FrameworkPropertyMetadata(style));
 
             // Supported.
-            CacheLengthProperty.OverrideMetadata(typeof(VirtualizingTilePanel),
+            DP.OverrideMetadata(CacheLengthProperty, typeof(VirtualizingTilePanel),
                     new FrameworkPropertyMetadata(new VirtualizationCacheLength(1, 1)));
 
             // Supported.
-            CacheLengthUnitProperty.OverrideMetadata(typeof(VirtualizingTilePanel),
+            DP.OverrideMetadata(CacheLengthUnitProperty, typeof(VirtualizingTilePanel),
                     new FrameworkPropertyMetadata(VirtualizationCacheLengthUnit.Page));
 
             // Not supported, ignores values apart from Pixel.
-            ScrollUnitProperty.OverrideMetadata(typeof(VirtualizingTilePanel),
+            DP.OverrideMetadata(ScrollUnitProperty, typeof(VirtualizingTilePanel),
                     new FrameworkPropertyMetadata(ScrollUnit.Pixel));
 
             // Not supported, always enabled.
-            IsVirtualizingProperty.OverrideMetadata(typeof(VirtualizingTilePanel),
+            DP.OverrideMetadata(IsVirtualizingProperty, typeof(VirtualizingTilePanel),
                     new FrameworkPropertyMetadata(true));
 
             // Not supported, ignores values apart from Recycling.
-            VirtualizationModeProperty.OverrideMetadata(typeof(VirtualizingTilePanel),
+            DP.OverrideMetadata(VirtualizationModeProperty, typeof(VirtualizingTilePanel),
                     new FrameworkPropertyMetadata(VirtualizationMode.Recycling));
         }
 

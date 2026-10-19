@@ -6,7 +6,11 @@ using System.Windows.Data;
 
 namespace FirstFloor.ModernUI.Windows.Converters {
     public class MultiBooleanToVisibilityConverter : IMultiValueConverter {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(values, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             var flag = values.All(x => x is bool && (bool)x);
             var parameterString = parameter as string ?? "";
             var inverse = parameterString.Contains(@"inverse");

@@ -6,7 +6,7 @@ using System.Windows.Controls.Primitives;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class BetterScrollBar : ScrollBar {
 
-        public static readonly DependencyProperty MinThumbLengthProperty = DependencyProperty.Register(nameof(MinThumbLength), typeof(double),
+        public static readonly DependencyProperty MinThumbLengthProperty = DP.Register(nameof(MinThumbLength), typeof(double),
                 typeof(BetterScrollBar), new UIPropertyMetadata(40d, OnMinThumbLengthPropertyChanged));
 
         public double MinThumbLength {

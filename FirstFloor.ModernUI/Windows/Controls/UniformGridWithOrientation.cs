@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class UniformGridWithOrientation : SpacingUniformGrid {
         #region Orientation (Dependency Property)
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation),
+        public static readonly DependencyProperty OrientationProperty = DP.Register("Orientation", typeof(Orientation),
                 typeof(UniformGridWithOrientation), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure),
                 IsValidOrientation);
 
@@ -31,10 +31,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             var width = 0d;
             var height = 0d;
-            var count = InternalChildren.Count;
+            var count = Children.Count;
 
             for (var n = 0; n < count; n++) {
-                var element = InternalChildren[n];
+                var element = Children[n];
                 element.Measure(available);
                 var desiredSize = element.DesiredSize;
                 if (width < desiredSize.Width) {
@@ -64,7 +64,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     childBounds.X += xStep * FirstColumn;
 
                     // Arrange and Position each child to the same cell size
-                    foreach (UIElement child in InternalChildren) {
+                    foreach (UIElement child in Children) {
                         child.Arrange(childBounds);
 
                         // only advance to the next grid cell if the child was not collapsed
@@ -83,7 +83,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     childBounds.Y += yStep * FirstColumn;
 
                     // Arrange and Position each child to the same cell size
-                    foreach (UIElement child in InternalChildren) {
+                    foreach (UIElement child in Children) {
                         child.Arrange(childBounds);
 
                         // only advance to the next grid cell if the child was not collapsed
@@ -119,8 +119,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (_rows == 0 || _columns == 0) {
                 var nonCollapsedCount = 0;
 
-                for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                    var child = InternalChildren[i];
+                for (int i = 0, count = Children.Count; i < count; ++i) {
+                    var child = Children[i];
                     if (child.Visibility != Visibility.Collapsed) {
                         nonCollapsedCount++;
                     }

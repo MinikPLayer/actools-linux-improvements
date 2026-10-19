@@ -43,7 +43,7 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
             private readonly int _maxSize;
 
             static InlineImage() {
-                DefaultStyleKeyProperty.OverrideMetadata(typeof(InlineImage),
+                DP.OverrideMetadata(DefaultStyleKeyProperty, typeof(InlineImage),
                         new FrameworkPropertyMetadata(typeof(InlineImage)));
             }
 
@@ -84,7 +84,7 @@ namespace FirstFloor.ModernUI.Windows.Controls.BbCode {
                 }
             }
 
-            public static readonly DependencyProperty ImageUriProperty = DependencyProperty.Register(nameof(ImageUri),
+            public static readonly DependencyProperty ImageUriProperty = DP.Register(nameof(ImageUri),
                     typeof(Uri), typeof(InlineImage), new PropertyMetadata(null, ImageUrlPropertyChanged));
         }
 

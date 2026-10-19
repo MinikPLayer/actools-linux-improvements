@@ -1,0 +1,85 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type DataGrid}, ResourceId=DataGridSelectAllButtonStyle}" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type DataGridColumnHeadersPresenter}" TargetType="DataGridColumnHeadersPresenter">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridColumnHeadersPresenter">
+          <c:Cell>
+            <DataGridColumnHeader IsHitTestVisible="False" x:Name="PART_FillerColumnHeader"/>
+            <ItemsPresenter/>
+          </c:Cell>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="ColumnHeaderGripperStyle" TargetType="Thumb">
+    <Setter Property="Width" Value="8"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Cursor" Value="SizeWE"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="RowHeaderGripperStyle" TargetType="Thumb">
+    <Setter Property="Height" Value="8"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Cursor" Value="SizeNS"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <Border Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="ColumnFloatingHeaderStyle" TargetType="Control">
+    <Setter Property="Opacity" Value="0.6"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Control">
+          <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+            <Canvas x:Name="PART_VisualBrushCanvas" Margin="{TemplateBinding Margin}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="ColumnHeaderDropSeparatorStyle" TargetType="Separator">
+    <Setter Property="Background" Value="{DynamicResource DataGridDropSeparator}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Separator">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type DataGridCellsPresenter}" TargetType="DataGridCellsPresenter">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridCellsPresenter">
+          <ItemsPresenter/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+</ResourceDictionary>

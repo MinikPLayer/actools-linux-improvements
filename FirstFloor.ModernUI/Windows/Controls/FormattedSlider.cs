@@ -10,11 +10,10 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class FormattedSlider : Slider {
         public FormattedSlider() {
-            DefaultStyleKey = typeof(FormattedSlider);
             AutoToolTipPrecision = 10;
         }
 
-        public static readonly DependencyProperty AutoToolTipFormatProperty = DependencyProperty.Register(nameof(AutoToolTipFormat), typeof(string),
+        public static readonly DependencyProperty AutoToolTipFormatProperty = DP.Register(nameof(AutoToolTipFormat), typeof(string),
                 typeof(FormattedSlider), new PropertyMetadata(null, (o, e) => {
                     ((FormattedSlider)o)._autoToolTipFormat = (string)e.NewValue;
                 }));
@@ -27,7 +26,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AutoToolTipFormatProperty, value);
         }
 
-        public static readonly DependencyProperty AutoToolTipConverterProperty = DependencyProperty.Register(nameof(AutoToolTipConverter), typeof(IValueConverter),
+        public static readonly DependencyProperty AutoToolTipConverterProperty = DP.Register(nameof(AutoToolTipConverter), typeof(IValueConverter),
                 typeof(FormattedSlider), new PropertyMetadata(null, (o, e) => {
                     ((FormattedSlider)o)._autoToolTipConverter = (IValueConverter)e.NewValue;
                 }));

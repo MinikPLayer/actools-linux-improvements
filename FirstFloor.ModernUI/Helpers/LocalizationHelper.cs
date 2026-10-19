@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using AcTools.Windows.Compat;
 using System.Windows.Input;
 using FirstFloor.ModernUI.Localizable;
 using FirstFloor.ModernUI.Windows.Converters;

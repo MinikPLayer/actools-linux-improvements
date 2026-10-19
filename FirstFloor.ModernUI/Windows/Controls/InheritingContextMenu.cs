@@ -16,7 +16,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private List<List<FrameworkElement>> _items;
 
         public InheritingContextMenu() {
-            DefaultStyleKey = typeof(InheritingContextMenu);
         }
 
         private void RemoveTemporary() {

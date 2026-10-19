@@ -6,7 +6,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         public static readonly DependencyProperty NewProperty;
 
         static NewMarkService() {
-            NewProperty = DependencyProperty.RegisterAttached("New", typeof(bool), typeof(NewMarkService),
+            NewProperty = DP.RegisterAttached("New", typeof(bool), typeof(NewMarkService),
                     new FrameworkPropertyMetadata(false, OnLimitedChanged));
         }
 

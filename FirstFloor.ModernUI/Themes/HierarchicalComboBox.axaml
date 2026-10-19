@@ -1,0 +1,233 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="HierarchicalComboBoxMenuItem" TargetType="MenuItem">
+    <Setter Property="Focusable" Value="True"/>
+
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="7 3 8 3"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="IsVisible" Value="True"/>
+    <Setter Property="IsTextSearchEnabled" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="MenuItem">
+          <Grid x:Name="MainGrid">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+              <ToolTip.Tip>
+                <ToolTip IsVisible="False"/>
+              </ToolTip.Tip>
+              <Grid Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+
+                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+                  <!-- popup border thickness not dependent on BorderThickness property-->
+                  <ScrollViewer x:Name="DropDownScrollViewer">
+                    <Grid Background="Green">
+                      <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Rectangle x:Name="OpaqueRect" Height="{Binding ActualHeight, ElementName=DropDownBorder}" Width="{Binding ActualWidth, ElementName=DropDownBorder}" Fill="{Binding Background, ElementName=DropDownBorder}"/>
+                      </Canvas>
+                      <ItemsPresenter x:Name="ItemsPresenter"/>
+                    </Grid>
+                  </ScrollViewer>
+                </Border>
+              </Grid>
+            </Popup>
+            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
+            <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
+            <ContentPresenter x:Name="PART_Text" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+          </Grid>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <!--<Style.Triggers>
+      <Trigger Binding="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource TypeToBooleanConverter}, ConverterParameter=ContentControl}" Value="True">
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type MenuItem}">
+              <ContentPresenter x:Name="PART_Text" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}"
+                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" IsHitTestVisible="False"
+                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Trigger>
+    </Style.Triggers>-->
+  <Style Selector="^ /template/ #Arrow"><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_Button"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:pointerover /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^:pointerover /template/ #PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
+            </Style><Style Selector="^:focus[IsSubmenuOpen=False] /template/ #PART_Button"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextHover}"/>
+              </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_Button"><Setter Property="Background" Value="{DynamicResource InputBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource InputBorderHover}"/>
+            </Style><Style Selector="^:disabled /template/ #PART_Text"><Setter Property="TextBlock.Foreground" Value="{DynamicResource InputTextDisabled}"/>
+              </Style><Style Selector="^:disabled /template/ #Arrow"><Setter Property="Fill" Value="{DynamicResource InputTextDisabled}"/>
+            </Style></ControlTheme>
+
+  <!-- PORT: ControlTemplate with triggers outside of a style (3 triggers) --><ControlTemplate x:Key="SpecialMenuItemHeaderControlTemplate" TargetType="c:HierarchicalItem">
+    <Grid x:Name="Bg" Background="Transparent">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="54"/>
+      </Grid.ColumnDefinitions>
+      <ContentPresenter Grid.Column="0" ContentSource="Header" Margin="7 2 8 2" RecognizesAccessKey="False"/>
+      <Path x:Name="RightArrow" Grid.Column="1" VerticalAlignment="Center" Margin="41 0 0 0" Fill="{TemplateBinding MenuItem.Foreground}" Data="{StaticResource RightArrow}" IsHitTestVisible="False"/>
+      <!-- PORT: SystemParameters not available: SystemParameters.MenuPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.Column="0" Grid.ColumnSpan="2" Placement="Right" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}">
+        <Grid Margin="0" Background="{DynamicResource PopupBackground}">
+          <Border x:Name="SubMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+            <ScrollViewer x:Name="SubMenuScrollViewer" CanContentScroll="True" Foreground="{DynamicResource ItemText}">
+              <ItemsPresenter x:Name="ItemsPresenter" Grid.IsSharedSizeScope="True"/>
+            </ScrollViewer>
+          </Border>
+        </Grid>
+      </Popup>
+    </Grid>
+    </ControlTemplate>
+
+  <!-- PORT: ControlTemplate with triggers outside of a style (2 triggers) --><ControlTemplate x:Key="SpecialMenuItemControlTemplate" TargetType="c:HierarchicalItem">
+    <Border x:Name="Bg">
+      <ToolTip.Tip>
+        <ToolTip Placement="{Binding ToolTipPlacement, RelativeSource={RelativeSource TemplatedParent}}" IsVisible="{Binding PreviewValue, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}">
+          <ContentPresenter IsHitTestVisible="False" Margin="4" Content="{Binding PreviewValue, RelativeSource={RelativeSource TemplatedParent}}" RecognizesAccessKey="False"/>
+        </ToolTip>
+      </ToolTip.Tip>
+      <ContentPresenter ContentSource="Header" Margin="7 2 62 2" RecognizesAccessKey="False" ToolTip.Tip="{x:Null}"/>
+    </Border>
+    </ControlTemplate>
+
+  <ControlTheme TargetType="c:HierarchicalItem" x:Key="{x:Type c:HierarchicalItem}">
+    <Setter Property="Background" Value="{DynamicResource PopupBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource SpecialMenuItemControlTemplate}"/>
+    <Setter Property="IsTextSearchEnabled" Value="True"/>
+    <Style Selector="^[Role=TopLevelHeader]"><Setter Property="Padding" Value="7 2 8 2"/>
+        <Setter Property="Template" Value="{StaticResource SpecialMenuItemHeaderControlTemplate}"/>
+      </Style><Style Selector="^[Role=SubmenuHeader]"><Setter Property="Padding" Value="2 3 2 3"/>
+        <Setter Property="Template" Value="{StaticResource SpecialMenuItemHeaderControlTemplate}"/>
+      </Style></ControlTheme>
+
+  <!-- PORT: ControlTemplate with triggers outside of a style (3 triggers) --><ControlTemplate x:Key="HierarchicalComboBox.DefaultTemplate" TargetType="c:HierarchicalComboBox">
+    <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+      <c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="{TemplateBinding InnerMargin}" Padding="{TemplateBinding Padding}" Theme="{StaticResource HierarchicalComboBoxMenuItem}">
+        <MenuItem.Header>
+          <ContentPresenter x:Name="PART_Text" Content="{TemplateBinding SelectedItem}" ContentTemplate="{TemplateBinding SelectedContent}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+        </MenuItem.Header>
+      </c:LazyMenuItem>
+    </Menu>
+    </ControlTemplate>
+
+  <ControlTheme x:Key="HierarchicalComboBoxMenuItem.Borderless" TargetType="MenuItem" BasedOn="{StaticResource HierarchicalComboBoxMenuItem}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="MenuItem">
+          <Grid x:Name="MainGrid">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <!-- PORT: SystemParameters not available: SystemParameters.VerticalScrollBarWidthKey --><ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
+            </Grid.ColumnDefinitions>
+            <!-- PORT: SystemParameters not available: SystemParameters.ComboBoxPopupAnimationKey --><Popup x:Name="PART_Popup" Grid.ColumnSpan="2" Grid.Column="0" Placement="Bottom" Margin="1" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
+              <Grid Margin="0" MinWidth="{Binding ActualWidth, ElementName=MainGrid}">
+
+                <Border x:Name="DropDownBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1" TextBlock.Foreground="{DynamicResource ItemText}">
+                  <!-- popup border thickness not dependent on BorderThickness property-->
+                  <ScrollViewer x:Name="DropDownScrollViewer">
+                    <Grid>
+                      <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Rectangle x:Name="OpaqueRect" Height="{Binding ActualHeight, ElementName=DropDownBorder}" Width="{Binding ActualWidth, ElementName=DropDownBorder}" Fill="{Binding Background, ElementName=DropDownBorder}"/>
+                      </Canvas>
+                      <ItemsPresenter x:Name="ItemsPresenter"/>
+                    </Grid>
+                  </ScrollViewer>
+                </Border>
+              </Grid>
+            </Popup>
+            <ToggleButton x:Name="PART_Button" Grid.ColumnSpan="2" Grid.Column="0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" IsChecked="{Binding IsSubmenuOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Padding="0 0 0 10"/>
+            <Path x:Name="Arrow" Grid.ColumnSpan="2" Grid.Column="0" Margin="3 1 8 0" Fill="{TemplateBinding Foreground}" Data="{DynamicResource DownArrowGeometry}" HorizontalAlignment="Right" VerticalAlignment="Center" IsHitTestVisible="False"/>
+            <ContentPresenter x:Name="PART_Text" Grid.Column="0" ContentSource="Header" RecognizesAccessKey="False" Margin="{TemplateBinding Padding}" IsHitTestVisible="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <!-- PORT: ControlTemplate with triggers outside of a style (4 triggers) --><ControlTemplate x:Key="HierarchicalComboBoxTemplate.Borderless" TargetType="c:HierarchicalComboBox">
+    <c:AdornedControl x:Name="Outline" IsAdornerVisible="False">
+      <c:AdornedControl.AdornerContent>
+        <Border Margin="{StaticResource BorderlessOutline}" BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" IsHitTestVisible="False"/>
+      </c:AdornedControl.AdornerContent>
+      <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" x:Name="PART_Menu" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+        <c:LazyMenuItem x:Name="PART_MenuItem" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ItemsSource="{TemplateBinding InnerItems}" Foreground="{TemplateBinding Foreground}" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Margin="{TemplateBinding InnerMargin}" Padding="0" Theme="{StaticResource HierarchicalComboBoxMenuItem.Borderless}">
+          <MenuItem.Header>
+            <ContentPresenter x:Name="PART_Text" Content="{TemplateBinding SelectedItem}" ContentTemplate="{TemplateBinding SelectedContent}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+          </MenuItem.Header>
+        </c:LazyMenuItem>
+      </Menu>
+    </c:AdornedControl>
+    </ControlTemplate>
+
+  <ControlTheme x:Key="HierarchicalComboBox.Base" TargetType="c:HierarchicalComboBox">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+    <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="SelectedContent">
+      <Setter.Value>
+        <DataTemplate DataType="{x:Type presentation:Displayable}">
+          <TextBlock TextTrimming="CharacterEllipsis">
+            <TextBlock.Text>
+              <MultiBinding Converter="{StaticResource BindableConverterConverter}">
+                <Binding Path="DisplayName"/>
+                <Binding Path="SelectedItemHeaderConverter" RelativeSource="{RelativeSource AncestorType={x:Type c:HierarchicalComboBox}}"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+        </DataTemplate>
+      </Setter.Value>
+    </Setter>
+    <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource HierarchicalComboBox.DefaultTemplate}"/>
+  </ControlTheme>
+
+  <ControlTheme TargetType="c:HierarchicalComboBox" BasedOn="{StaticResource HierarchicalComboBox.Base}" x:Key="{x:Type c:HierarchicalComboBox}">
+    <Setter Property="Foreground" Value="{DynamicResource InputText}"/>
+    <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource InputBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Padding" Value="7 3 8 3"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="HierarchicalComboBox.Borderless" TargetType="c:HierarchicalComboBox" BasedOn="{StaticResource HierarchicalComboBox.Base}">
+    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Control}}, Path=(TextElement.Foreground)}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource HierarchicalComboBoxTemplate.Borderless}"/>
+    </ControlTheme>
+
+  <ControlTheme x:Key="HierarchicalComboBox.Borderless.White" TargetType="c:HierarchicalComboBox" BasedOn="{StaticResource HierarchicalComboBox.Base}">
+    <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type Control}}, Path=(TextElement.Foreground)}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Padding" Value="0"/>
+    <!-- PORT: Template setter without inline ControlTemplate --><Setter Property="Template" Value="{StaticResource HierarchicalComboBoxTemplate.Borderless}"/>
+    <Style Selector="^:not(:disabled):pointerover"><Setter Property="BorderBrush" Value="{DynamicResource InputTextHover}"/>
+      </Style></ControlTheme>
+</ResourceDictionary>

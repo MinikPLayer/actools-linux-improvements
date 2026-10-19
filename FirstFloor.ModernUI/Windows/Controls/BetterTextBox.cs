@@ -8,11 +8,14 @@ using FirstFloor.ModernUI.Windows.Attached;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class BetterTextBox : TextBox {
-        public BetterTextBox() {
-            DefaultStyleKey = typeof(BetterTextBox);
+        static BetterTextBox() {
+            InputElement.KeyDownEvent.AddClassHandler<BetterTextBox>((x, e) => x.OnPreviewKeyDown((KeyEventArgs)e), Avalonia.Interactivity.RoutingStrategies.Tunnel);
         }
 
-        public static readonly DependencyProperty PlaceholderOpacityProperty = DependencyProperty.Register(nameof(PlaceholderOpacity), typeof(double),
+        public BetterTextBox() {
+        }
+
+        public static readonly DependencyProperty PlaceholderOpacityProperty = DP.Register(nameof(PlaceholderOpacity), typeof(double),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(0.5));
 
         public double PlaceholderOpacity {
@@ -20,14 +23,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PlaceholderOpacityProperty, value);
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register(nameof(Placeholder), typeof(string), typeof(BetterTextBox));
+        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string), typeof(BetterTextBox));
 
         public string Placeholder {
             get => (string)GetValue(PlaceholderProperty);
             set => SetValue(PlaceholderProperty, value);
         }
 
-        protected override void OnPreviewKeyDown(KeyEventArgs e) {
+        protected void OnPreviewKeyDown(KeyEventArgs e) {
             switch (e.Key) {
                 case Key.Escape:
                     e.Handled = this.RemoveFocus();
@@ -56,7 +59,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (!e.Handled) {
-                base.OnPreviewKeyDown(e);
+                
             }
         }
 
@@ -68,7 +71,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ConverterProperty, value);
         }
 
-        public static readonly DependencyProperty ConverterProperty = DependencyProperty.RegisterAttached("Converter", typeof(INumberInputConverter),
+        public static readonly DependencyProperty ConverterProperty = DP.RegisterAttached("Converter", typeof(INumberInputConverter),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -80,7 +83,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.RegisterAttached("Mode", typeof(SpecialMode),
+        public static readonly DependencyProperty ModeProperty = DP.RegisterAttached("Mode", typeof(SpecialMode),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(SpecialMode.None, FrameworkPropertyMetadataOptions.Inherits));
 
         public static string GetModeLabel(DependencyObject obj) {
@@ -91,7 +94,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeLabelProperty, value);
         }
 
-        public static readonly DependencyProperty ModeLabelProperty = DependencyProperty.RegisterAttached("ModeLabel", typeof(string),
+        public static readonly DependencyProperty ModeLabelProperty = DP.RegisterAttached("ModeLabel", typeof(string),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -103,7 +106,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ModeLabelValueProperty, value);
         }
 
-        public static readonly DependencyProperty ModeLabelValueProperty = DependencyProperty.RegisterAttached("ModeLabelValue", typeof(double),
+        public static readonly DependencyProperty ModeLabelValueProperty = DP.RegisterAttached("ModeLabelValue", typeof(double),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -115,7 +118,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(MinimumProperty, value);
         }
 
-        public static readonly DependencyProperty MinimumProperty = DependencyProperty.RegisterAttached("Minimum", typeof(double),
+        public static readonly DependencyProperty MinimumProperty = DP.RegisterAttached("Minimum", typeof(double),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(double.NegativeInfinity, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -127,7 +130,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(MaximumProperty, value);
         }
 
-        public static readonly DependencyProperty MaximumProperty = DependencyProperty.RegisterAttached("Maximum", typeof(double),
+        public static readonly DependencyProperty MaximumProperty = DP.RegisterAttached("Maximum", typeof(double),
                 typeof(BetterTextBox), new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.Inherits));
 
 

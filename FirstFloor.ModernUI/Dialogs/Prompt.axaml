@@ -1,0 +1,12 @@
+﻿<c:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.Prompt" SizeToContent="Height" Width="720" MinHeight="160">
+  <c:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </c:ModernDialog.Resources>
+  <StackPanel x:Name="Panel" VerticalAlignment="Center">
+    <c:BbCodeBlock Text="{Binding Description, Mode=OneTime}" Margin="0 0 0 8" TextWrapping="Wrap" IsVisible="{Binding Description, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+  </StackPanel>
+</c:ModernDialog>

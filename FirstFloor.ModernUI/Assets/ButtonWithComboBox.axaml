@@ -1,0 +1,183 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="ButtonWithComboBoxExtraMenu" TargetType="MenuItem">
+    <Setter Property="Focusable" Value="True"/>
+    <Setter Property="IsTabStop" Value="True"/>
+
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="IsVisible" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="MenuItem">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" VerticalAlignment="Stretch">
+            <c:Cell VerticalAlignment="Stretch">
+              <Path x:Name="Arrow" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" Margin="3 3 2 3" Data="M -0.5 3 L 5.5 3 L 2.5 6 Z"/>
+              <ContentPresenter/>
+              <!-- PORT: SystemParameters not available: SystemParameters.MenuAnimationKey --><Popup IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" PlacementTarget="{Binding ElementName=Chrome}" x:Name="SubMenuPopup" Focusable="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuAnimationKey}}">
+                <Border x:Name="SubMenuBorder" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}" BorderThickness="1" Padding="0" TextBlock.Foreground="{DynamicResource WindowText}">
+                  <c:Cell x:Name="SubMenu">
+                    <!-- StackPanel holds children of the menu. This is set by IsItemsHost=True -->
+                    <StackPanel IsItemsHost="True"/>
+                  </c:Cell>
+                </Border>
+              </Popup>
+            </c:Cell>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+              <Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="ButtonWithComboBoxWrapperMenu" TargetType="Menu">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="FocusManager.IsFocusScope" Value="False"/>
+
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Menu">
+          <Grid ClipToBounds="True" IsItemsHost="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme TargetType="c:ButtonWithComboBox" x:Key="{x:Type c:ButtonWithComboBox}">
+    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="16 1 16 2"/>
+  <Setter Property="Focusable" Value="True"/>
+    <Setter Property="IsTabStop" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ButtonWithComboBox">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel>
+              <c:Cell DockPanel.Dock="Right">
+                <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+                  <c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
+                </Menu>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Width="1" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Bottom" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+              </c:Cell>
+              <c:Cell>
+                <Button x:Name="Presenter" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Focusable="{TemplateBinding Focusable}" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" BorderThickness="0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" KeyboardNavigation.TabIndex="0" ToolTip.Tip="{TemplateBinding ButtonToolTip}" Theme="{StaticResource BaseButtonStyle.Nothing}"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Width="1" HorizontalAlignment="Left" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Height="1" VerticalAlignment="Bottom" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+              </c:Cell>
+            </DockPanel>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Presenter"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_MenuItem"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:pointerover /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #Presenter"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+              </Style><Style Selector="^:focus /template/ #PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+              </Style></ControlTheme>
+
+  <ControlTheme x:Key="Go.ButtonWithComboBox" TargetType="c:ButtonWithComboBox">
+    <Setter Property="Background" Value="{DynamicResource GoButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource GoButtonText}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ButtonWithComboBox">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel>
+              <c:Cell DockPanel.Dock="Right" TextBlock.FontWeight="Normal">
+                <Menu VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{TemplateBinding Foreground}" Theme="{StaticResource ButtonWithComboBoxWrapperMenu}">
+                  <c:LazyMenuItem x:Name="PART_MenuItem" ItemsSource="{TemplateBinding MenuItems}" KeyboardNavigation.TabIndex="1" Focusable="{TemplateBinding Focusable}" Theme="{StaticResource ButtonWithComboBoxExtraMenu}"/>
+                </Menu>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Width="1" HorizontalAlignment="Right" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=PART_MenuItem}" Height="1" VerticalAlignment="Bottom" IsHitTestVisible="False" Margin="0 -1 -1 -1"/>
+              </c:Cell>
+              <c:Cell>
+                <Button x:Name="Presenter" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Focusable="{TemplateBinding Focusable}" Command="{TemplateBinding Command}" CommandParameter="{TemplateBinding CommandParameter}" BorderThickness="0" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" KeyboardNavigation.TabIndex="0" ToolTip.Tip="{TemplateBinding ButtonToolTip}" Theme="{StaticResource BaseButtonStyle.Nothing}"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Width="1" HorizontalAlignment="Left" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Height="1" VerticalAlignment="Top" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+                <Border Background="{Binding BorderBrush, ElementName=Presenter}" Height="1" VerticalAlignment="Bottom" IsHitTestVisible="False" Margin="-1 -1 0 -1"/>
+              </c:Cell>
+            </DockPanel>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Presenter"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="Foreground" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #PART_MenuItem"><Setter Property="Background" Value="{TemplateBinding Background}"/><Setter Property="BorderBrush" Value="Transparent"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource GoButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource GoButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #Presenter"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
+            </Style><Style Selector="^:pointerover /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource GoButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
+            </Style><Style Selector="^[IsSubmenuOpen=True] /template/ #PART_MenuItem"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #Presenter"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
+            </Style><Style Selector="^:focus /template/ #PART_MenuItem"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="Go.ToolBarButtonWithComboBox" BasedOn="{StaticResource Go.ButtonWithComboBox}" TargetType="c:ButtonWithComboBox">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Padding" Value="8 3 8 5"/>
+  </ControlTheme>
+</ResourceDictionary>

@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class SpacingUniformGrid : Panel {
-        public static readonly DependencyProperty FirstColumnProperty = DependencyProperty.Register(nameof(FirstColumn), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly DependencyProperty FirstColumnProperty = DP.Register(nameof(FirstColumn), typeof(int), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int FirstColumn {
@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FirstColumnProperty, value);
         }
 
-        public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(nameof(Columns), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly DependencyProperty ColumnsProperty = DP.Register(nameof(Columns), typeof(int), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int Columns {
@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ColumnsProperty, value);
         }
 
-        public static readonly DependencyProperty RowsProperty = DependencyProperty.Register(nameof(Rows), typeof(int), typeof(SpacingUniformGrid),
+        public static readonly DependencyProperty RowsProperty = DP.Register(nameof(Rows), typeof(int), typeof(SpacingUniformGrid),
                 new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public int Rows {
@@ -29,7 +29,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RowsProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalSpacingProperty = DependencyProperty.Register(nameof(HorizontalSpacing), typeof(double),
+        public static readonly DependencyProperty HorizontalSpacingProperty = DP.Register(nameof(HorizontalSpacing), typeof(double),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double HorizontalSpacing {
@@ -37,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HorizontalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalSpacingProperty = DependencyProperty.Register(nameof(VerticalSpacing), typeof(double),
+        public static readonly DependencyProperty VerticalSpacingProperty = DP.Register(nameof(VerticalSpacing), typeof(double),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double VerticalSpacing {
@@ -45,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(VerticalSpacingProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalStackModeProperty = DependencyProperty.Register(nameof(VerticalStackMode), typeof(bool),
+        public static readonly DependencyProperty VerticalStackModeProperty = DP.Register(nameof(VerticalStackMode), typeof(bool),
                 typeof(SpacingUniformGrid), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public bool VerticalStackMode {
@@ -53,7 +53,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(VerticalStackModeProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalStackModeProperty = DependencyProperty.Register(nameof(HorizontalStackMode), typeof(bool),
+        public static readonly DependencyProperty HorizontalStackModeProperty = DP.Register(nameof(HorizontalStackMode), typeof(bool),
                 typeof(SpacingUniformGrid));
 
         public bool HorizontalStackMode {
@@ -94,8 +94,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var itemsInRow = 0;
 
             //  Measure each child, keeping track of maximum desired width and height.
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                var child = InternalChildren[i];
+            for (int i = 0, count = Children.Count; i < count; ++i) {
+                var child = Children[i];
 
                 // Measure the child.
                 child.Measure(childConstraint);
@@ -132,8 +132,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var itemsInRow = 0;
 
             //  Measure each child, keeping track of maximum desired width and height.
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                var child = InternalChildren[i];
+            for (int i = 0, count = Children.Count; i < count; ++i) {
+                var child = Children[i];
 
                 // Measure the child.
                 child.Measure(childConstraint);
@@ -174,8 +174,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var itemsInRow = 0;
 
             //  Measure each child, keeping track of maximum desired width and height.
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                var child = InternalChildren[i];
+            for (int i = 0, count = Children.Count; i < count; ++i) {
+                var child = Children[i];
 
                 // Measure the child.
                 child.Measure(childConstraint);
@@ -213,8 +213,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var maxChildDesiredHeight = 0d;
 
             //  Measure each child, keeping track of maximum desired width and height.
-            for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                var child = InternalChildren[i];
+            for (int i = 0, count = Children.Count; i < count; ++i) {
+                var child = Children[i];
 
                 // Measure the child.
                 child.Measure(childConstraint);
@@ -233,7 +233,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         protected override Size ArrangeOverride(Size arrangeSize) {
-            var children = InternalChildren;
+            var children = Children;
 
             switch (_stackMode) {
                 case StackMode.Vertical:
@@ -419,8 +419,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (_rows == 0 || _columns == 0) {
                 var nonCollapsedCount = 0;
 
-                for (int i = 0, count = InternalChildren.Count; i < count; ++i) {
-                    var child = InternalChildren[i];
+                for (int i = 0, count = Children.Count; i < count; ++i) {
+                    var child = Children[i];
                     if (child.Visibility != Visibility.Collapsed) {
                         nonCollapsedCount++;
                     }

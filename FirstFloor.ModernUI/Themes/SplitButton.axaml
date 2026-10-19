@@ -1,0 +1,91 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTheme x:Key="ClassicDropDownStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Border x:Name="chrome" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <ContentPresenter x:Name="Cp" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+
+                    <!--ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderStyle" TargetName="chrome" Value="RaisedPressed" />
+                            <Setter Property="Visibility" TargetName="chrome" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                            <Setter Property="BorderStyle" TargetName="chrome" Value="RaisedPressed" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Path.Stroke" TargetName="Cp" Value="#ADADAD" />
+                            <Setter Property="Path.Fill" TargetName="Cp" Value="#ADADAD" />
+                        </Trigger>
+                    </-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="ClassicSplitButtonStyle" TargetType="controls:SplitButton">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+        <Setter Property="BorderBrush" Value="Green"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:SplitButton">
+                    <Grid>
+                        <Border x:Name="buttonChrome" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+
+                            <Grid Background="Transparent" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border x:Name="Bd" Margin="1 1 2 1">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True"/>
+                                </Border>
+
+                                <Rectangle x:Name="rect" Grid.Column="2" Width="1" Margin="0 -2 0 -2" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="DarkGray"/>
+
+                                <Path x:Name="path" Data="M0,0L3,3 6,0z" Margin="0 1 0 0" Grid.Column="1" Stroke="{TemplateBinding Foreground}" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <Button x:Name="PART_DropDown" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Stretch" Grid.Column="1" Margin="1 -3 -3 -3"><!--Style="{DynamicResource classicDropDownStyle}"-->
+
+                                    <Path Data="M0,0L3,3 6,0z" Margin="0 1 0 0" Grid.Column="1" Stroke="{TemplateBinding Foreground}" Fill="{TemplateBinding Foreground}"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    <Style Selector="^ /template/ #buttonChrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:focus /template/ #buttonChrome"><Setter Property="BorderBrush" Value="Orange"/>
+                        </Style><Style Selector="^[IsContextMenuOpen=True] /template/ #buttonChrome"><Setter Property="BorderBrush" Value="DarkCyan"/>
+                        </Style><Style Selector="^[(ToggleButton.IsChecked)=True] /template/ #buttonChrome"><Setter Property="BorderBrush" Value="Yellow"/>
+                        </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Style><Style Selector="^[Mode=Dropdown] /template/ #PART_DropDown"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Dropdown] /template/ #rect"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[Mode=Button] /template/ #PART_DropDown"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ #path"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ #rect"><Setter Property="IsVisible" Value="False"/>
+                            </Style><Style Selector="^[Mode=Button] /template/ #Bd"><Setter Property="Grid.ColumnSpan" Value="2"/>
+                        </Style></ControlTheme>
+</ResourceDictionary>

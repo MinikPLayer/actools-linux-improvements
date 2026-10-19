@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(BrightnessProperty);
         }
 
-        public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register("Brightness", typeof(double),
+        public static readonly DependencyProperty BrightnessProperty = DP.Register("Brightness", typeof(double),
                 typeof(ColorPickerBrightnessPaletteEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), CoerceSaturationFactor));
 
         public double Brightness {

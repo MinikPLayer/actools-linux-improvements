@@ -24,34 +24,34 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         public ColorPicker() {
-            DefaultStyleKey = typeof(ColorPicker);
         }
 
         internal Popup Popup { get; private set; }
         private ColorPickerPanel _panel;
         private ToggleButton _button;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (Popup != null) {
                 Popup.Opened -= OnPopupOpened;
             }
 
             if (_button != null) {
-                _button.PreviewMouseLeftButtonDown -= OnButtonClick;
+                _button.RemovePreviewMouseLeftButtonDown(OnButtonClick);
             }
 
-            Popup = GetTemplateChild("PART_Popup") as Popup;
-            _panel = GetTemplateChild("PART_Panel") as ColorPickerPanel;
-            _button = GetTemplateChild("PART_Button") as ToggleButton;
+            Popup = this.GetTemplateChild("PART_Popup") as Popup;
+            _panel = this.GetTemplateChild("PART_Panel") as ColorPickerPanel;
+            _button = this.GetTemplateChild("PART_Button") as ToggleButton;
 
             if (Popup != null) {
                 Popup.Opened += OnPopupOpened;
             }
 
             if (_button != null) {
-                _button.PreviewMouseLeftButtonDown += OnButtonClick;
+                _button.AddPreviewMouseLeftButtonDown(OnButtonClick);
             }
         }
 
@@ -67,14 +67,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _lastColorPicker = new WeakReference<ColorPicker>(this);
         }
 
-        public static readonly DependencyPropertyKey OverlayColorPropertyKey = DependencyProperty.RegisterReadOnly(nameof(OverlayColor), typeof(Color),
+        public static readonly DependencyPropertyKey OverlayColorPropertyKey = DP.RegisterReadOnly(nameof(OverlayColor), typeof(Color),
                 typeof(ColorPicker), new PropertyMetadata(Colors.White));
 
         public static readonly DependencyProperty OverlayColorProperty = OverlayColorPropertyKey.DependencyProperty;
 
         public Color OverlayColor => (Color)GetValue(OverlayColorProperty);
 
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(nameof(Color), typeof(Color),
+        public static readonly DependencyProperty ColorProperty = DP.Register(nameof(Color), typeof(Color),
                 typeof(ColorPicker),
                 new FrameworkPropertyMetadata(Color.FromArgb(0, 0, 0, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
 
@@ -93,11 +93,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (_skip) return;
             if (DisplayColor.ToColor() != newValue) {
                 DisplayColor = newValue.ToHexString();
-                SetValue(OverlayColorPropertyKey, newValue.IsBright() ? Colors.Black : Colors.White);
+                SetValue(OverlayColorPropertyKey.DependencyProperty, newValue.IsBright() ? Colors.Black : Colors.White);
             }
         }
 
-        public static readonly DependencyProperty DisplayColorProperty = DependencyProperty.Register(nameof(DisplayColor), typeof(string),
+        public static readonly DependencyProperty DisplayColorProperty = DP.Register(nameof(DisplayColor), typeof(string),
                 typeof(ColorPicker), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnDisplayColorChanged));
 
         public string DisplayColor {

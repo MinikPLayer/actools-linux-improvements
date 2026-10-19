@@ -105,10 +105,10 @@ namespace FirstFloor.ModernUI.Helpers {
                     _sockets = new List<KillerOrder>();
 
                     if (OptionUseDispatcher) {
-                        _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background, Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher) {
-                            Interval = OptionInterval,
-                            IsEnabled = true
+                        _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background) {
+                            Interval = OptionInterval
                         };
+                        _dispatcherTimer.Start();
 
                         _dispatcherTimer.Tick += OnDispatcherTick;
                     } else {

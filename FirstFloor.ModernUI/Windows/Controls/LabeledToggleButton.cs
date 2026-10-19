@@ -7,7 +7,6 @@ using FirstFloor.ModernUI.Windows.Attached;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class LabeledToggleButton : ToggleButton {
         public LabeledToggleButton() {
-            DefaultStyleKey = typeof(LabeledToggleButton);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
@@ -25,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _loaded = true;
         }
 
-        public static readonly DependencyProperty HighlightCheckedProperty = DependencyProperty.Register(nameof(HighlightChecked), typeof(bool),
+        public static readonly DependencyProperty HighlightCheckedProperty = DP.Register(nameof(HighlightChecked), typeof(bool),
                 typeof(LabeledToggleButton));
 
         public bool HighlightChecked {
@@ -33,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HighlightCheckedProperty, value);
         }
 
-        public static readonly DependencyProperty HighlightUncheckedProperty = DependencyProperty.Register(nameof(HighlightUnchecked), typeof(bool),
+        public static readonly DependencyProperty HighlightUncheckedProperty = DP.Register(nameof(HighlightUnchecked), typeof(bool),
                 typeof(LabeledToggleButton));
 
         public bool HighlightUnchecked {
@@ -41,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HighlightUncheckedProperty, value);
         }
 
-        public static readonly DependencyProperty AnimationSpeedProperty = DependencyProperty.Register(nameof(AnimationSpeed), typeof(double),
+        public static readonly DependencyProperty AnimationSpeedProperty = DP.Register(nameof(AnimationSpeed), typeof(double),
                 typeof(LabeledToggleButton), new PropertyMetadata(150d));
 
         public double AnimationSpeed {
@@ -82,18 +81,19 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private FrameworkElement _labelOn, _labelOff, _helper;
         private Thumb _thumb;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_thumb != null) {
                 _thumb.DragDelta -= Thumb_DragDelta;
                 _thumb.DragCompleted -= Thumb_DragCompleted;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _labelOn = GetTemplateChild("PART_OnLabel") as FrameworkElement;
-            _labelOff = GetTemplateChild("PART_OffLabel") as FrameworkElement;
-            _helper = GetTemplateChild("PART_Helper") as FrameworkElement;
-            _thumb = GetTemplateChild("PART_Thumb") as Thumb;
+            _labelOn = this.GetTemplateChild("PART_OnLabel") as FrameworkElement;
+            _labelOff = this.GetTemplateChild("PART_OffLabel") as FrameworkElement;
+            _helper = this.GetTemplateChild("PART_Helper") as FrameworkElement;
+            _thumb = this.GetTemplateChild("PART_Thumb") as Thumb;
 
             if (_thumb != null) {
                 _thumb.DragDelta += Thumb_DragDelta;
@@ -153,7 +153,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty LabelUncheckedProperty = DependencyProperty.Register(nameof(LabelUnchecked), typeof(string),
+        public static readonly DependencyProperty LabelUncheckedProperty = DP.Register(nameof(LabelUnchecked), typeof(string),
                 typeof(LabeledToggleButton));
 
         public string LabelUnchecked {
@@ -161,7 +161,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LabelUncheckedProperty, value);
         }
 
-        public static readonly DependencyProperty LabelCheckedProperty = DependencyProperty.Register(nameof(LabelChecked), typeof(string),
+        public static readonly DependencyProperty LabelCheckedProperty = DP.Register(nameof(LabelChecked), typeof(string),
                 typeof(LabeledToggleButton));
 
         public string LabelChecked {

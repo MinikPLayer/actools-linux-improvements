@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="{x:Type DataGridCell}" TargetType="DataGridCell">
+    <Setter Property="Background" Value="{DynamicResource DataGridCellBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource DataGridCellForeground}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="5,1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridCell">
+          <c:Cell>
+            <Rectangle Fill="{TemplateBinding Background}"/>
+            <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+              <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+            </Border>
+          </c:Cell>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:selected"><Setter Property="Background" Value="{DynamicResource DataGridCellBackgroundSelected}"/>
+              <Setter Property="Foreground" Value="{DynamicResource DataGridCellForegroundSelected}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="DataGridCell.Transparent" TargetType="DataGridCell">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridCell">
+          <Border Background="Transparent" Padding="{TemplateBinding Padding}">
+            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="DataGridCell.Transparent.RightAlignment" TargetType="DataGridCell" BasedOn="{StaticResource DataGridCell.Transparent}">
+    <Setter Property="HorizontalContentAlignment" Value="Right"/>
+  </ControlTheme>
+
+</ResourceDictionary>

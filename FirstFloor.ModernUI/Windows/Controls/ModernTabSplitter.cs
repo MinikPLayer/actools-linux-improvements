@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernTabSplitter : GridSplitter {
         public ModernTabSplitter() {
-            DefaultStyleKey = typeof(ModernTabSplitter);
             DragCompleted += OnDragCompleted;
             Loaded += OnLoaded;
         }
@@ -34,20 +33,31 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnVisualParentChanged(DependencyObject oldParent) {
-            base.OnVisualParentChanged(oldParent);
+        private FrameworkElement _observedParent;
 
-            if (oldParent is FrameworkElement p) {
-                p.SizeChanged -= OnParentSizeChanged;
+        protected override void OnAttachedToLogicalTree(Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e) {
+            base.OnAttachedToLogicalTree(e);
+
+            if (_observedParent != null) {
+                _observedParent.SizeChanged -= OnParentSizeChanged;
             }
 
-            if (Parent is FrameworkElement n) {
-                n.SizeChanged += OnParentSizeChanged;
+            _observedParent = Parent as FrameworkElement;
+            if (_observedParent != null) {
+                _observedParent.SizeChanged += OnParentSizeChanged;
             }
 
             if (IsLoaded) {
                 SetMaxWidth();
                 SetWidth(LoadWidth());
+            }
+        }
+
+        protected override void OnDetachedFromLogicalTree(Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e) {
+            base.OnDetachedFromLogicalTree(e);
+            if (_observedParent != null) {
+                _observedParent.SizeChanged -= OnParentSizeChanged;
+                _observedParent = null;
             }
         }
 
@@ -98,7 +108,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ValuesStorage.Set(SaveKeyValue, value);
         }
 
-        private void OnDragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e) {
+        private void OnDragCompleted(object sender, VectorEventArgs e) {
             if (SaveKey != null) {
                 var value = GetWidth();
                 if (value.HasValue) {
@@ -107,7 +117,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty AdjustRightColumnProperty = DependencyProperty.Register(nameof(AdjustRightColumn), typeof(bool),
+        public static readonly DependencyProperty AdjustRightColumnProperty = DP.Register(nameof(AdjustRightColumn), typeof(bool),
                 typeof(ModernTabSplitter), new PropertyMetadata(false, (o, e) => {
                     ((ModernTabSplitter)o)._adjustRightColumn = (bool)e.NewValue;
                 }));
@@ -119,7 +129,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AdjustRightColumnProperty, value);
         }
 
-        public static readonly DependencyProperty InitialWidthProperty = DependencyProperty.Register(nameof(InitialWidth), typeof(double),
+        public static readonly DependencyProperty InitialWidthProperty = DP.Register(nameof(InitialWidth), typeof(double),
                 typeof(ModernTabSplitter), new PropertyMetadata(200d));
 
         public double InitialWidth {
@@ -129,7 +139,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private string SaveKeyValue => $"ModernTabSplitter:{SaveKey}";
 
-        public static readonly DependencyProperty SaveKeyProperty = DependencyProperty.Register(nameof(SaveKey), typeof(string),
+        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
                 typeof(ModernTabSplitter), new PropertyMetadata(@"ModernTab", OnSaveKeyChanged));
 
         public string SaveKey {

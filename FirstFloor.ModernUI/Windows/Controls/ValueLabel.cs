@@ -11,12 +11,11 @@ using FirstFloor.ModernUI.Serialization;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class DoubleValueLabel : ValueLabel {
         static DoubleValueLabel() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleValueLabel), new FrameworkPropertyMetadata(typeof(DoubleValueLabel)));
         }
 
         private readonly Busy _relativeRangeBusy = new Busy();
 
-        public static readonly DependencyProperty SecondValueProperty = DependencyProperty.Register(nameof(SecondValue), typeof(string),
+        public static readonly DependencyProperty SecondValueProperty = DP.Register(nameof(SecondValue), typeof(string),
                 typeof(DoubleValueLabel), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSecondValueChanged));
 
         private string _secondValue = "";
@@ -46,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var to = SecondValue.As<double>();
                 RelativeRangeBase = ((from + to) / 2).ToString(format);
                 RelativeRangeHalf = (Math.Abs(from - to) / 2).ToString(format);
-                SetValue(ValuesEqualPropertyKey, RelativeRangeHalf.As<double>() == 0);
+                SetValue(ValuesEqualPropertyKey.DependencyProperty, RelativeRangeHalf.As<double>() == 0);
             });
         }
 
@@ -56,11 +55,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var rangeHalf = RelativeRangeHalf.As<double>();
                 Value = (rangeBase - rangeHalf).ToString(CultureInfo.CurrentUICulture);
                 SecondValue = (rangeBase + rangeHalf).ToString(CultureInfo.CurrentUICulture);
-                SetValue(ValuesEqualPropertyKey, rangeHalf == 0f);
+                SetValue(ValuesEqualPropertyKey.DependencyProperty, rangeHalf == 0f);
             });
         }
 
-        public static readonly DependencyProperty RelativeRangeBaseProperty = DependencyProperty.Register(nameof(RelativeRangeBase), typeof(string),
+        public static readonly DependencyProperty RelativeRangeBaseProperty = DP.Register(nameof(RelativeRangeBase), typeof(string),
                 typeof(DoubleValueLabel), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnRelativeRangeBaseChanged));
 
         private string _relativeRangeBase = "";
@@ -78,7 +77,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             OnRelativeRangeValuesChanged();
         }
 
-        public static readonly DependencyProperty RelativeRangeHalfProperty = DependencyProperty.Register(nameof(RelativeRangeHalf), typeof(string),
+        public static readonly DependencyProperty RelativeRangeHalfProperty = DP.Register(nameof(RelativeRangeHalf), typeof(string),
                 typeof(DoubleValueLabel), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnRelativeRangeHalfChanged));
 
         private string _relativeRangeHalf = "";
@@ -96,7 +95,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             OnRelativeRangeValuesChanged();
         }
 
-        public static readonly DependencyProperty RelativeRangeStringFormatProperty = DependencyProperty.Register(nameof(RelativeRangeStringFormat),
+        public static readonly DependencyProperty RelativeRangeStringFormatProperty = DP.Register(nameof(RelativeRangeStringFormat),
                 typeof(string), typeof(DoubleValueLabel), new PropertyMetadata("", (o, e) => {
                     ((DoubleValueLabel)o)._relativeRangeStringFormat = (string)e.NewValue;
                 }));
@@ -107,14 +106,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RelativeRangeStringFormatProperty, value);
         }
 
-        public static readonly DependencyPropertyKey ValuesEqualPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ValuesEqual), typeof(bool),
+        public static readonly DependencyPropertyKey ValuesEqualPropertyKey = DP.RegisterReadOnly(nameof(ValuesEqual), typeof(bool),
                 typeof(DoubleValueLabel), new PropertyMetadata(false));
 
         public static readonly DependencyProperty ValuesEqualProperty = ValuesEqualPropertyKey.DependencyProperty;
 
         public bool ValuesEqual => GetValue(ValuesEqualProperty) as bool? == true;
 
-        public static readonly DependencyProperty SeparatorProperty = DependencyProperty.Register(nameof(Separator), typeof(string),
+        public static readonly DependencyProperty SeparatorProperty = DP.Register(nameof(Separator), typeof(string),
                 typeof(DoubleValueLabel));
 
         public string Separator {
@@ -122,7 +121,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SeparatorProperty, value);
         }
 
-        public static readonly DependencyProperty JoinIfEqualProperty = DependencyProperty.Register(nameof(JoinIfEqual), typeof(bool),
+        public static readonly DependencyProperty JoinIfEqualProperty = DP.Register(nameof(JoinIfEqual), typeof(bool),
                 typeof(DoubleValueLabel));
 
         public bool JoinIfEqual {
@@ -130,7 +129,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(JoinIfEqualProperty, value);
         }
 
-        public static readonly DependencyProperty RelativeRangeProperty = DependencyProperty.Register(nameof(RelativeRange), typeof(bool),
+        public static readonly DependencyProperty RelativeRangeProperty = DP.Register(nameof(RelativeRange), typeof(bool),
                 typeof(DoubleValueLabel));
 
         public bool RelativeRange {
@@ -142,10 +141,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(Content))]
     public class ValueLabel : Control {
         static ValueLabel() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ValueLabel), new FrameworkPropertyMetadata(typeof(ValueLabel)));
         }
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(string),
+        public static readonly DependencyProperty ContentProperty = DP.Register(nameof(Content), typeof(string),
                 typeof(ValueLabel));
 
         public string Content {
@@ -153,7 +151,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentProperty, value);
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(string),
+        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(string),
                 typeof(ValueLabel), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged) {
                     DefaultUpdateSourceTrigger = UpdateSourceTrigger.LostFocus
                 });
@@ -172,7 +170,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _value = newValue;
         }
 
-        public static readonly DependencyProperty PrefixProperty = DependencyProperty.Register(nameof(Prefix), typeof(string),
+        public static readonly DependencyProperty PrefixProperty = DP.Register(nameof(Prefix), typeof(string),
                 typeof(ValueLabel));
 
         public string Prefix {
@@ -180,7 +178,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PrefixProperty, value);
         }
 
-        public static readonly DependencyProperty PostfixProperty = DependencyProperty.Register(nameof(Postfix), typeof(string),
+        public static readonly DependencyProperty PostfixProperty = DP.Register(nameof(Postfix), typeof(string),
                 typeof(ValueLabel));
 
         public string Postfix {
@@ -188,7 +186,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PostfixProperty, value);
         }
 
-        public static readonly DependencyProperty ShowZeroAsOffProperty = DependencyProperty.Register(nameof(ShowZeroAsOff), typeof(bool),
+        public static readonly DependencyProperty ShowZeroAsOffProperty = DP.Register(nameof(ShowZeroAsOff), typeof(bool),
                 typeof(ValueLabel));
 
         public bool ShowZeroAsOff {
@@ -196,7 +194,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ShowZeroAsOffProperty, value);
         }
 
-        public static readonly DependencyProperty ShowPostfixProperty = DependencyProperty.Register(nameof(ShowPostfix), typeof(bool),
+        public static readonly DependencyProperty ShowPostfixProperty = DP.Register(nameof(ShowPostfix), typeof(bool),
                 typeof(ValueLabel), new PropertyMetadata(true));
 
         public bool ShowPostfix {
@@ -204,9 +202,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ShowPostfixProperty, value);
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e) {
-            base.OnMouseLeftButtonUp(e);
-            if (GetTemplateChild("PART_TextBox") is TextBox t && !t.IsFocused) {
+        protected override void OnPointerReleased(PointerReleasedEventArgs e) {
+            if (!e.IsButton(MouseButton.Left)) { base.OnPointerReleased(e); return; }
+            base.OnPointerReleased(e);
+            if (this.GetTemplateChild("PART_TextBox") is TextBox t && !t.IsFocused) {
                 Keyboard.Focus(t);
             }
         }

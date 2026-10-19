@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ControlTheme x:Key="{x:Type RadioButton}" TargetType="RadioButton">
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <DockPanel x:Name="LayoutRoot">
+            <Border x:Name="CheckBorder" Width="16" Height="16" Margin="0 1 4 0" BorderThickness="1" CornerRadius="8">
+              <Ellipse x:Name="CheckMark" Width="8" Height="8" Margin="2"/>
+            </Border>
+            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+            <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />-->
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #CheckMark"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackground}"/><Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:checked /template/ #CheckMark"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^:pointerover /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              </Style><Style Selector="^:pointerover /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #CheckBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              </Style><Style Selector="^:pressed /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #CheckBorder"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

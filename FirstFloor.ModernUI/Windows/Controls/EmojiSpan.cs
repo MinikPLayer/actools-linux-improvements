@@ -18,7 +18,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TextProperty, value);
         }
 
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TextProperty = DP.Register(
                 "Text", typeof(string), typeof(EmojiSpan), new PropertyMetadata("☺"));
     }
 }

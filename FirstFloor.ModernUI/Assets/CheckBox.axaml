@@ -1,0 +1,39 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ControlTheme x:Key="{x:Type CheckBox}" TargetType="CheckBox">
+    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="CheckBox">
+          <DockPanel x:Name="LayoutRoot" Background="Transparent">
+            <Border Width="16" Height="16" Margin="0 1 4 0" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" DockPanel.Dock="Left" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+              <c:Cell>
+                <Path x:Name="CheckMark" Width="10" Height="10" Margin="2" Stretch="Fill" Data="F1 M 15,21L 22,28L 32.9999,14.0001L 35.9999,17.0001L 22,34L 12.0001,24L 15,21 Z"/>
+                <Rectangle x:Name="Indeterminate" Width="8" Height="8" Margin="4" Fill="{TemplateBinding Foreground}"/>
+              </c:Cell>
+            </Border>
+            <ContentPresenter VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+            <!--<TextBlock Text="{TemplateBinding Content}" VerticalAlignment="Center" />-->
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^ /template/ #CheckMark"><Setter Property="IsVisible" Value="False"/><Setter Property="Fill" Value="{TemplateBinding Foreground}"/></Style><Style Selector="^ /template/ #Indeterminate"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+      </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+      </Style><!-- PORT: DataTrigger with element binding not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:checked /template/ #CheckMark"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^:checked /template/ #Indeterminate"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^:pointerover /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed /template/ #CheckMark"><Setter Property="Fill" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style></ControlTheme>
+
+  <!-- Specially for checkboxes with highlighted background -->
+  <!-- Checkbox-in-datagrid styles-->
+  </ResourceDictionary>

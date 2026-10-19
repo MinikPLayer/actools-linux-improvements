@@ -7,7 +7,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var width = 0d;
             var height = 0d;
 
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, count = children.Count; i < count; ++i) {
                 var child = children[i];
                 child.Measure(constraint);
@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected override Size ArrangeOverride(Size arrangeBounds) {
             var rect = new Rect(arrangeBounds);
 
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, count = children.Count; i < count; ++i) {
                 children[i].Arrange(rect);
             }

@@ -14,7 +14,6 @@ using FirstFloor.ModernUI.Helpers;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class PathTrimmingTextBlock : RichTextBox, IValueConverter {
         public PathTrimmingTextBlock() {
-            DefaultStyleKey = typeof(PathTrimmingTextBlock);
 
             Loaded += OnLoaded;
             SizeChanged += OnSizeChanged;
@@ -22,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             // TextTrimming = TextTrimming.CharacterEllipsis;
 
             DataObject.AddCopyingHandler(this, CopyCommand);
-            MouseDown += OnMouseDown;
+            this.AddMouseDown(OnMouseDown);
 
             HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
             Document.PageWidth = 2000;
@@ -97,7 +96,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register(nameof(Placeholder), typeof(string),
+        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
                 typeof(PathTrimmingTextBlock), new PropertyMetadata(OnPlaceholderChanged));
 
         public string Placeholder {
@@ -109,7 +108,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((PathTrimmingTextBlock)o).Update();
         }
 
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(string),
+        public static readonly DependencyProperty TextProperty = DP.Register(nameof(Text), typeof(string),
                 typeof(PathTrimmingTextBlock), new PropertyMetadata(OnTextChanged));
 
         private string _text;

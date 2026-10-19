@@ -72,7 +72,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                 return solution.DisplayName;
             }
 
-            var icon = new Path {
+            var icon = new Avalonia.Controls.Shapes.Path {
                 Data = solution.IconData,
                 Margin = new Thickness(0, 0, 6, -1),
                 VerticalAlignment = VerticalAlignment.Center,
@@ -81,7 +81,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                 Height = 12
             };
 
-            icon.SetResourceReference(Shape.FillProperty, @"Accent");
+            icon.SetResourceReference(Avalonia.Controls.Shapes.Shape.FillProperty, @"Accent");
             return new DockPanel { Children = { icon, new TextBlock { Text = solution.DisplayName } } };
         }
     }

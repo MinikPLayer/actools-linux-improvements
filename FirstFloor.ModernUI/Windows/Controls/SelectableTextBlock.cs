@@ -8,11 +8,11 @@ using FirstFloor.ModernUI.Helpers;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class SelectableTextBlock : BetterTextBox {
         public SelectableTextBlock() {
-            DefaultStyleKey = typeof(SelectableTextBlock);
             IsReadOnly = true;
         }
 
         static SelectableTextBlock() {
+            InputElement.PointerReleasedEvent.AddClassHandler<SelectableTextBlock>((x, e) => x.OnPreviewMouseUp((MouseButtonEventArgs)e), Avalonia.Interactivity.RoutingStrategies.Tunnel);
             var defaultMetadata = (FrameworkPropertyMetadata)TextProperty.GetMetadata(typeof(TextBox));
             var newMetadata = new FrameworkPropertyMetadata(
                     defaultMetadata.DefaultValue,
@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     defaultMetadata.CoerceValueCallback,
                     defaultMetadata.IsAnimationProhibited,
                     defaultMetadata.DefaultUpdateSourceTrigger);
-            TextProperty.OverrideMetadata(typeof(SelectableTextBlock), newMetadata);
+            DP.OverrideMetadata(TextProperty, typeof(SelectableTextBlock), newMetadata);
             var sealedProperty = typeof(PropertyMetadata).GetProperty("Sealed", BindingFlags.Instance | BindingFlags.NonPublic);
             if (sealedProperty != null) {
                 sealedProperty.SetValue(newMetadata, false);
@@ -33,7 +33,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private bool _tooltipSet;
 
-        protected override void OnMouseEnter(MouseEventArgs e) {
+        protected override void OnPointerEntered(PointerEventArgs e) {
             if (!_tooltipSet) {
                 _tooltipSet = true;
                 if (ToolTip == null) {
@@ -45,11 +45,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     ToolTip = new ToolTip { Content = toolTipText };
                 }
             }
-            base.OnMouseEnter(e);
+            base.OnPointerEntered(e);
         }
 
-        protected override void OnPreviewMouseUp(MouseButtonEventArgs e) {
-            base.OnPreviewMouseUp(e);
+        protected void OnPreviewMouseUp(MouseButtonEventArgs e) {
+            
             if (e.ClickCount == 1 && SelectionLength == 0) {
                 ClipboardHelper.SetText(Text);
             }

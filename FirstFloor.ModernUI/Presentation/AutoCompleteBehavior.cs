@@ -13,13 +13,13 @@ namespace FirstFloor.ModernUI.Presentation {
         /// <summary>
         /// The collection to search for matches from.
         /// </summary>
-        public static readonly DependencyProperty AutoCompleteItemsSource = DependencyProperty.RegisterAttached(nameof(AutoCompleteItemsSource),
+        public static readonly DependencyProperty AutoCompleteItemsSource = DP.RegisterAttached(nameof(AutoCompleteItemsSource),
                 typeof(IEnumerable<string>), typeof(AutoCompleteBehavior), new UIPropertyMetadata(null, OnAutoCompleteItemsSource));
 
         /// <summary>
         /// Whether or not to ignore case when searching for matches.
         /// </summary>
-        public static readonly DependencyProperty AutoCompleteStringComparison = DependencyProperty.RegisterAttached(nameof(AutoCompleteStringComparison),
+        public static readonly DependencyProperty AutoCompleteStringComparison = DP.RegisterAttached(nameof(AutoCompleteStringComparison),
                 typeof(StringComparison), typeof(AutoCompleteBehavior), new UIPropertyMetadata(StringComparison.Ordinal));
 
         #region Items Source
@@ -38,11 +38,11 @@ namespace FirstFloor.ModernUI.Presentation {
             //If we’re being removed, remove the callbacks
             if (e.NewValue == null) {
                 tb.TextChanged -= OnTextChangedHandler;
-                tb.PreviewKeyDown -= OnKeyDownHandler;
+                tb.RemovePreviewKeyDown(OnKeyDownHandler);
             } else {
                 //New source.  Add the callbacks
                 tb.TextChanged += OnTextChangedHandler;
-                tb.PreviewKeyDown += OnKeyDownHandler;
+                tb.AddPreviewKeyDown(OnKeyDownHandler);
             }
         }
         #endregion

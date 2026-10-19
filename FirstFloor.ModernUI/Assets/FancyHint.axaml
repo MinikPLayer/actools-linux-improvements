@@ -1,0 +1,91 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:attached="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="HintMarkStyle" TargetType="attached:FancyHintControl">
+    <Setter Property="Margin" Value="-4000"/>
+    <Setter Property="IsHitTestVisible" Value="True"/>
+    <Setter Property="Background" Value="{DynamicResource FancyHintBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource FancyHintText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Top"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="attached:FancyHintControl">
+          <ControlTemplate.Resources>
+            <ControlTheme TargetType="Button" x:Key="{x:Type Button}">
+              <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="16 1 16 2"/>
+  <Setter Property="Background" Value="{DynamicResource FancyHintButtonBackground}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorder}"/>
+              <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonText}"/>
+              <Setter Property="Template">
+                <Setter.Value>
+                  <ControlTemplate TargetType="Button">
+                    <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                      <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                    </Border>
+                  </ControlTemplate>
+                </Setter.Value>
+              </Setter>
+              <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextDisabled}"/>
+                </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundHover}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorderHover}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextHover}"/>
+                </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundPressed}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorderPressed}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextPressed}"/>
+                </Style><Style Selector="^[(ToggleButton.IsChecked)=True]"><Setter Property="Background" Value="{DynamicResource FancyHintButtonBackgroundPressed}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource FancyHintButtonBorderPressed}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource FancyHintButtonTextPressed}"/>
+                </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+                </Style></ControlTheme>
+          </ControlTemplate.Resources>
+
+          <controls:Cell x:Name="PART_Cell" Width="72" Height="72" attached:VisibilityAnimation.Visible="False" HorizontalAlignment="{TemplateBinding HorizontalPositionAlignment}" VerticalAlignment="{TemplateBinding VerticalPositionAlignment}">
+            <Border Margin="-4000 -4000 72 -4000" Background="{TemplateBinding Background}"/>
+            <Border Margin="72 -4000 -4000 -4000" Background="{TemplateBinding Background}"/>
+            <Border Margin="0 -4000 0 72" Background="{TemplateBinding Background}"/>
+            <Border Margin="0 72 0 -4000" Background="{TemplateBinding Background}"/>
+            <!--<Border Width="1" Background="Red" HorizontalAlignment="Center" />
+                        <Border Height="1" Background="Red" VerticalAlignment="Center" />-->
+            <Border Margin="0 0 0 0" Background="{TemplateBinding Background}">
+              <Border.Clip>
+                <CombinedGeometry GeometryCombineMode="Exclude">
+                  <CombinedGeometry.Geometry1>
+                    <RectangleGeometry Rect="0 0 72 72"/>
+                  </CombinedGeometry.Geometry1>
+                  <CombinedGeometry.Geometry2>
+                    <EllipseGeometry RadiusX="36" RadiusY="36" Center="36 36"/>
+                  </CombinedGeometry.Geometry2>
+                </CombinedGeometry>
+              </Border.Clip>
+            </Border>
+            <DockPanel x:Name="PART_Panel" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+              <controls:SpacingStackPanel DockPanel.Dock="Top" Margin="0 0 0 20" Spacing="12" DataContext="{Binding Hint, RelativeSource={RelativeSource TemplatedParent}}" MaxWidth="240" Effect="{DynamicResource FancyHintTextEffect}">
+                <controls:BbCodeBlock x:Name="PART_Header" Text="{Binding Header}" Classes="Title"/>
+                <controls:BbCodeBlock Text="{Binding Description}" Width="{Binding ActualWidth, ElementName=PART_Header}" Classes="Small"/>
+              </controls:SpacingStackPanel>
+              <DockPanel Effect="{DynamicResource FancyHintButtonsEffect}">
+                <Button x:Name="PART_DisableHintsButton" Content="Disable occasional hints" DockPanel.Dock="Right"/>
+                <Button x:Name="PART_CloseButton" Content="Got it" Margin="0 0 4 0"/>
+              </DockPanel>
+            </DockPanel>
+          </controls:Cell>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[HorizontalContentAlignment=Left][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="54 56 -720 -720"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Right][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 56 54 -720"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Center][VerticalContentAlignment=Top] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 56 -720 -720"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Left][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="54 -720 -720 56"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Right][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 -720 54 56"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Center][VerticalContentAlignment=Bottom] /template/ #PART_Panel"><Setter Property="Margin" Value="-720 -720 -720 56"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

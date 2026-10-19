@@ -1,0 +1,304 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:n="clr-namespace:FirstFloor.ModernUI.Windows.Navigation" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ModernProgressRing.Special.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="SystemButtonBase" TargetType="Button">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}">
+            <Border Background="{TemplateBinding BorderBrush}">
+              <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+            </Border>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="AlertButton" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="Margin" Value="8"/>
+    <Setter Property="Padding" Value="4"/>
+    <Style Selector="^:pointerover"><Setter Property="Opacity" Value=".7"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Opacity" Value=".4"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="SystemButtonSquare" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+    <Setter Property="Width" Value="45"/>
+    <Setter Property="Height" Value="29"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="SystemButton" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+    <Setter Property="Width" Value="45"/>
+    <Setter Property="Height" Value="29"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="BorderBrush">
+      <Setter.Value>
+        <SolidColorBrush Color="#24aaaaaa" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+  <!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="SystemCloseButton" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+    <Setter Property="Width" Value="45"/>
+    <Setter Property="Height" Value="29"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background">
+      <Setter.Value>
+        <SolidColorBrush Color="#e81123" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="BorderBrush">
+      <Setter.Value>
+        <SolidColorBrush Color="#ba3943" Opacity="0"/>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding WindowState, RelativeSource={RelativeSource AncestorType={x:Type c:DpiAwareWindow}}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=Normal}"/></Style><Style Selector="^[(mui|T.S0)=True]"><Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Button">
+              <c:Cell>
+                <Border Margin="0 2 2 0" Background="Transparent"/>
+                <Border x:Name="Chrome" Background="{TemplateBinding Background}" IsHitTestVisible="False">
+                  <Border Background="{TemplateBinding BorderBrush}">
+                    <ContentPresenter Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                  </Border>
+                </Border>
+              </c:Cell>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style><!-- PORT: storyboard actions of trigger :pointerover not converted --><!-- PORT: storyboard actions of trigger :pressed not converted --><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="SystemButtonLink" TargetType="Button" BasedOn="{StaticResource SystemButtonBase}">
+    <Setter Property="Foreground" Value="{DynamicResource LinkButtonText}"/>
+    <Setter Property="FontWeight" Value="{DynamicResource TitleLinksWeight}"/>
+    <Setter Property="Width" Value="NaN"/>
+    <Setter Property="Height" Value="NaN"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+            <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" Content="{TemplateBinding Content, Converter={StaticResource ToUpperSpecialConverter}}" TextBlock.FontWeight="{TemplateBinding FontWeight}"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource LinkButtonTextHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource LinkButtonTextPressed}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource LinkButtonTextDisabled}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="BaseButtonStyle.Nothing" TargetType="Button">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border Background="{TemplateBinding Background}">
+            <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:disabled /template/ #Presenter"><Setter Property="TextBlock.Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="BaseButtonStyle" TargetType="Button">
+    <Setter Property="Background" Value="{DynamicResource ButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="16 1 16 2"/>
+  <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+      </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+      </Style><Style Selector="^[(ToggleButton.IsChecked)=True]"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+      </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="DeleteButton" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+    <Setter Property="DockPanel.Dock" Value="Right"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="6 1 6 2"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <DockPanel Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+              <Path x:Name="Icon" Data="M0,0 L7,7 M7,0 L0,7 Z" Width="8" Height="8" VerticalAlignment="Center" HorizontalAlignment="Center" StrokeThickness="1" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}"/>
+              <ContentPresenter x:Name="Presenter" RecognizesAccessKey="True" Margin="8 0 6 0"/>
+            </DockPanel>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Icon"><Setter Property="Margin" Value="6 5 0 3"/></Style><Style Selector="^[Content=null] /template/ #Presenter"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[Content=null] /template/ #Icon"><Setter Property="Margin" Value="0 5 -1 3"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="Go.BaseButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+    <Setter Property="Background" Value="{DynamicResource GoButtonBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorder}"/>
+    <Setter Property="Foreground" Value="{DynamicResource GoButtonText}"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource GoButtonTextDisabled}"/>
+      </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GoButtonTextHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource GoButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource GoButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource GoButtonTextPressed}"/>
+      </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource Go}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="Error.BaseButtonStyle" TargetType="Button" BasedOn="{StaticResource Go.BaseButtonStyle}">
+    <Setter Property="a:Resources.Renames">
+      <Setter.Value>
+        <a:RenameEntries>
+          <a:RenameEntry SourceKey="Error" Key="Go"/>
+        </a:RenameEntries>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="a:Resources.Replaces">
+      <Setter.Value>
+        <a:ReplaceEntries>
+          <a:ReplaceEntry TargetKey="GoButtonBackground" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBackgroundHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBackgroundPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorder" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorderHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorderPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonText" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextDisabled" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+        </a:ReplaceEntries>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="FontWeight" Value="Normal"/>
+  <Style.Resources>
+      <SolidColorBrush x:Key="GoBrush" Color="{DynamicResource GoColor}"/>
+      <SolidColorBrush x:Key="ErrorBrush" Color="{DynamicResource ErrorColor}"/>
+    </Style.Resources>
+    </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type ToggleButton}" BasedOn="{StaticResource BaseButtonStyle}" TargetType="ToggleButton"/>
+
+  <ControlTheme x:Key="{x:Type RepeatButton}" BasedOn="{StaticResource BaseButtonStyle}" TargetType="RepeatButton">
+    </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type Button}" BasedOn="{StaticResource BaseButtonStyle}" TargetType="Button"/>
+
+  <ControlTheme x:Key="Go.Button" BasedOn="{StaticResource Go.BaseButtonStyle}" TargetType="Button">
+    <Setter Property="FontSize" Value="16"/>
+    </ControlTheme>
+
+  <ControlTheme x:Key="Error.Button" BasedOn="{StaticResource Go.BaseButtonStyle}" TargetType="Button">
+    <Setter Property="a:Resources.Renames">
+      <Setter.Value>
+        <a:RenameEntries>
+          <a:RenameEntry SourceKey="Error" Key="Go"/>
+        </a:RenameEntries>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="a:Resources.Replaces">
+      <Setter.Value>
+        <a:ReplaceEntries>
+          <a:ReplaceEntry TargetKey="GoButtonBackground" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBackgroundHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBackgroundPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorder" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorderHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonBorderPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonText" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextHover" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextPressed" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+          <a:ReplaceEntry TargetKey="GoButtonTextDisabled" PatternKey="GoBrush" ReplacementKey="ErrorBrush"/>
+        </a:ReplaceEntries>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="FontWeight" Value="Normal"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="WrapperButton" TargetType="Button">
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <ContentPresenter RecognizesAccessKey="True"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="MoreDetailsSuperscript" TargetType="Button">
+    <Setter Property="Command" Value="{x:Static n:LinkCommands.NavigateLinkMainWindow}"/>
+    <Setter Property="Content" Value="?"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <TextBlock x:Name="PART_Text" Margin="-20 -4 -10 -4" Padding="20 0 10 0" Background="Transparent">
+            <Run Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Typography.Variants="Superscript" FontSize="12" BaselineAlignment="Superscript" FontWeight="Bold"/>
+          </TextBlock>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #PART_Text"><Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/></Style><Style Selector="^:pointerover /template/ #PART_Text"><Setter Property="Foreground" Value="{DynamicResource HyperlinkHover}"/>
+            </Style><Style Selector="^:disabled /template/ #PART_Text"><Setter Property="Foreground" Value="{DynamicResource HyperlinkDisabled}"/>
+            </Style><Style Selector="^:not(:disabled) /template/ #PART_Text"><Setter Property="Cursor" Value="Hand"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

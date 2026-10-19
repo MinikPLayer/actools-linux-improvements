@@ -15,10 +15,9 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Attached {
     internal class FancyHintControl : Control {
         static FancyHintControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(FancyHintControl), new FrameworkPropertyMetadata(typeof(FancyHintControl)));
         }
 
-        public static readonly DependencyProperty HorizontalPositionAlignmentProperty = DependencyProperty.Register(nameof(HorizontalPositionAlignment),
+        public static readonly DependencyProperty HorizontalPositionAlignmentProperty = DP.Register(nameof(HorizontalPositionAlignment),
                 typeof(HorizontalAlignment), typeof(FancyHintControl));
 
         public HorizontalAlignment HorizontalPositionAlignment {
@@ -26,7 +25,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             set => SetValue(HorizontalPositionAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalPositionAlignmentProperty = DependencyProperty.Register(nameof(VerticalPositionAlignment),
+        public static readonly DependencyProperty VerticalPositionAlignmentProperty = DP.Register(nameof(VerticalPositionAlignment),
                 typeof(VerticalAlignment), typeof(FancyHintControl));
 
         public VerticalAlignment VerticalPositionAlignment {
@@ -34,7 +33,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             set => SetValue(VerticalPositionAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty HintProperty = DependencyProperty.Register(nameof(Hint), typeof(FancyHint),
+        public static readonly DependencyProperty HintProperty = DP.Register(nameof(Hint), typeof(FancyHint),
                 typeof(FancyHintControl));
 
         public FancyHint Hint {
@@ -107,15 +106,15 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                 VisibilityAnimation.SetDuration(cell, TimeSpan.FromSeconds(0.3));
                 VisibilityAnimation.SetVisible(cell, true);
 
-                _window.PreviewMouseDown += OnWindowMouseDown;
-                _window.PreviewKeyDown += OnWindowKeyDown;
+                _window.AddPreviewMouseDown(OnWindowMouseDown);
+                _window.AddPreviewKeyDown(OnWindowKeyDown);
                 _shownTime = DateTime.Now;
 
                 if (Hint.CloseOnResize) {
                     _window.SizeChanged += OnWindowSizeChanged;
                 }
 
-                cell.PreviewMouseDown += OnMouseDown;
+                cell.AddPreviewMouseDown(OnMouseDown);
 
                 if (GetByName("PART_DisableHintsButton") is Button disableButton) {
                     disableButton.Command = new DelegateCommand(() => {
@@ -164,8 +163,8 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             if ((DateTime.Now - _shownTime).TotalSeconds < 1d) return;
             IsHitTestVisible = false;
 
-            _window.PreviewMouseDown -= OnWindowMouseDown;
-            _window.PreviewKeyDown -= OnWindowMouseDown;
+            _window.RemovePreviewMouseDown(OnWindowMouseDown);
+            _window.RemovePreviewKeyDown(OnWindowMouseDown);
 
             if (Hint.CloseOnResize) {
                 _window.SizeChanged -= OnWindowSizeChanged;

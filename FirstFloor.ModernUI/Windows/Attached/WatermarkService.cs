@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         private static readonly IDictionary<object, ItemsControl> ItemsControls = new Dictionary<object, ItemsControl>();
 
         static WatermarkService() {
-            WatermarkProperty = DependencyProperty.RegisterAttached("Watermark", typeof(object), typeof(WatermarkService), 
+            WatermarkProperty = DP.RegisterAttached("Watermark", typeof(object), typeof(WatermarkService), 
                 new FrameworkPropertyMetadata(null, OnWatermarkChanged));
         }
         
@@ -46,14 +46,14 @@ namespace FirstFloor.ModernUI.Windows.Attached {
 
             var asTextBox = d as TextBox;
             if (asTextBox != null) {
-                control.GotKeyboardFocus += Control_GotKeyboardFocus;
-                control.LostKeyboardFocus += Control_Loaded;
+                control.AddGotKeyboardFocus(Control_GotKeyboardFocus);
+                control.AddLostKeyboardFocus(Control_Loaded);
                 asTextBox.TextChanged += Control_TextChanged;
             } else {
                 var asComboBox = d as ComboBox;
                 if (asComboBox != null) {
-                    control.GotKeyboardFocus += Control_GotKeyboardFocus;
-                    control.LostKeyboardFocus += Control_Loaded;
+                    control.AddGotKeyboardFocus(Control_GotKeyboardFocus);
+                    control.AddLostKeyboardFocus(Control_Loaded);
                     asComboBox.SelectionChanged += Control_SelectionChanged;
                     return;
                 }

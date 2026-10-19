@@ -14,18 +14,17 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static RoutedUICommand NavigateTitleLink { get; } = new RoutedUICommand(UiStrings.NavigateLink, nameof(NavigateTitleLink), typeof(LinkCommands));
 
         public ModernWindow() {
-            DefaultStyleKey = typeof(ModernWindow);
 
             SetCurrentValue(MenuLinkGroupsProperty, new LinkGroupCollection());
             SetCurrentValue(TitleButtonsProperty, new ObservableCollection<UIElement>());
             SetCurrentValue(TitleLinksProperty, new LinkCollection());
 
-            CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, OnCloseWindow));
-            CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, OnMaximizeWindow, OnCanResizeWindow));
-            CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, OnMinimizeWindow, OnCanMinimizeWindow));
-            CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, OnRestoreWindow, OnCanResizeWindow));
-            CommandBindings.Add(new CommandBinding(LinkCommands.NavigateLink, OnNavigateLink, OnCanNavigateLink));
-            CommandBindings.Add(new CommandBinding(NavigateTitleLink, OnNavigateTitleLink, OnCanNavigateTitleLink));
+            this.CommandBindings.Add(new CommandBinding(SystemCommands.CloseWindowCommand, OnCloseWindow));
+            this.CommandBindings.Add(new CommandBinding(SystemCommands.MaximizeWindowCommand, OnMaximizeWindow, OnCanResizeWindow));
+            this.CommandBindings.Add(new CommandBinding(SystemCommands.MinimizeWindowCommand, OnMinimizeWindow, OnCanMinimizeWindow));
+            this.CommandBindings.Add(new CommandBinding(SystemCommands.RestoreWindowCommand, OnRestoreWindow, OnCanResizeWindow));
+            this.CommandBindings.Add(new CommandBinding(LinkCommands.NavigateLink, OnNavigateLink, OnCanNavigateLink));
+            this.CommandBindings.Add(new CommandBinding(NavigateTitleLink, OnNavigateTitleLink, OnCanNavigateTitleLink));
         }
 
         public event EventHandler<NavigatingCancelEventArgs> FrameNavigating;
@@ -42,22 +41,23 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public LinkGroup CurrentLinkGroup => _menu?.SelectedLinkGroup;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_frame != null) {
                 _frame.Navigating -= OnFrameNavigating;
                 _frame.Navigated -= OnFrameNavigated;
             }
 
-            _frame = GetTemplateChild(@"ContentFrame") as ModernFrame;
+            _frame = this.GetTemplateChild(@"ContentFrame") as ModernFrame;
 
             if (_frame != null) {
                 _frame.Navigating += OnFrameNavigating;
                 _frame.Navigated += OnFrameNavigated;
             }
 
-            _menu = GetTemplateChild(@"PART_Menu") as ModernMenu;
+            _menu = this.GetTemplateChild(@"PART_Menu") as ModernMenu;
         }
 
         private void OnFrameNavigated(object sender, NavigationEventArgs navigationEventArgs) {
@@ -152,7 +152,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SystemCommands.RestoreWindow(this);
         }
 
-        public static readonly DependencyProperty FrameMarginProperty = DependencyProperty.Register(nameof(FrameMargin), typeof(Thickness),
+        public static readonly DependencyProperty FrameMarginProperty = DP.Register(nameof(FrameMargin), typeof(Thickness),
                 typeof(ModernWindow));
 
         public Thickness FrameMargin {
@@ -160,7 +160,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FrameMarginProperty, value);
         }
 
-        public static readonly DependencyProperty BackgroundContentProperty = DependencyProperty.Register(nameof(BackgroundContent), typeof(object),
+        public static readonly DependencyProperty BackgroundContentProperty = DP.Register(nameof(BackgroundContent), typeof(object),
                 typeof(ModernWindow));
 
         public object BackgroundContent {
@@ -168,7 +168,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(BackgroundContentProperty, value);
         }
 
-        public static readonly DependencyProperty TitleLinksPrefixProperty = DependencyProperty.Register(nameof(TitleLinksPrefix), typeof(object),
+        public static readonly DependencyProperty TitleLinksPrefixProperty = DP.Register(nameof(TitleLinksPrefix), typeof(object),
                 typeof(ModernWindow), new PropertyMetadata(null, (o, e) => {
                     ((ModernWindow)o)._titleLinksPrefix = e.NewValue;
                 }));
@@ -180,7 +180,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleLinksPrefixProperty, value);
         }
 
-        public static readonly DependencyProperty MenuLinkGroupsProperty = DependencyProperty.Register(nameof(MenuLinkGroups), typeof(LinkGroupCollection),
+        public static readonly DependencyProperty MenuLinkGroupsProperty = DP.Register(nameof(MenuLinkGroups), typeof(LinkGroupCollection),
                 typeof(ModernWindow));
 
         public LinkGroupCollection MenuLinkGroups {
@@ -188,7 +188,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MenuLinkGroupsProperty, value);
         }
 
-        public static readonly DependencyProperty TitleButtonsProperty = DependencyProperty.Register(nameof(TitleButtons),
+        public static readonly DependencyProperty TitleButtonsProperty = DP.Register(nameof(TitleButtons),
                 typeof(ObservableCollection<UIElement>), typeof(ModernWindow));
 
         public ObservableCollection<UIElement> TitleButtons {
@@ -196,7 +196,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleButtonsProperty, value);
         }
 
-        public static readonly DependencyProperty TitleLinksProperty = DependencyProperty.Register(nameof(TitleLinks), typeof(LinkCollection),
+        public static readonly DependencyProperty TitleLinksProperty = DP.Register(nameof(TitleLinks), typeof(LinkCollection),
                 typeof(ModernWindow));
 
         public LinkCollection TitleLinks {
@@ -204,7 +204,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleLinksProperty, value);
         }
 
-        public static readonly DependencyProperty IsTitleVisibleProperty = DependencyProperty.Register(nameof(IsTitleVisible), typeof(bool),
+        public static readonly DependencyProperty IsTitleVisibleProperty = DP.Register(nameof(IsTitleVisible), typeof(bool),
                 typeof(ModernWindow),
                 new PropertyMetadata(false));
 
@@ -213,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IsTitleVisibleProperty, value);
         }
 
-        public static readonly DependencyProperty MaxRootWidthProperty = DependencyProperty.Register(nameof(MaxRootWidth), typeof(double),
+        public static readonly DependencyProperty MaxRootWidthProperty = DP.Register(nameof(MaxRootWidth), typeof(double),
                 typeof(ModernWindow), new PropertyMetadata(double.PositiveInfinity, (o, e) => {
                     ((ModernWindow)o)._maxRootWidth = (double)e.NewValue;
                 }));
@@ -225,7 +225,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MaxRootWidthProperty, value);
         }
 
-        public static readonly DependencyProperty IsRootMarginEvenProperty = DependencyProperty.Register(nameof(IsRootMarginEven), typeof(bool),
+        public static readonly DependencyProperty IsRootMarginEvenProperty = DP.Register(nameof(IsRootMarginEven), typeof(bool),
                 typeof(ModernWindow), new PropertyMetadata(false, (o, e) => {
                     ((ModernWindow)o)._isRootMarginEven = (bool)e.NewValue;
                 }));
@@ -237,7 +237,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IsRootMarginEvenProperty, value);
         }
 
-        public static readonly DependencyProperty DefaultContentSourceProperty = DependencyProperty.Register(nameof(DefaultContentSource), typeof(Uri),
+        public static readonly DependencyProperty DefaultContentSourceProperty = DP.Register(nameof(DefaultContentSource), typeof(Uri),
                 typeof(ModernWindow));
 
         public Uri DefaultContentSource {
@@ -245,7 +245,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DefaultContentSourceProperty, value);
         }
 
-        public static readonly DependencyProperty ContentLoaderProperty = DependencyProperty.Register(nameof(ContentLoader), typeof(IContentLoader),
+        public static readonly DependencyProperty ContentLoaderProperty = DP.Register(nameof(ContentLoader), typeof(IContentLoader),
                 typeof(ModernWindow), new PropertyMetadata(new DefaultContentLoader()));
 
         public IContentLoader ContentLoader {
@@ -253,7 +253,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentLoaderProperty, value);
         }
 
-        public static DependencyProperty LinkNavigatorProperty = DependencyProperty.Register(nameof(LinkNavigator), typeof(ILinkNavigator), typeof(ModernWindow),
+        public static DependencyProperty LinkNavigatorProperty = DP.Register(nameof(LinkNavigator), typeof(ILinkNavigator), typeof(ModernWindow),
                 new PropertyMetadata(new DefaultLinkNavigator()));
 
         public ILinkNavigator LinkNavigator {
@@ -261,7 +261,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LinkNavigatorProperty, value);
         }
 
-        public static readonly DependencyProperty SaveKeyProperty = DependencyProperty.Register(nameof(SaveKey), typeof(string),
+        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
                 typeof(ModernWindow));
 
         public string SaveKey {
@@ -269,7 +269,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SaveKeyProperty, value);
         }
 
-        public static readonly DependencyProperty AdditionalContentProperty = DependencyProperty.Register(nameof(AdditionalContent), typeof(object),
+        public static readonly DependencyProperty AdditionalContentProperty = DP.Register(nameof(AdditionalContent), typeof(object),
                 typeof(ModernWindow));
 
         public object AdditionalContent {
@@ -277,7 +277,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AdditionalContentProperty, value);
         }
 
-        public static readonly DependencyProperty BackButtonVisibilityProperty = DependencyProperty.Register(nameof(BackButtonVisibility), typeof(Visibility),
+        public static readonly DependencyProperty BackButtonVisibilityProperty = DP.Register(nameof(BackButtonVisibility), typeof(Visibility),
                 typeof(ModernWindow), new PropertyMetadata(Visibility.Visible));
 
         public Visibility BackButtonVisibility {
@@ -285,7 +285,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(BackButtonVisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty TitleButtonsVisibilityProperty = DependencyProperty.Register(nameof(TitleButtonsVisibility), typeof(Visibility),
+        public static readonly DependencyProperty TitleButtonsVisibilityProperty = DP.Register(nameof(TitleButtonsVisibility), typeof(Visibility),
                 typeof(ModernWindow), new PropertyMetadata(Visibility.Visible));
 
         public Visibility TitleButtonsVisibility {
@@ -293,7 +293,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleButtonsVisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty MenuTopRowVisibilityProperty = DependencyProperty.Register(nameof(MenuTopRowVisibility), typeof(Visibility),
+        public static readonly DependencyProperty MenuTopRowVisibilityProperty = DP.Register(nameof(MenuTopRowVisibility), typeof(Visibility),
                 typeof(ModernWindow), new PropertyMetadata(Visibility.Visible));
 
         public Visibility MenuTopRowVisibility {
@@ -301,7 +301,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MenuTopRowVisibilityProperty, value);
         }
 
-        public static readonly DependencyProperty ShowErrorsButtonProperty = DependencyProperty.Register(nameof(ShowErrorsButton), typeof(bool),
+        public static readonly DependencyProperty ShowErrorsButtonProperty = DP.Register(nameof(ShowErrorsButton), typeof(bool),
                 typeof(ModernWindow), new PropertyMetadata(true));
 
         public bool ShowErrorsButton {
@@ -309,7 +309,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ShowErrorsButtonProperty, value);
         }
 
-        public static readonly DependencyProperty CloseButtonProperty = DependencyProperty.Register(nameof(CloseButton), typeof(object),
+        public static readonly DependencyProperty CloseButtonProperty = DP.Register(nameof(CloseButton), typeof(object),
                 typeof(ModernWindow));
 
         public object CloseButton {

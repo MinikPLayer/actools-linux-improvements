@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI {
     public static class ActionExtension {
         private static Dispatcher GetDispatcher() {
-            return Application.Current?.Dispatcher ?? Dispatcher.CurrentDispatcher;
+            return Dispatcher.UIThread;
         }
         
         public static void InvokeInMainThread(this Action action) {
@@ -16,11 +16,11 @@ namespace FirstFloor.ModernUI {
         }
 
         public static Task InvokeInMainThreadAsync(this Func<Task> action) {
-            return GetDispatcher().InvokeAsync(action).Task;
+            return GetDispatcher().InvokeAsync(action);
         }
 
         public static Task<T> InvokeInMainThreadAsync<T>(this Func<T> action) {
-            return GetDispatcher().InvokeAsync(action).Task;
+            return GetDispatcher().InvokeAsync(action);
         }
 
         public static T InvokeInMainThread<T>(this Func<T> action) {
@@ -33,7 +33,7 @@ namespace FirstFloor.ModernUI {
 
         public static void EnsureToRunInMainThreadWhenPossible(this Action action) {
             var dispatcher = GetDispatcher();
-            if (Thread.CurrentThread == dispatcher.Thread) {
+            if (dispatcher.CheckAccess()) {
                 action();
             } else {
                 dispatcher.InvokeAsync(action, DispatcherPriority.Background);

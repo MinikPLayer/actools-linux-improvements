@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="c:ValueLabel" x:Key="{x:Type c:ValueLabel}">
+    <Setter Property="Margin" Value="0 0 0 4"/>
+    <Setter Property="Padding" Value="8 0 0 0"/>
+    <Setter Property="c:BetterTextBox.Mode" Value="Integer"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ValueLabel">
+          <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
+            <c:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
+          </StackPanel>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[Prefix=null] /template/ #PART_Prefix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[Postfix=null] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ShowPostfix=False] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel][Value=0] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel][Value=-1] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
+
+  <ControlTheme TargetType="c:DoubleValueLabel" x:Key="{x:Type c:DoubleValueLabel}">
+    <Setter Property="Margin" Value="0 0 0 4"/>
+    <Setter Property="Padding" Value="8 0 0 0"/>
+    <Setter Property="Separator" Value="–"/>
+    <Setter Property="c:BetterTextBox.Mode" Value="Integer"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:DoubleValueLabel">
+          <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+            <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+            <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
+            <c:BetterTextBox x:Name="PART_TextBox" Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+            <TextBlock x:Name="PART_Separator" Text="{TemplateBinding Separator}" Classes="Label"/>
+            <c:BetterTextBox x:Name="PART_TextBox2" Text="{Binding SecondValue, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+            <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
+          </StackPanel>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^[RelativeRange=True]"><Setter Property="Template">
+          <Setter.Value>
+            <!-- PORT: ControlTemplate with triggers outside of a style (7 triggers) --><ControlTemplate TargetType="c:DoubleValueLabel">
+              <StackPanel Orientation="Horizontal" Margin="{TemplateBinding Padding}">
+                <TextBlock Text="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}, StringFormat={x:Static mui:UiStrings.ValueLabel_Format}}" IsVisible="{TemplateBinding Content, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Label"/>
+                <TextBlock x:Name="PART_Prefix" Text="{TemplateBinding Prefix}" Classes="Label"/>
+                <c:BetterTextBox x:Name="PART_TextBox" Text="{Binding RelativeRangeBase, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+                <TextBlock x:Name="PART_Separator" Text="±" Classes="Label"/>
+                <c:BetterTextBox x:Name="PART_TextBox2" Text="{Binding RelativeRangeHalf, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Theme="{StaticResource Borderless.Label}"/>
+                <TextBlock x:Name="PART_Postfix" Text="{TemplateBinding Postfix}" Classes="Label"/>
+              </StackPanel>
+
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style><Style Selector="^[Prefix=null] /template/ #PART_Prefix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[Postfix=null] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ShowPostfix=False] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrZeroLabel][Value=0] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[JoinIfEqual=True][ValuesEqual=True] /template/ #PART_Separator"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[JoinIfEqual=True][ValuesEqual=True] /template/ #PART_TextBox2"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[(c|BetterTextBox.Mode)=IntegerOrMinusOneLabel][Value=-1] /template/ #PART_Postfix"><Setter Property="IsVisible" Value="False"/>
+            </Style><!-- PORT: DataTrigger with element binding not converted --></ControlTheme>
+</ResourceDictionary>

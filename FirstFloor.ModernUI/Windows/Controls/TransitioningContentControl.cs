@@ -99,7 +99,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Identifies the IsTransitioning dependency property.
         /// </summary>
         public static readonly DependencyProperty IsTransitioningProperty =
-                DependencyProperty.Register(
+                DP.Register(
                         "IsTransitioning",
                         typeof(bool),
                         typeof(TransitioningContentControl),
@@ -156,7 +156,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Identifies the Transition dependency property.
         /// </summary>
         public static readonly DependencyProperty TransitionProperty =
-                DependencyProperty.Register(
+                DP.Register(
                         "Transition",
                         typeof(string),
                         typeof(TransitioningContentControl),
@@ -210,7 +210,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Identifies the RestartTransitionOnContentChange dependency property.
         /// </summary>
         public static readonly DependencyProperty RestartTransitionOnContentChangeProperty =
-                DependencyProperty.Register(
+                DP.Register(
                         "RestartTransitionOnContentChange",
                         typeof(bool),
                         typeof(TransitioningContentControl),
@@ -237,22 +237,22 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Static constructor
         /// </summary>
         static TransitioningContentControl() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(TransitioningContentControl), new FrameworkPropertyMetadata(typeof(TransitioningContentControl)));
         }
 
         /// <summary>
         /// Builds the visual tree for the TransitioningContentControl control
         /// when a new template is applied.
         /// </summary>
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (IsTransitioning) {
                 AbortTransition();
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            PreviousContentPresentationSite = GetTemplateChild(PreviousContentPresentationSitePartName) as ContentPresenter;
-            CurrentContentPresentationSite = GetTemplateChild(CurrentContentPresentationSitePartName) as ContentPresenter;
+            PreviousContentPresentationSite = this.GetTemplateChild(PreviousContentPresentationSitePartName) as ContentPresenter;
+            CurrentContentPresentationSite = this.GetTemplateChild(CurrentContentPresentationSitePartName) as ContentPresenter;
 
             if (CurrentContentPresentationSite != null) {
                 CurrentContentPresentationSite.Content = Content;

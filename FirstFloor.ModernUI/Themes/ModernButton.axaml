@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="c:ModernButton" x:Key="{x:Type c:ModernButton}">
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorder}"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ModernButtonText}"/>
+    <Setter Property="Padding" Value="1"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ModernButton">
+          <Grid x:Name="grid" Background="Transparent" Margin="{TemplateBinding Padding}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto"/>
+              <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Width="{TemplateBinding EllipseDiameter}" Height="{TemplateBinding EllipseDiameter}">
+              <Ellipse Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{TemplateBinding EllipseStrokeThickness}" VerticalAlignment="Stretch" Fill="{TemplateBinding Background}"/>
+              <Path x:Name="icon" Data="{TemplateBinding IconData}" Width="{TemplateBinding IconWidth}" Height="{TemplateBinding IconHeight}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Column="1">
+              <TextBlock DataContext="{TemplateBinding Content}" Text="{Binding Converter={StaticResource ToLowerConverter}}" TextTrimming="CharacterEllipsis" Foreground="{TemplateBinding Foreground}" Margin="4 -1 8 0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" IsVisible="{Binding Converter={StaticResource NullOrEmptyStringToVisibilityConverter}, ConverterParameter=inverse}"/>
+            </Grid>
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextHover}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderPressed}"/>
+        <Setter Property="Background" Value="{DynamicResource ModernButtonIconBackgroundPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ModernButtonIconForegroundPressed}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ModernButtonTextDisabled}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ModernButtonBorderDisabled}"/>
+      </Style><Style Selector="^:focus"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+      </Style></ControlTheme>
+
+  </ResourceDictionary>

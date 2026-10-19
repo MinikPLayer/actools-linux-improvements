@@ -1,0 +1,34 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI.Presentation">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="Fonts.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="ToolTip" x:Key="{x:Type ToolTip}">
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="FontStyle" Value="Normal"/>
+    <Setter Property="FontWeight" Value="Normal"/>
+    <Setter Property="Padding" Value="5 4 5 4"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HasDropShadow" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToolTip">
+          <c:Cell>
+            <c:Cell.LayoutTransform>
+              <ScaleTransform x:Name="ApplicationScaleTransform" CenterX="0" CenterY="0" ScaleX="{Binding AppScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}" ScaleY="{Binding AppScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}"/>
+            </c:Cell.LayoutTransform>
+            <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" CornerRadius="0">
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+          </c:Cell>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

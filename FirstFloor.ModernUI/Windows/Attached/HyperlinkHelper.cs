@@ -10,7 +10,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(IsHighlightedProperty, value);
         }
 
-        public static readonly DependencyProperty IsHighlightedProperty = DependencyProperty.RegisterAttached("IsHighlighted", typeof(bool),
+        public static readonly DependencyProperty IsHighlightedProperty = DP.RegisterAttached("IsHighlighted", typeof(bool),
                 typeof(HyperlinkHelper), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
     }
 }

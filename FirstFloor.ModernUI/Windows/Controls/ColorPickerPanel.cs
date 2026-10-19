@@ -19,7 +19,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
     public class ColorPickerPanel : Control {
         public ColorPickerPanel() {
-            DefaultStyleKey = typeof(ColorPickerPanel);
         }
 
         private Thumb _thumb;
@@ -28,8 +27,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private FrameworkElement _originalColor;
         private FrameworkElement _pickerButton;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
             OriginalColor = Color;
 
             if (_thumb != null) {
@@ -37,42 +37,42 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (_palette != null) {
-                _palette.MouseDown -= Palette_MouseMove;
-                _palette.MouseMove -= Palette_MouseMove;
-                _palette.MouseWheel -= Palette_MouseWheel;
+                _palette.RemoveMouseDown(Palette_MouseMove);
+                _palette.RemoveMouseMove(Palette_MouseMove);
+                _palette.RemoveMouseWheel(Palette_MouseWheel);
             }
 
             if (_originalColor != null) {
-                _originalColor.MouseLeftButtonUp -= OriginalColor_MouseLeftButtonUp;
+                _originalColor.RemoveMouseLeftButtonUp(OriginalColor_MouseLeftButtonUp);
             }
 
             if (_pickerButton != null) {
-                _pickerButton.PreviewMouseLeftButtonUp -= PickerButton_MouseLeftButtonUp;
+                _pickerButton.RemovePreviewMouseLeftButtonUp(PickerButton_MouseLeftButtonUp);
             }
 
-            _thumb = GetTemplateChild("PART_Thumb") as Thumb;
-            _slider = GetTemplateChild("PART_Slider") as Slider;
-            _palette = GetTemplateChild("PART_Palette") as FrameworkElement;
-            _originalColor = GetTemplateChild("PART_OriginalColor") as FrameworkElement;
-            _pickerButton = GetTemplateChild("PART_PickerButton") as ModernButton;
+            _thumb = this.GetTemplateChild("PART_Thumb") as Thumb;
+            _slider = this.GetTemplateChild("PART_Slider") as Slider;
+            _palette = this.GetTemplateChild("PART_Palette") as FrameworkElement;
+            _originalColor = this.GetTemplateChild("PART_OriginalColor") as FrameworkElement;
+            _pickerButton = this.GetTemplateChild("PART_PickerButton") as ModernButton;
 
             if (_thumb != null) {
                 _thumb.DragDelta += Thumb_DragDelta;
             }
 
             if (_palette != null) {
-                _palette.MouseDown += Palette_MouseMove;
-                _palette.MouseMove += Palette_MouseMove;
-                _palette.MouseWheel += Palette_MouseWheel;
+                _palette.AddMouseDown(Palette_MouseMove);
+                _palette.AddMouseMove(Palette_MouseMove);
+                _palette.AddMouseWheel(Palette_MouseWheel);
                 UpdateThumbPosition();
             }
 
             if (_originalColor != null) {
-                _originalColor.MouseLeftButtonUp += OriginalColor_MouseLeftButtonUp;
+                _originalColor.AddMouseLeftButtonUp(OriginalColor_MouseLeftButtonUp);
             }
 
             if (_pickerButton != null) {
-                _pickerButton.PreviewMouseLeftButtonUp += PickerButton_MouseLeftButtonUp;
+                _pickerButton.AddPreviewMouseLeftButtonUp(PickerButton_MouseLeftButtonUp);
             }
         }
 
@@ -203,9 +203,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     throw new ArgumentOutOfRangeException();
             }
 
-            SetValue(ThumbXPropertyKey, (int)(x * 256) - 10);
-            SetValue(ThumbYPropertyKey, (int)((1d - y) * 256) - 10);
-            SetValue(IsBrightPropertyKey, Brightness > 50);
+            SetValue(ThumbXPropertyKey.DependencyProperty, (int)(x * 256) - 10);
+            SetValue(ThumbYPropertyKey.DependencyProperty, (int)((1d - y) * 256) - 10);
+            SetValue(IsBrightPropertyKey.DependencyProperty, Brightness > 50);
         }
 
         private void UpdateRgb(Color value) {
@@ -251,14 +251,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         #region Properties
-        public static readonly DependencyProperty OriginalColorProperty = DependencyProperty.Register(nameof(OriginalColor), typeof(Color), typeof(ColorPickerPanel));
+        public static readonly DependencyProperty OriginalColorProperty = DP.Register(nameof(OriginalColor), typeof(Color), typeof(ColorPickerPanel));
 
         public Color OriginalColor {
             get => GetValue(OriginalColorProperty) as Color? ?? default;
             set => SetValue(OriginalColorProperty, value);
         }
 
-        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(nameof(Color), typeof(Color), typeof(ColorPickerPanel), new FrameworkPropertyMetadata(Color.FromRgb(255, 127, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
+        public static readonly DependencyProperty ColorProperty = DP.Register(nameof(Color), typeof(Color), typeof(ColorPickerPanel), new FrameworkPropertyMetadata(Color.FromRgb(255, 127, 0), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnColorChanged));
 
         public Color Color {
             get => GetValue(ColorProperty) as Color? ?? default;
@@ -273,21 +273,21 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return Math.Max(Math.Min((int)baseValue, 255), 0);
         }
 
-        public static readonly DependencyProperty RedProperty = DependencyProperty.Register(nameof(Red), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly DependencyProperty RedProperty = DP.Register(nameof(Red), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Red {
             get => GetValue(RedProperty) as int? ?? default;
             set => SetValue(RedProperty, Math.Max(Math.Min(value, 255), 0));
         }
 
-        public static readonly DependencyProperty GreenProperty = DependencyProperty.Register(nameof(Green), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly DependencyProperty GreenProperty = DP.Register(nameof(Green), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Green {
             get => GetValue(GreenProperty) as int? ?? default;
             set => SetValue(GreenProperty, Math.Max(Math.Min(value, 255), 0));
         }
 
-        public static readonly DependencyProperty BlueProperty = DependencyProperty.Register(nameof(Blue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
+        public static readonly DependencyProperty BlueProperty = DP.Register(nameof(Blue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnRgbChanged, ChannelCoerceValueCallback));
 
         public int Blue {
             get => GetValue(BlueProperty) as int? ?? default;
@@ -298,7 +298,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((ColorPickerPanel)o).OnRgbChanged();
         }
 
-        public static readonly DependencyProperty HueProperty = DependencyProperty.Register(nameof(Hue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, HueCoerceValueCallback));
+        public static readonly DependencyProperty HueProperty = DP.Register(nameof(Hue), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, HueCoerceValueCallback));
 
         private static object HueCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 359), 0);
@@ -309,7 +309,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HueProperty, value);
         }
 
-        public static readonly DependencyProperty SaturationProperty = DependencyProperty.Register(nameof(Saturation), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, SaturationCoerceValueCallback));
+        public static readonly DependencyProperty SaturationProperty = DP.Register(nameof(Saturation), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, SaturationCoerceValueCallback));
 
         private static object SaturationCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 100), 0);
@@ -320,7 +320,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SaturationProperty, value);
         }
 
-        public static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register(nameof(Brightness), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, BrightnessCoerceValueCallback));
+        public static readonly DependencyProperty BrightnessProperty = DP.Register(nameof(Brightness), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0, OnHsbChanged, BrightnessCoerceValueCallback));
 
         private static object BrightnessCoerceValueCallback(DependencyObject dependencyObject, object baseValue) {
             return Math.Max(Math.Min((int)baseValue, 100), 0);
@@ -335,25 +335,25 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((ColorPickerPanel)o).OnHsbChanged();
         }
 
-        public static readonly DependencyPropertyKey ThumbXPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ThumbX), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0));
+        public static readonly DependencyPropertyKey ThumbXPropertyKey = DP.RegisterReadOnly(nameof(ThumbX), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0));
 
         public static readonly DependencyProperty ThumbXProperty = ThumbXPropertyKey.DependencyProperty;
 
         public int ThumbX => GetValue(ThumbXProperty) as int? ?? default;
 
-        public static readonly DependencyPropertyKey ThumbYPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ThumbY), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0));
+        public static readonly DependencyPropertyKey ThumbYPropertyKey = DP.RegisterReadOnly(nameof(ThumbY), typeof(int), typeof(ColorPickerPanel), new PropertyMetadata(0));
 
         public static readonly DependencyProperty ThumbYProperty = ThumbYPropertyKey.DependencyProperty;
 
         public int ThumbY => GetValue(ThumbYProperty) as int? ?? default;
 
-        public static readonly DependencyPropertyKey IsBrightPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsBright), typeof(bool), typeof(ColorPickerPanel), new PropertyMetadata(false));
+        public static readonly DependencyPropertyKey IsBrightPropertyKey = DP.RegisterReadOnly(nameof(IsBright), typeof(bool), typeof(ColorPickerPanel), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsBrightProperty = IsBrightPropertyKey.DependencyProperty;
 
         public bool IsBright => GetValue(IsBrightProperty) as bool? ?? default;
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), typeof(ColorPickingMode),
+        public static readonly DependencyProperty ModeProperty = DP.Register(nameof(Mode), typeof(ColorPickingMode),
                 typeof(ColorPickerPanel), new PropertyMetadata(OnModeChanged));
 
         public ColorPickingMode Mode {

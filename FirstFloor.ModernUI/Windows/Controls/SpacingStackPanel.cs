@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class SpacingStackPanel : Panel {
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
                 typeof(SpacingStackPanel), new FrameworkPropertyMetadata(Orientation.Vertical, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public Orientation Orientation {
@@ -11,7 +11,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty SpacingProperty = DependencyProperty.Register(nameof(Spacing), typeof(double),
+        public static readonly DependencyProperty SpacingProperty = DP.Register(nameof(Spacing), typeof(double),
                 typeof(SpacingStackPanel), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public double Spacing {
@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _orientation = Orientation;
             _spacing = Spacing;
 
-            var count = InternalChildren.Count;
+            var count = Children.Count;
             if (count == 0) return Size.Empty;
 
             if (_orientation == Orientation.Vertical) {
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var summaryHeight = 0d;
                 var first = true;
                 for (var i = 0; i < count; ++i) {
-                    var child = InternalChildren[i];
+                    var child = Children[i];
                     child.Measure(childConstraint);
 
                     if (child.Visibility != Visibility.Collapsed) {
@@ -53,7 +53,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var summaryWidth = 0d;
                 var first = true;
                 for (var i = 0; i < count; ++i) {
-                    var child = InternalChildren[i];
+                    var child = Children[i];
                     child.Measure(childConstraint);
 
                     if (child.Visibility != Visibility.Collapsed) {
@@ -72,13 +72,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         protected override Size ArrangeOverride(Size arrangeSize) {
-            var count = InternalChildren.Count;
+            var count = Children.Count;
             if (count == 0) return arrangeSize;
 
             if (_orientation == Orientation.Vertical) {
                 var childBounds = new Rect(0, 0, arrangeSize.Width, 0);
                 for (var i = 0; i < count; ++i) {
-                    var child = InternalChildren[i];
+                    var child = Children[i];
                     var size = child.DesiredSize.Height;
                     childBounds.Height = size;
                     child.Arrange(childBounds);
@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             } else {
                 var childBounds = new Rect(0, 0, 0, arrangeSize.Height);
                 for (var i = 0; i < count; ++i) {
-                    var child = InternalChildren[i];
+                    var child = Children[i];
                     var size = child.DesiredSize.Width;
                     childBounds.Width = size;
                     child.Arrange(childBounds);

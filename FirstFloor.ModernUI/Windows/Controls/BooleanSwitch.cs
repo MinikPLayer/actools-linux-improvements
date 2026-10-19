@@ -4,7 +4,7 @@ using System.Windows.Markup;
 namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(True))]
     public class BooleanSwitch : BaseSwitch {
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(bool),
+        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(bool),
                 typeof(BooleanSwitch), new PropertyMetadata(false, (o, e) => {
                     ((BooleanSwitch)o)._value = (bool)e.NewValue;
                     OnChildSelectingPropertyChanged(o, e);
@@ -17,7 +17,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty TrueProperty = DependencyProperty.Register(nameof(True), typeof(UIElement),
+        public static readonly DependencyProperty TrueProperty = DP.Register(nameof(True), typeof(UIElement),
                 typeof(BooleanSwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanSwitch)o)._true = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -30,7 +30,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TrueProperty, value);
         }
 
-        public static readonly DependencyProperty FalseProperty = DependencyProperty.Register(nameof(False), typeof(UIElement),
+        public static readonly DependencyProperty FalseProperty = DP.Register(nameof(False), typeof(UIElement),
                 typeof(BooleanSwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanSwitch)o)._false = (UIElement)e.NewValue;
                     OnChildRegisteringPropertyChanged(o, e);
@@ -47,14 +47,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var value = _value;
             if (_collapseOnFalse) {
                 var targetVisibility = value ? Visibility.Visible : Visibility.Collapsed;
-                if (Visibility != targetVisibility) {
-                    Visibility = targetVisibility;
+                if (this.Visibility != targetVisibility) {
+                    this.Visibility = targetVisibility;
                 }
             }
             return value ? _true : _false;
         }
 
-        public static readonly DependencyProperty CollapseOnFalseProperty = DependencyProperty.Register(nameof(CollapseOnFalse), typeof(bool),
+        public static readonly DependencyProperty CollapseOnFalseProperty = DP.Register(nameof(CollapseOnFalse), typeof(bool),
                 typeof(BooleanSwitch), new PropertyMetadata(false, (o, e) => {
                     var b = (BooleanSwitch)o;
                     b._collapseOnFalse = (bool)e.NewValue;

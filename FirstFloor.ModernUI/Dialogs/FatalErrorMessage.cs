@@ -10,10 +10,9 @@ namespace FirstFloor.ModernUI.Dialogs {
         public static string ErrorHeader { get; set; } = "ɿ(｡･ɜ･)ɾ";
 
         internal FatalErrorMessage() {
-            DefaultStyleKey = typeof(FatalErrorMessage);
         }
 
-        public static readonly DependencyProperty MessageProperty = DependencyProperty.Register(nameof(Message), typeof(string),
+        public static readonly DependencyProperty MessageProperty = DP.Register(nameof(Message), typeof(string),
                 typeof(FatalErrorMessage));
 
         public string Message {
@@ -21,7 +20,7 @@ namespace FirstFloor.ModernUI.Dialogs {
             set => SetValue(MessageProperty, value);
         }
 
-        public static readonly DependencyProperty StackTraceProperty = DependencyProperty.Register(nameof(StackTrace), typeof(string),
+        public static readonly DependencyProperty StackTraceProperty = DP.Register(nameof(StackTrace), typeof(string),
                 typeof(FatalErrorMessage));
 
         public string StackTrace {

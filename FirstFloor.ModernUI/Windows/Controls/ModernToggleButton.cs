@@ -3,7 +3,11 @@ using System.Windows.Input;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernToggleButton : ModernButton {
-        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(nameof(IsChecked), typeof(bool),
+        static ModernToggleButton() {
+            InputElement.PointerPressedEvent.AddClassHandler<ModernToggleButton>((x, e) => { if (e is PointerEventArgs p && p.IsButton(MouseButton.Right)) x.OnPreviewMouseRightButtonDown(p); }, Avalonia.Interactivity.RoutingStrategies.Tunnel);
+        }
+
+        public static readonly DependencyProperty IsCheckedProperty = DP.Register(nameof(IsChecked), typeof(bool),
                 typeof(ModernToggleButton), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public bool IsChecked {
@@ -15,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             IsChecked = !IsChecked;
         }
 
-        public static readonly DependencyProperty MoreCommandProperty = DependencyProperty.Register(nameof(MoreCommand), typeof(ICommand),
+        public static readonly DependencyProperty MoreCommandProperty = DP.Register(nameof(MoreCommand), typeof(ICommand),
             typeof(ModernToggleButton));
 
         public ICommand MoreCommand {
@@ -25,18 +29,19 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private ContextMenuButton _contextMenuButton;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_contextMenuButton != null) {
                 _contextMenuButton.Click -= OnContextMenuButtonClick;
-                _contextMenuButton.PreviewMouseDown -= OnContextMenuButtonPreviewClick;
+                _contextMenuButton.RemovePreviewMouseDown(OnContextMenuButtonPreviewClick);
             }
 
-            base.OnApplyTemplate();
-            _contextMenuButton = GetTemplateChild("PART_MoreButton") as ContextMenuButton;
+            base.OnApplyTemplate(e);
+            _contextMenuButton = this.GetTemplateChild("PART_MoreButton") as ContextMenuButton;
 
             if (_contextMenuButton != null) {
                 _contextMenuButton.Click += OnContextMenuButtonClick;
-                _contextMenuButton.PreviewMouseDown += OnContextMenuButtonPreviewClick;
+                _contextMenuButton.AddPreviewMouseDown(OnContextMenuButtonPreviewClick);
             }
         }
 
@@ -56,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e) {
+        protected void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e) {
             var moreCommand = MoreCommand;
             if (moreCommand != null) {
                 MoreCommand?.Execute(null);

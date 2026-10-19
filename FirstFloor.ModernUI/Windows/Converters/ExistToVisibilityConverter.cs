@@ -7,7 +7,11 @@ using System.Windows;
 namespace FirstFloor.ModernUI.Windows.Converters {
     [ValueConversion(typeof(string), typeof(Visibility))]
     public class ExistToVisibilityConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(value, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             var path = value?.ToString();
             var flag = !string.IsNullOrEmpty(path) && File.Exists(path);
             if (parameter as string == @"inverse") {

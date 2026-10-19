@@ -9,7 +9,7 @@ using FirstFloor.ModernUI.Serialization;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class BorderyViewbox : Decorator {
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch),
+        public static readonly DependencyProperty StretchProperty = DP.Register(nameof(Stretch),
                 typeof(Stretch), typeof(BorderyViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public Stretch Stretch {
@@ -17,7 +17,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchProperty, value);
         }
 
-        public static readonly DependencyProperty StretchDirectionProperty = DependencyProperty.Register(nameof(StretchDirection),
+        public static readonly DependencyProperty StretchDirectionProperty = DP.Register(nameof(StretchDirection),
                 typeof(StretchDirection), typeof(BorderyViewbox), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public StretchDirection StretchDirection {
@@ -25,7 +25,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchDirectionProperty, value);
         }
 
-        public static readonly DependencyPropertyKey ScalePropertyKey = DependencyProperty.RegisterReadOnly(nameof(Scale), typeof(Size),
+        public static readonly DependencyPropertyKey ScalePropertyKey = DP.RegisterReadOnly(nameof(Scale), typeof(Size),
                 typeof(BorderyViewbox), new PropertyMetadata(default(Size)));
 
         public static readonly DependencyProperty ScaleProperty = ScalePropertyKey.DependencyProperty;
@@ -96,7 +96,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var childSize = child.DesiredSize;
 
                 var scale = ComputeScaleFactor(constraint, childSize, Stretch, StretchDirection);
-                SetValue(ScalePropertyKey, scale);
+                SetValue(ScalePropertyKey.DependencyProperty, scale);
 
                 parentSize.Width = scale.Width * childSize.Width;
                 parentSize.Height = scale.Height * childSize.Height;
@@ -112,7 +112,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 var childSize = child.DesiredSize;
 
                 var scale = ComputeScaleFactor(arrangeSize, childSize, Stretch, StretchDirection);
-                SetValue(ScalePropertyKey, scale);
+                SetValue(ScalePropertyKey.DependencyProperty, scale);
 
                 InternalTransform = new ScaleTransform(scale.Width, scale.Height);
                 child.Arrange(new Rect(new Point(), child.DesiredSize));

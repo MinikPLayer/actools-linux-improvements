@@ -12,16 +12,16 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(EnabledProperty, value);
         }
 
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool),
+        public static readonly DependencyProperty EnabledProperty = DP.RegisterAttached("Enabled", typeof(bool),
                 typeof(DoubleClickEvent), new UIPropertyMetadata(OnEnabledChanged));
 
         private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is FrameworkElement element) || !(e.NewValue is bool)) return;
             var newValue = (bool)e.NewValue;
             if (newValue) {
-                element.PreviewMouseLeftButtonDown += OnClick;
+                element.AddPreviewMouseLeftButtonDown(OnClick);
             } else {
-                element.PreviewMouseLeftButtonDown -= OnClick;
+                element.RemovePreviewMouseLeftButtonDown(OnClick);
             }
         }
 

@@ -13,7 +13,7 @@ using FirstFloor.ModernUI.Windows;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Dialogs {
-    public partial class WaitingDialog : IInvokingNotifyPropertyChanged, IProgress<string>, IProgress<double?>, IProgress<Tuple<string, double?>>,
+    public partial class WaitingDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, IInvokingNotifyPropertyChanged, IProgress<string>, IProgress<double?>, IProgress<Tuple<string, double?>>,
             IProgress<AsyncProgressEntry>, IDisposable, IProgress<double> {
         public static int BlockAttachmentCounter { get; set; }
 
@@ -47,11 +47,11 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void SetMultiline(bool multiline) {
-            Dispatcher.InvokeAsync(() => { MessageBlock.MinHeight = multiline ? 40d : 0d; });
+            Dispatcher.UIThread.InvokeAsync(() => { MessageBlock.MinHeight = multiline ? 40d : 0d; });
         }
 
         public void SetDetails([CanBeNull] IEnumerable<string> details) {
-            Dispatcher.InvokeAsync(() => { Details = details == null ? null : string.Join(Environment.NewLine, details); });
+            Dispatcher.UIThread.InvokeAsync(() => { Details = details == null ? null : string.Join(Environment.NewLine, details); });
         }
 
         public void SetDetails([CanBeNull] params string[] details) {
@@ -59,9 +59,9 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void SetImage(string imageFilename) {
-            Dispatcher.InvokeAsync(() => {
-                Image.Visibility = Visibility.Visible;
-                Image.Filename = imageFilename;
+            Dispatcher.UIThread.InvokeAsync(() => {
+                Image.IsVisible = true;
+                Image.Source = string.IsNullOrEmpty(imageFilename) ? null : new Avalonia.Media.Imaging.Bitmap(imageFilename);
             });
         }
 
@@ -140,7 +140,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void SetSecondary(bool value) {
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 SecondaryMessageBlock.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
                 SecondaryProgressBarSwitch.Visibility = value ? Visibility.Visible : Visibility.Collapsed;
             });
@@ -167,7 +167,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         public CancellationToken CancellationToken {
             get {
                 if (_cancellationTokenSource != null) return _cancellationTokenSource.Token;
-                return Dispatcher.Invoke(() => {
+                return Dispatcher.UIThread.Invoke(() => {
                     _cancellationTokenSource = new CancellationTokenSource();
                     Buttons = new[] { CreateCloseDialogButton(CancellationText, false, true, MessageBoxResult.Cancel) };
                     Padding = new Thickness(24, 20, 24, 20);
@@ -231,12 +231,12 @@ namespace FirstFloor.ModernUI.Dialogs {
 
             var app = Application.Current;
             if (app == null) {
-                Logging.Debug("App not found");
+                Helpers.Logging.Debug("App not found");
                 ShowWaitingDialog();
                 return;
             }
 
-            await app.Dispatcher.BeginInvoke((Action)(() => {
+            await app.Dispatcher.InvokeAsync((Action)(() => {
                 if (_closed || _disposed) return;
 
                 try {
@@ -269,7 +269,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void Report(string value) {
             if (Message == value) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value != null) {
                     EnsureShown();
                     Message = value;
@@ -297,7 +297,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void Report(double? value) {
             if (_progress == value) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.HasValue) {
                     EnsureShown();
                     SetProgress(value.Value);
@@ -313,7 +313,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void Report(double value) {
             if (_progress == value) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 EnsureShown();
                 SetProgress(value);
             });
@@ -325,7 +325,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void Report(AsyncProgressEntry value) {
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.Message != null) {
                     EnsureShown();
                     Message = value.Message;
@@ -337,7 +337,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void Report(Tuple<string, double?> value) {
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.Item1 != null) {
                     EnsureShown();
                     Message = value.Item1;
@@ -350,7 +350,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void ReportSecondary(string value) {
             if (SecondaryMessage == value) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value != null) {
                     EnsureShown();
                     SecondaryMessage = value;
@@ -367,7 +367,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void ReportSecondary(double? value) {
             if (SecondaryProgress.HasValue && value.HasValue && Math.Abs(SecondaryProgress.Value - value.Value) < 0.0001) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.HasValue) {
                     EnsureShown();
                     SetProgressSecondary(value.Value);
@@ -383,7 +383,7 @@ namespace FirstFloor.ModernUI.Dialogs {
 
         public void ReportSecondary(double value) {
             if (SecondaryProgress.HasValue && Math.Abs(SecondaryProgress.Value - value) < 0.0001) return;
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 EnsureShown();
                 SetProgressSecondary(value);
             });
@@ -395,7 +395,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void ReportSecondary(AsyncProgressEntry value) {
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.Message != null) {
                     EnsureShown();
                     SecondaryMessage = value.Message;
@@ -407,7 +407,7 @@ namespace FirstFloor.ModernUI.Dialogs {
         }
 
         public void ReportSecondary(Tuple<string, double?> value) {
-            Dispatcher.InvokeAsync(() => {
+            Dispatcher.UIThread.InvokeAsync(() => {
                 if (value.Item1 != null) {
                     EnsureShown();
                     SecondaryMessage = value.Item1;
@@ -425,7 +425,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                 _cancellationTokenSource = null;
             }
 
-            Dispatcher.InvokeAsync(EnsureClosed);
+            Dispatcher.UIThread.InvokeAsync(EnsureClosed);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

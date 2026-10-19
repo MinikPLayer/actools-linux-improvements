@@ -14,36 +14,36 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ProperMultiSelectionModeProperty, value);
         }
 
-        public static readonly DependencyProperty ProperMultiSelectionModeProperty = DependencyProperty.RegisterAttached("ProperMultiSelectionMode", typeof(bool),
+        public static readonly DependencyProperty ProperMultiSelectionModeProperty = DP.RegisterAttached("ProperMultiSelectionMode", typeof(bool),
                 typeof(ListBoxHelper), new UIPropertyMetadata(OnProperMultiSelectionModeChanged));
 
         private static void OnProperMultiSelectionModeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is ListBox element) || !(e.NewValue is bool)) return;
             var newValue = (bool)e.NewValue;
             if (newValue) {
-                element.SelectionMode = SelectionMode.Extended;
-                element.PreviewMouseDown += OnListBoxMouseDown;
-                element.MouseUp += OnListBoxMouseUp;
-                element.MouseLeave += OnListBoxMouseUp;
-                element.PreviewKeyDown += OnListBoxKeyDown;
+                element.SelectionMode = SelectionMode.Multiple;
+                element.AddPreviewMouseDown(OnListBoxMouseDown);
+                element.AddMouseUp(OnListBoxMouseUp);
+                element.AddMouseLeave(OnListBoxMouseUp);
+                element.AddPreviewKeyDown(OnListBoxKeyDown);
             } else {
                 element.SelectionMode = SelectionMode.Single;
-                element.PreviewMouseDown -= OnListBoxMouseDown;
-                element.MouseUp -= OnListBoxMouseUp;
-                element.MouseLeave -= OnListBoxMouseUp;
-                element.PreviewKeyDown -= OnListBoxKeyDown;
+                element.RemovePreviewMouseDown(OnListBoxMouseDown);
+                element.RemoveMouseUp(OnListBoxMouseUp);
+                element.RemoveMouseLeave(OnListBoxMouseUp);
+                element.RemovePreviewKeyDown(OnListBoxKeyDown);
             }
         }
 
         private static void OnListBoxMouseDown(object sender, MouseButtonEventArgs e) {
             var listBox = (ListBox)sender;
-            listBox.SelectionMode = Keyboard.Modifiers == ModifierKeys.None ? SelectionMode.Multiple : SelectionMode.Extended;
+            listBox.SelectionMode = Keyboard.Modifiers == ModifierKeys.None ? SelectionMode.Multiple : SelectionMode.Multiple;
         }
 
         private static async void OnListBoxMouseUp(object sender, EventArgs e) {
             var listBox = (ListBox)sender;
             await Task.Delay(1);
-            listBox.SelectionMode = SelectionMode.Extended;
+            listBox.SelectionMode = SelectionMode.Multiple;
         }
 
         private static void OnListBoxKeyDown(object sender, KeyEventArgs e) {

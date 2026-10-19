@@ -8,6 +8,10 @@ namespace FirstFloor.ModernUI.Windows.Converters {
     [ValueConversion(typeof(double), typeof(Visibility))]
     public class MoreToVisibilityConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(value, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             if (value == null) return null;
 
             var a = value.As<double>();

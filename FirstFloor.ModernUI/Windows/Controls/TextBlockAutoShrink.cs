@@ -7,7 +7,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private double _defaultMargin = 6;
 
         static TextBlockAutoShrink() {
-            TextProperty.OverrideMetadata(typeof(TextBlockAutoShrink), new FrameworkPropertyMetadata(TextPropertyChanged));
+            DP.OverrideMetadata(TextProperty, typeof(TextBlockAutoShrink), new FrameworkPropertyMetadata(TextPropertyChanged));
         }
 
         public TextBlockAutoShrink() {

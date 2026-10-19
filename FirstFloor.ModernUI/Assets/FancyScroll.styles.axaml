@@ -1,0 +1,24 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="using:System" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/FancyScroll.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ScrollViewer">
+    <Style Selector="^[(ScrollViewer.HorizontalScrollBarVisibility)=Disabled]"><Setter Property="Template">
+          <Setter.Value>
+            <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="ScrollViewer">
+              <c:Cell x:Name="Grid" HorizontalAlignment="Stretch" a:FancyScroll.ScrollParent="True" Background="Transparent">
+                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"/>
+                <c:BetterScrollBar x:Name="PART_VerticalScrollBar" HorizontalAlignment="Right" AutomationProperties.AutomationId="VerticalScrollBar" Cursor="Arrow" Maximum="{TemplateBinding ScrollableHeight}" Minimum="0" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Margin="0" ViewportSize="{TemplateBinding ViewportHeight}" IsVisible="{TemplateBinding ComputedVerticalScrollBarVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarVertical}"/>
+              </c:Cell>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style><Style Selector="^[(ScrollViewer.VerticalScrollBarVisibility)=Disabled]"><Setter Property="Template">
+          <Setter.Value>
+            <!-- PORT: ControlTemplate with triggers outside of a style (1 triggers) --><ControlTemplate TargetType="ScrollViewer">
+              <c:Cell x:Name="Grid" HorizontalAlignment="Stretch" a:FancyScroll.ScrollParent="True" Background="Transparent">
+                <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}"/>
+                <c:BetterScrollBar x:Name="PART_HorizontalScrollBar" VerticalAlignment="Bottom" AutomationProperties.AutomationId="HorizontalScrollBar" HorizontalAlignment="Stretch" Cursor="Arrow" Maximum="{TemplateBinding ScrollableWidth}" Minimum="0" Orientation="Horizontal" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}" IsVisible="{TemplateBinding ComputedHorizontalScrollBarVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}" Theme="{StaticResource FancyScrollBarHorizontal}"/>
+              </c:Cell>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style></Style>
+</Styles>

@@ -1,0 +1,10 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/Hyperlink.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="Hyperlink.{x:Type_Hyperlink}">
+    <Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/>
+    <Setter Property="TextDecorations" Value="Underline"/>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource HyperlinkHover}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource HyperlinkDisabled}"/>
+      </Style><Style Selector="^:not(:disabled)"><Setter Property="Cursor" Value="Hand"/>
+      </Style><Style Selector="^[(a|HyperlinkHelper.IsHighlighted)=True]"><Setter Property="Foreground" Value="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource AncestorType={x:Type DependencyObject}}}"/>
+      </Style></Style>
+</Styles>

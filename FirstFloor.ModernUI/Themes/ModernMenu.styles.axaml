@@ -1,0 +1,21 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/ModernMenu.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="ListBoxItem.ModernSubMenuItemBase">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="Foreground" Value="{DynamicResource SubMenuText}"/>
+    <Setter Property="FontSize" Value="{DynamicResource ModernSubMenuFontSize}"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="ClipToBounds" Value="False"/>
+    <Setter Property="Height" Value="20"/>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextHover}"/>
+      </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource SubMenuTextSelected}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding IsShown, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(mui|T.S0)=True]"><Setter Property="IsVisible" Value="False"/>
+      </Style><Style Selector="^"><Setter Property="mui:T.S1" Value="{Binding IsEnabled, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(mui|T.S1)=True]"><Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Foreground" Value="{DynamicResource MenuTextDisabled}"/>
+        <Setter Property="a:LimitedService.Limited" Value="True"/>
+      </Style></Style>
+
+  </Styles>

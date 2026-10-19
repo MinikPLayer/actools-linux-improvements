@@ -11,7 +11,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(XProperty, value);
         }
 
-        public static readonly DependencyProperty XProperty = DependencyProperty.RegisterAttached("X", typeof(double),
+        public static readonly DependencyProperty XProperty = DP.RegisterAttached("X", typeof(double),
                 typeof(RelativeTranslateTransform), new UIPropertyMetadata(0d, OnXChanged));
 
         private static void OnXChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -27,7 +27,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(YProperty, value);
         }
 
-        public static readonly DependencyProperty YProperty = DependencyProperty.RegisterAttached("Y", typeof(double),
+        public static readonly DependencyProperty YProperty = DP.RegisterAttached("Y", typeof(double),
                 typeof(RelativeTranslateTransform), new UIPropertyMetadata(0d, OnYChanged));
 
         private static void OnYChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -43,7 +43,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(RelativeToProperty, value);
         }
 
-        public static readonly DependencyProperty RelativeToProperty = DependencyProperty.RegisterAttached("RelativeTo", typeof(FrameworkElement),
+        public static readonly DependencyProperty RelativeToProperty = DP.RegisterAttached("RelativeTo", typeof(FrameworkElement),
                 typeof(RelativeTranslateTransform), new UIPropertyMetadata(OnRelativeToChanged));
 
         private static void OnRelativeToChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

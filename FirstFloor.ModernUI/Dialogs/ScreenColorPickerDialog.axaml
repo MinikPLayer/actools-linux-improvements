@@ -1,0 +1,62 @@
+﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:di="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:mui="clr-namespace:FirstFloor.ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.ScreenColorPickerDialog" MaxWidth="{x:Static co:DpiAwareWindow.UnlimitedSize}" MaxHeight="{x:Static co:DpiAwareWindow.UnlimitedSize}" Title="Pick a Color" ResizeMode="NoResize" WindowState="Maximized" SizeToContent="Manual" KeyUp="OnKeyUp" PointerMoved="OnMouseMove" PointerExited="OnMouseLeave" PointerReleased="OnMouseLeftButtonUp">
+  <co:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </co:ModernDialog.Resources>
+  <co:ModernDialog.Template>
+    <ControlTemplate TargetType="co:ModernDialog">
+      <Border Background="{DynamicResource WindowBackground}">
+        <Panel>
+          <ContentControl Content="{TemplateBinding Content}"/>
+        </Panel>
+      </Border>
+    </ControlTemplate>
+  </co:ModernDialog.Template>
+  <co:ModernDialog.Triggers>
+    <EventTrigger RoutedEvent="Window.Loaded">
+      <BeginStoryboard>
+        <Storyboard>
+          <DoubleAnimation Storyboard.TargetName="Flash" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.2" FillBehavior="HoldEnd"/>
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+    <EventTrigger SourceName="UpperPart" RoutedEvent="FrameworkElement.MouseEnter">
+      <BeginStoryboard>
+        <Storyboard>
+          <DoubleAnimation Storyboard.TargetName="TitleTextBlock" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" BeginTime="0:0:0.4" FillBehavior="HoldEnd"/>
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+    <EventTrigger SourceName="UpperPart" RoutedEvent="FrameworkElement.MouseLeave">
+      <BeginStoryboard>
+        <Storyboard>
+          <DoubleAnimation Storyboard.TargetName="TitleTextBlock" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" BeginTime="0:0:0.4" FillBehavior="HoldEnd"/>
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+  </co:ModernDialog.Triggers>
+  <Grid Cursor="{x:Static Cursors.Cross}">
+    <Image x:Name="CapturedImage" RenderOptions.BitmapInterpolationMode="NearestNeighbor"/>
+    <TextBlock x:Name="TitleTextBlock" Background="#55000000" VerticalAlignment="Top" HorizontalAlignment="Center" Padding="20" Text="{x:Static mui:UiStrings.PickColor}" Foreground="White" Classes="Heading1"/>
+    <Border x:Name="UpperPart" Background="Transparent" VerticalAlignment="Top" Height="200"/>
+    <Border x:Name="Flash" Background="White" IsHitTestVisible="False"/>
+    <Popup x:Name="FloatingTip" Placement="Relative" IsHitTestVisible="False">
+      <Grid IsHitTestVisible="False">
+        <Border Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="{DynamicResource WindowBorderActive}" Padding="5 4 5 4" CornerRadius="0">
+          <DockPanel>
+            <Rectangle DockPanel.Dock="Left" Width="16" Height="16" VerticalAlignment="Top" Margin="0 0 4 0" Fill="{Binding Color, Converter={x:Static co:ColorPicker.ColorToBrushConverter}}"/>
+            <TextBlock Text="{Binding Color, Converter={x:Static co:ColorPicker.ColorToStringConverter}}" FontWeight="Bold" DockPanel.Dock="Top"/>
+            <TextBlock>
+              (<Run Text="{Binding Color.R, Mode=OneWay}" FontWeight="Bold"/>,
+              <Run Text="{Binding Color.G, Mode=OneWay}" FontWeight="Bold"/>,
+              <Run Text="{Binding Color.B, Mode=OneWay}" FontWeight="Bold"/>)
+            </TextBlock>
+          </DockPanel>
+        </Border>
+      </Grid>
+    </Popup>
+  </Grid>
+</co:ModernDialog>

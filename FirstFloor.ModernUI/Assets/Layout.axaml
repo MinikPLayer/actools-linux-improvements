@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <!-- Layout margins -->
+  <Thickness x:Key="RootMargin">0</Thickness>
+  <Thickness x:Key="ContentMargin">0 8 0 0</Thickness>
+  <Thickness x:Key="ContentMarginWithPadding">20</Thickness>
+  <Thickness x:Key="InnerContentMargin">16 28 16 16</Thickness>
+  <Thickness x:Key="StatusMargin">16 8 4 8</Thickness>
+
+  <!-- Bottom row, to override in dialogs -->
+  <Thickness x:Key="SplitLeft">0 0 0 0</Thickness>
+  <Thickness x:Key="SplitRight">16 0 0 0</Thickness>
+
+  </ResourceDictionary>

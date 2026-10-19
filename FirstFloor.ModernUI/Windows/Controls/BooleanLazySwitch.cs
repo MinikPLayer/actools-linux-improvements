@@ -14,15 +14,15 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var result = GetChildFromResources(key);
             if (_collapseIfMissing) {
                 var targetVisibility = result == null ? Visibility.Collapsed : Visibility.Visible;
-                if (targetVisibility != Visibility) {
-                    Visibility = targetVisibility;
+                if (targetVisibility != this.Visibility) {
+                    this.Visibility = targetVisibility;
                 }
             }
 
             return result;
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(bool),
+        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(bool),
                 typeof(BooleanLazySwitch), new PropertyMetadata(false, (o, e) => {
                     ((BooleanLazySwitch)o)._value = (bool)e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -35,7 +35,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty TrueResourceKeyProperty = DependencyProperty.Register(nameof(TrueResourceKey), typeof(object),
+        public static readonly DependencyProperty TrueResourceKeyProperty = DP.Register(nameof(TrueResourceKey), typeof(object),
                 typeof(BooleanLazySwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanLazySwitch)o)._trueResourceKey = e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -48,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TrueResourceKeyProperty, value);
         }
 
-        public static readonly DependencyProperty FalseResourceKeyProperty = DependencyProperty.Register(nameof(FalseResourceKey), typeof(object),
+        public static readonly DependencyProperty FalseResourceKeyProperty = DP.Register(nameof(FalseResourceKey), typeof(object),
                 typeof(BooleanLazySwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanLazySwitch)o)._falseResourceKey = e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -61,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FalseResourceKeyProperty, value);
         }
 
-        public static readonly DependencyProperty TrueResourceKeyStringFormatProperty = DependencyProperty.Register(nameof(TrueResourceKeyStringFormat), typeof(string),
+        public static readonly DependencyProperty TrueResourceKeyStringFormatProperty = DP.Register(nameof(TrueResourceKeyStringFormat), typeof(string),
                 typeof(BooleanLazySwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanLazySwitch)o)._trueResourceKeyStringFormat = (string)e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -74,7 +74,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TrueResourceKeyStringFormatProperty, value);
         }
 
-        public static readonly DependencyProperty FalseResourceKeyStringFormatProperty = DependencyProperty.Register(nameof(FalseResourceKeyStringFormat), typeof(string),
+        public static readonly DependencyProperty FalseResourceKeyStringFormatProperty = DP.Register(nameof(FalseResourceKeyStringFormat), typeof(string),
                 typeof(BooleanLazySwitch), new PropertyMetadata(null, (o, e) => {
                     ((BooleanLazySwitch)o)._falseResourceKeyStringFormat = (string)e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -87,7 +87,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FalseResourceKeyStringFormatProperty, value);
         }
 
-        public static readonly DependencyProperty CollapseIfMissingProperty = DependencyProperty.Register(nameof(CollapseIfMissing), typeof(bool),
+        public static readonly DependencyProperty CollapseIfMissingProperty = DP.Register(nameof(CollapseIfMissing), typeof(bool),
                 typeof(BooleanLazySwitch), new PropertyMetadata(false, (o, e) => { ((BooleanLazySwitch)o)._collapseIfMissing = (bool)e.NewValue; }));
 
         private bool _collapseIfMissing;

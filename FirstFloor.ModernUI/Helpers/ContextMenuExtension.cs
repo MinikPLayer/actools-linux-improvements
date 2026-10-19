@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Helpers {
             if (menu == null) throw new ArgumentNullException(nameof(menu));
 
             if (icon == null && iconData != null) {
-                var path = new Path {
+                var path = new Avalonia.Controls.Shapes.Path {
                     Data = iconData,
                     Width = 12,
                     Height = 12,
@@ -23,8 +23,8 @@ namespace FirstFloor.ModernUI.Helpers {
                     VerticalAlignment = VerticalAlignment.Center,
                     Stretch = Stretch.Uniform
                 };
-                path.SetBinding(Shape.FillProperty, new Binding {
-                    Path = new PropertyPath("(Control.Foreground)"),
+                path.SetBinding(Avalonia.Controls.Shapes.Shape.FillProperty, new Binding {
+                    Path = "(TextElement.Foreground)",
                     RelativeSource = new RelativeSource(RelativeSourceMode.Self)
                 });
                 icon = path;
@@ -35,9 +35,12 @@ namespace FirstFloor.ModernUI.Helpers {
                 Icon = icon,
                 IsEnabled = isEnabled,
                 Command = command,
-                ToolTip = toolTip,
                 InputGestureText = shortcut
             };
+
+            if (toolTip != null) {
+                ToolTip.SetTip(item, toolTip);
+            }
 
             if (style != null) {
                 item.Style = style;

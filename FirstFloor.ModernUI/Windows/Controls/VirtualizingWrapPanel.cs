@@ -48,13 +48,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight", typeof(double), typeof(VirtualizingWrapPanel),
+        public static readonly DependencyProperty ItemHeightProperty = DP.Register("ItemHeight", typeof(double), typeof(VirtualizingWrapPanel),
                 new FrameworkPropertyMetadata(double.PositiveInfinity));
 
-        public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register("ItemWidth", typeof(double), typeof(VirtualizingWrapPanel),
+        public static readonly DependencyProperty ItemWidthProperty = DP.Register("ItemWidth", typeof(double), typeof(VirtualizingWrapPanel),
                 new FrameworkPropertyMetadata(double.PositiveInfinity));
 
-        public static readonly DependencyProperty OrientationProperty = StackPanel.OrientationProperty.AddOwner(typeof(VirtualizingWrapPanel),
+        public static readonly DependencyProperty OrientationProperty = DP.AddOwner(StackPanel.OrientationProperty, typeof(VirtualizingWrapPanel),
                 new FrameworkPropertyMetadata(Orientation.Horizontal));
         #endregion
 
@@ -342,7 +342,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SizeChanged += Resizing;
             base.OnInitialized(e);
             _itemsControl = ItemsControl.GetItemsOwner(this);
-            _children = InternalChildren;
+            _children = Children;
             _generator = ItemContainerGenerator;
         }
 

@@ -1,0 +1,116 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+
+    <ControlTheme x:Key="GridViewColumnHeaderGripper" TargetType="Thumb">
+        <Setter Property="Canvas.Right" Value="-9"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="{Binding ActualHeight, RelativeSource={RelativeSource TemplatedParent}}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border Padding="{TemplateBinding Padding}" Background="Transparent">
+                        <Rectangle HorizontalAlignment="Center" Width="1" Fill="{TemplateBinding Background}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="{x:Type GridViewColumnHeader}" TargetType="GridViewColumnHeader">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4 3 4 3"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GridViewColumnHeader">
+                    <Grid>
+                        <Border x:Name="HeaderBorder" BorderThickness="0" BorderBrush="{TemplateBinding BorderBrush}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition MaxHeight="7"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.RowSpan="2" Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter x:Name="HeaderContent" Margin="0 0 0 1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <Canvas>
+                            <Thumb x:Name="PART_HeaderGripper" Theme="{StaticResource GridViewColumnHeaderGripper}"/>
+                        </Canvas>
+                    </Grid>
+                    </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    <Style Selector="^ /template/ #HeaderBorder"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^ /template/ #PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+                        </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+                            </Style><Style Selector="^:pointerover /template/ #HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+                            </Style><Style Selector="^:pointerover /template/ #PART_HeaderGripper"><Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:pressed"><Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                            </Style><Style Selector="^:pressed /template/ #HeaderBorder"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                            </Style><Style Selector="^:pressed /template/ #PART_HeaderGripper"><Setter Property="IsVisible" Value="False"/>
+                        </Style><Style Selector="^[Height=Auto]"><Setter Property="MinHeight" Value="20"/>
+                        </Style></ControlTheme>
+
+    <ControlTheme x:Key="{x:Static GridView.GridViewStyleKey}" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBox">
+                    <Border x:Name="Bd" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+                        <ScrollViewer Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                    </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    <Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+                        </Style></ControlTheme>
+
+    <ControlTheme TargetType="ListBoxItem" x:Key="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+        <Setter Property="Padding" Value="5 2 5 2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <c:Cell Background="{TemplateBinding Background}">
+                        <Border x:Name="Selection"/>
+                        <!-- This is used when GridView is put inside the ListView -->
+                        <GridViewRowPresenter Grid.RowSpan="2" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
+                        <!-- This is used for ListView that does not use GridView -->
+                        <ContentPresenter x:Name="contentPresenter" Margin="{TemplateBinding Padding}" Content="{TemplateBinding ContentControl.Content}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"/>
+                    </c:Cell>
+                    </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    <Style Selector="^ /template/ #contentPresenter"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ #Selection"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[(GridView.ColumnCollection)=null] /template/ #contentPresenter"><Setter Property="IsVisible" Value="True"/>
+                        </Style><Style Selector="^:pointerover /template/ #Selection"><Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+                            </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+                        </Style><Style Selector="^:selected /template/ #Selection"><Setter Property="IsVisible" Value="True"/>
+                            <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+                            </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+                        </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+                        </Style></ControlTheme>
+
+    </ResourceDictionary>

@@ -1,0 +1,15 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <Styles.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceInclude Source="avares://__ASM__/ToolBar.axaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></Styles.Resources><Style Selector="Separator.{x:Static_ToolBar.SeparatorStyleKey}">
+    <Setter Property="Background" Value="{DynamicResource SeparatorBackground}"/>
+  </Style>
+
+  <Style Selector="TextBox.{x:Static_ToolBar.TextBoxStyleKey}">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="DragDrop.AllowDrop" Value="True"/>
+  </Style>
+
+  <Style Selector="ToolBarTray.{x:Type_ToolBarTray}">
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+  </Style>
+
+  </Styles>

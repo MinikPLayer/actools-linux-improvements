@@ -1,0 +1,123 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="using:System" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ControlTheme x:Key="ScrollBarThumbStyle" TargetType="Thumb">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="IsTabStop" Value="False"/>
+    <Setter Property="Foreground" Value="{DynamicResource ScrollBarThumb}"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <Rectangle Fill="{TemplateBinding Foreground}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ScrollBarThumbHover}"/>
+            </Style><Style Selector="^[IsDragging=True]"><Setter Property="Foreground" Value="{DynamicResource ScrollBarThumbDragging}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="RepeatButton" x:Key="{x:Type RepeatButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RepeatButton">
+          <ContentPresenter/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <system:Double x:Key="FancyScrollBar.Width">2</system:Double>
+  <system:Double x:Key="FancyScrollBar.ScaleMultiplier">5</system:Double>
+  <system:Double x:Key="FancyScrollBar.HalfScaleMultiplier">5</system:Double>
+
+  <ControlTheme x:Key="FancyScrollBarVertical" TargetType="ScrollBar">
+    <Setter Property="BorderThickness" Value="1 0"/>
+    <Setter Property="MinWidth" Value="8"/>
+    <Setter Property="Width" Value="8"/>
+    <Setter Property="MaxWidth" Value="8"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ScrollBar">
+          <Border x:Name="Bg" Width="8" Margin="0 0 0 0">
+            <Track x:Name="PART_Track" IsDirectionReversed="True" IsEnabled="{TemplateBinding IsMouseOver}">
+              <Track.DecreaseRepeatButton>
+                <RepeatButton Command="{x:Static ScrollBar.PageUpCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+              </Track.DecreaseRepeatButton>
+              <Track.IncreaseRepeatButton>
+                <RepeatButton Command="{x:Static ScrollBar.PageDownCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+              </Track.IncreaseRepeatButton>
+              <Track.Thumb>
+                <Thumb x:Name="PART_Thumb" Theme="{StaticResource ScrollBarThumbStyle}">
+                  <Thumb.RenderTransform>
+                    <ScaleTransform x:Name="PART_ThumbScale" ScaleX="1" ScaleY="1"/>
+                  </Thumb.RenderTransform>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="1 0"/><Setter Property="Width" Value="{StaticResource FancyScrollBar.Width}"/></Style><Style Selector="^ /template/ #PART_Track"><Setter Property="HorizontalAlignment" Value="Right"/></Style><Style Selector="^[(a|FancyScroll.Outside)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 0"/>
+            </Style><Style Selector="^[(a|FancyScroll.InvertLocation)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 0"/>
+              </Style><Style Selector="^[(a|FancyScroll.InvertLocation)=True] /template/ #PART_Track"><Setter Property="HorizontalAlignment" Value="Left"/>
+            </Style><Style Selector="^[(a|FancyScroll.Outside)=True][(a|FancyScroll.InvertLocation)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="1 0"/>
+            </Style><!-- PORT: storyboard actions of trigger [(a|FancyScroll.IsMouseOver)=True] not converted --><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding PopupScrollBars, Source={x:Static pr:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(mui|T.S0)=True] /template/ #PART_Thumb"><Setter Property="RenderTransform">
+                <Setter.Value>
+                  <ScaleTransform x:Name="PART_ThumbScale" ScaleX="{StaticResource FancyScrollBar.HalfScaleMultiplier}" ScaleY="1"/>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^"><Setter Property="mui:T.S1" Value="{Binding PixelScrollBars, Source={x:Static pr:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(mui|T.S1)=True] /template/ #PART_Thumb"><Setter Property="MinWidth" Value="2"/>
+              <Setter Property="Width" Value="2"/>
+              <Setter Property="RenderTransform">
+                <Setter.Value>
+                  <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+              </Setter>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="FancyScrollBarHorizontal" TargetType="ScrollBar">
+    <Setter Property="BorderThickness" Value="0 1"/>
+    <Setter Property="MinHeight" Value="8"/>
+    <Setter Property="Height" Value="8"/>
+    <Setter Property="MaxHeight" Value="8"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ScrollBar">
+          <Border x:Name="Bg" Height="8" Background="Transparent">
+            <Track x:Name="PART_Track" IsDirectionReversed="False" IsEnabled="{TemplateBinding IsMouseOver}">
+              <Track.DecreaseRepeatButton>
+                <RepeatButton Command="{x:Static ScrollBar.PageLeftCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+              </Track.DecreaseRepeatButton>
+              <Track.IncreaseRepeatButton>
+                <RepeatButton Command="{x:Static ScrollBar.PageRightCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+              </Track.IncreaseRepeatButton>
+              <Track.Thumb>
+                <Thumb x:Name="PART_Thumb" Theme="{StaticResource ScrollBarThumbStyle}">
+                  <Thumb.RenderTransform>
+                    <ScaleTransform x:Name="PART_ThumbScale" ScaleX="1" ScaleY="1"/>
+                  </Thumb.RenderTransform>
+                </Thumb>
+              </Track.Thumb>
+            </Track>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 1"/><Setter Property="Height" Value="{StaticResource FancyScrollBar.Width}"/></Style><Style Selector="^ /template/ #PART_Track"><Setter Property="VerticalAlignment" Value="Bottom"/></Style><Style Selector="^[(a|FancyScroll.Outside)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 0"/>
+            </Style><Style Selector="^[(a|FancyScroll.InvertLocation)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 0"/>
+              </Style><Style Selector="^[(a|FancyScroll.InvertLocation)=True] /template/ #PART_Track"><Setter Property="VerticalAlignment" Value="Top"/>
+            </Style><Style Selector="^[(a|FancyScroll.Outside)=True][(a|FancyScroll.InvertLocation)=True] /template/ #PART_Thumb"><Setter Property="RenderTransformOrigin" Value="0 1"/>
+            </Style><!-- PORT: storyboard actions of trigger [(a|FancyScroll.IsMouseOver)=True] not converted --><Style Selector="^"><Setter Property="mui:T.S2" Value="{Binding PopupScrollBars, Source={x:Static pr:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=False}"/></Style><Style Selector="^[(mui|T.S2)=True] /template/ #PART_Thumb"><Setter Property="RenderTransform">
+                <Setter.Value>
+                  <ScaleTransform x:Name="PART_ThumbScale" ScaleX="1" ScaleY="{StaticResource FancyScrollBar.HalfScaleMultiplier}"/>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^"><Setter Property="mui:T.S3" Value="{Binding PixelScrollBars, Source={x:Static pr:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(mui|T.S3)=True] /template/ #PART_Thumb"><Setter Property="MinHeight" Value="2"/>
+              <Setter Property="Height" Value="2"/>
+              <Setter Property="RenderTransform">
+                <Setter.Value>
+                  <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+              </Setter>
+            </Style></ControlTheme>
+
+  </ResourceDictionary>

@@ -1,0 +1,5 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+    <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
+    <FontFamily x:Key="MonospaceFont">Consolas</FontFamily>
+    <FontFamily x:Key="CondensedFont">/FirstFloor.ModernUI;component/Fonts/#Segoe Condensed</FontFamily>
+</ResourceDictionary>

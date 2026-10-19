@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class StretchyWrapPanel : Panel {
-        public static readonly DependencyProperty ItemWidthProperty = DependencyProperty.Register(nameof(ItemWidth), typeof(double),
+        public static readonly DependencyProperty ItemWidthProperty = DP.Register(nameof(ItemWidth), typeof(double),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._itemWidth = (double)e.NewValue;
                 }));
@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ItemWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register(nameof(ItemHeight), typeof(double),
+        public static readonly DependencyProperty ItemHeightProperty = DP.Register(nameof(ItemHeight), typeof(double),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._itemHeight = (double)e.NewValue;
                 }));
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ItemHeightProperty, value);
         }
 
-        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(nameof(Orientation), typeof(Orientation),
+        public static readonly DependencyProperty OrientationProperty = DP.Register(nameof(Orientation), typeof(Orientation),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(Orientation.Horizontal, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._orientation = (Orientation)e.NewValue;
                 }));
@@ -44,7 +44,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(OrientationProperty, value);
         }
 
-        public static readonly DependencyProperty StretchToFillProperty = DependencyProperty.Register(nameof(StretchToFill), typeof(bool),
+        public static readonly DependencyProperty StretchToFillProperty = DP.Register(nameof(StretchToFill), typeof(bool),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._stretchToFill = (bool)e.NewValue;
                 }));
@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchToFillProperty, value);
         }
 
-        public static readonly DependencyProperty StretchProportionallyProperty = DependencyProperty.Register(nameof(StretchProportionally), typeof(bool),
+        public static readonly DependencyProperty StretchProportionallyProperty = DP.Register(nameof(StretchProportionally), typeof(bool),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsArrange, (o, e) => {
                     ((StretchyWrapPanel)o)._stretchProportionally = (bool)e.NewValue;
                 }));
@@ -68,7 +68,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchProportionallyProperty, value);
         }
 
-        public static readonly DependencyProperty RearrangeForBestFitProperty = DependencyProperty.Register(nameof(RearrangeForBestFit), typeof(bool),
+        public static readonly DependencyProperty RearrangeForBestFitProperty = DP.Register(nameof(RearrangeForBestFit), typeof(bool),
                 typeof(StretchyWrapPanel), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((StretchyWrapPanel)o)._rearrangeForBestFit = (bool)e.NewValue;
                 }));
@@ -80,7 +80,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RearrangeForBestFitProperty, value);
         }
 
-        public static readonly DependencyProperty LineSpaceProperty = DependencyProperty.Register(nameof(LineSpace), typeof(double),
+        public static readonly DependencyProperty LineSpaceProperty = DP.Register(nameof(LineSpace), typeof(double),
                 typeof(StretchyWrapPanel), new PropertyMetadata(0d, (o, e) => {
                     ((StretchyWrapPanel)o)._lineSpace = (double)e.NewValue;
                 }));
@@ -157,7 +157,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     itemWidthSet ? itemWidth : constraint.Width,
                     itemHeightSet ? itemHeight : constraint.Height);
 
-            var children = InternalChildren;
+            var children = Children;
             var lines = 1;
 
             for (int i = 0, count = children.Count; i < count; i++) {
@@ -213,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     itemWidthSet ? itemWidth : constraint.Width,
                     itemHeightSet ? itemHeight : constraint.Height);
 
-            var children = InternalChildren;
+            var children = Children;
 
             // First-Fit Decreasing Height (FFDH) algorithm
             var lines = new List<UVSize>();
@@ -271,7 +271,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private Size ArrangeKeepInOrder(Size finalSize) {
             var orientation = Orientation;
             var fixedChildSize = new UVSize(orientation, ItemWidth, ItemHeight);
-            var children = InternalChildren;
+            var children = Children;
             var firstInLine = 0;
             var uLimit = new UVSize(orientation, finalSize).U;
             var currentLineSize = new UVSize(orientation);
@@ -413,7 +413,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             // First-Fit Decreasing Height (FFDH) algorithm
             var lines = new List<ArrangeBestFitLine>();
-            var children = InternalChildren;
+            var children = Children;
             for (int i = 0, count = children.Count; i < count; i++) {
                 var child = children[i];
                 if (child == null) continue;

@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// Identifies the IsActive property.
         /// </summary>
-        public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register("IsActive", typeof(bool), typeof(ModernProgressRing),
+        public static readonly DependencyProperty IsActiveProperty = DP.Register("IsActive", typeof(bool), typeof(ModernProgressRing),
                 new PropertyMetadata(false, OnIsActiveChanged));
 
         /// <inheritdoc />
@@ -23,7 +23,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Initializes a new instance of the <see cref="T:FirstFloor.ModernUI.Windows.Controls.ModernProgressRing" /> class.
         /// </summary>
         public ModernProgressRing() {
-            DefaultStyleKey = typeof(ModernProgressRing);
         }
 
         private void GotoCurrentState(bool animate) {
@@ -36,8 +35,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate" />.
         /// </summary>
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
             GotoCurrentState(false);
         }
 
@@ -54,7 +54,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         #region For glowing
-        public static readonly DependencyProperty DensityMultiplierProperty = DependencyProperty.Register(nameof(DensityMultiplier), typeof(double),
+        public static readonly DependencyProperty DensityMultiplierProperty = DP.Register(nameof(DensityMultiplier), typeof(double),
                 typeof(ModernProgressRing), new FrameworkPropertyMetadata(1d));
 
         public double DensityMultiplier {

@@ -99,7 +99,7 @@ namespace FirstFloor.ModernUI.Windows {
         }
 
         #region Properties
-        public static readonly DependencyProperty X1Property = DependencyProperty.Register(nameof(X1), typeof(double),
+        public static readonly DependencyProperty X1Property = DP.Register(nameof(X1), typeof(double),
                 typeof(CubicBesierEase), new PropertyMetadata(0.4, (o, e) => {
                     var f = (CubicBesierEase)o;
                     f._x1 = (double)e.NewValue;
@@ -113,7 +113,7 @@ namespace FirstFloor.ModernUI.Windows {
             set => SetValue(X1Property, value);
         }
 
-        public static readonly DependencyProperty X2Property = DependencyProperty.Register(nameof(X2), typeof(double),
+        public static readonly DependencyProperty X2Property = DP.Register(nameof(X2), typeof(double),
                 typeof(CubicBesierEase), new PropertyMetadata(0d, (o, e) => {
                     var f = (CubicBesierEase)o;
                     f._x2 = (double)e.NewValue;
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows {
             set => SetValue(Y1Property, value);
         }
 
-        public static readonly DependencyProperty Y2Property = DependencyProperty.Register(nameof(Y2), typeof(double),
+        public static readonly DependencyProperty Y2Property = DP.Register(nameof(Y2), typeof(double),
                 typeof(CubicBesierEase), new PropertyMetadata(0.2, (o, e) => {
                     var f = (CubicBesierEase)o;
                     f._y2 = (double)e.NewValue;
@@ -141,7 +141,7 @@ namespace FirstFloor.ModernUI.Windows {
             set => SetValue(X2Property, value);
         }
 
-        public static readonly DependencyProperty Y1Property = DependencyProperty.Register(nameof(Y1), typeof(double),
+        public static readonly DependencyProperty Y1Property = DP.Register(nameof(Y1), typeof(double),
                 typeof(CubicBesierEase), new PropertyMetadata(1d, (o, e) => {
                     var f = (CubicBesierEase)o;
                     f._y1 = (double)e.NewValue;

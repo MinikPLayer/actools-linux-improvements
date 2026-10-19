@@ -19,8 +19,8 @@ namespace FirstFloor.ModernUI.Windows {
             if (_periodicCallback != null) {
                 _timer = new DispatcherTimer {
                     Interval = TimeSpan.FromSeconds(1d / 60d),
-                    IsEnabled = true
                 };
+                _timer.Start();
 
                 _timer.Tick += OnTick;
             }
@@ -63,7 +63,7 @@ namespace FirstFloor.ModernUI.Windows {
 
         public void Dispose() {
             if (_timer != null) {
-                _timer.IsEnabled = false;
+                _timer.Stop();
             }
 
             TaskbarService.Delete(this);
@@ -93,8 +93,9 @@ namespace FirstFloor.ModernUI.Windows {
 
         private static TaskbarProgress ValueFactory() {
             return ActionExtension.InvokeInMainThread(() => {
-                var window = Application.Current?.MainWindow
-                        ?? Application.Current?.Windows.OfType<DpiAwareWindow>().FirstOrDefault(x => x.IsVisible && x.ShowInTaskbar);
+                var lifetime = Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime;
+                var window = lifetime?.MainWindow
+                        ?? lifetime?.Windows.OfType<DpiAwareWindow>().FirstOrDefault(x => x.IsVisible && x.ShowInTaskbar);
                 return window == null ? null : new TaskbarProgress(window);
             });
         }

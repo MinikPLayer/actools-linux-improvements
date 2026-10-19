@@ -14,7 +14,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected UIElement GetChildFromResources([CanBeNull] object key) {
             if (key != _previousResourceKey) {
                 _previousResourceKey = key;
-                _previousResource = key == null ? null : TryFindResource(key) as UIElement;
+                _previousResource = key == null ? null : this.TryFindResource(key) as UIElement;
             }
             return _previousResource;
         }
@@ -40,11 +40,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 _busy = true;
                 if (_reattachChild) {
                     Content = null;
-                    AddLogicalChild(_child);
+                    LogicalChildren.Add(_child);
                 }
                 _reattachChild = child is FrameworkElement fe && fe.Parent == this;
                 if (_reattachChild) {
-                    RemoveLogicalChild(child);
+                    LogicalChildren.Remove(child);
                 }
                 _child = child;
                 Content = child;

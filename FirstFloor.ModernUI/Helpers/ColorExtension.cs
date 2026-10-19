@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using JetBrains.Annotations;
-using Color = System.Windows.Media.Color;
 
 namespace FirstFloor.ModernUI.Helpers {
     public static class ColorExtension {

@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Markup;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
-    [ContentProperty(nameof(Children))]
-    public abstract class ListSwitch : BaseSwitch, IAddChild, IList {
+    public abstract class ListSwitch : BaseSwitch, IList {
+        [Avalonia.Metadata.Content]
         public IList Children => this;
 
         public void CopyTo(Array array, int index) {
@@ -82,24 +82,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         IEnumerator IEnumerable.GetEnumerator() {
             return ((IEnumerable)RegisteredElements).GetEnumerator();
-        }
-
-        void IAddChild.AddChild(object value) {
-            switch (value) {
-                case null:
-                    throw new ArgumentNullException(nameof(value));
-                case UIElement element:
-                    Add(element);
-                    break;
-                default:
-                    throw new ArgumentException(@"UIElement is required", nameof(value));
-            }
-        }
-
-        void IAddChild.AddText(string text) {
-            if (!string.IsNullOrWhiteSpace(text)) {
-                throw new NotSupportedException();
-            }
         }
 
         protected abstract bool TestChild(UIElement child);

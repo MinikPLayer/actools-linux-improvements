@@ -36,7 +36,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(RenamesProperty, value);
         }
 
-        public static readonly DependencyProperty RenamesProperty = DependencyProperty.RegisterAttached("Renames", typeof(IList),
+        public static readonly DependencyProperty RenamesProperty = DP.RegisterAttached("Renames", typeof(IList),
                 typeof(Resources), new UIPropertyMetadata(OnRenamesChanged));
 
         private static void OnRenamesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -78,7 +78,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ReplacesProperty, value);
         }
 
-        public static readonly DependencyProperty ReplacesProperty = DependencyProperty.RegisterAttached("Replaces", typeof(IList),
+        public static readonly DependencyProperty ReplacesProperty = DP.RegisterAttached("Replaces", typeof(IList),
                 typeof(Resources), new UIPropertyMetadata(OnReplacesChanged));
 
         private static void OnReplacesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

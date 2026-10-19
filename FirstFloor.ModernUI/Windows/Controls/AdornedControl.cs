@@ -208,31 +208,31 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
     public class AdornedControl : ContentControl {
         #region Dependency Properties
-        public static readonly DependencyProperty IsAdornerVisibleProperty = DependencyProperty.Register(nameof(IsAdornerVisible), typeof(bool),
+        public static readonly DependencyProperty IsAdornerVisibleProperty = DP.Register(nameof(IsAdornerVisible), typeof(bool),
                 typeof(AdornedControl), new FrameworkPropertyMetadata(IsAdornerVisible_PropertyChanged));
 
-        public static readonly DependencyProperty AdornerContentProperty = DependencyProperty.Register(nameof(AdornerContent), typeof(FrameworkElement),
+        public static readonly DependencyProperty AdornerContentProperty = DP.Register(nameof(AdornerContent), typeof(FrameworkElement),
                 typeof(AdornedControl), new FrameworkPropertyMetadata(AdornerContent_PropertyChanged));
 
-        public static readonly DependencyProperty HorizontalAdornerPlacementProperty = DependencyProperty.Register(nameof(HorizontalAdornerPlacement),
+        public static readonly DependencyProperty HorizontalAdornerPlacementProperty = DP.Register(nameof(HorizontalAdornerPlacement),
                 typeof(AdornerPlacement), typeof(AdornedControl), new FrameworkPropertyMetadata(AdornerPlacement.Inside));
 
-        public static readonly DependencyProperty VerticalAdornerPlacementProperty = DependencyProperty.Register(nameof(VerticalAdornerPlacement),
+        public static readonly DependencyProperty VerticalAdornerPlacementProperty = DP.Register(nameof(VerticalAdornerPlacement),
                 typeof(AdornerPlacement), typeof(AdornedControl), new FrameworkPropertyMetadata(AdornerPlacement.Inside));
 
-        public static readonly DependencyProperty AdornerOffsetXProperty = DependencyProperty.Register(nameof(AdornerOffsetX), typeof(double),
+        public static readonly DependencyProperty AdornerOffsetXProperty = DP.Register(nameof(AdornerOffsetX), typeof(double),
                 typeof(AdornedControl));
 
-        public static readonly DependencyProperty AdornerOffsetYProperty = DependencyProperty.Register(nameof(AdornerOffsetY), typeof(double),
+        public static readonly DependencyProperty AdornerOffsetYProperty = DP.Register(nameof(AdornerOffsetY), typeof(double),
                 typeof(AdornedControl));
 
-        public static readonly DependencyProperty OrderProperty = DependencyProperty.Register(nameof(Order), typeof(int),
+        public static readonly DependencyProperty OrderProperty = DP.Register(nameof(Order), typeof(int),
                 typeof(AdornedControl), new PropertyMetadata(OnOrderChanged));
 
         public static readonly DependencyProperty AvoidUsingScrollContentPresenterProperty =
-                DependencyProperty.Register(nameof(AvoidUsingScrollContentPresenter), typeof(bool), typeof(AdornedControl), new FrameworkPropertyMetadata(true));
+                DP.Register(nameof(AvoidUsingScrollContentPresenter), typeof(bool), typeof(AdornedControl), new FrameworkPropertyMetadata(true));
 
-        public static readonly DependencyProperty ShowAdornerOnHoverProperty = DependencyProperty.Register(nameof(ShowAdornerOnHover), typeof(bool),
+        public static readonly DependencyProperty ShowAdornerOnHoverProperty = DP.Register(nameof(ShowAdornerOnHover), typeof(bool),
                 typeof(AdornedControl), new PropertyMetadata(false, (o, e) => {
                     var c = (AdornedControl)o;
                     c._showAdornerOnHover = (bool)e.NewValue;
@@ -265,7 +265,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private int _mouseCounter;
 
-        protected override void OnMouseEnter(MouseEventArgs e) {
+        protected override void OnPointerEntered(PointerEventArgs e) {
             if (_isLoaded && ++_mouseCounter == 1) {
                 Task.Delay(200).ContinueWithInMainThread(r => {
                     if (_isLoaded && _mouseCounter > 0) ShowAdorner();
@@ -273,7 +273,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnMouseLeave(MouseEventArgs e) {
+        protected override void OnPointerExited(PointerEventArgs e) {
             if (_isLoaded && _mouseCounter != 0 && --_mouseCounter == 0) {
                 Task.Delay(300).ContinueWithInMainThread(r => {
                     if (_isLoaded && _mouseCounter == 0) HideAdorner();
@@ -516,8 +516,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 if (_adornerLayer != null) {
                     _adorner = new FrameworkElementAdorner(AdornerContent, this, HorizontalAdornerPlacement, VerticalAdornerPlacement,
                             AdornerOffsetX, AdornerOffsetY);
-                    _adorner.MouseEnter += AdornerOnMouseEnter;
-                    _adorner.MouseLeave += AdornerOnMouseLeave;
+                    _adorner.AddMouseEnter(AdornerOnMouseEnter);
+                    _adorner.AddMouseLeave(AdornerOnMouseLeave);
                     _adornerLayer.Add(_adorner);
                     UpdateAdornerDataContext();
                 }
@@ -536,8 +536,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _adorner.DisconnectChild();
 
             if (_adorner != null) {
-                _adorner.MouseEnter -= AdornerOnMouseEnter;
-                _adorner.MouseLeave -= AdornerOnMouseLeave;
+                _adorner.RemoveMouseEnter(AdornerOnMouseEnter);
+                _adorner.RemoveMouseLeave(AdornerOnMouseLeave);
                 _adorner = null;
             }
             _adornerLayer = null;
@@ -566,7 +566,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ZOrderProperty, value);
         }
 
-        public static readonly DependencyProperty ZOrderProperty = DependencyProperty.RegisterAttached("ZOrder", typeof(int),
+        public static readonly DependencyProperty ZOrderProperty = DP.RegisterAttached("ZOrder", typeof(int),
                 typeof(AdornedControl), new UIPropertyMetadata(OnZOrderChanged));
 
         private static void OnZOrderChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

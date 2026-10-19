@@ -2,9 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Interop;
 using FirstFloor.ModernUI.Helpers;
-using FirstFloor.ModernUI.Win32;
 
 namespace FirstFloor.ModernUI.Windows {
     public enum TaskbarState {
@@ -19,12 +17,12 @@ namespace FirstFloor.ModernUI.Windows {
         private readonly IntPtr _windowHandle;
         private TaskbarState _state;
 
-        public TaskbarProgress() : this(Application.Current?.MainWindow) {
+        public TaskbarProgress() : this((Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow) {
             // If Application.Current == null, it will cause a crash
         }
 
         public TaskbarProgress(Window window) {
-            _windowHandle = new WindowInteropHelper(window).Handle;
+            _windowHandle = window?.TryGetPlatformHandle()?.Handle ?? IntPtr.Zero;
         }
 
         public TaskbarProgress(IntPtr windowHandle) {
@@ -89,7 +87,7 @@ namespace FirstFloor.ModernUI.Windows {
         private class TaskbarInstance { }
 
         private static ITaskbarList3 _instance;
-        private static bool _supported = WindowsVersionHelper.IsWindows10OrGreater;
+        private static bool _supported = OperatingSystem.IsWindowsVersionAtLeast(10);
 
         private static void SetState(IntPtr handle, TaskbarState state) {
             if (!_supported) return;

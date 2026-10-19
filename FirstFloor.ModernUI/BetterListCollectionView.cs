@@ -39,7 +39,7 @@ namespace FirstFloor.ModernUI {
                 if (Dispatcher.Thread == Thread.CurrentThread) {
                     OnCollectionChanged(sender, notify);
                 } else {
-                    Dispatcher.Invoke(() => OnCollectionChanged(sender, notify));
+                    Dispatcher.UIThread.Invoke(() => OnCollectionChanged(sender, notify));
                 }
             } catch (ArgumentOutOfRangeException ex) {
                 _compatible = true;

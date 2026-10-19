@@ -4,7 +4,7 @@ using FirstFloor.ModernUI.Helpers;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class RememberingExpander : Expander {
-        public static readonly DependencyProperty DefaultValueProperty = DependencyProperty.Register(nameof(DefaultValue), typeof(bool),
+        public static readonly DependencyProperty DefaultValueProperty = DP.Register(nameof(DefaultValue), typeof(bool),
                 typeof(RememberingExpander), new PropertyMetadata(true, (o, e) => {
                     ((RememberingExpander)o)._defaultValue = (bool)e.NewValue;
                 }));
@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DefaultValueProperty, value);
         }
 
-        public static readonly DependencyProperty KeyProperty = DependencyProperty.Register(nameof(Key), typeof(string),
+        public static readonly DependencyProperty KeyProperty = DP.Register(nameof(Key), typeof(string),
                 typeof(RememberingExpander), new PropertyMetadata(OnKeyChanged));
 
         public string Key {
@@ -40,8 +40,15 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnExpanded() {
-            base.OnExpanded();
+        protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs change) {
+            base.OnPropertyChanged(change);
+            if (change.Property == IsExpandedProperty) {
+                if (IsExpanded) OnExpanded();
+                else OnCollapsed();
+            }
+        }
+
+        private void OnExpanded() {
             if (_loaded) {
                 if (DefaultValue) {
                     ValuesStorage.Remove(Key);
@@ -51,8 +58,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnCollapsed() {
-            base.OnCollapsed();
+        private void OnCollapsed() {
             if (_loaded) {
                 if (!DefaultValue) {
                     ValuesStorage.Remove(Key);

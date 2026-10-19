@@ -1,0 +1,47 @@
+﻿<c:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.WaitingDialog" Width="480" SizeToContent="Height" Initialized="OnLoaded" MinHeight="40" Padding="24 20 24 0">
+  <c:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </c:ModernDialog.Resources>
+
+  <c:SpacingStackPanel Spacing="20">
+    <c:BooleanSwitch x:Name="ProgressBarSwitch">
+      <c:BooleanSwitch.True>
+        <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding ProgressIndetermitate}"/>
+      </c:BooleanSwitch.True>
+      <c:BooleanSwitch.False>
+        <c:ReferenceSwitch Value="{Binding Progress}">
+          <c:ReferenceSwitch.Null>
+            <c:ModernProgressRing IsActive="True" Width="80" Height="80" HorizontalAlignment="Center"/>
+          </c:ReferenceSwitch.Null>
+          <c:ReferenceSwitch.NonNull>
+            <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding Progress, Mode=OneWay}" IsIndeterminate="{Binding ProgressIndetermitate}"/>
+          </c:ReferenceSwitch.NonNull>
+        </c:ReferenceSwitch>
+      </c:BooleanSwitch.False>
+    </c:BooleanSwitch>
+    <c:BbCodeBlock x:Name="MessageBlock" Text="{Binding Message}"/>
+    <c:BooleanSwitch x:Name="SecondaryProgressBarSwitch" IsVisible="False">
+      <c:BooleanSwitch.True>
+        <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding SecondaryProgress, Mode=OneWay}" IsIndeterminate="{Binding SecondaryProgressIndetermitate}"/>
+      </c:BooleanSwitch.True>
+      <c:BooleanSwitch.False>
+        <c:ReferenceSwitch Value="{Binding SecondaryProgress}">
+          <c:ReferenceSwitch.Null>
+            <c:ModernProgressRing IsActive="True" Width="80" Height="80" HorizontalAlignment="Center"/>
+          </c:ReferenceSwitch.Null>
+          <c:ReferenceSwitch.NonNull>
+            <ProgressBar Height="4" Minimum="0" Maximum="1" Value="{Binding SecondaryProgress, Mode=OneWay}" IsIndeterminate="{Binding SecondaryProgressIndetermitate}"/>
+          </c:ReferenceSwitch.NonNull>
+        </c:ReferenceSwitch>
+      </c:BooleanSwitch.False>
+    </c:BooleanSwitch>
+    <c:BbCodeBlock x:Name="SecondaryMessageBlock" Text="{Binding SecondaryMessage}" IsVisible="False"/>
+    <c:BbCodeBlock Text="{Binding Details}" IsVisible="{Binding Details, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+    <c:BetterImage x:Name="Image" Height="242" Width="430" ShowBroken="False" HorizontalAlignment="Left" IsVisible="False"/>
+  </c:SpacingStackPanel>
+</c:ModernDialog>

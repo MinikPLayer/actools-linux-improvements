@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using FirstFloor.ModernUI.Helpers;
 using JetBrains.Annotations;
 
@@ -19,7 +18,7 @@ namespace FirstFloor.ModernUI {
             task.ContinueWith(x => {
                 Logging.Warning(x.Exception?.Flatten());
 #if DEBUG
-                MessageBox.Show("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
+                System.Diagnostics.Debug.WriteLine("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
 #endif
             }, TaskContinuationOptions.NotOnRanToCompletion);
         }
@@ -28,7 +27,7 @@ namespace FirstFloor.ModernUI {
             task.ContinueWith(x => {
                 Logging.Warning(x.Exception?.Flatten());
 #if DEBUG
-                MessageBox.Show("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
+                System.Diagnostics.Debug.WriteLine("IGNORED EXCEPTION:\n" + x.Exception?.Flatten());
 #endif
             }, TaskContinuationOptions.OnlyOnFaulted);
         }

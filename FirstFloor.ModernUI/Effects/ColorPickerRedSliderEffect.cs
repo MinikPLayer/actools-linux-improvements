@@ -14,7 +14,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(BlueProperty);
         }
 
-        public static readonly DependencyProperty GreenProperty = DependencyProperty.Register("Green", typeof(double),
+        public static readonly DependencyProperty GreenProperty = DP.Register("Green", typeof(double),
                 typeof(ColorPickerRedSliderEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), GreenCoerceSaturationFactor));
 
         public double Green {
@@ -26,7 +26,7 @@ namespace FirstFloor.ModernUI.Effects {
             return Math.Min(Math.Max((double)value / 255d, 0d), 1d);
         }
 
-        public static readonly DependencyProperty BlueProperty = DependencyProperty.Register("Blue", typeof(double),
+        public static readonly DependencyProperty BlueProperty = DP.Register("Blue", typeof(double),
                 typeof(ColorPickerRedSliderEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(1), BlueCoerceSaturationFactor));
 
         public double Blue {

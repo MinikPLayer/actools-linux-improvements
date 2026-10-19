@@ -1,0 +1,217 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ItemsPanelTemplate x:Key="HorizontalItemsPanel">
+    <StackPanel Orientation="Horizontal"/>
+  </ItemsPanelTemplate>
+
+  <ItemsPanelTemplate x:Key="WrapItemsPanel">
+    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left"/>
+  </ItemsPanelTemplate>
+
+  <ControlTheme x:Key="FlatListBoxItem" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border x:Name="PART_Border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+        <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+      </Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemTextSelected}"/>
+        <Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+      </Style><Style Selector="^:selected /template/ #PART_Border"><Setter Property="Style" Value="{StaticResource HighlightedBackground}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="RibbonListBoxItem.Left" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="6 2 2 2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <controls:Cell Background="Transparent">
+            <Rectangle Fill="{TemplateBinding Background}" HorizontalAlignment="Left" Width="4"/>
+            <Rectangle x:Name="BgHighlight" Fill="{DynamicResource ItemBackgroundSelectedSubtle}"/>
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+          </controls:Cell>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^ /template/ #BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+      </Style><Style Selector="^:selected"><Setter Property="Background" Value="{DynamicResource ItemBackgroundSelected}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+      </Style><Style Selector="^:selected /template/ #BgHighlight"><Setter Property="IsVisible" Value="True"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="RibbonListBoxItem.Top" TargetType="ListBoxItem" BasedOn="{StaticResource RibbonListBoxItem.Left}">
+    <Setter Property="Padding" Value="2 6 2 2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <controls:Cell Background="Transparent">
+            <Rectangle Fill="{TemplateBinding Background}" VerticalAlignment="Top" Height="4"/>
+            <Rectangle x:Name="BgHighlight" Fill="{DynamicResource ItemBackgroundSelectedSubtle}"/>
+            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
+          </controls:Cell>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #BgHighlight"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^:selected /template/ #BgHighlight"><Setter Property="IsVisible" Value="True"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="RadioBoxListItem" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <DockPanel>
+              <RadioButton IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"/>
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </DockPanel>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style Selector="^ /template/ #Bd"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+      </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+        <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+      </Style><Style Selector="^:pointerover /template/ #Bd"><Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="CheckBoxListBoxItem" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Margin" Value="0"/>
+    <Setter Property="Padding" Value="2"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBoxItem">
+          <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+            <DockPanel>
+              <CheckBox IsHitTestVisible="False" IsChecked="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}"/>
+              <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </DockPanel>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style Selector="^:selected"><Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+      </Style><Style Selector="^:pointerover"><Setter Property="Foreground" Value="{DynamicResource ItemTextHover}"/>
+        <Setter Property="Background" Value="{DynamicResource ItemBackgroundHover}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ItemTextDisabled}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme TargetType="ListBox" x:Key="{x:Type ListBox}">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="ItemContainerStyle" Value="{StaticResource FlatListBoxItem}"/>
+    <Setter Property="IsTextSearchEnabled" Value="True"/>
+    <Setter Property="IsTextSearchCaseSensitive" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBox">
+          <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False">
+            <ItemsPresenter/>
+          </ScrollViewer>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme TargetType="ListBox" x:Key="VirtualizingListBox">
+    <Setter Property="VirtualizingPanel.CacheLengthUnit" Value="Page"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ListBox">
+          <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}">
+            <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+              <ItemsPresenter/>
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel IsItemsHost="True" CacheLength="{TemplateBinding VirtualizingPanel.CacheLength}" CacheLengthUnit="{TemplateBinding VirtualizingPanel.CacheLengthUnit}" ScrollUnit="{TemplateBinding VirtualizingPanel.ScrollUnit}" VirtualizationMode="{TemplateBinding VirtualizingPanel.VirtualizationMode}" IsVirtualizing="{TemplateBinding VirtualizingPanel.IsVirtualizing}"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme TargetType="ItemsControl" x:Key="ScrollingItemsControl">
+    <Setter Property="IsTextSearchEnabled" Value="True"/>
+    <Setter Property="IsTextSearchCaseSensitive" Value="False"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ItemsControl">
+          <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+            <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" CanContentScroll="False" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+              <ItemsPresenter/>
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <StackPanel IsItemsHost="True"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme TargetType="ItemsControl" x:Key="VirtualizingItemsControl">
+    <Setter Property="VirtualizingPanel.CacheLengthUnit" Value="Page"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ItemsControl">
+          <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+            <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="False" CanContentScroll="True" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+              <ItemsPresenter/>
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="ItemsPanel">
+      <Setter.Value>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel IsItemsHost="True" CacheLength="{TemplateBinding VirtualizingPanel.CacheLength}" CacheLengthUnit="{TemplateBinding VirtualizingPanel.CacheLengthUnit}" ScrollUnit="{TemplateBinding VirtualizingPanel.ScrollUnit}" VirtualizationMode="{TemplateBinding VirtualizingPanel.VirtualizationMode}" IsVirtualizing="{TemplateBinding VirtualizingPanel.IsVirtualizing}"/>
+        </ItemsPanelTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

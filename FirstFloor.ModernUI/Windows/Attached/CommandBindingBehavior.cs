@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         public static readonly DependencyProperty PropagateToFrameProperty =
-                DependencyProperty.RegisterAttached("PropagateToFrame", typeof(bool), typeof(CommandBindingBehavior),
+                DP.RegisterAttached("PropagateToFrame", typeof(bool), typeof(CommandBindingBehavior),
                         new PropertyMetadata(false, OnPropagateToFrameChanged));
 
         private static void OnPropagateToFrameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

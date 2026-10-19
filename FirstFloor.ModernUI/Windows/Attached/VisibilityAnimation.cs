@@ -12,7 +12,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DurationProperty, value);
         }
 
-        public static readonly DependencyProperty DurationProperty = DependencyProperty.RegisterAttached("Duration", typeof(TimeSpan),
+        public static readonly DependencyProperty DurationProperty = DP.RegisterAttached("Duration", typeof(TimeSpan),
                 typeof(VisibilityAnimation), new UIPropertyMetadata(TimeSpan.FromSeconds(0.3)));
 
         public static bool? GetVisible(DependencyObject obj) {
@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(VisibleProperty, value);
         }
 
-        public static readonly DependencyProperty VisibleProperty = DependencyProperty.RegisterAttached("Visible", typeof(bool?),
+        public static readonly DependencyProperty VisibleProperty = DP.RegisterAttached("Visible", typeof(bool?),
                 typeof(VisibilityAnimation), new UIPropertyMetadata(null, OnVisibleChanged));
 
         private static void OnVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

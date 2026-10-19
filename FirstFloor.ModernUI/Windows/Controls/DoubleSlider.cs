@@ -13,11 +13,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
     public class DoubleThumb : ThumbExt {
         static DoubleThumb() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleThumb), new FrameworkPropertyMetadata(typeof(DoubleThumb)));
         }
 
 
-        public static readonly DependencyProperty RangeLeftProperty = DependencyProperty.Register(nameof(RangeLeft), typeof(double),
+        public static readonly DependencyProperty RangeLeftProperty = DP.Register(nameof(RangeLeft), typeof(double),
                 typeof(DoubleThumb), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double RangeLeft {
@@ -25,7 +24,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RangeLeftProperty, value);
         }
 
-        public static readonly DependencyProperty RangeRightProperty = DependencyProperty.Register(nameof(RangeRight), typeof(double),
+        public static readonly DependencyProperty RangeRightProperty = DP.Register(nameof(RangeRight), typeof(double),
                 typeof(DoubleThumb), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
         public double RangeRight {
@@ -33,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RangeRightProperty, value);
         }
 
-        public static readonly DependencyProperty RangeLeftLimitProperty = DependencyProperty.Register(nameof(RangeLeftLimit), typeof(double),
+        public static readonly DependencyProperty RangeLeftLimitProperty = DP.Register(nameof(RangeLeftLimit), typeof(double),
                 typeof(DoubleThumb));
 
         public double RangeLeftLimit {
@@ -41,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RangeLeftLimitProperty, value);
         }
 
-        public static readonly DependencyProperty RangeRightLimitProperty = DependencyProperty.Register(nameof(RangeRightLimit), typeof(double),
+        public static readonly DependencyProperty RangeRightLimitProperty = DP.Register(nameof(RangeRightLimit), typeof(double),
                 typeof(DoubleThumb));
 
         public double RangeRightLimit {
@@ -49,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RangeRightLimitProperty, value);
         }
 
-        public static readonly DependencyProperty RangeLeftWidthProperty = DependencyProperty.Register(nameof(RangeLeftWidth), typeof(double),
+        public static readonly DependencyProperty RangeLeftWidthProperty = DP.Register(nameof(RangeLeftWidth), typeof(double),
                 typeof(DoubleThumb));
 
         public double RangeLeftWidth {
@@ -57,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(RangeLeftWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ChangeProperty = DependencyProperty.Register(nameof(Change), typeof(double),
+        public static readonly DependencyProperty ChangeProperty = DP.Register(nameof(Change), typeof(double),
                 typeof(DoubleThumb));
 
         public double Change {
@@ -65,7 +64,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ChangeProperty, value);
         }
 
-        public static readonly DependencyProperty RangeRightWidthProperty = DependencyProperty.Register(nameof(RangeRightWidth), typeof(double),
+        public static readonly DependencyProperty RangeRightWidthProperty = DP.Register(nameof(RangeRightWidth), typeof(double),
                 typeof(DoubleThumb));
 
         public double RangeRightWidth {
@@ -82,7 +81,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(IsLeftSubThumbProperty, value);
         }
 
-        public static readonly DependencyProperty IsLeftSubThumbProperty = DependencyProperty.RegisterAttached("IsLeftSubThumb", typeof(bool),
+        public static readonly DependencyProperty IsLeftSubThumbProperty = DP.RegisterAttached("IsLeftSubThumb", typeof(bool),
                 typeof(DoubleThumb), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetHighlightRange(DependencyObject obj) {
@@ -93,14 +92,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(HighlightRangeProperty, value);
         }
 
-        public static readonly DependencyProperty HighlightRangeProperty = DependencyProperty.RegisterAttached("HighlightRange", typeof(bool),
+        public static readonly DependencyProperty HighlightRangeProperty = DP.RegisterAttached("HighlightRange", typeof(bool),
                 typeof(DoubleThumb), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
     }
 
     public class DoubleSlider : Slider {
         static DoubleSlider() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(DoubleSlider), new FrameworkPropertyMetadata(typeof(DoubleSlider)));
         }
 
         private bool _valueNotSet;
@@ -113,7 +111,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private readonly Busy _publicValuesBusy = new Busy();
 
         #region For thumb
-        public static readonly DependencyProperty RangeLeftProperty = DependencyProperty.Register(nameof(RangeLeft), typeof(double),
+        public static readonly DependencyProperty RangeLeftProperty = DP.Register(nameof(RangeLeft), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(OnRangeLeftChanged));
 
         public double RangeLeft {
@@ -145,7 +143,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             });
         }
 
-        public static readonly DependencyProperty RangeRightProperty = DependencyProperty.Register(nameof(RangeRight), typeof(double),
+        public static readonly DependencyProperty RangeRightProperty = DP.Register(nameof(RangeRight), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(OnRangeRightChanged));
 
         public double RangeRight {
@@ -175,35 +173,35 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             });
         }
 
-        public static readonly DependencyPropertyKey RangeLeftLimitPropertyKey = DependencyProperty.RegisterReadOnly(nameof(RangeLeftLimit), typeof(double),
+        public static readonly DependencyPropertyKey RangeLeftLimitPropertyKey = DP.RegisterReadOnly(nameof(RangeLeftLimit), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(0d));
 
         public static readonly DependencyProperty RangeLeftLimitProperty = RangeLeftLimitPropertyKey.DependencyProperty;
 
         public double RangeLeftLimit => GetValue(RangeLeftLimitProperty) as double? ?? default;
 
-        public static readonly DependencyPropertyKey RangeRightLimitPropertyKey = DependencyProperty.RegisterReadOnly(nameof(RangeRightLimit), typeof(double),
+        public static readonly DependencyPropertyKey RangeRightLimitPropertyKey = DP.RegisterReadOnly(nameof(RangeRightLimit), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(0d));
 
         public static readonly DependencyProperty RangeRightLimitProperty = RangeRightLimitPropertyKey.DependencyProperty;
 
         public double RangeRightLimit => GetValue(RangeRightLimitProperty) as double? ?? default;
 
-        public static readonly DependencyPropertyKey RangeLeftWidthPropertyKey = DependencyProperty.RegisterReadOnly(nameof(RangeLeftWidth), typeof(double),
+        public static readonly DependencyPropertyKey RangeLeftWidthPropertyKey = DP.RegisterReadOnly(nameof(RangeLeftWidth), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(0d));
 
         public static readonly DependencyProperty RangeLeftWidthProperty = RangeLeftWidthPropertyKey.DependencyProperty;
 
         public double RangeLeftWidth => GetValue(RangeLeftWidthProperty) as double? ?? default;
 
-        public static readonly DependencyPropertyKey RangeRightWidthPropertyKey = DependencyProperty.RegisterReadOnly(nameof(RangeRightWidth), typeof(double),
+        public static readonly DependencyPropertyKey RangeRightWidthPropertyKey = DP.RegisterReadOnly(nameof(RangeRightWidth), typeof(double),
                 typeof(DoubleSlider), new PropertyMetadata(0d));
 
         public static readonly DependencyProperty RangeRightWidthProperty = RangeRightWidthPropertyKey.DependencyProperty;
 
         public double RangeRightWidth => GetValue(RangeRightWidthProperty) as double? ?? default;
 
-        public static readonly DependencyProperty ThumbSizeProperty = DependencyProperty.Register(nameof(ThumbSize), typeof(double),
+        public static readonly DependencyProperty ThumbSizeProperty = DP.Register(nameof(ThumbSize), typeof(double),
                 typeof(DoubleSlider), new FrameworkPropertyMetadata(11d, (o, args) => {
                     var s = o as DoubleSlider;
                     if (s != null) {
@@ -216,7 +214,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ThumbSizeProperty, value);
         }
 
-        public static readonly DependencyProperty ThumbSubSizeProperty = DependencyProperty.Register(nameof(ThumbSubSize), typeof(double),
+        public static readonly DependencyProperty ThumbSubSizeProperty = DP.Register(nameof(ThumbSubSize), typeof(double),
                 typeof(DoubleSlider), new FrameworkPropertyMetadata(9d, (o, args) => {
                     var s = o as DoubleSlider;
                     if (s != null) {
@@ -237,7 +235,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ThumbSizeDeltaProperty, value);
         }
 
-        public static readonly DependencyProperty ThumbSizeDeltaProperty = DependencyProperty.RegisterAttached("ThumbSizeDelta", typeof(double),
+        public static readonly DependencyProperty ThumbSizeDeltaProperty = DP.RegisterAttached("ThumbSizeDelta", typeof(double),
                 typeof(DoubleSlider), new FrameworkPropertyMetadata(2d, FrameworkPropertyMetadataOptions.Inherits));
 
 
@@ -252,16 +250,16 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var leftLimit = value - minimum;
             var rightLimit = maximum - value;
 
-            SetValue(RangeLeftLimitPropertyKey, -leftLimit);
-            SetValue(RangeRightLimitPropertyKey, rightLimit);
+            SetValue(RangeLeftLimitPropertyKey.DependencyProperty, -leftLimit);
+            SetValue(RangeRightLimitPropertyKey.DependencyProperty, rightLimit);
 
             RangeLeft = -(value - half < minimum ? leftLimit : half);
             RangeRight = value + half > maximum ? rightLimit : half;
 
             var thumbSize = ThumbSize;
             var thumbSubSize = ThumbSubSize;
-            SetValue(RangeLeftWidthPropertyKey, (ActualWidth - thumbSize) * leftLimit / range + thumbSubSize);
-            SetValue(RangeRightWidthPropertyKey, (ActualWidth - thumbSize) * rightLimit / range + thumbSubSize);
+            SetValue(RangeLeftWidthPropertyKey.DependencyProperty, (ActualWidth - thumbSize) * leftLimit / range + thumbSubSize);
+            SetValue(RangeRightWidthPropertyKey.DependencyProperty, (ActualWidth - thumbSize) * rightLimit / range + thumbSubSize);
         }
 
         private void UpdateThumbValues() {
@@ -294,7 +292,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             UpdateThumbValues();
         }
 
-        public static readonly DependencyProperty BindingModeProperty = DependencyProperty.Register(nameof(BindingMode), typeof(DoubleSliderBindingMode),
+        public static readonly DependencyProperty BindingModeProperty = DP.Register(nameof(BindingMode), typeof(DoubleSliderBindingMode),
                 typeof(DoubleSlider), new PropertyMetadata(DoubleSliderBindingMode.FromToFixed,
                         (o, e) => { ((DoubleSlider)o)._bindingMode = (DoubleSliderBindingMode)e.NewValue; }));
 
@@ -305,7 +303,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(BindingModeProperty, value);
         }
 
-        public static readonly DependencyProperty RangeProperty = DependencyProperty.Register(nameof(Range), typeof(double), typeof(DoubleSlider),
+        public static readonly DependencyProperty RangeProperty = DP.Register(nameof(Range), typeof(double), typeof(DoubleSlider),
                 new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnRangeChanged, CoerceRangeCallback));
 
         private static object CoerceRangeCallback(DependencyObject d, object baseValue) {
@@ -335,7 +333,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private static double Clamp(double v, double min, double max) => v < min ? min : v > max ? max : v;
 
-        public static readonly DependencyProperty FromProperty = DependencyProperty.Register(nameof(From), typeof(double), typeof(DoubleSlider),
+        public static readonly DependencyProperty FromProperty = DP.Register(nameof(From), typeof(double), typeof(DoubleSlider),
                 new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnFromChanged, CoerceFromCallback));
 
         private static object CoerceFromCallback(DependencyObject d, object baseValue) {
@@ -372,7 +370,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             });
         }
 
-        public static readonly DependencyProperty ToProperty = DependencyProperty.Register(nameof(To), typeof(double),
+        public static readonly DependencyProperty ToProperty = DP.Register(nameof(To), typeof(double),
                 typeof(DoubleSlider), new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnToChanged, CoerceToCallback));
 
         private static object CoerceToCallback(DependencyObject d, object baseValue) {

@@ -31,21 +31,20 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Static Constructor
         /// </summary>
         static SplitButton() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton)));
-            IsContextMenuOpenProperty = DependencyProperty.Register("IsContextMenuOpen", typeof(bool), typeof(SplitButton),
+            IsContextMenuOpenProperty = DP.Register("IsContextMenuOpen", typeof(bool), typeof(SplitButton),
                     new FrameworkPropertyMetadata(false, OnIsContextMenuOpenChanged));
-            ModeProperty = DependencyProperty.Register("Mode", typeof(SplitButtonMode), typeof(SplitButton),
+            ModeProperty = DP.Register("Mode", typeof(SplitButtonMode), typeof(SplitButton),
                     new FrameworkPropertyMetadata(SplitButtonMode.Split));
 
             // AddOwner properties from the ContextMenuService class, we need callbacks from these properties
             // to update the Buttons ContextMenu properties
-            PlacementProperty = ContextMenuService.PlacementProperty.AddOwner(typeof(SplitButton),
+            PlacementProperty = DP.AddOwner(ContextMenuService.PlacementProperty, typeof(SplitButton),
                     new FrameworkPropertyMetadata(PlacementMode.Bottom, OnPlacementChanged));
-            PlacementRectangleProperty = ContextMenuService.PlacementRectangleProperty.AddOwner(typeof(SplitButton),
+            PlacementRectangleProperty = DP.AddOwner(ContextMenuService.PlacementRectangleProperty, typeof(SplitButton),
                     new FrameworkPropertyMetadata(Rect.Empty, OnPlacementRectangleChanged));
-            HorizontalOffsetProperty = ContextMenuService.HorizontalOffsetProperty.AddOwner(typeof(SplitButton),
+            HorizontalOffsetProperty = DP.AddOwner(ContextMenuService.HorizontalOffsetProperty, typeof(SplitButton),
                     new FrameworkPropertyMetadata(0.0, OnHorizontalOffsetChanged));
-            VerticalOffsetProperty = ContextMenuService.VerticalOffsetProperty.AddOwner(typeof(SplitButton),
+            VerticalOffsetProperty = DP.AddOwner(ContextMenuService.VerticalOffsetProperty, typeof(SplitButton),
                     new FrameworkPropertyMetadata(0.0, OnVerticalOffsetChanged));
         }
 
@@ -57,8 +56,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// OnApplyTemplate override, set up the click event for the dropdown if present in the template
         /// </summary>
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             // set up the click event handler for the dropdown button
             if (Template.FindName("PART_DropDown", this) is ButtonBase dropDown) dropDown.Click += Dropdown_Click;

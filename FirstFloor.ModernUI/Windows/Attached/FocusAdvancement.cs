@@ -20,15 +20,15 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         [Obsolete]
-        public static readonly DependencyProperty AdvancesByEnterKeyProperty = DependencyProperty.RegisterAttached("AdvancesByEnterKey",
+        public static readonly DependencyProperty AdvancesByEnterKeyProperty = DP.RegisterAttached("AdvancesByEnterKey",
             typeof(bool), typeof(FocusAdvancement), new UIPropertyMetadata(OnAdvancesByEnterKeyPropertyChanged));
 
         private static void OnAdvancesByEnterKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is UIElement element)) return;
             if ((bool)e.NewValue) {
-                element.PreviewKeyDown += OnKeyDown;
+                element.AddPreviewKeyDown(OnKeyDown);
             } else {
-                element.PreviewKeyDown -= OnKeyDown;
+                element.RemovePreviewKeyDown(OnKeyDown);
             }
         }
 

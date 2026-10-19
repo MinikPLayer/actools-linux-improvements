@@ -1,16 +1,14 @@
-﻿using System;
+using System;
+using Avalonia;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Markup;
-using System.Windows.Navigation;
+using Avalonia.Controls.Documents;
+using Avalonia.Media;
 using FirstFloor.ModernUI.Commands;
 using FirstFloor.ModernUI.Helpers;
-using FirstFloor.ModernUI.Windows.Controls.BbCode;
 using FirstFloor.ModernUI.Windows.Navigation;
 using JetBrains.Annotations;
 
@@ -18,10 +16,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// <summary>
     /// A lighweight control for displaying small amounts of rich formatted BbCode content.
     /// </summary>
-    [Localizable(false), ContentProperty(nameof(Text))]
-    public class BbCodeBlock : PlaceholderTextBlock {
+    /// <remarks>
+    /// Simplified version for now: supports basic formatting tags, no images and emoji, links are shown but not clickable (see LinuxPortDocs.md).
+    /// </remarks>
+    [Localizable(false)]
+    public class BbCodeBlock : Avalonia.Controls.Decorator {
         public static ResourceDictionary IconsDictionary { get; set; }
-        
+
         public enum AllowBbCodes {
             None,
             Limited,
@@ -75,7 +76,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         [CanBeNull]
         public static string OptionImageCacheDirectory;
-        
+
         [CanBeNull]
         public static Func<string, bool> OptionVerifyLocalImage;
 
@@ -100,14 +101,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ImageClicked?.Invoke(null, args);
         }
 
-        public new static readonly DependencyProperty TextProperty = DependencyProperty.Register(nameof(Text), typeof(string), typeof(BbCodeBlock),
-                new PropertyMetadata(OnBbCodeChanged));
-
-        public new string Text {
-            get => (string)GetValue(TextProperty);
-            set => SetValue(TextProperty, value);
-        }
-
         public static readonly ILinkNavigator DefaultLinkNavigator = new DefaultLinkNavigator();
 
         public static void AddLinkCommand(Uri key, ICommand value) {
@@ -115,8 +108,18 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             DefaultLinkNavigator.Commands.Add(key, value);
         }
 
-        public static readonly DependencyProperty LinkNavigatorProperty = DependencyProperty.Register(nameof(LinkNavigator), typeof(ILinkNavigator),
-                typeof(BbCodeBlock), new PropertyMetadata(DefaultLinkNavigator, OnLinkNavigatorChanged));
+        #region Properties
+        public static readonly DependencyProperty TextProperty = DP.Register(nameof(Text), typeof(string), typeof(BbCodeBlock),
+                new PropertyMetadata(OnBbCodeChanged));
+
+        [Avalonia.Metadata.Content]
+        public string Text {
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
+        }
+
+        public static readonly DependencyProperty LinkNavigatorProperty = DP.Register(nameof(LinkNavigator), typeof(ILinkNavigator),
+                typeof(BbCodeBlock), new PropertyMetadata(DefaultLinkNavigator, OnBbCodeChanged));
 
         [CanBeNull]
         public ILinkNavigator LinkNavigator {
@@ -124,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(LinkNavigatorProperty, value);
         }
 
-        public static readonly DependencyProperty ModeProperty = DependencyProperty.Register(nameof(Mode), typeof(EmojiSupport),
+        public static readonly DependencyProperty ModeProperty = DP.Register(nameof(Mode), typeof(EmojiSupport),
                 typeof(BbCodeBlock), new PropertyMetadata(EmojiSupport.Extended, OnBbCodeChanged));
 
         public EmojiSupport Mode {
@@ -132,287 +135,207 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ModeProperty, value);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BbCodeBlock"/> class.
-        /// </summary>
-        public BbCodeBlock() {
-            // ensures the implicit BbCodeBlock style is used
-            DefaultStyleKey = typeof(BbCodeBlock);
-
-            AddHandler(FrameworkContentElement.LoadedEvent, new RoutedEventHandler(OnLoaded));
-            AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(OnRequestNavigate));
-        }
-
-        private static void OnBbCodeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((BbCodeBlock)o).UpdateDirty();
-        }
-
-        private static void OnLinkNavigatorChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            ((BbCodeBlock)o).UpdateDirty();
-        }
-
-        private bool _dirty;
-
-        private void OnLoaded(object o, EventArgs e) {
-            Update();
-        }
-
-        private void UpdateDirty() {
-            _dirty = true;
-            Update();
-        }
-
-        public static readonly DependencyProperty HighlightUrlsProperty = DependencyProperty.Register(nameof(HighlightUrls), typeof(bool),
-                typeof(BbCodeBlock), new PropertyMetadata(true, (o, e) => {
-                    var block = (BbCodeBlock)o;
-                    block._highlightUrls = (bool)e.NewValue;
-                    block.UpdateDirty();
-                }));
-
-        private bool _highlightUrls = true;
+        public static readonly DependencyProperty HighlightUrlsProperty = DP.Register(nameof(HighlightUrls), typeof(bool),
+                typeof(BbCodeBlock), new PropertyMetadata(true, OnBbCodeChanged));
 
         public bool HighlightUrls {
-            get => _highlightUrls;
+            get => (bool)GetValue(HighlightUrlsProperty);
             set => SetValue(HighlightUrlsProperty, value);
         }
 
-        public static readonly DependencyProperty AllowImagesProperty = DependencyProperty.Register(nameof(AllowImages), typeof(bool),
-                typeof(BbCodeBlock), new PropertyMetadata(true, (o, e) => {
-                    ((BbCodeBlock)o)._allowImages = (bool)e.NewValue;
-                }));
-
-        private bool _allowImages = true;
+        public static readonly DependencyProperty AllowImagesProperty = DP.Register(nameof(AllowImages), typeof(bool),
+                typeof(BbCodeBlock), new PropertyMetadata(true));
 
         public bool AllowImages {
-            get => _allowImages;
+            get => (bool)GetValue(AllowImagesProperty);
             set => SetValue(AllowImagesProperty, value);
         }
 
-        private static string EmojiToNumber(string emoji) {
-            var result = new StringBuilder();
+        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
+                typeof(BbCodeBlock), new PropertyMetadata(OnBbCodeChanged));
 
-            for (var i = 0; i < emoji.Length; i++) {
-                int code;
-                if (char.IsHighSurrogate(emoji, i)) {
-                    code = char.ConvertToUtf32(emoji, i);
-                    i++;
-                } else {
-                    code = emoji[i];
+        public string Placeholder {
+            get => (string)GetValue(PlaceholderProperty);
+            set => SetValue(PlaceholderProperty, value);
+        }
+
+        public static readonly DependencyProperty AllowedBbCodesProperty = DP.Register(nameof(AllowedBbCodes), typeof(AllowBbCodes),
+                typeof(BbCodeBlock), new PropertyMetadata(AllowBbCodes.All, OnBbCodeChanged));
+
+        public AllowBbCodes AllowedBbCodes {
+            get => (AllowBbCodes)GetValue(AllowedBbCodesProperty);
+            set => SetValue(AllowedBbCodesProperty, value);
+        }
+
+        // text-related properties of the inner text block
+
+        public static readonly StyledProperty<IBrush> ForegroundProperty = TextElement.ForegroundProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<double> FontSizeProperty = TextElement.FontSizeProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<FontFamily> FontFamilyProperty = TextElement.FontFamilyProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<FontWeight> FontWeightProperty = TextElement.FontWeightProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<FontStyle> FontStyleProperty = TextElement.FontStyleProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<TextWrapping> TextWrappingProperty = TextBlock.TextWrappingProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<TextAlignment> TextAlignmentProperty = TextBlock.TextAlignmentProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<TextTrimming> TextTrimmingProperty = TextBlock.TextTrimmingProperty.AddOwner<BbCodeBlock>();
+        public static readonly StyledProperty<double> LineHeightProperty = TextBlock.LineHeightProperty.AddOwner<BbCodeBlock>();
+
+        public IBrush Foreground { get => GetValue(ForegroundProperty); set => SetValue(ForegroundProperty, value); }
+        public double FontSize { get => GetValue(FontSizeProperty); set => SetValue(FontSizeProperty, value); }
+        public FontFamily FontFamily { get => GetValue(FontFamilyProperty); set => SetValue(FontFamilyProperty, value); }
+        public FontWeight FontWeight { get => GetValue(FontWeightProperty); set => SetValue(FontWeightProperty, value); }
+        public FontStyle FontStyle { get => GetValue(FontStyleProperty); set => SetValue(FontStyleProperty, value); }
+        public TextWrapping TextWrapping { get => GetValue(TextWrappingProperty); set => SetValue(TextWrappingProperty, value); }
+        public TextAlignment TextAlignment { get => GetValue(TextAlignmentProperty); set => SetValue(TextAlignmentProperty, value); }
+        public TextTrimming TextTrimming { get => GetValue(TextTrimmingProperty); set => SetValue(TextTrimmingProperty, value); }
+        public double LineHeight { get => GetValue(LineHeightProperty); set => SetValue(LineHeightProperty, value); }
+        #endregion
+
+        protected readonly TextBlock TextBlock;
+
+        public BbCodeBlock() {
+            TextBlock = new TextBlock();
+            TextBlock[!TextBlock.TextWrappingProperty] = this[!TextWrappingProperty];
+            TextBlock[!TextBlock.TextAlignmentProperty] = this[!TextAlignmentProperty];
+            TextBlock[!TextBlock.TextTrimmingProperty] = this[!TextTrimmingProperty];
+            TextBlock[!TextBlock.LineHeightProperty] = this[!LineHeightProperty];
+            Child = TextBlock;
+        }
+
+        private static void OnBbCodeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
+            ((BbCodeBlock)o).Update();
+        }
+
+        protected virtual void Update() {
+            var text = Text;
+            var inlines = TextBlock.Inlines;
+            inlines.Clear();
+
+            if (string.IsNullOrEmpty(text)) {
+                var placeholder = Placeholder;
+                if (!string.IsNullOrEmpty(placeholder)) {
+                    inlines.Add(PlaceholderTextBlock.GetPlaceholder(this, placeholder));
                 }
 
-                if (code == 0x200d || code == 0xfe0f) {
+                return;
+            }
+
+            if (Mode == EmojiSupport.WithoutBbCodes) {
+                inlines.Add(new Run { Text = text });
+                return;
+            }
+
+            SimpleBbCodeParser.Fill(inlines, text);
+        }
+    }
+
+    /// <summary>
+    /// Basic BBCode support: [b], [i], [u], [s], [color], [size], [mono], [url], [url=…], [br], \[ escapes.
+    /// </summary>
+    internal static class SimpleBbCodeParser {
+        private class Frame {
+            public string Tag;
+            public string Argument;
+            public int Start;
+        }
+
+        public static void Fill(InlineCollection inlines, string text) {
+            var stack = new List<Frame>();
+            var plain = new StringBuilder();
+            var runs = new List<(string, List<Frame>)>();
+
+            void Flush() {
+                if (plain.Length == 0) return;
+                runs.Add((plain.ToString(), stack.Select(x => new Frame { Tag = x.Tag, Argument = x.Argument }).ToList()));
+                plain.Clear();
+            }
+
+            for (var i = 0; i < text.Length; i++) {
+                var c = text[i];
+                if (c == '\\' && i + 1 < text.Length && text[i + 1] == '[') {
+                    plain.Append('[');
+                    i++;
                     continue;
                 }
 
-                if (result.Length > 0) {
-                    result.Append('-');
-                }
+                if (c == '[') {
+                    var end = text.IndexOf(']', i);
+                    if (end > i) {
+                        var body = text.Substring(i + 1, end - i - 1);
+                        var closing = body.StartsWith("/");
+                        if (closing) body = body.Substring(1);
+                        var eq = body.IndexOf('=');
+                        var name = (eq == -1 ? body : body.Substring(0, eq)).Trim().ToLowerInvariant();
+                        var arg = eq == -1 ? null : body.Substring(eq + 1).Trim().Trim('"');
 
-                result.Append(code.ToString("x"));
-            }
-
-            return result.ToString();
-        }
-
-        private static bool IsMatching(string bbCode, int index, string compareWith) {
-            if (index + compareWith.Length > bbCode.Length) return false;
-            for (var i = 0; i < compareWith.Length; i++) {
-                if (bbCode[index + i] != compareWith[i]) return false;
-            }
-            return true;
-        }
-
-        private static bool IsLimitedBbCode(string bbCode, int index) {
-            if (index + 2 > bbCode.Length) return false;
-            if (bbCode[index] == '/') {
-                if (++index + 2 > bbCode.Length) return false;
-            }
-            switch (bbCode[index]) {
-                case 's':
-                    return IsMatching(bbCode, index, "size");
-                case 'u':
-                    return IsMatching(bbCode, index, "url");
-                case 'i':
-                    return IsMatching(bbCode, index, "img") || IsMatching(bbCode, index, "ico");
-                default:
-                    return false;
-            }
-        }
-
-        private static bool ContainsEmoji(string bbCode) {
-            for (var i = 0; i < bbCode.Length; i++) {
-                if (Emoji.IsEmoji(bbCode, i, out var emojiLength)) {
-                    return true;
-                }
-                if (emojiLength > 1) {
-                    i += emojiLength - 1;
-                }
-            }
-            return false;
-        }
-
-        [CanBeNull]
-        private static Inline ParseWithParser(string bbCode, FrameworkElement element, ILinkNavigator navigator, [CanBeNull] IBbCodeLinkParser linkParser, bool allowImages) {
-            try {
-                return new BbCodeParser(bbCode, element) {
-                    Commands = (navigator ?? DefaultLinkNavigator).Commands,
-                    LinkParser = linkParser,
-                    AllowImages = allowImages
-                }.Parse();
-            } catch (Exception e) {
-                Logging.Error(e);
-                return null;
-            }
-        }
-
-        private static void AppendSegment(StringBuilder sb, string bbCode, int from, int to) {
-            if (from < to) {
-                sb.Append(bbCode, from, to - from);
-            }
-        }
-
-        [CanBeNull]
-        private static Inline ParseEmojiOrNull(string bbCode, AllowBbCodes allowBbCodes, bool highlightUrls, bool allowImages, FrameworkElement element = null,
-                ILinkNavigator navigator = null, IBbCodeLinkParser linkParser = null) {
-            try {
-                var needsEscape = allowBbCodes != AllowBbCodes.All;
-                var bracketIndex = bbCode.IndexOf('[');
-
-                if (!needsEscape && !highlightUrls) {
-                    if (bracketIndex == -1) {
-                        if (!ContainsEmoji(bbCode)) {
-                            return null;
+                        switch (name) {
+                            case "b":
+                            case "i":
+                            case "u":
+                            case "s":
+                            case "color":
+                            case "size":
+                            case "mono":
+                            case "url":
+                            case "bg":
+                            case "code":
+                                Flush();
+                                if (closing) {
+                                    var index = stack.FindLastIndex(x => x.Tag == name);
+                                    if (index != -1) stack.RemoveRange(index, stack.Count - index);
+                                } else {
+                                    stack.Add(new Frame { Tag = name, Argument = arg });
+                                }
+                                i = end;
+                                continue;
+                            case "br":
+                                plain.Append('\n');
+                                i = end;
+                                continue;
                         }
-                    } else if (!ContainsEmoji(bbCode)) {
-                        return ParseWithParser(bbCode, element, navigator, linkParser, allowImages);
                     }
                 }
 
-                StringBuilder converted = null;
-                var lastIndex = 0;
-                var complex = bracketIndex != -1;
-                var urlSkipNext = false;
+                plain.Append(c);
+            }
 
-                for (var i = 0; i < bbCode.Length; i++) {
-                    var c = bbCode[i];
+            Flush();
 
-                    if (c == '[') {
-                        if (needsEscape && (allowBbCodes == AllowBbCodes.None || !IsLimitedBbCode(bbCode, i + 1))) {
-                            if (converted == null) converted = new StringBuilder();
-                            AppendSegment(converted, bbCode, lastIndex, i);
-                            lastIndex = i + 1;
-                            converted.Append(@"\[");
-                        }
-                        complex = true;
-                        urlSkipNext = false;
-                        continue;
-                    }
-
-                    if (highlightUrls) {
-                        if (char.IsLetterOrDigit(c)) {
-                            if (!urlSkipNext && UrlHelper.IsWebUrl(bbCode, i, true, out var urlLength)) {
-                                if (converted == null) converted = new StringBuilder();
-                                AppendSegment(converted, bbCode, lastIndex, i);
-                                var url = bbCode.Substring(i, urlLength);
-                                lastIndex = i + urlLength;
-                                converted.Append("[url=").Append(EncodeAttribute(url.Urlify())).Append(']').Append(Encode(url)).Append("[/url]");
-                                complex = true;
+            foreach (var (value, frames) in runs) {
+                var run = new Run { Text = value };
+                foreach (var frame in frames) {
+                    switch (frame.Tag) {
+                        case "b":
+                            run.FontWeight = FontWeight.Bold;
+                            break;
+                        case "i":
+                            run.FontStyle = FontStyle.Italic;
+                            break;
+                        case "u":
+                            run.TextDecorations = TextDecorations.Underline;
+                            break;
+                        case "s":
+                            run.TextDecorations = TextDecorations.Strikethrough;
+                            break;
+                        case "mono":
+                        case "code":
+                            run.FontFamily = new FontFamily("Consolas, Menlo, DejaVu Sans Mono, monospace");
+                            break;
+                        case "size":
+                            if (double.TryParse(frame.Argument, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var size)) {
+                                run.FontSize = size;
                             }
-
-                            urlSkipNext = true;
-                        } else {
-                            urlSkipNext = false;
-                        }
-                    }
-
-                    if (Emoji.IsEmoji(bbCode, i, out var emojiLength)) {
-                        if (converted == null) converted = new StringBuilder();
-                        AppendSegment(converted, bbCode, lastIndex, i);
-                        var emoji = bbCode.Substring(i, emojiLength);
-                        lastIndex = i + emojiLength;
-                        converted.Append("[img=\"emoji://").Append(EmojiToNumber(emoji)).Append("\"]").Append(emoji).Append("[/img]");
-                        complex = true;
-                    }
-
-                    // Even if it’s not an emoji, it still would be better to jump over high surrogates
-                    if (emojiLength > 1) {
-                        i += emojiLength - 1;
+                            break;
+                        case "color":
+                            if (frame.Argument != null && Color.TryParse(frame.Argument, out var color)) {
+                                run.Foreground = new SolidColorBrush(color);
+                            }
+                            break;
+                        case "url":
+                            run.TextDecorations = TextDecorations.Underline;
+                            break;
                     }
                 }
-
-                if (!complex) {
-                    return null;
-                }
-
-                if (converted != null && converted.Length > 0) {
-                    AppendSegment(converted, bbCode, lastIndex, bbCode.Length);
-                    bbCode = converted.ToString();
-                }
-
-                return ParseWithParser(bbCode, element, navigator, linkParser, allowImages);
-            } catch (Exception e) {
-                Logging.Warning(e);
-                Logging.Warning(bbCode);
-                return null;
-            }
-        }
-
-        [NotNull]
-        public static Inline ParseEmoji(string bbCode, AllowBbCodes allowBbCodes, bool highlightUrls, FrameworkElement element = null,
-                ILinkNavigator navigator = null, IBbCodeLinkParser linkParser = null) {
-            return ParseEmojiOrNull(bbCode, allowBbCodes, highlightUrls, true, element, navigator, linkParser) ?? new Run { Text = bbCode };
-        }
-
-        [CanBeNull]
-        private static Inline ParseOrNull(string bbCode, FrameworkElement element = null, ILinkNavigator navigator = null, IBbCodeLinkParser linkParser = null) {
-            return bbCode.IndexOf('[') == -1 ? null : ParseWithParser(bbCode, element, navigator, linkParser, true);
-        }
-
-        [NotNull]
-        public static Inline Parse(string bbCode, FrameworkElement element = null, ILinkNavigator navigator = null) {
-            return ParseOrNull(bbCode, element, navigator) ?? new Run { Text = bbCode };
-        }
-
-        public void ForceUpdate() {
-            var bbCode = Text;
-            if (string.IsNullOrWhiteSpace(bbCode)) {
-                SetPlaceholder();
-            } else {
-                var inlines = Inlines;
-                var emojiSupport = Mode;
-                var highlightUrls = HighlightUrls;
-
-                var inline = emojiSupport == EmojiSupport.Simple
-                        ? ParseOrNull(bbCode, this, LinkNavigator)
-                        : ParseEmojiOrNull(bbCode,
-                                emojiSupport == EmojiSupport.SafeBbCodes ? AllowBbCodes.Limited :
-                                        emojiSupport == EmojiSupport.WithoutBbCodes ? AllowBbCodes.None : AllowBbCodes.All,
-                                highlightUrls, _allowImages, this, LinkNavigator);
-                if (inline == null) {
-                    SetValue(TextBlock.TextProperty, bbCode);
-                } else {
-                    inlines.Clear();
-                    inlines.Add(inline);
-                }
-            }
-
-            _dirty = false;
-        }
-
-        private void Update() {
-            if (!IsLoaded || !_dirty) return;
-            ForceUpdate();
-        }
-
-        private void OnRequestNavigate(object sender, RequestNavigateEventArgs e) {
-            try {
-                // perform navigation using the link navigator
-                Logging.Debug("REQ Nav: " + e.Uri);
-                LinkNavigator?.Navigate(e.Uri, this, e.Target);
-            } catch (Exception ex) {
-                // display navigation failures
-                Logging.Warning(ex);
-                ModernDialog.ShowMessage(ex.Message, UiStrings.NavigationFailed, MessageBoxButton.OK);
+                inlines.Add(run);
             }
         }
     }

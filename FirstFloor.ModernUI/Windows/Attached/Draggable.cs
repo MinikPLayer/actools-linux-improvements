@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(ForceDisabledProperty, value);
         }
 
-        public static readonly DependencyProperty ForceDisabledProperty = DependencyProperty.RegisterAttached("ForceDisabled", typeof(bool),
+        public static readonly DependencyProperty ForceDisabledProperty = DP.RegisterAttached("ForceDisabled", typeof(bool),
                 typeof(Draggable), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits));
 
         public static bool GetEnabled(FrameworkElement obj) {
@@ -67,7 +67,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(EnabledProperty, value);
         }
 
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool), typeof(Draggable),
+        public static readonly DependencyProperty EnabledProperty = DP.RegisterAttached("Enabled", typeof(bool), typeof(Draggable),
                 new PropertyMetadata(false, OnEnabledChanged));
 
         public static object GetData(DependencyObject obj) {
@@ -78,7 +78,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DataProperty, value);
         }
 
-        public static readonly DependencyProperty DataProperty = DependencyProperty.RegisterAttached("Data", typeof(object),
+        public static readonly DependencyProperty DataProperty = DP.RegisterAttached("Data", typeof(object),
                 typeof(Draggable), new PropertyMetadata(null, OnEnabledChanged));
 
         public static bool GetKeepSelection(DependencyObject obj) {
@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(KeepSelectionProperty, value);
         }
 
-        public static readonly DependencyProperty KeepSelectionProperty = DependencyProperty.RegisterAttached("KeepSelection", typeof(bool),
+        public static readonly DependencyProperty KeepSelectionProperty = DP.RegisterAttached("KeepSelection", typeof(bool),
                 typeof(Draggable), new PropertyMetadata(false));
 
         public static bool GetIsDestinationHighlighted(DependencyObject obj) {
@@ -100,7 +100,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(IsDestinationHighlightedProperty, value);
         }
 
-        public static readonly DependencyProperty IsDestinationHighlightedProperty = DependencyProperty.RegisterAttached("IsDestinationHighlighted",
+        public static readonly DependencyProperty IsDestinationHighlightedProperty = DP.RegisterAttached("IsDestinationHighlighted",
                 typeof(bool),
                 typeof(Draggable), new FrameworkPropertyMetadata(false));
 
@@ -128,12 +128,12 @@ namespace FirstFloor.ModernUI.Windows.Attached {
 
             if (e.Property == DataProperty && e.NewValue != null ||
                     e.Property == EnabledProperty && e.NewValue as bool? != false) {
-                element.PreviewMouseDown += OnElementMouseDown;
-                element.PreviewMouseMove += handler;
+                element.AddPreviewMouseDown(OnElementMouseDown);
+                element.AddPreviewMouseMove(handler);
                 element.AllowDrop = true;
             } else {
-                element.PreviewMouseDown -= OnElementMouseDown;
-                element.PreviewMouseMove -= handler;
+                element.RemovePreviewMouseDown(OnElementMouseDown);
+                element.RemovePreviewMouseMove(handler);
                 element.AllowDrop = false;
             }
         }
@@ -333,7 +333,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DestinationProperty, value);
         }
 
-        public static readonly DependencyProperty DestinationProperty = DependencyProperty.RegisterAttached("Destination", typeof(object),
+        public static readonly DependencyProperty DestinationProperty = DP.RegisterAttached("Destination", typeof(object),
                 typeof(Draggable), new UIPropertyMetadata(OnDestinationChanged));
 
         private static void OnDestinationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -344,10 +344,10 @@ namespace FirstFloor.ModernUI.Windows.Attached {
                     RegisterDraggable(type);
                 }
 
-                element.Drop += OnDestinationDrop;
+                element.AddDrop(OnDestinationDrop);
                 element.AllowDrop = true;
             } else {
-                element.Drop -= OnDestinationDrop;
+                element.RemoveDrop(OnDestinationDrop);
                 element.AllowDrop = false;
             }
         }
@@ -360,17 +360,17 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DestinationConverterProperty, value);
         }
 
-        public static readonly DependencyProperty DestinationConverterProperty = DependencyProperty.RegisterAttached("DestinationConverter",
+        public static readonly DependencyProperty DestinationConverterProperty = DP.RegisterAttached("DestinationConverter",
                 typeof(IDraggableDestinationConverter), typeof(Draggable), new UIPropertyMetadata(OnDestinationConverterChanged));
 
         private static void OnDestinationConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is ItemsControl element) || !(e.NewValue is IDraggableDestinationConverter)) return;
             var newValue = (IDraggableDestinationConverter)e.NewValue;
             if (newValue != null) {
-                element.Drop += OnDestinationConverterDrop;
+                element.AddDrop(OnDestinationConverterDrop);
                 element.AllowDrop = true;
             } else {
-                element.Drop -= OnDestinationConverterDrop;
+                element.RemoveDrop(OnDestinationConverterDrop);
                 element.AllowDrop = false;
             }
         }

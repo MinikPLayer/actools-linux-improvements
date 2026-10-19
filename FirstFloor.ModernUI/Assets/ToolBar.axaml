@@ -1,0 +1,318 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/AsyncButton.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ButtonWithComboBox.axaml"/>
+    <ResourceInclude Source="Fonts.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="ToolBarButtonBaseStyle" TargetType="Button">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="8 3 8 5"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+            <ContentPresenter x:Name="Presenter" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="Go.ToolBarButton" BasedOn="{StaticResource Go.BaseButtonStyle}" TargetType="Button">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="8 3 8 5"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Static ToolBar.ButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="Button"/>
+  <ControlTheme x:Key="{x:Static ToolBar.ToggleButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="ToggleButton">
+    <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+      </Style></ControlTheme>
+  <ControlTheme x:Key="{x:Static ToolBar.CheckBoxStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="CheckBox">
+    <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+      </Style></ControlTheme>
+  <ControlTheme x:Key="{x:Static ToolBar.RadioButtonStyleKey}" BasedOn="{StaticResource ToolBarButtonBaseStyle}" TargetType="RadioButton">
+    <Style Selector="^:checked"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+      </Style></ControlTheme>
+
+  <ControlTheme x:Key="{x:Static ToolBar.MenuStyleKey}" TargetType="Menu">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="8 3 8 5"/>
+    <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Menu">
+          <ItemsPresenter x:Name="ItemsPresenter" VerticalAlignment="Stretch"/>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style.Resources>
+      <ControlTheme x:Key="Disabled" TargetType="MenuItem">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+        <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0 6 0 6"/>
+        <Setter Property="MinWidth" Value="150"/>
+        <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="MenuItem">
+              <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="Col0" MinWidth="17" Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuTextColumnGroup"/>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                    <ColumnDefinition x:Name="Col3"/>
+                  </Grid.ColumnDefinitions>
+
+                  <!-- ContentPresenter to show an Icon if needed -->
+                  <ContentPresenter Grid.Column="0" Margin="4 0 6 0" x:Name="Icon" VerticalAlignment="Center" ContentSource="Icon"/>
+
+                  <!-- Glyph is a checkmark if needed for a checkable menu -->
+                  <c:Cell Grid.Column="0" Margin="4 0 6 0" x:Name="GlyphPanel" VerticalAlignment="Center">
+                    <Path x:Name="GlyphPanelpath" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,2 L0,4.8 L2.5,7.4 L7.1,2.8 L7.1,0 L2.5,4.6 z" FlowDirection="LeftToRight"/>
+                  </c:Cell>
+
+                  <!-- Content for the menu text etc -->
+                  <ContentPresenter Grid.Column="1" Margin="{TemplateBinding Padding}" x:Name="HeaderHost" RecognizesAccessKey="True" ContentSource="Header"/>
+
+                  <!-- Content for the menu IGT -->
+                  <ContentPresenter Grid.Column="2" Margin="8 1 8 1" x:Name="IGTHost" ContentSource="InputGestureText" VerticalAlignment="Center"/>
+
+                  <!-- Arrow drawn path which points to the next level of the menu -->
+                  <c:Cell Grid.Column="3" Margin="4 0 6 0" x:Name="ArrowPanel" VerticalAlignment="Center">
+                    <Path x:Name="ArrowPanelPath" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="{TemplateBinding Foreground}" Data="M0,0 L0,8 L4,4 z"/>
+                  </c:Cell>
+
+                  <!-- The Popup is the body of the menu which expands down or across depending on the level of the item -->
+                  <!-- PORT: SystemParameters not available: SystemParameters.MenuPopupAnimationKey --><Popup Grid.Column="0" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" x:Name="SubMenuPopup" Focusable="False">
+                    <Border x:Name="SubMenuBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Padding="2 2 2 2">
+                      <c:Cell x:Name="SubMenu" Grid.IsSharedSizeScope="True">
+                        <!-- StackPanel holds children of the menu. This is set by IsItemsHost=True -->
+                        <StackPanel IsItemsHost="True"/>
+                      </c:Cell>
+                    </Border>
+                  </Popup>
+                </Grid>
+              </Border>
+
+              <!-- These triggers re-configure the four arrangements of MenuItem to show different levels of menu via Role -->
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^ /template/ #SubMenuPopup"><Setter Property="Placement" Value="Right"/><Setter Property="PopupAnimation" Value="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}"/></Style><Style Selector="^ /template/ #Col3"><Setter Property="Width" Value="14"/></Style><Style Selector="^ /template/ #GlyphPanel"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ #Border"><Setter Property="Background" Value="{TemplateBinding Background}"/></Style><Style Selector="^[Role=TopLevelHeader]"><Setter Property="Padding" Value="6 1 6 1"/>
+                  <Setter Property="MinWidth" Value="0"/>
+                  <Setter Property="Background" Value="Yellow"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #SubMenuPopup"><Setter Property="Placement" Value="Bottom"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #Col3"><Setter Property="Width" Value="Auto"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #Icon"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #GlyphPanel"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #IGTHost"><Setter Property="IsVisible" Value="False"/>
+                  </Style><Style Selector="^[Role=TopLevelHeader] /template/ #ArrowPanel"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[Role=TopLevelItem]"><Setter Property="Padding" Value="6 1 6 1"/>
+                  </Style><Style Selector="^[Role=TopLevelItem] /template/ #ArrowPanel"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[Role=SubmenuHeader]"><Setter Property="DockPanel.Dock" Value="Top"/>
+                  <Setter Property="Padding" Value="0 2 0 2"/>
+                </Style><Style Selector="^[Role=SubmenuItem]"><Setter Property="DockPanel.Dock" Value="Top"/>
+                  <Setter Property="Padding" Value="0 2 0 2"/>
+                  </Style><Style Selector="^[Role=SubmenuItem] /template/ #ArrowPanel"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[IsSuspendingPopupAnimation=True] /template/ #SubMenuPopup"><Setter Property="PopupAnimation" Value="None"/>
+                </Style><Style Selector="^[Icon=null] /template/ #Icon"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^:checked /template/ #GlyphPanel"><Setter Property="IsVisible" Value="True"/>
+                  </Style><Style Selector="^:checked /template/ #Icon"><Setter Property="IsVisible" Value="False"/>
+                </Style><Style Selector="^[IsHighlighted=True] /template/ #Border"><Setter Property="Background" Value="LightGray"/>
+                  </Style><Style Selector="^[IsHighlighted=True]"><Setter Property="Foreground" Value="Black"/>
+                </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="LightGray"/>
+                </Style></ControlTheme>
+    </Style.Resources>
+  </ControlTheme>
+
+  <ControlTheme x:Key="ToolBarThumbStyle" TargetType="Thumb">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Cursor" Value="SizeAll"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Thumb">
+          <Border Background="Transparent">
+            <Rectangle Margin="0 3 0 4">
+              <Rectangle.Fill>
+                <DrawingBrush Viewport="0 0 4 4" ViewportUnits="Absolute" Viewbox="0 0 8 8" ViewboxUnits="Absolute" TileMode="Tile">
+                  <DrawingBrush.Drawing>
+                    <DrawingGroup>
+                      <GeometryDrawing Brush="{DynamicResource SeparatorBackground}" Geometry="M 4 4 L 4 8 L 8 8 L 8 4 z"/>
+                    </DrawingGroup>
+                  </DrawingBrush.Drawing>
+                </DrawingBrush>
+              </Rectangle.Fill>
+            </Rectangle>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="ToolBarOverflowButtonStyle" TargetType="ToggleButton">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="IsVisible" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToggleButton">
+          <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+              <Path x:Name="Arrow" Fill="{TemplateBinding Foreground}" VerticalAlignment="Bottom" Margin="2,3" Data="M -0.5 3 L 5.5 3 L 2.5 6 Z"/>
+              <ContentPresenter/>
+            </Grid>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+              <Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+            </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+              <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+              <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+            </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="{x:Type ToolBar}" TargetType="ToolBar">
+    <Setter Property="OverridesDefaultStyle" Value="True"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ToolBar">
+          <DockPanel Background="{DynamicResource WindowBackground}">
+            <ToggleButton DockPanel.Dock="Right" IsEnabled="{TemplateBinding HasOverflowItems}" ClickMode="Press" IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Theme="{StaticResource ToolBarOverflowButtonStyle}">
+              <Popup x:Name="OverflowPopup" Placement="Bottom" StaysOpen="False" Focusable="False" PopupAnimation="Slide" IsOpen="{Binding IsOverflowOpen, RelativeSource={RelativeSource TemplatedParent}}">
+                <Border x:Name="DropDownBorder" BorderThickness="1" BorderBrush="{DynamicResource WindowBorderActive}" Background="{DynamicResource WindowBackground}">
+                  <ToolBarOverflowPanel x:Name="PART_ToolBarOverflowPanel" Margin="2" WrapWidth="200" Focusable="True"/>
+                </Border>
+              </Popup>
+            </ToggleButton>
+
+            <Thumb x:Name="ToolBarThumb" Width="10" Theme="{StaticResource ToolBarThumbStyle}"/>
+            <ToolBarPanel x:Name="PART_ToolBarPanel" IsItemsHost="True" Margin="0"/>
+          </DockPanel>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style.Resources>
+      <ControlTheme TargetType="c:ModernButton" x:Key="{x:Type c:ModernButton}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonText}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="IconWidth" Value="24"/>
+        <Setter Property="IconHeight" Value="24"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="8 3 8 5"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="c:ModernButton">
+              <Border x:Name="Chrome" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                <StackPanel Background="{TemplateBinding Background}">
+                  <Path x:Name="Icon" Data="{TemplateBinding IconData}" Width="{TemplateBinding IconWidth}" Height="{TemplateBinding IconHeight}" Fill="{TemplateBinding Foreground}" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  <ContentPresenter x:Name="Presenter" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True"/>
+                </StackPanel>
+              </Border>
+              </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      <Style Selector="^ /template/ #Chrome"><Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}"/></Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource ButtonTextDisabled}"/>
+                </Style><Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundHover}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderHover}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource ButtonTextHover}"/>
+                </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource ButtonBackgroundPressed}"/>
+                  <Setter Property="BorderBrush" Value="{DynamicResource ButtonBorderPressed}"/>
+                  <Setter Property="Foreground" Value="{DynamicResource ButtonTextPressed}"/>
+                </Style><Style Selector="^:focus /template/ #Chrome"><Setter Property="BorderBrush" Value="{DynamicResource FocusBorder}"/>
+                </Style></ControlTheme>
+
+      <Style Selector="c:BooleanSwitch" __plain="1">
+        <Style.Resources>
+          <Style Selector="Button" __plain="1"/>
+        </Style.Resources>
+      </Style>
+
+      <Style Selector="c:ButtonWithComboBox" __plain="1">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Padding" Value="8 3 8 5"/>
+      </Style>
+
+      <Style Selector="c:AsyncButton" __plain="1">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Padding" Value="8 3 8 5"/>
+      </Style>
+    </Style.Resources>
+  <Style Selector="^[IsOverflowOpen=True] /template/ #ToolBarThumb"><Setter Property="IsEnabled" Value="False"/>
+            </Style><Style Selector="^[(ToolBarTray.IsLocked)=True] /template/ #ToolBarThumb"><Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+
+  <!--<Style x:Key="{x:Type ToolBarTray}" TargetType="{x:Type ToolBarTray}">
+        <Setter Property="Background" Value="{DynamicResource WindowBackground}" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Opacity="0.4" Direction="0" ShadowDepth="0" BlurRadius="5" />
+            </Setter.Value>
+        </Setter>
+    </Style>-->
+</ResourceDictionary>

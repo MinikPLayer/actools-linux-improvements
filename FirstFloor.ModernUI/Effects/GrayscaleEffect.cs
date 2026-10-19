@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Effects {
             set => SetValue(InputProperty, value);
         }
 
-        public static readonly DependencyProperty SaturationFactorProperty = DependencyProperty.Register("SaturationFactor", typeof(double),
+        public static readonly DependencyProperty SaturationFactorProperty = DP.Register("SaturationFactor", typeof(double),
                 typeof(GrayscaleEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), CoerceSaturationFactor));
 
         public double SaturationFactor {

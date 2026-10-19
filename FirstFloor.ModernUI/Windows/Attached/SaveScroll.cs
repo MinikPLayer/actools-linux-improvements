@@ -17,7 +17,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(TriggerLoadProperty, value);
         }
 
-        public static readonly DependencyProperty TriggerLoadProperty = DependencyProperty.RegisterAttached("TriggerLoad", typeof(string),
+        public static readonly DependencyProperty TriggerLoadProperty = DP.RegisterAttached("TriggerLoad", typeof(string),
                 typeof(SaveScroll), new UIPropertyMetadata(OnTriggerLoadChanged));
 
         private static void OnTriggerLoadChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(KeyProperty, value);
         }
 
-        public static readonly DependencyProperty KeyProperty = DependencyProperty.RegisterAttached("Key", typeof(string),
+        public static readonly DependencyProperty KeyProperty = DP.RegisterAttached("Key", typeof(string),
                 typeof(SaveScroll), new UIPropertyMetadata(OnKeyChanged));
 
         private static void ApplyKeyChanged(ScrollViewer scrollViewer, DependencyPropertyChangedEventArgs e) {

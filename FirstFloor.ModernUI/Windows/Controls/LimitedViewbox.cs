@@ -65,7 +65,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         protected override IEnumerator LogicalChildren => InternalChild == null ? EmptyEnumerator.Instance :
                 new SingleChildEnumerator(InternalChild);
 
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch),
+        public static readonly DependencyProperty StretchProperty = DP.Register(nameof(Stretch), typeof(Stretch),
                 typeof(LimitedViewbox), new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((LimitedViewbox)o)._stretch = (Stretch)e.NewValue;
                 }));
@@ -77,7 +77,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchProperty, value);
         }
 
-        public static readonly DependencyProperty StretchDirectionProperty = DependencyProperty.Register(nameof(StretchDirection), typeof(StretchDirection),
+        public static readonly DependencyProperty StretchDirectionProperty = DP.Register(nameof(StretchDirection), typeof(StretchDirection),
                 typeof(LimitedViewbox), new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((LimitedViewbox)o)._stretchDirection = (StretchDirection)e.NewValue;
                 }));
@@ -89,7 +89,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchDirectionProperty, value);
         }
 
-        public static readonly DependencyProperty MinimumScaleProperty = DependencyProperty.Register(nameof(MinimumScale), typeof(double),
+        public static readonly DependencyProperty MinimumScaleProperty = DP.Register(nameof(MinimumScale), typeof(double),
                 typeof(LimitedViewbox), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((LimitedViewbox)o)._minimumScale = (double)e.NewValue;
                 }));
@@ -101,7 +101,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MinimumScaleProperty, value);
         }
 
-        public static readonly DependencyProperty MaximumScaleProperty = DependencyProperty.Register(nameof(MaximumScale), typeof(double),
+        public static readonly DependencyProperty MaximumScaleProperty = DP.Register(nameof(MaximumScale), typeof(double),
                 typeof(LimitedViewbox), new FrameworkPropertyMetadata(double.PositiveInfinity, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     ((LimitedViewbox)o)._maximumScale = (double)e.NewValue;
                 }));

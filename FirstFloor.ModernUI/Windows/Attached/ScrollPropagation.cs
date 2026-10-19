@@ -13,15 +13,15 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(FixProperty, value);
         }
 
-        public static readonly DependencyProperty FixProperty = DependencyProperty.RegisterAttached("Fix", typeof(bool),
+        public static readonly DependencyProperty FixProperty = DP.RegisterAttached("Fix", typeof(bool),
                 typeof(ScrollPropagation), new UIPropertyMetadata(OnFixChanged));
 
         private static void OnFixChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (d is FrameworkElement element && e.NewValue is bool value) {
                 if (value) {
-                    element.PreviewMouseWheel += OnMouseWheel;
+                    element.AddPreviewMouseWheel(OnMouseWheel);
                 } else {
-                    element.PreviewMouseWheel -= OnMouseWheel;
+                    element.RemovePreviewMouseWheel(OnMouseWheel);
                 }
             }
         }

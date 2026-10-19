@@ -13,7 +13,7 @@ using Color = System.Windows.Media.Color;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace FirstFloor.ModernUI.Dialogs {
-    public partial class ScreenColorPickerDialog : INotifyPropertyChanged {
+    public partial class ScreenColorPickerDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog, INotifyPropertyChanged {
         private static BitmapSource CopyScreen() {
             using (var bmp = new Bitmap((int)SystemParameters.PrimaryScreenWidth, (int)SystemParameters.PrimaryScreenHeight, PixelFormat.Format32bppArgb)) {
                 using (var graphics = Graphics.FromImage(bmp)) {

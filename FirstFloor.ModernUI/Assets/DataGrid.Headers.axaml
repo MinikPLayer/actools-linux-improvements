@@ -1,0 +1,83 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Easing.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+    <ResourceInclude Source="DataGrid.Base.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <!-- Column headers -->
+  <ControlTheme x:Key="{x:Type DataGridColumnHeader}" TargetType="DataGridColumnHeader">
+    <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForeground}"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="Padding" Value="8 4"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridColumnHeader">
+          <c:Cell>
+            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+              <DockPanel x:Name="containerGrid">
+                <Path x:Name="SortArrow" HorizontalAlignment="Center" VerticalAlignment="Center" Width="8" Height="6" Margin="4 0" Stretch="Fill" Opacity="0.5" Fill="{TemplateBinding Foreground}" RenderTransformOrigin="0.5,0.4" Data="M0,0 L1,0 0.5,1 z"/>
+                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+              </DockPanel>
+            </Border>
+            <Thumb x:Name="PART_LeftHeaderGripper" HorizontalAlignment="Left" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
+            <Thumb x:Name="PART_RightHeaderGripper" HorizontalAlignment="Right" Theme="{StaticResource ColumnHeaderGripperStyle}"/>
+          </c:Cell>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style Selector="^ /template/ #SortArrow"><Setter Property="IsVisible" Value="False"/><Setter Property="DockPanel.Dock" Value="Right"/></Style><Style Selector="^:pointerover[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundHover}"/>
+      </Style><Style Selector="^:pressed[CanUserSort=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundPressed}"/>
+      </Style><Style Selector="^[SortDirection=Ascending] /template/ #SortArrow"><Setter Property="IsVisible" Value="True"/>
+              <Setter Property="RenderTransform">
+                <Setter.Value>
+                  <RotateTransform Angle="180"/>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^[SortDirection=Descending] /template/ #SortArrow"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[CanUserSort=False] /template/ #SortArrow"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[HorizontalContentAlignment=Right] /template/ #SortArrow"><Setter Property="DockPanel.Dock" Value="Left"/>
+            </Style></ControlTheme>
+
+  <!-- Row headers -->
+  <ControlTheme x:Key="{x:Type DataGridRowHeader}" TargetType="DataGridRowHeader">
+    <Setter Property="Background" Value="{DynamicResource DataGridHeaderBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForeground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource DataGridGridLines}"/>
+    <Setter Property="BorderThickness" Value="0 0 0 1"/>
+    <Setter Property="Width" Value="16"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="DataGridRowHeader">
+          <c:Cell>
+            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+              <StackPanel Orientation="Horizontal">
+                <ContentPresenter VerticalAlignment="Center"/>
+                <Control Template="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=ValidationErrorTemplate}" IsVisible="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGridRow}}, Path=(Validation.HasError), Converter={StaticResource BooleanToVisibilityConverter}}"/>
+              </StackPanel>
+            </Border>
+            <Thumb x:Name="PART_TopHeaderGripper" VerticalAlignment="Top" Theme="{StaticResource RowHeaderGripperStyle}"/>
+            <Thumb x:Name="PART_BottomHeaderGripper" VerticalAlignment="Bottom" Theme="{StaticResource RowHeaderGripperStyle}"/>
+          </c:Cell>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundHover}"/>
+      </Style><Style Selector="^:pressed"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundPressed}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundPressed}"/>
+      </Style><Style Selector="^[IsRowSelected=True]"><Setter Property="Background" Value="{DynamicResource DataGridHeaderBackgroundSelected}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DataGridHeaderForegroundSelected}"/>
+      </Style></ControlTheme>
+
+</ResourceDictionary>

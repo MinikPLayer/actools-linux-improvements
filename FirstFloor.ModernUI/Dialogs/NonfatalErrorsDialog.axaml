@@ -1,0 +1,41 @@
+﻿<co:ModernDialog xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:co="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:h="clr-namespace:FirstFloor.ModernUI.Helpers" xmlns:pr="clr-namespace:FirstFloor.ModernUI.Presentation" xmlns:mui="http://firstfloorsoftware.com/ModernUI" x:Class="FirstFloor.ModernUI.Dialogs.NonfatalErrorsDialog" Title="Errors" DataContext="{x:Static h:NonfatalError.Instance}" SizeToContent="Manual" Width="480" Height="600" LocationAndSizeKey=".NonfatalErrors.LS" KeyDown="OnKeyDown">
+  <co:ModernDialog.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ListBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </co:ModernDialog.Resources>
+  <ListBox x:Name="List" SelectionMode="Extended" ItemsSource="{Binding Errors}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="OnSelectionChanged" ItemContainerStyle="{StaticResource RibbonListBoxItem.Left}" Margin="-24 0">
+    <ListBox.ItemTemplate>
+      <DataTemplate>
+        <DockPanel Margin="0 4 0 4" TextBlock.FontWeight="Normal">
+          <ItemsControl ItemsSource="{Binding Solutions}" DockPanel.Dock="Bottom" Margin="20 8 20 0" IsVisible="{Binding HasSolutions, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="{x:Type h:NonfatalErrorSolution}">
+                <Button Command="{Binding}">
+                  <DockPanel>
+                    <Path Data="{Binding IconData}" Stretch="Uniform" Fill="{DynamicResource Accent}" Margin="0 0 6 -1" VerticalAlignment="Center" Width="12" Height="12" IsVisible="{Binding IconData, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+                    <TextBlock Text="{Binding DisplayName}"/>
+                  </DockPanel>
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <Ellipse Width="4" Height="4" Fill="{DynamicResource Go}" DockPanel.Dock="Left" VerticalAlignment="Center" Margin="8 0 8 0" IsVisible="{Binding Unseen, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=hidden}"/>
+          <TextBlock Text="{Binding DisplayName}" DockPanel.Dock="Top" TextWrapping="Wrap" Margin="0 0 20 0" Classes="Heading2"/>
+          <TextBlock FontFamily="Consolas" Text="{Binding Exception.Message}" Margin="0 4 20 0" DockPanel.Dock="Top" TextWrapping="Wrap" IsVisible="{Binding Exception, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+          <TextBlock Text="{Binding Commentary}" Margin="0 4 20 0" TextWrapping="Wrap" IsVisible="{Binding Commentary, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}" Classes="Small"/>
+        </DockPanel>
+      </DataTemplate>
+    </ListBox.ItemTemplate>
+    <ListBox.ItemsPanel>
+      <ItemsPanelTemplate>
+        <VirtualizingStackPanel IsItemsHost="True" CacheLength="1,1" CacheLengthUnit="Page" ScrollUnit="Pixel" VirtualizationMode="Recycling" IsVirtualizing="True"/>
+      </ItemsPanelTemplate>
+    </ListBox.ItemsPanel>
+  </ListBox>
+</co:ModernDialog>

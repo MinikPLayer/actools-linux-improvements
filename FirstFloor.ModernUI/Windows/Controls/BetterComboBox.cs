@@ -5,23 +5,26 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Avalonia.VisualTree;
+using Avalonia.Controls.Primitives;
 using System.Windows.Input;
+using Avalonia.Input;
 using FirstFloor.ModernUI.Windows.Attached;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class BetterComboBox : ComboBox {
         static BetterComboBox() {
-            IsEditableProperty.OverrideMetadata(typeof(BetterComboBox), new FrameworkPropertyMetadata(true));
+            DP.OverrideMetadata(IsEditableProperty, typeof(BetterComboBox), new FrameworkPropertyMetadata(true));
         }
 
         public BetterComboBox() {
-            DefaultStyleKey = typeof(BetterComboBox);
-            PreviewMouseWheel += OnMouseWheel;
+            AddHandler(PointerWheelChangedEvent, OnMouseWheel, Avalonia.Interactivity.RoutingStrategies.Tunnel);
             Loaded += OnLoaded;
+            SelectionChanged += (sender, e) => OnSelectionChanged(e);
         }
 
-        public static readonly DependencyProperty MaxLengthProperty = DependencyProperty.Register(nameof(MaxLength), typeof(int),
+        public static readonly DependencyProperty MaxLengthProperty = DP.Register(nameof(MaxLength), typeof(int),
                 typeof(BetterComboBox));
 
         public int MaxLength {
@@ -29,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MaxLengthProperty, value);
         }
 
-        public static readonly DependencyProperty TextWrappingProperty = DependencyProperty.Register(nameof(TextWrapping), typeof(TextWrapping),
+        public static readonly DependencyProperty TextWrappingProperty = DP.Register(nameof(TextWrapping), typeof(TextWrapping),
                 typeof(BetterComboBox), new FrameworkPropertyMetadata(TextWrapping.NoWrap));
 
         public TextWrapping TextWrapping {
@@ -37,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TextWrappingProperty, value);
         }
 
-        public static readonly DependencyProperty AcceptsReturnProperty = DependencyProperty.Register(nameof(AcceptsReturn), typeof(bool),
+        public static readonly DependencyProperty AcceptsReturnProperty = DP.Register(nameof(AcceptsReturn), typeof(bool),
                 typeof(BetterComboBox));
 
         public bool AcceptsReturn {
@@ -45,7 +48,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AcceptsReturnProperty, value);
         }
 
-        public static readonly DependencyProperty AcceptsTabProperty = DependencyProperty.Register(nameof(AcceptsTab), typeof(bool),
+        public static readonly DependencyProperty AcceptsTabProperty = DP.Register(nameof(AcceptsTab), typeof(bool),
                 typeof(BetterComboBox));
 
         public bool AcceptsTab {
@@ -53,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AcceptsTabProperty, value);
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register(nameof(Placeholder), typeof(string),
+        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
                 typeof(BetterComboBox));
 
         public string Placeholder {
@@ -61,16 +64,17 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PlaceholderProperty, value);
         }
 
-        private void OnMouseWheel(object sender, MouseWheelEventArgs e) {
+        private void OnMouseWheel(object sender, PointerWheelEventArgs e) {
             if (IsDropDownOpen) return;
             e.Handled = true;
-            (Parent as UIElement ?? VisualParent as UIElement)?.RaiseEvent(new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta) {
-                RoutedEvent = MouseWheelEvent,
+            (Parent as Avalonia.Input.InputElement ?? this.GetVisualParent() as Avalonia.Input.InputElement)?.RaiseEvent(new PointerWheelEventArgs(
+                    e.RoutedEvent, e.Source, e.Pointer, (Avalonia.Visual)e.Source, e.GetPosition(null), e.Timestamp, e.Properties, e.KeyModifiers, e.Delta) {
+                RoutedEvent = PointerWheelChangedEvent,
                 Source = sender
             });
         }
 
-        protected override void OnPreviewKeyDown(KeyEventArgs e) {
+        protected override void OnKeyDown(KeyEventArgs e) {
             switch (e.Key) {
                 case Key.Escape:
                     e.Handled = this.RemoveFocus();
@@ -90,11 +94,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (!e.Handled) {
-                base.OnPreviewKeyDown(e);
+                base.OnKeyDown(e);
             }
         }
 
-        public new static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(nameof(SelectedItem), typeof(object),
+        public new static readonly DependencyProperty SelectedItemProperty = DP.Register(nameof(SelectedItem), typeof(object),
                 typeof(BetterComboBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedItemChanged));
 
         [CanBeNull]
@@ -108,10 +112,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private void OnSelectedItemChanged(object newValue) {
-            SetValue(Selector.SelectedItemProperty, newValue ?? NullValue);
+            SetValue(SelectingItemsControl.SelectedItemProperty, newValue ?? NullValue);
         }
 
-        public static readonly DependencyProperty HoldSelectedIfEmptyProperty = DependencyProperty.Register(nameof(HoldSelectedIfEmpty), typeof(bool),
+        public static readonly DependencyProperty HoldSelectedIfEmptyProperty = DP.Register(nameof(HoldSelectedIfEmpty), typeof(bool),
                 typeof(BetterComboBox), new PropertyMetadata(false, (o, e) =>
                         ((BetterComboBox)o)._holdSelectedIfEmpty = (bool)e.NewValue));
 
@@ -129,8 +133,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return !HoldSelectedIfEmpty || ItemsSource?.OfType<object>().Any() == true;
         }
 
-        protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
-            base.OnSelectionChanged(e);
+        protected virtual void OnSelectionChanged(SelectionChangedEventArgs e) {
             if (!CanUpdateSelected()) return;
             if (!IgnoreUnloadedChanges || IsLoaded) {
                 SelectedItem = ReferenceEquals(base.SelectedItem, NullValue) ? null : base.SelectedItem;
@@ -165,8 +168,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 if (collection is INotifyCollectionChanged o) {
                     // ReSharper disable once PossibleMultipleEnumeration
                     _collection = collection;
-                    WeakEventManager<INotifyCollectionChanged, NotifyCollectionChangedEventArgs>.AddHandler(o, nameof(o.CollectionChanged),
-                            OnCollectionChanged);
+                    o.CollectionChanged += OnCollectionChanged;
                 }
             }
 
@@ -230,7 +232,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public new static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable),
+        public new static readonly DependencyProperty ItemsSourceProperty = DP.Register(nameof(ItemsSource), typeof(IEnumerable),
                 typeof(BetterComboBox), new PropertyMetadata(OnItemsSourceChanged));
 
         public new IEnumerable ItemsSource {
@@ -242,7 +244,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((BetterComboBox)o).UpdateItemsSource();
         }
 
-        public static readonly DependencyProperty NullableProperty = DependencyProperty.Register(nameof(Nullable), typeof(bool),
+        public static readonly DependencyProperty NullableProperty = DP.Register(nameof(Nullable), typeof(bool),
                 typeof(BetterComboBox), new PropertyMetadata(OnNullableChanged));
 
         public bool Nullable {

@@ -27,15 +27,15 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(AddCopyLinkItemProperty, value);
         }
 
-        public static readonly DependencyProperty AddCopyLinkItemProperty = DependencyProperty.RegisterAttached("AddCopyLinkItem", typeof(bool),
+        public static readonly DependencyProperty AddCopyLinkItemProperty = DP.RegisterAttached("AddCopyLinkItem", typeof(bool),
                 typeof(ContextMenuAdvancement), new UIPropertyMetadata(OnAddCopyLinkItemChanged));
 
         private static void OnAddCopyLinkItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (d is FrameworkElement element) {
                 if (e.NewValue is bool value && value) {
-                    element.ContextMenuOpening += OnAddingCopyLinkItemMenuOpening;
+                    element.AddContextMenuOpening(OnAddingCopyLinkItemMenuOpening);
                 } else {
-                    element.ContextMenuOpening -= OnAddingCopyLinkItemMenuOpening;
+                    element.RemoveContextMenuOpening(OnAddingCopyLinkItemMenuOpening);
                 }
             }
         }
@@ -67,16 +67,16 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(PropagateToChildrenProperty, value);
         }
 
-        public static readonly DependencyProperty PropagateToChildrenProperty = DependencyProperty.RegisterAttached("PropagateToChildren", typeof(bool),
+        public static readonly DependencyProperty PropagateToChildrenProperty = DP.RegisterAttached("PropagateToChildren", typeof(bool),
                 typeof(ContextMenuAdvancement), new UIPropertyMetadata(OnPropagateToChildrenChanged));
 
         private static void OnPropagateToChildrenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
             if (!(d is FrameworkElement element) || !(e.NewValue is bool)) return;
             var newValue = (bool)e.NewValue;
             if (newValue) {
-                element.PreviewMouseDown += OnMouseDown;
+                element.AddPreviewMouseDown(OnMouseDown);
             } else {
-                element.PreviewMouseDown -= OnMouseDown;
+                element.RemovePreviewMouseDown(OnMouseDown);
             }
         }
 

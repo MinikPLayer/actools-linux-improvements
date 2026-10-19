@@ -116,7 +116,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(HintsDecoratorProperty, value);
         }
 
-        public static readonly DependencyProperty HintsDecoratorProperty = DependencyProperty.RegisterAttached("HintsDecorator", typeof(bool),
+        public static readonly DependencyProperty HintsDecoratorProperty = DP.RegisterAttached("HintsDecorator", typeof(bool),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.None));
 
         public static string GetHint(DependencyObject obj) {
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(HintProperty, value);
         }
 
-        public static readonly DependencyProperty HintProperty = DependencyProperty.RegisterAttached("Hint", typeof(string),
+        public static readonly DependencyProperty HintProperty = DP.RegisterAttached("Hint", typeof(string),
                 typeof(FancyHintsService), new UIPropertyMetadata(OnHintChanged));
 
         private static void OnHintChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -175,7 +175,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(HorizontalAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalAlignmentProperty = DependencyProperty.RegisterAttached("HorizontalAlignment",
+        public static readonly DependencyProperty HorizontalAlignmentProperty = DP.RegisterAttached("HorizontalAlignment",
                 typeof(HorizontalAlignment),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(HorizontalAlignment.Stretch, FrameworkPropertyMetadataOptions.None));
 
@@ -187,7 +187,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(VerticalAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalAlignmentProperty = DependencyProperty.RegisterAttached("VerticalAlignment", typeof(VerticalAlignment),
+        public static readonly DependencyProperty VerticalAlignmentProperty = DP.RegisterAttached("VerticalAlignment", typeof(VerticalAlignment),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(VerticalAlignment.Stretch, FrameworkPropertyMetadataOptions.None));
 
         public static HorizontalAlignment GetHorizontalContentAlignment(DependencyObject obj) {
@@ -198,7 +198,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(HorizontalContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DependencyProperty.RegisterAttached("HorizontalContentAlignment",
+        public static readonly DependencyProperty HorizontalContentAlignmentProperty = DP.RegisterAttached("HorizontalContentAlignment",
                 typeof(HorizontalAlignment), typeof(FancyHintsService),
                 new FrameworkPropertyMetadata(HorizontalAlignment.Left, FrameworkPropertyMetadataOptions.None));
 
@@ -210,7 +210,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(VerticalContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty VerticalContentAlignmentProperty = DependencyProperty.RegisterAttached("VerticalContentAlignment",
+        public static readonly DependencyProperty VerticalContentAlignmentProperty = DP.RegisterAttached("VerticalContentAlignment",
                 typeof(VerticalAlignment), typeof(FancyHintsService),
                 new FrameworkPropertyMetadata(VerticalAlignment.Top, FrameworkPropertyMetadataOptions.None));
 
@@ -222,7 +222,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(OffsetXProperty, value);
         }
 
-        public static readonly DependencyProperty OffsetXProperty = DependencyProperty.RegisterAttached("OffsetX", typeof(double),
+        public static readonly DependencyProperty OffsetXProperty = DP.RegisterAttached("OffsetX", typeof(double),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.None));
 
         public static double GetOffsetY(DependencyObject obj) {
@@ -233,7 +233,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(OffsetYProperty, value);
         }
 
-        public static readonly DependencyProperty OffsetYProperty = DependencyProperty.RegisterAttached("OffsetY", typeof(double),
+        public static readonly DependencyProperty OffsetYProperty = DP.RegisterAttached("OffsetY", typeof(double),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.None));
 
         public static bool GetTriggerOnLoad(DependencyObject obj) {
@@ -244,7 +244,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(TriggerOnLoadProperty, value);
         }
 
-        public static readonly DependencyProperty TriggerOnLoadProperty = DependencyProperty.RegisterAttached("TriggerOnLoad", typeof(bool),
+        public static readonly DependencyProperty TriggerOnLoadProperty = DP.RegisterAttached("TriggerOnLoad", typeof(bool),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.None));
 
         public static object GetAttachTo(DependencyObject obj) {
@@ -255,7 +255,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(AttachToProperty, value);
         }
 
-        public static readonly DependencyProperty AttachToProperty = DependencyProperty.RegisterAttached("AttachTo", typeof(object),
+        public static readonly DependencyProperty AttachToProperty = DP.RegisterAttached("AttachTo", typeof(object),
                 typeof(FancyHintsService), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
         #endregion
     }

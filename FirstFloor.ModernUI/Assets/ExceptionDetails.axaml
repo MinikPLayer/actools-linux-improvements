@@ -1,0 +1,36 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:nav="clr-namespace:FirstFloor.ModernUI.Windows.Navigation">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/BetterTextBox.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme TargetType="c:ExceptionDetails" x:Key="{x:Type c:ExceptionDetails}">
+    <Setter Property="Focusable" Value="False"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ExceptionDetails">
+          <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+              <c:BetterTextBox Text="{Binding Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" IsReadOnly="True" Theme="{StaticResource Borderless.Heading1}"/>
+              <c:BetterTextBox IsReadOnly="True" Text="{Binding Exception.Message, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" FontWeight="Bold" Foreground="{DynamicResource Error}" Margin="0 0 0 20" TextWrapping="Wrap" Theme="{StaticResource Borderless}"/>
+              <TextBlock Text="{x:Static mui:UiStrings.Source}" Classes="Heading2"/>
+              <c:BetterTextBox IsReadOnly="True" Margin="0 0 0 20" Text="{Binding Source, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type c:ModernFrame}}}" Theme="{StaticResource Borderless}"/>
+              <TextBlock Text="{x:Static mui:UiStrings.StackTrace}" Classes="Heading2"/>
+              <c:BetterTextBox IsReadOnly="True" Text="{Binding StackTrace, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" TextWrapping="Wrap" Theme="{StaticResource Borderless.Monospace}"/>
+              <TextBlock x:Name="PART_SuggestionsTitle" Margin="0 20 0 0" Text="{x:Static mui:UiStrings.Suggestions}" Classes="Heading2"/>
+              <c:SelectableBbCodeBlock x:Name="PART_Suggestions" Text="{Binding Suggestions, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                <c:SelectableBbCodeBlock.LinkNavigator>
+                  <nav:DefaultLinkNavigator/>
+                </c:SelectableBbCodeBlock.LinkNavigator>
+              </c:SelectableBbCodeBlock>
+            </StackPanel>
+          </ScrollViewer>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^[Suggestions=null] /template/ #PART_SuggestionsTitle"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[Suggestions=null] /template/ #PART_Suggestions"><Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

@@ -20,7 +20,7 @@ using FirstFloor.ModernUI.Windows.Controls;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Dialogs {
-    public partial class Prompt : IValueConverter {
+    public partial class Prompt : ModernDialog, IValueConverter {
         private readonly bool _multiline;
         private FrameworkElement _element;
 
@@ -56,7 +56,7 @@ namespace FirstFloor.ModernUI.Dialogs {
             }
 
             if (comment != null) {
-                ButtonsRowContent = new BbCodeBlock { Text = comment, Style = (Style)FindResource(@"BbCodeBlock.Small") };
+                ButtonsRowContent = new BbCodeBlock { Text = comment, Style = (Style)this.FindResource(@"BbCodeBlock.Small") };
                 ButtonsRowContentAlignment = HorizontalAlignment.Left;
             }
 
@@ -96,8 +96,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                     Source = DataContext,
                     Path = new PropertyPath(nameof(ViewModel.Text)),
                     Mode = BindingMode.TwoWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    ValidatesOnDataErrors = true
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 });
 
                 if (placeholder != null) {
@@ -111,8 +110,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                     Source = DataContext,
                     Path = new PropertyPath(nameof(ViewModel.Text)),
                     Mode = BindingMode.TwoWay,
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    ValidatesOnDataErrors = true
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
                 });
 
                 if (maxLength != -1) {
@@ -153,7 +151,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                         Source = Model.SuggestionsDynamic
                     });
                 }
-                listBox.SetBinding(Selector.SelectedItemProperty, new Binding {
+                listBox.SetBinding(SelectingItemsControl.SelectedItemProperty, new Binding {
                     Source = DataContext,
                     Path = new PropertyPath(nameof(ViewModel.TextInList)),
                     Mode = BindingMode.TwoWay
@@ -161,16 +159,16 @@ namespace FirstFloor.ModernUI.Dialogs {
                 Panel.Children.Add(listBox);
             }
 
-            if (toolTip != null) element.SetValue(ToolTipProperty, toolTip);
+            if (toolTip != null) ToolTip.SetTip(element, toolTip);
 
-            PreviewKeyDown += OnKeyDown;
-            element.PreviewKeyDown += OnKeyDown;
+            this.AddPreviewKeyDown(OnKeyDown);
+            element.AddPreviewKeyDown(OnKeyDown);
             _element = element;
 
             Closing += (sender, args) => {
                 if (MessageBoxResult != MessageBoxResult.OK) return;
                 Result = Model.Text;
-                Logging.Debug("Result:" + (Result != null));
+                Helpers.Logging.Debug("Result:" + (Result != null));
             };
         }
 
@@ -180,7 +178,7 @@ namespace FirstFloor.ModernUI.Dialogs {
                 passwordBox.Focus();
                 passwordBox.SelectAll();
             } else if (_element is BetterComboBox comboBox) {
-                if (comboBox.Template?.FindName(@"PART_EditableTextBox", comboBox) is TextBox textBox) {
+                if (comboBox.FindVisualChild<TextBox>() is TextBox textBox) {
                     textBox.SelectAll();
                     textBox.Focus();
                 } else {

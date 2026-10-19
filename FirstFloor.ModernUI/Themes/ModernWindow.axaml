@@ -1,0 +1,163 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:h="clr-namespace:FirstFloor.ModernUI.Helpers" xmlns:presentation="clr-namespace:FirstFloor.ModernUI.Presentation">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Border x:Key="WindowBackgroundContent" Background="{DynamicResource WindowBackgroundContentBrush}"/>
+
+  <Button x:Key="WindowCloseButtonDefault" Command="{Binding Source={x:Static SystemCommands.CloseWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Close}" Theme="{StaticResource SystemCloseButton}">
+    <c:Cell Width="10" Height="10" ClipToBounds="True" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,-5.01" EndPoint="14.99,14.99" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type c:ModernWindow}}}"/>
+      <Line Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StartPoint="-5.01,14.99" EndPoint="14.99,-5.01" StrokeThickness="{Binding IconPathThickness, RelativeSource={RelativeSource AncestorType={x:Type c:ModernWindow}}}"/>
+    </c:Cell>
+  </Button>
+
+  <ControlTheme TargetType="c:ModernWindow" x:Key="{x:Type c:ModernWindow}">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="BackgroundContent" Value="{StaticResource WindowBackgroundContent}"/>
+    <Setter Property="CloseButton" Value="{StaticResource WindowCloseButtonDefault}"/>
+    <Setter Property="FrameMargin" Value="0"/>
+    <Setter Property="Width" Value="800"/>
+    <Setter Property="Height" Value="640"/>
+    <Setter Property="MinWidth" Value="320"/>
+    <Setter Property="MinHeight" Value="320"/>
+    <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ModernWindow">
+          <!-- PORT: SystemParameters not available: SystemParameters.WindowNonClientFrameThickness --><Border x:Name="WindowBorder" Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+            <Panel a:FancyHintsService.HintsDecorator="True">
+              <c:Cell>
+                <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                <c:Cell Margin="{TemplateBinding BorderThickness}">
+                  <!-- Window background content -->
+                  <ContentControl Content="{TemplateBinding BackgroundContent}" IsVisible="{TemplateBinding BackgroundContent, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+
+                  <!-- Title bar -->
+                  <DockPanel VerticalAlignment="Top" x:Name="PART_TitleBar" ZIndex="10" IsVisible="{TemplateBinding TitleButtonsVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}">
+                    <!-- Window system buttons-->
+                    <StackPanel x:Name="PART_SystemButtonsPanel" DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Top">
+                      <StackPanel.RenderTransform>
+                        <TranslateTransform X="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}}" Y="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=-1}"/>
+                      </StackPanel.RenderTransform>
+                      <ItemsControl ItemsSource="{TemplateBinding TitleButtons}">
+                        <ItemsControl.ItemsPanel>
+                          <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                          </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                      </ItemsControl>
+                      <Button x:Name="PART_ErrorsButton" Command="{Binding ViewErrorsCommand, Source={x:Static h:NonfatalError.Instance}}" Theme="{StaticResource SystemButton}">
+                        <ToolTip.Tip>
+                          <ToolTip Content="{Binding Errors.Count, Source={x:Static h:NonfatalError.Instance}}"/>
+                        </ToolTip.Tip>
+                        <Path Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" Fill="Red" StrokeThickness="0" Stretch="Uniform" Data="F1 M 38,19C 48.4934,19 57,27.5066 57,38C 57,48.4934 48.4934,57 38,57C 27.5066,57 19,48.4934 19,38C 19,27.5066 27.5066,19 38,19 Z M 34.0417,25.7292L 36.0208,41.9584L 39.9792,41.9583L 41.9583,25.7292L 34.0417,25.7292 Z M 38,44.3333C 36.2511,44.3333 34.8333,45.7511 34.8333,47.5C 34.8333,49.2489 36.2511,50.6667 38,50.6667C 39.7489,50.6667 41.1667,49.2489 41.1667,47.5C 41.1667,45.7511 39.7489,44.3333 38,44.3333 Z"/>
+                      </Button>
+                      <Button x:Name="PART_MinimizeButton" Command="{Binding Source={x:Static SystemCommands.MinimizeWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Minimize}" Theme="{StaticResource SystemButton}">
+                        <Path Data="M0,5 L9,5 Z" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="{TemplateBinding IconPathThickness}"/>
+                      </Button>
+                      <c:Cell x:Name="PART_MaximizeButton">
+                        <Button x:Name="Restore" Command="{Binding Source={x:Static SystemCommands.RestoreWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Restore}" Theme="{StaticResource SystemButton}">
+                          <Path Data="M0,2 L7,2 L7,9 L0,9 L0,1.5 M2,2 L2,0 L9,0 L9,7 L7,7" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center" Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="{TemplateBinding IconPathThickness}"/>
+                        </Button>
+                        <Button x:Name="Maximize" Command="{Binding Source={x:Static SystemCommands.MaximizeWindowCommand}}" ToolTip.Tip="{x:Static mui:UiStrings.Maximize}" Theme="{StaticResource SystemButton}">
+                          <Rectangle Stroke="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource Self}}" StrokeThickness="{TemplateBinding IconPathThickness}" Width="10" Height="10" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                      </c:Cell>
+                      <ContentPresenter Content="{TemplateBinding CloseButton}"/>
+                    </StackPanel>
+
+                    <!-- Title links -->
+                    <ItemsControl DockPanel.Dock="Right" ItemsSource="{TemplateBinding TitleLinks}" Margin="0 0 24 0" ItemTemplate="{DynamicResource TitleLinksTemplate}">
+                      <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                          <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                      </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <ContentControl DockPanel.Dock="Right" Content="{TemplateBinding TitleLinksPrefix}" IsVisible="{TemplateBinding TitleLinksPrefix, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=inverse}"/>
+
+                    <!-- Title -->
+                    <TextBlock x:Name="PART_TitleTextBlock" Text="{TemplateBinding Title}" Margin="8,0" VerticalAlignment="Center" DataContext="{TemplateBinding IsTitleVisible}" Classes="ModernWindowTitle"/>
+                  </DockPanel>
+
+                  <!-- Resize grip -->
+                  <c:Cell x:Name="ResizeGrip" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" ZIndex="10">
+                    <Path Width="12" Height="12" Margin="1" Stroke="{DynamicResource WindowText}" StrokeThickness="1" Stretch="None" Data="F1 M1,10 L3,10 M5,10 L7,10 M9,10 L11,10 M2,9 L2,11 M6,9 L6,11 M10,9 L10,11 M5,6 L7,6 M9,6 L11,6 M6,5 L6,7 M10,5 L10,7 M9,2 L11,2 M10,1 L10,3"/>
+                  </c:Cell>
+
+                  <Panel>
+                    <!-- Real margin value is in triggers -->
+                    <DockPanel x:Name="LayoutRoot" MaxWidth="{TemplateBinding MaxRootWidth}">
+                      <!-- Menu -->
+                      <DockPanel DockPanel.Dock="Top">
+                        <!-- Back button -->
+                        <c:ModernButton DockPanel.Dock="Left" Margin="8 10 10 0" HorizontalAlignment="Left" VerticalAlignment="Top" EllipseDiameter="24" IconWidth="12" IconHeight="12" IconData="F1 M 33,22L 33,26L 19.75,26L 27,33L 20.5,33L 11,24L 20.5,15L 27,15L 19.75,22L 33,22 Z" Command="NavigationCommands.BrowseBack" CommandTarget="{Binding ElementName=ContentFrame}" x:Name="WindowBackButton" ToolTip.Tip="{x:Static mui:UiStrings.Back}" IsVisible="{TemplateBinding BackButtonVisibility, Converter={x:Static mui:VisibilityConverters.ToBool}}"/>
+
+                        <!-- Main menu -->
+                        <c:ModernMenu LinkGroups="{TemplateBinding MenuLinkGroups}" x:Name="PART_Menu" SaveKey="{TemplateBinding SaveKey}" DefaultSource="{TemplateBinding DefaultContentSource}" a:InputBindingBehavior.PropagateToWindow="True" TopRowVisibility="{TemplateBinding MenuTopRowVisibility}"/>
+                      </DockPanel>
+
+                      <!-- Content frame -->
+                      <c:ModernFrame x:Name="ContentFrame" Margin="{TemplateBinding FrameMargin}" ContentLoader="{TemplateBinding ContentLoader}" Source="{Binding SelectedSource, ElementName=PART_Menu, Mode=TwoWay}" TopSource="{TemplateBinding DefaultContentSource}" Padding="{TemplateBinding Padding}"/>
+                    </DockPanel>
+                  </Panel>
+
+                  <!-- Additional content -->
+                  <ContentPresenter Content="{TemplateBinding AdditionalContent}"/>
+                  <Rectangle x:Name="DimmingThing" Fill="Black" Opacity="0" IsHitTestVisible="False" ZIndex="20"/>
+                </c:Cell>
+              </c:Cell>
+            </Panel>
+          </Border>
+
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="WindowChrome.WindowChrome">
+      <Setter.Value>
+        <WindowChrome CornerRadius="0" GlassFrameThickness="0" UseAeroCaptionButtons="False" NonClientFrameEdges="None"/>
+      </Setter.Value>
+    </Setter>
+    <Style Selector="^ /template/ #Restore"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^ /template/ #LayoutRoot"><Setter Property="Margin" Value="7 35 7 7"/></Style><Style Selector="^ /template/ #PART_ErrorsButton"><Setter Property="IsVisible" Value="{Binding HasUnseen, Source={x:Static h:NonfatalError.Instance}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ #PART_MaximizeButton"><Setter Property="IsVisible" Value="{Binding PreferFullscreenMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=inverse}"/></Style><Style Selector="^ /template/ #ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><Style Selector="^[IsActive=True]"><Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
+      </Style><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding FullscreenOverTaskbarMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^[(mui|T.S0)=True]"><Setter Property="WindowChrome.WindowChrome">
+          <Setter.Value>
+            <WindowChrome CornerRadius="0" UseAeroCaptionButtons="False" NonClientFrameEdges="None"/>
+          </Setter.Value>
+        </Setter>
+      </Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[WindowState=Maximized] /template/ #Maximize"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[WindowState=Maximized] /template/ #Restore"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[WindowState=Maximized] /template/ #PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[WindowState=Maximized] /template/ #PART_TitleBar"><Setter Property="Margin" Value="0 7 7 0"/>
+              </Style><Style Selector="^[WindowState=Maximized] /template/ #PART_SystemButtonsPanel"><Setter Property="RenderTransform">
+                <Setter.Value>
+                  <TranslateTransform X="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=2}" Y="{Binding IconPathThickness, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MultiplyConverter}, ConverterParameter=-3}"/>
+                </Setter.Value>
+              </Setter>
+            </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ #Maximize"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ #Restore"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ #PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[PreferredFullscreenMode=True] /template/ #PART_TitleBar"><Setter Property="Margin" Value="0 7 7 0"/>
+            </Style><Style Selector="^[WindowState=Normal] /template/ #LayoutRoot"><Setter Property="Margin" Value="0 36 0 0"/>
+            </Style><Style Selector="^"><Setter Property="mui:T.S1" Value="{Binding ForceMenuAtTopInFullscreenMode, Source={x:Static presentation:AppearanceManager.Instance}, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=True}"/></Style><Style Selector="^"><Setter Property="mui:T.S2" Value="{Binding Visibility, ElementName=Restore, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=Visible}"/></Style><Style Selector="^[(mui|T.S1)=True][(mui|T.S2)=True] /template/ #LayoutRoot"><Setter Property="Margin" Value="7 11 7 7"/>
+            </Style><Style Selector="^[IsRootMarginEven=True] /template/ #LayoutRoot"><Setter Property="Margin" Value="0"/>
+            </Style><Style Selector="^[IsTitleVisible=False] /template/ #PART_TitleTextBlock"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ShowErrorsButton=False] /template/ #PART_ErrorsButton"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[BackButtonVisibility=Collapsed] /template/ #PART_Menu"><Setter Property="Margin" Value="20 0 0 0"/>
+            </Style><Style Selector="^[WindowState=Normal] /template/ #Maximize"><Setter Property="IsVisible" Value="True"/>
+              </Style><Style Selector="^[WindowState=Normal] /template/ #Restore"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ResizeMode=CanMinimize] /template/ #PART_MaximizeButton"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ResizeMode=NoResize] /template/ #PART_MinimizeButton"><Setter Property="IsVisible" Value="False"/>
+              </Style><Style Selector="^[ResizeMode=NoResize] /template/ #PART_MaximizeButton"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ResizeMode=CanResizeWithGrip][WindowState=Normal] /template/ #ResizeGrip"><Setter Property="IsVisible" Value="True"/>
+            </Style></ControlTheme>
+</ResourceDictionary>

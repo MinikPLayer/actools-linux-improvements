@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                                                  .GetValue(null) as DependencyPropertyKey;
         }
 
-        protected override void OnLostMouseCapture(MouseEventArgs e) {
+        protected override void OnPointerCaptureLost(PointerCaptureLostEventArgs e) {
             var thumb = this;
             if (ReferenceEquals(Mouse.Captured, thumb)) return;
             thumb.CancelDragOverride();
@@ -45,9 +45,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         [CanBeNull]
         private Visual _currentWindow;
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+        protected override void OnPointerPressed(PointerPressedEventArgs e) {
+            if (!e.IsButton(MouseButton.Left)) { base.OnPointerPressed(e); return; }
             if (IsDraggingPropertyKey == null) {
-                base.OnMouseLeftButtonDown(e);
+                base.OnPointerPressed(e);
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 e.Handled = true;
                 Focus();
                 CaptureMouse();
-                SetValue(IsDraggingPropertyKey, true);
+                SetValue(IsDraggingPropertyKey.DependencyProperty, true);
                 _originThumbPoint = e.GetPosition(this);
 
                 _currentWindow = this.GetParent() as Visual;
@@ -79,9 +80,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return Keyboard.Modifiers == ModifierKeys.Shift ? 0.1 : 1d;
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e) {
+        protected override void OnPointerReleased(PointerReleasedEventArgs e) {
+            if (!e.IsButton(MouseButton.Left)) { base.OnPointerReleased(e); return; }
             if (IsDraggingPropertyKey == null) {
-                base.OnMouseLeftButtonUp(e);
+                base.OnPointerReleased(e);
                 return;
             }
 
@@ -101,9 +103,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private Point _startElementPosition;
         private double _previousMultiplier;
 
-        protected override void OnMouseMove(MouseEventArgs e) {
+        protected override void OnPointerMoved(PointerEventArgs e) {
             if (IsDraggingPropertyKey == null) {
-                base.OnMouseMove(e);
+                base.OnPointerMoved(e);
                 return;
             }
 

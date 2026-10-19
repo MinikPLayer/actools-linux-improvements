@@ -19,7 +19,11 @@ namespace FirstFloor.ModernUI.Windows.Converters {
         /// <returns>
         /// A converted value. If the method returns null, the valid null value is used.
         /// </returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(value, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             var flag = value == null;
 
             var s = value as string;

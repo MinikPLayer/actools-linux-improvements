@@ -16,7 +16,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// Represents a Modern UI styled dialog window.
     /// </summary>
     public class ModernDialog : DpiAwareWindow {
-        public static readonly DependencyProperty ShowTopBlobProperty = DependencyProperty.Register(nameof(ShowTopBlob), typeof(bool),
+        public static readonly DependencyProperty ShowTopBlobProperty = DP.Register(nameof(ShowTopBlob), typeof(bool),
                 typeof(ModernDialog), new PropertyMetadata(true));
 
         public bool ShowTopBlob {
@@ -27,13 +27,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// <summary>
         /// Identifies the BackgroundContent dependency property.
         /// </summary>
-        public static readonly DependencyProperty BackgroundContentProperty = DependencyProperty.Register("BackgroundContent", typeof(object),
+        public static readonly DependencyProperty BackgroundContentProperty = DP.Register("BackgroundContent", typeof(object),
                 typeof(ModernDialog));
 
         /// <summary>
         /// Identifies the Buttons dependency property.
         /// </summary>
-        public static readonly DependencyProperty ButtonsProperty = DependencyProperty.Register("Buttons", typeof(IEnumerable<Control>), typeof(ModernDialog));
+        public static readonly DependencyProperty ButtonsProperty = DP.Register("Buttons", typeof(IEnumerable<Control>), typeof(ModernDialog));
 
         private Button _okButton;
         private Button _goButton;
@@ -46,7 +46,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Initializes a new instance of the <see cref="ModernDialog"/> class.
         /// </summary>
         public ModernDialog() {
-            DefaultStyleKey = typeof(ModernDialog);
             WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             CloseCommand = new DelegateCommand<MessageBoxResult?>(CloseWithResult);
@@ -124,7 +123,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 MinHeight = 21,
                 MinWidth = 65,
                 Margin = new Thickness(4, 0, 0, 0),
-                Style = FindResource(styleKey) as Style,
+                Style = this.FindResource(styleKey) as Style,
                 Command = command
             };
         }
@@ -138,7 +137,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     }
                 };
             } catch (Exception e) {
-                Logging.Warning(e);
+                Helpers.Logging.Warning(e);
                 return content;
             }
         }
@@ -172,7 +171,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 MinHeight = 21,
                 MinWidth = 65,
                 Margin = new Thickness(4, 0, 0, 0),
-                Style = FindResource(styleKey) as Style
+                Style = this.FindResource(styleKey) as Style
             };
         }
 
@@ -263,7 +262,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return ShowMessage(text, "", MessageBoxButton.OK);
         }
 
-        public static readonly DependencyProperty IconSourceProperty = DependencyProperty.Register(nameof(IconSource), typeof(string),
+        public static readonly DependencyProperty IconSourceProperty = DP.Register(nameof(IconSource), typeof(string),
                 typeof(ModernDialog));
 
         public string IconSource {
@@ -271,7 +270,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IconSourceProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsRowContentAlignmentProperty = DependencyProperty.Register(nameof(ButtonsRowContentAlignment),
+        public static readonly DependencyProperty ButtonsRowContentAlignmentProperty = DP.Register(nameof(ButtonsRowContentAlignment),
                 typeof(HorizontalAlignment), typeof(ModernDialog));
 
         public HorizontalAlignment ButtonsRowContentAlignment {
@@ -279,7 +278,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonsRowContentAlignmentProperty, value);
         }
 
-        public static readonly DependencyProperty ExtraContentProperty = DependencyProperty.Register(nameof(ExtraContent), typeof(object),
+        public static readonly DependencyProperty ExtraContentProperty = DP.Register(nameof(ExtraContent), typeof(object),
                 typeof(ModernDialog));
 
         public object ExtraContent {
@@ -287,7 +286,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ExtraContentProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsRowContentProperty = DependencyProperty.Register(nameof(ButtonsRowContent), typeof(object),
+        public static readonly DependencyProperty ButtonsRowContentProperty = DP.Register(nameof(ButtonsRowContent), typeof(object),
                 typeof(ModernDialog));
 
         public object ButtonsRowContent {
@@ -295,7 +294,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonsRowContentProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonsMarginProperty = DependencyProperty.Register(nameof(ButtonsMargin), typeof(Thickness),
+        public static readonly DependencyProperty ButtonsMarginProperty = DP.Register(nameof(ButtonsMargin), typeof(Thickness),
                 typeof(ModernDialog));
 
         public Thickness ButtonsMargin {
@@ -303,7 +302,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ButtonsMarginProperty, value);
         }
 
-        public static readonly DependencyProperty MainButtonsPanelTemplateProperty = DependencyProperty.Register(nameof(MainButtonsPanelTemplate),
+        public static readonly DependencyProperty MainButtonsPanelTemplateProperty = DP.Register(nameof(MainButtonsPanelTemplate),
                 typeof(ItemsPanelTemplate), typeof(ModernDialog));
 
         public ItemsPanelTemplate MainButtonsPanelTemplate {
@@ -311,7 +310,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(MainButtonsPanelTemplateProperty, value);
         }
 
-        public static readonly DependencyProperty ContentMarginProperty = DependencyProperty.Register(nameof(ContentMargin), typeof(Thickness),
+        public static readonly DependencyProperty ContentMarginProperty = DP.Register(nameof(ContentMargin), typeof(Thickness),
                 typeof(ModernDialog));
 
         public Thickness ContentMargin {
@@ -319,7 +318,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentMarginProperty, value);
         }
 
-        public static readonly DependencyProperty ShowTitleProperty = DependencyProperty.Register(nameof(ShowTitle), typeof(bool),
+        public static readonly DependencyProperty ShowTitleProperty = DP.Register(nameof(ShowTitle), typeof(bool),
                 typeof(ModernDialog), new PropertyMetadata(true));
 
         public bool ShowTitle {
@@ -335,7 +334,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             obj.SetValue(ButtonBehaviorProperty, value);
         }
 
-        public static readonly DependencyProperty ButtonBehaviorProperty = DependencyProperty.RegisterAttached("ButtonBehavior", typeof(MessageBoxResult?),
+        public static readonly DependencyProperty ButtonBehaviorProperty = DP.RegisterAttached("ButtonBehavior", typeof(MessageBoxResult?),
                 typeof(FatalErrorMessage), new UIPropertyMetadata(null, OnButtonBehaviorChanged));
 
         private static void OnButtonBehaviorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -351,7 +350,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private static void OnButtonBehavorClick(object sender, RoutedEventArgs e) {
             var element = (FrameworkElement)sender;
             var value = GetButtonBehavior(element);
-            (GetWindow(element) as ModernDialog)?.CloseCommand.Execute(value);
+            (Window.GetWindow(element) as ModernDialog)?.CloseCommand.Execute(value);
         }
 
         private FrameworkElement _bottomRow, _bottomRowExtra;
@@ -381,7 +380,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             Resources[@"BottomRow"] = style;
         }
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_bottomRow != null) {
                 _bottomRow.SizeChanged -= OnBottomRowSizeChanged;
             }
@@ -390,10 +390,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 _bottomRowExtra.SizeChanged -= OnBottomRowSizeChanged;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _bottomRow = GetTemplateChild(@"PART_BottomRow_Buttons") as FrameworkElement;
-            _bottomRowExtra = GetTemplateChild(@"PART_BottomRow_Content") as FrameworkElement;
+            _bottomRow = this.GetTemplateChild(@"PART_BottomRow_Buttons") as FrameworkElement;
+            _bottomRowExtra = this.GetTemplateChild(@"PART_BottomRow_Content") as FrameworkElement;
 
             if (_bottomRow != null) {
                 _bottomRow.SizeChanged += OnBottomRowSizeChanged;
@@ -409,24 +409,5 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             UpdateBottomRowStyle();
         }
 
-        private ResizeMode? _originalResizeMode;
-        private Thickness? _originalBorderThickness;
-
-        protected override void OnPreferredFullscreenSet(bool maximizeRequested, bool maximizeDelivered) {
-            base.OnPreferredFullscreenSet(maximizeRequested, maximizeDelivered);
-
-            if (!_originalResizeMode.HasValue) {
-                _originalResizeMode = ResizeMode;
-                _originalBorderThickness = BorderThickness;
-            }
-
-            if (!maximizeRequested) {
-                ResizeMode = _originalResizeMode.Value;
-                BorderThickness = _originalBorderThickness ?? BorderThickness;
-            } else if (maximizeDelivered) {
-                ResizeMode = ResizeMode.NoResize;
-                BorderThickness = new Thickness(0d);
-            }
-        }
     }
 }

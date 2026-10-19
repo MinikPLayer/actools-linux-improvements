@@ -1,0 +1,153 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:dialogs="clr-namespace:FirstFloor.ModernUI.Dialogs">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Button.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBlock.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Fonts.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <Border x:Key="DialogBackgroundContent" Background="{DynamicResource DialogBackgroundContentBrush}"/>
+  <ItemsPanelTemplate x:Key="DialogMainButtonsPanelTemplate">
+    <StackPanel Orientation="Horizontal"/>
+  </ItemsPanelTemplate>
+
+  <ControlTheme TargetType="c:ModernDialog" x:Key="{x:Type c:ModernDialog}">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="Foreground" Value="{DynamicResource WindowText}"/>
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WindowBorder}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="MaxWidth" Value="640"/>
+    <Setter Property="MaxHeight" Value="640"/>
+    <Setter Property="MinWidth" Value="240"/>
+    <Setter Property="MinHeight" Value="240"/>
+    <Setter Property="ShowInTaskbar" Value="False"/>
+    <Setter Property="ResizeMode" Value="NoResize"/>
+    <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+    <Setter Property="Padding" Value="24 20"/>
+    <Setter Property="ButtonsMargin" Value="24 0 24 24"/>
+    <Setter Property="ButtonsRowContentAlignment" Value="Right"/>
+    <Setter Property="BackgroundContent" Value="{StaticResource DialogBackgroundContent}"/>
+    <Setter Property="MainButtonsPanelTemplate" Value="{StaticResource DialogMainButtonsPanelTemplate}"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="c:ModernDialog">
+          <!-- PORT: SystemParameters not available: SystemParameters.WindowNonClientFrameThickness --><Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+            <c:Cell>
+              <Panel a:FancyHintsService.HintsDecorator="True">
+                <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                  <c:Cell>
+                    <!-- window background content -->
+                    <ContentControl Content="{TemplateBinding BackgroundContent}"/>
+
+                    <!-- top blob -->
+                    <Border Background="{DynamicResource Accent}" Margin="24 18 0 0" Width="100" Height="6" HorizontalAlignment="Left" VerticalAlignment="Top" IsVisible="{TemplateBinding ShowTopBlob, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <DockPanel ZIndex="1">
+                      <!-- title -->
+                      <StackPanel x:Name="PART_Title" DockPanel.Dock="Top" Orientation="Horizontal" Margin="24 24 24 0">
+                        <c:BetterImage Margin="4 4 8 0" Width="28" Height="28" StretchDirection="DownOnly" Filename="{TemplateBinding IconSource}" IsVisible="{TemplateBinding IconSource, Converter={StaticResource ExistToVisibilityConverter}}"/>
+                        <TextBlock Text="{TemplateBinding Title}" FontFamily="{StaticResource DefaultFont}" FontWeight="Light" FontSize="24" TextTrimming="CharacterEllipsis" IsVisible="{TemplateBinding ShowTitle, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                      </StackPanel>
+
+                      <!-- buttons -->
+                      <DockPanel x:Name="PART_BottomRow" DockPanel.Dock="Bottom" Margin="{TemplateBinding ButtonsMargin}" ZIndex="1">
+                        <ItemsControl x:Name="PART_BottomRow_Buttons" DockPanel.Dock="Right" ItemsSource="{TemplateBinding Buttons}" ItemsPanel="{TemplateBinding MainButtonsPanelTemplate}"/>
+                        <ContentControl x:Name="PART_BottomRow_Content" HorizontalAlignment="{TemplateBinding ButtonsRowContentAlignment}" Content="{TemplateBinding ButtonsRowContent}"/>
+                      </DockPanel>
+                      
+                      <!-- content -->
+                      <Border Margin="{TemplateBinding ContentMargin}" Padding="{TemplateBinding Padding}">
+                        <DockPanel>
+                          <ContentControl x:Name="PART_ExtraContent" DockPanel.Dock="Bottom" Content="{TemplateBinding ExtraContent}"/>
+                          <c:TransitioningContentControl x:Name="PART_Content" Content="{TemplateBinding Content}"/>
+                        </DockPanel>
+                      </Border>
+                    </DockPanel>
+
+                    <!-- Resize grip -->
+                    <c:Cell x:Name="ResizeGrip" Background="Transparent" HorizontalAlignment="Right" VerticalAlignment="Bottom" ZIndex="10">
+                      <Path Width="12" Height="12" Margin="1" Stroke="{DynamicResource WindowText}" StrokeThickness="1" Stretch="None" Data="F1 M1,10 L3,10 M5,10 L7,10 M9,10 L11,10 M2,9 L2,11 M6,9 L6,11 M10,9 L10,11 M5,6 L7,6 M9,6 L11,6 M6,5 L6,7 M10,5 L10,7 M9,2 L11,2 M10,1 L10,3"/>
+                    </c:Cell>
+
+                    <Rectangle x:Name="DimmingThing" Fill="Black" Opacity="0" IsHitTestVisible="False" ZIndex="20"/>
+                  </c:Cell>
+                </Border>
+              </Panel>
+              <Border x:Name="PART_BorderActive" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="{TemplateBinding BorderThickness}"/>
+            </c:Cell>
+          </Border>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+
+    <Setter Property="WindowChrome.WindowChrome">
+      <Setter.Value>
+        <WindowChrome CornerRadius="0" GlassFrameThickness="1" UseAeroCaptionButtons="False" CaptionHeight="20" NonClientFrameEdges="None" ResizeBorderThickness="4"/>
+      </Setter.Value>
+    </Setter>
+  <Style.Resources>
+      <!--<Style x:Key="BottomRow" TargetType="FrameworkElement">
+        <Setter Property="Margin" Value="0 -46 200 -172" />
+        <Setter Property="Height" Value="26" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+      </Style>-->
+      <HorizontalAlignment x:Key="BottomRowAlignment">Right</HorizontalAlignment>
+    </Style.Resources>
+
+    <Style Selector="^ /template/ #PART_BorderActive"><Setter Property="IsVisible" Value="{Binding IsActive, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Converter={StaticResource BooleanToVisibilityConverter}}"/></Style><Style Selector="^ /template/ #ResizeGrip"><Setter Property="IsVisible" Value="False"/></Style><!-- PORT: storyboard actions of trigger [IsDimmed=True] not converted --><Style Selector="^[ExtraContent=null] /template/ #PART_ExtraContent"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^"><Setter Property="mui:T.S0" Value="{Binding Path=BorderBrush.(SolidColorBrush.Color).(Color.A), ElementName=PART_Border, Converter={x:Static mui:StateConverter.Instance}, ConverterParameter=0}"/></Style><Style Selector="^[(mui|T.S0)=True] /template/ #PART_BorderActive"><Setter Property="IsVisible" Value="False"/>
+            </Style><Style Selector="^[ResizeMode=CanResizeWithGrip][WindowState=Normal] /template/ #ResizeGrip"><Setter Property="IsVisible" Value="True"/>
+            </Style><Style Selector="^[ShowTitle=False][ShowTopBlob=False][IconSource=null] /template/ #PART_Title"><Setter Property="IsVisible" Value="False"/>
+            </Style></ControlTheme>
+
+  <ControlTheme TargetType="dialogs:FatalErrorMessage" x:Key="{x:Type dialogs:FatalErrorMessage}">
+    <Setter Property="BackgroundContent" Value="{x:Null}"/>
+    <Setter Property="Foreground" Value="White"/>
+    <Setter Property="Background" Value="#2067b2"/>
+    <Setter Property="Title" Value="Fatal Error"/>
+
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="dialogs:FatalErrorMessage">
+          <ControlTemplate.Resources>
+            <SolidColorBrush x:Key="ButtonBackground" Color="#2b6099"/>
+            <SolidColorBrush x:Key="ButtonBackgroundHover" Color="#2b6099"/>
+            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#295b91"/>
+            <SolidColorBrush x:Key="ButtonBorder" Color="#2b6099"/>
+            <SolidColorBrush x:Key="ButtonBorderHover" Color="#295b91"/>
+            <SolidColorBrush x:Key="ButtonBorderPressed" Color="#295b91"/>
+            <SolidColorBrush x:Key="ButtonText" Color="#ffffff"/>
+            <SolidColorBrush x:Key="ButtonTextHover" Color="#ffffff"/>
+            <SolidColorBrush x:Key="ButtonTextPressed" Color="#ffffff"/>
+            <SolidColorBrush x:Key="ButtonTextDisabled" Color="#999999"/>
+          </ControlTemplate.Resources>
+
+          <!-- PORT: SystemParameters not available: SystemParameters.WindowNonClientFrameThickness --><Border Background="{TemplateBinding Background}" Margin="{Binding Source={x:Static SystemParameters.WindowNonClientFrameThickness}}">
+            <Border BorderBrush="#2067b2" BorderThickness="1">
+              <Panel>
+                <StackPanel Margin="40">
+                  <TextBlock Text="{x:Static dialogs:FatalErrorMessage.ErrorHeader}" FontSize="50" Margin="0 0 0 20" Classes="Heading1"/>
+                  <TextBlock Text="{x:Static mui:UiStrings.FatalError_Message}" Margin="0 0 0 20" TextWrapping="Wrap" Classes="Light"/>
+
+                  <TextBlock Text="Detailed information:" Margin="0 0 0 8" Classes="Light"/>
+                  <ScrollViewer HorizontalScrollBarVisibility="Disabled" Margin="0 0 0 20" MaxHeight="200">
+                    <TextBlock Text="{TemplateBinding StackTrace}" Margin="0 0 0 8" TextWrapping="Wrap" FontSize="11" Classes="Monospace"/>
+                  </ScrollViewer>
+
+                  <c:SpacingStackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
+                    <Button Content="Copy to clipboard" Command="{Binding CopyCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <Button Content="Restart" Command="{Binding RestartCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <Button Content="Close" Command="{Binding ExitCommand, RelativeSource={RelativeSource TemplatedParent}}"/>
+                  </c:SpacingStackPanel>
+                </StackPanel>
+              </Panel>
+            </Border>
+          </Border>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+</ResourceDictionary>

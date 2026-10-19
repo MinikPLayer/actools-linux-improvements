@@ -23,10 +23,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     [ContentProperty(nameof(Menu))]
     public class ContextMenuButton : Control {
         public ContextMenuButton() {
-            DefaultStyleKey = typeof(ContextMenuButton);
         }
 
-        public static readonly DependencyProperty LookForParentMenuProperty = DependencyProperty.Register(nameof(LookForParentMenu), typeof(bool),
+        public static readonly DependencyProperty LookForParentMenuProperty = DP.Register(nameof(LookForParentMenu), typeof(bool),
                 typeof(ContextMenuButton), new PropertyMetadata(false, (o, e) => {
                     ((ContextMenuButton)o)._lookForParentMenu = (bool)e.NewValue;
                 }));
@@ -48,6 +47,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             var menu = args.Menu ?? Menu ?? (LookForParentMenu ?
                     this.GetParents().OfType<FrameworkElement>().Select(x => x.ContextMenu).FirstOrDefault(x => x != null) : null);
 
+
             if ((menu as FrameworkElement)?.DataContext == null) {
                 ((FrameworkElement)menu)?.SetBinding(DataContextProperty, new Binding {
                     Source = this,
@@ -63,8 +63,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 if (popup.IsOpen) {
                     popup.IsOpen = false;
                 } else {
-                    popup.Placement = near ? PlacementMode.Bottom : PlacementMode.MousePoint;
-                    popup.PlacementTarget = near ? this : null;
+                    popup.Placement = near ? PlacementMode.Bottom : PlacementMode.Pointer;
+                    popup.PlacementTarget = near ? this : Avalonia.VisualTree.VisualExtensions.GetVisualRoot(this) as Avalonia.Visual;
                     popup.IsOpen = true;
                     popup.StaysOpen = false;
                 }
@@ -72,9 +72,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (menu is ContextMenu contextMenu) {
-                contextMenu.Placement = near ? PlacementMode.Bottom : PlacementMode.MousePoint;
+                contextMenu.Placement = near ? PlacementMode.Bottom : PlacementMode.Pointer;
                 contextMenu.PlacementTarget = near ? this : null;
-                contextMenu.IsOpen = true;
+                if (near) {
+                    contextMenu.Open(this);
+                } else {
+                    contextMenu.Open();
+                }
                 return true;
             }
 
@@ -87,7 +91,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return false;
         }
 
-        public static readonly DependencyProperty ForceNearProperty = DependencyProperty.Register(nameof(ForceNear), typeof(bool?),
+        public static readonly DependencyProperty ForceNearProperty = DP.Register(nameof(ForceNear), typeof(bool?),
                 typeof(ContextMenuButton), new PropertyMetadata(null, (o, e) => {
                     ((ContextMenuButton)o)._forceNear = (bool?)e.NewValue;
                 }));
@@ -99,7 +103,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ForceNearProperty, value);
         }
 
-        public static readonly DependencyProperty ExtraDelayProperty = DependencyProperty.Register(nameof(ExtraDelay), typeof(bool),
+        public static readonly DependencyProperty ExtraDelayProperty = DP.Register(nameof(ExtraDelay), typeof(bool),
                 typeof(ContextMenuButton), new PropertyMetadata(false, (o, e) => {
                     ((ContextMenuButton)o)._extraDelay = (bool)e.NewValue;
                 }));
@@ -114,20 +118,21 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private FrameworkElement _child;
         private FrameworkElement _button;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_button != null) {
-                _button.PreviewMouseLeftButtonDown -= OnMouseDown;
-                _button.PreviewMouseLeftButtonUp -= OnButtonClick;
-                _button.MouseRightButtonUp -= OnButtonDown;
+                _button.RemovePreviewMouseLeftButtonDown(OnMouseDown);
+                _button.RemovePreviewMouseLeftButtonUp(OnButtonClick);
+                _button.RemoveMouseRightButtonUp(OnButtonDown);
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _button = GetTemplateChild(@"PART_Button") as FrameworkElement;
+            _button = this.GetTemplateChild(@"PART_Button") as FrameworkElement;
             if (_button != null) {
-                _button.PreviewMouseLeftButtonDown += OnMouseDown;
-                _button.PreviewMouseLeftButtonUp += OnButtonClick;
-                _button.MouseRightButtonUp += OnButtonDown;
+                _button.AddPreviewMouseLeftButtonDown(OnMouseDown);
+                _button.AddPreviewMouseLeftButtonUp(OnButtonClick);
+                _button.AddMouseRightButtonUp(OnButtonDown);
             }
         }
 
@@ -152,7 +157,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private async void OnContextMenuClick(object sender, MouseButtonEventArgs e) {
-            if (Parent.FindVisualChildren<FrameworkElement>().Any(child => child.ContextMenu is InheritingContextMenu)) {
+            if (Parent.FindVisualChildren<FrameworkElement>().Any(child => child.ContextMenu != null)) {
                 await Task.Delay(1);
             }
 
@@ -161,23 +166,36 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        protected override void OnVisualParentChanged(DependencyObject oldParent) {
-            if (oldParent is FrameworkElement fe) {
-                fe.PreviewMouseRightButtonUp -= OnContextMenuPreviewClick;
-                fe.MouseRightButtonUp -= OnContextMenuClick;
-            }
+        private FrameworkElement _observedParent;
 
-            fe = Parent as FrameworkElement;
+        protected override void OnAttachedToLogicalTree(Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e) {
+            base.OnAttachedToLogicalTree(e);
+            Unsubscribe();
+
+            var fe = Parent as FrameworkElement;
             if (fe != null) {
-                fe.PreviewMouseRightButtonUp += OnContextMenuPreviewClick;
-                fe.MouseRightButtonUp += OnContextMenuClick;
+                _observedParent = fe;
+                fe.AddPreviewMouseRightButtonUp(OnContextMenuPreviewClick);
+                fe.AddMouseRightButtonUp(OnContextMenuClick);
 
-                if (fe.GetValue(Panel.BackgroundProperty) == null) {
-                    fe.SetValue(Panel.BackgroundProperty, new SolidColorBrush(Colors.Transparent));
+                if (fe is Panel panel && panel.Background == null) {
+                    panel.Background = Brushes.Transparent;
                 }
             }
+        }
 
-            base.OnVisualParentChanged(oldParent);
+        protected override void OnDetachedFromLogicalTree(Avalonia.LogicalTree.LogicalTreeAttachmentEventArgs e) {
+            base.OnDetachedFromLogicalTree(e);
+            Unsubscribe();
+        }
+
+        private void Unsubscribe() {
+            var fe = _observedParent;
+            if (fe != null) {
+                fe.RemovePreviewMouseRightButtonUp(OnContextMenuPreviewClick);
+                fe.RemoveMouseRightButtonUp(OnContextMenuClick);
+                _observedParent = null;
+            }
         }
 
         private void OnContextMenuPreviewClick(object sender, MouseButtonEventArgs e) {
@@ -186,7 +204,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty MenuProperty = DependencyProperty.Register(nameof(Menu), typeof(FrameworkElement),
+        public static readonly DependencyProperty MenuProperty = DP.Register(nameof(Menu), typeof(FrameworkElement),
                 typeof(ContextMenuButton), new PropertyMetadata(OnMenuChanged));
 
         public FrameworkElement Menu {
@@ -201,10 +219,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private void OnMenuChanged(FrameworkElement oldValue, FrameworkElement newValue) {
             if (oldValue != null) {
                 if (oldValue is ContextMenu) {
-                    BindingOperations.ClearBinding(oldValue, DataContextProperty);
+                    oldValue.ClearValue(DataContextProperty);
                 } else {
-                    RemoveVisualChild(oldValue);
-                    RemoveLogicalChild(oldValue);
+                    LogicalChildren.Remove(oldValue);
                 }
             }
 
@@ -217,18 +234,14 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                     });
                 } else {
                     _child = newValue;
-                    AddLogicalChild(newValue);
-                    AddVisualChild(newValue);
+                    LogicalChildren.Add(newValue);
                 }
             } else {
                 _child = null;
             }
         }
 
-        protected override IEnumerator LogicalChildren => _child == null ? EmptyEnumerator.Instance :
-                new SingleChildEnumerator(_child);
-
-        public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(nameof(Command), typeof(ICommand),
+        public static readonly DependencyProperty CommandProperty = DP.Register(nameof(Command), typeof(ICommand),
             typeof(ContextMenuButton));
 
         public ICommand Command {
@@ -236,7 +249,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CommandProperty, value);
         }
 
-        public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(nameof(CommandParameter), typeof(object),
+        public static readonly DependencyProperty CommandParameterProperty = DP.Register(nameof(CommandParameter), typeof(object),
                 typeof(ContextMenuButton));
 
         public object CommandParameter {
@@ -244,7 +257,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CommandParameterProperty, value);
         }
 
-        public static readonly DependencyProperty PropagateToChildrenProperty = DependencyProperty.Register(nameof(PropagateToChildren), typeof(bool),
+        public static readonly DependencyProperty PropagateToChildrenProperty = DP.Register(nameof(PropagateToChildren), typeof(bool),
                 typeof(ContextMenuButton));
 
         public bool PropagateToChildren {

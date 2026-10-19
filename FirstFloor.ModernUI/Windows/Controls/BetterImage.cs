@@ -173,7 +173,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region Properties
-        public static readonly DependencyProperty ShowBrokenProperty = DependencyProperty.Register(nameof(ShowBroken), typeof(bool),
+        public static readonly DependencyProperty ShowBrokenProperty = DP.Register(nameof(ShowBroken), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(true, (o, e) => { ((BetterImage)o)._showBroken = (bool)e.NewValue; }));
 
         private bool _showBroken = true;
@@ -183,7 +183,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ShowBrokenProperty, value);
         }
 
-        public static readonly DependencyProperty HideBrokenProperty = DependencyProperty.Register(nameof(HideBroken), typeof(bool),
+        public static readonly DependencyProperty HideBrokenProperty = DP.Register(nameof(HideBroken), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(false, (o, e) => { ((BetterImage)o)._hideBroken = (bool)e.NewValue; }));
 
         private bool _hideBroken;
@@ -193,7 +193,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(HideBrokenProperty, value);
         }
 
-        public static readonly DependencyProperty ClearOnChangeProperty = DependencyProperty.Register(nameof(ClearOnChange), typeof(bool),
+        public static readonly DependencyProperty ClearOnChangeProperty = DP.Register(nameof(ClearOnChange), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(false, (o, e) => { ((BetterImage)o)._clearOnChange = (bool)e.NewValue; }));
 
         private bool _clearOnChange;
@@ -203,7 +203,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ClearOnChangeProperty, value);
         }
 
-        public static readonly DependencyProperty DelayedCreationProperty = DependencyProperty.Register(nameof(DelayedCreation), typeof(bool),
+        public static readonly DependencyProperty DelayedCreationProperty = DP.Register(nameof(DelayedCreation), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(true, (o, e) => { ((BetterImage)o)._delayedCreation = (bool)e.NewValue; }));
 
         private bool _delayedCreation = true;
@@ -213,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DelayedCreationProperty, value);
         }
 
-        public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register(nameof(DecodeHeight), typeof(int),
+        public static readonly DependencyProperty DecodeHeightProperty = DP.Register(nameof(DecodeHeight), typeof(int),
                 typeof(BetterImage), new PropertyMetadata(-1, (o, e) => { ((BetterImage)o)._decodeHeight = (int)e.NewValue; }));
 
         private int _decodeHeight = -1;
@@ -230,7 +230,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         /// Without cropping, if set to -1 (default value), MaxWidth or Width will be used instead. Set to 0
         /// if you want to disable this behavior and force full-size decoding.
         /// </summary>
-        public static readonly DependencyProperty DecodeWidthProperty = DependencyProperty.Register(nameof(DecodeWidth), typeof(int),
+        public static readonly DependencyProperty DecodeWidthProperty = DP.Register(nameof(DecodeWidth), typeof(int),
                 typeof(BetterImage), new PropertyMetadata(-1, (o, e) => { ((BetterImage)o)._decodeWidth = (int)e.NewValue; }));
 
         private int _decodeWidth = -1;
@@ -240,7 +240,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DecodeWidthProperty, value);
         }
 
-        public static readonly DependencyProperty AsyncDecodeProperty = DependencyProperty.Register(nameof(AsyncDecode), typeof(bool),
+        public static readonly DependencyProperty AsyncDecodeProperty = DP.Register(nameof(AsyncDecode), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(true,
                         (o, e) => ((BetterImage)o)._asyncDecode = (bool)e.NewValue));
 
@@ -251,7 +251,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(AsyncDecodeProperty, value);
         }
 
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch),
+        public static readonly DependencyProperty StretchProperty = DP.Register(nameof(Stretch), typeof(Stretch),
                 typeof(BetterImage),
                 new FrameworkPropertyMetadata(Stretch.Uniform, FrameworkPropertyMetadataOptions.AffectsMeasure,
                         (o, e) => { ((BetterImage)o)._stretch = (Stretch)e.NewValue; }));
@@ -263,7 +263,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchProperty, value);
         }
 
-        public static readonly DependencyProperty StretchDirectionProperty = DependencyProperty.Register(nameof(StretchDirection), typeof(StretchDirection),
+        public static readonly DependencyProperty StretchDirectionProperty = DP.Register(nameof(StretchDirection), typeof(StretchDirection),
                 typeof(BetterImage),
                 new FrameworkPropertyMetadata(StretchDirection.Both, FrameworkPropertyMetadataOptions.AffectsMeasure,
                         (o, e) => { ((BetterImage)o)._stretchDirection = (StretchDirection)e.NewValue; }));
@@ -275,7 +275,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(StretchDirectionProperty, value);
         }
 
-        public static readonly DependencyProperty FilenameProperty = DependencyProperty.Register(nameof(Filename), typeof(string),
+        public static readonly DependencyProperty FilenameProperty = DP.Register(nameof(Filename), typeof(string),
                 typeof(BetterImage), new PropertyMetadata(OnFilenameChanged));
 
         private string _filename;
@@ -292,7 +292,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             b.OnFilenameChanged(b._filename);
         }
 
-        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(nameof(Source), typeof(object),
+        public static readonly DependencyProperty SourceProperty = DP.Register(nameof(Source), typeof(object),
                 typeof(BetterImage), new PropertyMetadata(OnSourceChanged));
 
         public object Source {
@@ -336,7 +336,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource),
+        public static readonly DependencyProperty ImageSourceProperty = DP.Register(nameof(ImageSource), typeof(ImageSource),
                 typeof(BetterImage), new PropertyMetadata(OnImageSourceChanged));
 
         public ImageSource ImageSource {
@@ -349,7 +349,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((BetterImage)o).Source = e.NewValue;
         }
 
-        public static readonly DependencyProperty CropProperty = DependencyProperty.Register(nameof(Crop), typeof(Rect?),
+        public static readonly DependencyProperty CropProperty = DP.Register(nameof(Crop), typeof(Rect?),
                 typeof(BetterImage), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure, (o, e) => {
                     var b = (BetterImage)o;
                     b._crop = (Rect?)e.NewValue;
@@ -366,7 +366,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CropProperty, value);
         }
 
-        public static readonly DependencyProperty CropUnitsProperty = DependencyProperty.Register(nameof(CropUnits), typeof(ImageCropMode),
+        public static readonly DependencyProperty CropUnitsProperty = DP.Register(nameof(CropUnits), typeof(ImageCropMode),
                 typeof(BetterImage),
                 new FrameworkPropertyMetadata(ImageCropMode.Relative, FrameworkPropertyMetadataOptions.AffectsMeasure,
                         (o, e) => { ((BetterImage)o)._cropUnits = (ImageCropMode)e.NewValue; }));
@@ -378,7 +378,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CropUnitsProperty, value);
         }
 
-        public static readonly DependencyProperty CropTransparentAreasProperty = DependencyProperty.Register(nameof(CropTransparentAreas), typeof(bool),
+        public static readonly DependencyProperty CropTransparentAreasProperty = DP.Register(nameof(CropTransparentAreas), typeof(bool),
                 typeof(BetterImage),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsMeasure,
                         (o, e) => ((BetterImage)o)._cropTransparentAreas = (bool)e.NewValue));
@@ -402,7 +402,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SetBitmapEntryDirectly(newValue == null ? Image.Empty : new Image(newValue, (int)newValue.Width, (int)newValue.Height, false));
         }
 
-        public static readonly DependencyProperty ForceFillProperty = DependencyProperty.Register(nameof(ForceFill), typeof(bool),
+        public static readonly DependencyProperty ForceFillProperty = DP.Register(nameof(ForceFill), typeof(bool),
                 typeof(BetterImage));
 
         public bool ForceFill {
@@ -410,7 +410,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ForceFillProperty, value);
         }
 
-        public static readonly DependencyProperty CollapseIfMissingProperty = DependencyProperty.Register(nameof(CollapseIfMissing), typeof(bool),
+        public static readonly DependencyProperty CollapseIfMissingProperty = DP.Register(nameof(CollapseIfMissing), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(OnCollapseIfMissingChanged));
 
         private bool _collapseIfMissing;
@@ -424,7 +424,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             ((BetterImage)o)._collapseIfMissing = (bool)e.NewValue;
         }
 
-        public static readonly DependencyProperty CollapseIfNullProperty = DependencyProperty.Register(nameof(CollapseIfNull), typeof(bool),
+        public static readonly DependencyProperty CollapseIfNullProperty = DP.Register(nameof(CollapseIfNull), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(OnCollapseIfNullChanged));
 
         private bool _collapseIfNull;
@@ -444,7 +444,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private bool _hideIfNull;
 
-        public static readonly DependencyProperty HideIfNullProperty = DependencyProperty.Register(nameof(HideIfNull), typeof(bool),
+        public static readonly DependencyProperty HideIfNullProperty = DP.Register(nameof(HideIfNull), typeof(bool),
                 typeof(BetterImage), new PropertyMetadata(OnHideIfNullChanged));
 
         public bool HideIfNull {
@@ -1529,10 +1529,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #region Initialization
         static BetterImage() {
             var style = CreateDefaultStyles();
-            StyleProperty.OverrideMetadata(typeof(BetterImage), new FrameworkPropertyMetadata(style));
-            ClipToBoundsProperty.OverrideMetadata(typeof(BetterImage),
+            DP.OverrideMetadata(StyleProperty, typeof(BetterImage), new FrameworkPropertyMetadata(style));
+            DP.OverrideMetadata(ClipToBoundsProperty, typeof(BetterImage),
                     new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsRender));
-            BackgroundProperty.OverrideMetadata(typeof(BetterImage),
+            DP.OverrideMetadata(BackgroundProperty, typeof(BetterImage),
                     new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Transparent), FrameworkPropertyMetadataOptions.AffectsRender));
         }
 

@@ -4,7 +4,7 @@ using System.Windows.Input;
 using FirstFloor.ModernUI.Helpers;
 
 namespace FirstFloor.ModernUI.Dialogs {
-    public partial class NonfatalErrorsDialog {
+    public partial class NonfatalErrorsDialog : global::FirstFloor.ModernUI.Windows.Controls.ModernDialog {
         public NonfatalErrorsDialog() {
             InitializeComponent();
             Buttons = new[] { OkButton };

@@ -3,10 +3,10 @@ using System.Windows.Input;
 
 namespace FirstFloor.ModernUI.Windows.Attached {
     public class IsPressedAdvancement {
-        public static readonly DependencyProperty IsPressedProperty = DependencyProperty.RegisterAttached("IsPressed", typeof(bool),
+        public static readonly DependencyProperty IsPressedProperty = DP.RegisterAttached("IsPressed", typeof(bool),
                 typeof(IsPressedAdvancement), new PropertyMetadata(false));
 
-        public static readonly DependencyProperty AttachIsPressedProperty = DependencyProperty.RegisterAttached("AttachIsPressed", typeof(bool),
+        public static readonly DependencyProperty AttachIsPressedProperty = DP.RegisterAttached("AttachIsPressed", typeof(bool),
                 typeof(IsPressedAdvancement), new PropertyMetadata(false, PropertyChangedCallback));
 
         public static void PropertyChangedCallback(DependencyObject depObj, DependencyPropertyChangedEventArgs args) {
@@ -14,13 +14,13 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             if (element == null) return;
 
             if ((bool)args.NewValue) {
-                element.MouseDown += OnMouseDown;
-                element.MouseUp += OnMouseUp;
-                element.MouseLeave += OnMouseLeave;
+                element.AddMouseDown(OnMouseDown);
+                element.AddMouseUp(OnMouseUp);
+                element.AddMouseLeave(OnMouseLeave);
             } else {
-                element.MouseDown -= OnMouseDown;
-                element.MouseUp -= OnMouseUp;
-                element.MouseLeave -= OnMouseLeave;
+                element.RemoveMouseDown(OnMouseDown);
+                element.RemoveMouseUp(OnMouseUp);
+                element.RemoveMouseLeave(OnMouseLeave);
             }
         }
 

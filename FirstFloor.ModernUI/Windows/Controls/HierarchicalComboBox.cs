@@ -71,7 +71,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     }
 
     public class LazyMenuItem : MenuItem {
-        public static readonly DependencyProperty AutoPrepareProperty = DependencyProperty.Register(nameof(AutoPrepare), typeof(bool),
+        public static readonly DependencyProperty AutoPrepareProperty = DP.Register(nameof(AutoPrepare), typeof(bool),
                 typeof(LazyMenuItem), new PropertyMetadata(OnAutoPrepareChanged));
 
         public bool AutoPrepare {
@@ -123,7 +123,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public object OriginalValue { get; }
 
         static HierarchicalItem() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(HierarchicalItem), new FrameworkPropertyMetadata(typeof(HierarchicalItem)));
         }
 
         public HierarchicalItem() { }
@@ -135,21 +134,21 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private bool _previewInitialized;
 
-        protected override void OnMouseEnter(MouseEventArgs e) {
-            base.OnMouseEnter(e);
+        protected override void OnPointerEntered(PointerEventArgs e) {
+            base.OnPointerEntered(e);
 
             if (_previewInitialized) return;
             _previewInitialized = true;
 
             if (_view?.PreviewProvider != null) {
-                SetValue(PreviewValuePropertyKey, _view.PreviewProvider.GetPreview(OriginalValue));
-                SetValue(ToolTipPlacementPropertyKey, _view.PreviewProvider.GetPlacementMode(OriginalValue));
+                SetValue(PreviewValuePropertyKey.DependencyProperty, _view.PreviewProvider.GetPreview(OriginalValue));
+                SetValue(ToolTipPlacementPropertyKey.DependencyProperty, _view.PreviewProvider.GetPlacementMode(OriginalValue));
             } else if (ToolTip != null) {
-                SetValue(PreviewValuePropertyKey, ToolTip);
+                SetValue(PreviewValuePropertyKey.DependencyProperty, ToolTip);
             }
         }
 
-        public static readonly DependencyPropertyKey PreviewValuePropertyKey = DependencyProperty.RegisterReadOnly(nameof(PreviewValue), typeof(object),
+        public static readonly DependencyPropertyKey PreviewValuePropertyKey = DP.RegisterReadOnly(nameof(PreviewValue), typeof(object),
                 typeof(HierarchicalItem), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PreviewValueProperty = PreviewValuePropertyKey.DependencyProperty;
@@ -157,7 +156,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         [CanBeNull]
         public object PreviewValue => GetValue(PreviewValueProperty);
 
-        public static readonly DependencyPropertyKey ToolTipPlacementPropertyKey = DependencyProperty.RegisterReadOnly(nameof(ToolTipPlacement),
+        public static readonly DependencyPropertyKey ToolTipPlacementPropertyKey = DP.RegisterReadOnly(nameof(ToolTipPlacement),
                 typeof(PlacementMode),
                 typeof(HierarchicalItem), new PropertyMetadata(PlacementMode.Mouse));
 
@@ -271,7 +270,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private static readonly object NullSubstitute = new object();
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.RegisterAttached("Value", typeof(object),
+        public static readonly DependencyProperty ValueProperty = DP.RegisterAttached("Value", typeof(object),
                 typeof(HierarchicalItemsView), new UIPropertyMetadata(null, null, CoerceMyProperty));
 
         private static object CoerceMyProperty(DependencyObject d, object baseValue) {
@@ -402,8 +401,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
     public class HierarchicalComboBox : Control {
         public HierarchicalComboBox() {
-            DefaultStyleKey = typeof(HierarchicalComboBox);
-            PreviewKeyDown += OnKeyDown;
+            this.AddPreviewKeyDown(OnKeyDown);
         }
 
         private object GetItem(int offset) {
@@ -439,12 +437,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private LazyMenuItem _menu;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
-            _menu = GetTemplateChild("PART_MenuItem") as LazyMenuItem;
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
+            _menu = this.GetTemplateChild("PART_MenuItem") as LazyMenuItem;
         }
 
-        public static readonly DependencyProperty InnerMarginProperty = DependencyProperty.Register(nameof(InnerMargin), typeof(Thickness),
+        public static readonly DependencyProperty InnerMarginProperty = DP.Register(nameof(InnerMargin), typeof(Thickness),
                 typeof(HierarchicalComboBox));
 
         public Thickness InnerMargin {
@@ -456,7 +455,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public event EventHandler<SelectedItemChangedEventArgs> ItemSelected;
 
-        public static readonly DependencyProperty SelectedContentProperty = DependencyProperty.Register(nameof(SelectedContent), typeof(DataTemplate),
+        public static readonly DependencyProperty SelectedContentProperty = DP.Register(nameof(SelectedContent), typeof(DataTemplate),
                 typeof(HierarchicalComboBox), new PropertyMetadata(OnSelectedContentChanged));
 
         public DataTemplate SelectedContent {
@@ -478,7 +477,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }*/
         }
 
-        public static readonly DependencyPropertyKey InnerItemsPropertyKey = DependencyProperty.RegisterReadOnly(nameof(InnerItems),
+        public static readonly DependencyPropertyKey InnerItemsPropertyKey = DP.RegisterReadOnly(nameof(InnerItems),
                 typeof(HierarchicalItemsView),
                 typeof(HierarchicalComboBox), new PropertyMetadata(null));
 
@@ -486,7 +485,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         internal HierarchicalItemsView InnerItems => (HierarchicalItemsView)GetValue(InnerItemsProperty);
 
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(nameof(ItemsSource), typeof(IList),
+        public static readonly DependencyProperty ItemsSourceProperty = DP.Register(nameof(ItemsSource), typeof(IList),
                 typeof(HierarchicalComboBox), new PropertyMetadata(OnItemsSourceChanged));
 
         public IList ItemsSource {
@@ -539,27 +538,27 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void OnItemsSourceChanged([CanBeNull] IList newValue) {
             InnerItems?.Dispose();
-            SetValue(InnerItemsPropertyKey, new HierarchicalItemsView(this, newValue));
+            SetValue(InnerItemsPropertyKey.DependencyProperty, new HierarchicalItemsView(this, newValue));
 
             if (FixedMode) {
                 if (newValue == null) {
                     SelectedItem = null;
                 } else if (!IsItemPresent(newValue, SelectedItem)) {
                     SelectedItem = Flatten(newValue).FirstOrDefault();
-                    SetValue(SelectedItemHeaderConverterPropertyKey, GetGroup(newValue, SelectedItem)?.HeaderConverter);
+                    SetValue(SelectedItemHeaderConverterPropertyKey.DependencyProperty, GetGroup(newValue, SelectedItem)?.HeaderConverter);
                     return;
                 }
             }
 
             if (newValue != null) {
-                SetValue(SelectedItemHeaderConverterPropertyKey, GetGroup(newValue, SelectedItem)?.HeaderConverter);
+                SetValue(SelectedItemHeaderConverterPropertyKey.DependencyProperty, GetGroup(newValue, SelectedItem)?.HeaderConverter);
             }
         }
 
         /// <summary>
         /// Update SelectedItem when ItemsSource value is changed.
         /// </summary>
-        public static readonly DependencyProperty FixedModeProperty = DependencyProperty.Register(nameof(FixedMode), typeof(bool),
+        public static readonly DependencyProperty FixedModeProperty = DP.Register(nameof(FixedMode), typeof(bool),
                 typeof(HierarchicalComboBox), new FrameworkPropertyMetadata(true));
 
         public bool FixedMode {
@@ -567,7 +566,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(FixedModeProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(nameof(SelectedItem), typeof(object),
+        public static readonly DependencyProperty SelectedItemProperty = DP.Register(nameof(SelectedItem), typeof(object),
                 typeof(HierarchicalComboBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnSelectedItemChanged));
 
         private static void OnSelectedItemChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
@@ -578,11 +577,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             SelectionChanged?.Invoke(this, new SelectedItemChangedEventArgs(oldValue, newValue));
 
             var itemsSource = ItemsSource;
-            SetValue(SelectedItemHeaderConverterPropertyKey, itemsSource == null ? null : GetGroup(itemsSource, SelectedItem)?.HeaderConverter);
+            SetValue(SelectedItemHeaderConverterPropertyKey.DependencyProperty, itemsSource == null ? null : GetGroup(itemsSource, SelectedItem)?.HeaderConverter);
         }
 
         internal void ItemChosen(object item, HierarchicalGroup parentGroup) {
-            SetValue(SelectedItemHeaderConverterPropertyKey, parentGroup?.HeaderConverter);
+            SetValue(SelectedItemHeaderConverterPropertyKey.DependencyProperty, parentGroup?.HeaderConverter);
 
             var oldValue = SelectedItem;
             SelectedItem = item;
@@ -590,7 +589,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         public static readonly DependencyPropertyKey SelectedItemHeaderConverterPropertyKey =
-                DependencyProperty.RegisterReadOnly(nameof(SelectedItemHeaderConverter), typeof(IValueConverter),
+                DP.RegisterReadOnly(nameof(SelectedItemHeaderConverter), typeof(IValueConverter),
                         typeof(HierarchicalComboBox), new PropertyMetadata(null));
 
         public static readonly DependencyProperty SelectedItemHeaderConverterProperty = SelectedItemHeaderConverterPropertyKey.DependencyProperty;
@@ -602,7 +601,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SelectedItemProperty, value);
         }
 
-        public static readonly DependencyProperty PreviewProviderProperty = DependencyProperty.Register(nameof(PreviewProvider),
+        public static readonly DependencyProperty PreviewProviderProperty = DP.Register(nameof(PreviewProvider),
                 typeof(IHierarchicalItemPreviewProvider), typeof(HierarchicalComboBox));
 
         [CanBeNull]

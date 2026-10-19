@@ -13,31 +13,30 @@ using JetBrains.Annotations;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class AsyncButton : Button, IProgress<AsyncProgressEntry> {
         public AsyncButton() {
-            DefaultStyleKey = typeof(AsyncButton);
         }
 
-        public static readonly DependencyPropertyKey IsProcessingPropertyKey = DependencyProperty.RegisterReadOnly(nameof(IsProcessing), typeof(bool),
+        public static readonly DependencyPropertyKey IsProcessingPropertyKey = DP.RegisterReadOnly(nameof(IsProcessing), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsProcessingProperty = IsProcessingPropertyKey.DependencyProperty;
 
         public bool IsProcessing => GetValue(IsProcessingProperty) as bool? == true;
 
-        public static readonly DependencyPropertyKey CancellablePropertyKey = DependencyProperty.RegisterReadOnly(nameof(Cancellable), typeof(bool),
+        public static readonly DependencyPropertyKey CancellablePropertyKey = DP.RegisterReadOnly(nameof(Cancellable), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty CancellableProperty = CancellablePropertyKey.DependencyProperty;
 
         public bool Cancellable => GetValue(CancellableProperty) as bool? == true;
 
-        public static readonly DependencyPropertyKey PercentageProgressPropertyKey = DependencyProperty.RegisterReadOnly(nameof(PercentageProgress), typeof(bool),
+        public static readonly DependencyPropertyKey PercentageProgressPropertyKey = DP.RegisterReadOnly(nameof(PercentageProgress), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty PercentageProgressProperty = PercentageProgressPropertyKey.DependencyProperty;
 
         public bool PercentageProgress => GetValue(PercentageProgressProperty) as bool? == true;
 
-        public static readonly DependencyPropertyKey MessageProgressPropertyKey = DependencyProperty.RegisterReadOnly(nameof(MessageProgress), typeof(bool),
+        public static readonly DependencyPropertyKey MessageProgressPropertyKey = DP.RegisterReadOnly(nameof(MessageProgress), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty MessageProgressProperty = MessageProgressPropertyKey.DependencyProperty;
@@ -47,26 +46,27 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private InvokeExecuteDelegate _commandInvoke;
         private bool _commandCancellable, _commandPercentageProgress, _commandMessageProgress;
 
-        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e) {
+        protected override void OnPropertyChanged(Avalonia.AvaloniaPropertyChangedEventArgs e) {
             base.OnPropertyChanged(e);
             if (e.Property.Name == nameof(Command)) {
                 _commandInvoke = AnalyzeCommand(Command as IAsyncCommand,
                         out _commandCancellable, out _commandPercentageProgress, out _commandMessageProgress);
-                SetValue(CancellablePropertyKey, _commandCancellable || CancelCommand != null);
-                SetValue(PercentageProgressPropertyKey, _commandPercentageProgress || ProgressPercentage);
-                SetValue(MessageProgressPropertyKey, _commandMessageProgress || ProgressMessage);
+                SetValue(CancellablePropertyKey.DependencyProperty, _commandCancellable || CancelCommand != null);
+                SetValue(PercentageProgressPropertyKey.DependencyProperty, _commandPercentageProgress || ProgressPercentage);
+                SetValue(MessageProgressPropertyKey.DependencyProperty, _commandMessageProgress || ProgressMessage);
             }
         }
 
         private Button _cancelButton;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_cancelButton != null) {
                 _cancelButton.Click -= OnCancelClick;
             }
 
-            base.OnApplyTemplate();
-            _cancelButton = GetTemplateChild(@"PART_CancelButton") as Button;
+            base.OnApplyTemplate(e);
+            _cancelButton = this.GetTemplateChild(@"PART_CancelButton") as Button;
             if (_cancelButton != null) {
                 _cancelButton.Click += OnCancelClick;
             }
@@ -85,7 +85,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (Command is IAsyncCommand asyncCommand) {
                 _busy.Task(async () => {
                     try {
-                        SetValue(IsProcessingPropertyKey, true);
+                        SetValue(IsProcessingPropertyKey.DependencyProperty, true);
                         using (_cancellation = new CancellationTokenSource())
                         using (_taskbar = TaskbarService.Create("Async operation", 1200)) {
                             await _commandInvoke.Invoke(asyncCommand, this, _cancellation.Token, CommandParameter);
@@ -98,7 +98,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                         NonfatalError.Notify("Unhandled error", e);
                     } finally {
                         _cancellation = null;
-                        SetValue(IsProcessingPropertyKey, false);
+                        SetValue(IsProcessingPropertyKey.DependencyProperty, false);
                     }
                 }).Ignore();
             } else {
@@ -106,7 +106,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty CancelCommandProperty = DependencyProperty.Register(nameof(CancelCommand), typeof(ICommand),
+        public static readonly DependencyProperty CancelCommandProperty = DP.Register(nameof(CancelCommand), typeof(ICommand),
                 typeof(AsyncButton), new PropertyMetadata(null, (o, e) => {
                     var b = (AsyncButton)o;
                     b._cancelCommand = (ICommand)e.NewValue;
@@ -116,7 +116,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private void OnCancelCommandPropertyChanged(object sender, PropertyChangedEventArgs args) {
             if (args.PropertyName == nameof(CommandBase.IsAbleToExecute) && !_busy.Is) {
-                SetValue(IsProcessingPropertyKey, (CancelCommand as CommandBase)?.IsAbleToExecute);
+                SetValue(IsProcessingPropertyKey.DependencyProperty, (CancelCommand as CommandBase)?.IsAbleToExecute);
             }
         }
 
@@ -127,7 +127,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CancelCommandProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressPercentageProperty = DependencyProperty.Register(nameof(ProgressPercentage), typeof(bool),
+        public static readonly DependencyProperty ProgressPercentageProperty = DP.Register(nameof(ProgressPercentage), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false, (o, e) => {
                     var b = (AsyncButton)o;
                     b._progressPercentage = (bool)e.NewValue;
@@ -141,7 +141,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ProgressPercentageProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressMessageProperty = DependencyProperty.Register(nameof(ProgressMessage), typeof(bool),
+        public static readonly DependencyProperty ProgressMessageProperty = DP.Register(nameof(ProgressMessage), typeof(bool),
                 typeof(AsyncButton), new PropertyMetadata(false, (o, e) => {
                     var b = (AsyncButton)o;
                     b._progressMessage = (bool)e.NewValue;
@@ -155,7 +155,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ProgressMessageProperty, value);
         }
 
-        public static readonly DependencyProperty ProgressProperty = DependencyProperty.Register(nameof(Progress), typeof(AsyncProgressEntry),
+        public static readonly DependencyProperty ProgressProperty = DP.Register(nameof(Progress), typeof(AsyncProgressEntry),
                 typeof(AsyncButton));
 
         public AsyncProgressEntry Progress {

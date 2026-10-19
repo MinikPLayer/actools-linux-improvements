@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Effects {
             UpdateShaderValue(HueProperty);
         }
 
-        public static readonly DependencyProperty HueProperty = DependencyProperty.Register("Hue", typeof(double),
+        public static readonly DependencyProperty HueProperty = DP.Register("Hue", typeof(double),
                 typeof(ColorPickerHuePaletteEffect), new UIPropertyMetadata(0.0, PixelShaderConstantCallback(0), CoerceSaturationFactor));
 
         public double Hue {

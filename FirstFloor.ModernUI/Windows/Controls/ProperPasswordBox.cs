@@ -12,28 +12,28 @@ namespace FirstFloor.ModernUI.Windows.Controls {
     /// </summary>
     public class ProperPasswordBox : Control {
         public ProperPasswordBox() {
-            DefaultStyleKey = typeof(ProperPasswordBox);
             TogglePasswordVisibilityCommand = new DelegateCommand(TogglePasswordVisibility);
         }
 
         private PasswordBox _passwordBox;
         private TextBox _textBox;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_passwordBox != null) {
                 _passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
-                _passwordBox.PreviewKeyDown -= FocusAdvancement.OnKeyDown;
+                _passwordBox.RemovePreviewKeyDown(FocusAdvancement.OnKeyDown);
             }
 
-            _passwordBox = GetTemplateChild("PART_PasswordBox") as PasswordBox;
-            _textBox = GetTemplateChild("PART_TextBox") as TextBox;
+            _passwordBox = this.GetTemplateChild("PART_PasswordBox") as PasswordBox;
+            _textBox = this.GetTemplateChild("PART_TextBox") as TextBox;
 
             if (_passwordBox != null) {
                 _passwordBox.Password = Password;
                 _passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
-                _passwordBox.PreviewKeyDown += FocusAdvancement.OnKeyDown;
+                _passwordBox.AddPreviewKeyDown(FocusAdvancement.OnKeyDown);
             }
         }
 
@@ -49,7 +49,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _skipNext = false;
         }
 
-        protected override void OnGotFocus(RoutedEventArgs e) {
+        protected override void OnGotFocus(GotFocusEventArgs e) {
             base.OnGotFocus(e);
 
             if (VisiblePassword) {
@@ -69,7 +69,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private bool _skipNext;
 
-        public static readonly DependencyProperty PasswordProperty = DependencyProperty.Register(nameof(Password), typeof(string),
+        public static readonly DependencyProperty PasswordProperty = DP.Register(nameof(Password), typeof(string),
                 typeof(ProperPasswordBox), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnPasswordChanged));
 
         public string Password {
@@ -90,7 +90,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _skipNext = false;
         }
 
-        public static readonly DependencyProperty VisiblePasswordProperty = DependencyProperty.Register(nameof(VisiblePassword), typeof(bool),
+        public static readonly DependencyProperty VisiblePasswordProperty = DP.Register(nameof(VisiblePassword), typeof(bool),
                 typeof(ProperPasswordBox));
 
         public bool VisiblePassword {
@@ -98,7 +98,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(VisiblePasswordProperty, value);
         }
 
-        public static readonly DependencyProperty TogglePasswordVisibilityCommandProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TogglePasswordVisibilityCommandProperty = DP.Register(
                 nameof(TogglePasswordVisibilityCommand), typeof(DelegateCommand),
                 typeof(ProperPasswordBox));
 
@@ -121,7 +121,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
         }
 
-        public static readonly DependencyProperty PlaceholderProperty = DependencyProperty.Register(nameof(Placeholder), typeof(string),
+        public static readonly DependencyProperty PlaceholderProperty = DP.Register(nameof(Placeholder), typeof(string),
                 typeof(ProperPasswordBox));
 
         public string Placeholder {
@@ -129,7 +129,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(PlaceholderProperty, value);
         }
 
-        public static readonly DependencyProperty CaretBrushProperty = DependencyProperty.Register(nameof(CaretBrush), typeof(Brush),
+        public static readonly DependencyProperty CaretBrushProperty = DP.Register(nameof(CaretBrush), typeof(Brush),
                 typeof(ProperPasswordBox));
 
         public Brush CaretBrush {
@@ -137,7 +137,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(CaretBrushProperty, value);
         }
 
-        public static readonly DependencyProperty SelectionBrushProperty = DependencyProperty.Register(nameof(SelectionBrush), typeof(Brush),
+        public static readonly DependencyProperty SelectionBrushProperty = DP.Register(nameof(SelectionBrush), typeof(Brush),
                 typeof(ProperPasswordBox));
 
         public Brush SelectionBrush {

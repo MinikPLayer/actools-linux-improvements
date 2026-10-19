@@ -1,0 +1,162 @@
+<Project>
+  <PropertyGroup>
+    <AvaloniaVersion>11.3.22</AvaloniaVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="Avalonia.AvaloniaProperty" Alias="DependencyProperty" />
+    <Using Include="Avalonia.AvaloniaObject" Alias="DependencyObject" />
+    <Using Include="Avalonia.Controls.Control" Alias="FrameworkElement" />
+    <Using Include="Avalonia.Controls.Control" Alias="UIElement" />
+    <Using Include="Avalonia.Visual" Alias="Visual" />
+    <Using Include="Avalonia.Thickness" Alias="Thickness" />
+    <Using Include="Avalonia.CornerRadius" Alias="CornerRadius" />
+    <Using Include="Avalonia.Vector" Alias="Vector" />
+    <Using Include="Avalonia.Matrix" Alias="Matrix" />
+    <Using Include="Avalonia.Interactivity.RoutedEvent" Alias="RoutedEvent" />
+    <Using Include="Avalonia.Interactivity.RoutedEventArgs" Alias="RoutedEventArgs" />
+    <Using Include="Avalonia.Layout.HorizontalAlignment" Alias="HorizontalAlignment" />
+    <Using Include="Avalonia.Layout.VerticalAlignment" Alias="VerticalAlignment" />
+    <Using Include="Avalonia.Layout.Orientation" Alias="Orientation" />
+    <Using Include="Avalonia.Media.FlowDirection" Alias="FlowDirection" />
+    <Using Include="Avalonia.Application" Alias="Application" />
+    <Using Include="Avalonia.Styling.StyleBase" Alias="Style" />
+    <Using Include="Avalonia.Controls.ResourceDictionary" Alias="ResourceDictionary" />
+    <Using Include="Avalonia.Data.Converters.IValueConverter" Alias="IValueConverter" />
+    <Using Include="Avalonia.Data.Binding" Alias="Binding" />
+    <Using Include="Avalonia.Data.BindingMode" Alias="BindingMode" />
+    <Using Include="Avalonia.Data.BindingOperations" Alias="BindingOperations" />
+    <Using Include="Avalonia.Markup.Xaml.MarkupExtension" Alias="MarkupExtension" />
+    <Using Include="Avalonia.Metadata.XmlnsDefinitionAttribute" Alias="XmlnsDefinitionAttribute" />
+    <Using Include="Avalonia.Metadata.XmlnsPrefixAttribute" Alias="XmlnsPrefixAttribute" />
+    <Using Include="Avalonia.Controls.Primitives.TemplatedControl" Alias="Control" />
+    <Using Include="Avalonia.Controls.ContentControl" Alias="ContentControl" />
+    <Using Include="Avalonia.Controls.ItemsControl" Alias="ItemsControl" />
+    <Using Include="Avalonia.Controls.Panel" Alias="Panel" />
+    <Using Include="Avalonia.Controls.Button" Alias="Button" />
+    <Using Include="Avalonia.Controls.TextBox" Alias="TextBox" />
+    <Using Include="Avalonia.Controls.TextBlock" Alias="TextBlock" />
+    <Using Include="Avalonia.Controls.ComboBox" Alias="ComboBox" />
+    <Using Include="Avalonia.Controls.Slider" Alias="Slider" />
+    <Using Include="Avalonia.Controls.ListBox" Alias="ListBox" />
+    <Using Include="Avalonia.Controls.MenuItem" Alias="MenuItem" />
+    <Using Include="Avalonia.Controls.ScrollViewer" Alias="ScrollViewer" />
+    <Using Include="Avalonia.Controls.ContextMenu" Alias="ContextMenu" />
+    <Using Include="Avalonia.Controls.Primitives.Popup" Alias="Popup" />
+    <Using Include="Avalonia.Controls.Primitives.Thumb" Alias="Thumb" />
+    <Using Include="Avalonia.Controls.Primitives.ToggleButton" Alias="ToggleButton" />
+    <Using Include="Avalonia.Controls.Primitives.ScrollBar" Alias="ScrollBar" />
+    <Using Include="Avalonia.Controls.TreeView" Alias="TreeView" />
+    <Using Include="Avalonia.Controls.Image" Alias="Image" />
+    <Using Include="Avalonia.Controls.Presenters.ContentPresenter" Alias="ContentPresenter" />
+    <Using Include="Avalonia.Controls.Decorator" Alias="Decorator" />
+    <Using Include="Avalonia.Controls.Border" Alias="Border" />
+    <Using Include="Avalonia.Controls.Grid" Alias="Grid" />
+    <Using Include="Avalonia.Controls.StackPanel" Alias="StackPanel" />
+    <Using Include="Avalonia.Controls.WrapPanel" Alias="WrapPanel" />
+    <Using Include="Avalonia.Controls.DockPanel" Alias="DockPanel" />
+    <Using Include="Avalonia.Controls.Canvas" Alias="Canvas" />
+    <Using Include="Avalonia.Controls.CheckBox" Alias="CheckBox" />
+    <Using Include="Avalonia.Controls.RadioButton" Alias="RadioButton" />
+    <Using Include="Avalonia.Controls.Window" Alias="Window" />
+    <Using Include="Avalonia.Controls.UserControl" Alias="UserControl" />
+    <Using Include="Avalonia.Controls.Label" Alias="Label" />
+    <Using Include="Avalonia.Markup.Xaml.Templates.DataTemplate" Alias="DataTemplate" />
+    <Using Include="Avalonia.Controls.ToolTip" Alias="ToolTip" />
+    <Using Include="Avalonia.Controls.Viewbox" Alias="Viewbox" />
+    <Using Include="Avalonia.Controls.SelectionChangedEventArgs" Alias="SelectionChangedEventArgs" />
+    <Using Include="Avalonia.Controls.ProgressBar" Alias="ProgressBar" />
+    <Using Include="Avalonia.Controls.Expander" Alias="Expander" />
+    <Using Include="Avalonia.Controls.TabControl" Alias="TabControl" />
+    <Using Include="Avalonia.Controls.DataGrid" Alias="DataGrid" />
+    <Using Include="Avalonia.Controls.DataGridColumn" Alias="DataGridColumn" />
+    <Using Include="Avalonia.Media.TextWrapping" Alias="TextWrapping" />
+    <Using Include="Avalonia.Media.TextTrimming" Alias="TextTrimming" />
+    <Using Include="Avalonia.Media.TextAlignment" Alias="TextAlignment" />
+    <Using Include="Avalonia.Media.IBrush" Alias="Brush" />
+    <Using Include="Avalonia.Media.Brushes" Alias="Brushes" />
+    <Using Include="Avalonia.Media.SolidColorBrush" Alias="SolidColorBrush" />
+    <Using Include="Avalonia.Media.Color" Alias="Color" />
+    <Using Include="Avalonia.Media.Colors" Alias="Colors" />
+    <Using Include="Avalonia.Media.Geometry" Alias="Geometry" />
+    <Using Include="Avalonia.Media.FontFamily" Alias="FontFamily" />
+    <Using Include="Avalonia.Media.FontWeight" Alias="FontWeight" />
+    <Using Include="Avalonia.Media.FontStyle" Alias="FontStyle" />
+    <Using Include="Avalonia.Media.Stretch" Alias="Stretch" />
+    <Using Include="Avalonia.Media.StretchDirection" Alias="StretchDirection" />
+    <Using Include="Avalonia.Media.Transform" Alias="Transform" />
+    <Using Include="Avalonia.Media.DrawingContext" Alias="DrawingContext" />
+    <Using Include="Avalonia.Media.FormattedText" Alias="FormattedText" />
+    <Using Include="Avalonia.Media.IImage" Alias="ImageSource" />
+    <Using Include="Avalonia.Media.Imaging.Bitmap" Alias="BitmapSource" />
+    <Using Include="Avalonia.Media.Imaging.Bitmap" Alias="BitmapImage" />
+    <Using Include="Avalonia.Threading.Dispatcher" Alias="Dispatcher" />
+    <Using Include="Avalonia.Threading.DispatcherPriority" Alias="DispatcherPriority" />
+    <Using Include="Avalonia.Threading.DispatcherTimer" Alias="DispatcherTimer" />
+    <Using Include="Avalonia.Controls.Metadata.TemplatePartAttribute" Alias="TemplatePartAttribute" />
+    <Using Include="Avalonia.Input.KeyEventArgs" Alias="KeyEventArgs" />
+    <Using Include="Avalonia.Controls.SizeChangedEventArgs" Alias="SizeChangedEventArgs" />
+    <Using Include="Avalonia.Input.VectorEventArgs" Alias="DragDeltaEventArgs" />
+    <Using Include="Avalonia.Controls.TextChangedEventArgs" Alias="TextChangedEventArgs" />
+    <Using Include="Avalonia.Controls.ScrollChangedEventArgs" Alias="ScrollChangedEventArgs" />
+    <Using Include="Avalonia.Animation.Animatable" Alias="Freezable" />
+    <Using Include="Avalonia.Input.PointerEventArgs" Alias="MouseButtonEventArgs" />
+    <Using Include="Avalonia.Input.PointerEventArgs" Alias="MouseEventArgs" />
+    <Using Include="Avalonia.Input.PointerWheelEventArgs" Alias="MouseWheelEventArgs" />
+    <Using Include="Avalonia.Input.DragEventArgs" Alias="DragEventArgs" />
+    <Using Include="Avalonia.Input.KeyModifiers" Alias="ModifierKeys" />
+    <Using Include="Avalonia.Input.KeyGesture" Alias="KeyGesture" />
+    <Using Include="Avalonia.Input.IInputElement" Alias="IInputElement" />
+    <Using Include="Avalonia.Input.VectorEventArgs" Alias="DragStartedEventArgs" />
+    <Using Include="Avalonia.Input.VectorEventArgs" Alias="DragCompletedEventArgs" />
+    <Using Include="Avalonia.Controls.ContextRequestedEventArgs" Alias="ContextMenuEventArgs" />
+    <Using Include="Avalonia.Controls.ColumnDefinition" Alias="ColumnDefinition" />
+    <Using Include="Avalonia.Controls.GridSplitter" Alias="GridSplitter" />
+    <Using Include="Avalonia.Controls.TextBox" Alias="PasswordBox" />
+    <Using Include="Avalonia.Media.TranslateTransform" Alias="TranslateTransform" />
+    <Using Include="Avalonia.Media.FontStretch" Alias="FontStretch" />
+    <Using Include="Avalonia.Controls.ITemplate&lt;Avalonia.Controls.Panel&gt;" Alias="ItemsPanelTemplate" />
+    <Using Include="Avalonia.Markup.Xaml.Templates.ControlTemplate" Alias="ControlTemplate" />
+    <Using Include="Avalonia.Controls.Controls" Alias="UIElementCollection" />
+    <Using Include="Avalonia.Size" Alias="Size" />
+    <Using Include="System.Windows.Rect" Alias="Rect" />
+    <Using Include="Avalonia.Point" Alias="Point" />
+    <Using Include="Avalonia.Input.Key" Alias="Key" />
+    <Using Include="Avalonia.Controls.Primitives.ScrollBarVisibility" Alias="ScrollBarVisibility" />
+    <Using Include="Avalonia.Controls.Separator" Alias="Separator" />
+    <Using Include="Avalonia.Data.RelativeSource" Alias="RelativeSource" />
+    <Using Include="Avalonia.Data.RelativeSourceMode" Alias="RelativeSourceMode" />
+    <Using Include="Avalonia.Controls.Primitives.SelectingItemsControl" Alias="Selector" />
+    <Using Include="Avalonia.Controls.SelectionMode" Alias="SelectionMode" />
+    <Using Include="Avalonia.Controls.Documents.Run" Alias="Run" />
+    <Using Include="Avalonia.Styling.Setter" Alias="Setter" />
+    <Using Include="Avalonia.Controls.TextBox" Alias="TextBoxBase" />
+    <Using Include="Avalonia.Controls.TreeViewItem" Alias="TreeViewItem" />
+    <Using Include="Avalonia.PixelPoint" Alias="PixelPoint" />
+    <Using Include="Avalonia.PixelRect" Alias="PixelRect" />
+    <Using Include="Avalonia.Input.DragDropEffects" Alias="DragDropEffects" />
+    <Using Include="Avalonia.Input.IDataObject" Alias="IDataObject" />
+    <Using Include="Avalonia.Input.DataObject" Alias="DataObject" />
+    <Using Include="System.Drawing.ColorTranslator" Alias="ColorTranslator" />
+    <Using Include="Avalonia.Controls.WindowState" Alias="WindowState" />
+    <Using Include="Avalonia.Controls.TextBox" Alias="TextBoxEx" />
+    <Using Include="System.TimeSpan" Alias="Duration" />
+    <Using Include="Avalonia.Controls.Primitives.Track" Alias="Track" />
+    <Using Include="Avalonia.Controls.RepeatButton" Alias="RepeatButton" />
+    <Using Include="Avalonia.Controls.Shapes.Ellipse" Alias="Ellipse" />
+    <Using Include="Avalonia.Controls.Shapes.Line" Alias="Line" />
+    <Using Include="System.Windows" />
+    <Using Include="System.Windows.Input" />
+    <Using Include="System.Windows.Data" />
+    <Using Include="System.Windows.Controls" />
+    <Using Include="System.Windows.Media" />
+    <Using Include="System.Windows.Threading" />
+    <Using Include="System.Windows.Markup" />
+    <Using Include="Avalonia.Input.NavigationDirection" Alias="FocusNavigationDirection" />
+    <Using Include="Avalonia.Input" />
+    <Using Include="Avalonia.Interactivity" />
+    <Using Include="Avalonia.Controls.GridLength" Alias="GridLength" />
+    <Using Include="Avalonia.Controls.GridUnitType" Alias="GridUnitType" />
+    <Using Include="Avalonia.Controls.PlacementMode" Alias="PlacementMode" />
+    <Using Include="Avalonia.Data.UpdateSourceTrigger" Alias="UpdateSourceTrigger" />
+  </ItemGroup>
+</Project>

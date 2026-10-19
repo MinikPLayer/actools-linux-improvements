@@ -21,7 +21,7 @@ namespace FirstFloor.ModernUI.Effects {
             set => SetValue(InputProperty, value);
         }
 
-        public static readonly DependencyProperty OverlayColorProperty = DependencyProperty.Register("OverlayColor", typeof(Color),
+        public static readonly DependencyProperty OverlayColorProperty = DP.Register("OverlayColor", typeof(Color),
                 typeof(AsTransparencyMask), new UIPropertyMetadata(default(Color), PixelShaderConstantCallback(0)));
 
         public Color OverlayColor {

@@ -21,18 +21,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return _registeredElements.IndexOf(child);
         }
 
-        protected override IEnumerator LogicalChildren => ((IEnumerable)_registeredElements).GetEnumerator();
-
-        protected override int VisualChildrenCount => _child == null ? 0 : 1;
-
-        protected override Visual GetVisualChild(int index) {
-            if (index != 0 || _child == null) throw new ArgumentOutOfRangeException();
-            return _child;
-        }
-
         protected void ClearRegisteredChildren() {
             foreach (var element in _registeredElements) {
-                RemoveLogicalChild(element);
+                LogicalChildren.Remove(element);
             }
             _registeredElements.Clear();
         }
@@ -44,13 +35,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (oldChild != null) {
                 var i = _registeredElements.IndexOf(oldChild);
                 if (i != -1) {
-                    RemoveLogicalChild(oldChild);
+                    LogicalChildren.Remove(oldChild);
                     _registeredElements.RemoveAt(i);
                 }
             }
 
             if (newChild != null) {
-                AddLogicalChild(newChild);
+                LogicalChildren.Add(newChild);
                 _registeredElements.Add(newChild);
             }
 
@@ -61,8 +52,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             if (ReferenceEquals(_child, child) || _busy) return;
             try {
                 _busy = true;
-                if (_child != null) RemoveVisualChild(_child);
-                AddVisualChild(child);
+                if (_child != null) VisualChildren.Remove(_child);
+                if (child != null) VisualChildren.Add(child);
                 _child = child;
             } finally {
                 _busy = false;

@@ -12,7 +12,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringProperty = DependencyProperty.RegisterAttached("ContinuousFiring", typeof(bool),
+        public static readonly DependencyProperty ContinuousFiringProperty = DP.RegisterAttached("ContinuousFiring", typeof(bool),
                 typeof(StoryboardHelper), new UIPropertyMetadata(OnContinuousFiringChanged));
 
         private static async void OnContinuousFiringChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -39,7 +39,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringActiveProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringActiveProperty = DependencyProperty.RegisterAttached("ContinuousFiringActive", typeof(bool),
+        public static readonly DependencyProperty ContinuousFiringActiveProperty = DP.RegisterAttached("ContinuousFiringActive", typeof(bool),
                 typeof(StoryboardHelper));
 
         public static TimeSpan GetContinuousFiringInterval(DependencyObject obj) {
@@ -50,7 +50,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiringIntervalProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiringIntervalProperty = DependencyProperty.RegisterAttached("ContinuousFiringInterval", typeof(TimeSpan),
+        public static readonly DependencyProperty ContinuousFiringIntervalProperty = DP.RegisterAttached("ContinuousFiringInterval", typeof(TimeSpan),
                 typeof(StoryboardHelper));
 
         public static bool GetContinuousFired(DependencyObject obj) {
@@ -61,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Actions {
             obj.SetValue(ContinuousFiredProperty, value);
         }
 
-        public static readonly DependencyProperty ContinuousFiredProperty = DependencyProperty.RegisterAttached("ContinuousFired", typeof(bool),
+        public static readonly DependencyProperty ContinuousFiredProperty = DP.RegisterAttached("ContinuousFired", typeof(bool),
                 typeof(StoryboardHelper));
     }
 }

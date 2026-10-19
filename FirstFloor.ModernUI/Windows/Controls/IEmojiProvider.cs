@@ -1,5 +1,5 @@
-﻿using System;
-using System.Windows.Media;
+using System;
+using Avalonia.Media;
 using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
@@ -11,6 +11,6 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         Uri GetUri([NotNull] string emojiCode);
 
         [CanBeNull]
-        ImageSource GetImageSource([NotNull] string emojiCode);
+        IImage GetImageSource([NotNull] string emojiCode);
     }
 }

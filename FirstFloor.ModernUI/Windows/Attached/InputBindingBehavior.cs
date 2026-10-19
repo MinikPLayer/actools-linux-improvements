@@ -15,7 +15,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         }
 
         public static readonly DependencyProperty PropagateToWindowProperty =
-            DependencyProperty.RegisterAttached("PropagateToWindow", typeof(bool), typeof(InputBindingBehavior),
+            DP.RegisterAttached("PropagateToWindow", typeof(bool), typeof(InputBindingBehavior),
             new PropertyMetadata(false, OnPropagateToWindowChanged));
 
         private static void OnPropagateToWindowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -39,7 +39,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(WindowProperty, value);
         }
 
-        public static readonly DependencyProperty WindowProperty = DependencyProperty.RegisterAttached("Window", typeof(Window),
+        public static readonly DependencyProperty WindowProperty = DP.RegisterAttached("Window", typeof(Window),
                 typeof(InputBindingBehavior), new UIPropertyMetadata(null));
 
         private static void SetBindings(UIElement element) {

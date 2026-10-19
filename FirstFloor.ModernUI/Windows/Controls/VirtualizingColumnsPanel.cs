@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class VirtualizingColumnsPanel : VirtualizingPanel, IScrollInfo {
-        public static readonly DependencyProperty ColumnsProperty = DependencyProperty.Register(nameof(Columns), typeof(int),
+        public static readonly DependencyProperty ColumnsProperty = DP.Register(nameof(Columns), typeof(int),
                 typeof(VirtualizingColumnsPanel), new PropertyMetadata(2, (o, e) => {
                     var panel = (VirtualizingColumnsPanel)o;
                     panel._columns = (int)e.NewValue;
@@ -22,7 +22,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ColumnsProperty, value);
         }
 
-        public static readonly DependencyProperty ItemHeightModifierProperty = DependencyProperty.Register(nameof(ItemHeightModifier), typeof(double),
+        public static readonly DependencyProperty ItemHeightModifierProperty = DP.Register(nameof(ItemHeightModifier), typeof(double),
                 typeof(VirtualizingColumnsPanel), new PropertyMetadata(0.8, (o, e) => {
                     var panel = (VirtualizingColumnsPanel)o;
                     panel._itemHeightModifier = (double)e.NewValue;
@@ -52,7 +52,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         public VirtualizingColumnsPanel() {
             if (!DesignerProperties.GetIsInDesignMode(this)) {
-                Dispatcher.BeginInvoke((Action)delegate {
+                Dispatcher.UIThread.BeginInvoke((Action)delegate {
                     _itemsControl = ItemsControl.GetItemsOwner(this);
                     _generator = (IRecyclingItemContainerGenerator)ItemContainerGenerator;
                     InvalidateMeasure();
@@ -73,7 +73,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             CleanUpItems(lastVisibleItemIndex, firstVisibleItemIndex);
             if (lastVisibleItemIndex == -1) return availableSize;
 
-            var children = InternalChildren;
+            var children = Children;
             var startPos = _generator.GeneratorPositionFromIndex(firstVisibleItemIndex);
             var childIndex = startPos.Offset == 0 ? startPos.Index : startPos.Index + 1;
             using (_generator.StartAt(startPos, GeneratorDirection.Forward, true)) {

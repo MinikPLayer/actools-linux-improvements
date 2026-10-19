@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/BbCodeBlock.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ColorPicker.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ContextMenuButton.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/DoubleSlider.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/HierarchicalComboBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/HistoricalTextBox.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/LabeledToggleButton.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernButton.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernDialog.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernFrame.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernMenu.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernProgressRing.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTab.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernTabSplitter.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ModernWindow.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/RoundSlider.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/SplitButton.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/TransitioningContentControl.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/TagsList.axaml"/>
+        <ResourceInclude Source="avares://FirstFloor.ModernUI/Themes/ValueLabel.axaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

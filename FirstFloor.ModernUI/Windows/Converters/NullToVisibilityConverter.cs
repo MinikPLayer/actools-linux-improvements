@@ -6,7 +6,11 @@ using System.Windows;
 namespace FirstFloor.ModernUI.Windows.Converters {
     [ValueConversion(typeof(object), typeof(bool))]
     public class NullToVisibilityConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(value, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             var flag = value == null;
             var parameterString = parameter as string ?? "";
             var inverse = parameterString.Contains(@"inverse");

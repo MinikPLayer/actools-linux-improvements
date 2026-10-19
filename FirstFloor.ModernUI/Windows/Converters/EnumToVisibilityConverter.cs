@@ -6,7 +6,11 @@ using System.Windows;
 namespace FirstFloor.ModernUI.Windows.Converters {
     [ValueConversion(typeof(object), typeof(Visibility))]
     public class EnumToVisibilityConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
+            return VisibilityResult.Adapt(ConvertCore(value, targetType, parameter, culture), targetType);
+        }
+
+        private object ConvertCore(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture) {
             if (parameter == null) {
                 return value == null ? Visibility.Visible : Visibility.Collapsed;
             }

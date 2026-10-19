@@ -16,11 +16,11 @@ namespace FirstFloor.ModernUI.Helpers {
 
         private void OnLoaded(object sender, RoutedEventArgs e) {
             AssociatedObject.Loaded -= OnLoaded;
-            AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
+            AssociatedObject.AddPreviewMouseWheel(OnPreviewMouseWheel);
         }
 
         protected override void OnDetaching() {
-            AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
+            AssociatedObject.RemovePreviewMouseWheel(OnPreviewMouseWheel);
             base.OnDetaching();
         }
 

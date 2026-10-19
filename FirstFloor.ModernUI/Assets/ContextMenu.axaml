@@ -1,0 +1,55 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:mui="clr-namespace:FirstFloor.ModernUI.Presentation">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="Fonts.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="{x:Type ContextMenu}" TargetType="ContextMenu">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="FontSize" Value="{DynamicResource DefaultFontSize}"/>
+    <Setter Property="Background" Value="{DynamicResource WindowBackground}"/>
+    <Setter Property="Foreground" Value="{DynamicResource ItemText}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderActive}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="0 6 0 6"/>
+    <Setter Property="MinWidth" Value="150"/>
+    <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+    <Setter Property="TextBlock.FontWeight" Value="Normal"/>
+    <Setter Property="TextBlock.FontStyle" Value="Normal"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="ContextMenu">
+          <c:Cell>
+            <c:Cell.LayoutTransform>
+              <ScaleTransform CenterX="0" CenterY="0" ScaleX="{Binding AppScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}" ScaleY="{Binding AppScale, Source={x:Static mui:AppearanceManager.Instance}, Mode=OneTime}"/>
+            </c:Cell.LayoutTransform>
+            <Border x:Name="ContextMenuBorder" Background="{DynamicResource PopupBackground}" BorderBrush="{DynamicResource WindowBorderActive}" BorderThickness="1">
+              <ScrollViewer x:Name="ContextMenuScrollViewer">
+                <c:Cell>
+                  <Canvas Height="0" Width="0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Rectangle x:Name="OpaqueRect" Height="{Binding ElementName=ContextMenuBorder, Path=ActualHeight}" Width="{Binding ElementName=ContextMenuBorder, Path=ActualWidth}" Fill="{Binding ElementName=ContextMenuBorder, Path=Background}"/>
+                  </Canvas>
+                  <ItemsPresenter x:Name="ItemsPresenter"/>
+                </c:Cell>
+              </ScrollViewer>
+            </Border>
+          </c:Cell>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </ControlTheme>
+
+  <c:InheritingContextMenu x:Key="TextBoxContextMenu">
+    <MenuItem Command="ApplicationCommands.Cut"/>
+    <MenuItem Command="ApplicationCommands.Copy"/>
+    <MenuItem Command="ApplicationCommands.Paste"/>
+    <MenuItem Command="ApplicationCommands.Delete"/>
+    <Separator/>
+    <MenuItem Command="ApplicationCommands.SelectAll"/>
+  </c:InheritingContextMenu>
+
+  <c:InheritingContextMenu x:Key="TextBoxReadOnlyContextMenu">
+    <MenuItem Command="ApplicationCommands.Copy"/>
+    <MenuItem Command="ApplicationCommands.SelectAll"/>
+  </c:InheritingContextMenu>
+</ResourceDictionary>

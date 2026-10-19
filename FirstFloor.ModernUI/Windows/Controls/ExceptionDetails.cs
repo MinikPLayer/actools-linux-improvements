@@ -11,17 +11,16 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private ILinkNavigator _baseLinkNavigator;
 
         public ExceptionDetails() {
-            DefaultStyleKey = typeof(ExceptionDetails);
         }
 
-        public static readonly DependencyPropertyKey StackTracePropertyKey = DependencyProperty.RegisterReadOnly(nameof(StackTrace), typeof(string),
+        public static readonly DependencyPropertyKey StackTracePropertyKey = DP.RegisterReadOnly(nameof(StackTrace), typeof(string),
                 typeof(ExceptionDetails), new PropertyMetadata(null));
 
         public static readonly DependencyProperty StackTraceProperty = StackTracePropertyKey.DependencyProperty;
 
         public string StackTrace => (string)GetValue(StackTraceProperty);
 
-        public static readonly DependencyProperty ExceptionProperty = DependencyProperty.Register(nameof(Exception), typeof(Exception),
+        public static readonly DependencyProperty ExceptionProperty = DP.Register(nameof(Exception), typeof(Exception),
                 typeof(ExceptionDetails), new PropertyMetadata(OnExceptionChanged));
 
         public Exception Exception {
@@ -34,11 +33,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         }
 
         private void OnExceptionChanged(Exception newValue) {
-            SetValue(StackTracePropertyKey, newValue == null ? null : string.Join("\n",
+            SetValue(StackTracePropertyKey.DependencyProperty, newValue == null ? null : string.Join("\n",
                     newValue.ToString().Trim().Replace("\r", "").Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)));
         }
 
-        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(nameof(Title), typeof(string),
+        public static readonly DependencyProperty TitleProperty = DP.Register(nameof(Title), typeof(string),
                 typeof(ExceptionDetails), new PropertyMetadata(UiStrings.NavigationFailed));
 
         public string Title {
@@ -46,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TitleProperty, value);
         }
 
-        public static readonly DependencyProperty SuggestionsProperty = DependencyProperty.Register(nameof(Suggestions), typeof(string),
+        public static readonly DependencyProperty SuggestionsProperty = DP.Register(nameof(Suggestions), typeof(string),
                 typeof(ExceptionDetails), new PropertyMetadata(UiStrings.SuggestionsMessage));
 
         public string Suggestions {
@@ -54,8 +53,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SuggestionsProperty, value);
         }
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_baseLinkNavigator == null) {
                 _baseLinkNavigator = new DefaultLinkNavigator();
@@ -66,7 +66,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                 };
             }
 
-            (GetTemplateChild(@"PART_Suggestions") as SelectableBbCodeBlock)?.SetValue(SelectableBbCodeBlock.LinkNavigatorProperty, this);
+            (this.GetTemplateChild(@"PART_Suggestions") as SelectableBbCodeBlock)?.SetValue(SelectableBbCodeBlock.LinkNavigatorProperty, this);
         }
 
         private CommandDictionary _commands;

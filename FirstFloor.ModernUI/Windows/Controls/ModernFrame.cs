@@ -15,20 +15,20 @@ using JetBrains.Annotations;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernFrame : ContentControl {
-        public static readonly DependencyProperty TransitionNameProperty = DependencyProperty.Register("TransitionName", typeof(string),
+        public static readonly DependencyProperty TransitionNameProperty = DP.Register("TransitionName", typeof(string),
             typeof(ModernFrame));
 
-        public static readonly DependencyProperty KeepAliveProperty = DependencyProperty.RegisterAttached("KeepAlive", typeof(bool?),
+        public static readonly DependencyProperty KeepAliveProperty = DP.RegisterAttached("KeepAlive", typeof(bool?),
             typeof(ModernFrame), new PropertyMetadata(null));
-        public static readonly DependencyProperty KeepContentAliveProperty = DependencyProperty.RegisterAttached("KeepContentAlive", typeof(bool),
+        public static readonly DependencyProperty KeepContentAliveProperty = DP.RegisterAttached("KeepContentAlive", typeof(bool),
             typeof(ModernFrame), new FrameworkPropertyMetadata(false,
                     FrameworkPropertyMetadataOptions.Inherits, OnKeepContentAliveChanged));
-        public static readonly DependencyProperty ContentLoaderProperty = DependencyProperty.Register("ContentLoader", typeof(IContentLoader),
+        public static readonly DependencyProperty ContentLoaderProperty = DP.Register("ContentLoader", typeof(IContentLoader),
             typeof(ModernFrame), new PropertyMetadata(new DefaultContentLoader(), OnContentLoaderChanged));
-        private static readonly DependencyPropertyKey IsLoadingContentPropertyKey = DependencyProperty.RegisterReadOnly("IsLoadingContent", typeof(bool),
+        private static readonly DependencyPropertyKey IsLoadingContentPropertyKey = DP.RegisterReadOnly("IsLoadingContent", typeof(bool),
             typeof(ModernFrame), new PropertyMetadata(false));
         public static readonly DependencyProperty IsLoadingContentProperty = IsLoadingContentPropertyKey.DependencyProperty;
-        public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(Uri),
+        public static readonly DependencyProperty SourceProperty = DP.Register("Source", typeof(Uri),
             typeof(ModernFrame), new PropertyMetadata(OnSourceChanged));
 
         public event EventHandler<FragmentNavigationEventArgs> FragmentNavigation;
@@ -46,13 +46,12 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private bool _isResetSource;
 
         public ModernFrame() {
-            DefaultStyleKey = typeof(ModernFrame);
 
-            CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseBack, OnBrowseBack, OnCanBrowseBack));
-            CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseForward, OnBrowseForward, OnCanBrowseForward));
-            CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, OnRefresh, OnCanRefresh));
-            CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage, OnGoToPage, OnCanGoToPage));
-            CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, OnCopy, OnCanCopy));
+            this.CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseBack, OnBrowseBack, OnCanBrowseBack));
+            this.CommandBindings.Add(new CommandBinding(NavigationCommands.BrowseForward, OnBrowseForward, OnCanBrowseForward));
+            this.CommandBindings.Add(new CommandBinding(NavigationCommands.Refresh, OnRefresh, OnCanRefresh));
+            this.CommandBindings.Add(new CommandBinding(NavigationCommands.GoToPage, OnGoToPage, OnCanGoToPage));
+            this.CommandBindings.Add(new CommandBinding(ApplicationCommands.Copy, OnCopy, OnCanCopy));
 
             Loaded += OnLoaded;
         }
@@ -60,12 +59,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         public static bool OptionDisableTransitionAnimation = false;
         public static string OptionTransitionName = @"ModernUITransition";
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (TransitionName == null) {
                 TransitionName = OptionDisableTransitionAnimation ? @"Normal" : OptionTransitionName;
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
         }
 
         private static void OnKeepContentAliveChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) {
@@ -146,7 +146,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
             if (Source != oldValue) {
                 // enqueue the operation to reset the source back to the old value
-                Dispatcher.BeginInvoke((Action)(() => {
+                Dispatcher.UIThread.BeginInvoke((Action)(() => {
                     _isResetSource = true;
                     SetCurrentValue(SourceProperty, oldValue);
                     _isResetSource = false;
@@ -169,7 +169,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             // Debug.WriteLine("Navigating from '{0}' to '{1}'", oldValue, newValue);
 
             // set IsLoadingContent state
-            SetValue(IsLoadingContentPropertyKey, true);
+            SetValue(IsLoadingContentPropertyKey.DependencyProperty, true);
 
             // cancel previous load content task (if any)
             // note: no need for thread synchronization, this code always executes on the UI thread
@@ -261,7 +261,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             // Debug.WriteLine("Navigating from '{0}' to '{1}'", oldValue, newValue);
 
             // set IsLoadingContent state
-            SetValue(IsLoadingContentPropertyKey, true);
+            SetValue(IsLoadingContentPropertyKey.DependencyProperty, true);
 
             // cancel previous load content task (if any)
             // note: no need for thread synchronization, this code always executes on the UI thread
@@ -363,7 +363,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             // set IsLoadingContent to false
-            SetValue(IsLoadingContentPropertyKey, false);
+            SetValue(IsLoadingContentPropertyKey.DependencyProperty, false);
 
             if (contentIsError) return;
 
@@ -598,7 +598,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TopSourceProperty, value);
         }
 
-        public static readonly DependencyProperty TopSourceProperty = DependencyProperty.RegisterAttached(nameof(TopSource), typeof(Uri),
+        public static readonly DependencyProperty TopSourceProperty = DP.RegisterAttached(nameof(TopSource), typeof(Uri),
                 typeof(ModernFrame), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.Inherits));
 
         public static Uri GetTopSource(DependencyObject o) {

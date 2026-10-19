@@ -19,7 +19,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             return GetChildFromResources(key);
         }
 
-        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(nameof(Value), typeof(object),
+        public static readonly DependencyProperty ValueProperty = DP.Register(nameof(Value), typeof(object),
                 typeof(LazySwitch), new PropertyMetadata(null, (o, e) => {
                     ((LazySwitch)o)._value = e.NewValue;
                     OnChildAffectingPropertyChanged(o, e);
@@ -32,7 +32,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ValueProperty, value);
         }
 
-        public static readonly DependencyProperty DefinitionsProperty = DependencyProperty.Register(nameof(Definitions), typeof(ObservableCollection<LazySwitchDefinition>),
+        public static readonly DependencyProperty DefinitionsProperty = DP.Register(nameof(Definitions), typeof(ObservableCollection<LazySwitchDefinition>),
                 typeof(LazySwitch));
 
         private readonly ObservableCollection<LazySwitchDefinition> _definitions;

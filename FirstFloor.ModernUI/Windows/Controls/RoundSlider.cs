@@ -11,10 +11,9 @@ using FirstFloor.ModernUI.Serialization;
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class RoundSlider : Slider {
         static RoundSlider() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RoundSlider), new FrameworkPropertyMetadata(typeof(RoundSlider)));
         }
 
-        public static readonly DependencyProperty IsThumbDraggingProperty = DependencyProperty.Register(nameof(IsThumbDragging), typeof(bool),
+        public static readonly DependencyProperty IsThumbDraggingProperty = DP.Register(nameof(IsThumbDragging), typeof(bool),
                 typeof(RoundSlider));
 
         public bool IsThumbDragging {
@@ -22,7 +21,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(IsThumbDraggingProperty, value);
         }
 
-        public static readonly DependencyProperty TickBrushProperty = DependencyProperty.Register(nameof(TickBrush), typeof(Brush),
+        public static readonly DependencyProperty TickBrushProperty = DP.Register(nameof(TickBrush), typeof(Brush),
                 typeof(RoundSlider));
 
         public Brush TickBrush {
@@ -30,7 +29,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickBrushProperty, value);
         }
 
-        public static readonly DependencyProperty TickThicknessProperty = DependencyProperty.Register(nameof(TickThickness), typeof(double),
+        public static readonly DependencyProperty TickThicknessProperty = DP.Register(nameof(TickThickness), typeof(double),
                 typeof(RoundSlider));
 
         public double TickThickness {
@@ -38,7 +37,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickThicknessProperty, value);
         }
 
-        public static readonly DependencyProperty TickLengthProperty = DependencyProperty.Register(nameof(TickLength), typeof(double),
+        public static readonly DependencyProperty TickLengthProperty = DP.Register(nameof(TickLength), typeof(double),
                 typeof(RoundSlider));
 
         public double TickLength {
@@ -46,7 +45,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickLengthProperty, value);
         }
 
-        public static readonly DependencyProperty TickOffsetProperty = DependencyProperty.Register(nameof(TickOffset), typeof(double),
+        public static readonly DependencyProperty TickOffsetProperty = DP.Register(nameof(TickOffset), typeof(double),
                 typeof(RoundSlider));
 
         public double TickOffset {
@@ -54,7 +53,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(TickOffsetProperty, value);
         }
 
-        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register(nameof(Content), typeof(object),
+        public static readonly DependencyProperty ContentProperty = DP.Register(nameof(Content), typeof(object),
                 typeof(RoundSlider));
 
         public object Content {
@@ -62,7 +61,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentProperty, value);
         }
 
-        public static readonly DependencyProperty ContentWidthProperty = DependencyProperty.Register(nameof(ContentWidth), typeof(double),
+        public static readonly DependencyProperty ContentWidthProperty = DP.Register(nameof(ContentWidth), typeof(double),
                 typeof(RoundSlider));
 
         public double ContentWidth {
@@ -70,7 +69,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(ContentWidthProperty, value);
         }
 
-        public static readonly DependencyProperty ContentHeightProperty = DependencyProperty.Register(nameof(ContentHeight), typeof(double),
+        public static readonly DependencyProperty ContentHeightProperty = DP.Register(nameof(ContentHeight), typeof(double),
                 typeof(RoundSlider));
 
         public double ContentHeight {
@@ -81,8 +80,9 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private Thumb _thumb;
         private FrameworkElement _wrapper;
 
-        public override void OnApplyTemplate() {
-            base.OnApplyTemplate();
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
+            base.OnApplyTemplate(e);
 
             if (_thumb != null) {
                 _thumb.DragDelta -= OnThumbDragDelta;
@@ -91,11 +91,11 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (_wrapper != null) {
-                _wrapper.MouseWheel -= OnWrapperMouseWheel;
+                _wrapper.RemoveMouseWheel(OnWrapperMouseWheel);
             }
 
-            _thumb = GetTemplateChild(@"PART_Thumb") as Thumb;
-            _wrapper = GetTemplateChild(@"PART_Wrapper") as FrameworkElement;
+            _thumb = this.GetTemplateChild(@"PART_Thumb") as Thumb;
+            _wrapper = this.GetTemplateChild(@"PART_Wrapper") as FrameworkElement;
 
             if (_thumb != null) {
                 _thumb.DragDelta += OnThumbDragDelta;
@@ -104,7 +104,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             if (_wrapper != null) {
-                _wrapper.MouseWheel += OnWrapperMouseWheel;
+                _wrapper.AddMouseWheel(OnWrapperMouseWheel);
             }
         }
 

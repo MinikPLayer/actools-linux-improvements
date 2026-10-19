@@ -8,7 +8,7 @@ using FirstFloor.ModernUI.Windows.Media;
 
 namespace FirstFloor.ModernUI.Windows.Controls {
     public class ModernTabLinksComboBox : BetterComboBox {
-        public static readonly DependencyProperty IsAnySelectedProperty = DependencyProperty.Register(nameof(IsAnySelected), typeof(bool),
+        public static readonly DependencyProperty IsAnySelectedProperty = DP.Register(nameof(IsAnySelected), typeof(bool),
                 typeof(ModernTabLinksComboBox), new PropertyMetadata(false, (o, e) => {
                     ((ModernTabLinksComboBox)o)._isAnySelected = (bool)e.NewValue;
                 }));
@@ -23,7 +23,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private ModernTab _parent;
         
         public ModernTabLinksComboBox() {
-            PreviewMouseUp += (sender, args) => {
+            this.AddPreviewMouseUp((sender, args) => {
                 if (_parent == null || args.ChangedButton != MouseButton.Left) return;
                 var popup = this.FindVisualChild<Popup>();
                 if (popup?.IsOpen == true && (args.Source as DependencyObject)?.GetParent<Popup>() == popup){
@@ -33,7 +33,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
                         _parent.SelectedSource = newUrl;
                     }
                 }
-            };
+            });
             Loaded += (sender, args) => {
                 _parent = this.GetParent<ModernTab>();
                 if (_parent == null) return;

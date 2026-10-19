@@ -13,14 +13,14 @@ namespace FirstFloor.ModernUI.Helpers {
                 return false;
             }
 
-            var childNode = parent.ItemContainerGenerator.ContainerFromItem(child) as TreeViewItem;
+            var childNode = parent.ContainerFromItem(child) as TreeViewItem;
             if (childNode != null) {
                 childNode.Focus();
                 return childNode.IsSelected = true;
             }
 
             if (parent.Items.Count > 0) {
-                return (from object childItem in parent.Items select parent.ItemContainerGenerator.ContainerFromItem(childItem) as ItemsControl).Any(
+                return (from object childItem in parent.Items select parent.ContainerFromItem(childItem) as ItemsControl).Any(
                         childControl => SetSelected(childControl, child));
             }
 

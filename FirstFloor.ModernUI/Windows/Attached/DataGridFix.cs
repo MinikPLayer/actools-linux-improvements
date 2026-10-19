@@ -11,7 +11,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(EnabledProperty, value);
         }
 
-        public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached("Enabled", typeof(bool),
+        public static readonly DependencyProperty EnabledProperty = DP.RegisterAttached("Enabled", typeof(bool),
                 typeof(DataGridFix), new UIPropertyMetadata(OnEnabledChanged));
 
         private static void OnEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {

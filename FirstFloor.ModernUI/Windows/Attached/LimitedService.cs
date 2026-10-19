@@ -13,7 +13,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
             obj.SetValue(DisplayConverterProperty, value);
         }
 
-        public static readonly DependencyProperty DisplayConverterProperty = DependencyProperty.RegisterAttached("DisplayConverter", typeof(IValueConverter),
+        public static readonly DependencyProperty DisplayConverterProperty = DP.RegisterAttached("DisplayConverter", typeof(IValueConverter),
                 typeof(ComboBoxAdvancement), new UIPropertyMetadata(OnDisplayConverterChanged));
 
         private static void OnDisplayConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) {
@@ -40,7 +40,7 @@ namespace FirstFloor.ModernUI.Windows.Attached {
         public static readonly DependencyProperty LimitedProperty;
 
         static LimitedService() {
-            LimitedProperty = DependencyProperty.RegisterAttached("Limited", typeof(bool), typeof(LimitedService),
+            LimitedProperty = DP.RegisterAttached("Limited", typeof(bool), typeof(LimitedService),
                     new FrameworkPropertyMetadata(false, OnLimitedChanged));
         }
 

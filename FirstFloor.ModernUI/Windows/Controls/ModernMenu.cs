@@ -19,11 +19,10 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         private bool _isSelecting;
 
         static ModernMenu() {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ModernMenu), new FrameworkPropertyMetadata(typeof(ModernMenu)));
         }
 
         public ModernMenu() {
-            InputBindings.AddRange(new[] {
+            this.InputBindings.AddRange(new[] {
                 new InputBinding(new DelegateCommand(NewTab), new KeyGesture(Key.T, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(CloseTab), new KeyGesture(Key.W, ModifierKeys.Control)),
                 new InputBinding(new DelegateCommand(CloseTab), new KeyGesture(Key.F4, ModifierKeys.Control)),
@@ -35,8 +34,8 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             });
 
             foreach (var i in Enumerable.Range(0, 9)) {
-                InputBindings.Add(new InputBinding(new DelegateCommand(() => SwitchTab(i, false)), new KeyGesture(Key.D1 + i, ModifierKeys.Control)));
-                InputBindings.Add(new InputBinding(new DelegateCommand(() => SwitchSection(i, false)),
+                this.InputBindings.Add(new InputBinding(new DelegateCommand(() => SwitchTab(i, false)), new KeyGesture(Key.D1 + i, ModifierKeys.Control)));
+                this.InputBindings.Add(new InputBinding(new DelegateCommand(() => SwitchSection(i, false)),
                         new KeyGesture(Key.D1 + i, ModifierKeys.Alt | ModifierKeys.Control)));
             }
 
@@ -155,7 +154,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region LinkGroups
-        public static readonly DependencyProperty LinkGroupsProperty = DependencyProperty.Register("LinkGroups", typeof(LinkGroupCollection),
+        public static readonly DependencyProperty LinkGroupsProperty = DP.Register("LinkGroups", typeof(LinkGroupCollection),
                 typeof(ModernMenu), new PropertyMetadata(new LinkGroupCollection(), OnLinkGroupsChanged));
 
         public LinkGroupCollection LinkGroups {
@@ -181,7 +180,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedLinkGroup
-        public static readonly DependencyProperty SelectedLinkGroupProperty = DependencyProperty.Register("SelectedLinkGroup", typeof(LinkGroup),
+        public static readonly DependencyProperty SelectedLinkGroupProperty = DP.Register("SelectedLinkGroup", typeof(LinkGroup),
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedLinkGroupChanged));
 
         [CanBeNull]
@@ -214,7 +213,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedLink
-        public static readonly DependencyProperty SelectedLinkProperty = DependencyProperty.Register(nameof(SelectedLink), typeof(Link),
+        public static readonly DependencyProperty SelectedLinkProperty = DP.Register(nameof(SelectedLink), typeof(Link),
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedLinkChanged));
 
         public Link SelectedLink {
@@ -257,7 +256,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region SelectedSource
-        public static readonly DependencyProperty SelectedSourceProperty = DependencyProperty.Register("SelectedSource", typeof(Uri),
+        public static readonly DependencyProperty SelectedSourceProperty = DP.Register("SelectedSource", typeof(Uri),
                 typeof(ModernMenu), new PropertyMetadata(OnSelectedSourceChanged));
 
         [CanBeNull]
@@ -278,7 +277,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
         #endregion
 
         #region VisibleLinkGroups
-        private static readonly DependencyPropertyKey VisibleLinkGroupsPropertyKey = DependencyProperty.RegisterReadOnly("VisibleLinkGroups",
+        private static readonly DependencyPropertyKey VisibleLinkGroupsPropertyKey = DP.RegisterReadOnly("VisibleLinkGroups",
                 typeof(ReadOnlyLinkGroupCollection), typeof(ModernMenu), null);
 
         public static readonly DependencyProperty VisibleLinkGroupsProperty = VisibleLinkGroupsPropertyKey.DependencyProperty;
@@ -288,16 +287,17 @@ namespace FirstFloor.ModernUI.Windows.Controls {
 
         private ListBox _subMenuListBox;
 
-        public override void OnApplyTemplate() {
+        protected override void OnApplyTemplate(Avalonia.Controls.Primitives.TemplateAppliedEventArgs e) {
+            this.RememberTemplateScope(e);
             if (_subMenuListBox != null) {
-                _subMenuListBox.Drop -= OnDrop;
+                _subMenuListBox.RemoveDrop(OnDrop);
             }
 
-            base.OnApplyTemplate();
+            base.OnApplyTemplate(e);
 
-            _subMenuListBox = GetTemplateChild("PART_SubMenu") as ListBox;
+            _subMenuListBox = this.GetTemplateChild("PART_SubMenu") as ListBox;
             if (_subMenuListBox != null) {
-                _subMenuListBox.Drop += OnDrop;
+                _subMenuListBox.AddDrop(OnDrop);
             }
         }
 
@@ -441,13 +441,13 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             }
 
             // update selection
-            SetValue(VisibleLinkGroupsPropertyKey, groups);
+            SetValue(VisibleLinkGroupsPropertyKey.DependencyProperty, groups);
             SetCurrentValue(SelectedLinkGroupProperty, selectedGroup);
             SetCurrentValue(SelectedLinkProperty, selectedLink);
             _isSelecting = false;
         }
 
-        public static readonly DependencyProperty SaveKeyProperty = DependencyProperty.Register(nameof(SaveKey), typeof(string),
+        public static readonly DependencyProperty SaveKeyProperty = DP.Register(nameof(SaveKey), typeof(string),
                 typeof(ModernMenu));
 
         public string SaveKey {
@@ -455,7 +455,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(SaveKeyProperty, value);
         }
 
-        public static readonly DependencyProperty DefaultSourceProperty = DependencyProperty.Register(nameof(DefaultSource), typeof(Uri),
+        public static readonly DependencyProperty DefaultSourceProperty = DP.Register(nameof(DefaultSource), typeof(Uri),
                 typeof(ModernMenu));
 
         public Uri DefaultSource {
@@ -463,7 +463,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             set => SetValue(DefaultSourceProperty, value);
         }
 
-        public static readonly DependencyProperty TopRowVisibilityProperty = DependencyProperty.Register(nameof(TopRowVisibility), typeof(Visibility),
+        public static readonly DependencyProperty TopRowVisibilityProperty = DP.Register(nameof(TopRowVisibility), typeof(Visibility),
                 typeof(ModernMenu), new PropertyMetadata(Visibility.Visible));
 
         public Visibility TopRowVisibility {

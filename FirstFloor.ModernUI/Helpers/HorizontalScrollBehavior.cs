@@ -22,7 +22,7 @@ namespace FirstFloor.ModernUI.Helpers {
 
             _scrollViewer = AssociatedObject.FindVisualChild<ScrollViewer>();
             if (_scrollViewer != null) {
-                _scrollViewer.PreviewMouseWheel += OnPreviewMouseWheel;
+                _scrollViewer.AddPreviewMouseWheel(OnPreviewMouseWheel);
             }
         }
 
@@ -30,7 +30,7 @@ namespace FirstFloor.ModernUI.Helpers {
             base.OnDetaching();
 
             if (_scrollViewer != null) {
-                _scrollViewer.PreviewMouseWheel -= OnPreviewMouseWheel;
+                _scrollViewer.RemovePreviewMouseWheel(OnPreviewMouseWheel);
             }
         }
 

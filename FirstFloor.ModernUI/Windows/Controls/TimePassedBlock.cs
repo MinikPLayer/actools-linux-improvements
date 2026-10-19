@@ -27,7 +27,7 @@ namespace FirstFloor.ModernUI.Windows.Controls {
             _timer = null;
         }
 
-        public static readonly DependencyProperty FromProperty = DependencyProperty.Register(nameof(From), typeof(DateTime),
+        public static readonly DependencyProperty FromProperty = DP.Register(nameof(From), typeof(DateTime),
                 typeof(TimePassedBlock), new PropertyMetadata(OnFromChanged));
 
         public DateTime From {

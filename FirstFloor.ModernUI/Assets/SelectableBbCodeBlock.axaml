@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:c="clr-namespace:FirstFloor.ModernUI.Windows.Controls" xmlns:a="clr-namespace:FirstFloor.ModernUI.Windows.Attached" xmlns:mui="http://firstfloorsoftware.com/ModernUI">
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/Converters.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/ComboBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/TextBox.axaml"/>
+    <ResourceInclude Source="avares://FirstFloor.ModernUI/Assets/MenuItem.axaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <ControlTheme x:Key="RichTextBox.ReadOnly" TargetType="RichTextBox">
+    <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+    <Setter Property="ContextMenu" Value="{StaticResource TextBoxReadOnlyContextMenu}"/>
+    <Setter Property="CaretBrush" Value="{DynamicResource InputText}"/>
+    <Setter Property="DragDrop.AllowDrop" Value="True"/>
+    <Setter Property="IsUndoEnabled" Value="False"/>
+    <Setter Property="UndoLimit" Value="0"/>
+    <Setter Property="a:ContextMenuAdvancement.AddCopyLinkItem" Value="True"/>
+    <Setter Property="SelectionBrush" Value="{DynamicResource Accent}"/>
+    <Setter Property="IsReadOnly" Value="True"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="TextBox">
+          <ScrollViewer x:Name="PART_ContentHost" Padding="0" Margin="-4 0"/>
+          </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  <Style Selector="^:not(:disabled)"><Setter Property="Foreground" Value="{Binding Path=(TextBlock.Foreground), RelativeSource={RelativeSource AncestorType={x:Type Control}}}"/>
+            </Style><Style Selector="^:disabled"><Setter Property="Foreground" Value="{DynamicResource InputTextDisabled}"/>
+            </Style></ControlTheme>
+
+  <ControlTheme x:Key="RichTextBox.Heading2.ReadOnly" TargetType="RichTextBox" BasedOn="{StaticResource RichTextBox.ReadOnly}">
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="RichTextBox.Small.ReadOnly" TargetType="RichTextBox" BasedOn="{StaticResource RichTextBox.ReadOnly}">
+    <Setter Property="FontSize" Value="{DynamicResource SmallFontSize}"/>
+  </ControlTheme>
+
+  <ControlTheme x:Key="RichTextBox.Hyperlink" TargetType="RichTextBox" BasedOn="{StaticResource RichTextBox.ReadOnly}">
+    <Setter Property="Foreground" Value="{DynamicResource Hyperlink}"/>
+    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+    <Style Selector="^:pointerover"><Setter Property="Control.Foreground" Value="{DynamicResource HyperlinkHover}"/>
+      </Style><Style Selector="^:disabled"><Setter Property="Control.Foreground" Value="{DynamicResource HyperlinkDisabled}"/>
+      </Style><Style Selector="^:not(:disabled)"><Setter Property="Cursor" Value="Hand"/>
+      </Style></ControlTheme>
+
+  <ControlTheme TargetType="c:SelectableBbCodeBlock" BasedOn="{StaticResource RichTextBox.ReadOnly}" x:Key="{x:Type c:SelectableBbCodeBlock}"/>
+  <ControlTheme TargetType="c:PathTrimmingTextBlock" BasedOn="{StaticResource RichTextBox.ReadOnly}" x:Key="{x:Type c:PathTrimmingTextBlock}"/>
+</ResourceDictionary>
