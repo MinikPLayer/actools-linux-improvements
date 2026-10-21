@@ -65,6 +65,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcManager.Workshop", "AcMan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcTools.ExtraKn5Utils", "AcTools.ExtraKn5Utils\AcTools.ExtraKn5Utils.csproj", "{67729C43-6E5F-482A-8777-1651EA1AA393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcManager.Internal", "AcManager.Internal\AcManager.Internal.csproj", "{2B08B572-C02D-4544-98DF-BDF68B982B4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FANNCSharp.Stub", "FANNCSharp.Stub\FANNCSharp.Stub.csproj", "{C152134D-BC1C-4A3C-A50F-D5196356DB39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -311,6 +315,22 @@ Global
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x64.Build.0 = Release|x64
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x86.ActiveCfg = Release|x86
 		{67729C43-6E5F-482A-8777-1651EA1AA393}.Release|x86.Build.0 = Release|x86
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Debug|x86.ActiveCfg = Debug|x86
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Debug|x86.Build.0 = Debug|x86
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Release|x86.ActiveCfg = Release|x86
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Release|x86.Build.0 = Release|x86
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Debug|x64.ActiveCfg = Debug|x64
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Debug|x64.Build.0 = Debug|x64
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Release|x64.ActiveCfg = Release|x64
+		{2B08B572-C02D-4544-98DF-BDF68B982B4F}.Release|x64.Build.0 = Release|x64
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Debug|x86.ActiveCfg = Debug|x86
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Debug|x86.Build.0 = Debug|x86
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Release|x86.ActiveCfg = Release|x86
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Release|x86.Build.0 = Release|x86
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Debug|x64.ActiveCfg = Debug|x64
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Debug|x64.Build.0 = Debug|x64
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Release|x64.ActiveCfg = Release|x64
+		{C152134D-BC1C-4A3C-A50F-D5196356DB39}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

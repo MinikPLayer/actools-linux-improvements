@@ -1,0 +1,3 @@
+[submodule "AcManager.Internal"]
+	path = AcManager.Internal
+	url = git@github.com:MinikPLayer/AcManager.Internal.git

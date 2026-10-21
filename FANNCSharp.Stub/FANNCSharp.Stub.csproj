@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>FANNCSharp</AssemblyName>
+        <RootNamespace>FANNCSharp</RootNamespace>
+        <Company>FANNCSharp</Company>
+        <Product>FANNCSharp</Product>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Include="NetworkType.cs" />
+      <Compile Include="TrainingAlgorithm.cs" />
+      <Compile Include="ActivationFunction.cs" />
+      <Compile Include="Double\NeuralNet.cs" />
+      <Compile Include="Double\TrainingData.cs" />
+    </ItemGroup>
+
+</Project>
