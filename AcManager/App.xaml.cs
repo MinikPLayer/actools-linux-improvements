@@ -215,7 +215,7 @@ namespace AcManager {
         }
 
         public static bool IsSoftwareRenderingModeEnabled() {
-            return AppArguments.GetBool(AppFlag.SoftwareRendering) || ValuesStorage.Get<bool>(AppAppearanceManager.KeySoftwareRendering)
+            return AppArguments.GetBool(AppFlag.SoftwareRendering) || ValuesStorage.Get(AppAppearanceManager.KeySoftwareRendering, true)
                     || MainExecutingFile.Name.IndexOf(@"safe", StringComparison.OrdinalIgnoreCase) != -1;
         }
 
