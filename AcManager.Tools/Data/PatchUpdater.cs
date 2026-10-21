@@ -227,17 +227,20 @@ namespace AcManager.Tools.Data {
             } catch (InformativeException e) {
                 Logging.Warning(e);
                 LatestError = e.SolutionCommentary != null ? $"{e.Message}: {e.SolutionCommentary.ToSentenceMember()}".ToSentence() : e.Message.ToSentence();
+                MessageDialog.Show(LatestError, "CSP Installation failed!", MessageDialogButton.OK);
                 ChangeCurrentVersionWithoutForcing(oldVersion, false);
                 return false;
             } catch (UnauthorizedAccessException e) when (e.Message.Contains(@"dwrite.dll")) {
                 Logging.Warning(e);
                 LatestError = $"Can’t install patch: failed to replace “dwrite.dll”, is AC running?".ToSentence();
+                MessageDialog.Show(LatestError, "CSP Installation failed!", MessageDialogButton.OK);
                 ChangeCurrentVersionWithoutForcing(oldVersion, false);
                 return false;
             } catch (Exception e) {
                 Logging.Warning(e);
                 LatestError = $"Can’t install patch: {e.Message.ToSentenceMember()}".ToSentence();
                 ChangeCurrentVersionWithoutForcing(oldVersion, false);
+                MessageDialog.Show(LatestError, "CSP Installation failed!", MessageDialogButton.OK);
                 return false;
             } finally {
                 InstallationProgress = AsyncProgressEntry.Finished;

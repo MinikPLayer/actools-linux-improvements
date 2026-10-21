@@ -5,9 +5,10 @@
   <Import Project="..\packages\cef.redist.x64.114.2.12\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.114.2.12\build\cef.redist.x64.props')" />
   <PropertyGroup>
     <!-- There is also a custom packer made for this app, that’s why there is an option. -->
-    <UseCosturaToPack>false</UseCosturaToPack>
+    <UseCosturaToPack>true</UseCosturaToPack>
     <IncludeWorkshop>false</IncludeWorkshop>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishUrl>..\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -19,7 +20,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ProductName>Content Manager</ProductName>
     <PublisherName>AcClub</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -38,7 +39,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AcManager</RootNamespace>
-    <AssemblyName>AssettoCorsa</AssemblyName>
+    <AssemblyName>Content Manager</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <FileAlignment>512</FileAlignment>
@@ -61,7 +62,7 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
+    <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>1C50C8B86DDF7F1AC6E4F6C16886EF163542FF71</ManifestCertificateThumbprint>
@@ -2391,4 +2392,8 @@
     <Error Condition="!Exists('..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.targets'))" />
   </Target>
   <Import Project="..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.114.2.120\build\CefSharp.Common.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)/Publish"
+copy "$(TargetPath)"  "$(SolutionDir)/Publish/AssettoCorsa.exe"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

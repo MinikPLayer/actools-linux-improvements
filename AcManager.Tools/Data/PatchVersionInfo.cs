@@ -547,113 +547,122 @@ namespace AcManager.Tools.Data {
             if (_installing) throw new InformativeException("Can’t update patch", "Another update is in process.");
             _installing = true;
 
-            var installationEntry = new ContentInstallationEntry("Custom Shaders Patch", ContentInstallationParams.DefaultWithoutExecutables) {
-                FileIcon = AppIconService.GetAppIcon().ToImageSource(),
-                Version = Version,
-                Virtual = true,
-            };
-            using (var cancellationSource = new CancellationTokenSource()) {
-                var cancellation = cancellationSource.Token;
-                installationEntry.CancellationTokenSource = cancellationSource;
+            try
+            {
+                var installationEntry = new ContentInstallationEntry("Custom Shaders Patch", ContentInstallationParams.DefaultWithoutExecutables) {
+                    FileIcon = AppIconService.GetAppIcon().ToImageSource(),
+                    Version = Version,
+                    Virtual = true,
+                };
+                using (var cancellationSource = new CancellationTokenSource()) {
+                    var cancellation = cancellationSource.Token;
+                    installationEntry.CancellationTokenSource = cancellationSource;
 
-                var progressBak = progress;
-                progress = new Progress<AsyncProgressEntry>(p => {
-                    installationEntry.Progress = p;
-                    progressBak?.Report(p);
-                });
-                ContentInstallationManager.Instance.DownloadList.Add(installationEntry);
-                ContentInstallationManager.Instance.UpdateBusyStates();
+                    var progressBak = progress;
+                    progress = new Progress<AsyncProgressEntry>(p => {
+                        installationEntry.Progress = p;
+                        progressBak?.Report(p);
+                    });
+                    ContentInstallationManager.Instance.DownloadList.Add(installationEntry);
+                    ContentInstallationManager.Instance.UpdateBusyStates();
 
-                try {
-                    if (!AvailableToDownload) {
-                        throw new InformativeException("Can’t update patch", "This version is not available.");
-                    }
-
-                    _installing = true;
-                    Logging.Debug($"Beginning patch installation, trying to install v{Version} ({Build})");
-                    FileUtils.TryToDelete(Path.Combine(PatchHelper.RequireRootDirectory(), @"config", @"joypad_assist.ini"));
-
-                    /*if (BuildInformation.IsDebugConfiguration) {
-                        Logging.Warning("Skipping installation in debug configuration");
-                    } else {*/
-                    var vars = new InstallVars();
-                    vars.LoadValues(ref progress);
-
-                    byte[] dataPatch;
-                    if (Version != vars.InstalledVersion && Build != vars.InstalledBuild) {
-                        dataPatch = await CmApiProvider.GetPatchVersionAsync(Version, LoadPreviewBuilds(), progress.Subrange(0.0, 0.3), cancellation);
-                        cancellation.ThrowIfCancellationRequested();
-                        if (dataPatch == null) {
-                            throw new InformativeException(ToolsStrings.AppUpdater_CannotLoad, ToolsStrings.Common_MakeSureInternetWorks);
+                    try {
+                        if (!AvailableToDownload) {
+                            throw new InformativeException("Can’t update patch", "This version is not available.");
                         }
-                        Logging.Debug("Zipped patch ready: " + dataPatch.Length);
-                    } else {
-                        dataPatch = null;
-                        Logging.Debug("Skipping patch stage");
-                    }
 
-                    byte[] dataChunk;
-                    if (ChunkVersion == null) {
-                        dataChunk = new byte[0];
-                        Logging.Debug("No chunk needed");
-                    } else if (ChunkVersion != vars.InstalledChunk) {
-                        dataChunk = await CmApiProvider.GetChunkVersionAsync(ChunkVersion, progress.Subrange(0.3, 0.5), cancellation);
-                        cancellation.ThrowIfCancellationRequested();
-                        if (dataChunk == null) {
-                            throw new InformativeException(ToolsStrings.AppUpdater_CannotLoad, ToolsStrings.Common_MakeSureInternetWorks);
+                        _installing = true;
+                        Logging.Debug($"Beginning patch installation, trying to install v{Version} ({Build})");
+                        FileUtils.TryToDelete(Path.Combine(PatchHelper.RequireRootDirectory(), @"config", @"joypad_assist.ini"));
+
+                        /*if (BuildInformation.IsDebugConfiguration) {
+                            Logging.Warning("Skipping installation in debug configuration");
+                        } else {*/
+                        var vars = new InstallVars();
+                        vars.LoadValues(ref progress);
+
+                        byte[] dataPatch;
+                        if (Version != vars.InstalledVersion && Build != vars.InstalledBuild) {
+                            dataPatch = await CmApiProvider.GetPatchVersionAsync(Version, LoadPreviewBuilds(), progress.Subrange(0.0, 0.3), cancellation);
+                            cancellation.ThrowIfCancellationRequested();
+                            if (dataPatch == null) {
+                                throw new InformativeException(ToolsStrings.AppUpdater_CannotLoad, ToolsStrings.Common_MakeSureInternetWorks);
+                            }
+                            Logging.Debug("Zipped patch ready: " + dataPatch.Length);
+                        } else {
+                            dataPatch = null;
+                            Logging.Debug("Skipping patch stage");
                         }
-                        Logging.Debug("Zipped chunk ready: " + dataChunk.Length);
-                    } else {
-                        dataChunk = null;
-                        Logging.Debug("Skipping chunk stage");
-                    }
 
-                    installationEntry.CancellationTokenSource = null;
-                    await Task.Run(() => {
-                        Logging.Debug("Main folder created");
-                        Directory.CreateDirectory(PatchHelper.RequireRootDirectory());
+                        byte[] dataChunk;
+                        if (ChunkVersion == null) {
+                            dataChunk = new byte[0];
+                            Logging.Debug("No chunk needed");
+                        } else if (ChunkVersion != vars.InstalledChunk) {
+                            dataChunk = await CmApiProvider.GetChunkVersionAsync(ChunkVersion, progress.Subrange(0.3, 0.5), cancellation);
+                            cancellation.ThrowIfCancellationRequested();
+                            if (dataChunk == null) {
+                                throw new InformativeException(ToolsStrings.AppUpdater_CannotLoad, ToolsStrings.Common_MakeSureInternetWorks);
+                            }
+                            Logging.Debug("Zipped chunk ready: " + dataChunk.Length);
+                        } else {
+                            dataChunk = null;
+                            Logging.Debug("Skipping chunk stage");
+                        }
 
-                        using (var installedLogStream = new MemoryStream()) {
-                            using (var installedLog = new StreamWriter(installedLogStream)) {
-                                installedLog.WriteLine(@"# Generated automatically during last patch installation via Content Manager.");
-                                installedLog.WriteLine(@"# Do not edit, unless you have to for some reason.");
+                        installationEntry.CancellationTokenSource = null;
+                        await Task.Run(() => {
+                            Logging.Debug("Main folder created");
+                            Directory.CreateDirectory(PatchHelper.RequireRootDirectory());
 
-                                installedLog.WriteLine(@"version: " + Version);
-                                installedLog.WriteLine(@"build: " + Build);
-                                if (dataPatch != null) {
-                                    Logging.Debug("Running patch stage");
-                                    if (CustomBuild) {
-                                        vars.PatchStage.CombineWith(vars.ChunkStage);
+                            using (var installedLogStream = new MemoryStream()) {
+                                using (var installedLog = new StreamWriter(installedLogStream)) {
+                                    installedLog.WriteLine(@"# Generated automatically during last patch installation via Content Manager.");
+                                    installedLog.WriteLine(@"# Do not edit, unless you have to for some reason.");
+
+                                    installedLog.WriteLine(@"version: " + Version);
+                                    installedLog.WriteLine(@"build: " + Build);
+                                    if (dataPatch != null) {
+                                        Logging.Debug("Running patch stage");
+                                        if (CustomBuild) {
+                                            vars.PatchStage.CombineWith(vars.ChunkStage);
+                                        }
+                                        vars.PatchStage.Run(dataPatch, installedLog, progress.Subrange(0.5, 0.245), cancellation);
                                     }
-                                    vars.PatchStage.Run(dataPatch, installedLog, progress.Subrange(0.5, 0.245), cancellation);
-                                }
 
-                                if (!CustomBuild) {
-                                    if (dataChunk != null) {
-                                        Logging.Debug("Running chunk stage");
-                                        installedLog.WriteLine(@"chunk: " + ChunkVersion);
-                                        vars.ChunkStage.Run(dataChunk, installedLog, progress.Subrange(0.75, 0.245), cancellation);
-                                    } else {
-                                        foreach (var line in vars.ChunkStage.LogLines) {
-                                            installedLog.WriteLine(line);
+                                    if (!CustomBuild) {
+                                        if (dataChunk != null) {
+                                            Logging.Debug("Running chunk stage");
+                                            installedLog.WriteLine(@"chunk: " + ChunkVersion);
+                                            vars.ChunkStage.Run(dataChunk, installedLog, progress.Subrange(0.75, 0.245), cancellation);
+                                        } else {
+                                            foreach (var line in vars.ChunkStage.LogLines) {
+                                                installedLog.WriteLine(line);
+                                            }
                                         }
                                     }
                                 }
+
+                                // TODO: If chunk is being reused, does it show up in InstalledLog?
+                                File.WriteAllBytes(PatchHelper.TryGetInstalledLog() ?? string.Empty, installedLogStream.ToArray());
                             }
 
-                            // TODO: If chunk is being reused, does it show up in InstalledLog?
-                            File.WriteAllBytes(PatchHelper.TryGetInstalledLog() ?? string.Empty, installedLogStream.ToArray());
-                        }
-
-                        PatchHelper.Reload();
-                    });
-                    /*}*/
-                } finally {
-                    _installing = false;
-                    ContentInstallationManager.Instance.DownloadList.Remove(installationEntry);
-                    ContentInstallationManager.Instance.UpdateBusyStates();
+                            PatchHelper.Reload();
+                        });
+                        /*}*/
+                    } finally {
+                        _installing = false;
+                        ContentInstallationManager.Instance.DownloadList.Remove(installationEntry);
+                        ContentInstallationManager.Instance.UpdateBusyStates();
+                    }
                 }
             }
+            catch (Exception)
+            {
+                _installing = false;
+                throw;
+            }
+
         }
 
         private static string ExtraVersionsFilename() {
