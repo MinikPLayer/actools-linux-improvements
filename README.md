@@ -11,6 +11,21 @@ Set of utils and apps designed for Assetto Corsa. Some obsolete projects are mov
 Changes from main:
 - Improved the content Install function: Now it correctly refreshes installed cars and tracks after install. 
 
+## Running on Linux
+1) Set Assetto Corsa proton version to GE-Proton9.25 (ProtonGE 9.25)
+2) Install the game
+3) Install missing fonts (https://acstuff.club/u/blob/ac-fonts.zip), by copying the system directory from the archive into the assettocorsa/content/fonts folder.
+4) Rename the original AssettoCorsa.exe file to AssettoCorsa_original.exe
+5) Download the modified content manager from [Releases](https://github.com/MinikPLayer/actools-linux-improvements/releases/latest) and copy the downloaded AssettoCorsa.exe into the game folder
+6) Run the game, the CM window should open (it may take a while for the window to show up, because ProtonGE installs dependencies in the background).
+7) Install CSP
+8) Run the driving mode at least once (Press "Go!" in the "Drive" section)
+9) Close the CM. Change the proton version to GE-Proton11.9
+10) Run the game again, ignore "This application could not be started" and "This application requires one of the following versions of .NET Framework" - click "No" to all of them. This may also take a while, becase game specific fixes are installing in the background.
+11) Go into Settings -> Content Manager -> Plugins and install 7-Zip
+12) Test if you can go into drive mode ("Go!" button in the "Drive" section). If you can't, try going back to ProtonGE version 9.25, running the game and then again try version 11.9
+13) Enjoy!
+
 ## Common libraries
 
 - ### [AcTools](https://github.com/gro-ove/actools/tree/master/AcTools)
